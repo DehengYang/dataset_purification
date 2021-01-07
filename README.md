@@ -16,6 +16,7 @@ It can automatically identify and filter out code changes irrelevant to but tang
     - [1.3.2. For end users who use human-written patches as the ground truth](#132-for-end-users-who-use-human-written-patches-as-the-ground-truth)
     - [1.3.3. For researchers who want to explore the real challenges of APR](#133-for-researchers-who-want-to-explore-the-real-challenges-of-apr)
   - [1.4. APR techniques that are evaluated on Defects4J](#14-apr-techniques-that-are-evaluated-on-defects4j)
+  - [1.5 Minor fix](#15-minor-fix)
 
 ## 1.1. Introduction
 An unsolved but important problem is the purification (i.e., filtering out the code changes irrelevant to the real bug fix) of human-written patches when constructing a dataset of real-world bugs.
@@ -129,6 +130,13 @@ Here we also share our literature review results (i.e., the APR techniques evalu
 | 45 | CoCoNuT                          | 2020 | https://github/com/lin-tan/CoCoNut-Artifact       |
 | 46 | JAID-revise                     | 2020 | -                                                   |
 | 47 | MuJava                           | 2020 | -                                                   |
+
+
+## 1.5 Minor fix
+
+There is a typo in Figure 1 of our paper. As shown in the following figure, the number of correctly/plausible repaired bugs for Hercules is 49/72, rather than 46/63.
+
+![Figure_1](./doc/Fig_1.png)
 
 
 ----
