@@ -1,0 +1,246 @@
+1 bug_id: Lang-20
+2 src folder:
+  name of src folder: java
+  number of files: 112
+  number of java files: 99
+  number of src classes: 151
+  number of test classes: 99
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.StringUtilsTest#testJoin_Objectarray
+  - org.apache.commons.lang3.StringUtilsTest#testJoin_ArrayChar
+  failing tests:
+  - org.apache.commons.lang3.StringUtilsTest
+  number of all test cases: 1876
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.009
+  purification via delta debugging: 66.912
+  repair actions extraction: 4.06
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.StringUtilsTest#testJoin_ArrayChar: 33
+    org.apache.commons.lang3.StringUtilsTest#testJoin_Objectarray: 34
+  fixed:
+    org.apache.commons.lang3.StringUtilsTest#testJoin_ArrayChar: 33
+    org.apache.commons.lang3.StringUtilsTest#testJoin_Objectarray: 36
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 2
+  passed: 0
+  total: 6
+9 sibling repair actions:
+- 0 1 0.8727694090382387
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_20/src/main/java/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 01:02:41.999949741 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_20/purify/patch/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 01:02:41.983949280 -0400\n@@ -3295,7 +3295,7 @@\n             return\
+    \ EMPTY;\n         }\n         \n-        StringBuilder buf = new StringBuilder((array[startIndex]\
+    \ == null ? 16 : array[startIndex].toString().length()) + 1);\n+        StringBuilder\
+    \ buf = new StringBuilder(noOfItems * 16);\n \n         for (int i = startIndex;\
+    \ i < endIndex; i++) {\n             if (i > startIndex) {\n@@ -3380,7 +3380,7\
+    \ @@\n             return EMPTY;\n         }\n \n-        StringBuilder buf =\
+    \ new StringBuilder((array[startIndex] == null ? 16 : array[startIndex].toString().length())\
+    \ + separator.length());\n+        StringBuilder buf = new StringBuilder(noOfItems\
+    \ * 16);\n \n         for (int i = startIndex; i < endIndex; i++) {\n        \
+    \     if (i > startIndex) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_20/src/main/java/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 01:04:03.590306214 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_20/purify/purified/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 01:04:03.586306098 -0400\n@@ -3295,7 +3295,7 @@\n             return\
+    \ EMPTY;\n         }\n         \n-        StringBuilder buf = new StringBuilder((array[startIndex]\
+    \ == null ? 16 : array[startIndex].toString().length()) + 1);\n+        StringBuilder\
+    \ buf = new StringBuilder(noOfItems * 16);\n \n         for (int i = startIndex;\
+    \ i < endIndex; i++) {\n             if (i > startIndex) {\n@@ -3380,7 +3380,7\
+    \ @@\n             return EMPTY;\n         }\n \n-        StringBuilder buf =\
+    \ new StringBuilder((array[startIndex] == null ? 16 : array[startIndex].toString().length())\
+    \ + separator.length());\n+        StringBuilder buf = new StringBuilder(noOfItems\
+    \ * 16);\n \n         for (int i = startIndex; i < endIndex; i++) {\n        \
+    \     if (i > startIndex) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/StringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@StringBuilder buf=new StringBuilder((array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + 1); @TO@ StringBuilder
+      buf=new StringBuilder(noOfItems * 16); '
+    - '---UPD VariableDeclarationFragment@@buf=new StringBuilder((array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + 1) @TO@ buf=new StringBuilder(noOfItems
+      * 16) '
+    - '------UPD ClassInstanceCreation@@StringBuilder[(array[startIndex] == null ?
+      16 : array[startIndex].toString().length()) + 1] @TO@ StringBuilder[noOfItems
+      * 16] '
+    - '---------UPD InfixExpression@@(array[startIndex] == null ? 16 : array[startIndex].toString().length())
+      + 1 @TO@ noOfItems * 16 '
+    - '------------INS SimpleName@@noOfItems @TO@ InfixExpression@@(array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + 1 '
+    - '------------DEL ParenthesizedExpression@@(array[startIndex] == null ? 16 :
+      array[startIndex].toString().length()) '
+    - '---------------DEL ConditionalExpression@@array[startIndex] == null ? 16 :
+      array[startIndex].toString().length() '
+    - '------------------DEL InfixExpression@@array[startIndex] == null '
+    - '---------------------DEL ArrayAccess@@array[startIndex] '
+    - '------------------------DEL SimpleName@@array '
+    - '------------------------DEL SimpleName@@startIndex '
+    - '---------------------DEL NullLiteral@@null '
+    - '------------------DEL NumberLiteral@@16 '
+    - '------------------DEL MethodInvocation@@array[startIndex].toString().length() '
+    - '---------------------DEL ArrayAccess@@array[startIndex] '
+    - '------------------------DEL SimpleName@@array '
+    - '------------------------DEL SimpleName@@startIndex '
+    - '---------------------DEL MethodInvocation@@MethodName:toString:[] '
+    - '---------------------DEL SimpleName@@MethodName:length:[] '
+    - '------------INS NumberLiteral@@16 @TO@ InfixExpression@@(array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + 1 '
+    - '------------MOV Operator@@== @TO@ InfixExpression@@(array[startIndex] == null
+      ? 16 : array[startIndex].toString().length()) + 1 '
+    - '------------DEL Operator@@+ '
+    - '------------DEL NumberLiteral@@1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@StringBuilder buf=new StringBuilder((array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + separator.length());
+      @TO@ StringBuilder buf=new StringBuilder(noOfItems * 16); '
+    - '---UPD VariableDeclarationFragment@@buf=new StringBuilder((array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + separator.length())
+      @TO@ buf=new StringBuilder(noOfItems * 16) '
+    - '------UPD ClassInstanceCreation@@StringBuilder[(array[startIndex] == null ?
+      16 : array[startIndex].toString().length()) + separator.length()] @TO@ StringBuilder[noOfItems
+      * 16] '
+    - '---------UPD InfixExpression@@(array[startIndex] == null ? 16 : array[startIndex].toString().length())
+      + separator.length() @TO@ noOfItems * 16 '
+    - '------------INS SimpleName@@noOfItems @TO@ InfixExpression@@(array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + separator.length() '
+    - '------------INS NumberLiteral@@16 @TO@ InfixExpression@@(array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + separator.length() '
+    - '------------DEL ParenthesizedExpression@@(array[startIndex] == null ? 16 :
+      array[startIndex].toString().length()) '
+    - '---------------DEL ConditionalExpression@@array[startIndex] == null ? 16 :
+      array[startIndex].toString().length() '
+    - '------------------DEL InfixExpression@@array[startIndex] == null '
+    - '---------------------DEL ArrayAccess@@array[startIndex] '
+    - '------------------------DEL SimpleName@@array '
+    - '------------------------DEL SimpleName@@startIndex '
+    - '---------------------DEL NullLiteral@@null '
+    - '------------------DEL NumberLiteral@@16 '
+    - '------------------DEL MethodInvocation@@array[startIndex].toString().length() '
+    - '---------------------DEL ArrayAccess@@array[startIndex] '
+    - '------------------------DEL SimpleName@@array '
+    - '------------------------DEL SimpleName@@startIndex '
+    - '---------------------DEL MethodInvocation@@MethodName:toString:[] '
+    - '---------------------DEL SimpleName@@MethodName:length:[] '
+    - '------------MOV Operator@@== @TO@ InfixExpression@@(array[startIndex] == null
+      ? 16 : array[startIndex].toString().length()) + separator.length() '
+    - '------------DEL Operator@@+ '
+    - '------------DEL MethodInvocation@@separator.length() '
+    - '---------------DEL SimpleName@@Name:separator '
+    - '---------------DEL SimpleName@@MethodName:length:[] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/StringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@StringBuilder buf=new StringBuilder((array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + 1); @TO@ StringBuilder
+      buf=new StringBuilder(noOfItems * 16); '
+    - '---UPD VariableDeclarationFragment@@buf=new StringBuilder((array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + 1) @TO@ buf=new StringBuilder(noOfItems
+      * 16) '
+    - '------UPD ClassInstanceCreation@@StringBuilder[(array[startIndex] == null ?
+      16 : array[startIndex].toString().length()) + 1] @TO@ StringBuilder[noOfItems
+      * 16] '
+    - '---------UPD InfixExpression@@(array[startIndex] == null ? 16 : array[startIndex].toString().length())
+      + 1 @TO@ noOfItems * 16 '
+    - '------------INS SimpleName@@noOfItems @TO@ InfixExpression@@(array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + 1 '
+    - '------------DEL ParenthesizedExpression@@(array[startIndex] == null ? 16 :
+      array[startIndex].toString().length()) '
+    - '---------------DEL ConditionalExpression@@array[startIndex] == null ? 16 :
+      array[startIndex].toString().length() '
+    - '------------------DEL InfixExpression@@array[startIndex] == null '
+    - '---------------------DEL ArrayAccess@@array[startIndex] '
+    - '------------------------DEL SimpleName@@array '
+    - '------------------------DEL SimpleName@@startIndex '
+    - '---------------------DEL NullLiteral@@null '
+    - '------------------DEL NumberLiteral@@16 '
+    - '------------------DEL MethodInvocation@@array[startIndex].toString().length() '
+    - '---------------------DEL ArrayAccess@@array[startIndex] '
+    - '------------------------DEL SimpleName@@array '
+    - '------------------------DEL SimpleName@@startIndex '
+    - '---------------------DEL MethodInvocation@@MethodName:toString:[] '
+    - '---------------------DEL SimpleName@@MethodName:length:[] '
+    - '------------INS NumberLiteral@@16 @TO@ InfixExpression@@(array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + 1 '
+    - '------------MOV Operator@@== @TO@ InfixExpression@@(array[startIndex] == null
+      ? 16 : array[startIndex].toString().length()) + 1 '
+    - '------------DEL Operator@@+ '
+    - '------------DEL NumberLiteral@@1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@StringBuilder buf=new StringBuilder((array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + separator.length());
+      @TO@ StringBuilder buf=new StringBuilder(noOfItems * 16); '
+    - '---UPD VariableDeclarationFragment@@buf=new StringBuilder((array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + separator.length())
+      @TO@ buf=new StringBuilder(noOfItems * 16) '
+    - '------UPD ClassInstanceCreation@@StringBuilder[(array[startIndex] == null ?
+      16 : array[startIndex].toString().length()) + separator.length()] @TO@ StringBuilder[noOfItems
+      * 16] '
+    - '---------UPD InfixExpression@@(array[startIndex] == null ? 16 : array[startIndex].toString().length())
+      + separator.length() @TO@ noOfItems * 16 '
+    - '------------INS SimpleName@@noOfItems @TO@ InfixExpression@@(array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + separator.length() '
+    - '------------INS NumberLiteral@@16 @TO@ InfixExpression@@(array[startIndex]
+      == null ? 16 : array[startIndex].toString().length()) + separator.length() '
+    - '------------DEL ParenthesizedExpression@@(array[startIndex] == null ? 16 :
+      array[startIndex].toString().length()) '
+    - '---------------DEL ConditionalExpression@@array[startIndex] == null ? 16 :
+      array[startIndex].toString().length() '
+    - '------------------DEL InfixExpression@@array[startIndex] == null '
+    - '---------------------DEL ArrayAccess@@array[startIndex] '
+    - '------------------------DEL SimpleName@@array '
+    - '------------------------DEL SimpleName@@startIndex '
+    - '---------------------DEL NullLiteral@@null '
+    - '------------------DEL NumberLiteral@@16 '
+    - '------------------DEL MethodInvocation@@array[startIndex].toString().length() '
+    - '---------------------DEL ArrayAccess@@array[startIndex] '
+    - '------------------------DEL SimpleName@@array '
+    - '------------------------DEL SimpleName@@startIndex '
+    - '---------------------DEL MethodInvocation@@MethodName:toString:[] '
+    - '---------------------DEL SimpleName@@MethodName:length:[] '
+    - '------------MOV Operator@@== @TO@ InfixExpression@@(array[startIndex] == null
+      ? 16 : array[startIndex].toString().length()) + separator.length() '
+    - '------------DEL Operator@@+ '
+    - '------------DEL MethodInvocation@@separator.length() '
+    - '---------------DEL SimpleName@@Name:separator '
+    - '---------------DEL SimpleName@@MethodName:length:[] '
+  repair_actions_cnt: 2

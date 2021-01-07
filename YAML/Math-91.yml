@@ -1,0 +1,163 @@
+1 bug_id: Math-91
+2 src folder:
+  name of src folder: java
+  number of files: 363
+  number of java files: 328
+  number of src classes: 385
+  number of test classes: 175
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.fraction.FractionTest#testCompareTo
+  failing tests:
+  - org.apache.commons.math.fraction.FractionTest
+  number of all test cases: 1671
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.0
+  purification via delta debugging: 67.616
+  repair actions extraction: 0.973
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.fraction.FractionTest#testCompareTo: 39
+  fixed:
+    org.apache.commons.math.fraction.FractionTest#testCompareTo: 39
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 0
+  passed: 0
+  total: 6
+9 sibling repair actions:
+- 0 1 0.7220843672456576
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_91/src/java/org/apache/commons/math/fraction/Fraction.java\t\
+    2020-10-21 13:59:12.059017384 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_91/purify/patch/org/apache/commons/math/fraction/Fraction.java\t\
+    2020-10-21 13:59:12.059017384 -0400\n@@ -256,8 +256,8 @@\n      *         than\
+    \ <tt>object</tt>, 0 if they are equal.\n      */\n     public int compareTo(Fraction\
+    \ object) {\n-        double nOd = doubleValue();\n-        double dOn = object.doubleValue();\n\
+    +        long nOd = ((long) numerator) * object.denominator;\n+        long dOn\
+    \ = ((long) denominator) * object.numerator;\n         return (nOd < dOn) ? -1\
+    \ : ((nOd > dOn) ? +1 : 0);\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_91/src/java/org/apache/commons/math/fraction/Fraction.java\t\
+    2020-10-21 14:00:32.037329504 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_91/purify/purified/org/apache/commons/math/fraction/Fraction.java\t\
+    2020-10-21 14:00:32.037329504 -0400\n@@ -256,8 +256,8 @@\n      *         than\
+    \ <tt>object</tt>, 0 if they are equal.\n      */\n     public int compareTo(Fraction\
+    \ object) {\n-        double nOd = doubleValue();\n-        double dOn = object.doubleValue();\n\
+    +        long nOd = ((long) numerator) * object.denominator;\n+        long dOn\
+    \ = ((long) denominator) * object.numerator;\n         return (nOd < dOn) ? -1\
+    \ : ((nOd > dOn) ? +1 : 0);\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/fraction/Fraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double nOd=doubleValue(); @TO@ long nOd=((long)numerator)
+      * object.denominator; '
+    - '---UPD PrimitiveType@@double @TO@ long '
+    - '---UPD VariableDeclarationFragment@@nOd=doubleValue() @TO@ nOd=((long)numerator)
+      * object.denominator '
+    - '------INS InfixExpression@@((long)numerator) * object.denominator @TO@ VariableDeclarationFragment@@nOd=doubleValue() '
+    - '---------INS ParenthesizedExpression@@((long)numerator) @TO@ InfixExpression@@((long)numerator)
+      * object.denominator '
+    - '------------INS CastExpression@@(long)numerator @TO@ ParenthesizedExpression@@((long)numerator) '
+    - '---------------INS PrimitiveType@@long @TO@ CastExpression@@(long)numerator '
+    - '---------------INS SimpleName@@numerator @TO@ CastExpression@@(long)numerator '
+    - '---------INS Operator@@* @TO@ InfixExpression@@((long)numerator) * object.denominator '
+    - '---------INS QualifiedName@@object.denominator @TO@ InfixExpression@@((long)numerator)
+      * object.denominator '
+    - '------------INS SimpleName@@object @TO@ QualifiedName@@object.denominator '
+    - '------------INS SimpleName@@denominator @TO@ QualifiedName@@object.denominator '
+    - '------DEL MethodInvocation@@MethodName:doubleValue:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double dOn=object.doubleValue(); @TO@ long
+      dOn=((long)denominator) * object.numerator; '
+    - '---UPD PrimitiveType@@double @TO@ long '
+    - '---UPD VariableDeclarationFragment@@dOn=object.doubleValue() @TO@ dOn=((long)denominator)
+      * object.numerator '
+    - '------DEL MethodInvocation@@object.doubleValue() '
+    - '---------DEL SimpleName@@Name:object '
+    - '---------DEL SimpleName@@MethodName:doubleValue:[] '
+    - '------INS InfixExpression@@((long)denominator) * object.numerator @TO@ VariableDeclarationFragment@@dOn=object.doubleValue() '
+    - '---------INS ParenthesizedExpression@@((long)denominator) @TO@ InfixExpression@@((long)denominator)
+      * object.numerator '
+    - '------------INS CastExpression@@(long)denominator @TO@ ParenthesizedExpression@@((long)denominator) '
+    - '---------------INS PrimitiveType@@long @TO@ CastExpression@@(long)denominator '
+    - '---------------INS SimpleName@@denominator @TO@ CastExpression@@(long)denominator '
+    - '---------INS Operator@@* @TO@ InfixExpression@@((long)denominator) * object.numerator '
+    - '---------INS QualifiedName@@object.numerator @TO@ InfixExpression@@((long)denominator)
+      * object.numerator '
+    - '------------INS SimpleName@@object @TO@ QualifiedName@@object.numerator '
+    - '------------INS SimpleName@@numerator @TO@ QualifiedName@@object.numerator '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/fraction/Fraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double nOd=doubleValue(); @TO@ long nOd=((long)numerator)
+      * object.denominator; '
+    - '---UPD PrimitiveType@@double @TO@ long '
+    - '---UPD VariableDeclarationFragment@@nOd=doubleValue() @TO@ nOd=((long)numerator)
+      * object.denominator '
+    - '------INS InfixExpression@@((long)numerator) * object.denominator @TO@ VariableDeclarationFragment@@nOd=doubleValue() '
+    - '---------INS ParenthesizedExpression@@((long)numerator) @TO@ InfixExpression@@((long)numerator)
+      * object.denominator '
+    - '------------INS CastExpression@@(long)numerator @TO@ ParenthesizedExpression@@((long)numerator) '
+    - '---------------INS PrimitiveType@@long @TO@ CastExpression@@(long)numerator '
+    - '---------------INS SimpleName@@numerator @TO@ CastExpression@@(long)numerator '
+    - '---------INS Operator@@* @TO@ InfixExpression@@((long)numerator) * object.denominator '
+    - '---------INS QualifiedName@@object.denominator @TO@ InfixExpression@@((long)numerator)
+      * object.denominator '
+    - '------------INS SimpleName@@object @TO@ QualifiedName@@object.denominator '
+    - '------------INS SimpleName@@denominator @TO@ QualifiedName@@object.denominator '
+    - '------DEL MethodInvocation@@MethodName:doubleValue:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double dOn=object.doubleValue(); @TO@ long
+      dOn=((long)denominator) * object.numerator; '
+    - '---UPD PrimitiveType@@double @TO@ long '
+    - '---UPD VariableDeclarationFragment@@dOn=object.doubleValue() @TO@ dOn=((long)denominator)
+      * object.numerator '
+    - '------DEL MethodInvocation@@object.doubleValue() '
+    - '---------DEL SimpleName@@Name:object '
+    - '---------DEL SimpleName@@MethodName:doubleValue:[] '
+    - '------INS InfixExpression@@((long)denominator) * object.numerator @TO@ VariableDeclarationFragment@@dOn=object.doubleValue() '
+    - '---------INS ParenthesizedExpression@@((long)denominator) @TO@ InfixExpression@@((long)denominator)
+      * object.numerator '
+    - '------------INS CastExpression@@(long)denominator @TO@ ParenthesizedExpression@@((long)denominator) '
+    - '---------------INS PrimitiveType@@long @TO@ CastExpression@@(long)denominator '
+    - '---------------INS SimpleName@@denominator @TO@ CastExpression@@(long)denominator '
+    - '---------INS Operator@@* @TO@ InfixExpression@@((long)denominator) * object.numerator '
+    - '---------INS QualifiedName@@object.numerator @TO@ InfixExpression@@((long)denominator)
+      * object.numerator '
+    - '------------INS SimpleName@@object @TO@ QualifiedName@@object.numerator '
+    - '------------INS SimpleName@@numerator @TO@ QualifiedName@@object.numerator '
+  repair_actions_cnt: 2

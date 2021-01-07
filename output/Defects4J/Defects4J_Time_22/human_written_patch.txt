@@ -1,0 +1,18 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_22/src/main/java/org/joda/time/base/BasePeriod.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_22/fixed-version/src/main/java/org/joda/time/base/BasePeriod.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_22/src/main/java/org/joda/time/base/BasePeriod.java	2020-03-01 00:02:07.605731205 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_22/fixed-version/src/main/java/org/joda/time/base/BasePeriod.java	2020-03-01 00:02:09.377814698 -0800
+@@ -219,8 +219,13 @@
+      * @param duration  the duration, in milliseconds
+      */
+     protected BasePeriod(long duration) {
+-        this(duration, null, null);
++        super();
+         // bug [3264409]
++        iType = PeriodType.time();
++        int[] values = ISOChronology.getInstanceUTC().get(this, duration);
++        iType = PeriodType.standard();
++        iValues = new int[8];
++        System.arraycopy(values, 0, iValues, 4, 4);
+     }
+ 
+     /**

@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_85/src/java/org/apache/commons/math/analysis/solvers/UnivariateRealSolverUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_85/fixed-version/src/java/org/apache/commons/math/analysis/solvers/UnivariateRealSolverUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_85/src/java/org/apache/commons/math/analysis/solvers/UnivariateRealSolverUtils.java	2020-03-01 00:22:32.851460839 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_85/fixed-version/src/java/org/apache/commons/math/analysis/solvers/UnivariateRealSolverUtils.java	2020-03-01 00:22:36.415628781 -0800
+@@ -195,7 +195,7 @@
+         } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && 
+                 ((a > lowerBound) || (b < upperBound)));
+    
+-        if (fa * fb >= 0.0 ) {
++        if (fa * fb > 0.0 ) {
+             throw new ConvergenceException(
+                       "number of iterations={0}, maximum iterations={1}, " +
+                       "initial={2}, lower bound={3}, upper bound={4}, final a value={5}, " +

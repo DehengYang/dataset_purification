@@ -1,0 +1,40 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_105/src/com/google/javascript/jscomp/FoldConstants.java	2020-10-23 13:14:17.396555335 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_105/purify/assertBeforeMut/com/google/javascript/jscomp/FoldConstants.java	2020-10-23 13:14:17.396555335 -0400
+@@ -1474,22 +1474,24 @@
+ 
+     String joinString = NodeUtil.getStringValue(right);
+     List<Node> arrayFoldedChildren = Lists.newLinkedList();
+-    StringBuilder sb = new StringBuilder();
++    StringBuilder sb = null;
+     int foldedSize = 0;
+     Node elem = arrayNode.getFirstChild();
+     // Merges adjacent String nodes.
+     while (elem != null) {
+       if (NodeUtil.isImmutableValue(elem)) {
+-        if (sb.length() > 0) {
++        if (sb == null) {
++          sb = new StringBuilder();
++        } else {
+           sb.append(joinString);
+         }
+         sb.append(NodeUtil.getStringValue(elem));
+       } else {
+-        if (sb.length() > 0) {
++        if (sb != null) {
+           // + 2 for the quotes.
+           foldedSize += sb.length() + 2;
+           arrayFoldedChildren.add(Node.newString(sb.toString()));
+-          sb = new StringBuilder();
++          sb = null;
+         }
+         foldedSize += InlineCostEstimator.getCost(elem);
+         arrayFoldedChildren.add(elem);
+@@ -1497,7 +1499,7 @@
+       elem = elem.getNext();
+     }
+ 
+-    if (sb.length() > 0) {
++    if (sb != null) {
+       // + 2 for the quotes.
+       foldedSize += sb.length() + 2;
+       arrayFoldedChildren.add(Node.newString(sb.toString()));

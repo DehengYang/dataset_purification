@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_15/src/main/java/org/joda/time/field/FieldUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_15/fixed-version/src/main/java/org/joda/time/field/FieldUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_15/src/main/java/org/joda/time/field/FieldUtils.java	2020-03-01 00:01:48.248819183 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_15/fixed-version/src/main/java/org/joda/time/field/FieldUtils.java	2020-03-01 00:01:49.592882510 -0800
+@@ -135,6 +135,9 @@
+     public static long safeMultiply(long val1, int val2) {
+         switch (val2) {
+             case -1:
++                if (val1 == Long.MIN_VALUE) {
++                    throw new ArithmeticException("Multiplication overflows a long: " + val1 + " * " + val2);
++                }
+                 return -val1;
+             case 0:
+                 return 0L;

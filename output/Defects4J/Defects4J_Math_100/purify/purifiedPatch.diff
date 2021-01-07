@@ -1,0 +1,24 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_100/src/java/org/apache/commons/math/estimation/AbstractEstimator.java	2020-10-22 08:50:06.892669545 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_100/purify/purified/org/apache/commons/math/estimation/AbstractEstimator.java	2020-10-22 08:50:06.888669429 -0400
+@@ -163,7 +163,6 @@
+ 
+         // compute transpose(J).J, avoiding building big intermediate matrices
+         final int rows = problem.getMeasurements().length;
+-        final int cols = problem.getAllParameters().length;
+         final int max  = cols * rows;
+         double[][] jTj = new double[cols][cols];
+         for (int i = 0; i < cols; ++i) {
+@@ -200,11 +199,13 @@
+       throws EstimationException {
+         int m = problem.getMeasurements().length;
+         int p = problem.getAllParameters().length;
++        int p = problem.getUnboundParameters().length;
+         if (m <= p) {
+             throw new EstimationException("no degrees of freedom ({0} measurements, {1} parameters)",
+                                           new Object[] { new Integer(m), new Integer(p)});
+         }
+         double[] errors = new double[problem.getAllParameters().length];
++        double[] errors = new double[problem.getUnboundParameters().length];
+         final double c = Math.sqrt(getChiSquare(problem) / (m - p));
+         double[][] covar = getCovariances(problem);
+         for (int i = 0; i < errors.length; ++i) {

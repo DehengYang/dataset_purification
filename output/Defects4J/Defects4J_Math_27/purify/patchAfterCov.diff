@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_27/src/main/java/org/apache/commons/math3/fraction/Fraction.java	2020-10-21 10:13:07.818741102 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_27/purify/assertBeforeMut/org/apache/commons/math3/fraction/Fraction.java	2020-10-21 10:13:07.818741102 -0400
+@@ -594,7 +594,7 @@
+      * @return the fraction percentage as a <tt>double</tt>.
+      */
+     public double percentageValue() {
+-        return multiply(100).doubleValue();
++        return 100 * doubleValue();
+     }
+ 
+     /**

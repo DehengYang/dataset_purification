@@ -1,0 +1,10 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_96/src/java/org/apache/commons/math/complex/Complex.java	2020-10-21 14:09:55.305611502 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_96/purify/purified/org/apache/commons/math/complex/Complex.java	2020-10-21 14:09:55.305611502 -0400
+@@ -256,6 +256,7 @@
+                     ret = this.isNaN();
+                 } else {
+                     ret = (Double.doubleToRawLongBits(real) == Double.doubleToRawLongBits(rhs.getReal())) && (Double.doubleToRawLongBits(imaginary) == Double.doubleToRawLongBits(rhs.getImaginary())); 
++                    ret = (real == rhs.real) && (imaginary == rhs.imaginary); 
+                 }
+             } catch (ClassCastException ex) {
+                 // ignore exception

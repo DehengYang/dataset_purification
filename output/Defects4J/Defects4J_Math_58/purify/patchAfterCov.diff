@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_58/src/main/java/org/apache/commons/math/optimization/fitting/GaussianFitter.java	2020-10-21 12:39:21.660511496 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_58/purify/assertBeforeMut/org/apache/commons/math/optimization/fitting/GaussianFitter.java	2020-10-21 12:39:21.660511496 -0400
+@@ -118,7 +118,7 @@
+      */
+     public double[] fit() {
+         final double[] guess = (new ParameterGuesser(getObservations())).guess();
+-        return fit(new Gaussian.Parametric(), guess);
++        return fit(guess);
+     }
+ 
+     /**

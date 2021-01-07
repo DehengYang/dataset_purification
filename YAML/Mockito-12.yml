@@ -1,0 +1,165 @@
+1 bug_id: Mockito-12
+2 src folder:
+  name of src folder: src
+  number of files: 267
+  number of java files: 231
+  number of src classes: 256
+  number of test classes: 199
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.annotation.CaptorAnnotationBasicTest#shouldUseCaptorInOrdinaryWay
+  - org.mockitousage.annotation.CaptorAnnotationBasicTest#shouldCaptureGenericList
+  - org.mockitousage.annotation.CaptorAnnotationTest#shouldLookForAnnotatedCaptorsInSuperClasses
+  - org.mockitousage.annotation.CaptorAnnotationTest#shouldScreamWhenInitializingCaptorsForNullClass
+  - org.mockito.internal.util.reflection.GenericMasterTest#shouldDealWithNestedGenerics
+  - org.mockitousage.annotation.CaptorAnnotationTest#shouldScreamWhenMoreThanOneMockitoAnnotaton
+  - org.mockitousage.annotation.CaptorAnnotationBasicTest#shouldUseAnnotatedCaptor
+  - org.mockitousage.annotation.CaptorAnnotationTest#shouldScreamWhenWrongTypeForCaptor
+  - org.mockitousage.annotation.CaptorAnnotationBasicTest#shouldUseGenericlessAnnotatedCaptor
+  - org.mockitousage.annotation.CaptorAnnotationTest#testNormalUsage
+  failing tests:
+  - org.mockitousage.annotation.CaptorAnnotationBasicTest
+  - org.mockitousage.annotation.CaptorAnnotationTest
+  - org.mockito.internal.util.reflection.GenericMasterTest
+  number of all test cases: 0
+  number of failing test cases: 10
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.31
+  purification via delta debugging: 499.956
+  repair actions extraction: 0.649
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 6
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_12/src/org/mockito/internal/util/reflection/GenericMaster.java\t\
+    2020-10-24 10:14:52.847693194 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_12/purify/patch/org/mockito/internal/util/reflection/GenericMaster.java\t\
+    2020-10-24 10:14:52.847693194 -0400\n@@ -17,8 +17,12 @@\n         Type generic\
+    \ = field.getGenericType();\n         if (generic != null && generic instanceof\
+    \ ParameterizedType) {\n             Type actual = ((ParameterizedType) generic).getActualTypeArguments()[0];\n\
+    +            if (actual instanceof Class) {\n                 return (Class) actual;\n\
+    +            } else if (actual instanceof ParameterizedType) {\n             \
+    \    //in case of nested generics we don't go deep\n+                return (Class)\
+    \ ((ParameterizedType) actual).getRawType();\n+            }\n         }\n   \
+    \      \n         return Object.class;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_12/src/org/mockito/internal/util/reflection/GenericMaster.java\t\
+    2020-10-24 10:23:29.274505573 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_12/purify/purified/org/mockito/internal/util/reflection/GenericMaster.java\t\
+    2020-10-24 10:23:29.274505573 -0400\n@@ -17,8 +17,12 @@\n         Type generic\
+    \ = field.getGenericType();\n         if (generic != null && generic instanceof\
+    \ ParameterizedType) {\n             Type actual = ((ParameterizedType) generic).getActualTypeArguments()[0];\n\
+    +            if (actual instanceof Class) {\n                 return (Class) actual;\n\
+    +            } else if (actual instanceof ParameterizedType) {\n             \
+    \    //in case of nested generics we don't go deep\n+                return (Class)\
+    \ ((ParameterizedType) actual).getRawType();\n+            }\n         }\n   \
+    \      \n         return Object.class;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/util/reflection/GenericMaster:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InstanceofExpression:actual instanceof Class @TO@ IfStatement@@InfixExpression:generic
+      != null && generic instanceof ParameterizedType '
+    - '---INS InstanceofExpression@@actual instanceof Class @TO@ IfStatement@@InstanceofExpression:actual
+      instanceof Class '
+    - '------INS SimpleName@@actual @TO@ InstanceofExpression@@actual instanceof Class '
+    - '------INS Instanceof@@instanceof @TO@ InstanceofExpression@@actual instanceof
+      Class '
+    - '------INS SimpleType@@Class @TO@ InstanceofExpression@@actual instanceof Class '
+    - '---MOV ReturnStatement@@CastExpression:(Class)actual @TO@ IfStatement@@InstanceofExpression:actual
+      instanceof Class '
+    - '---INS IfStatement@@InstanceofExpression:actual instanceof ParameterizedType
+      @TO@ IfStatement@@InstanceofExpression:actual instanceof Class '
+    - '------INS InstanceofExpression@@actual instanceof ParameterizedType @TO@ IfStatement@@InstanceofExpression:actual
+      instanceof ParameterizedType '
+    - '---------INS SimpleName@@actual @TO@ InstanceofExpression@@actual instanceof
+      ParameterizedType '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@actual instanceof
+      ParameterizedType '
+    - '---------INS SimpleType@@ParameterizedType @TO@ InstanceofExpression@@actual
+      instanceof ParameterizedType '
+    - '------INS ReturnStatement@@CastExpression:(Class)((ParameterizedType)actual).getRawType()
+      @TO@ IfStatement@@InstanceofExpression:actual instanceof ParameterizedType '
+    - '---------INS CastExpression@@(Class)((ParameterizedType)actual).getRawType()
+      @TO@ ReturnStatement@@CastExpression:(Class)((ParameterizedType)actual).getRawType() '
+    - '------------INS SimpleType@@Class @TO@ CastExpression@@(Class)((ParameterizedType)actual).getRawType() '
+    - '------------INS MethodInvocation@@((ParameterizedType)actual).getRawType()
+      @TO@ CastExpression@@(Class)((ParameterizedType)actual).getRawType() '
+    - '---------------INS ParenthesizedExpression@@((ParameterizedType)actual) @TO@
+      MethodInvocation@@((ParameterizedType)actual).getRawType() '
+    - '------------------INS CastExpression@@(ParameterizedType)actual @TO@ ParenthesizedExpression@@((ParameterizedType)actual) '
+    - '---------------------INS SimpleType@@ParameterizedType @TO@ CastExpression@@(ParameterizedType)actual '
+    - '---------------------INS SimpleName@@actual @TO@ CastExpression@@(ParameterizedType)actual '
+    - '---------------INS SimpleName@@MethodName:getRawType:[] @TO@ MethodInvocation@@((ParameterizedType)actual).getRawType() '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/util/reflection/GenericMaster:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InstanceofExpression:actual instanceof Class @TO@ IfStatement@@InfixExpression:generic
+      != null && generic instanceof ParameterizedType '
+    - '---INS InstanceofExpression@@actual instanceof Class @TO@ IfStatement@@InstanceofExpression:actual
+      instanceof Class '
+    - '------INS SimpleName@@actual @TO@ InstanceofExpression@@actual instanceof Class '
+    - '------INS Instanceof@@instanceof @TO@ InstanceofExpression@@actual instanceof
+      Class '
+    - '------INS SimpleType@@Class @TO@ InstanceofExpression@@actual instanceof Class '
+    - '---MOV ReturnStatement@@CastExpression:(Class)actual @TO@ IfStatement@@InstanceofExpression:actual
+      instanceof Class '
+    - '---INS IfStatement@@InstanceofExpression:actual instanceof ParameterizedType
+      @TO@ IfStatement@@InstanceofExpression:actual instanceof Class '
+    - '------INS InstanceofExpression@@actual instanceof ParameterizedType @TO@ IfStatement@@InstanceofExpression:actual
+      instanceof ParameterizedType '
+    - '---------INS SimpleName@@actual @TO@ InstanceofExpression@@actual instanceof
+      ParameterizedType '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@actual instanceof
+      ParameterizedType '
+    - '---------INS SimpleType@@ParameterizedType @TO@ InstanceofExpression@@actual
+      instanceof ParameterizedType '
+    - '------INS ReturnStatement@@CastExpression:(Class)((ParameterizedType)actual).getRawType()
+      @TO@ IfStatement@@InstanceofExpression:actual instanceof ParameterizedType '
+    - '---------INS CastExpression@@(Class)((ParameterizedType)actual).getRawType()
+      @TO@ ReturnStatement@@CastExpression:(Class)((ParameterizedType)actual).getRawType() '
+    - '------------INS SimpleType@@Class @TO@ CastExpression@@(Class)((ParameterizedType)actual).getRawType() '
+    - '------------INS MethodInvocation@@((ParameterizedType)actual).getRawType()
+      @TO@ CastExpression@@(Class)((ParameterizedType)actual).getRawType() '
+    - '---------------INS ParenthesizedExpression@@((ParameterizedType)actual) @TO@
+      MethodInvocation@@((ParameterizedType)actual).getRawType() '
+    - '------------------INS CastExpression@@(ParameterizedType)actual @TO@ ParenthesizedExpression@@((ParameterizedType)actual) '
+    - '---------------------INS SimpleType@@ParameterizedType @TO@ CastExpression@@(ParameterizedType)actual '
+    - '---------------------INS SimpleName@@actual @TO@ CastExpression@@(ParameterizedType)actual '
+    - '---------------INS SimpleName@@MethodName:getRawType:[] @TO@ MethodInvocation@@((ParameterizedType)actual).getRawType() '
+  repair_actions_cnt: 1

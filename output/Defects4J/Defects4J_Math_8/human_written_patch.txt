@@ -1,0 +1,19 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_8/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_8/fixed-version/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_8/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java	2020-03-01 00:13:56.599136232 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_8/fixed-version/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java	2020-03-01 00:14:00.199305858 -0800
+@@ -178,13 +178,13 @@
+      * @throws NotStrictlyPositiveException if {@code sampleSize} is not
+      * positive.
+      */
+-    public T[] sample(int sampleSize) throws NotStrictlyPositiveException {
++    public Object[] sample(int sampleSize) throws NotStrictlyPositiveException {
+         if (sampleSize <= 0) {
+             throw new NotStrictlyPositiveException(LocalizedFormats.NUMBER_OF_SAMPLES,
+                     sampleSize);
+         }
+ 
+-        final T[]out = (T[]) java.lang.reflect.Array.newInstance(singletons.get(0).getClass(), sampleSize);
++        final Object[] out = new Object[sampleSize];
+ 
+         for (int i = 0; i < sampleSize; i++) {
+             out[i] = sample();

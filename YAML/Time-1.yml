@@ -1,0 +1,285 @@
+1 bug_id: Time-1
+2 src folder:
+  name of src folder: java
+  number of files: 186
+  number of java files: 157
+  number of src classes: 232
+  number of test classes: 124
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestPartial_Constructors#testConstructorEx7_TypeArray_intArray
+  failing tests:
+  - org.joda.time.TestPartial_Constructors
+  number of all test cases: 4043
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.8
+  purification via delta debugging: 198.7
+  repair actions extraction: 1.683
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestPartial_Constructors#testConstructorEx7_TypeArray_intArray: 1050
+  fixed:
+    org.joda.time.TestPartial_Constructors#testConstructorEx7_TypeArray_intArray: 1026
+6 reduced lines:
+  by all: 8
+  by coverage: 2
+  by delta debugging: 6
+  covAdd: 8
+  covDel: 4
+  cov_patch_lines: 12
+  delta_patch_lines: 6
+  oriAdd: 10
+  oriDel: 4
+  ori_patch_lines: 14
+  purAdd: 6
+  purDel: 0
+7 reduced chunks:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  cov: 3
+  original: 3
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 25
+  failFail: 0
+  passed: 3
+  total: 28
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_1/src/main/java/org/joda/time/Partial.java\t\
+    2020-10-20 19:57:29.374724872 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_1/purify/patch/org/joda/time/Partial.java\t\
+    2020-10-20 19:57:29.374724872 -0400\n@@ -214,11 +214,20 @@\n             DateTimeFieldType\
+    \ loopType = types[i];\n             DurationField loopUnitField = loopType.getDurationType().getField(iChronology);\n\
+    \             if (i > 0) {\n+                if (loopUnitField.isSupported() ==\
+    \ false) {\n+                    if (lastUnitField.isSupported()) {\n+       \
+    \                 throw new IllegalArgumentException(\"Types array must be in\
+    \ order largest-smallest: \" +\n+                                        types[i\
+    \ - 1].getName() + \" < \" + loopType.getName());\n+                    } else\
+    \ {\n+                        throw new IllegalArgumentException(\"Types array\
+    \ must not contain duplicate unsupported: \" +\n+                            \
+    \            types[i - 1].getName() + \" and \" + loopType.getName());\n+    \
+    \                }\n+                }\n                 int compare = lastUnitField.compareTo(loopUnitField);\n\
+    \                 if (compare < 0) {\n                     throw new IllegalArgumentException(\"\
+    Types array must be in order largest-smallest: \" +\n                        \
+    \     types[i - 1].getName() + \" < \" + loopType.getName());\n-             \
+    \   } else if (compare == 0) {\n+                } else if (compare == 0 && lastUnitField.equals(loopUnitField))\
+    \ {\n                     if (types[i - 1].getRangeDurationType() == null) {\n\
+    \                         if (loopType.getRangeDurationType() == null) {\n   \
+    \                          throw new IllegalArgumentException(\"Types array must\
+    \ not contain duplicate: \" +"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_1/src/main/java/org/joda/time/Partial.java\t\
+    2020-10-20 20:01:06.040987751 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_1/purify/purified/org/joda/time/Partial.java\t\
+    2020-10-20 20:01:06.040987751 -0400\n@@ -214,6 +214,12 @@\n             DateTimeFieldType\
+    \ loopType = types[i];\n             DurationField loopUnitField = loopType.getDurationType().getField(iChronology);\n\
+    \             if (i > 0) {\n+                if (loopUnitField.isSupported() ==\
+    \ false) {\n+                    if (lastUnitField.isSupported()) {\n+       \
+    \                 throw new IllegalArgumentException(\"Types array must be in\
+    \ order largest-smallest: \" +\n+                                        types[i\
+    \ - 1].getName() + \" < \" + loopType.getName());\n+                    }\n+ \
+    \               }\n                 int compare = lastUnitField.compareTo(loopUnitField);\n\
+    \                 if (compare < 0) {\n                     throw new IllegalArgumentException(\"\
+    Types array must be in order largest-smallest: \" +"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/joda/time/field/UnsupportedDurationField, org/joda/time/Partial:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:loopUnitField.isSupported() == false @TO@
+      IfStatement@@InfixExpression:i > 0 '
+    - '---INS InfixExpression@@loopUnitField.isSupported() == false @TO@ IfStatement@@InfixExpression:loopUnitField.isSupported()
+      == false '
+    - '------INS MethodInvocation@@loopUnitField.isSupported() @TO@ InfixExpression@@loopUnitField.isSupported()
+      == false '
+    - '---------INS SimpleName@@Name:loopUnitField @TO@ MethodInvocation@@loopUnitField.isSupported() '
+    - '---------INS SimpleName@@MethodName:isSupported:[] @TO@ MethodInvocation@@loopUnitField.isSupported() '
+    - '------INS Operator@@== @TO@ InfixExpression@@loopUnitField.isSupported() ==
+      false '
+    - '------INS BooleanLiteral@@false @TO@ InfixExpression@@loopUnitField.isSupported()
+      == false '
+    - '---INS IfStatement@@MethodInvocation:lastUnitField.isSupported() @TO@ IfStatement@@InfixExpression:loopUnitField.isSupported()
+      == false '
+    - '------INS MethodInvocation@@lastUnitField.isSupported() @TO@ IfStatement@@MethodInvocation:lastUnitField.isSupported() '
+    - '---------INS SimpleName@@Name:lastUnitField @TO@ MethodInvocation@@lastUnitField.isSupported() '
+    - '---------INS SimpleName@@MethodName:isSupported:[] @TO@ MethodInvocation@@lastUnitField.isSupported() '
+    - '------INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName()) @TO@ IfStatement@@MethodInvocation:lastUnitField.isSupported() '
+    - '---------INS ClassInstanceCreation@@IllegalArgumentException["Types array must
+      be in order largest-smallest: " + types[i - 1].getName() + " < "+ loopType.getName()]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName()) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName()] '
+    - '------------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName()] '
+    - '------------INS InfixExpression@@"Types array must be in order largest-smallest:
+      " + types[i - 1].getName() + " < "+ loopType.getName() @TO@ ClassInstanceCreation@@IllegalArgumentException["Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName()] '
+    - '---------------INS StringLiteral@@"Types array must be in order largest-smallest:
+      " @TO@ InfixExpression@@"Types array must be in order largest-smallest: " +
+      types[i - 1].getName() + " < "+ loopType.getName() '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@"Types array must be in
+      order largest-smallest: " + types[i - 1].getName() + " < "+ loopType.getName() '
+    - '---------------INS MethodInvocation@@types[i - 1].getName() @TO@ InfixExpression@@"Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName() '
+    - '------------------INS ArrayAccess@@types[i - 1] @TO@ MethodInvocation@@types[i
+      - 1].getName() '
+    - '---------------------INS SimpleName@@types @TO@ ArrayAccess@@types[i - 1] '
+    - '---------------------INS InfixExpression@@i - 1 @TO@ ArrayAccess@@types[i -
+      1] '
+    - '------------------------INS SimpleName@@i @TO@ InfixExpression@@i - 1 '
+    - '------------------------INS Operator@@- @TO@ InfixExpression@@i - 1 '
+    - '------------------------INS NumberLiteral@@1 @TO@ InfixExpression@@i - 1 '
+    - '------------------INS SimpleName@@MethodName:getName:[] @TO@ MethodInvocation@@types[i
+      - 1].getName() '
+    - '---------------INS StringLiteral@@" < " @TO@ InfixExpression@@"Types array
+      must be in order largest-smallest: " + types[i - 1].getName() + " < "+ loopType.getName() '
+    - '---------------INS MethodInvocation@@loopType.getName() @TO@ InfixExpression@@"Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName() '
+    - '------------------INS SimpleName@@Name:loopType @TO@ MethodInvocation@@loopType.getName() '
+    - '------------------INS SimpleName@@MethodName:getName:[] @TO@ MethodInvocation@@loopType.getName() '
+    - '------INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Types
+      array must not contain duplicate unsupported: " + types[i - 1].getName() + "
+      and "+ loopType.getName()) @TO@ IfStatement@@MethodInvocation:lastUnitField.isSupported() '
+    - '---------INS ClassInstanceCreation@@IllegalArgumentException["Types array must
+      not contain duplicate unsupported: " + types[i - 1].getName() + " and "+ loopType.getName()]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Types
+      array must not contain duplicate unsupported: " + types[i - 1].getName() + "
+      and "+ loopType.getName()) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Types
+      array must not contain duplicate unsupported: " + types[i - 1].getName() + "
+      and "+ loopType.getName()] '
+    - '------------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Types
+      array must not contain duplicate unsupported: " + types[i - 1].getName() + "
+      and "+ loopType.getName()] '
+    - '------------INS InfixExpression@@"Types array must not contain duplicate unsupported:
+      " + types[i - 1].getName() + " and "+ loopType.getName() @TO@ ClassInstanceCreation@@IllegalArgumentException["Types
+      array must not contain duplicate unsupported: " + types[i - 1].getName() + "
+      and "+ loopType.getName()] '
+    - '---------------INS StringLiteral@@"Types array must not contain duplicate unsupported:
+      " @TO@ InfixExpression@@"Types array must not contain duplicate unsupported:
+      " + types[i - 1].getName() + " and "+ loopType.getName() '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@"Types array must not
+      contain duplicate unsupported: " + types[i - 1].getName() + " and "+ loopType.getName() '
+    - '---------------INS MethodInvocation@@types[i - 1].getName() @TO@ InfixExpression@@"Types
+      array must not contain duplicate unsupported: " + types[i - 1].getName() + "
+      and "+ loopType.getName() '
+    - '------------------INS ArrayAccess@@types[i - 1] @TO@ MethodInvocation@@types[i
+      - 1].getName() '
+    - '---------------------INS SimpleName@@types @TO@ ArrayAccess@@types[i - 1] '
+    - '---------------------INS InfixExpression@@i - 1 @TO@ ArrayAccess@@types[i -
+      1] '
+    - '------------------------INS SimpleName@@i @TO@ InfixExpression@@i - 1 '
+    - '------------------------INS Operator@@- @TO@ InfixExpression@@i - 1 '
+    - '------------------------INS NumberLiteral@@1 @TO@ InfixExpression@@i - 1 '
+    - '------------------INS SimpleName@@MethodName:getName:[] @TO@ MethodInvocation@@types[i
+      - 1].getName() '
+    - '---------------INS StringLiteral@@" and " @TO@ InfixExpression@@"Types array
+      must not contain duplicate unsupported: " + types[i - 1].getName() + " and "+
+      loopType.getName() '
+    - '---------------INS MethodInvocation@@loopType.getName() @TO@ InfixExpression@@"Types
+      array must not contain duplicate unsupported: " + types[i - 1].getName() + "
+      and "+ loopType.getName() '
+    - '------------------INS SimpleName@@Name:loopType @TO@ MethodInvocation@@loopType.getName() '
+    - '------------------INS SimpleName@@MethodName:getName:[] @TO@ MethodInvocation@@loopType.getName() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:compare == 0 @TO@ InfixExpression:compare
+      == 0 && lastUnitField.equals(loopUnitField) '
+    - '---DEL InfixExpression@@compare == 0 '
+    - '---INS InfixExpression@@compare == 0 && lastUnitField.equals(loopUnitField)
+      @TO@ IfStatement@@InfixExpression:compare == 0 '
+    - '------INS InfixExpression@@compare == 0 @TO@ InfixExpression@@compare == 0
+      && lastUnitField.equals(loopUnitField) '
+    - '---------MOV SimpleName@@compare @TO@ InfixExpression@@compare == 0 '
+    - '---------MOV Operator@@== @TO@ InfixExpression@@compare == 0 '
+    - '---------MOV NumberLiteral@@0 @TO@ InfixExpression@@compare == 0 '
+    - '------INS Operator@@&& @TO@ InfixExpression@@compare == 0 && lastUnitField.equals(loopUnitField) '
+    - '------INS MethodInvocation@@lastUnitField.equals(loopUnitField) @TO@ InfixExpression@@compare
+      == 0 && lastUnitField.equals(loopUnitField) '
+    - '---------INS SimpleName@@Name:lastUnitField @TO@ MethodInvocation@@lastUnitField.equals(loopUnitField) '
+    - '---------INS SimpleName@@MethodName:equals:[loopUnitField] @TO@ MethodInvocation@@lastUnitField.equals(loopUnitField) '
+    - '------------INS SimpleName@@loopUnitField @TO@ SimpleName@@MethodName:equals:[loopUnitField] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/Partial:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:loopUnitField.isSupported() == false @TO@
+      IfStatement@@InfixExpression:i > 0 '
+    - '---INS InfixExpression@@loopUnitField.isSupported() == false @TO@ IfStatement@@InfixExpression:loopUnitField.isSupported()
+      == false '
+    - '------INS MethodInvocation@@loopUnitField.isSupported() @TO@ InfixExpression@@loopUnitField.isSupported()
+      == false '
+    - '---------INS SimpleName@@Name:loopUnitField @TO@ MethodInvocation@@loopUnitField.isSupported() '
+    - '---------INS SimpleName@@MethodName:isSupported:[] @TO@ MethodInvocation@@loopUnitField.isSupported() '
+    - '------INS Operator@@== @TO@ InfixExpression@@loopUnitField.isSupported() ==
+      false '
+    - '------INS BooleanLiteral@@false @TO@ InfixExpression@@loopUnitField.isSupported()
+      == false '
+    - '---INS IfStatement@@MethodInvocation:lastUnitField.isSupported() @TO@ IfStatement@@InfixExpression:loopUnitField.isSupported()
+      == false '
+    - '------INS MethodInvocation@@lastUnitField.isSupported() @TO@ IfStatement@@MethodInvocation:lastUnitField.isSupported() '
+    - '---------INS SimpleName@@Name:lastUnitField @TO@ MethodInvocation@@lastUnitField.isSupported() '
+    - '---------INS SimpleName@@MethodName:isSupported:[] @TO@ MethodInvocation@@lastUnitField.isSupported() '
+    - '------INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName()) @TO@ IfStatement@@MethodInvocation:lastUnitField.isSupported() '
+    - '---------INS ClassInstanceCreation@@IllegalArgumentException["Types array must
+      be in order largest-smallest: " + types[i - 1].getName() + " < "+ loopType.getName()]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName()) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName()] '
+    - '------------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName()] '
+    - '------------INS InfixExpression@@"Types array must be in order largest-smallest:
+      " + types[i - 1].getName() + " < "+ loopType.getName() @TO@ ClassInstanceCreation@@IllegalArgumentException["Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName()] '
+    - '---------------INS StringLiteral@@"Types array must be in order largest-smallest:
+      " @TO@ InfixExpression@@"Types array must be in order largest-smallest: " +
+      types[i - 1].getName() + " < "+ loopType.getName() '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@"Types array must be in
+      order largest-smallest: " + types[i - 1].getName() + " < "+ loopType.getName() '
+    - '---------------INS MethodInvocation@@types[i - 1].getName() @TO@ InfixExpression@@"Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName() '
+    - '------------------INS ArrayAccess@@types[i - 1] @TO@ MethodInvocation@@types[i
+      - 1].getName() '
+    - '---------------------INS SimpleName@@types @TO@ ArrayAccess@@types[i - 1] '
+    - '---------------------INS InfixExpression@@i - 1 @TO@ ArrayAccess@@types[i -
+      1] '
+    - '------------------------INS SimpleName@@i @TO@ InfixExpression@@i - 1 '
+    - '------------------------INS Operator@@- @TO@ InfixExpression@@i - 1 '
+    - '------------------------INS NumberLiteral@@1 @TO@ InfixExpression@@i - 1 '
+    - '------------------INS SimpleName@@MethodName:getName:[] @TO@ MethodInvocation@@types[i
+      - 1].getName() '
+    - '---------------INS StringLiteral@@" < " @TO@ InfixExpression@@"Types array
+      must be in order largest-smallest: " + types[i - 1].getName() + " < "+ loopType.getName() '
+    - '---------------INS MethodInvocation@@loopType.getName() @TO@ InfixExpression@@"Types
+      array must be in order largest-smallest: " + types[i - 1].getName() + " < "+
+      loopType.getName() '
+    - '------------------INS SimpleName@@Name:loopType @TO@ MethodInvocation@@loopType.getName() '
+    - '------------------INS SimpleName@@MethodName:getName:[] @TO@ MethodInvocation@@loopType.getName() '
+  repair_actions_cnt: 1

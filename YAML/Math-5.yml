@@ -1,0 +1,84 @@
+1 bug_id: Math-5
+2 src folder:
+  name of src folder: java
+  number of files: 772
+  number of java files: 771
+  number of src classes: 1044
+  number of test classes: 386
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.complex.ComplexTest#testReciprocalZero
+  failing tests:
+  - org.apache.commons.math3.complex.ComplexTest
+  number of all test cases: 4994
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.0
+  purification via delta debugging: 179.521
+  repair actions extraction: 1.92
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.complex.ComplexTest#testReciprocalZero: 20
+  fixed:
+    org.apache.commons.math3.complex.ComplexTest#testReciprocalZero: 16
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 1
+  failFail: 1
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_5/src/main/java/org/apache/commons/math3/complex/Complex.java\t\
+    2020-10-21 04:36:29.362301645 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_5/purify/patch/org/apache/commons/math3/complex/Complex.java\t\
+    2020-10-21 04:36:29.358301528 -0400\n@@ -302,7 +302,7 @@\n         }\n \n    \
+    \     if (real == 0.0 && imaginary == 0.0) {\n-            return NaN;\n+    \
+    \        return INF;\n         }\n \n         if (isInfinite) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_5/src/main/java/org/apache/commons/math3/complex/Complex.java\t\
+    2020-10-21 04:39:46.479996263 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_5/purify/purified/org/apache/commons/math3/complex/Complex.java\t\
+    2020-10-21 04:39:46.479996263 -0400\n@@ -302,7 +302,7 @@\n         }\n \n    \
+    \     if (real == 0.0 && imaginary == 0.0) {\n-            return NaN;\n+    \
+    \        return INF;\n         }\n \n         if (isInfinite) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/complex/Complex:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@SimpleName:NaN @TO@ SimpleName:INF '
+    - '---UPD SimpleName@@NaN @TO@ INF '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/complex/Complex:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@SimpleName:NaN @TO@ SimpleName:INF '
+    - '---UPD SimpleName@@NaN @TO@ INF '
+  repair_actions_cnt: 1

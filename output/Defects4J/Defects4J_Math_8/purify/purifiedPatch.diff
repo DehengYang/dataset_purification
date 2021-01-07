@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_8/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java	2020-10-21 04:49:33.136944959 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_8/purify/purified/org/apache/commons/math3/distribution/DiscreteDistribution.java	2020-10-21 04:49:33.132944844 -0400
+@@ -178,13 +178,13 @@
+      * @throws NotStrictlyPositiveException if {@code sampleSize} is not
+      * positive.
+      */
+-    public T[] sample(int sampleSize) throws NotStrictlyPositiveException {
++    public Object[] sample(int sampleSize) throws NotStrictlyPositiveException {
+         if (sampleSize <= 0) {
+             throw new NotStrictlyPositiveException(LocalizedFormats.NUMBER_OF_SAMPLES,
+                     sampleSize);
+         }
+ 
+-        final T[]out = (T[]) java.lang.reflect.Array.newInstance(singletons.get(0).getClass(), sampleSize);
++        final Object[] out = new Object[sampleSize];
+ 
+         for (int i = 0; i < sampleSize; i++) {
+             out[i] = sample();

@@ -1,0 +1,206 @@
+1 bug_id: Closure-27
+2 src folder:
+  name of src folder: src
+  number of files: 417
+  number of java files: 401
+  number of src classes: 1346
+  number of test classes: 223
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.rhino.IRTest#testIssue727_2
+  - com.google.javascript.rhino.IRTest#testIssue727_3
+  - com.google.javascript.rhino.IRTest#testIssue727_1
+  failing tests:
+  - com.google.javascript.rhino.IRTest
+  number of all test cases: 7518
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 4.0
+  purification via coverage: 2.192
+  purification via delta debugging: 1238.533
+  repair actions extraction: 1.263
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.rhino.IRTest#testIssue727_1: 10
+    com.google.javascript.rhino.IRTest#testIssue727_2: 41
+    com.google.javascript.rhino.IRTest#testIssue727_3: 43
+  fixed:
+    com.google.javascript.rhino.IRTest#testIssue727_1: 100
+    com.google.javascript.rhino.IRTest#testIssue727_2: 123
+    com.google.javascript.rhino.IRTest#testIssue727_3: 135
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 6
+  covDel: 3
+  cov_patch_lines: 9
+  delta_patch_lines: 6
+  oriAdd: 6
+  oriDel: 3
+  ori_patch_lines: 9
+  purAdd: 4
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 17
+  failFail: 12
+  passed: 2
+  total: 31
+9 sibling repair actions:
+- 1 2 0.8266199649737302
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_27/src/com/google/javascript/rhino/IR.java\t\
+    2020-10-22 10:20:02.116735907 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_27/purify/patch/com/google/javascript/rhino/IR.java\t\
+    2020-10-22 10:20:02.116735907 -0400\n@@ -108,6 +108,9 @@\n     return block;\n\
+    \   }\n \n+  private static Node blockUnchecked(Node stmt) {\n+    return new\
+    \ Node(Token.BLOCK, stmt);\n+  }\n \n   public static Node script(Node ... stmts)\
+    \ {\n     // TODO(johnlenz): finish setting up the SCRIPT node\n@@ -221,8 +224,8\
+    \ @@\n   }\n \n   public static Node tryFinally(Node tryBody, Node finallyBody)\
+    \ {\n-    Preconditions.checkState(tryBody.isLabelName());\n-    Preconditions.checkState(finallyBody.isLabelName());\n\
+    +    Preconditions.checkState(tryBody.isBlock());\n+    Preconditions.checkState(finallyBody.isBlock());\n\
+    \     Node catchBody = block().copyInformationFrom(tryBody);\n     return new\
+    \ Node(Token.TRY, tryBody, catchBody, finallyBody);\n   }\n@@ -230,7 +233,7 @@\n\
+    \   public static Node tryCatch(Node tryBody, Node catchNode) {\n     Preconditions.checkState(tryBody.isBlock());\n\
+    \     Preconditions.checkState(catchNode.isCatch());\n-    Node catchBody = block(catchNode).copyInformationFrom(catchNode);\n\
+    +    Node catchBody = blockUnchecked(catchNode).copyInformationFrom(catchNode);\n\
+    \     return new Node(Token.TRY, tryBody, catchBody);\n   }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_27/src/com/google/javascript/rhino/IR.java\t\
+    2020-10-22 10:41:30.730003096 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_27/purify/purified/com/google/javascript/rhino/IR.java\t\
+    2020-10-22 10:41:30.730003096 -0400\n@@ -108,6 +108,9 @@\n     return block;\n\
+    \   }\n \n+  private static Node blockUnchecked(Node stmt) {\n+    return new\
+    \ Node(Token.BLOCK, stmt);\n+  }\n \n   public static Node script(Node ... stmts)\
+    \ {\n     // TODO(johnlenz): finish setting up the SCRIPT node\n@@ -221,7 +224,6\
+    \ @@\n   }\n \n   public static Node tryFinally(Node tryBody, Node finallyBody)\
+    \ {\n-    Preconditions.checkState(tryBody.isLabelName());\n     Preconditions.checkState(finallyBody.isLabelName());\n\
+    \     Node catchBody = block().copyInformationFrom(tryBody);\n     return new\
+    \ Node(Token.TRY, tryBody, catchBody, finallyBody);\n@@ -230,7 +232,7 @@\n   public\
+    \ static Node tryCatch(Node tryBody, Node catchNode) {\n     Preconditions.checkState(tryBody.isBlock());\n\
+    \     Preconditions.checkState(catchNode.isCatch());\n-    Node catchBody = block(catchNode).copyInformationFrom(catchNode);\n\
+    +    Node catchBody = blockUnchecked(catchNode).copyInformationFrom(catchNode);\n\
+    \     return new Node(Token.TRY, tryBody, catchBody);\n   }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/rhino/IR:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, static, @@Node, MethodName:blockUnchecked,
+      @@Argus:Node+stmt+ @TO@ TypeDeclaration@@[public]IR,  '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, static, @@Node, MethodName:blockUnchecked,
+      @@Argus:Node+stmt+ '
+    - '---INS Modifier@@static @TO@ MethodDeclaration@@private, static, @@Node, MethodName:blockUnchecked,
+      @@Argus:Node+stmt+ '
+    - '---INS SimpleType@@Node @TO@ MethodDeclaration@@private, static, @@Node, MethodName:blockUnchecked,
+      @@Argus:Node+stmt+ '
+    - '---INS SimpleName@@MethodName:blockUnchecked @TO@ MethodDeclaration@@private,
+      static, @@Node, MethodName:blockUnchecked, @@Argus:Node+stmt+ '
+    - '---INS SingleVariableDeclaration@@Node stmt @TO@ MethodDeclaration@@private,
+      static, @@Node, MethodName:blockUnchecked, @@Argus:Node+stmt+ '
+    - '------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node stmt '
+    - '------INS SimpleName@@stmt @TO@ SingleVariableDeclaration@@Node stmt '
+    - '---INS ReturnStatement@@ClassInstanceCreation:new Node(Token.BLOCK,stmt) @TO@
+      MethodDeclaration@@private, static, @@Node, MethodName:blockUnchecked, @@Argus:Node+stmt+ '
+    - '------INS ClassInstanceCreation@@Node[Token.BLOCK, stmt] @TO@ ReturnStatement@@ClassInstanceCreation:new
+      Node(Token.BLOCK,stmt) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@Node[Token.BLOCK, stmt] '
+    - '---------INS SimpleType@@Node @TO@ ClassInstanceCreation@@Node[Token.BLOCK,
+      stmt] '
+    - '---------INS QualifiedName@@Token.BLOCK @TO@ ClassInstanceCreation@@Node[Token.BLOCK,
+      stmt] '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.BLOCK '
+    - '------------INS SimpleName@@BLOCK @TO@ QualifiedName@@Token.BLOCK '
+    - '---------INS SimpleName@@stmt @TO@ ClassInstanceCreation@@Node[Token.BLOCK,
+      stmt] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:Preconditions.checkState(tryBody.isLabelName())
+      @TO@ MethodInvocation:Preconditions.checkState(tryBody.isBlock()) '
+    - '---UPD MethodInvocation@@Preconditions.checkState(tryBody.isLabelName()) @TO@
+      Preconditions.checkState(tryBody.isBlock()) '
+    - '------UPD SimpleName@@MethodName:checkState:[tryBody.isLabelName()] @TO@ MethodName:checkState:[tryBody.isBlock()] '
+    - '---------UPD MethodInvocation@@tryBody.isLabelName() @TO@ tryBody.isBlock() '
+    - '------------UPD SimpleName@@MethodName:isLabelName:[] @TO@ MethodName:isBlock:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:Preconditions.checkState(finallyBody.isLabelName())
+      @TO@ MethodInvocation:Preconditions.checkState(finallyBody.isBlock()) '
+    - '---UPD MethodInvocation@@Preconditions.checkState(finallyBody.isLabelName())
+      @TO@ Preconditions.checkState(finallyBody.isBlock()) '
+    - '------UPD SimpleName@@MethodName:checkState:[finallyBody.isLabelName()] @TO@
+      MethodName:checkState:[finallyBody.isBlock()] '
+    - '---------UPD MethodInvocation@@finallyBody.isLabelName() @TO@ finallyBody.isBlock() '
+    - '------------UPD SimpleName@@MethodName:isLabelName:[] @TO@ MethodName:isBlock:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Node catchBody=block(catchNode).copyInformationFrom(catchNode);
+      @TO@ Node catchBody=blockUnchecked(catchNode).copyInformationFrom(catchNode); '
+    - '---UPD VariableDeclarationFragment@@catchBody=block(catchNode).copyInformationFrom(catchNode)
+      @TO@ catchBody=blockUnchecked(catchNode).copyInformationFrom(catchNode) '
+    - '------UPD MethodInvocation@@block(catchNode).copyInformationFrom(catchNode)
+      @TO@ blockUnchecked(catchNode).copyInformationFrom(catchNode) '
+    - '---------UPD MethodInvocation@@MethodName:block:[catchNode] @TO@ MethodName:blockUnchecked:[catchNode] '
+  files_cnt: '1'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/rhino/IR:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, static, @@Node, MethodName:blockUnchecked,
+      @@Argus:Node+stmt+ @TO@ TypeDeclaration@@[public]IR,  '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, static, @@Node, MethodName:blockUnchecked,
+      @@Argus:Node+stmt+ '
+    - '---INS Modifier@@static @TO@ MethodDeclaration@@private, static, @@Node, MethodName:blockUnchecked,
+      @@Argus:Node+stmt+ '
+    - '---INS SimpleType@@Node @TO@ MethodDeclaration@@private, static, @@Node, MethodName:blockUnchecked,
+      @@Argus:Node+stmt+ '
+    - '---INS SimpleName@@MethodName:blockUnchecked @TO@ MethodDeclaration@@private,
+      static, @@Node, MethodName:blockUnchecked, @@Argus:Node+stmt+ '
+    - '---INS SingleVariableDeclaration@@Node stmt @TO@ MethodDeclaration@@private,
+      static, @@Node, MethodName:blockUnchecked, @@Argus:Node+stmt+ '
+    - '------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node stmt '
+    - '------INS SimpleName@@stmt @TO@ SingleVariableDeclaration@@Node stmt '
+    - '---INS ReturnStatement@@ClassInstanceCreation:new Node(Token.BLOCK,stmt) @TO@
+      MethodDeclaration@@private, static, @@Node, MethodName:blockUnchecked, @@Argus:Node+stmt+ '
+    - '------INS ClassInstanceCreation@@Node[Token.BLOCK, stmt] @TO@ ReturnStatement@@ClassInstanceCreation:new
+      Node(Token.BLOCK,stmt) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@Node[Token.BLOCK, stmt] '
+    - '---------INS SimpleType@@Node @TO@ ClassInstanceCreation@@Node[Token.BLOCK,
+      stmt] '
+    - '---------INS QualifiedName@@Token.BLOCK @TO@ ClassInstanceCreation@@Node[Token.BLOCK,
+      stmt] '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.BLOCK '
+    - '------------INS SimpleName@@BLOCK @TO@ QualifiedName@@Token.BLOCK '
+    - '---------INS SimpleName@@stmt @TO@ ClassInstanceCreation@@Node[Token.BLOCK,
+      stmt] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@MethodInvocation:Preconditions.checkState(tryBody.isLabelName()) '
+    - '---DEL MethodInvocation@@Preconditions.checkState(tryBody.isLabelName()) '
+    - '------DEL SimpleName@@Name:Preconditions '
+    - '------DEL SimpleName@@MethodName:checkState:[tryBody.isLabelName()] '
+    - '---------DEL MethodInvocation@@tryBody.isLabelName() '
+    - '------------DEL SimpleName@@Name:tryBody '
+    - '------------DEL SimpleName@@MethodName:isLabelName:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Node catchBody=block(catchNode).copyInformationFrom(catchNode);
+      @TO@ Node catchBody=blockUnchecked(catchNode).copyInformationFrom(catchNode); '
+    - '---UPD VariableDeclarationFragment@@catchBody=block(catchNode).copyInformationFrom(catchNode)
+      @TO@ catchBody=blockUnchecked(catchNode).copyInformationFrom(catchNode) '
+    - '------UPD MethodInvocation@@block(catchNode).copyInformationFrom(catchNode)
+      @TO@ blockUnchecked(catchNode).copyInformationFrom(catchNode) '
+    - '---------UPD MethodInvocation@@MethodName:block:[catchNode] @TO@ MethodName:blockUnchecked:[catchNode] '
+  files_cnt: '1'
+  repair_actions_cnt: 3

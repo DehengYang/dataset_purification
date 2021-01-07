@@ -1,0 +1,236 @@
+1 bug_id: Math-51
+2 src folder:
+  name of src folder: java
+  number of files: 614
+  number of java files: 567
+  number of src classes: 745
+  number of test classes: 275
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest#testIssue631
+  failing tests:
+  - org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest
+  number of all test cases: 2942
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.752
+  purification via delta debugging: 295.668
+  repair actions extraction: 0.756
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest#testIssue631: 743
+  fixed:
+    org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest#testIssue631: 396
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 9
+  covDel: 0
+  cov_patch_lines: 9
+  delta_patch_lines: 7
+  oriAdd: 9
+  oriDel: 0
+  ori_patch_lines: 9
+  purAdd: 7
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 3
+  original: 3
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 15
+  failFail: 5
+  passed: 1
+  total: 21
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_51/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java\t\
+    2020-10-22 07:23:24.406100165 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_51/purify/patch/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java\t\
+    2020-10-22 07:23:24.406100165 -0400\n@@ -182,10 +182,19 @@\n                 case\
+    \ PEGASUS:\n                     f0 *= f1 / (f1 + fx);\n                     break;\n\
+    +                case REGULA_FALSI:\n+                    if (x == x1) {\n+  \
+    \                      final double delta = FastMath.max(rtol * FastMath.abs(x1),\n\
+    +                                                          atol);\n          \
+    \               // Update formula cannot make any progress: Update the\n     \
+    \                    // search interval.\n+                        x0 = 0.5 *\
+    \ (x0 + x1 - delta);\n+                        f0 = computeObjectiveValue(x0);\n\
+    +                    }\n+                    break;\n                 default:\n\
+    \                     // Should never happen.\n+                    throw new\
+    \ MathInternalError();\n                 }\n             }\n             // Update\
+    \ from [x0, x1] to [x0, x]."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_51/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java\t\
+    2020-10-22 07:28:39.163208724 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_51/purify/purified/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java\t\
+    2020-10-22 07:28:39.163208724 -0400\n@@ -182,8 +182,15 @@\n                 case\
+    \ PEGASUS:\n                     f0 *= f1 / (f1 + fx);\n                     break;\n\
+    +                case REGULA_FALSI:\n+                    if (x == x1) {\n+  \
+    \                      final double delta = FastMath.max(rtol * FastMath.abs(x1),\n\
+    +                                                          atol);\n          \
+    \               // Update formula cannot make any progress: Update the\n     \
+    \                    // search interval.\n+                        x0 = 0.5 *\
+    \ (x0 + x1 - delta);\n+                        f0 = computeObjectiveValue(x0);\n\
+    +                    }\n                 default:\n                     // Should\
+    \ never happen.\n                 }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/solvers/BaseSecantSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@SimpleName:REGULA_FALSI @TO@ SwitchStatement@@SimpleName:method '
+    - '---INS SimpleName@@REGULA_FALSI @TO@ SwitchCase@@SimpleName:REGULA_FALSI '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x == x1 @TO@ SwitchStatement@@SimpleName:method '
+    - '---INS InfixExpression@@x == x1 @TO@ IfStatement@@InfixExpression:x == x1 '
+    - '------INS SimpleName@@x @TO@ InfixExpression@@x == x1 '
+    - '------INS Operator@@== @TO@ InfixExpression@@x == x1 '
+    - '------INS SimpleName@@x1 @TO@ InfixExpression@@x == x1 '
+    - '---INS VariableDeclarationStatement@@final double delta=FastMath.max(rtol *
+      FastMath.abs(x1),atol); @TO@ IfStatement@@InfixExpression:x == x1 '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double delta=FastMath.max(rtol
+      * FastMath.abs(x1),atol); '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      delta=FastMath.max(rtol * FastMath.abs(x1),atol); '
+    - '------INS VariableDeclarationFragment@@delta=FastMath.max(rtol * FastMath.abs(x1),atol)
+      @TO@ VariableDeclarationStatement@@final double delta=FastMath.max(rtol * FastMath.abs(x1),atol); '
+    - '---------INS SimpleName@@delta @TO@ VariableDeclarationFragment@@delta=FastMath.max(rtol
+      * FastMath.abs(x1),atol) '
+    - '---------INS MethodInvocation@@FastMath.max(rtol * FastMath.abs(x1),atol) @TO@
+      VariableDeclarationFragment@@delta=FastMath.max(rtol * FastMath.abs(x1),atol) '
+    - '------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.max(rtol
+      * FastMath.abs(x1),atol) '
+    - '------------INS SimpleName@@MethodName:max:[rtol * FastMath.abs(x1), atol]
+      @TO@ MethodInvocation@@FastMath.max(rtol * FastMath.abs(x1),atol) '
+    - '---------------INS InfixExpression@@rtol * FastMath.abs(x1) @TO@ SimpleName@@MethodName:max:[rtol
+      * FastMath.abs(x1), atol] '
+    - '------------------INS SimpleName@@rtol @TO@ InfixExpression@@rtol * FastMath.abs(x1) '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@rtol * FastMath.abs(x1) '
+    - '------------------INS MethodInvocation@@FastMath.abs(x1) @TO@ InfixExpression@@rtol
+      * FastMath.abs(x1) '
+    - '---------------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.abs(x1) '
+    - '---------------------INS SimpleName@@MethodName:abs:[x1] @TO@ MethodInvocation@@FastMath.abs(x1) '
+    - '------------------------INS SimpleName@@x1 @TO@ SimpleName@@MethodName:abs:[x1] '
+    - '---------------INS SimpleName@@atol @TO@ SimpleName@@MethodName:max:[rtol *
+      FastMath.abs(x1), atol] '
+    - '---INS ExpressionStatement@@Assignment:x0=0.5 * (x0 + x1 - delta) @TO@ IfStatement@@InfixExpression:x
+      == x1 '
+    - '------INS Assignment@@x0=0.5 * (x0 + x1 - delta) @TO@ ExpressionStatement@@Assignment:x0=0.5
+      * (x0 + x1 - delta) '
+    - '---------INS SimpleName@@x0 @TO@ Assignment@@x0=0.5 * (x0 + x1 - delta) '
+    - '---------INS Operator@@= @TO@ Assignment@@x0=0.5 * (x0 + x1 - delta) '
+    - '---------INS InfixExpression@@0.5 * (x0 + x1 - delta) @TO@ Assignment@@x0=0.5
+      * (x0 + x1 - delta) '
+    - '------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * (x0 + x1 - delta) '
+    - '------------INS Operator@@* @TO@ InfixExpression@@0.5 * (x0 + x1 - delta) '
+    - '------------INS ParenthesizedExpression@@(x0 + x1 - delta) @TO@ InfixExpression@@0.5
+      * (x0 + x1 - delta) '
+    - '---------------INS InfixExpression@@x0 + x1 - delta @TO@ ParenthesizedExpression@@(x0
+      + x1 - delta) '
+    - '------------------INS InfixExpression@@x0 + x1 @TO@ InfixExpression@@x0 + x1
+      - delta '
+    - '---------------------INS SimpleName@@x0 @TO@ InfixExpression@@x0 + x1 '
+    - '---------------------INS Operator@@+ @TO@ InfixExpression@@x0 + x1 '
+    - '---------------------INS SimpleName@@x1 @TO@ InfixExpression@@x0 + x1 '
+    - '------------------INS Operator@@- @TO@ InfixExpression@@x0 + x1 - delta '
+    - '------------------INS SimpleName@@delta @TO@ InfixExpression@@x0 + x1 - delta '
+    - '---INS ExpressionStatement@@Assignment:f0=computeObjectiveValue(x0) @TO@ IfStatement@@InfixExpression:x
+      == x1 '
+    - '------INS Assignment@@f0=computeObjectiveValue(x0) @TO@ ExpressionStatement@@Assignment:f0=computeObjectiveValue(x0) '
+    - '---------INS SimpleName@@f0 @TO@ Assignment@@f0=computeObjectiveValue(x0) '
+    - '---------INS Operator@@= @TO@ Assignment@@f0=computeObjectiveValue(x0) '
+    - '---------INS MethodInvocation@@computeObjectiveValue(x0) @TO@ Assignment@@f0=computeObjectiveValue(x0) '
+    - '------------INS SimpleName@@MethodName:computeObjectiveValue:[x0] @TO@ MethodInvocation@@computeObjectiveValue(x0) '
+    - '---------------INS SimpleName@@x0 @TO@ SimpleName@@MethodName:computeObjectiveValue:[x0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS BreakStatement@@ @TO@ SwitchStatement@@SimpleName:method '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ThrowStatement@@ClassInstanceCreation:new MathInternalError() @TO@ SwitchStatement@@SimpleName:method '
+    - '---INS ClassInstanceCreation@@MathInternalError[] @TO@ ThrowStatement@@ClassInstanceCreation:new
+      MathInternalError() '
+    - '------INS New@@new @TO@ ClassInstanceCreation@@MathInternalError[] '
+    - '------INS SimpleType@@MathInternalError @TO@ ClassInstanceCreation@@MathInternalError[] '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/solvers/BaseSecantSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@SimpleName:REGULA_FALSI @TO@ SwitchStatement@@SimpleName:method '
+    - '---INS SimpleName@@REGULA_FALSI @TO@ SwitchCase@@SimpleName:REGULA_FALSI '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x == x1 @TO@ SwitchStatement@@SimpleName:method '
+    - '---INS InfixExpression@@x == x1 @TO@ IfStatement@@InfixExpression:x == x1 '
+    - '------INS SimpleName@@x @TO@ InfixExpression@@x == x1 '
+    - '------INS Operator@@== @TO@ InfixExpression@@x == x1 '
+    - '------INS SimpleName@@x1 @TO@ InfixExpression@@x == x1 '
+    - '---INS VariableDeclarationStatement@@final double delta=FastMath.max(rtol *
+      FastMath.abs(x1),atol); @TO@ IfStatement@@InfixExpression:x == x1 '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double delta=FastMath.max(rtol
+      * FastMath.abs(x1),atol); '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      delta=FastMath.max(rtol * FastMath.abs(x1),atol); '
+    - '------INS VariableDeclarationFragment@@delta=FastMath.max(rtol * FastMath.abs(x1),atol)
+      @TO@ VariableDeclarationStatement@@final double delta=FastMath.max(rtol * FastMath.abs(x1),atol); '
+    - '---------INS SimpleName@@delta @TO@ VariableDeclarationFragment@@delta=FastMath.max(rtol
+      * FastMath.abs(x1),atol) '
+    - '---------INS MethodInvocation@@FastMath.max(rtol * FastMath.abs(x1),atol) @TO@
+      VariableDeclarationFragment@@delta=FastMath.max(rtol * FastMath.abs(x1),atol) '
+    - '------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.max(rtol
+      * FastMath.abs(x1),atol) '
+    - '------------INS SimpleName@@MethodName:max:[rtol * FastMath.abs(x1), atol]
+      @TO@ MethodInvocation@@FastMath.max(rtol * FastMath.abs(x1),atol) '
+    - '---------------INS InfixExpression@@rtol * FastMath.abs(x1) @TO@ SimpleName@@MethodName:max:[rtol
+      * FastMath.abs(x1), atol] '
+    - '------------------INS SimpleName@@rtol @TO@ InfixExpression@@rtol * FastMath.abs(x1) '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@rtol * FastMath.abs(x1) '
+    - '------------------INS MethodInvocation@@FastMath.abs(x1) @TO@ InfixExpression@@rtol
+      * FastMath.abs(x1) '
+    - '---------------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.abs(x1) '
+    - '---------------------INS SimpleName@@MethodName:abs:[x1] @TO@ MethodInvocation@@FastMath.abs(x1) '
+    - '------------------------INS SimpleName@@x1 @TO@ SimpleName@@MethodName:abs:[x1] '
+    - '---------------INS SimpleName@@atol @TO@ SimpleName@@MethodName:max:[rtol *
+      FastMath.abs(x1), atol] '
+    - '---INS ExpressionStatement@@Assignment:x0=0.5 * (x0 + x1 - delta) @TO@ IfStatement@@InfixExpression:x
+      == x1 '
+    - '------INS Assignment@@x0=0.5 * (x0 + x1 - delta) @TO@ ExpressionStatement@@Assignment:x0=0.5
+      * (x0 + x1 - delta) '
+    - '---------INS SimpleName@@x0 @TO@ Assignment@@x0=0.5 * (x0 + x1 - delta) '
+    - '---------INS Operator@@= @TO@ Assignment@@x0=0.5 * (x0 + x1 - delta) '
+    - '---------INS InfixExpression@@0.5 * (x0 + x1 - delta) @TO@ Assignment@@x0=0.5
+      * (x0 + x1 - delta) '
+    - '------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * (x0 + x1 - delta) '
+    - '------------INS Operator@@* @TO@ InfixExpression@@0.5 * (x0 + x1 - delta) '
+    - '------------INS ParenthesizedExpression@@(x0 + x1 - delta) @TO@ InfixExpression@@0.5
+      * (x0 + x1 - delta) '
+    - '---------------INS InfixExpression@@x0 + x1 - delta @TO@ ParenthesizedExpression@@(x0
+      + x1 - delta) '
+    - '------------------INS InfixExpression@@x0 + x1 @TO@ InfixExpression@@x0 + x1
+      - delta '
+    - '---------------------INS SimpleName@@x0 @TO@ InfixExpression@@x0 + x1 '
+    - '---------------------INS Operator@@+ @TO@ InfixExpression@@x0 + x1 '
+    - '---------------------INS SimpleName@@x1 @TO@ InfixExpression@@x0 + x1 '
+    - '------------------INS Operator@@- @TO@ InfixExpression@@x0 + x1 - delta '
+    - '------------------INS SimpleName@@delta @TO@ InfixExpression@@x0 + x1 - delta '
+    - '---INS ExpressionStatement@@Assignment:f0=computeObjectiveValue(x0) @TO@ IfStatement@@InfixExpression:x
+      == x1 '
+    - '------INS Assignment@@f0=computeObjectiveValue(x0) @TO@ ExpressionStatement@@Assignment:f0=computeObjectiveValue(x0) '
+    - '---------INS SimpleName@@f0 @TO@ Assignment@@f0=computeObjectiveValue(x0) '
+    - '---------INS Operator@@= @TO@ Assignment@@f0=computeObjectiveValue(x0) '
+    - '---------INS MethodInvocation@@computeObjectiveValue(x0) @TO@ Assignment@@f0=computeObjectiveValue(x0) '
+    - '------------INS SimpleName@@MethodName:computeObjectiveValue:[x0] @TO@ MethodInvocation@@computeObjectiveValue(x0) '
+    - '---------------INS SimpleName@@x0 @TO@ SimpleName@@MethodName:computeObjectiveValue:[x0] '
+  repair_actions_cnt: 2

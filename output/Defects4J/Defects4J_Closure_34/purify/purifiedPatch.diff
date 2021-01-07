@@ -1,0 +1,32 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_34/src/com/google/javascript/jscomp/CodeGenerator.java	2020-10-22 11:33:59.641086182 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_34/purify/purified/com/google/javascript/jscomp/CodeGenerator.java	2020-10-22 11:33:59.641086182 -0400
+@@ -119,9 +119,9 @@
+         cc.addOp(opstr, true);
+         addExpr(last, p, rhsContext);
+       } else {
+-        addExpr(first, p, context);
+         cc.addOp(opstr, true);
+         addExpr(last, p + 1, rhsContext);
++        unrollBinaryOperator(n, type, opstr, context, rhsContext, p, p + 1);
+       }
+       return;
+     }
+@@ -752,6 +752,7 @@
+     do {
+       current = current.getParent();
+       cc.listSeparator();
++      cc.addOp(opStr, true);
+       addExpr(current.getFirstChild().getNext(), rightPrecedence, rhsContext);
+     } while (current != n);
+   }
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_34/src/com/google/javascript/jscomp/CodePrinter.java	2020-10-22 11:33:59.653086529 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_34/purify/purified/com/google/javascript/jscomp/CodePrinter.java	2020-10-22 11:33:59.653086529 -0400
+@@ -331,7 +331,7 @@
+     @Override
+     void appendOp(String op, boolean binOp) {
+       if (binOp) {
+-        if (getLastChar() != ' ') {
++        if (getLastChar() != ' ' && op.charAt(0) != ',') {
+           append(" ");
+         }
+         append(op);

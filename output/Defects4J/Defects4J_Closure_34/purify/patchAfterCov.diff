@@ -1,0 +1,33 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_34/src/com/google/javascript/jscomp/CodeGenerator.java	2020-10-22 11:24:47.529114627 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_34/purify/assertBeforeMut/com/google/javascript/jscomp/CodeGenerator.java	2020-10-22 11:24:47.529114627 -0400
+@@ -119,9 +119,7 @@
+         cc.addOp(opstr, true);
+         addExpr(last, p, rhsContext);
+       } else {
+-        addExpr(first, p, context);
+-        cc.addOp(opstr, true);
+-        addExpr(last, p + 1, rhsContext);
++        unrollBinaryOperator(n, type, opstr, context, rhsContext, p, p + 1);
+       }
+       return;
+     }
+@@ -751,7 +749,7 @@
+     Node current = firstNonOperator;
+     do {
+       current = current.getParent();
+-      cc.listSeparator();
++      cc.addOp(opStr, true);
+       addExpr(current.getFirstChild().getNext(), rightPrecedence, rhsContext);
+     } while (current != n);
+   }
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_34/src/com/google/javascript/jscomp/CodePrinter.java	2020-10-22 11:24:47.533114743 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_34/purify/assertBeforeMut/com/google/javascript/jscomp/CodePrinter.java	2020-10-22 11:24:47.533114743 -0400
+@@ -331,7 +331,7 @@
+     @Override
+     void appendOp(String op, boolean binOp) {
+       if (binOp) {
+-        if (getLastChar() != ' ') {
++        if (getLastChar() != ' ' && op.charAt(0) != ',') {
+           append(" ");
+         }
+         append(op);

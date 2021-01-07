@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_55/src/java/org/apache/commons/lang/time/StopWatch.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_55/fixed-version/src/java/org/apache/commons/lang/time/StopWatch.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_55/src/java/org/apache/commons/lang/time/StopWatch.java	2020-03-01 00:11:49.273137116 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_55/fixed-version/src/java/org/apache/commons/lang/time/StopWatch.java	2020-03-01 00:11:52.693298260 -0800
+@@ -115,7 +115,9 @@
+         if(this.runningState != STATE_RUNNING && this.runningState != STATE_SUSPENDED) {
+             throw new IllegalStateException("Stopwatch is not running. ");
+         }
++        if(this.runningState == STATE_RUNNING) {
+             stopTime = System.currentTimeMillis();
++        }
+         this.runningState = STATE_STOPPED;
+     }
+ 

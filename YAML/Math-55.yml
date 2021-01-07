@@ -1,0 +1,1008 @@
+1 bug_id: Math-55
+2 src folder:
+  name of src folder: java
+  number of files: 537
+  number of java files: 497
+  number of src classes: 636
+  number of test classes: 256
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.geometry.Vector3DTest#testCrossProductCancellation
+  failing tests:
+  - org.apache.commons.math.geometry.Vector3DTest
+  number of all test cases: 2402
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.674
+  purification via delta debugging: 556.817
+  repair actions extraction: 1.379
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.geometry.Vector3DTest#testCrossProductCancellation: 36
+  fixed:
+    org.apache.commons.math.geometry.Vector3DTest#testCrossProductCancellation: 356
+6 reduced lines:
+  by all: 3
+  by coverage: 1
+  by delta debugging: 2
+  covAdd: 17
+  covDel: 1
+  cov_patch_lines: 18
+  delta_patch_lines: 16
+  oriAdd: 18
+  oriDel: 1
+  ori_patch_lines: 19
+  purAdd: 15
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 5
+  original: 5
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 40
+  failFail: 4
+  passed: 1
+  total: 45
+9 sibling repair actions:
+- 0 1 0.976857490864799
+- 4 5 0.9819694868238558
+- 4 6 0.9833564493758669
+- 4 7 0.8829357798165137
+- 4 8 0.8733944954128441
+- 4 10 0.8733944954128441
+- 5 6 0.9819694868238558
+- 5 7 0.8733944954128441
+- 5 8 0.8521100917431192
+- 5 10 0.8733944954128441
+- 6 7 0.8726605504587156
+- 6 8 0.8733944954128441
+- 6 10 0.8836697247706422
+- 7 8 0.9805144193296961
+- 7 10 0.9805144193296961
+- 8 10 0.9797349961028838
+- 13 14 0.7735124760076776
+- 14 15 0.718809980806142
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_55/src/main/java/org/apache/commons/math/geometry/Vector3D.java\t\
+    2020-10-21 12:17:55.007305398 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_55/purify/patch/org/apache/commons/math/geometry/Vector3D.java\t\
+    2020-10-21 12:17:55.007305398 -0400\n@@ -456,9 +456,21 @@\n    */\n   public static\
+    \ Vector3D crossProduct(final Vector3D v1, final Vector3D v2) {\n \n+      final\
+    \ double n1 = v1.getNormSq();\n+      final double n2 = v2.getNormSq();\n+   \
+    \   if ((n1 * n2) < MathUtils.SAFE_MIN) {\n+          return ZERO;\n+      }\n\
+    \ \n       // rescale both vectors without losing precision,\n       // to ensure\
+    \ their norm are the same order of magnitude\n+      final int deltaExp = (FastMath.getExponent(n1)\
+    \ - FastMath.getExponent(n2)) / 4;\n+      final double x1    = FastMath.scalb(v1.x,\
+    \ -deltaExp);\n+      final double y1    = FastMath.scalb(v1.y, -deltaExp);\n\
+    +      final double z1    = FastMath.scalb(v1.z, -deltaExp);\n+      final double\
+    \ x2    = FastMath.scalb(v2.x,  deltaExp);\n+      final double y2    = FastMath.scalb(v2.y,\
+    \  deltaExp);\n+      final double z2    = FastMath.scalb(v2.z,  deltaExp);\n\
+    \ \n       // we reduce cancellation errors by preconditioning,\n       // we\
+    \ replace v1 by v3 = v1 - rho v2 with rho chosen in order to compute\n@@ -467,10\
+    \ +479,15 @@\n       // available at http://www.cs.berkeley.edu/~wkahan/MathH110/Cross.pdf\n\
+    \ \n       // compute rho as an 8 bits approximation of v1.v2 / v2.v2\n+     \
+    \ final double ratio = (x1 * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2, 2 *\
+    \ deltaExp);\n+      final double rho   = FastMath.rint(256 * ratio) / 256;\n\
+    \ \n+      final double x3 = x1 - rho * x2;\n+      final double y3 = y1 - rho\
+    \ * y2;\n+      final double z3 = z1 - rho * z2;\n \n       // compute cross product\
+    \ from v3 and v2 instead of v1 and v2\n-      return new Vector3D(v1.y * v2.z\
+    \ - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);\n+   \
+    \   return new Vector3D(y3 * z2 - z3 * y2, z3 * x2 - x3 * z2, x3 * y2 - y3 * x2);\n\
+    \ \n   }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_55/src/main/java/org/apache/commons/math/geometry/Vector3D.java\t\
+    2020-10-21 12:27:31.087965108 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_55/purify/purified/org/apache/commons/math/geometry/Vector3D.java\t\
+    2020-10-21 12:27:31.083964991 -0400\n@@ -456,9 +456,18 @@\n    */\n   public static\
+    \ Vector3D crossProduct(final Vector3D v1, final Vector3D v2) {\n \n+      final\
+    \ double n1 = v1.getNormSq();\n+      final double n2 = v2.getNormSq();\n \n \
+    \      // rescale both vectors without losing precision,\n       // to ensure\
+    \ their norm are the same order of magnitude\n+      final int deltaExp = (FastMath.getExponent(n1)\
+    \ - FastMath.getExponent(n2)) / 4;\n+      final double x1    = FastMath.scalb(v1.x,\
+    \ -deltaExp);\n+      final double y1    = FastMath.scalb(v1.y, -deltaExp);\n\
+    +      final double z1    = FastMath.scalb(v1.z, -deltaExp);\n+      final double\
+    \ x2    = FastMath.scalb(v2.x,  deltaExp);\n+      final double y2    = FastMath.scalb(v2.y,\
+    \  deltaExp);\n+      final double z2    = FastMath.scalb(v2.z,  deltaExp);\n\
+    \ \n       // we reduce cancellation errors by preconditioning,\n       // we\
+    \ replace v1 by v3 = v1 - rho v2 with rho chosen in order to compute\n@@ -467,10\
+    \ +476,15 @@\n       // available at http://www.cs.berkeley.edu/~wkahan/MathH110/Cross.pdf\n\
+    \ \n       // compute rho as an 8 bits approximation of v1.v2 / v2.v2\n+     \
+    \ final double ratio = (x1 * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2, 2 *\
+    \ deltaExp);\n+      final double rho   = FastMath.rint(256 * ratio) / 256;\n\
+    \ \n+      final double x3 = x1 - rho * x2;\n+      final double y3 = y1 - rho\
+    \ * y2;\n+      final double z3 = z1 - rho * z2;\n \n       // compute cross product\
+    \ from v3 and v2 instead of v1 and v2\n-      return new Vector3D(v1.y * v2.z\
+    \ - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);\n+   \
+    \   return new Vector3D(y3 * z2 - z3 * y2, z3 * x2 - x3 * z2, x3 * y2 - y3 * x2);\n\
+    \ \n   }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/geometry/Vector3D:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double n1=v1.getNormSq(); @TO@ MethodDeclaration@@public,
+      static, @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double n1=v1.getNormSq(); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      n1=v1.getNormSq(); '
+    - '---INS VariableDeclarationFragment@@n1=v1.getNormSq() @TO@ VariableDeclarationStatement@@final
+      double n1=v1.getNormSq(); '
+    - '------INS SimpleName@@n1 @TO@ VariableDeclarationFragment@@n1=v1.getNormSq() '
+    - '------INS MethodInvocation@@v1.getNormSq() @TO@ VariableDeclarationFragment@@n1=v1.getNormSq() '
+    - '---------INS SimpleName@@Name:v1 @TO@ MethodInvocation@@v1.getNormSq() '
+    - '---------INS SimpleName@@MethodName:getNormSq:[] @TO@ MethodInvocation@@v1.getNormSq() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double n2=v2.getNormSq(); @TO@ MethodDeclaration@@public,
+      static, @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double n2=v2.getNormSq(); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      n2=v2.getNormSq(); '
+    - '---INS VariableDeclarationFragment@@n2=v2.getNormSq() @TO@ VariableDeclarationStatement@@final
+      double n2=v2.getNormSq(); '
+    - '------INS SimpleName@@n2 @TO@ VariableDeclarationFragment@@n2=v2.getNormSq() '
+    - '------INS MethodInvocation@@v2.getNormSq() @TO@ VariableDeclarationFragment@@n2=v2.getNormSq() '
+    - '---------INS SimpleName@@Name:v2 @TO@ MethodInvocation@@v2.getNormSq() '
+    - '---------INS SimpleName@@MethodName:getNormSq:[] @TO@ MethodInvocation@@v2.getNormSq() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:(n1 * n2) < MathUtils.SAFE_MIN @TO@ MethodDeclaration@@public,
+      static, @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS InfixExpression@@(n1 * n2) < MathUtils.SAFE_MIN @TO@ IfStatement@@InfixExpression:(n1
+      * n2) < MathUtils.SAFE_MIN '
+    - '------INS ParenthesizedExpression@@(n1 * n2) @TO@ InfixExpression@@(n1 * n2)
+      < MathUtils.SAFE_MIN '
+    - '---------INS InfixExpression@@n1 * n2 @TO@ ParenthesizedExpression@@(n1 * n2) '
+    - '------------INS SimpleName@@n1 @TO@ InfixExpression@@n1 * n2 '
+    - '------------INS SimpleName@@n2 @TO@ InfixExpression@@n1 * n2 '
+    - '------------MOV Operator@@* @TO@ InfixExpression@@n1 * n2 '
+    - '------INS Operator@@< @TO@ InfixExpression@@(n1 * n2) < MathUtils.SAFE_MIN '
+    - '------MOV QualifiedName@@v2.z @TO@ InfixExpression@@(n1 * n2) < MathUtils.SAFE_MIN '
+    - '---INS ReturnStatement@@SimpleName:ZERO @TO@ IfStatement@@InfixExpression:(n1
+      * n2) < MathUtils.SAFE_MIN '
+    - '------INS SimpleName@@ZERO @TO@ ReturnStatement@@SimpleName:ZERO '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final int deltaExp=(FastMath.getExponent(n1)
+      - FastMath.getExponent(n2)) / 4; @TO@ MethodDeclaration@@public, static, @@Vector3D,
+      MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final int deltaExp=(FastMath.getExponent(n1)
+      - FastMath.getExponent(n2)) / 4; '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@final int deltaExp=(FastMath.getExponent(n1)
+      - FastMath.getExponent(n2)) / 4; '
+    - '---INS VariableDeclarationFragment@@deltaExp=(FastMath.getExponent(n1) - FastMath.getExponent(n2))
+      / 4 @TO@ VariableDeclarationStatement@@final int deltaExp=(FastMath.getExponent(n1)
+      - FastMath.getExponent(n2)) / 4; '
+    - '------INS SimpleName@@deltaExp @TO@ VariableDeclarationFragment@@deltaExp=(FastMath.getExponent(n1)
+      - FastMath.getExponent(n2)) / 4 '
+    - '------INS InfixExpression@@(FastMath.getExponent(n1) - FastMath.getExponent(n2))
+      / 4 @TO@ VariableDeclarationFragment@@deltaExp=(FastMath.getExponent(n1) - FastMath.getExponent(n2))
+      / 4 '
+    - '---------INS ParenthesizedExpression@@(FastMath.getExponent(n1) - FastMath.getExponent(n2))
+      @TO@ InfixExpression@@(FastMath.getExponent(n1) - FastMath.getExponent(n2))
+      / 4 '
+    - '------------INS InfixExpression@@FastMath.getExponent(n1) - FastMath.getExponent(n2)
+      @TO@ ParenthesizedExpression@@(FastMath.getExponent(n1) - FastMath.getExponent(n2)) '
+    - '---------------INS MethodInvocation@@FastMath.getExponent(n1) @TO@ InfixExpression@@FastMath.getExponent(n1)
+      - FastMath.getExponent(n2) '
+    - '------------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.getExponent(n1) '
+    - '------------------INS SimpleName@@MethodName:getExponent:[n1] @TO@ MethodInvocation@@FastMath.getExponent(n1) '
+    - '---------------------INS SimpleName@@n1 @TO@ SimpleName@@MethodName:getExponent:[n1] '
+    - '---------------INS MethodInvocation@@FastMath.getExponent(n2) @TO@ InfixExpression@@FastMath.getExponent(n1)
+      - FastMath.getExponent(n2) '
+    - '------------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.getExponent(n2) '
+    - '------------------INS SimpleName@@MethodName:getExponent:[n2] @TO@ MethodInvocation@@FastMath.getExponent(n2) '
+    - '---------------------INS SimpleName@@n2 @TO@ SimpleName@@MethodName:getExponent:[n2] '
+    - '---------------MOV Operator@@- @TO@ InfixExpression@@FastMath.getExponent(n1)
+      - FastMath.getExponent(n2) '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@(FastMath.getExponent(n1) -
+      FastMath.getExponent(n2)) / 4 '
+    - '---------INS NumberLiteral@@4 @TO@ InfixExpression@@(FastMath.getExponent(n1)
+      - FastMath.getExponent(n2)) / 4 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double x1=FastMath.scalb(v1.x,-deltaExp);
+      @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double x1=FastMath.scalb(v1.x,-deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      x1=FastMath.scalb(v1.x,-deltaExp); '
+    - '---INS VariableDeclarationFragment@@x1=FastMath.scalb(v1.x,-deltaExp) @TO@
+      VariableDeclarationStatement@@final double x1=FastMath.scalb(v1.x,-deltaExp); '
+    - '------INS SimpleName@@x1 @TO@ VariableDeclarationFragment@@x1=FastMath.scalb(v1.x,-deltaExp) '
+    - '------INS MethodInvocation@@FastMath.scalb(v1.x,-deltaExp) @TO@ VariableDeclarationFragment@@x1=FastMath.scalb(v1.x,-deltaExp) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(v1.x,-deltaExp) '
+    - '---------INS SimpleName@@MethodName:scalb:[v1.x, -deltaExp] @TO@ MethodInvocation@@FastMath.scalb(v1.x,-deltaExp) '
+    - '------------INS QualifiedName@@v1.x @TO@ SimpleName@@MethodName:scalb:[v1.x,
+      -deltaExp] '
+    - '---------------MOV SimpleName@@v1 @TO@ QualifiedName@@v1.x '
+    - '---------------MOV SimpleName@@z @TO@ QualifiedName@@v1.x '
+    - '------------INS PrefixExpression@@-deltaExp @TO@ SimpleName@@MethodName:scalb:[v1.x,
+      -deltaExp] '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-deltaExp '
+    - '---------------INS SimpleName@@deltaExp @TO@ PrefixExpression@@-deltaExp '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double y1=FastMath.scalb(v1.y,-deltaExp);
+      @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double y1=FastMath.scalb(v1.y,-deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      y1=FastMath.scalb(v1.y,-deltaExp); '
+    - '---INS VariableDeclarationFragment@@y1=FastMath.scalb(v1.y,-deltaExp) @TO@
+      VariableDeclarationStatement@@final double y1=FastMath.scalb(v1.y,-deltaExp); '
+    - '------INS SimpleName@@y1 @TO@ VariableDeclarationFragment@@y1=FastMath.scalb(v1.y,-deltaExp) '
+    - '------INS MethodInvocation@@FastMath.scalb(v1.y,-deltaExp) @TO@ VariableDeclarationFragment@@y1=FastMath.scalb(v1.y,-deltaExp) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(v1.y,-deltaExp) '
+    - '---------INS SimpleName@@MethodName:scalb:[v1.y, -deltaExp] @TO@ MethodInvocation@@FastMath.scalb(v1.y,-deltaExp) '
+    - '------------INS QualifiedName@@v1.y @TO@ SimpleName@@MethodName:scalb:[v1.y,
+      -deltaExp] '
+    - '---------------MOV SimpleName@@v2 @TO@ QualifiedName@@v1.y '
+    - '---------------MOV SimpleName@@y @TO@ QualifiedName@@v1.y '
+    - '------------INS PrefixExpression@@-deltaExp @TO@ SimpleName@@MethodName:scalb:[v1.y,
+      -deltaExp] '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-deltaExp '
+    - '---------------INS SimpleName@@deltaExp @TO@ PrefixExpression@@-deltaExp '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double z1=FastMath.scalb(v1.z,-deltaExp);
+      @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double z1=FastMath.scalb(v1.z,-deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      z1=FastMath.scalb(v1.z,-deltaExp); '
+    - '---INS VariableDeclarationFragment@@z1=FastMath.scalb(v1.z,-deltaExp) @TO@
+      VariableDeclarationStatement@@final double z1=FastMath.scalb(v1.z,-deltaExp); '
+    - '------INS SimpleName@@z1 @TO@ VariableDeclarationFragment@@z1=FastMath.scalb(v1.z,-deltaExp) '
+    - '------INS MethodInvocation@@FastMath.scalb(v1.z,-deltaExp) @TO@ VariableDeclarationFragment@@z1=FastMath.scalb(v1.z,-deltaExp) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(v1.z,-deltaExp) '
+    - '---------INS SimpleName@@MethodName:scalb:[v1.z, -deltaExp] @TO@ MethodInvocation@@FastMath.scalb(v1.z,-deltaExp) '
+    - '------------INS QualifiedName@@v1.z @TO@ SimpleName@@MethodName:scalb:[v1.z,
+      -deltaExp] '
+    - '---------------MOV SimpleName@@v1 @TO@ QualifiedName@@v1.z '
+    - '---------------MOV SimpleName@@z @TO@ QualifiedName@@v1.z '
+    - '------------INS PrefixExpression@@-deltaExp @TO@ SimpleName@@MethodName:scalb:[v1.z,
+      -deltaExp] '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-deltaExp '
+    - '---------------INS SimpleName@@deltaExp @TO@ PrefixExpression@@-deltaExp '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double x2=FastMath.scalb(v2.x,deltaExp);
+      @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double x2=FastMath.scalb(v2.x,deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      x2=FastMath.scalb(v2.x,deltaExp); '
+    - '---INS VariableDeclarationFragment@@x2=FastMath.scalb(v2.x,deltaExp) @TO@ VariableDeclarationStatement@@final
+      double x2=FastMath.scalb(v2.x,deltaExp); '
+    - '------INS SimpleName@@x2 @TO@ VariableDeclarationFragment@@x2=FastMath.scalb(v2.x,deltaExp) '
+    - '------INS MethodInvocation@@FastMath.scalb(v2.x,deltaExp) @TO@ VariableDeclarationFragment@@x2=FastMath.scalb(v2.x,deltaExp) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(v2.x,deltaExp) '
+    - '---------INS SimpleName@@MethodName:scalb:[v2.x, deltaExp] @TO@ MethodInvocation@@FastMath.scalb(v2.x,deltaExp) '
+    - '------------INS QualifiedName@@v2.x @TO@ SimpleName@@MethodName:scalb:[v2.x,
+      deltaExp] '
+    - '---------------MOV SimpleName@@v2 @TO@ QualifiedName@@v2.x '
+    - '---------------MOV SimpleName@@x @TO@ QualifiedName@@v2.x '
+    - '------------INS SimpleName@@deltaExp @TO@ SimpleName@@MethodName:scalb:[v2.x,
+      deltaExp] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double y2=FastMath.scalb(v2.y,deltaExp);
+      @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double y2=FastMath.scalb(v2.y,deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      y2=FastMath.scalb(v2.y,deltaExp); '
+    - '---INS VariableDeclarationFragment@@y2=FastMath.scalb(v2.y,deltaExp) @TO@ VariableDeclarationStatement@@final
+      double y2=FastMath.scalb(v2.y,deltaExp); '
+    - '------INS SimpleName@@y2 @TO@ VariableDeclarationFragment@@y2=FastMath.scalb(v2.y,deltaExp) '
+    - '------INS MethodInvocation@@FastMath.scalb(v2.y,deltaExp) @TO@ VariableDeclarationFragment@@y2=FastMath.scalb(v2.y,deltaExp) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(v2.y,deltaExp) '
+    - '---------INS SimpleName@@MethodName:scalb:[v2.y, deltaExp] @TO@ MethodInvocation@@FastMath.scalb(v2.y,deltaExp) '
+    - '------------INS QualifiedName@@v2.y @TO@ SimpleName@@MethodName:scalb:[v2.y,
+      deltaExp] '
+    - '---------------MOV SimpleName@@v1 @TO@ QualifiedName@@v2.y '
+    - '---------------MOV SimpleName@@x @TO@ QualifiedName@@v2.y '
+    - '------------INS SimpleName@@deltaExp @TO@ SimpleName@@MethodName:scalb:[v2.y,
+      deltaExp] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@ClassInstanceCreation:new Vector3D(v1.y * v2.z - v1.z
+      * v2.y,v1.z * v2.x - v1.x * v2.z,v1.x * v2.y - v1.y * v2.x) '
+    - '---DEL ClassInstanceCreation@@Vector3D[v1.y * v2.z - v1.z * v2.y, v1.z * v2.x
+      - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x] '
+    - '------DEL New@@new '
+    - '------DEL SimpleType@@Vector3D '
+    - '------DEL InfixExpression@@v1.y * v2.z - v1.z * v2.y '
+    - '---------DEL InfixExpression@@v1.y * v2.z '
+    - '------------DEL QualifiedName@@v1.y '
+    - '---------------DEL SimpleName@@v1 '
+    - '---------------DEL SimpleName@@y '
+    - '---------DEL InfixExpression@@v1.z * v2.y '
+    - '------------DEL QualifiedName@@v1.z '
+    - '------------DEL Operator@@* '
+    - '------------DEL QualifiedName@@v2.y '
+    - '------DEL InfixExpression@@v1.z * v2.x - v1.x * v2.z '
+    - '---------DEL InfixExpression@@v1.z * v2.x '
+    - '------------DEL QualifiedName@@v1.z '
+    - '------------DEL Operator@@* '
+    - '------------DEL QualifiedName@@v2.x '
+    - '---------DEL Operator@@- '
+    - '---------DEL InfixExpression@@v1.x * v2.z '
+    - '------------DEL QualifiedName@@v1.x '
+    - '------------DEL Operator@@* '
+    - '------------DEL QualifiedName@@v2.z '
+    - '------DEL InfixExpression@@v1.x * v2.y - v1.y * v2.x '
+    - '---------DEL InfixExpression@@v1.x * v2.y '
+    - '------------DEL QualifiedName@@v1.x '
+    - '---------------DEL SimpleName@@v1 '
+    - '---------------DEL SimpleName@@x '
+    - '------------DEL QualifiedName@@v2.y '
+    - '---------------DEL SimpleName@@v2 '
+    - '---------------DEL SimpleName@@y '
+    - '---------DEL InfixExpression@@v1.y * v2.x '
+    - '------------DEL QualifiedName@@v1.y '
+    - '---------------DEL SimpleName@@v1 '
+    - '---------------DEL SimpleName@@y '
+    - '------------DEL QualifiedName@@v2.x '
+    - '---------------DEL SimpleName@@v2 '
+    - '---------------DEL SimpleName@@x '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double z2=FastMath.scalb(v2.z,deltaExp);
+      @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double z2=FastMath.scalb(v2.z,deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      z2=FastMath.scalb(v2.z,deltaExp); '
+    - '---INS VariableDeclarationFragment@@z2=FastMath.scalb(v2.z,deltaExp) @TO@ VariableDeclarationStatement@@final
+      double z2=FastMath.scalb(v2.z,deltaExp); '
+    - '------INS SimpleName@@z2 @TO@ VariableDeclarationFragment@@z2=FastMath.scalb(v2.z,deltaExp) '
+    - '------INS MethodInvocation@@FastMath.scalb(v2.z,deltaExp) @TO@ VariableDeclarationFragment@@z2=FastMath.scalb(v2.z,deltaExp) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(v2.z,deltaExp) '
+    - '---------INS SimpleName@@MethodName:scalb:[v2.z, deltaExp] @TO@ MethodInvocation@@FastMath.scalb(v2.z,deltaExp) '
+    - '------------INS QualifiedName@@v2.z @TO@ SimpleName@@MethodName:scalb:[v2.z,
+      deltaExp] '
+    - '---------------MOV SimpleName@@v2 @TO@ QualifiedName@@v2.z '
+    - '---------------MOV SimpleName@@z @TO@ QualifiedName@@v2.z '
+    - '------------INS SimpleName@@deltaExp @TO@ SimpleName@@MethodName:scalb:[v2.z,
+      deltaExp] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double ratio=(x1 * x2 + y1 * y2 + z1
+      * z2) / FastMath.scalb(n2,2 * deltaExp); @TO@ MethodDeclaration@@public, static,
+      @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double ratio=(x1
+      * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2 * deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      ratio=(x1 * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2 * deltaExp); '
+    - '---INS VariableDeclarationFragment@@ratio=(x1 * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2
+      * deltaExp) @TO@ VariableDeclarationStatement@@final double ratio=(x1 * x2 +
+      y1 * y2 + z1 * z2) / FastMath.scalb(n2,2 * deltaExp); '
+    - '------INS SimpleName@@ratio @TO@ VariableDeclarationFragment@@ratio=(x1 * x2
+      + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2 * deltaExp) '
+    - '------INS InfixExpression@@(x1 * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2
+      * deltaExp) @TO@ VariableDeclarationFragment@@ratio=(x1 * x2 + y1 * y2 + z1
+      * z2) / FastMath.scalb(n2,2 * deltaExp) '
+    - '---------INS ParenthesizedExpression@@(x1 * x2 + y1 * y2 + z1 * z2) @TO@ InfixExpression@@(x1
+      * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2 * deltaExp) '
+    - '------------INS InfixExpression@@x1 * x2 + y1 * y2 + z1 * z2 @TO@ ParenthesizedExpression@@(x1
+      * x2 + y1 * y2 + z1 * z2) '
+    - '---------------INS InfixExpression@@x1 * x2 + y1 * y2 @TO@ InfixExpression@@x1
+      * x2 + y1 * y2 + z1 * z2 '
+    - '------------------INS InfixExpression@@x1 * x2 @TO@ InfixExpression@@x1 * x2
+      + y1 * y2 '
+    - '---------------------INS SimpleName@@x1 @TO@ InfixExpression@@x1 * x2 '
+    - '---------------------INS Operator@@* @TO@ InfixExpression@@x1 * x2 '
+    - '---------------------INS SimpleName@@x2 @TO@ InfixExpression@@x1 * x2 '
+    - '------------------INS Operator@@+ @TO@ InfixExpression@@x1 * x2 + y1 * y2 '
+    - '------------------INS InfixExpression@@y1 * y2 @TO@ InfixExpression@@x1 * x2
+      + y1 * y2 '
+    - '---------------------MOV Operator@@* @TO@ InfixExpression@@y1 * y2 '
+    - '---------------------INS SimpleName@@y1 @TO@ InfixExpression@@y1 * y2 '
+    - '---------------------INS SimpleName@@y2 @TO@ InfixExpression@@y1 * y2 '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@x1 * x2 + y1 * y2 + z1
+      * z2 '
+    - '---------------INS InfixExpression@@z1 * z2 @TO@ InfixExpression@@x1 * x2 +
+      y1 * y2 + z1 * z2 '
+    - '------------------INS SimpleName@@z1 @TO@ InfixExpression@@z1 * z2 '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@z1 * z2 '
+    - '------------------INS SimpleName@@z2 @TO@ InfixExpression@@z1 * z2 '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@(x1 * x2 + y1 * y2 + z1 * z2)
+      / FastMath.scalb(n2,2 * deltaExp) '
+    - '---------INS MethodInvocation@@FastMath.scalb(n2,2 * deltaExp) @TO@ InfixExpression@@(x1
+      * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2 * deltaExp) '
+    - '------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(n2,2
+      * deltaExp) '
+    - '------------INS SimpleName@@MethodName:scalb:[n2, 2 * deltaExp] @TO@ MethodInvocation@@FastMath.scalb(n2,2
+      * deltaExp) '
+    - '---------------INS SimpleName@@n2 @TO@ SimpleName@@MethodName:scalb:[n2, 2
+      * deltaExp] '
+    - '---------------INS InfixExpression@@2 * deltaExp @TO@ SimpleName@@MethodName:scalb:[n2,
+      2 * deltaExp] '
+    - '------------------INS NumberLiteral@@2 @TO@ InfixExpression@@2 * deltaExp '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@2 * deltaExp '
+    - '------------------INS SimpleName@@deltaExp @TO@ InfixExpression@@2 * deltaExp '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double rho=FastMath.rint(256 * ratio)
+      / 256; @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double rho=FastMath.rint(256
+      * ratio) / 256; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      rho=FastMath.rint(256 * ratio) / 256; '
+    - '---INS VariableDeclarationFragment@@rho=FastMath.rint(256 * ratio) / 256 @TO@
+      VariableDeclarationStatement@@final double rho=FastMath.rint(256 * ratio) /
+      256; '
+    - '------INS SimpleName@@rho @TO@ VariableDeclarationFragment@@rho=FastMath.rint(256
+      * ratio) / 256 '
+    - '------INS InfixExpression@@FastMath.rint(256 * ratio) / 256 @TO@ VariableDeclarationFragment@@rho=FastMath.rint(256
+      * ratio) / 256 '
+    - '---------INS MethodInvocation@@FastMath.rint(256 * ratio) @TO@ InfixExpression@@FastMath.rint(256
+      * ratio) / 256 '
+    - '------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.rint(256
+      * ratio) '
+    - '------------INS SimpleName@@MethodName:rint:[256 * ratio] @TO@ MethodInvocation@@FastMath.rint(256
+      * ratio) '
+    - '---------------INS InfixExpression@@256 * ratio @TO@ SimpleName@@MethodName:rint:[256
+      * ratio] '
+    - '------------------INS NumberLiteral@@256 @TO@ InfixExpression@@256 * ratio '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@256 * ratio '
+    - '------------------INS SimpleName@@ratio @TO@ InfixExpression@@256 * ratio '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@FastMath.rint(256 * ratio) /
+      256 '
+    - '---------INS NumberLiteral@@256 @TO@ InfixExpression@@FastMath.rint(256 * ratio)
+      / 256 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double x3=x1 - rho * x2; @TO@ MethodDeclaration@@public,
+      static, @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double x3=x1
+      - rho * x2; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      x3=x1 - rho * x2; '
+    - '---INS VariableDeclarationFragment@@x3=x1 - rho * x2 @TO@ VariableDeclarationStatement@@final
+      double x3=x1 - rho * x2; '
+    - '------INS SimpleName@@x3 @TO@ VariableDeclarationFragment@@x3=x1 - rho * x2 '
+    - '------INS InfixExpression@@x1 - rho * x2 @TO@ VariableDeclarationFragment@@x3=x1
+      - rho * x2 '
+    - '---------MOV Operator@@- @TO@ InfixExpression@@x1 - rho * x2 '
+    - '---------INS SimpleName@@x1 @TO@ InfixExpression@@x1 - rho * x2 '
+    - '---------INS InfixExpression@@rho * x2 @TO@ InfixExpression@@x1 - rho * x2 '
+    - '------------INS SimpleName@@rho @TO@ InfixExpression@@rho * x2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@rho * x2 '
+    - '------------INS SimpleName@@x2 @TO@ InfixExpression@@rho * x2 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double y3=y1 - rho * y2; @TO@ MethodDeclaration@@public,
+      static, @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double y3=y1
+      - rho * y2; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      y3=y1 - rho * y2; '
+    - '---INS VariableDeclarationFragment@@y3=y1 - rho * y2 @TO@ VariableDeclarationStatement@@final
+      double y3=y1 - rho * y2; '
+    - '------INS SimpleName@@y3 @TO@ VariableDeclarationFragment@@y3=y1 - rho * y2 '
+    - '------INS InfixExpression@@y1 - rho * y2 @TO@ VariableDeclarationFragment@@y3=y1
+      - rho * y2 '
+    - '---------INS SimpleName@@y1 @TO@ InfixExpression@@y1 - rho * y2 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@y1 - rho * y2 '
+    - '---------INS InfixExpression@@rho * y2 @TO@ InfixExpression@@y1 - rho * y2 '
+    - '------------INS SimpleName@@rho @TO@ InfixExpression@@rho * y2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@rho * y2 '
+    - '------------INS SimpleName@@y2 @TO@ InfixExpression@@rho * y2 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double z3=z1 - rho * z2; @TO@ MethodDeclaration@@public,
+      static, @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double z3=z1
+      - rho * z2; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      z3=z1 - rho * z2; '
+    - '---INS VariableDeclarationFragment@@z3=z1 - rho * z2 @TO@ VariableDeclarationStatement@@final
+      double z3=z1 - rho * z2; '
+    - '------INS SimpleName@@z3 @TO@ VariableDeclarationFragment@@z3=z1 - rho * z2 '
+    - '------INS InfixExpression@@z1 - rho * z2 @TO@ VariableDeclarationFragment@@z3=z1
+      - rho * z2 '
+    - '---------INS SimpleName@@z1 @TO@ InfixExpression@@z1 - rho * z2 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@z1 - rho * z2 '
+    - '---------INS InfixExpression@@rho * z2 @TO@ InfixExpression@@z1 - rho * z2 '
+    - '------------MOV Operator@@* @TO@ InfixExpression@@rho * z2 '
+    - '------------INS SimpleName@@rho @TO@ InfixExpression@@rho * z2 '
+    - '------------INS SimpleName@@z2 @TO@ InfixExpression@@rho * z2 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@ClassInstanceCreation:new Vector3D(y3 * z2 - z3 * y2,z3
+      * x2 - x3 * z2,x3 * y2 - y3 * x2) @TO@ MethodDeclaration@@public, static, @@Vector3D,
+      MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS ClassInstanceCreation@@Vector3D[y3 * z2 - z3 * y2, z3 * x2 - x3 * z2,
+      x3 * y2 - y3 * x2] @TO@ ReturnStatement@@ClassInstanceCreation:new Vector3D(y3
+      * z2 - z3 * y2,z3 * x2 - x3 * z2,x3 * y2 - y3 * x2) '
+    - '------INS New@@new @TO@ ClassInstanceCreation@@Vector3D[y3 * z2 - z3 * y2,
+      z3 * x2 - x3 * z2, x3 * y2 - y3 * x2] '
+    - '------INS SimpleType@@Vector3D @TO@ ClassInstanceCreation@@Vector3D[y3 * z2
+      - z3 * y2, z3 * x2 - x3 * z2, x3 * y2 - y3 * x2] '
+    - '------INS InfixExpression@@y3 * z2 - z3 * y2 @TO@ ClassInstanceCreation@@Vector3D[y3
+      * z2 - z3 * y2, z3 * x2 - x3 * z2, x3 * y2 - y3 * x2] '
+    - '---------INS InfixExpression@@y3 * z2 @TO@ InfixExpression@@y3 * z2 - z3 *
+      y2 '
+    - '------------INS SimpleName@@y3 @TO@ InfixExpression@@y3 * z2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@y3 * z2 '
+    - '------------INS SimpleName@@z2 @TO@ InfixExpression@@y3 * z2 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@y3 * z2 - z3 * y2 '
+    - '---------INS InfixExpression@@z3 * y2 @TO@ InfixExpression@@y3 * z2 - z3 *
+      y2 '
+    - '------------INS SimpleName@@z3 @TO@ InfixExpression@@z3 * y2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@z3 * y2 '
+    - '------------INS SimpleName@@y2 @TO@ InfixExpression@@z3 * y2 '
+    - '------INS InfixExpression@@z3 * x2 - x3 * z2 @TO@ ClassInstanceCreation@@Vector3D[y3
+      * z2 - z3 * y2, z3 * x2 - x3 * z2, x3 * y2 - y3 * x2] '
+    - '---------INS InfixExpression@@z3 * x2 @TO@ InfixExpression@@z3 * x2 - x3 *
+      z2 '
+    - '------------INS SimpleName@@z3 @TO@ InfixExpression@@z3 * x2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@z3 * x2 '
+    - '------------INS SimpleName@@x2 @TO@ InfixExpression@@z3 * x2 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@z3 * x2 - x3 * z2 '
+    - '---------INS InfixExpression@@x3 * z2 @TO@ InfixExpression@@z3 * x2 - x3 *
+      z2 '
+    - '------------INS SimpleName@@x3 @TO@ InfixExpression@@x3 * z2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@x3 * z2 '
+    - '------------INS SimpleName@@z2 @TO@ InfixExpression@@x3 * z2 '
+    - '------INS InfixExpression@@x3 * y2 - y3 * x2 @TO@ ClassInstanceCreation@@Vector3D[y3
+      * z2 - z3 * y2, z3 * x2 - x3 * z2, x3 * y2 - y3 * x2] '
+    - '---------INS InfixExpression@@x3 * y2 @TO@ InfixExpression@@x3 * y2 - y3 *
+      x2 '
+    - '------------INS SimpleName@@x3 @TO@ InfixExpression@@x3 * y2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@x3 * y2 '
+    - '------------INS SimpleName@@y2 @TO@ InfixExpression@@x3 * y2 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@x3 * y2 - y3 * x2 '
+    - '---------INS InfixExpression@@y3 * x2 @TO@ InfixExpression@@x3 * y2 - y3 *
+      x2 '
+    - '------------INS SimpleName@@y3 @TO@ InfixExpression@@y3 * x2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@y3 * x2 '
+    - '------------INS SimpleName@@x2 @TO@ InfixExpression@@y3 * x2 '
+  repair_actions_cnt: 17
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/geometry/Vector3D:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double n1=v1.getNormSq(); @TO@ MethodDeclaration@@public,
+      static, @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double n1=v1.getNormSq(); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      n1=v1.getNormSq(); '
+    - '---INS VariableDeclarationFragment@@n1=v1.getNormSq() @TO@ VariableDeclarationStatement@@final
+      double n1=v1.getNormSq(); '
+    - '------INS SimpleName@@n1 @TO@ VariableDeclarationFragment@@n1=v1.getNormSq() '
+    - '------INS MethodInvocation@@v1.getNormSq() @TO@ VariableDeclarationFragment@@n1=v1.getNormSq() '
+    - '---------INS SimpleName@@Name:v1 @TO@ MethodInvocation@@v1.getNormSq() '
+    - '---------INS SimpleName@@MethodName:getNormSq:[] @TO@ MethodInvocation@@v1.getNormSq() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double n2=v2.getNormSq(); @TO@ MethodDeclaration@@public,
+      static, @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double n2=v2.getNormSq(); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      n2=v2.getNormSq(); '
+    - '---INS VariableDeclarationFragment@@n2=v2.getNormSq() @TO@ VariableDeclarationStatement@@final
+      double n2=v2.getNormSq(); '
+    - '------INS SimpleName@@n2 @TO@ VariableDeclarationFragment@@n2=v2.getNormSq() '
+    - '------INS MethodInvocation@@v2.getNormSq() @TO@ VariableDeclarationFragment@@n2=v2.getNormSq() '
+    - '---------INS SimpleName@@Name:v2 @TO@ MethodInvocation@@v2.getNormSq() '
+    - '---------INS SimpleName@@MethodName:getNormSq:[] @TO@ MethodInvocation@@v2.getNormSq() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final int deltaExp=(FastMath.getExponent(n1)
+      - FastMath.getExponent(n2)) / 4; @TO@ MethodDeclaration@@public, static, @@Vector3D,
+      MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final int deltaExp=(FastMath.getExponent(n1)
+      - FastMath.getExponent(n2)) / 4; '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@final int deltaExp=(FastMath.getExponent(n1)
+      - FastMath.getExponent(n2)) / 4; '
+    - '---INS VariableDeclarationFragment@@deltaExp=(FastMath.getExponent(n1) - FastMath.getExponent(n2))
+      / 4 @TO@ VariableDeclarationStatement@@final int deltaExp=(FastMath.getExponent(n1)
+      - FastMath.getExponent(n2)) / 4; '
+    - '------INS SimpleName@@deltaExp @TO@ VariableDeclarationFragment@@deltaExp=(FastMath.getExponent(n1)
+      - FastMath.getExponent(n2)) / 4 '
+    - '------INS InfixExpression@@(FastMath.getExponent(n1) - FastMath.getExponent(n2))
+      / 4 @TO@ VariableDeclarationFragment@@deltaExp=(FastMath.getExponent(n1) - FastMath.getExponent(n2))
+      / 4 '
+    - '---------INS ParenthesizedExpression@@(FastMath.getExponent(n1) - FastMath.getExponent(n2))
+      @TO@ InfixExpression@@(FastMath.getExponent(n1) - FastMath.getExponent(n2))
+      / 4 '
+    - '------------INS InfixExpression@@FastMath.getExponent(n1) - FastMath.getExponent(n2)
+      @TO@ ParenthesizedExpression@@(FastMath.getExponent(n1) - FastMath.getExponent(n2)) '
+    - '---------------INS MethodInvocation@@FastMath.getExponent(n1) @TO@ InfixExpression@@FastMath.getExponent(n1)
+      - FastMath.getExponent(n2) '
+    - '------------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.getExponent(n1) '
+    - '------------------INS SimpleName@@MethodName:getExponent:[n1] @TO@ MethodInvocation@@FastMath.getExponent(n1) '
+    - '---------------------INS SimpleName@@n1 @TO@ SimpleName@@MethodName:getExponent:[n1] '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@FastMath.getExponent(n1)
+      - FastMath.getExponent(n2) '
+    - '---------------INS MethodInvocation@@FastMath.getExponent(n2) @TO@ InfixExpression@@FastMath.getExponent(n1)
+      - FastMath.getExponent(n2) '
+    - '------------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.getExponent(n2) '
+    - '------------------INS SimpleName@@MethodName:getExponent:[n2] @TO@ MethodInvocation@@FastMath.getExponent(n2) '
+    - '---------------------INS SimpleName@@n2 @TO@ SimpleName@@MethodName:getExponent:[n2] '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@(FastMath.getExponent(n1) -
+      FastMath.getExponent(n2)) / 4 '
+    - '---------INS NumberLiteral@@4 @TO@ InfixExpression@@(FastMath.getExponent(n1)
+      - FastMath.getExponent(n2)) / 4 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double x1=FastMath.scalb(v1.x,-deltaExp);
+      @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double x1=FastMath.scalb(v1.x,-deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      x1=FastMath.scalb(v1.x,-deltaExp); '
+    - '---INS VariableDeclarationFragment@@x1=FastMath.scalb(v1.x,-deltaExp) @TO@
+      VariableDeclarationStatement@@final double x1=FastMath.scalb(v1.x,-deltaExp); '
+    - '------INS SimpleName@@x1 @TO@ VariableDeclarationFragment@@x1=FastMath.scalb(v1.x,-deltaExp) '
+    - '------INS MethodInvocation@@FastMath.scalb(v1.x,-deltaExp) @TO@ VariableDeclarationFragment@@x1=FastMath.scalb(v1.x,-deltaExp) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(v1.x,-deltaExp) '
+    - '---------INS SimpleName@@MethodName:scalb:[v1.x, -deltaExp] @TO@ MethodInvocation@@FastMath.scalb(v1.x,-deltaExp) '
+    - '------------INS QualifiedName@@v1.x @TO@ SimpleName@@MethodName:scalb:[v1.x,
+      -deltaExp] '
+    - '---------------MOV SimpleName@@v1 @TO@ QualifiedName@@v1.x '
+    - '---------------MOV SimpleName@@y @TO@ QualifiedName@@v1.x '
+    - '------------INS PrefixExpression@@-deltaExp @TO@ SimpleName@@MethodName:scalb:[v1.x,
+      -deltaExp] '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-deltaExp '
+    - '---------------INS SimpleName@@deltaExp @TO@ PrefixExpression@@-deltaExp '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double y1=FastMath.scalb(v1.y,-deltaExp);
+      @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double y1=FastMath.scalb(v1.y,-deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      y1=FastMath.scalb(v1.y,-deltaExp); '
+    - '---INS VariableDeclarationFragment@@y1=FastMath.scalb(v1.y,-deltaExp) @TO@
+      VariableDeclarationStatement@@final double y1=FastMath.scalb(v1.y,-deltaExp); '
+    - '------INS SimpleName@@y1 @TO@ VariableDeclarationFragment@@y1=FastMath.scalb(v1.y,-deltaExp) '
+    - '------INS MethodInvocation@@FastMath.scalb(v1.y,-deltaExp) @TO@ VariableDeclarationFragment@@y1=FastMath.scalb(v1.y,-deltaExp) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(v1.y,-deltaExp) '
+    - '---------INS SimpleName@@MethodName:scalb:[v1.y, -deltaExp] @TO@ MethodInvocation@@FastMath.scalb(v1.y,-deltaExp) '
+    - '------------INS QualifiedName@@v1.y @TO@ SimpleName@@MethodName:scalb:[v1.y,
+      -deltaExp] '
+    - '---------------MOV SimpleName@@v2 @TO@ QualifiedName@@v1.y '
+    - '---------------MOV SimpleName@@z @TO@ QualifiedName@@v1.y '
+    - '------------INS PrefixExpression@@-deltaExp @TO@ SimpleName@@MethodName:scalb:[v1.y,
+      -deltaExp] '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-deltaExp '
+    - '---------------INS SimpleName@@deltaExp @TO@ PrefixExpression@@-deltaExp '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double z1=FastMath.scalb(v1.z,-deltaExp);
+      @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double z1=FastMath.scalb(v1.z,-deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      z1=FastMath.scalb(v1.z,-deltaExp); '
+    - '---INS VariableDeclarationFragment@@z1=FastMath.scalb(v1.z,-deltaExp) @TO@
+      VariableDeclarationStatement@@final double z1=FastMath.scalb(v1.z,-deltaExp); '
+    - '------INS SimpleName@@z1 @TO@ VariableDeclarationFragment@@z1=FastMath.scalb(v1.z,-deltaExp) '
+    - '------INS MethodInvocation@@FastMath.scalb(v1.z,-deltaExp) @TO@ VariableDeclarationFragment@@z1=FastMath.scalb(v1.z,-deltaExp) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(v1.z,-deltaExp) '
+    - '---------INS SimpleName@@MethodName:scalb:[v1.z, -deltaExp] @TO@ MethodInvocation@@FastMath.scalb(v1.z,-deltaExp) '
+    - '------------INS QualifiedName@@v1.z @TO@ SimpleName@@MethodName:scalb:[v1.z,
+      -deltaExp] '
+    - '---------------MOV SimpleName@@v1 @TO@ QualifiedName@@v1.z '
+    - '---------------MOV SimpleName@@z @TO@ QualifiedName@@v1.z '
+    - '------------INS PrefixExpression@@-deltaExp @TO@ SimpleName@@MethodName:scalb:[v1.z,
+      -deltaExp] '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-deltaExp '
+    - '---------------INS SimpleName@@deltaExp @TO@ PrefixExpression@@-deltaExp '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double x2=FastMath.scalb(v2.x,deltaExp);
+      @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double x2=FastMath.scalb(v2.x,deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      x2=FastMath.scalb(v2.x,deltaExp); '
+    - '---INS VariableDeclarationFragment@@x2=FastMath.scalb(v2.x,deltaExp) @TO@ VariableDeclarationStatement@@final
+      double x2=FastMath.scalb(v2.x,deltaExp); '
+    - '------INS SimpleName@@x2 @TO@ VariableDeclarationFragment@@x2=FastMath.scalb(v2.x,deltaExp) '
+    - '------INS MethodInvocation@@FastMath.scalb(v2.x,deltaExp) @TO@ VariableDeclarationFragment@@x2=FastMath.scalb(v2.x,deltaExp) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(v2.x,deltaExp) '
+    - '---------INS SimpleName@@MethodName:scalb:[v2.x, deltaExp] @TO@ MethodInvocation@@FastMath.scalb(v2.x,deltaExp) '
+    - '------------INS QualifiedName@@v2.x @TO@ SimpleName@@MethodName:scalb:[v2.x,
+      deltaExp] '
+    - '---------------INS SimpleName@@v2 @TO@ QualifiedName@@v2.x '
+    - '---------------INS SimpleName@@x @TO@ QualifiedName@@v2.x '
+    - '------------INS SimpleName@@deltaExp @TO@ SimpleName@@MethodName:scalb:[v2.x,
+      deltaExp] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double y2=FastMath.scalb(v2.y,deltaExp);
+      @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double y2=FastMath.scalb(v2.y,deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      y2=FastMath.scalb(v2.y,deltaExp); '
+    - '---INS VariableDeclarationFragment@@y2=FastMath.scalb(v2.y,deltaExp) @TO@ VariableDeclarationStatement@@final
+      double y2=FastMath.scalb(v2.y,deltaExp); '
+    - '------INS SimpleName@@y2 @TO@ VariableDeclarationFragment@@y2=FastMath.scalb(v2.y,deltaExp) '
+    - '------INS MethodInvocation@@FastMath.scalb(v2.y,deltaExp) @TO@ VariableDeclarationFragment@@y2=FastMath.scalb(v2.y,deltaExp) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(v2.y,deltaExp) '
+    - '---------INS SimpleName@@MethodName:scalb:[v2.y, deltaExp] @TO@ MethodInvocation@@FastMath.scalb(v2.y,deltaExp) '
+    - '------------INS QualifiedName@@v2.y @TO@ SimpleName@@MethodName:scalb:[v2.y,
+      deltaExp] '
+    - '---------------MOV SimpleName@@v2 @TO@ QualifiedName@@v2.y '
+    - '---------------MOV SimpleName@@y @TO@ QualifiedName@@v2.y '
+    - '------------INS SimpleName@@deltaExp @TO@ SimpleName@@MethodName:scalb:[v2.y,
+      deltaExp] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double z2=FastMath.scalb(v2.z,deltaExp);
+      @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double z2=FastMath.scalb(v2.z,deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      z2=FastMath.scalb(v2.z,deltaExp); '
+    - '---INS VariableDeclarationFragment@@z2=FastMath.scalb(v2.z,deltaExp) @TO@ VariableDeclarationStatement@@final
+      double z2=FastMath.scalb(v2.z,deltaExp); '
+    - '------INS SimpleName@@z2 @TO@ VariableDeclarationFragment@@z2=FastMath.scalb(v2.z,deltaExp) '
+    - '------INS MethodInvocation@@FastMath.scalb(v2.z,deltaExp) @TO@ VariableDeclarationFragment@@z2=FastMath.scalb(v2.z,deltaExp) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(v2.z,deltaExp) '
+    - '---------INS SimpleName@@MethodName:scalb:[v2.z, deltaExp] @TO@ MethodInvocation@@FastMath.scalb(v2.z,deltaExp) '
+    - '------------INS QualifiedName@@v2.z @TO@ SimpleName@@MethodName:scalb:[v2.z,
+      deltaExp] '
+    - '---------------MOV SimpleName@@v1 @TO@ QualifiedName@@v2.z '
+    - '---------------MOV SimpleName@@z @TO@ QualifiedName@@v2.z '
+    - '------------INS SimpleName@@deltaExp @TO@ SimpleName@@MethodName:scalb:[v2.z,
+      deltaExp] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@ClassInstanceCreation:new Vector3D(v1.y * v2.z - v1.z
+      * v2.y,v1.z * v2.x - v1.x * v2.z,v1.x * v2.y - v1.y * v2.x) '
+    - '---DEL ClassInstanceCreation@@Vector3D[v1.y * v2.z - v1.z * v2.y, v1.z * v2.x
+      - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x] '
+    - '------DEL New@@new '
+    - '------DEL SimpleType@@Vector3D '
+    - '------DEL InfixExpression@@v1.y * v2.z - v1.z * v2.y '
+    - '---------DEL InfixExpression@@v1.y * v2.z '
+    - '------------DEL QualifiedName@@v1.y '
+    - '------------DEL Operator@@* '
+    - '------------DEL QualifiedName@@v2.z '
+    - '---------DEL Operator@@- '
+    - '---------DEL InfixExpression@@v1.z * v2.y '
+    - '------------DEL QualifiedName@@v1.z '
+    - '------------DEL Operator@@* '
+    - '------------DEL QualifiedName@@v2.y '
+    - '------DEL InfixExpression@@v1.z * v2.x - v1.x * v2.z '
+    - '---------DEL InfixExpression@@v1.z * v2.x '
+    - '------------DEL QualifiedName@@v1.z '
+    - '------------DEL QualifiedName@@v2.x '
+    - '---------------DEL SimpleName@@v2 '
+    - '---------------DEL SimpleName@@x '
+    - '---------DEL InfixExpression@@v1.x * v2.z '
+    - '------------DEL QualifiedName@@v1.x '
+    - '---------------DEL SimpleName@@v1 '
+    - '---------------DEL SimpleName@@x '
+    - '------------DEL QualifiedName@@v2.z '
+    - '---------------DEL SimpleName@@v2 '
+    - '---------------DEL SimpleName@@z '
+    - '------DEL InfixExpression@@v1.x * v2.y - v1.y * v2.x '
+    - '---------DEL InfixExpression@@v1.x * v2.y '
+    - '------------DEL QualifiedName@@v1.x '
+    - '---------------DEL SimpleName@@v1 '
+    - '---------------DEL SimpleName@@x '
+    - '------------DEL QualifiedName@@v2.y '
+    - '---------------DEL SimpleName@@v2 '
+    - '---------------DEL SimpleName@@y '
+    - '---------DEL InfixExpression@@v1.y * v2.x '
+    - '------------DEL QualifiedName@@v1.y '
+    - '---------------DEL SimpleName@@v1 '
+    - '---------------DEL SimpleName@@y '
+    - '------------DEL QualifiedName@@v2.x '
+    - '---------------DEL SimpleName@@v2 '
+    - '---------------DEL SimpleName@@x '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double ratio=(x1 * x2 + y1 * y2 + z1
+      * z2) / FastMath.scalb(n2,2 * deltaExp); @TO@ MethodDeclaration@@public, static,
+      @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double ratio=(x1
+      * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2 * deltaExp); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      ratio=(x1 * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2 * deltaExp); '
+    - '---INS VariableDeclarationFragment@@ratio=(x1 * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2
+      * deltaExp) @TO@ VariableDeclarationStatement@@final double ratio=(x1 * x2 +
+      y1 * y2 + z1 * z2) / FastMath.scalb(n2,2 * deltaExp); '
+    - '------INS SimpleName@@ratio @TO@ VariableDeclarationFragment@@ratio=(x1 * x2
+      + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2 * deltaExp) '
+    - '------INS InfixExpression@@(x1 * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2
+      * deltaExp) @TO@ VariableDeclarationFragment@@ratio=(x1 * x2 + y1 * y2 + z1
+      * z2) / FastMath.scalb(n2,2 * deltaExp) '
+    - '---------INS ParenthesizedExpression@@(x1 * x2 + y1 * y2 + z1 * z2) @TO@ InfixExpression@@(x1
+      * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2 * deltaExp) '
+    - '------------INS InfixExpression@@x1 * x2 + y1 * y2 + z1 * z2 @TO@ ParenthesizedExpression@@(x1
+      * x2 + y1 * y2 + z1 * z2) '
+    - '---------------INS InfixExpression@@x1 * x2 + y1 * y2 @TO@ InfixExpression@@x1
+      * x2 + y1 * y2 + z1 * z2 '
+    - '------------------INS InfixExpression@@x1 * x2 @TO@ InfixExpression@@x1 * x2
+      + y1 * y2 '
+    - '---------------------MOV Operator@@* @TO@ InfixExpression@@x1 * x2 '
+    - '---------------------INS SimpleName@@x1 @TO@ InfixExpression@@x1 * x2 '
+    - '---------------------INS SimpleName@@x2 @TO@ InfixExpression@@x1 * x2 '
+    - '------------------INS Operator@@+ @TO@ InfixExpression@@x1 * x2 + y1 * y2 '
+    - '------------------INS InfixExpression@@y1 * y2 @TO@ InfixExpression@@x1 * x2
+      + y1 * y2 '
+    - '---------------------INS SimpleName@@y1 @TO@ InfixExpression@@y1 * y2 '
+    - '---------------------INS Operator@@* @TO@ InfixExpression@@y1 * y2 '
+    - '---------------------INS SimpleName@@y2 @TO@ InfixExpression@@y1 * y2 '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@x1 * x2 + y1 * y2 + z1
+      * z2 '
+    - '---------------INS InfixExpression@@z1 * z2 @TO@ InfixExpression@@x1 * x2 +
+      y1 * y2 + z1 * z2 '
+    - '------------------INS SimpleName@@z1 @TO@ InfixExpression@@z1 * z2 '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@z1 * z2 '
+    - '------------------INS SimpleName@@z2 @TO@ InfixExpression@@z1 * z2 '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@(x1 * x2 + y1 * y2 + z1 * z2)
+      / FastMath.scalb(n2,2 * deltaExp) '
+    - '---------INS MethodInvocation@@FastMath.scalb(n2,2 * deltaExp) @TO@ InfixExpression@@(x1
+      * x2 + y1 * y2 + z1 * z2) / FastMath.scalb(n2,2 * deltaExp) '
+    - '------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.scalb(n2,2
+      * deltaExp) '
+    - '------------INS SimpleName@@MethodName:scalb:[n2, 2 * deltaExp] @TO@ MethodInvocation@@FastMath.scalb(n2,2
+      * deltaExp) '
+    - '---------------INS SimpleName@@n2 @TO@ SimpleName@@MethodName:scalb:[n2, 2
+      * deltaExp] '
+    - '---------------INS InfixExpression@@2 * deltaExp @TO@ SimpleName@@MethodName:scalb:[n2,
+      2 * deltaExp] '
+    - '------------------INS NumberLiteral@@2 @TO@ InfixExpression@@2 * deltaExp '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@2 * deltaExp '
+    - '------------------INS SimpleName@@deltaExp @TO@ InfixExpression@@2 * deltaExp '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double rho=FastMath.rint(256 * ratio)
+      / 256; @TO@ MethodDeclaration@@public, static, @@Vector3D, MethodName:crossProduct,
+      @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double rho=FastMath.rint(256
+      * ratio) / 256; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      rho=FastMath.rint(256 * ratio) / 256; '
+    - '---INS VariableDeclarationFragment@@rho=FastMath.rint(256 * ratio) / 256 @TO@
+      VariableDeclarationStatement@@final double rho=FastMath.rint(256 * ratio) /
+      256; '
+    - '------INS SimpleName@@rho @TO@ VariableDeclarationFragment@@rho=FastMath.rint(256
+      * ratio) / 256 '
+    - '------INS InfixExpression@@FastMath.rint(256 * ratio) / 256 @TO@ VariableDeclarationFragment@@rho=FastMath.rint(256
+      * ratio) / 256 '
+    - '---------INS MethodInvocation@@FastMath.rint(256 * ratio) @TO@ InfixExpression@@FastMath.rint(256
+      * ratio) / 256 '
+    - '------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.rint(256
+      * ratio) '
+    - '------------INS SimpleName@@MethodName:rint:[256 * ratio] @TO@ MethodInvocation@@FastMath.rint(256
+      * ratio) '
+    - '---------------INS InfixExpression@@256 * ratio @TO@ SimpleName@@MethodName:rint:[256
+      * ratio] '
+    - '------------------INS NumberLiteral@@256 @TO@ InfixExpression@@256 * ratio '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@256 * ratio '
+    - '------------------INS SimpleName@@ratio @TO@ InfixExpression@@256 * ratio '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@FastMath.rint(256 * ratio) /
+      256 '
+    - '---------INS NumberLiteral@@256 @TO@ InfixExpression@@FastMath.rint(256 * ratio)
+      / 256 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double x3=x1 - rho * x2; @TO@ MethodDeclaration@@public,
+      static, @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double x3=x1
+      - rho * x2; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      x3=x1 - rho * x2; '
+    - '---INS VariableDeclarationFragment@@x3=x1 - rho * x2 @TO@ VariableDeclarationStatement@@final
+      double x3=x1 - rho * x2; '
+    - '------INS SimpleName@@x3 @TO@ VariableDeclarationFragment@@x3=x1 - rho * x2 '
+    - '------INS InfixExpression@@x1 - rho * x2 @TO@ VariableDeclarationFragment@@x3=x1
+      - rho * x2 '
+    - '---------MOV Operator@@- @TO@ InfixExpression@@x1 - rho * x2 '
+    - '---------INS SimpleName@@x1 @TO@ InfixExpression@@x1 - rho * x2 '
+    - '---------INS InfixExpression@@rho * x2 @TO@ InfixExpression@@x1 - rho * x2 '
+    - '------------INS SimpleName@@rho @TO@ InfixExpression@@rho * x2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@rho * x2 '
+    - '------------INS SimpleName@@x2 @TO@ InfixExpression@@rho * x2 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double y3=y1 - rho * y2; @TO@ MethodDeclaration@@public,
+      static, @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double y3=y1
+      - rho * y2; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      y3=y1 - rho * y2; '
+    - '---INS VariableDeclarationFragment@@y3=y1 - rho * y2 @TO@ VariableDeclarationStatement@@final
+      double y3=y1 - rho * y2; '
+    - '------INS SimpleName@@y3 @TO@ VariableDeclarationFragment@@y3=y1 - rho * y2 '
+    - '------INS InfixExpression@@y1 - rho * y2 @TO@ VariableDeclarationFragment@@y3=y1
+      - rho * y2 '
+    - '---------INS SimpleName@@y1 @TO@ InfixExpression@@y1 - rho * y2 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@y1 - rho * y2 '
+    - '---------INS InfixExpression@@rho * y2 @TO@ InfixExpression@@y1 - rho * y2 '
+    - '------------MOV Operator@@* @TO@ InfixExpression@@rho * y2 '
+    - '------------INS SimpleName@@rho @TO@ InfixExpression@@rho * y2 '
+    - '------------INS SimpleName@@y2 @TO@ InfixExpression@@rho * y2 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double z3=z1 - rho * z2; @TO@ MethodDeclaration@@public,
+      static, @@Vector3D, MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double z3=z1
+      - rho * z2; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      z3=z1 - rho * z2; '
+    - '---INS VariableDeclarationFragment@@z3=z1 - rho * z2 @TO@ VariableDeclarationStatement@@final
+      double z3=z1 - rho * z2; '
+    - '------INS SimpleName@@z3 @TO@ VariableDeclarationFragment@@z3=z1 - rho * z2 '
+    - '------INS InfixExpression@@z1 - rho * z2 @TO@ VariableDeclarationFragment@@z3=z1
+      - rho * z2 '
+    - '---------INS SimpleName@@z1 @TO@ InfixExpression@@z1 - rho * z2 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@z1 - rho * z2 '
+    - '---------INS InfixExpression@@rho * z2 @TO@ InfixExpression@@z1 - rho * z2 '
+    - '------------MOV Operator@@* @TO@ InfixExpression@@rho * z2 '
+    - '------------INS SimpleName@@rho @TO@ InfixExpression@@rho * z2 '
+    - '------------INS SimpleName@@z2 @TO@ InfixExpression@@rho * z2 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@ClassInstanceCreation:new Vector3D(y3 * z2 - z3 * y2,z3
+      * x2 - x3 * z2,x3 * y2 - y3 * x2) @TO@ MethodDeclaration@@public, static, @@Vector3D,
+      MethodName:crossProduct, @@Argus:Vector3D+v1+Vector3D+v2+ '
+    - '---INS ClassInstanceCreation@@Vector3D[y3 * z2 - z3 * y2, z3 * x2 - x3 * z2,
+      x3 * y2 - y3 * x2] @TO@ ReturnStatement@@ClassInstanceCreation:new Vector3D(y3
+      * z2 - z3 * y2,z3 * x2 - x3 * z2,x3 * y2 - y3 * x2) '
+    - '------INS New@@new @TO@ ClassInstanceCreation@@Vector3D[y3 * z2 - z3 * y2,
+      z3 * x2 - x3 * z2, x3 * y2 - y3 * x2] '
+    - '------INS SimpleType@@Vector3D @TO@ ClassInstanceCreation@@Vector3D[y3 * z2
+      - z3 * y2, z3 * x2 - x3 * z2, x3 * y2 - y3 * x2] '
+    - '------INS InfixExpression@@y3 * z2 - z3 * y2 @TO@ ClassInstanceCreation@@Vector3D[y3
+      * z2 - z3 * y2, z3 * x2 - x3 * z2, x3 * y2 - y3 * x2] '
+    - '---------MOV Operator@@- @TO@ InfixExpression@@y3 * z2 - z3 * y2 '
+    - '---------INS InfixExpression@@y3 * z2 @TO@ InfixExpression@@y3 * z2 - z3 *
+      y2 '
+    - '------------INS SimpleName@@y3 @TO@ InfixExpression@@y3 * z2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@y3 * z2 '
+    - '------------INS SimpleName@@z2 @TO@ InfixExpression@@y3 * z2 '
+    - '---------INS InfixExpression@@z3 * y2 @TO@ InfixExpression@@y3 * z2 - z3 *
+      y2 '
+    - '------------INS SimpleName@@z3 @TO@ InfixExpression@@z3 * y2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@z3 * y2 '
+    - '------------INS SimpleName@@y2 @TO@ InfixExpression@@z3 * y2 '
+    - '------INS InfixExpression@@z3 * x2 - x3 * z2 @TO@ ClassInstanceCreation@@Vector3D[y3
+      * z2 - z3 * y2, z3 * x2 - x3 * z2, x3 * y2 - y3 * x2] '
+    - '---------INS InfixExpression@@z3 * x2 @TO@ InfixExpression@@z3 * x2 - x3 *
+      z2 '
+    - '------------MOV Operator@@* @TO@ InfixExpression@@z3 * x2 '
+    - '------------INS SimpleName@@z3 @TO@ InfixExpression@@z3 * x2 '
+    - '------------INS SimpleName@@x2 @TO@ InfixExpression@@z3 * x2 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@z3 * x2 - x3 * z2 '
+    - '---------INS InfixExpression@@x3 * z2 @TO@ InfixExpression@@z3 * x2 - x3 *
+      z2 '
+    - '------------INS SimpleName@@x3 @TO@ InfixExpression@@x3 * z2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@x3 * z2 '
+    - '------------INS SimpleName@@z2 @TO@ InfixExpression@@x3 * z2 '
+    - '------INS InfixExpression@@x3 * y2 - y3 * x2 @TO@ ClassInstanceCreation@@Vector3D[y3
+      * z2 - z3 * y2, z3 * x2 - x3 * z2, x3 * y2 - y3 * x2] '
+    - '---------INS InfixExpression@@x3 * y2 @TO@ InfixExpression@@x3 * y2 - y3 *
+      x2 '
+    - '------------INS SimpleName@@x3 @TO@ InfixExpression@@x3 * y2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@x3 * y2 '
+    - '------------INS SimpleName@@y2 @TO@ InfixExpression@@x3 * y2 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@x3 * y2 - y3 * x2 '
+    - '---------INS InfixExpression@@y3 * x2 @TO@ InfixExpression@@x3 * y2 - y3 *
+      x2 '
+    - '------------INS SimpleName@@y3 @TO@ InfixExpression@@y3 * x2 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@y3 * x2 '
+    - '------------INS SimpleName@@x2 @TO@ InfixExpression@@y3 * x2 '
+  repair_actions_cnt: 16

@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_44/src/java/org/apache/commons/lang/NumberUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_44/fixed-version/src/java/org/apache/commons/lang/NumberUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_44/src/java/org/apache/commons/lang/NumberUtils.java	2020-03-01 00:10:33.273556306 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_44/fixed-version/src/java/org/apache/commons/lang/NumberUtils.java	2020-03-01 00:10:36.725718959 -0800
+@@ -142,6 +142,9 @@
+         if (val.length() == 0) {
+             throw new NumberFormatException("\"\" is not a valid number.");
+         }
++        if (val.length() == 1 && !Character.isDigit(val.charAt(0))) {
++            throw new NumberFormatException(val + " is not a valid number.");
++        }
+         if (val.startsWith("--")) {
+             // this is protection for poorness in java.lang.BigDecimal.
+             // it accepts this as a legal value, but it does not appear 

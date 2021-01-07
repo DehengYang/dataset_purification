@@ -1,0 +1,10 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_11/src/com/google/javascript/jscomp/TypeCheck.java	2020-10-21 17:40:53.000299689 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_11/purify/purified/com/google/javascript/jscomp/TypeCheck.java	2020-10-21 17:40:53.000299689 -0400
+@@ -1311,7 +1311,6 @@
+ 
+     if (childType.isDict()) {
+       report(t, property, TypeValidator.ILLEGAL_PROPERTY_ACCESS, "'.'", "dict");
+-    } else if (n.getJSType() != null && parent.isAssign()) {
+       return;
+     } else if (validator.expectNotNullOrUndefined(t, n, childType,
+         "No properties on this expression", getNativeType(OBJECT_TYPE))) {

@@ -1,0 +1,116 @@
+1 bug_id: Math-32
+2 src folder:
+  name of src folder: java
+  number of files: 621
+  number of java files: 620
+  number of src classes: 838
+  number of test classes: 306
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSetTest#testIssue780
+  failing tests:
+  - org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSetTest
+  number of all test cases: 3594
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.003
+  purification via delta debugging: 87.69
+  repair actions extraction: 1.078
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSetTest#testIssue780: 1401
+  fixed:
+    org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSetTest#testIssue780: 1428
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_32/src/main/java/org/apache/commons/math3/geometry/euclidean/twod/PolygonsSet.java\t\
+    2020-10-21 10:36:07.314691372 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_32/purify/patch/org/apache/commons/math3/geometry/euclidean/twod/PolygonsSet.java\t\
+    2020-10-21 10:36:07.314691372 -0400\n@@ -133,7 +133,7 @@\n \n         if (v.length\
+    \ == 0) {\n             final BSPTree<Euclidean2D> tree = getTree(false);\n- \
+    \           if ((Boolean) tree.getAttribute()) {\n+            if (tree.getCut()\
+    \ == null && (Boolean) tree.getAttribute()) {\n                 // the instance\
+    \ covers the whole space\n                 setSize(Double.POSITIVE_INFINITY);\n\
+    \                 setBarycenter(Vector2D.NaN);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_32/src/main/java/org/apache/commons/math3/geometry/euclidean/twod/PolygonsSet.java\t\
+    2020-10-21 10:37:53.553767930 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_32/purify/purified/org/apache/commons/math3/geometry/euclidean/twod/PolygonsSet.java\t\
+    2020-10-21 10:37:53.553767930 -0400\n@@ -133,7 +133,7 @@\n \n         if (v.length\
+    \ == 0) {\n             final BSPTree<Euclidean2D> tree = getTree(false);\n- \
+    \           if ((Boolean) tree.getAttribute()) {\n+            if (tree.getCut()\
+    \ == null && (Boolean) tree.getAttribute()) {\n                 // the instance\
+    \ covers the whole space\n                 setSize(Double.POSITIVE_INFINITY);\n\
+    \                 setBarycenter(Vector2D.NaN);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/geometry/euclidean/twod/PolygonsSet:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@CastExpression:(Boolean)tree.getAttribute() @TO@ InfixExpression:tree.getCut()
+      == null && (Boolean)tree.getAttribute() '
+    - '---INS InfixExpression@@tree.getCut() == null && (Boolean)tree.getAttribute()
+      @TO@ IfStatement@@CastExpression:(Boolean)tree.getAttribute() '
+    - '------INS InfixExpression@@tree.getCut() == null @TO@ InfixExpression@@tree.getCut()
+      == null && (Boolean)tree.getAttribute() '
+    - '---------INS MethodInvocation@@tree.getCut() @TO@ InfixExpression@@tree.getCut()
+      == null '
+    - '------------INS SimpleName@@Name:tree @TO@ MethodInvocation@@tree.getCut() '
+    - '------------INS SimpleName@@MethodName:getCut:[] @TO@ MethodInvocation@@tree.getCut() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@tree.getCut() == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@tree.getCut() == null '
+    - '------MOV CastExpression@@(Boolean)tree.getAttribute() @TO@ InfixExpression@@tree.getCut()
+      == null && (Boolean)tree.getAttribute() '
+    - '------INS Operator@@&& @TO@ InfixExpression@@tree.getCut() == null && (Boolean)tree.getAttribute() '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/geometry/euclidean/twod/PolygonsSet:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@CastExpression:(Boolean)tree.getAttribute() @TO@ InfixExpression:tree.getCut()
+      == null && (Boolean)tree.getAttribute() '
+    - '---INS InfixExpression@@tree.getCut() == null && (Boolean)tree.getAttribute()
+      @TO@ IfStatement@@CastExpression:(Boolean)tree.getAttribute() '
+    - '------INS InfixExpression@@tree.getCut() == null @TO@ InfixExpression@@tree.getCut()
+      == null && (Boolean)tree.getAttribute() '
+    - '---------INS MethodInvocation@@tree.getCut() @TO@ InfixExpression@@tree.getCut()
+      == null '
+    - '------------INS SimpleName@@Name:tree @TO@ MethodInvocation@@tree.getCut() '
+    - '------------INS SimpleName@@MethodName:getCut:[] @TO@ MethodInvocation@@tree.getCut() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@tree.getCut() == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@tree.getCut() == null '
+    - '------MOV CastExpression@@(Boolean)tree.getAttribute() @TO@ InfixExpression@@tree.getCut()
+      == null && (Boolean)tree.getAttribute() '
+    - '------INS Operator@@&& @TO@ InfixExpression@@tree.getCut() == null && (Boolean)tree.getAttribute() '
+  repair_actions_cnt: 1

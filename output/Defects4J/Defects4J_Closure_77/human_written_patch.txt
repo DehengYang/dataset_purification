@@ -1,0 +1,11 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_77/src/com/google/javascript/jscomp/CodeGenerator.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_77/fixed-version/src/com/google/javascript/jscomp/CodeGenerator.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_77/src/com/google/javascript/jscomp/CodeGenerator.java	2020-03-01 00:30:21.145526573 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_77/fixed-version/src/com/google/javascript/jscomp/CodeGenerator.java	2020-03-01 00:30:23.281627225 -0800
+@@ -963,6 +963,7 @@
+     for (int i = 0; i < s.length(); i++) {
+       char c = s.charAt(i);
+       switch (c) {
++        case '\0': sb.append("\\0"); break;
+         case '\n': sb.append("\\n"); break;
+         case '\r': sb.append("\\r"); break;
+         case '\t': sb.append("\\t"); break;

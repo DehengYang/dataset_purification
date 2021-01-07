@@ -1,0 +1,227 @@
+1 bug_id: Math-93
+2 src folder:
+  name of src folder: java
+  number of files: 307
+  number of java files: 277
+  number of src classes: 318
+  number of test classes: 160
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.util.MathUtilsTest#testFactorial
+  - org.apache.commons.math.util.MathUtilsTest#testFactorial
+  - org.apache.commons.math.util.MathUtilsTest#testFactorial
+  - org.apache.commons.math.util.MathUtilsTest#testFactorialFail
+  - org.apache.commons.math.util.MathUtilsTest#testFactorial
+  - org.apache.commons.math.util.MathUtilsTest#testFactorial
+  - org.apache.commons.math.util.MathUtilsTest#testFactorialFail
+  failing tests:
+  - org.apache.commons.math.util.MathUtilsTest
+  number of all test cases: 1503
+  number of failing test cases: 7
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 9.0
+  purification via coverage: 1.211
+  purification via delta debugging: 213.371
+  repair actions extraction: 1.421
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.util.MathUtilsTest#testFactorial: 11
+  fixed:
+    org.apache.commons.math.util.MathUtilsTest#testFactorial: 10
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 10
+  covDel: 2
+  cov_patch_lines: 12
+  delta_patch_lines: 9
+  oriAdd: 10
+  oriDel: 2
+  ori_patch_lines: 12
+  purAdd: 7
+  purDel: 2
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 3
+  original: 3
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 11
+  failFail: 12
+  passed: 1
+  total: 24
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_93/src/java/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 14:02:40.213035019 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_93/purify/patch/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 14:02:40.213035019 -0400\n@@ -342,8 +342,10 @@\n      * @throws IllegalArgumentException\
+    \ if n < 0\n      */\n     public static long factorial(final int n) {\n-    \
+    \    long result = Math.round(factorialDouble(n));\n-        if (result == Long.MAX_VALUE)\
+    \ {\n+        if (n < 0) {\n+            throw new IllegalArgumentException(\"\
+    must have n >= 0 for n!\");\n+        }\n+        if (n > 20) {\n            \
+    \ throw new ArithmeticException(\n                     \"factorial value is too\
+    \ large to fit in a long\");\n         }\n@@ -374,6 +376,9 @@\n         if (n\
+    \ < 0) {\n             throw new IllegalArgumentException(\"must have n >= 0 for\
+    \ n!\");\n         }\n+        if (n < 21) {\n+            return factorial(n);\n\
+    +        }\n         return Math.floor(Math.exp(factorialLog(n)) + 0.5);\n   \
+    \  }\n \n@@ -394,6 +399,9 @@\n         if (n < 0) {\n             throw new IllegalArgumentException(\"\
+    must have n > 0 for n!\");\n         }\n+        if (n < 21) {\n+            return\
+    \ Math.log(factorial(n));\n+        }\n         double logSum = 0;\n         for\
+    \ (int i = 2; i <= n; i++) {\n             logSum += Math.log((double)i);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_93/src/java/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 14:06:25.219539985 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_93/purify/purified/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 14:06:25.215539869 -0400\n@@ -342,8 +342,10 @@\n      * @throws IllegalArgumentException\
+    \ if n < 0\n      */\n     public static long factorial(final int n) {\n-    \
+    \    long result = Math.round(factorialDouble(n));\n-        if (result == Long.MAX_VALUE)\
+    \ {\n+        if (n < 0) {\n+            throw new IllegalArgumentException(\"\
+    must have n >= 0 for n!\");\n+        }\n+        if (n > 20) {\n            \
+    \ throw new ArithmeticException(\n                     \"factorial value is too\
+    \ large to fit in a long\");\n         }\n@@ -374,6 +376,9 @@\n         if (n\
+    \ < 0) {\n             throw new IllegalArgumentException(\"must have n >= 0 for\
+    \ n!\");\n         }\n+        if (n < 21) {\n+            return factorial(n);\n\
+    +        }\n         return Math.floor(Math.exp(factorialLog(n)) + 0.5);\n   \
+    \  }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/MathUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n < 0 @TO@ MethodDeclaration@@public, static,
+      @@long, MethodName:factorial, @@Argus:int+n+ '
+    - '---INS InfixExpression@@n < 0 @TO@ IfStatement@@InfixExpression:n < 0 '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@n < 0 '
+    - '------INS Operator@@< @TO@ InfixExpression@@n < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@n < 0 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("must
+      have n >= 0 for n!") @TO@ IfStatement@@InfixExpression:n < 0 '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["must have n >= 0
+      for n!"] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("must
+      have n >= 0 for n!") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["must
+      have n >= 0 for n!"] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["must
+      have n >= 0 for n!"] '
+    - '---------INS StringLiteral@@"must have n >= 0 for n!" @TO@ ClassInstanceCreation@@IllegalArgumentException["must
+      have n >= 0 for n!"] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@long result=Math.round(factorialDouble(n)); '
+    - '---DEL PrimitiveType@@long '
+    - '---DEL VariableDeclarationFragment@@result=Math.round(factorialDouble(n)) '
+    - '------DEL SimpleName@@result '
+    - '------DEL MethodInvocation@@Math.round(factorialDouble(n)) '
+    - '---------DEL SimpleName@@Name:Math '
+    - '---------DEL SimpleName@@MethodName:round:[factorialDouble(n)] '
+    - '------------DEL MethodInvocation@@factorialDouble(n) '
+    - '---------------DEL SimpleName@@MethodName:factorialDouble:[n] '
+    - '------------------DEL SimpleName@@n '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:result == Long.MAX_VALUE @TO@ InfixExpression:n
+      > 20 '
+    - '---UPD InfixExpression@@result == Long.MAX_VALUE @TO@ n > 20 '
+    - '------UPD SimpleName@@result @TO@ n '
+    - '------UPD Operator@@== @TO@ > '
+    - '------DEL QualifiedName@@Long.MAX_VALUE '
+    - '---------DEL SimpleName@@Long '
+    - '---------DEL SimpleName@@MAX_VALUE '
+    - '------INS NumberLiteral@@20 @TO@ InfixExpression@@result == Long.MAX_VALUE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n < 21 @TO@ MethodDeclaration@@public, static,
+      @@double, MethodName:factorialDouble, @@Argus:int+n+ '
+    - '---INS InfixExpression@@n < 21 @TO@ IfStatement@@InfixExpression:n < 21 '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@n < 21 '
+    - '------INS Operator@@< @TO@ InfixExpression@@n < 21 '
+    - '------INS NumberLiteral@@21 @TO@ InfixExpression@@n < 21 '
+    - '---INS ReturnStatement@@MethodInvocation:factorial(n) @TO@ IfStatement@@InfixExpression:n
+      < 21 '
+    - '------INS MethodInvocation@@factorial(n) @TO@ ReturnStatement@@MethodInvocation:factorial(n) '
+    - '---------INS SimpleName@@MethodName:factorial:[n] @TO@ MethodInvocation@@factorial(n) '
+    - '------------INS SimpleName@@n @TO@ SimpleName@@MethodName:factorial:[n] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n < 21 @TO@ MethodDeclaration@@public, static,
+      @@double, MethodName:factorialLog, @@Argus:int+n+ '
+    - '---INS InfixExpression@@n < 21 @TO@ IfStatement@@InfixExpression:n < 21 '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@n < 21 '
+    - '------INS Operator@@< @TO@ InfixExpression@@n < 21 '
+    - '------INS NumberLiteral@@21 @TO@ InfixExpression@@n < 21 '
+    - '---INS ReturnStatement@@MethodInvocation:Math.log(factorial(n)) @TO@ IfStatement@@InfixExpression:n
+      < 21 '
+    - '------INS MethodInvocation@@Math.log(factorial(n)) @TO@ ReturnStatement@@MethodInvocation:Math.log(factorial(n)) '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.log(factorial(n)) '
+    - '---------INS SimpleName@@MethodName:log:[factorial(n)] @TO@ MethodInvocation@@Math.log(factorial(n)) '
+    - '------------INS MethodInvocation@@factorial(n) @TO@ SimpleName@@MethodName:log:[factorial(n)] '
+    - '---------------INS SimpleName@@MethodName:factorial:[n] @TO@ MethodInvocation@@factorial(n) '
+    - '------------------INS SimpleName@@n @TO@ SimpleName@@MethodName:factorial:[n] '
+  repair_actions_cnt: 5
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/MathUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n < 0 @TO@ MethodDeclaration@@public, static,
+      @@long, MethodName:factorial, @@Argus:int+n+ '
+    - '---INS InfixExpression@@n < 0 @TO@ IfStatement@@InfixExpression:n < 0 '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@n < 0 '
+    - '------INS Operator@@< @TO@ InfixExpression@@n < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@n < 0 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("must
+      have n >= 0 for n!") @TO@ IfStatement@@InfixExpression:n < 0 '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["must have n >= 0
+      for n!"] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("must
+      have n >= 0 for n!") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["must
+      have n >= 0 for n!"] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["must
+      have n >= 0 for n!"] '
+    - '---------INS StringLiteral@@"must have n >= 0 for n!" @TO@ ClassInstanceCreation@@IllegalArgumentException["must
+      have n >= 0 for n!"] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@long result=Math.round(factorialDouble(n)); '
+    - '---DEL PrimitiveType@@long '
+    - '---DEL VariableDeclarationFragment@@result=Math.round(factorialDouble(n)) '
+    - '------DEL SimpleName@@result '
+    - '------DEL MethodInvocation@@Math.round(factorialDouble(n)) '
+    - '---------DEL SimpleName@@Name:Math '
+    - '---------DEL SimpleName@@MethodName:round:[factorialDouble(n)] '
+    - '------------DEL MethodInvocation@@factorialDouble(n) '
+    - '---------------DEL SimpleName@@MethodName:factorialDouble:[n] '
+    - '------------------DEL SimpleName@@n '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:result == Long.MAX_VALUE @TO@ InfixExpression:n
+      > 20 '
+    - '---UPD InfixExpression@@result == Long.MAX_VALUE @TO@ n > 20 '
+    - '------UPD SimpleName@@result @TO@ n '
+    - '------UPD Operator@@== @TO@ > '
+    - '------DEL QualifiedName@@Long.MAX_VALUE '
+    - '---------DEL SimpleName@@Long '
+    - '---------DEL SimpleName@@MAX_VALUE '
+    - '------INS NumberLiteral@@20 @TO@ InfixExpression@@result == Long.MAX_VALUE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n < 21 @TO@ MethodDeclaration@@public, static,
+      @@double, MethodName:factorialDouble, @@Argus:int+n+ '
+    - '---INS InfixExpression@@n < 21 @TO@ IfStatement@@InfixExpression:n < 21 '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@n < 21 '
+    - '------INS Operator@@< @TO@ InfixExpression@@n < 21 '
+    - '------INS NumberLiteral@@21 @TO@ InfixExpression@@n < 21 '
+    - '---INS ReturnStatement@@MethodInvocation:factorial(n) @TO@ IfStatement@@InfixExpression:n
+      < 21 '
+    - '------INS MethodInvocation@@factorial(n) @TO@ ReturnStatement@@MethodInvocation:factorial(n) '
+    - '---------INS SimpleName@@MethodName:factorial:[n] @TO@ MethodInvocation@@factorial(n) '
+    - '------------INS SimpleName@@n @TO@ SimpleName@@MethodName:factorial:[n] '
+  repair_actions_cnt: 4

@@ -1,0 +1,26 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_65/src/main/java/org/apache/commons/math/optimization/general/AbstractLeastSquaresOptimizer.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_65/fixed-version/src/main/java/org/apache/commons/math/optimization/general/AbstractLeastSquaresOptimizer.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_65/src/main/java/org/apache/commons/math/optimization/general/AbstractLeastSquaresOptimizer.java	2020-03-01 00:20:25.549462424 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_65/fixed-version/src/main/java/org/apache/commons/math/optimization/general/AbstractLeastSquaresOptimizer.java	2020-03-01 00:20:28.117583433 -0800
+@@ -237,12 +237,7 @@
+      * @return RMS value
+      */
+     public double getRMS() {
+-        double criterion = 0;
+-        for (int i = 0; i < rows; ++i) {
+-            final double residual = residuals[i];
+-            criterion += residual * residual * residualsWeights[i];
+-        }
+-        return Math.sqrt(criterion / rows);
++        return Math.sqrt(getChiSquare() / rows);
+     }
+ 
+     /**
+@@ -255,7 +250,7 @@
+         double chiSquare = 0;
+         for (int i = 0; i < rows; ++i) {
+             final double residual = residuals[i];
+-            chiSquare += residual * residual / residualsWeights[i];
++            chiSquare += residual * residual * residualsWeights[i];
+         }
+         return chiSquare;
+     }

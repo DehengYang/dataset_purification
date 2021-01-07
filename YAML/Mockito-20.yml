@@ -1,0 +1,278 @@
+1 bug_id: Mockito-20
+2 src folder:
+  name of src folder: src
+  number of files: 372
+  number of java files: 334
+  number of src classes: 410
+  number of test classes: 285
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.constructor.CreatingMocksWithConstructorTest#mocking_inner_classes_with_wrong_outer_instance
+  - org.mockitousage.constructor.CreatingMocksWithConstructorTest#can_mock_abstract_classes
+  - org.mockitousage.annotation.SpyAnnotationTest#should_spy_inner_class
+  - org.mockitousage.annotation.SpyAnnotationTest#should_report_when_constructor_is_explosive
+  - org.mockitousage.constructor.CreatingMocksWithConstructorTest#can_spy_abstract_classes
+  - org.mockitousage.constructor.CreatingMocksWithConstructorTest#can_create_mock_with_constructor
+  - org.mockitousage.constructor.CreatingMocksWithConstructorTest#exception_message_when_constructor_not_found
+  - org.mockitousage.constructor.CreatingMocksWithConstructorTest#can_mock_inner_classes
+  failing tests:
+  - org.mockitousage.constructor.CreatingMocksWithConstructorTest
+  - org.mockitousage.annotation.SpyAnnotationTest
+  number of all test cases: 967
+  number of failing test cases: 8
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 5.0
+  purification via coverage: 0.707
+  purification via delta debugging: 1524.28
+  repair actions extraction: 0.732
+5 stmts covered by failing cases:
+  buggy:
+    org.mockitousage.annotation.SpyAnnotationTest#should_report_when_constructor_is_explosive: 159
+    org.mockitousage.annotation.SpyAnnotationTest#should_spy_inner_class: 159
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#can_create_mock_with_constructor: 165
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#can_mock_abstract_classes: 165
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#can_mock_inner_classes: 165
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#can_spy_abstract_classes: 165
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#exception_message_when_constructor_not_found: 165
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#mocking_inner_classes_with_wrong_outer_instance: 165
+  fixed:
+    org.mockitousage.annotation.SpyAnnotationTest#should_report_when_constructor_is_explosive: 159
+    org.mockitousage.annotation.SpyAnnotationTest#should_spy_inner_class: 159
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#can_create_mock_with_constructor: 165
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#can_mock_abstract_classes: 165
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#can_mock_inner_classes: 165
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#can_spy_abstract_classes: 165
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#exception_message_when_constructor_not_found: 165
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#mocking_inner_classes_with_wrong_outer_instance: 165
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 2
+  cov_patch_lines: 5
+  delta_patch_lines: 5
+  oriAdd: 3
+  oriDel: 2
+  ori_patch_lines: 5
+  purAdd: 3
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 7
+  passed: 2
+  total: 9
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_20/src/org/mockito/internal/creation/bytebuddy/ByteBuddyMockMaker.java\t\
+    2020-10-27 03:14:11.765154605 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_20/purify/patch/org/mockito/internal/creation/bytebuddy/ByteBuddyMockMaker.java\t\
+    2020-10-27 03:14:11.765154605 -0400\n@@ -29,9 +29,10 @@\n                 settings.getTypeToMock(),\n\
+    \                 settings.getExtraInterfaces()\n         );\n+        Instantiator\
+    \ instantiator = new InstantiatorProvider().getInstantiator(settings);\n     \
+    \    T mockInstance = null;\n         try {\n-            mockInstance = classInstantiator.instantiate(mockedProxyType);\n\
+    +            mockInstance = instantiator.newInstance(mockedProxyType);\n     \
+    \        MockMethodInterceptor.MockAccess mockAccess = (MockMethodInterceptor.MockAccess)\
+    \ mockInstance;\n             mockAccess.setMockitoInterceptor(new MockMethodInterceptor(asInternalMockHandler(handler),\
+    \ settings));\n \n@@ -42,7 +43,7 @@\n                     \"  class to mock :\
+    \ \" + describeClass(mockedProxyType),\n                     \"  created class\
+    \ : \" + describeClass(settings.getTypeToMock()),\n                     \"  proxy\
+    \ instance class : \" + describeClass(mockInstance),\n-                    \"\
+    \  instance creation by : \" + classInstantiator.getClass().getSimpleName(),\n\
+    +                    \"  instance creation by : \" + instantiator.getClass().getSimpleName(),\n\
+    \                     \"\",\n                     \"You might experience classloading\
+    \ issues, please ask the mockito mailing-list.\",\n                     \"\""
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_20/src/org/mockito/internal/creation/bytebuddy/ByteBuddyMockMaker.java\t\
+    2020-10-27 03:40:32.246962445 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_20/purify/purified/org/mockito/internal/creation/bytebuddy/ByteBuddyMockMaker.java\t\
+    2020-10-27 03:40:32.246962445 -0400\n@@ -29,9 +29,10 @@\n                 settings.getTypeToMock(),\n\
+    \                 settings.getExtraInterfaces()\n         );\n+        Instantiator\
+    \ instantiator = new InstantiatorProvider().getInstantiator(settings);\n     \
+    \    T mockInstance = null;\n         try {\n-            mockInstance = classInstantiator.instantiate(mockedProxyType);\n\
+    +            mockInstance = instantiator.newInstance(mockedProxyType);\n     \
+    \        MockMethodInterceptor.MockAccess mockAccess = (MockMethodInterceptor.MockAccess)\
+    \ mockInstance;\n             mockAccess.setMockitoInterceptor(new MockMethodInterceptor(asInternalMockHandler(handler),\
+    \ settings));\n \n@@ -42,7 +43,7 @@\n                     \"  class to mock :\
+    \ \" + describeClass(mockedProxyType),\n                     \"  created class\
+    \ : \" + describeClass(settings.getTypeToMock()),\n                     \"  proxy\
+    \ instance class : \" + describeClass(mockInstance),\n-                    \"\
+    \  instance creation by : \" + classInstantiator.getClass().getSimpleName(),\n\
+    +                    \"  instance creation by : \" + instantiator.getClass().getSimpleName(),\n\
+    \                     \"\",\n                     \"You might experience classloading\
+    \ issues, please ask the mockito mailing-list.\",\n                     \"\""
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/creation/bytebuddy/ByteBuddyMockMaker:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Instantiator instantiator=new InstantiatorProvider().getInstantiator(settings);
+      @TO@ MethodDeclaration@@public, @@T, T, MethodName:createMock, @@Argus:MockCreationSettings<T>+settings+MockHandler+handler+ '
+    - '---INS SimpleType@@Instantiator @TO@ VariableDeclarationStatement@@Instantiator
+      instantiator=new InstantiatorProvider().getInstantiator(settings); '
+    - '---INS VariableDeclarationFragment@@instantiator=new InstantiatorProvider().getInstantiator(settings)
+      @TO@ VariableDeclarationStatement@@Instantiator instantiator=new InstantiatorProvider().getInstantiator(settings); '
+    - '------INS SimpleName@@instantiator @TO@ VariableDeclarationFragment@@instantiator=new
+      InstantiatorProvider().getInstantiator(settings) '
+    - '------INS MethodInvocation@@new InstantiatorProvider().getInstantiator(settings)
+      @TO@ VariableDeclarationFragment@@instantiator=new InstantiatorProvider().getInstantiator(settings) '
+    - '---------INS ClassInstanceCreation@@InstantiatorProvider[] @TO@ MethodInvocation@@new
+      InstantiatorProvider().getInstantiator(settings) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstantiatorProvider[] '
+    - '------------INS SimpleType@@InstantiatorProvider @TO@ ClassInstanceCreation@@InstantiatorProvider[] '
+    - '---------INS SimpleName@@MethodName:getInstantiator:[settings] @TO@ MethodInvocation@@new
+      InstantiatorProvider().getInstantiator(settings) '
+    - '------------INS SimpleName@@settings @TO@ SimpleName@@MethodName:getInstantiator:[settings] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:mockInstance=classInstantiator.instantiate(mockedProxyType)
+      @TO@ Assignment:mockInstance=instantiator.newInstance(mockedProxyType) '
+    - '---UPD Assignment@@mockInstance=classInstantiator.instantiate(mockedProxyType)
+      @TO@ mockInstance=instantiator.newInstance(mockedProxyType) '
+    - '------UPD MethodInvocation@@classInstantiator.instantiate(mockedProxyType)
+      @TO@ instantiator.newInstance(mockedProxyType) '
+    - '---------UPD SimpleName@@Name:classInstantiator @TO@ Name:instantiator '
+    - '---------UPD SimpleName@@MethodName:instantiate:[mockedProxyType] @TO@ MethodName:newInstance:[mockedProxyType] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ThrowStatement@@ClassInstanceCreation:new MockitoException(join("ClassCastException
+      occurred while creating the mockito mock :","  class to mock : " + describeClass(mockedProxyType),"  created
+      class : " + describeClass(settings.getTypeToMock()),"  proxy instance class
+      : " + describeClass(mockInstance),"  instance creation by : " + classInstantiator.getClass().getSimpleName(),"","You
+      might experience classloading issues, please ask the mockito mailing-list.",""),cce)
+      @TO@ ClassInstanceCreation:new MockitoException(join("ClassCastException occurred
+      while creating the mockito mock :","  class to mock : " + describeClass(mockedProxyType),"  created
+      class : " + describeClass(settings.getTypeToMock()),"  proxy instance class
+      : " + describeClass(mockInstance),"  instance creation by : " + instantiator.getClass().getSimpleName(),"","You
+      might experience classloading issues, please ask the mockito mailing-list.",""),cce) '
+    - '---UPD ClassInstanceCreation@@MockitoException[join("ClassCastException occurred
+      while creating the mockito mock :","  class to mock : " + describeClass(mockedProxyType),"  created
+      class : " + describeClass(settings.getTypeToMock()),"  proxy instance class
+      : " + describeClass(mockInstance),"  instance creation by : " + classInstantiator.getClass().getSimpleName(),"","You
+      might experience classloading issues, please ask the mockito mailing-list.",""),
+      cce] @TO@ MockitoException[join("ClassCastException occurred while creating
+      the mockito mock :","  class to mock : " + describeClass(mockedProxyType),"  created
+      class : " + describeClass(settings.getTypeToMock()),"  proxy instance class
+      : " + describeClass(mockInstance),"  instance creation by : " + instantiator.getClass().getSimpleName(),"","You
+      might experience classloading issues, please ask the mockito mailing-list.",""),
+      cce] '
+    - '------UPD MethodInvocation@@join("ClassCastException occurred while creating
+      the mockito mock :","  class to mock : " + describeClass(mockedProxyType),"  created
+      class : " + describeClass(settings.getTypeToMock()),"  proxy instance class
+      : " + describeClass(mockInstance),"  instance creation by : " + classInstantiator.getClass().getSimpleName(),"","You
+      might experience classloading issues, please ask the mockito mailing-list.","")
+      @TO@ join("ClassCastException occurred while creating the mockito mock :","  class
+      to mock : " + describeClass(mockedProxyType),"  created class : " + describeClass(settings.getTypeToMock()),"  proxy
+      instance class : " + describeClass(mockInstance),"  instance creation by : "
+      + instantiator.getClass().getSimpleName(),"","You might experience classloading
+      issues, please ask the mockito mailing-list.","") '
+    - '---------UPD SimpleName@@MethodName:join:["ClassCastException occurred while
+      creating the mockito mock :", "  class to mock : " + describeClass(mockedProxyType),
+      "  created class : " + describeClass(settings.getTypeToMock()), "  proxy instance
+      class : " + describeClass(mockInstance), "  instance creation by : " + classInstantiator.getClass().getSimpleName(),
+      "", "You might experience classloading issues, please ask the mockito mailing-list.",
+      ""] @TO@ MethodName:join:["ClassCastException occurred while creating the mockito
+      mock :", "  class to mock : " + describeClass(mockedProxyType), "  created class
+      : " + describeClass(settings.getTypeToMock()), "  proxy instance class : " +
+      describeClass(mockInstance), "  instance creation by : " + instantiator.getClass().getSimpleName(),
+      "", "You might experience classloading issues, please ask the mockito mailing-list.",
+      ""] '
+    - '------------UPD InfixExpression@@"  instance creation by : " + classInstantiator.getClass().getSimpleName()
+      @TO@ "  instance creation by : " + instantiator.getClass().getSimpleName() '
+    - '---------------UPD MethodInvocation@@classInstantiator.getClass().getSimpleName()
+      @TO@ instantiator.getClass().getSimpleName() '
+    - '------------------UPD SimpleName@@Name:classInstantiator @TO@ Name:instantiator '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/creation/bytebuddy/ByteBuddyMockMaker:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Instantiator instantiator=new InstantiatorProvider().getInstantiator(settings);
+      @TO@ MethodDeclaration@@public, @@T, T, MethodName:createMock, @@Argus:MockCreationSettings<T>+settings+MockHandler+handler+ '
+    - '---INS SimpleType@@Instantiator @TO@ VariableDeclarationStatement@@Instantiator
+      instantiator=new InstantiatorProvider().getInstantiator(settings); '
+    - '---INS VariableDeclarationFragment@@instantiator=new InstantiatorProvider().getInstantiator(settings)
+      @TO@ VariableDeclarationStatement@@Instantiator instantiator=new InstantiatorProvider().getInstantiator(settings); '
+    - '------INS SimpleName@@instantiator @TO@ VariableDeclarationFragment@@instantiator=new
+      InstantiatorProvider().getInstantiator(settings) '
+    - '------INS MethodInvocation@@new InstantiatorProvider().getInstantiator(settings)
+      @TO@ VariableDeclarationFragment@@instantiator=new InstantiatorProvider().getInstantiator(settings) '
+    - '---------INS ClassInstanceCreation@@InstantiatorProvider[] @TO@ MethodInvocation@@new
+      InstantiatorProvider().getInstantiator(settings) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstantiatorProvider[] '
+    - '------------INS SimpleType@@InstantiatorProvider @TO@ ClassInstanceCreation@@InstantiatorProvider[] '
+    - '---------INS SimpleName@@MethodName:getInstantiator:[settings] @TO@ MethodInvocation@@new
+      InstantiatorProvider().getInstantiator(settings) '
+    - '------------INS SimpleName@@settings @TO@ SimpleName@@MethodName:getInstantiator:[settings] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:mockInstance=classInstantiator.instantiate(mockedProxyType)
+      @TO@ Assignment:mockInstance=instantiator.newInstance(mockedProxyType) '
+    - '---UPD Assignment@@mockInstance=classInstantiator.instantiate(mockedProxyType)
+      @TO@ mockInstance=instantiator.newInstance(mockedProxyType) '
+    - '------UPD MethodInvocation@@classInstantiator.instantiate(mockedProxyType)
+      @TO@ instantiator.newInstance(mockedProxyType) '
+    - '---------UPD SimpleName@@Name:classInstantiator @TO@ Name:instantiator '
+    - '---------UPD SimpleName@@MethodName:instantiate:[mockedProxyType] @TO@ MethodName:newInstance:[mockedProxyType] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ThrowStatement@@ClassInstanceCreation:new MockitoException(join("ClassCastException
+      occurred while creating the mockito mock :","  class to mock : " + describeClass(mockedProxyType),"  created
+      class : " + describeClass(settings.getTypeToMock()),"  proxy instance class
+      : " + describeClass(mockInstance),"  instance creation by : " + classInstantiator.getClass().getSimpleName(),"","You
+      might experience classloading issues, please ask the mockito mailing-list.",""),cce)
+      @TO@ ClassInstanceCreation:new MockitoException(join("ClassCastException occurred
+      while creating the mockito mock :","  class to mock : " + describeClass(mockedProxyType),"  created
+      class : " + describeClass(settings.getTypeToMock()),"  proxy instance class
+      : " + describeClass(mockInstance),"  instance creation by : " + instantiator.getClass().getSimpleName(),"","You
+      might experience classloading issues, please ask the mockito mailing-list.",""),cce) '
+    - '---UPD ClassInstanceCreation@@MockitoException[join("ClassCastException occurred
+      while creating the mockito mock :","  class to mock : " + describeClass(mockedProxyType),"  created
+      class : " + describeClass(settings.getTypeToMock()),"  proxy instance class
+      : " + describeClass(mockInstance),"  instance creation by : " + classInstantiator.getClass().getSimpleName(),"","You
+      might experience classloading issues, please ask the mockito mailing-list.",""),
+      cce] @TO@ MockitoException[join("ClassCastException occurred while creating
+      the mockito mock :","  class to mock : " + describeClass(mockedProxyType),"  created
+      class : " + describeClass(settings.getTypeToMock()),"  proxy instance class
+      : " + describeClass(mockInstance),"  instance creation by : " + instantiator.getClass().getSimpleName(),"","You
+      might experience classloading issues, please ask the mockito mailing-list.",""),
+      cce] '
+    - '------UPD MethodInvocation@@join("ClassCastException occurred while creating
+      the mockito mock :","  class to mock : " + describeClass(mockedProxyType),"  created
+      class : " + describeClass(settings.getTypeToMock()),"  proxy instance class
+      : " + describeClass(mockInstance),"  instance creation by : " + classInstantiator.getClass().getSimpleName(),"","You
+      might experience classloading issues, please ask the mockito mailing-list.","")
+      @TO@ join("ClassCastException occurred while creating the mockito mock :","  class
+      to mock : " + describeClass(mockedProxyType),"  created class : " + describeClass(settings.getTypeToMock()),"  proxy
+      instance class : " + describeClass(mockInstance),"  instance creation by : "
+      + instantiator.getClass().getSimpleName(),"","You might experience classloading
+      issues, please ask the mockito mailing-list.","") '
+    - '---------UPD SimpleName@@MethodName:join:["ClassCastException occurred while
+      creating the mockito mock :", "  class to mock : " + describeClass(mockedProxyType),
+      "  created class : " + describeClass(settings.getTypeToMock()), "  proxy instance
+      class : " + describeClass(mockInstance), "  instance creation by : " + classInstantiator.getClass().getSimpleName(),
+      "", "You might experience classloading issues, please ask the mockito mailing-list.",
+      ""] @TO@ MethodName:join:["ClassCastException occurred while creating the mockito
+      mock :", "  class to mock : " + describeClass(mockedProxyType), "  created class
+      : " + describeClass(settings.getTypeToMock()), "  proxy instance class : " +
+      describeClass(mockInstance), "  instance creation by : " + instantiator.getClass().getSimpleName(),
+      "", "You might experience classloading issues, please ask the mockito mailing-list.",
+      ""] '
+    - '------------UPD InfixExpression@@"  instance creation by : " + classInstantiator.getClass().getSimpleName()
+      @TO@ "  instance creation by : " + instantiator.getClass().getSimpleName() '
+    - '---------------UPD MethodInvocation@@classInstantiator.getClass().getSimpleName()
+      @TO@ instantiator.getClass().getSimpleName() '
+    - '------------------UPD SimpleName@@Name:classInstantiator @TO@ Name:instantiator '
+  repair_actions_cnt: 3

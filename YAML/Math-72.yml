@@ -1,0 +1,116 @@
+1 bug_id: Math-72
+2 src folder:
+  name of src folder: java
+  number of files: 436
+  number of java files: 399
+  number of src classes: 544
+  number of test classes: 222
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.analysis.solvers.BrentSolverTest#testRootEndpoints
+  failing tests:
+  - org.apache.commons.math.analysis.solvers.BrentSolverTest
+  number of all test cases: 2140
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.51
+  purification via delta debugging: 84.557
+  repair actions extraction: 0.864
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.analysis.solvers.BrentSolverTest#testRootEndpoints: 65
+  fixed:
+    org.apache.commons.math.analysis.solvers.BrentSolverTest#testRootEndpoints: 70
+6 reduced lines:
+  by all: 2
+  by coverage: 1
+  by delta debugging: 1
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 1
+  total: 3
+9 sibling repair actions:
+- 0 1 0.847457627118644
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_72/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java\t\
+    2020-10-21 13:16:43.897338616 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_72/purify/patch/org/apache/commons/math/analysis/solvers/BrentSolver.java\t\
+    2020-10-21 13:16:43.897338616 -0400\n@@ -112,7 +112,7 @@\n         // return the\
+    \ first endpoint if it is good enough\n         double yMin = f.value(min);\n\
+    \         if (Math.abs(yMin) <= functionValueAccuracy) {\n-            setResult(yMin,\
+    \ 0);\n+            setResult(min, 0);\n             return result;\n        \
+    \ }\n \n@@ -124,7 +124,7 @@\n         // return the second endpoint if it is good\
+    \ enough\n         double yMax = f.value(max);\n         if (Math.abs(yMax) <=\
+    \ functionValueAccuracy) {\n-            setResult(yMax, 0);\n+            setResult(max,\
+    \ 0);\n             return result;\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_72/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java\t\
+    2020-10-21 13:18:21.364156635 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_72/purify/purified/org/apache/commons/math/analysis/solvers/BrentSolver.java\t\
+    2020-10-21 13:18:21.364156635 -0400\n@@ -113,6 +113,7 @@\n         double yMin\
+    \ = f.value(min);\n         if (Math.abs(yMin) <= functionValueAccuracy) {\n \
+    \            setResult(yMin, 0);\n+            setResult(min, 0);\n          \
+    \   return result;\n         }\n \n@@ -125,6 +126,7 @@\n         double yMax =\
+    \ f.value(max);\n         if (Math.abs(yMax) <= functionValueAccuracy) {\n   \
+    \          setResult(yMax, 0);\n+            setResult(max, 0);\n            \
+    \ return result;\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/solvers/BrentSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:setResult(yMin,0) @TO@ MethodInvocation:setResult(min,0) '
+    - '---UPD MethodInvocation@@setResult(yMin,0) @TO@ setResult(min,0) '
+    - '------UPD SimpleName@@MethodName:setResult:[yMin, 0] @TO@ MethodName:setResult:[min,
+      0] '
+    - '---------UPD SimpleName@@yMin @TO@ min '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:setResult(yMax,0) @TO@ MethodInvocation:setResult(max,0) '
+    - '---UPD MethodInvocation@@setResult(yMax,0) @TO@ setResult(max,0) '
+    - '------UPD SimpleName@@MethodName:setResult:[yMax, 0] @TO@ MethodName:setResult:[max,
+      0] '
+    - '---------UPD SimpleName@@yMax @TO@ max '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/solvers/BrentSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:setResult(min,0) @TO@ IfStatement@@InfixExpression:Math.abs(yMin)
+      <= functionValueAccuracy '
+    - '---INS MethodInvocation@@setResult(min,0) @TO@ ExpressionStatement@@MethodInvocation:setResult(min,0) '
+    - '------INS SimpleName@@MethodName:setResult:[min, 0] @TO@ MethodInvocation@@setResult(min,0) '
+    - '---------INS SimpleName@@min @TO@ SimpleName@@MethodName:setResult:[min, 0] '
+    - '---------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:setResult:[min, 0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:setResult(max,0) @TO@ IfStatement@@InfixExpression:Math.abs(yMax)
+      <= functionValueAccuracy '
+    - '---INS MethodInvocation@@setResult(max,0) @TO@ ExpressionStatement@@MethodInvocation:setResult(max,0) '
+    - '------INS SimpleName@@MethodName:setResult:[max, 0] @TO@ MethodInvocation@@setResult(max,0) '
+    - '---------INS SimpleName@@max @TO@ SimpleName@@MethodName:setResult:[max, 0] '
+    - '---------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:setResult:[max, 0] '
+  repair_actions_cnt: 2

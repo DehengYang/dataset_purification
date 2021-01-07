@@ -1,0 +1,166 @@
+1 bug_id: Math-106
+2 src folder:
+  name of src folder: java
+  number of files: 152
+  number of java files: 136
+  number of src classes: 146
+  number of test classes: 93
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.fraction.FractionFormatTest#testParseProperInvalidMinus
+  failing tests:
+  - org.apache.commons.math.fraction.FractionFormatTest
+  number of all test cases: 875
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 7.0
+  purification via coverage: 0.442
+  purification via delta debugging: 147.991
+  repair actions extraction: 0.775
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.fraction.FractionFormatTest#testParseProperInvalidMinus: 104
+  fixed:
+    org.apache.commons.math.fraction.FractionFormatTest#testParseProperInvalidMinus: 74
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 8
+  covDel: 0
+  cov_patch_lines: 8
+  delta_patch_lines: 6
+  oriAdd: 8
+  oriDel: 0
+  ori_patch_lines: 8
+  purAdd: 6
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 12
+  failFail: 7
+  passed: 2
+  total: 21
+9 sibling repair actions:
+- 0 1 0.9730538922155688
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_106/src/java/org/apache/commons/math/fraction/ProperFractionFormat.java\t\
+    2020-10-21 14:27:07.499437208 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_106/purify/patch/org/apache/commons/math/fraction/ProperFractionFormat.java\t\
+    2020-10-21 14:27:07.495437092 -0400\n@@ -162,7 +162,11 @@\n             return\
+    \ null;\n         }\n         \n+        if (num.intValue() < 0) {\n         \
+    \    // minus signs should be leading, invalid expression\n+            pos.setIndex(initialIndex);\n\
+    +            return null;\n+        }\n \n         // parse '/'\n         int\
+    \ startIndex = pos.getIndex();\n@@ -197,7 +201,11 @@\n             return null;\n\
+    \         }\n         \n+        if (den.intValue() < 0) {\n             // minus\
+    \ signs must be leading, invalid\n+            pos.setIndex(initialIndex);\n+\
+    \            return null;\n+        }\n \n         int w = whole.intValue();\n\
+    \         int n = num.intValue();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_106/src/java/org/apache/commons/math/fraction/ProperFractionFormat.java\t\
+    2020-10-21 14:29:44.211965846 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_106/purify/purified/org/apache/commons/math/fraction/ProperFractionFormat.java\t\
+    2020-10-21 14:29:44.211965846 -0400\n@@ -162,7 +162,10 @@\n             return\
+    \ null;\n         }\n         \n+        if (num.intValue() < 0) {\n         \
+    \    // minus signs should be leading, invalid expression\n+            pos.setIndex(initialIndex);\n\
+    +        }\n \n         // parse '/'\n         int startIndex = pos.getIndex();\n\
+    @@ -197,7 +200,10 @@\n             return null;\n         }\n         \n+    \
+    \    if (den.intValue() < 0) {\n             // minus signs must be leading, invalid\n\
+    +            pos.setIndex(initialIndex);\n+        }\n \n         int w = whole.intValue();\n\
+    \         int n = num.intValue();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/fraction/ProperFractionFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:num.intValue() < 0 @TO@ MethodDeclaration@@public,
+      @@Fraction, MethodName:parse, @@Argus:String+source+ParsePosition+pos+ '
+    - '---INS InfixExpression@@num.intValue() < 0 @TO@ IfStatement@@InfixExpression:num.intValue()
+      < 0 '
+    - '------INS MethodInvocation@@num.intValue() @TO@ InfixExpression@@num.intValue()
+      < 0 '
+    - '---------INS SimpleName@@Name:num @TO@ MethodInvocation@@num.intValue() '
+    - '---------INS SimpleName@@MethodName:intValue:[] @TO@ MethodInvocation@@num.intValue() '
+    - '------INS Operator@@< @TO@ InfixExpression@@num.intValue() < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@num.intValue() < 0 '
+    - '---INS ExpressionStatement@@MethodInvocation:pos.setIndex(initialIndex) @TO@
+      IfStatement@@InfixExpression:num.intValue() < 0 '
+    - '------INS MethodInvocation@@pos.setIndex(initialIndex) @TO@ ExpressionStatement@@MethodInvocation:pos.setIndex(initialIndex) '
+    - '---------INS SimpleName@@Name:pos @TO@ MethodInvocation@@pos.setIndex(initialIndex) '
+    - '---------INS SimpleName@@MethodName:setIndex:[initialIndex] @TO@ MethodInvocation@@pos.setIndex(initialIndex) '
+    - '------------INS SimpleName@@initialIndex @TO@ SimpleName@@MethodName:setIndex:[initialIndex] '
+    - '---INS ReturnStatement@@NullLiteral:null @TO@ IfStatement@@InfixExpression:num.intValue()
+      < 0 '
+    - '------INS NullLiteral@@null @TO@ ReturnStatement@@NullLiteral:null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:den.intValue() < 0 @TO@ MethodDeclaration@@public,
+      @@Fraction, MethodName:parse, @@Argus:String+source+ParsePosition+pos+ '
+    - '---INS InfixExpression@@den.intValue() < 0 @TO@ IfStatement@@InfixExpression:den.intValue()
+      < 0 '
+    - '------INS MethodInvocation@@den.intValue() @TO@ InfixExpression@@den.intValue()
+      < 0 '
+    - '---------INS SimpleName@@Name:den @TO@ MethodInvocation@@den.intValue() '
+    - '---------INS SimpleName@@MethodName:intValue:[] @TO@ MethodInvocation@@den.intValue() '
+    - '------INS Operator@@< @TO@ InfixExpression@@den.intValue() < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@den.intValue() < 0 '
+    - '---INS ExpressionStatement@@MethodInvocation:pos.setIndex(initialIndex) @TO@
+      IfStatement@@InfixExpression:den.intValue() < 0 '
+    - '------INS MethodInvocation@@pos.setIndex(initialIndex) @TO@ ExpressionStatement@@MethodInvocation:pos.setIndex(initialIndex) '
+    - '---------INS SimpleName@@Name:pos @TO@ MethodInvocation@@pos.setIndex(initialIndex) '
+    - '---------INS SimpleName@@MethodName:setIndex:[initialIndex] @TO@ MethodInvocation@@pos.setIndex(initialIndex) '
+    - '------------INS SimpleName@@initialIndex @TO@ SimpleName@@MethodName:setIndex:[initialIndex] '
+    - '---INS ReturnStatement@@NullLiteral:null @TO@ IfStatement@@InfixExpression:den.intValue()
+      < 0 '
+    - '------INS NullLiteral@@null @TO@ ReturnStatement@@NullLiteral:null '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/fraction/ProperFractionFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:num.intValue() < 0 @TO@ MethodDeclaration@@public,
+      @@Fraction, MethodName:parse, @@Argus:String+source+ParsePosition+pos+ '
+    - '---INS InfixExpression@@num.intValue() < 0 @TO@ IfStatement@@InfixExpression:num.intValue()
+      < 0 '
+    - '------INS MethodInvocation@@num.intValue() @TO@ InfixExpression@@num.intValue()
+      < 0 '
+    - '---------INS SimpleName@@Name:num @TO@ MethodInvocation@@num.intValue() '
+    - '---------INS SimpleName@@MethodName:intValue:[] @TO@ MethodInvocation@@num.intValue() '
+    - '------INS Operator@@< @TO@ InfixExpression@@num.intValue() < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@num.intValue() < 0 '
+    - '---INS ExpressionStatement@@MethodInvocation:pos.setIndex(initialIndex) @TO@
+      IfStatement@@InfixExpression:num.intValue() < 0 '
+    - '------INS MethodInvocation@@pos.setIndex(initialIndex) @TO@ ExpressionStatement@@MethodInvocation:pos.setIndex(initialIndex) '
+    - '---------INS SimpleName@@Name:pos @TO@ MethodInvocation@@pos.setIndex(initialIndex) '
+    - '---------INS SimpleName@@MethodName:setIndex:[initialIndex] @TO@ MethodInvocation@@pos.setIndex(initialIndex) '
+    - '------------INS SimpleName@@initialIndex @TO@ SimpleName@@MethodName:setIndex:[initialIndex] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:den.intValue() < 0 @TO@ MethodDeclaration@@public,
+      @@Fraction, MethodName:parse, @@Argus:String+source+ParsePosition+pos+ '
+    - '---INS InfixExpression@@den.intValue() < 0 @TO@ IfStatement@@InfixExpression:den.intValue()
+      < 0 '
+    - '------INS MethodInvocation@@den.intValue() @TO@ InfixExpression@@den.intValue()
+      < 0 '
+    - '---------INS SimpleName@@Name:den @TO@ MethodInvocation@@den.intValue() '
+    - '---------INS SimpleName@@MethodName:intValue:[] @TO@ MethodInvocation@@den.intValue() '
+    - '------INS Operator@@< @TO@ InfixExpression@@den.intValue() < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@den.intValue() < 0 '
+    - '---INS ExpressionStatement@@MethodInvocation:pos.setIndex(initialIndex) @TO@
+      IfStatement@@InfixExpression:den.intValue() < 0 '
+    - '------INS MethodInvocation@@pos.setIndex(initialIndex) @TO@ ExpressionStatement@@MethodInvocation:pos.setIndex(initialIndex) '
+    - '---------INS SimpleName@@Name:pos @TO@ MethodInvocation@@pos.setIndex(initialIndex) '
+    - '---------INS SimpleName@@MethodName:setIndex:[initialIndex] @TO@ MethodInvocation@@pos.setIndex(initialIndex) '
+    - '------------INS SimpleName@@initialIndex @TO@ SimpleName@@MethodName:setIndex:[initialIndex] '
+  repair_actions_cnt: 2

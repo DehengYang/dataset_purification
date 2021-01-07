@@ -1,0 +1,24 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_39/src/com/google/javascript/rhino/jstype/PrototypeObjectType.java	2020-10-22 12:14:50.255959017 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_39/purify/purified/com/google/javascript/rhino/jstype/PrototypeObjectType.java	2020-10-22 12:14:50.243958670 -0400
+@@ -377,10 +377,10 @@
+ 
+         sb.append(property);
+         sb.append(": ");
+-        sb.append(getPropertyType(property).toString());
++        sb.append(getPropertyType(property).toStringHelper(forAnnotations));
+ 
+         ++i;
+-        if (i == MAX_PRETTY_PRINTED_PROPERTIES) {
++        if (!forAnnotations && i == MAX_PRETTY_PRINTED_PROPERTIES) {
+           sb.append(", ...");
+           break;
+         }
+@@ -391,7 +391,7 @@
+       prettyPrint = true;
+       return sb.toString();
+     } else {
+-      return "{...}";
++      return forAnnotations ? "?" : "{...}";
+     }
+   }
+ 

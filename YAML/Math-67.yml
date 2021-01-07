@@ -1,0 +1,115 @@
+1 bug_id: Math-67
+2 src folder:
+  name of src folder: java
+  number of files: 471
+  number of java files: 433
+  number of src classes: 594
+  number of test classes: 238
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.MultiStartUnivariateRealOptimizerTest#testQuinticMin
+  failing tests:
+  - org.apache.commons.math.optimization.MultiStartUnivariateRealOptimizerTest
+  number of all test cases: 2255
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.805
+  purification via delta debugging: 103.806
+  repair actions extraction: 0.849
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.MultiStartUnivariateRealOptimizerTest#testQuinticMin: 429
+  fixed:
+    org.apache.commons.math.optimization.MultiStartUnivariateRealOptimizerTest#testQuinticMin: 432
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 3
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 2
+  passed: 0
+  total: 6
+9 sibling repair actions:
+- 0 1 0.8837719298245614
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_67/src/main/java/org/apache/commons/math/optimization/MultiStartUnivariateRealOptimizer.java\t\
+    2020-10-22 07:58:41.947398362 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_67/purify/patch/org/apache/commons/math/optimization/MultiStartUnivariateRealOptimizer.java\t\
+    2020-10-22 07:58:41.947398362 -0400\n@@ -89,12 +89,12 @@\n \n     /** {@inheritDoc}\
+    \ */\n     public double getFunctionValue() {\n-        return optimizer.getFunctionValue();\n\
+    +        return optimaValues[0];\n     }\n \n     /** {@inheritDoc} */\n     public\
+    \ double getResult() {\n-        return optimizer.getResult();\n+        return\
+    \ optima[0];\n     }\n \n     /** {@inheritDoc} */"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_67/src/main/java/org/apache/commons/math/optimization/MultiStartUnivariateRealOptimizer.java\t\
+    2020-10-22 08:00:40.198821953 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_67/purify/purified/org/apache/commons/math/optimization/MultiStartUnivariateRealOptimizer.java\t\
+    2020-10-22 08:00:40.198821953 -0400\n@@ -90,11 +90,12 @@\n     /** {@inheritDoc}\
+    \ */\n     public double getFunctionValue() {\n         return optimizer.getFunctionValue();\n\
+    +        return optimaValues[0];\n     }\n \n     /** {@inheritDoc} */\n     public\
+    \ double getResult() {\n-        return optimizer.getResult();\n+        return\
+    \ optima[0];\n     }\n \n     /** {@inheritDoc} */"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/MultiStartUnivariateRealOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:optimizer.getFunctionValue() @TO@ ArrayAccess:optimaValues[0] '
+    - '---INS ArrayAccess@@optimaValues[0] @TO@ ReturnStatement@@MethodInvocation:optimizer.getFunctionValue() '
+    - '------INS SimpleName@@optimaValues @TO@ ArrayAccess@@optimaValues[0] '
+    - '------INS NumberLiteral@@0 @TO@ ArrayAccess@@optimaValues[0] '
+    - '---DEL MethodInvocation@@optimizer.getFunctionValue() '
+    - '------DEL SimpleName@@Name:optimizer '
+    - '------DEL SimpleName@@MethodName:getFunctionValue:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:optimizer.getResult() @TO@ ArrayAccess:optima[0] '
+    - '---INS ArrayAccess@@optima[0] @TO@ ReturnStatement@@MethodInvocation:optimizer.getResult() '
+    - '------INS SimpleName@@optima @TO@ ArrayAccess@@optima[0] '
+    - '------INS NumberLiteral@@0 @TO@ ArrayAccess@@optima[0] '
+    - '---DEL MethodInvocation@@optimizer.getResult() '
+    - '------DEL SimpleName@@Name:optimizer '
+    - '------DEL SimpleName@@MethodName:getResult:[] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/MultiStartUnivariateRealOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@ArrayAccess:optimaValues[0] @TO@ MethodDeclaration@@public,
+      @@double, MethodName:getFunctionValue, @@Argus:null '
+    - '---INS ArrayAccess@@optimaValues[0] @TO@ ReturnStatement@@ArrayAccess:optimaValues[0] '
+    - '------INS SimpleName@@optimaValues @TO@ ArrayAccess@@optimaValues[0] '
+    - '------INS NumberLiteral@@0 @TO@ ArrayAccess@@optimaValues[0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:optimizer.getResult() @TO@ ArrayAccess:optima[0] '
+    - '---DEL MethodInvocation@@optimizer.getResult() '
+    - '------DEL SimpleName@@Name:optimizer '
+    - '------DEL SimpleName@@MethodName:getResult:[] '
+    - '---INS ArrayAccess@@optima[0] @TO@ ReturnStatement@@MethodInvocation:optimizer.getResult() '
+    - '------INS SimpleName@@optima @TO@ ArrayAccess@@optima[0] '
+    - '------INS NumberLiteral@@0 @TO@ ArrayAccess@@optima[0] '
+  repair_actions_cnt: 2

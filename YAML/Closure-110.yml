@@ -1,0 +1,181 @@
+1 bug_id: Closure-110
+2 src folder:
+  name of src folder: src
+  number of files: 553
+  number of java files: 537
+  number of src classes: 1552
+  number of test classes: 237
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.ScopedAliasesTest#testHoistedFunctionDeclaration
+  - com.google.javascript.jscomp.ScopedAliasesTest#testFunctionDeclaration
+  failing tests:
+  - com.google.javascript.jscomp.ScopedAliasesTest
+  number of all test cases: 8359
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 4.0
+  purification via coverage: 2.011
+  purification via delta debugging: 3883.5129
+  repair actions extraction: 3.372
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.ScopedAliasesTest#testFunctionDeclaration: 2990
+    com.google.javascript.jscomp.ScopedAliasesTest#testHoistedFunctionDeclaration: 2965
+  fixed:
+    com.google.javascript.jscomp.ScopedAliasesTest#testFunctionDeclaration: 4179
+    com.google.javascript.jscomp.ScopedAliasesTest#testHoistedFunctionDeclaration: 4102
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 25
+  covDel: 4
+  cov_patch_lines: 29
+  delta_patch_lines: 29
+  oriAdd: 25
+  oriDel: 4
+  ori_patch_lines: 29
+  purAdd: 25
+  purDel: 4
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 12
+  original: 12
+  purifiy: 12
+8 mutants by delta debugging:
+  failAll: 8
+  failCompile: 0
+  failFail: 77
+  passed: 1
+  total: 86
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_110/src/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-24 14:01:05.889472929 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_110/purify/patch/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-24 14:01:05.885472815 -0400\n@@ -355,6 +355,7 @@\n         Node n = v.getNode();\n\
+    \         Node parent = n.getParent();\n         boolean isVar = parent.isVar();\n\
+    +        boolean isFunctionDecl = NodeUtil.isFunctionDeclaration(parent);\n  \
+    \       if (isVar && n.getFirstChild() != null && n.getFirstChild().isQualifiedName())\
+    \ {\n           recordAlias(v);\n         } else if (v.isBleedingFunction()) {\n\
+    @@ -363,12 +364,13 @@\n         } else if (parent.getType() == Token.LP) {\n \
+    \          // Parameters of the scope function also get a BAD_PARAMETERS\n   \
+    \        // error.\n-        } else if (isVar) {\n+        } else if (isVar ||\
+    \ isFunctionDecl) {\n+          boolean isHoisted = NodeUtil.isHoistedFunctionDeclaration(parent);\n\
+    \           Node grandparent = parent.getParent();\n-          Node value = n.hasChildren()\
+    \ ?\n-              v.getInitialValue().detachFromParent() :\n+          Node\
+    \ value = v.getInitialValue() != null ?\n+              v.getInitialValue() :\n\
+    \               null;\n-          Node varNode = parent;\n+          Node varNode\
+    \ = null;\n \n           String name = n.getString();\n           int nameCount\
+    \ = scopedAliasNames.count(name);\n@@ -380,7 +382,9 @@\n \n           // First,\
+    \ we need to free up the function expression (EXPR)\n           // to be used\
+    \ in another expression.\n+          if (isFunctionDecl) {\n             // Replace\
+    \ \"function NAME() { ... }\" with \"var NAME;\".\n+            Node existingName\
+    \ = v.getNameNode();\n \n             // We can't keep the local name on the function\
+    \ expression,\n             // because IE is buggy and will leak the name into\
+    \ the global\n@@ -389,9 +393,19 @@\n             //\n             // This will\
+    \ only cause problems if this is a hoisted, recursive\n             // function,\
+    \ and the programmer is using the hoisting.\n+            Node newName = IR.name(\"\
+    \").useSourceInfoFrom(existingName);\n+            value.replaceChild(existingName,\
+    \ newName);\n \n+            varNode = IR.var(existingName).useSourceInfoFrom(existingName);\n\
+    +            grandparent.replaceChild(parent, varNode);\n+          } else {\n\
+    +            if (value != null) {\n               // If this is a VAR, we can\
+    \ just detach the expression and\n               // the tree will still be valid.\n\
+    +              value.detachFromParent();\n+            }\n+            varNode\
+    \ = parent;\n+          }\n \n           // Add $jscomp.scope.name = EXPR;\n \
+    \          // Make sure we copy over all the jsdoc and debug info.\n@@ -405,7\
+    \ +419,11 @@\n             NodeUtil.setDebugInformation(\n                 newDecl.getFirstChild().getFirstChild(),\
+    \ n, name);\n \n+            if (isHoisted) {\n+              grandparent.addChildToFront(newDecl);\n\
+    +            } else {\n               grandparent.addChildBefore(newDecl, varNode);\n\
+    +            }\n           }\n \n           // Rewrite \"var name = EXPR;\" to\
+    \ \"var name = $jscomp.scope.name;\""
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_110/src/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-24 15:06:44.142150093 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_110/purify/purified/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-24 15:06:44.138149978 -0400\n@@ -355,6 +355,7 @@\n         Node n = v.getNode();\n\
+    \         Node parent = n.getParent();\n         boolean isVar = parent.isVar();\n\
+    +        boolean isFunctionDecl = NodeUtil.isFunctionDeclaration(parent);\n  \
+    \       if (isVar && n.getFirstChild() != null && n.getFirstChild().isQualifiedName())\
+    \ {\n           recordAlias(v);\n         } else if (v.isBleedingFunction()) {\n\
+    @@ -363,12 +364,13 @@\n         } else if (parent.getType() == Token.LP) {\n \
+    \          // Parameters of the scope function also get a BAD_PARAMETERS\n   \
+    \        // error.\n-        } else if (isVar) {\n+        } else if (isVar ||\
+    \ isFunctionDecl) {\n+          boolean isHoisted = NodeUtil.isHoistedFunctionDeclaration(parent);\n\
+    \           Node grandparent = parent.getParent();\n-          Node value = n.hasChildren()\
+    \ ?\n-              v.getInitialValue().detachFromParent() :\n+          Node\
+    \ value = v.getInitialValue() != null ?\n+              v.getInitialValue() :\n\
+    \               null;\n-          Node varNode = parent;\n+          Node varNode\
+    \ = null;\n \n           String name = n.getString();\n           int nameCount\
+    \ = scopedAliasNames.count(name);\n@@ -380,7 +382,9 @@\n \n           // First,\
+    \ we need to free up the function expression (EXPR)\n           // to be used\
+    \ in another expression.\n+          if (isFunctionDecl) {\n             // Replace\
+    \ \"function NAME() { ... }\" with \"var NAME;\".\n+            Node existingName\
+    \ = v.getNameNode();\n \n             // We can't keep the local name on the function\
+    \ expression,\n             // because IE is buggy and will leak the name into\
+    \ the global\n@@ -389,9 +393,19 @@\n             //\n             // This will\
+    \ only cause problems if this is a hoisted, recursive\n             // function,\
+    \ and the programmer is using the hoisting.\n+            Node newName = IR.name(\"\
+    \").useSourceInfoFrom(existingName);\n+            value.replaceChild(existingName,\
+    \ newName);\n \n+            varNode = IR.var(existingName).useSourceInfoFrom(existingName);\n\
+    +            grandparent.replaceChild(parent, varNode);\n+          } else {\n\
+    +            if (value != null) {\n               // If this is a VAR, we can\
+    \ just detach the expression and\n               // the tree will still be valid.\n\
+    +              value.detachFromParent();\n+            }\n+            varNode\
+    \ = parent;\n+          }\n \n           // Add $jscomp.scope.name = EXPR;\n \
+    \          // Make sure we copy over all the jsdoc and debug info.\n@@ -405,7\
+    \ +419,11 @@\n             NodeUtil.setDebugInformation(\n                 newDecl.getFirstChild().getFirstChild(),\
+    \ n, name);\n \n+            if (isHoisted) {\n+              grandparent.addChildToFront(newDecl);\n\
+    +            } else {\n               grandparent.addChildBefore(newDecl, varNode);\n\
+    +            }\n           }\n \n           // Rewrite \"var name = EXPR;\" to\
+    \ \"var name = $jscomp.scope.name;\""
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '2'
+  com/google/javascript/jscomp/ScopedAliases, com/google/javascript/rhino/Node:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n == null @TO@ MethodDeclaration@@public,
+      @@Node, MethodName:getChildBefore, @@Argus:Node+child+ '
+    - '---INS InfixExpression@@n == null @TO@ IfStatement@@InfixExpression:n == null '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@n == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@n == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@n == null '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new RuntimeException("node is
+      not a child") @TO@ IfStatement@@InfixExpression:n == null '
+    - '------INS ClassInstanceCreation@@RuntimeException["node is not a child"] @TO@
+      ThrowStatement@@ClassInstanceCreation:new RuntimeException("node is not a child") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@RuntimeException["node is
+      not a child"] '
+    - '---------INS SimpleType@@RuntimeException @TO@ ClassInstanceCreation@@RuntimeException["node
+      is not a child"] '
+    - '---------INS StringLiteral@@"node is not a child" @TO@ ClassInstanceCreation@@RuntimeException["node
+      is not a child"] '
+  files_cnt: '2'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '2'
+  com/google/javascript/jscomp/ScopedAliases, com/google/javascript/rhino/Node:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n == null @TO@ MethodDeclaration@@public,
+      @@Node, MethodName:getChildBefore, @@Argus:Node+child+ '
+    - '---INS InfixExpression@@n == null @TO@ IfStatement@@InfixExpression:n == null '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@n == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@n == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@n == null '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new RuntimeException("node is
+      not a child") @TO@ IfStatement@@InfixExpression:n == null '
+    - '------INS ClassInstanceCreation@@RuntimeException["node is not a child"] @TO@
+      ThrowStatement@@ClassInstanceCreation:new RuntimeException("node is not a child") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@RuntimeException["node is
+      not a child"] '
+    - '---------INS SimpleType@@RuntimeException @TO@ ClassInstanceCreation@@RuntimeException["node
+      is not a child"] '
+    - '---------INS StringLiteral@@"node is not a child" @TO@ ClassInstanceCreation@@RuntimeException["node
+      is not a child"] '
+  files_cnt: '2'
+  repair_actions_cnt: 1

@@ -1,0 +1,132 @@
+1 bug_id: Time-16
+2 src folder:
+  name of src folder: java
+  number of files: 183
+  number of java files: 156
+  number of src classes: 228
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.format.TestDateTimeFormatter#testParseInto_monthDay_feb29
+  - org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly_parseStartYear
+  - org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly
+  - org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly_baseStartYear
+  - org.joda.time.format.TestDateTimeFormatter#testParseInto_monthDay_withDefaultYear_feb29
+  - org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly_baseEndYear
+  - org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly_parseEndYear
+  failing tests:
+  - org.joda.time.format.TestDateTimeFormatter
+  number of all test cases: 3895
+  number of failing test cases: 7
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.926
+  purification via delta debugging: 73.933
+  repair actions extraction: 1.59
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthDay_feb29: 2227
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthDay_withDefaultYear_feb29: 2225
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly: 2208
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly_baseEndYear: 2090
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly_baseStartYear: 2086
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly_parseEndYear: 2089
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly_parseStartYear: 2086
+  fixed:
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthDay_feb29: 2121
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthDay_withDefaultYear_feb29: 2119
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly: 2088
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly_baseEndYear: 1968
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly_baseStartYear: 1965
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly_parseEndYear: 1966
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthOnly_parseStartYear: 1965
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_16/src/main/java/org/joda/time/format/DateTimeFormatter.java\t\
+    2020-10-20 22:44:55.001110141 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_16/purify/patch/org/joda/time/format/DateTimeFormatter.java\t\
+    2020-10-20 22:44:55.001110141 -0400\n@@ -706,7 +706,7 @@\n         chrono = selectChronology(chrono);\n\
+    \         \n         DateTimeParserBucket bucket = new DateTimeParserBucket(\n\
+    -            instantLocal, chrono, iLocale, iPivotYear, iDefaultYear);\n+    \
+    \        instantLocal, chrono, iLocale, iPivotYear, chrono.year().get(instantLocal));\n\
+    \         int newPos = parser.parseInto(bucket, text, position);\n         instant.setMillis(bucket.computeMillis(false,\
+    \ text));\n         if (iOffsetParsed && bucket.getOffsetInteger() != null) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_16/src/main/java/org/joda/time/format/DateTimeFormatter.java\t\
+    2020-10-20 22:46:29.307835734 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_16/purify/purified/org/joda/time/format/DateTimeFormatter.java\t\
+    2020-10-20 22:46:29.307835734 -0400\n@@ -706,7 +706,7 @@\n         chrono = selectChronology(chrono);\n\
+    \         \n         DateTimeParserBucket bucket = new DateTimeParserBucket(\n\
+    -            instantLocal, chrono, iLocale, iPivotYear, iDefaultYear);\n+    \
+    \        instantLocal, chrono, iLocale, iPivotYear, chrono.year().get(instantLocal));\n\
+    \         int newPos = parser.parseInto(bucket, text, position);\n         instant.setMillis(bucket.computeMillis(false,\
+    \ text));\n         if (iOffsetParsed && bucket.getOffsetInteger() != null) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/format/DateTimeFormatter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@DateTimeParserBucket bucket=new DateTimeParserBucket(instantLocal,chrono,iLocale,iPivotYear,iDefaultYear);
+      @TO@ DateTimeParserBucket bucket=new DateTimeParserBucket(instantLocal,chrono,iLocale,iPivotYear,chrono.year().get(instantLocal)); '
+    - '---UPD VariableDeclarationFragment@@bucket=new DateTimeParserBucket(instantLocal,chrono,iLocale,iPivotYear,iDefaultYear)
+      @TO@ bucket=new DateTimeParserBucket(instantLocal,chrono,iLocale,iPivotYear,chrono.year().get(instantLocal)) '
+    - '------UPD ClassInstanceCreation@@DateTimeParserBucket[instantLocal, chrono,
+      iLocale, iPivotYear, iDefaultYear] @TO@ DateTimeParserBucket[instantLocal, chrono,
+      iLocale, iPivotYear, chrono.year().get(instantLocal)] '
+    - '---------INS MethodInvocation@@chrono.year().get(instantLocal) @TO@ ClassInstanceCreation@@DateTimeParserBucket[instantLocal,
+      chrono, iLocale, iPivotYear, iDefaultYear] '
+    - '------------INS SimpleName@@Name:chrono @TO@ MethodInvocation@@chrono.year().get(instantLocal) '
+    - '------------INS MethodInvocation@@MethodName:year:[] @TO@ MethodInvocation@@chrono.year().get(instantLocal) '
+    - '------------INS SimpleName@@MethodName:get:[instantLocal] @TO@ MethodInvocation@@chrono.year().get(instantLocal) '
+    - '---------------INS SimpleName@@instantLocal @TO@ SimpleName@@MethodName:get:[instantLocal] '
+    - '---------DEL SimpleName@@iDefaultYear '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/format/DateTimeFormatter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@DateTimeParserBucket bucket=new DateTimeParserBucket(instantLocal,chrono,iLocale,iPivotYear,iDefaultYear);
+      @TO@ DateTimeParserBucket bucket=new DateTimeParserBucket(instantLocal,chrono,iLocale,iPivotYear,chrono.year().get(instantLocal)); '
+    - '---UPD VariableDeclarationFragment@@bucket=new DateTimeParserBucket(instantLocal,chrono,iLocale,iPivotYear,iDefaultYear)
+      @TO@ bucket=new DateTimeParserBucket(instantLocal,chrono,iLocale,iPivotYear,chrono.year().get(instantLocal)) '
+    - '------UPD ClassInstanceCreation@@DateTimeParserBucket[instantLocal, chrono,
+      iLocale, iPivotYear, iDefaultYear] @TO@ DateTimeParserBucket[instantLocal, chrono,
+      iLocale, iPivotYear, chrono.year().get(instantLocal)] '
+    - '---------INS MethodInvocation@@chrono.year().get(instantLocal) @TO@ ClassInstanceCreation@@DateTimeParserBucket[instantLocal,
+      chrono, iLocale, iPivotYear, iDefaultYear] '
+    - '------------INS SimpleName@@Name:chrono @TO@ MethodInvocation@@chrono.year().get(instantLocal) '
+    - '------------INS MethodInvocation@@MethodName:year:[] @TO@ MethodInvocation@@chrono.year().get(instantLocal) '
+    - '------------INS SimpleName@@MethodName:get:[instantLocal] @TO@ MethodInvocation@@chrono.year().get(instantLocal) '
+    - '---------------INS SimpleName@@instantLocal @TO@ SimpleName@@MethodName:get:[instantLocal] '
+    - '---------DEL SimpleName@@iDefaultYear '
+  repair_actions_cnt: 1

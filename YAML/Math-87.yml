@@ -1,0 +1,178 @@
+1 bug_id: Math-87
+2 src folder:
+  name of src folder: java
+  number of files: 398
+  number of java files: 362
+  number of src classes: 444
+  number of test classes: 186
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.linear.SimplexSolverTest#testSingleVariableAndConstraint
+  failing tests:
+  - org.apache.commons.math.optimization.linear.SimplexSolverTest
+  number of all test cases: 1893
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.83
+  purification via delta debugging: 70.081
+  repair actions extraction: 0.99
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.linear.SimplexSolverTest#testSingleVariableAndConstraint: 254
+  fixed:
+    org.apache.commons.math.optimization.linear.SimplexSolverTest#testSingleVariableAndConstraint: 256
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 4
+  cov_patch_lines: 6
+  delta_patch_lines: 6
+  oriAdd: 2
+  oriDel: 4
+  ori_patch_lines: 6
+  purAdd: 2
+  purDel: 4
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 11
+  failFail: 1
+  passed: 0
+  total: 12
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_87/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 13:49:57.870992827 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_87/purify/patch/org/apache/commons/math/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 13:49:57.866992711 -0400\n@@ -272,12 +272,10 @@\n     private Integer\
+    \ getBasicRow(final int col) {\n         Integer row = null;\n         for (int\
+    \ i = getNumObjectiveFunctions(); i < getHeight(); i++) {\n-            if (!MathUtils.equals(getEntry(i,\
+    \ col), 0.0, epsilon)) {\n-                if (row == null) {\n+            if\
+    \ (MathUtils.equals(getEntry(i, col), 1.0, epsilon) && (row == null)) {\n    \
+    \             row = i;\n-                } else {\n+            } else if (!MathUtils.equals(getEntry(i,\
+    \ col), 0.0, epsilon)) {\n                 return null;\n-                }\n\
+    \             }\n         }\n         return row;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_87/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 13:51:21.989425258 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_87/purify/purified/org/apache/commons/math/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 13:51:21.989425258 -0400\n@@ -272,12 +272,10 @@\n     private Integer\
+    \ getBasicRow(final int col) {\n         Integer row = null;\n         for (int\
+    \ i = getNumObjectiveFunctions(); i < getHeight(); i++) {\n-            if (!MathUtils.equals(getEntry(i,\
+    \ col), 0.0, epsilon)) {\n-                if (row == null) {\n+            if\
+    \ (MathUtils.equals(getEntry(i, col), 1.0, epsilon) && (row == null)) {\n    \
+    \             row = i;\n-                } else {\n+            } else if (!MathUtils.equals(getEntry(i,\
+    \ col), 0.0, epsilon)) {\n                 return null;\n-                }\n\
+    \             }\n         }\n         return row;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/linear/SimplexTableau:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:MathUtils.equals(getEntry(i,col),1.0,epsilon)
+      && (row == null) @TO@ ForStatement@@[int i=getNumObjectiveFunctions()];i < getHeight();
+      [i++] '
+    - '---MOV IfStatement@@PrefixExpression:!MathUtils.equals(getEntry(i,col),0.0,epsilon)
+      @TO@ IfStatement@@InfixExpression:MathUtils.equals(getEntry(i,col),1.0,epsilon)
+      && (row == null) '
+    - '------MOV ReturnStatement@@NullLiteral:null @TO@ IfStatement@@PrefixExpression:!MathUtils.equals(getEntry(i,col),0.0,epsilon) '
+    - '---INS InfixExpression@@MathUtils.equals(getEntry(i,col),1.0,epsilon) && (row
+      == null) @TO@ IfStatement@@InfixExpression:MathUtils.equals(getEntry(i,col),1.0,epsilon)
+      && (row == null) '
+    - '------INS MethodInvocation@@MathUtils.equals(getEntry(i,col),1.0,epsilon) @TO@
+      InfixExpression@@MathUtils.equals(getEntry(i,col),1.0,epsilon) && (row == null) '
+    - '---------INS SimpleName@@Name:MathUtils @TO@ MethodInvocation@@MathUtils.equals(getEntry(i,col),1.0,epsilon) '
+    - '---------INS SimpleName@@MethodName:equals:[getEntry(i,col), 1.0, epsilon]
+      @TO@ MethodInvocation@@MathUtils.equals(getEntry(i,col),1.0,epsilon) '
+    - '------------INS MethodInvocation@@getEntry(i,col) @TO@ SimpleName@@MethodName:equals:[getEntry(i,col),
+      1.0, epsilon] '
+    - '---------------INS SimpleName@@MethodName:getEntry:[i, col] @TO@ MethodInvocation@@getEntry(i,col) '
+    - '------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:getEntry:[i,
+      col] '
+    - '------------------INS SimpleName@@col @TO@ SimpleName@@MethodName:getEntry:[i,
+      col] '
+    - '------------INS NumberLiteral@@1.0 @TO@ SimpleName@@MethodName:equals:[getEntry(i,col),
+      1.0, epsilon] '
+    - '------------INS SimpleName@@epsilon @TO@ SimpleName@@MethodName:equals:[getEntry(i,col),
+      1.0, epsilon] '
+    - '------INS Operator@@&& @TO@ InfixExpression@@MathUtils.equals(getEntry(i,col),1.0,epsilon)
+      && (row == null) '
+    - '------INS ParenthesizedExpression@@(row == null) @TO@ InfixExpression@@MathUtils.equals(getEntry(i,col),1.0,epsilon)
+      && (row == null) '
+    - '---------INS InfixExpression@@row == null @TO@ ParenthesizedExpression@@(row
+      == null) '
+    - '------------INS SimpleName@@row @TO@ InfixExpression@@row == null '
+    - '------------INS Operator@@== @TO@ InfixExpression@@row == null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@row == null '
+    - '---MOV ExpressionStatement@@Assignment:row=i @TO@ IfStatement@@InfixExpression:MathUtils.equals(getEntry(i,col),1.0,epsilon)
+      && (row == null) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:row == null '
+    - '---DEL InfixExpression@@row == null '
+    - '------DEL SimpleName@@row '
+    - '------DEL Operator@@== '
+    - '------DEL NullLiteral@@null '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/linear/SimplexTableau:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:MathUtils.equals(getEntry(i,col),1.0,epsilon)
+      && (row == null) @TO@ ForStatement@@[int i=getNumObjectiveFunctions()];i < getHeight();
+      [i++] '
+    - '---MOV IfStatement@@PrefixExpression:!MathUtils.equals(getEntry(i,col),0.0,epsilon)
+      @TO@ IfStatement@@InfixExpression:MathUtils.equals(getEntry(i,col),1.0,epsilon)
+      && (row == null) '
+    - '------MOV ReturnStatement@@NullLiteral:null @TO@ IfStatement@@PrefixExpression:!MathUtils.equals(getEntry(i,col),0.0,epsilon) '
+    - '---INS InfixExpression@@MathUtils.equals(getEntry(i,col),1.0,epsilon) && (row
+      == null) @TO@ IfStatement@@InfixExpression:MathUtils.equals(getEntry(i,col),1.0,epsilon)
+      && (row == null) '
+    - '------INS MethodInvocation@@MathUtils.equals(getEntry(i,col),1.0,epsilon) @TO@
+      InfixExpression@@MathUtils.equals(getEntry(i,col),1.0,epsilon) && (row == null) '
+    - '---------INS SimpleName@@Name:MathUtils @TO@ MethodInvocation@@MathUtils.equals(getEntry(i,col),1.0,epsilon) '
+    - '---------INS SimpleName@@MethodName:equals:[getEntry(i,col), 1.0, epsilon]
+      @TO@ MethodInvocation@@MathUtils.equals(getEntry(i,col),1.0,epsilon) '
+    - '------------INS MethodInvocation@@getEntry(i,col) @TO@ SimpleName@@MethodName:equals:[getEntry(i,col),
+      1.0, epsilon] '
+    - '---------------INS SimpleName@@MethodName:getEntry:[i, col] @TO@ MethodInvocation@@getEntry(i,col) '
+    - '------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:getEntry:[i,
+      col] '
+    - '------------------INS SimpleName@@col @TO@ SimpleName@@MethodName:getEntry:[i,
+      col] '
+    - '------------INS NumberLiteral@@1.0 @TO@ SimpleName@@MethodName:equals:[getEntry(i,col),
+      1.0, epsilon] '
+    - '------------INS SimpleName@@epsilon @TO@ SimpleName@@MethodName:equals:[getEntry(i,col),
+      1.0, epsilon] '
+    - '------INS Operator@@&& @TO@ InfixExpression@@MathUtils.equals(getEntry(i,col),1.0,epsilon)
+      && (row == null) '
+    - '------INS ParenthesizedExpression@@(row == null) @TO@ InfixExpression@@MathUtils.equals(getEntry(i,col),1.0,epsilon)
+      && (row == null) '
+    - '---------INS InfixExpression@@row == null @TO@ ParenthesizedExpression@@(row
+      == null) '
+    - '------------INS SimpleName@@row @TO@ InfixExpression@@row == null '
+    - '------------INS Operator@@== @TO@ InfixExpression@@row == null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@row == null '
+    - '---MOV ExpressionStatement@@Assignment:row=i @TO@ IfStatement@@InfixExpression:MathUtils.equals(getEntry(i,col),1.0,epsilon)
+      && (row == null) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:row == null '
+    - '---DEL InfixExpression@@row == null '
+    - '------DEL SimpleName@@row '
+    - '------DEL Operator@@== '
+    - '------DEL NullLiteral@@null '
+  repair_actions_cnt: 2

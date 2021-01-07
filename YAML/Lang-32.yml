@@ -1,0 +1,322 @@
+1 bug_id: Lang-32
+2 src folder:
+  name of src folder: java
+  number of files: 91
+  number of java files: 80
+  number of src classes: 126
+  number of test classes: 85
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.builder.HashCodeBuilderTest#testReflectionObjectCycle
+  failing tests:
+  - org.apache.commons.lang3.builder.HashCodeBuilderTest
+  number of all test cases: 1670
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 9.0
+  purification via coverage: 1.063
+  purification via delta debugging: 373.793
+  repair actions extraction: 1.154
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.builder.HashCodeBuilderTest#testReflectionObjectCycle: 76
+  fixed:
+    org.apache.commons.lang3.builder.HashCodeBuilderTest#testReflectionObjectCycle: 86
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 17
+  covDel: 8
+  cov_patch_lines: 25
+  delta_patch_lines: 23
+  oriAdd: 17
+  oriDel: 8
+  ori_patch_lines: 25
+  purAdd: 16
+  purDel: 7
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 81
+  failFail: 4
+  passed: 2
+  total: 87
+9 sibling repair actions:
+- 1 5 0.9312320916905444
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_32/src/main/java/org/apache/commons/lang3/builder/HashCodeBuilder.java\t\
+    2020-10-22 02:20:19.088520326 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_32/purify/patch/org/apache/commons/lang3/builder/HashCodeBuilder.java\t\
+    2020-10-22 02:20:19.088520326 -0400\n@@ -101,12 +101,7 @@\n      * \n      * @since\
+    \ 2.3\n      */\n-    private static final ThreadLocal<Set<IDKey>> REGISTRY =\
+    \ new ThreadLocal<Set<IDKey>>() {\n-        @Override\n-        protected Set<IDKey>\
+    \ initialValue() {\n-            return new HashSet<IDKey>();\n-        }\n- \
+    \   };\n+    private static final ThreadLocal<Set<IDKey>> REGISTRY = new ThreadLocal<Set<IDKey>>();\n\
+    \ \n     /*\n      * N.B. we cannot store the actual objects in a HashSet, as\
+    \ that would use the very hashCode()\n@@ -149,7 +144,8 @@\n      * @since 2.3\n\
+    \      */\n     static boolean isRegistered(Object value) {\n-        return getRegistry().contains(new\
+    \ IDKey(value));\n+        Set<IDKey> registry = getRegistry();\n+        return\
+    \ registry != null && registry.contains(new IDKey(value));\n     }\n \n     /**\n\
+    @@ -519,6 +515,11 @@\n      *            The object to register.\n      */\n \
+    \    static void register(Object value) {\n+        synchronized (HashCodeBuilder.class)\
+    \ {\n+            if (getRegistry() == null) {\n+                REGISTRY.set(new\
+    \ HashSet<IDKey>());\n+            }\n+        }\n         getRegistry().add(new\
+    \ IDKey(value));\n     }\n \n@@ -535,7 +536,15 @@\n      * @since 2.3\n      */\n\
+    \     static void unregister(Object value) {\n-        getRegistry().remove(new\
+    \ IDKey(value));\n+        Set<IDKey> s = getRegistry();\n+        if (s != null)\
+    \ {\n+            s.remove(new IDKey(value));\n+            synchronized (HashCodeBuilder.class)\
+    \ {\n+                if (s.isEmpty()) {\n+                    REGISTRY.remove();\n\
+    +                }\n+            }\n+        }\n     }\n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_32/src/main/java/org/apache/commons/lang3/builder/HashCodeBuilder.java\t\
+    2020-10-22 02:26:44.335656174 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_32/purify/purified/org/apache/commons/lang3/builder/HashCodeBuilder.java\t\
+    2020-10-22 02:26:44.335656174 -0400\n@@ -101,12 +101,7 @@\n      * \n      * @since\
+    \ 2.3\n      */\n-    private static final ThreadLocal<Set<IDKey>> REGISTRY =\
+    \ new ThreadLocal<Set<IDKey>>() {\n-        @Override\n-        protected Set<IDKey>\
+    \ initialValue() {\n-            return new HashSet<IDKey>();\n-        }\n- \
+    \   };\n+    private static final ThreadLocal<Set<IDKey>> REGISTRY = new ThreadLocal<Set<IDKey>>();\n\
+    \ \n     /*\n      * N.B. we cannot store the actual objects in a HashSet, as\
+    \ that would use the very hashCode()\n@@ -149,7 +144,8 @@\n      * @since 2.3\n\
+    \      */\n     static boolean isRegistered(Object value) {\n-        return getRegistry().contains(new\
+    \ IDKey(value));\n+        Set<IDKey> registry = getRegistry();\n+        return\
+    \ registry != null && registry.contains(new IDKey(value));\n     }\n \n     /**\n\
+    @@ -519,6 +515,11 @@\n      *            The object to register.\n      */\n \
+    \    static void register(Object value) {\n+        synchronized (HashCodeBuilder.class)\
+    \ {\n+            if (getRegistry() == null) {\n+                REGISTRY.set(new\
+    \ HashSet<IDKey>());\n+            }\n+        }\n         getRegistry().add(new\
+    \ IDKey(value));\n     }\n \n@@ -536,6 +537,14 @@\n      */\n     static void\
+    \ unregister(Object value) {\n         getRegistry().remove(new IDKey(value));\n\
+    +        Set<IDKey> s = getRegistry();\n+        if (s != null) {\n+         \
+    \   synchronized (HashCodeBuilder.class) {\n+                if (s.isEmpty())\
+    \ {\n+                    REGISTRY.remove();\n+                }\n+          \
+    \  }\n+        }\n     }\n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/builder/HashCodeBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD FieldDeclaration@@private, static, final, ThreadLocal<Set<IDKey>>, [REGISTRY=new
+      ThreadLocal<Set<IDKey>>()
+    - '  @Override protected Set<IDKey> initialValue()'
+    - '    return new HashSet<IDKey>()'
+    - '  '
+    - ''
+    - '] @TO@ private, static, final, ThreadLocal<Set<IDKey>>, [REGISTRY=new ThreadLocal<Set<IDKey>>()] '
+    - '---UPD VariableDeclarationFragment@@REGISTRY=new ThreadLocal<Set<IDKey>>()'
+    - '  @Override protected Set<IDKey> initialValue()'
+    - '    return new HashSet<IDKey>()'
+    - '  '
+    - ''
+    - ' @TO@ REGISTRY=new ThreadLocal<Set<IDKey>>() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Set<IDKey> registry=getRegistry(); @TO@ MethodDeclaration@@static,
+      @@boolean, MethodName:isRegistered, @@Argus:Object+value+ '
+    - '---INS ParameterizedType@@Set<IDKey> @TO@ VariableDeclarationStatement@@Set<IDKey>
+      registry=getRegistry(); '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<IDKey> '
+    - '------INS SimpleType@@IDKey @TO@ ParameterizedType@@Set<IDKey> '
+    - '---INS VariableDeclarationFragment@@registry=getRegistry() @TO@ VariableDeclarationStatement@@Set<IDKey>
+      registry=getRegistry(); '
+    - '------INS SimpleName@@registry @TO@ VariableDeclarationFragment@@registry=getRegistry() '
+    - '------INS MethodInvocation@@MethodName:getRegistry:[] @TO@ VariableDeclarationFragment@@registry=getRegistry() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:getRegistry().contains(new IDKey(value))
+      @TO@ InfixExpression:registry != null && registry.contains(new IDKey(value)) '
+    - '---INS InfixExpression@@registry != null && registry.contains(new IDKey(value))
+      @TO@ ReturnStatement@@MethodInvocation:getRegistry().contains(new IDKey(value)) '
+    - '------INS InfixExpression@@registry != null @TO@ InfixExpression@@registry
+      != null && registry.contains(new IDKey(value)) '
+    - '---------INS SimpleName@@registry @TO@ InfixExpression@@registry != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@registry != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@registry != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@registry != null && registry.contains(new
+      IDKey(value)) '
+    - '------MOV MethodInvocation@@getRegistry().contains(new IDKey(value)) @TO@ InfixExpression@@registry
+      != null && registry.contains(new IDKey(value)) '
+    - '---UPD MethodInvocation@@getRegistry().contains(new IDKey(value)) @TO@ registry.contains(new
+      IDKey(value)) '
+    - '------INS SimpleName@@Name:registry @TO@ MethodInvocation@@getRegistry().contains(new
+      IDKey(value)) '
+    - '------DEL MethodInvocation@@MethodName:getRegistry:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SynchronizedStatement@@TypeLiteral:HashCodeBuilder.class @TO@ MethodDeclaration@@static,
+      @@void, MethodName:register, @@Argus:Object+value+ '
+    - '---INS TypeLiteral@@HashCodeBuilder.class @TO@ SynchronizedStatement@@TypeLiteral:HashCodeBuilder.class '
+    - '---INS IfStatement@@InfixExpression:getRegistry() == null @TO@ SynchronizedStatement@@TypeLiteral:HashCodeBuilder.class '
+    - '------INS InfixExpression@@getRegistry() == null @TO@ IfStatement@@InfixExpression:getRegistry()
+      == null '
+    - '---------INS MethodInvocation@@MethodName:getRegistry:[] @TO@ InfixExpression@@getRegistry()
+      == null '
+    - '---------INS Operator@@== @TO@ InfixExpression@@getRegistry() == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@getRegistry() == null '
+    - '------INS ExpressionStatement@@MethodInvocation:REGISTRY.set(new HashSet<IDKey>())
+      @TO@ IfStatement@@InfixExpression:getRegistry() == null '
+    - '---------INS MethodInvocation@@REGISTRY.set(new HashSet<IDKey>()) @TO@ ExpressionStatement@@MethodInvocation:REGISTRY.set(new
+      HashSet<IDKey>()) '
+    - '------------INS SimpleName@@Name:REGISTRY @TO@ MethodInvocation@@REGISTRY.set(new
+      HashSet<IDKey>()) '
+    - '------------INS SimpleName@@MethodName:set:[new HashSet<IDKey>()] @TO@ MethodInvocation@@REGISTRY.set(new
+      HashSet<IDKey>()) '
+    - '---------------MOV ClassInstanceCreation@@HashSet<IDKey>[] @TO@ SimpleName@@MethodName:set:[new
+      HashSet<IDKey>()] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:getRegistry().remove(new IDKey(value))
+      @TO@ MethodInvocation:s.remove(new IDKey(value)) '
+    - '---UPD MethodInvocation@@getRegistry().remove(new IDKey(value)) @TO@ s.remove(new
+      IDKey(value)) '
+    - '------DEL MethodInvocation@@MethodName:getRegistry:[] '
+    - '------INS SimpleName@@Name:s @TO@ MethodInvocation@@getRegistry().remove(new
+      IDKey(value)) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Set<IDKey> s=getRegistry(); @TO@ MethodDeclaration@@static,
+      @@void, MethodName:unregister, @@Argus:Object+value+ '
+    - '---INS ParameterizedType@@Set<IDKey> @TO@ VariableDeclarationStatement@@Set<IDKey>
+      s=getRegistry(); '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<IDKey> '
+    - '------INS SimpleType@@IDKey @TO@ ParameterizedType@@Set<IDKey> '
+    - '---INS VariableDeclarationFragment@@s=getRegistry() @TO@ VariableDeclarationStatement@@Set<IDKey>
+      s=getRegistry(); '
+    - '------INS SimpleName@@s @TO@ VariableDeclarationFragment@@s=getRegistry() '
+    - '------INS MethodInvocation@@MethodName:getRegistry:[] @TO@ VariableDeclarationFragment@@s=getRegistry() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:s != null @TO@ MethodDeclaration@@static,
+      @@void, MethodName:unregister, @@Argus:Object+value+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:getRegistry().remove(new IDKey(value))
+      @TO@ IfStatement@@InfixExpression:s != null '
+    - '---INS InfixExpression@@s != null @TO@ IfStatement@@InfixExpression:s != null '
+    - '------INS SimpleName@@s @TO@ InfixExpression@@s != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@s != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@s != null '
+    - '---INS SynchronizedStatement@@TypeLiteral:HashCodeBuilder.class @TO@ IfStatement@@InfixExpression:s
+      != null '
+    - '------INS TypeLiteral@@HashCodeBuilder.class @TO@ SynchronizedStatement@@TypeLiteral:HashCodeBuilder.class '
+    - '------INS IfStatement@@MethodInvocation:s.isEmpty() @TO@ SynchronizedStatement@@TypeLiteral:HashCodeBuilder.class '
+    - '---------INS MethodInvocation@@s.isEmpty() @TO@ IfStatement@@MethodInvocation:s.isEmpty() '
+    - '------------INS SimpleName@@Name:s @TO@ MethodInvocation@@s.isEmpty() '
+    - '------------INS SimpleName@@MethodName:isEmpty:[] @TO@ MethodInvocation@@s.isEmpty() '
+    - '---------INS ExpressionStatement@@MethodInvocation:REGISTRY.remove() @TO@ IfStatement@@MethodInvocation:s.isEmpty() '
+    - '------------INS MethodInvocation@@REGISTRY.remove() @TO@ ExpressionStatement@@MethodInvocation:REGISTRY.remove() '
+    - '---------------INS SimpleName@@Name:REGISTRY @TO@ MethodInvocation@@REGISTRY.remove() '
+    - '---------------INS SimpleName@@MethodName:remove:[] @TO@ MethodInvocation@@REGISTRY.remove() '
+  repair_actions_cnt: 7
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/builder/HashCodeBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD FieldDeclaration@@private, static, final, ThreadLocal<Set<IDKey>>, [REGISTRY=new
+      ThreadLocal<Set<IDKey>>()
+    - '  @Override protected Set<IDKey> initialValue()'
+    - '    return new HashSet<IDKey>()'
+    - '  '
+    - ''
+    - '] @TO@ private, static, final, ThreadLocal<Set<IDKey>>, [REGISTRY=new ThreadLocal<Set<IDKey>>()] '
+    - '---UPD VariableDeclarationFragment@@REGISTRY=new ThreadLocal<Set<IDKey>>()'
+    - '  @Override protected Set<IDKey> initialValue()'
+    - '    return new HashSet<IDKey>()'
+    - '  '
+    - ''
+    - ' @TO@ REGISTRY=new ThreadLocal<Set<IDKey>>() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Set<IDKey> registry=getRegistry(); @TO@ MethodDeclaration@@static,
+      @@boolean, MethodName:isRegistered, @@Argus:Object+value+ '
+    - '---INS ParameterizedType@@Set<IDKey> @TO@ VariableDeclarationStatement@@Set<IDKey>
+      registry=getRegistry(); '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<IDKey> '
+    - '------INS SimpleType@@IDKey @TO@ ParameterizedType@@Set<IDKey> '
+    - '---INS VariableDeclarationFragment@@registry=getRegistry() @TO@ VariableDeclarationStatement@@Set<IDKey>
+      registry=getRegistry(); '
+    - '------INS SimpleName@@registry @TO@ VariableDeclarationFragment@@registry=getRegistry() '
+    - '------INS MethodInvocation@@MethodName:getRegistry:[] @TO@ VariableDeclarationFragment@@registry=getRegistry() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:getRegistry().contains(new IDKey(value))
+      @TO@ InfixExpression:registry != null && registry.contains(new IDKey(value)) '
+    - '---INS InfixExpression@@registry != null && registry.contains(new IDKey(value))
+      @TO@ ReturnStatement@@MethodInvocation:getRegistry().contains(new IDKey(value)) '
+    - '------INS InfixExpression@@registry != null @TO@ InfixExpression@@registry
+      != null && registry.contains(new IDKey(value)) '
+    - '---------INS SimpleName@@registry @TO@ InfixExpression@@registry != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@registry != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@registry != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@registry != null && registry.contains(new
+      IDKey(value)) '
+    - '------MOV MethodInvocation@@getRegistry().contains(new IDKey(value)) @TO@ InfixExpression@@registry
+      != null && registry.contains(new IDKey(value)) '
+    - '---UPD MethodInvocation@@getRegistry().contains(new IDKey(value)) @TO@ registry.contains(new
+      IDKey(value)) '
+    - '------INS SimpleName@@Name:registry @TO@ MethodInvocation@@getRegistry().contains(new
+      IDKey(value)) '
+    - '------DEL MethodInvocation@@MethodName:getRegistry:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SynchronizedStatement@@TypeLiteral:HashCodeBuilder.class @TO@ MethodDeclaration@@static,
+      @@void, MethodName:register, @@Argus:Object+value+ '
+    - '---INS TypeLiteral@@HashCodeBuilder.class @TO@ SynchronizedStatement@@TypeLiteral:HashCodeBuilder.class '
+    - '---INS IfStatement@@InfixExpression:getRegistry() == null @TO@ SynchronizedStatement@@TypeLiteral:HashCodeBuilder.class '
+    - '------INS InfixExpression@@getRegistry() == null @TO@ IfStatement@@InfixExpression:getRegistry()
+      == null '
+    - '---------INS MethodInvocation@@MethodName:getRegistry:[] @TO@ InfixExpression@@getRegistry()
+      == null '
+    - '---------INS Operator@@== @TO@ InfixExpression@@getRegistry() == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@getRegistry() == null '
+    - '------INS ExpressionStatement@@MethodInvocation:REGISTRY.set(new HashSet<IDKey>())
+      @TO@ IfStatement@@InfixExpression:getRegistry() == null '
+    - '---------INS MethodInvocation@@REGISTRY.set(new HashSet<IDKey>()) @TO@ ExpressionStatement@@MethodInvocation:REGISTRY.set(new
+      HashSet<IDKey>()) '
+    - '------------INS SimpleName@@Name:REGISTRY @TO@ MethodInvocation@@REGISTRY.set(new
+      HashSet<IDKey>()) '
+    - '------------INS SimpleName@@MethodName:set:[new HashSet<IDKey>()] @TO@ MethodInvocation@@REGISTRY.set(new
+      HashSet<IDKey>()) '
+    - '---------------MOV ClassInstanceCreation@@HashSet<IDKey>[] @TO@ SimpleName@@MethodName:set:[new
+      HashSet<IDKey>()] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Set<IDKey> s=getRegistry(); @TO@ MethodDeclaration@@static,
+      @@void, MethodName:unregister, @@Argus:Object+value+ '
+    - '---INS ParameterizedType@@Set<IDKey> @TO@ VariableDeclarationStatement@@Set<IDKey>
+      s=getRegistry(); '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<IDKey> '
+    - '------INS SimpleType@@IDKey @TO@ ParameterizedType@@Set<IDKey> '
+    - '---INS VariableDeclarationFragment@@s=getRegistry() @TO@ VariableDeclarationStatement@@Set<IDKey>
+      s=getRegistry(); '
+    - '------INS SimpleName@@s @TO@ VariableDeclarationFragment@@s=getRegistry() '
+    - '------INS MethodInvocation@@MethodName:getRegistry:[] @TO@ VariableDeclarationFragment@@s=getRegistry() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:s != null @TO@ MethodDeclaration@@static,
+      @@void, MethodName:unregister, @@Argus:Object+value+ '
+    - '---INS InfixExpression@@s != null @TO@ IfStatement@@InfixExpression:s != null '
+    - '------INS SimpleName@@s @TO@ InfixExpression@@s != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@s != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@s != null '
+    - '---INS SynchronizedStatement@@TypeLiteral:HashCodeBuilder.class @TO@ IfStatement@@InfixExpression:s
+      != null '
+    - '------INS TypeLiteral@@HashCodeBuilder.class @TO@ SynchronizedStatement@@TypeLiteral:HashCodeBuilder.class '
+    - '------INS IfStatement@@MethodInvocation:s.isEmpty() @TO@ SynchronizedStatement@@TypeLiteral:HashCodeBuilder.class '
+    - '---------INS MethodInvocation@@s.isEmpty() @TO@ IfStatement@@MethodInvocation:s.isEmpty() '
+    - '------------INS SimpleName@@Name:s @TO@ MethodInvocation@@s.isEmpty() '
+    - '------------INS SimpleName@@MethodName:isEmpty:[] @TO@ MethodInvocation@@s.isEmpty() '
+    - '---------INS ExpressionStatement@@MethodInvocation:REGISTRY.remove() @TO@ IfStatement@@MethodInvocation:s.isEmpty() '
+    - '------------INS MethodInvocation@@REGISTRY.remove() @TO@ ExpressionStatement@@MethodInvocation:REGISTRY.remove() '
+    - '---------------INS SimpleName@@Name:REGISTRY @TO@ MethodInvocation@@REGISTRY.remove() '
+    - '---------------INS SimpleName@@MethodName:remove:[] @TO@ MethodInvocation@@REGISTRY.remove() '
+  repair_actions_cnt: 6

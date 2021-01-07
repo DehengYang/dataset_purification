@@ -1,0 +1,107 @@
+1 bug_id: Closure-86
+2 src folder:
+  name of src folder: src
+  number of files: 369
+  number of java files: 357
+  number of src classes: 1156
+  number of test classes: 187
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.PureFunctionIdentifierTest#testIssue303
+  - com.google.javascript.jscomp.PureFunctionIdentifierTest#testAnnotationInExterns_new4
+  - com.google.javascript.jscomp.PureFunctionIdentifierTest#testAnnotationInExterns_new6
+  - com.google.javascript.jscomp.NodeUtilTest#testLocalValue1
+  - com.google.javascript.jscomp.PureFunctionIdentifierTest#testLocalizedSideEffects8
+  - com.google.javascript.jscomp.PureFunctionIdentifierTest#testLocalizedSideEffects9
+  - com.google.javascript.jscomp.PureFunctionIdentifierTest#testIssue303b
+  failing tests:
+  - com.google.javascript.jscomp.PureFunctionIdentifierTest
+  - com.google.javascript.jscomp.NodeUtilTest
+  number of all test cases: 6424
+  number of failing test cases: 7
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.013
+  purification via delta debugging: 150.91
+  repair actions extraction: 2.325
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.NodeUtilTest#testLocalValue1: 1014
+    com.google.javascript.jscomp.PureFunctionIdentifierTest#testAnnotationInExterns_new4: 5428
+    com.google.javascript.jscomp.PureFunctionIdentifierTest#testAnnotationInExterns_new6: 5569
+    com.google.javascript.jscomp.PureFunctionIdentifierTest#testIssue303: 5759
+    com.google.javascript.jscomp.PureFunctionIdentifierTest#testIssue303b: 5837
+    com.google.javascript.jscomp.PureFunctionIdentifierTest#testLocalizedSideEffects8: 5675
+    com.google.javascript.jscomp.PureFunctionIdentifierTest#testLocalizedSideEffects9: 5702
+  fixed:
+    com.google.javascript.jscomp.NodeUtilTest#testLocalValue1: 1187
+    com.google.javascript.jscomp.PureFunctionIdentifierTest#testAnnotationInExterns_new4: 5427
+    com.google.javascript.jscomp.PureFunctionIdentifierTest#testAnnotationInExterns_new6: 5571
+    com.google.javascript.jscomp.PureFunctionIdentifierTest#testIssue303: 5758
+    com.google.javascript.jscomp.PureFunctionIdentifierTest#testIssue303b: 5832
+    com.google.javascript.jscomp.PureFunctionIdentifierTest#testLocalizedSideEffects8: 5692
+    com.google.javascript.jscomp.PureFunctionIdentifierTest#testLocalizedSideEffects9: 5719
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 1
+  failFail: 1
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_86/src/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 11:18:17.823071596 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_86/purify/patch/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 11:18:17.823071596 -0400\n@@ -2462,7 +2462,7 @@\n         // TODO(nicksantos):\
+    \ This needs to be changed so that it\n         // returns true iff we're sure\
+    \ the value was never aliased from inside\n         // the constructor (similar\
+    \ to callHasLocalResult)\n-        return true;\n+        return false;\n    \
+    \   case Token.FUNCTION:\n       case Token.REGEXP:\n       case Token.ARRAYLIT:"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_86/src/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 11:21:18.616305286 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_86/purify/purified/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 11:21:18.616305286 -0400\n@@ -2462,7 +2462,7 @@\n         // TODO(nicksantos):\
+    \ This needs to be changed so that it\n         // returns true iff we're sure\
+    \ the value was never aliased from inside\n         // the constructor (similar\
+    \ to callHasLocalResult)\n-        return true;\n+        return false;\n    \
+    \   case Token.FUNCTION:\n       case Token.REGEXP:\n       case Token.ARRAYLIT:"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NodeUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@BooleanLiteral:true @TO@ BooleanLiteral:false '
+    - '---UPD BooleanLiteral@@true @TO@ false '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NodeUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@BooleanLiteral:true @TO@ BooleanLiteral:false '
+    - '---UPD BooleanLiteral@@true @TO@ false '
+  files_cnt: '1'
+  repair_actions_cnt: 1

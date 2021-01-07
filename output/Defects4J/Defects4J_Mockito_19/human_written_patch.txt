@@ -1,0 +1,117 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/src/org/mockito/internal/configuration/injection/filter/FinalMockCandidateFilter.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/fixed-version/src/org/mockito/internal/configuration/injection/filter/FinalMockCandidateFilter.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/src/org/mockito/internal/configuration/injection/filter/FinalMockCandidateFilter.java	2020-03-01 00:37:24.541476635 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/fixed-version/src/org/mockito/internal/configuration/injection/filter/FinalMockCandidateFilter.java	2020-03-01 00:37:28.245651172 -0800
+@@ -10,6 +10,7 @@
+ 
+ import java.lang.reflect.Field;
+ import java.util.Collection;
++import java.util.List;
+ 
+ /**
+  * This node returns an actual injecter which will be either :
+@@ -20,7 +21,7 @@
+  * </ul>
+  */
+ public class FinalMockCandidateFilter implements MockCandidateFilter {
+-    public OngoingInjecter filterCandidate(final Collection<Object> mocks, final Field field, final Object fieldInstance) {
++    public OngoingInjecter filterCandidate(final Collection<Object> mocks, final Field field, List<Field> fields, final Object fieldInstance) {
+         if(mocks.size() == 1) {
+             final Object matchingMock = mocks.iterator().next();
+ 
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/src/org/mockito/internal/configuration/injection/filter/MockCandidateFilter.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/fixed-version/src/org/mockito/internal/configuration/injection/filter/MockCandidateFilter.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/src/org/mockito/internal/configuration/injection/filter/MockCandidateFilter.java	2020-03-01 00:37:24.541476635 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/fixed-version/src/org/mockito/internal/configuration/injection/filter/MockCandidateFilter.java	2020-03-01 00:37:28.245651172 -0800
+@@ -6,13 +6,14 @@
+ 
+ import java.lang.reflect.Field;
+ import java.util.Collection;
++import java.util.List;
+ 
+ public interface MockCandidateFilter {
+ 
+     OngoingInjecter filterCandidate(
+             Collection<Object> mocks,
+             Field fieldToBeInjected,
+-            Object fieldInstance
++            List<Field> fields, Object instance
+     );
+ 
+ }
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/src/org/mockito/internal/configuration/injection/filter/NameBasedCandidateFilter.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/fixed-version/src/org/mockito/internal/configuration/injection/filter/NameBasedCandidateFilter.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/src/org/mockito/internal/configuration/injection/filter/NameBasedCandidateFilter.java	2020-03-01 00:37:24.573478143 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/fixed-version/src/org/mockito/internal/configuration/injection/filter/NameBasedCandidateFilter.java	2020-03-01 00:37:28.245651172 -0800
+@@ -20,7 +20,7 @@
+ 	}
+ 
+ 	public OngoingInjecter filterCandidate(Collection<Object> mocks,
+-			Field field, Object fieldInstance) {
++			Field field, List<Field> fields, Object fieldInstance) {
+ 		List<Object> mockNameMatches = new ArrayList<Object>();
+ 		if (mocks.size() > 1) {
+ 			for (Object mock : mocks) {
+@@ -28,7 +28,7 @@
+ 					mockNameMatches.add(mock);
+ 				}
+ 			}
+-			return next.filterCandidate(mockNameMatches, field,
++			return next.filterCandidate(mockNameMatches, field, fields,
+ 					fieldInstance);
+ 			/*
+ 			 * In this case we have to check whether we have conflicting naming
+@@ -39,7 +39,23 @@
+ 			 * whenever we find a field that does match its name with the mock
+ 			 * name, we should take that field instead.
+ 			 */
++		} else if (mocks.size() == 1) {
++			String mockName = mockUtil.getMockName(mocks.iterator().next())
++					.toString();
++
++			for (Field otherField : fields) {
++				if (!otherField.equals(field)
++						&& otherField.getType().equals(field.getType())
++						&& otherField.getName().equals(mockName)) {
++
++					return new OngoingInjecter() {
++						public Object thenInject() {
++							return null;
++						}
++					};
++				}
++			}
+ 		}
+-		return next.filterCandidate(mocks, field, fieldInstance);
++		return next.filterCandidate(mocks, field, fields, fieldInstance);
+ 	}
+ }
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/src/org/mockito/internal/configuration/injection/filter/TypeBasedCandidateFilter.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/fixed-version/src/org/mockito/internal/configuration/injection/filter/TypeBasedCandidateFilter.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/src/org/mockito/internal/configuration/injection/filter/TypeBasedCandidateFilter.java	2020-03-01 00:37:24.541476635 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/fixed-version/src/org/mockito/internal/configuration/injection/filter/TypeBasedCandidateFilter.java	2020-03-01 00:37:28.245651172 -0800
+@@ -17,7 +17,7 @@
+         this.next = next;
+     }
+ 
+-    public OngoingInjecter filterCandidate(Collection<Object> mocks, Field field, Object fieldInstance) {
++    public OngoingInjecter filterCandidate(Collection<Object> mocks, Field field, List<Field> fields, Object fieldInstance) {
+         List<Object> mockTypeMatches = new ArrayList<Object>();
+         for (Object mock : mocks) {
+             if (field.getType().isAssignableFrom(mock.getClass())) {
+@@ -25,6 +25,6 @@
+             }
+         }
+ 
+-        return next.filterCandidate(mockTypeMatches, field, fieldInstance);
++        return next.filterCandidate(mockTypeMatches, field, fields, fieldInstance);
+     }
+ }
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/src/org/mockito/internal/configuration/injection/PropertyAndSetterInjection.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/fixed-version/src/org/mockito/internal/configuration/injection/PropertyAndSetterInjection.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/src/org/mockito/internal/configuration/injection/PropertyAndSetterInjection.java	2020-03-01 00:37:24.541476635 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_19/fixed-version/src/org/mockito/internal/configuration/injection/PropertyAndSetterInjection.java	2020-03-01 00:37:28.245651172 -0800
+@@ -111,7 +111,7 @@
+     private boolean injectMockCandidatesOnFields(Set<Object> mocks, Object instance, boolean injectionOccurred, List<Field> orderedInstanceFields) {
+         for (Iterator<Field> it = orderedInstanceFields.iterator(); it.hasNext(); ) {
+             Field field = it.next();
+-            Object injected = mockCandidateFilter.filterCandidate(mocks, field, instance).thenInject();
++            Object injected = mockCandidateFilter.filterCandidate(mocks, field, orderedInstanceFields, instance).thenInject();
+             if (injected != null) {
+                 injectionOccurred |= true;
+                 mocks.remove(injected);

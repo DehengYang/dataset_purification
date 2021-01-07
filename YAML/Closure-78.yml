@@ -1,0 +1,130 @@
+1 bug_id: Closure-78
+2 src folder:
+  name of src folder: src
+  number of files: 379
+  number of java files: 366
+  number of src classes: 1172
+  number of test classes: 193
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.PeepholeFoldConstantsTest#testFoldArithmetic
+  failing tests:
+  - com.google.javascript.jscomp.PeepholeFoldConstantsTest
+  number of all test cases: 6741
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.06
+  purification via delta debugging: 159.124
+  repair actions extraction: 2.735
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testFoldArithmetic: 2467
+  fixed:
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testFoldArithmetic: 2359
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 0
+  covDel: 2
+  cov_patch_lines: 2
+  delta_patch_lines: 1
+  oriAdd: 0
+  oriDel: 2
+  ori_patch_lines: 2
+  purAdd: 0
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 0
+  total: 2
+9 sibling repair actions:
+- 0 1 1.0
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_78/src/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-23 09:58:44.436886520 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_78/purify/patch/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-23 09:58:44.432886404 -0400\n@@ -708,14 +708,12 @@\n         break;\n\
+    \       case Token.MOD:\n         if (rval == 0) {\n-          error(DiagnosticType.error(\"\
+    JSC_DIVIDE_BY_0_ERROR\", \"Divide by 0\"), right);\n           return null;\n\
+    \         }\n         result = lval % rval;\n         break;\n       case Token.DIV:\n\
+    \         if (rval == 0) {\n-          error(DiagnosticType.error(\"JSC_DIVIDE_BY_0_ERROR\"\
+    , \"Divide by 0\"), right);\n           return null;\n         }\n         result\
+    \ = lval / rval;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_78/src/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-23 10:01:49.850254606 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_78/purify/purified/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-23 10:01:49.846254491 -0400\n@@ -715,7 +715,6 @@\n         break;\n  \
+    \     case Token.DIV:\n         if (rval == 0) {\n-          error(DiagnosticType.error(\"\
+    JSC_DIVIDE_BY_0_ERROR\", \"Divide by 0\"), right);\n           return null;\n\
+    \         }\n         result = lval / rval;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeFoldConstants:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@MethodInvocation:error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR","Divide
+      by 0"),right) '
+    - '---DEL MethodInvocation@@error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR","Divide
+      by 0"),right) '
+    - '------DEL SimpleName@@MethodName:error:[DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR","Divide
+      by 0"), right] '
+    - '---------DEL MethodInvocation@@DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR","Divide
+      by 0") '
+    - '------------DEL SimpleName@@Name:DiagnosticType '
+    - '------------DEL SimpleName@@MethodName:error:["JSC_DIVIDE_BY_0_ERROR", "Divide
+      by 0"] '
+    - '---------------DEL StringLiteral@@"JSC_DIVIDE_BY_0_ERROR" '
+    - '---------------DEL StringLiteral@@"Divide by 0" '
+    - '---------DEL SimpleName@@right '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@MethodInvocation:error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR","Divide
+      by 0"),right) '
+    - '---DEL MethodInvocation@@error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR","Divide
+      by 0"),right) '
+    - '------DEL SimpleName@@MethodName:error:[DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR","Divide
+      by 0"), right] '
+    - '---------DEL MethodInvocation@@DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR","Divide
+      by 0") '
+    - '------------DEL SimpleName@@Name:DiagnosticType '
+    - '------------DEL SimpleName@@MethodName:error:["JSC_DIVIDE_BY_0_ERROR", "Divide
+      by 0"] '
+    - '---------------DEL StringLiteral@@"JSC_DIVIDE_BY_0_ERROR" '
+    - '---------------DEL StringLiteral@@"Divide by 0" '
+    - '---------DEL SimpleName@@right '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeFoldConstants:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@MethodInvocation:error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR","Divide
+      by 0"),right) '
+    - '---DEL MethodInvocation@@error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR","Divide
+      by 0"),right) '
+    - '------DEL SimpleName@@MethodName:error:[DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR","Divide
+      by 0"), right] '
+    - '---------DEL MethodInvocation@@DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR","Divide
+      by 0") '
+    - '------------DEL SimpleName@@Name:DiagnosticType '
+    - '------------DEL SimpleName@@MethodName:error:["JSC_DIVIDE_BY_0_ERROR", "Divide
+      by 0"] '
+    - '---------------DEL StringLiteral@@"JSC_DIVIDE_BY_0_ERROR" '
+    - '---------------DEL StringLiteral@@"Divide by 0" '
+    - '---------DEL SimpleName@@right '
+  files_cnt: '1'
+  repair_actions_cnt: 1

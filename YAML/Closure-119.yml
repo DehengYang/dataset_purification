@@ -1,0 +1,90 @@
+1 bug_id: Closure-119
+2 src folder:
+  name of src folder: src
+  number of files: 444
+  number of java files: 428
+  number of src classes: 1427
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CheckGlobalNamesTest#testGlobalCatch
+  failing tests:
+  - com.google.javascript.jscomp.CheckGlobalNamesTest
+  number of all test cases: 8292
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.988
+  purification via delta debugging: 193.852
+  repair actions extraction: 1.831
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CheckGlobalNamesTest#testGlobalCatch: 3452
+  fixed:
+    com.google.javascript.jscomp.CheckGlobalNamesTest#testGlobalCatch: 3668
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 0
+  cov_patch_lines: 1
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 0
+  ori_patch_lines: 1
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 0
+  total: 0
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_119/src/com/google/javascript/jscomp/GlobalNamespace.java\t\
+    2020-10-23 16:36:09.923285450 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_119/purify/patch/com/google/javascript/jscomp/GlobalNamespace.java\t\
+    2020-10-23 16:36:09.923285450 -0400\n@@ -363,6 +363,7 @@\n                 isSet\
+    \ = true;\n                 type = Name.Type.FUNCTION;\n                 break;\n\
+    +              case Token.CATCH:\n               case Token.INC:\n           \
+    \    case Token.DEC:\n                 isSet = true;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_119/src/com/google/javascript/jscomp/GlobalNamespace.java\t\
+    2020-10-23 16:39:55.725817301 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_119/purify/purified/com/google/javascript/jscomp/GlobalNamespace.java\t\
+    2020-10-23 16:39:55.725817301 -0400\n@@ -363,6 +363,7 @@\n                 isSet\
+    \ = true;\n                 type = Name.Type.FUNCTION;\n                 break;\n\
+    +              case Token.CATCH:\n               case Token.INC:\n           \
+    \    case Token.DEC:\n                 isSet = true;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/GlobalNamespace:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.CATCH @TO@ SwitchStatement@@MethodInvocation:parent.getType() '
+    - '---INS QualifiedName@@Token.CATCH @TO@ SwitchCase@@QualifiedName:Token.CATCH '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.CATCH '
+    - '------INS SimpleName@@CATCH @TO@ QualifiedName@@Token.CATCH '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/GlobalNamespace:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.CATCH @TO@ SwitchStatement@@MethodInvocation:parent.getType() '
+    - '---INS QualifiedName@@Token.CATCH @TO@ SwitchCase@@QualifiedName:Token.CATCH '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.CATCH '
+    - '------INS SimpleName@@CATCH @TO@ QualifiedName@@Token.CATCH '
+  files_cnt: '1'
+  repair_actions_cnt: 1

@@ -1,0 +1,116 @@
+1 bug_id: Lang-16
+2 src folder:
+  name of src folder: java
+  number of files: 119
+  number of java files: 105
+  number of src classes: 160
+  number of test classes: 105
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.math.NumberUtilsTest#testCreateNumber
+  failing tests:
+  - org.apache.commons.lang3.math.NumberUtilsTest
+  number of all test cases: 2046
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 9.0
+  purification via coverage: 0.001
+  purification via delta debugging: 27.036
+  repair actions extraction: 1.544
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.math.NumberUtilsTest#testCreateNumber: 101
+  fixed:
+    org.apache.commons.lang3.math.NumberUtilsTest#testCreateNumber: 228
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_16/src/main/java/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-21 00:57:48.019458687 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_16/purify/patch/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-21 00:57:48.015458571 -0400\n@@ -455,7 +455,7 @@\n             // a wrong\
+    \ value.\n             return null;\n         }\n-        if (str.startsWith(\"\
+    0x\") || str.startsWith(\"-0x\")) {\n+        if (str.startsWith(\"0x\") || str.startsWith(\"\
+    -0x\") || str.startsWith(\"0X\") || str.startsWith(\"-0X\")) {\n             return\
+    \ createInteger(str);\n         }   \n         char lastChar = str.charAt(str.length()\
+    \ - 1);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_16/src/main/java/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-21 00:58:26.180560863 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_16/purify/purified/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-21 00:58:26.176560747 -0400\n@@ -455,7 +455,7 @@\n             // a wrong\
+    \ value.\n             return null;\n         }\n-        if (str.startsWith(\"\
+    0x\") || str.startsWith(\"-0x\")) {\n+        if (str.startsWith(\"0x\") || str.startsWith(\"\
+    -0x\") || str.startsWith(\"0X\") || str.startsWith(\"-0X\")) {\n             return\
+    \ createInteger(str);\n         }   \n         char lastChar = str.charAt(str.length()\
+    \ - 1);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:str.startsWith("0x") || str.startsWith("-0x")
+      @TO@ InfixExpression:str.startsWith("0x") || str.startsWith("-0x") || str.startsWith("0X")||
+      str.startsWith("-0X") '
+    - '---UPD InfixExpression@@str.startsWith("0x") || str.startsWith("-0x") @TO@
+      str.startsWith("0x") || str.startsWith("-0x") || str.startsWith("0X")|| str.startsWith("-0X") '
+    - '------INS MethodInvocation@@str.startsWith("0X") @TO@ InfixExpression@@str.startsWith("0x")
+      || str.startsWith("-0x") '
+    - '---------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.startsWith("0X") '
+    - '---------INS SimpleName@@MethodName:startsWith:["0X"] @TO@ MethodInvocation@@str.startsWith("0X") '
+    - '------------INS StringLiteral@@"0X" @TO@ SimpleName@@MethodName:startsWith:["0X"] '
+    - '------INS MethodInvocation@@str.startsWith("-0X") @TO@ InfixExpression@@str.startsWith("0x")
+      || str.startsWith("-0x") '
+    - '---------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.startsWith("-0X") '
+    - '---------INS SimpleName@@MethodName:startsWith:["-0X"] @TO@ MethodInvocation@@str.startsWith("-0X") '
+    - '------------INS StringLiteral@@"-0X" @TO@ SimpleName@@MethodName:startsWith:["-0X"] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:str.startsWith("0x") || str.startsWith("-0x")
+      @TO@ InfixExpression:str.startsWith("0x") || str.startsWith("-0x") || str.startsWith("0X")||
+      str.startsWith("-0X") '
+    - '---UPD InfixExpression@@str.startsWith("0x") || str.startsWith("-0x") @TO@
+      str.startsWith("0x") || str.startsWith("-0x") || str.startsWith("0X")|| str.startsWith("-0X") '
+    - '------INS MethodInvocation@@str.startsWith("0X") @TO@ InfixExpression@@str.startsWith("0x")
+      || str.startsWith("-0x") '
+    - '---------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.startsWith("0X") '
+    - '---------INS SimpleName@@MethodName:startsWith:["0X"] @TO@ MethodInvocation@@str.startsWith("0X") '
+    - '------------INS StringLiteral@@"0X" @TO@ SimpleName@@MethodName:startsWith:["0X"] '
+    - '------INS MethodInvocation@@str.startsWith("-0X") @TO@ InfixExpression@@str.startsWith("0x")
+      || str.startsWith("-0x") '
+    - '---------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.startsWith("-0X") '
+    - '---------INS SimpleName@@MethodName:startsWith:["-0X"] @TO@ MethodInvocation@@str.startsWith("-0X") '
+    - '------------INS StringLiteral@@"-0X" @TO@ SimpleName@@MethodName:startsWith:["-0X"] '
+  repair_actions_cnt: 1

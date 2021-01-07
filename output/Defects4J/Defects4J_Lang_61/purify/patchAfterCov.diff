@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_61/src/java/org/apache/commons/lang/text/StrBuilder.java	2020-10-21 04:07:15.267635426 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_61/purify/assertBeforeMut/org/apache/commons/lang/text/StrBuilder.java	2020-10-21 04:07:15.263635311 -0400
+@@ -1773,7 +1773,7 @@
+             return -1;
+         }
+         char[] thisBuf = buffer;
+-        int len = thisBuf.length - strLen;
++        int len = size - strLen + 1;
+         outer:
+         for (int i = startIndex; i < len; i++) {
+             for (int j = 0; j < strLen; j++) {

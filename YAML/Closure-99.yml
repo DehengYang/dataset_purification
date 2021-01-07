@@ -1,0 +1,226 @@
+1 bug_id: Closure-99
+2 src folder:
+  name of src folder: src
+  number of files: 341
+  number of java files: 330
+  number of src classes: 1047
+  number of test classes: 171
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testMethod4
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testPropertyOfMethod
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testInterface1
+  failing tests:
+  - com.google.javascript.jscomp.CheckGlobalThisTest
+  number of all test cases: 5694
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.454
+  purification via delta debugging: 209.449
+  repair actions extraction: 0.922
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CheckGlobalThisTest#testInterface1: 2304
+    com.google.javascript.jscomp.CheckGlobalThisTest#testMethod4: 1976
+    com.google.javascript.jscomp.CheckGlobalThisTest#testPropertyOfMethod: 1914
+  fixed:
+    com.google.javascript.jscomp.CheckGlobalThisTest#testInterface1: 2501
+    com.google.javascript.jscomp.CheckGlobalThisTest#testMethod4: 2237
+    com.google.javascript.jscomp.CheckGlobalThisTest#testPropertyOfMethod: 1970
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 6
+  covDel: 1
+  cov_patch_lines: 7
+  delta_patch_lines: 7
+  oriAdd: 6
+  oriDel: 1
+  ori_patch_lines: 7
+  purAdd: 6
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 8
+  failFail: 5
+  passed: 0
+  total: 13
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_99/src/com/google/javascript/jscomp/CheckGlobalThis.java\t\
+    2020-10-23 12:47:51.398621243 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_99/purify/patch/com/google/javascript/jscomp/CheckGlobalThis.java\t\
+    2020-10-23 12:47:51.398621243 -0400\n@@ -89,6 +89,7 @@\n       JSDocInfo jsDoc\
+    \ = getFunctionJsDocInfo(n);\n       if (jsDoc != null &&\n           (jsDoc.isConstructor()\
+    \ ||\n+           jsDoc.isInterface() ||\n            jsDoc.hasThisType() ||\n\
+    \            jsDoc.isOverride())) {\n         return false;\n@@ -122,13 +123,17\
+    \ @@\n       } else {\n         // Only traverse the right side if it's not an\
+    \ assignment to a prototype\n         // property or subproperty.\n+        if\
+    \ (NodeUtil.isGet(lhs)) {\n           if (lhs.getType() == Token.GETPROP &&\n\
+    \               lhs.getLastChild().getString().equals(\"prototype\")) {\n    \
+    \         return false;\n           }\n-          if (lhs.getQualifiedName() !=\
+    \ null && lhs.getQualifiedName().contains(\".prototype.\")) {\n+          Node\
+    \ llhs = lhs.getFirstChild();\n+          if (llhs.getType() == Token.GETPROP\
+    \ &&\n+              llhs.getLastChild().getString().equals(\"prototype\")) {\n\
+    \             return false;\n           }\n+        }\n       }\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_99/src/com/google/javascript/jscomp/CheckGlobalThis.java\t\
+    2020-10-23 12:51:48.509485030 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_99/purify/purified/com/google/javascript/jscomp/CheckGlobalThis.java\t\
+    2020-10-23 12:51:48.509485030 -0400\n@@ -89,6 +89,7 @@\n       JSDocInfo jsDoc\
+    \ = getFunctionJsDocInfo(n);\n       if (jsDoc != null &&\n           (jsDoc.isConstructor()\
+    \ ||\n+           jsDoc.isInterface() ||\n            jsDoc.hasThisType() ||\n\
+    \            jsDoc.isOverride())) {\n         return false;\n@@ -122,13 +123,17\
+    \ @@\n       } else {\n         // Only traverse the right side if it's not an\
+    \ assignment to a prototype\n         // property or subproperty.\n+        if\
+    \ (NodeUtil.isGet(lhs)) {\n           if (lhs.getType() == Token.GETPROP &&\n\
+    \               lhs.getLastChild().getString().equals(\"prototype\")) {\n    \
+    \         return false;\n           }\n-          if (lhs.getQualifiedName() !=\
+    \ null && lhs.getQualifiedName().contains(\".prototype.\")) {\n+          Node\
+    \ llhs = lhs.getFirstChild();\n+          if (llhs.getType() == Token.GETPROP\
+    \ &&\n+              llhs.getLastChild().getString().equals(\"prototype\")) {\n\
+    \             return false;\n           }\n+        }\n       }\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CheckGlobalThis:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:jsDoc != null && (jsDoc.isConstructor() ||
+      jsDoc.hasThisType() || jsDoc.isOverride()) @TO@ InfixExpression:jsDoc != null
+      && (jsDoc.isConstructor() || jsDoc.isInterface() || jsDoc.hasThisType()|| jsDoc.isOverride()) '
+    - '---UPD InfixExpression@@jsDoc != null && (jsDoc.isConstructor() || jsDoc.hasThisType()
+      || jsDoc.isOverride()) @TO@ jsDoc != null && (jsDoc.isConstructor() || jsDoc.isInterface()
+      || jsDoc.hasThisType()|| jsDoc.isOverride()) '
+    - '------UPD ParenthesizedExpression@@(jsDoc.isConstructor() || jsDoc.hasThisType()
+      || jsDoc.isOverride()) @TO@ (jsDoc.isConstructor() || jsDoc.isInterface() ||
+      jsDoc.hasThisType()|| jsDoc.isOverride()) '
+    - '---------UPD InfixExpression@@jsDoc.isConstructor() || jsDoc.hasThisType()
+      || jsDoc.isOverride() @TO@ jsDoc.isConstructor() || jsDoc.isInterface() || jsDoc.hasThisType()||
+      jsDoc.isOverride() '
+    - '------------INS MethodInvocation@@jsDoc.isInterface() @TO@ InfixExpression@@jsDoc.isConstructor()
+      || jsDoc.hasThisType() || jsDoc.isOverride() '
+    - '---------------INS SimpleName@@Name:jsDoc @TO@ MethodInvocation@@jsDoc.isInterface() '
+    - '---------------INS SimpleName@@MethodName:isInterface:[] @TO@ MethodInvocation@@jsDoc.isInterface() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:NodeUtil.isGet(lhs) @TO@ IfStatement@@InfixExpression:n
+      == lhs '
+    - '---MOV IfStatement@@InfixExpression:lhs.getType() == Token.GETPROP && lhs.getLastChild().getString().equals("prototype")
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isGet(lhs) '
+    - '---INS MethodInvocation@@NodeUtil.isGet(lhs) @TO@ IfStatement@@MethodInvocation:NodeUtil.isGet(lhs) '
+    - '------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isGet(lhs) '
+    - '------INS SimpleName@@MethodName:isGet:[lhs] @TO@ MethodInvocation@@NodeUtil.isGet(lhs) '
+    - '---------INS SimpleName@@lhs @TO@ SimpleName@@MethodName:isGet:[lhs] '
+    - '---MOV IfStatement@@InfixExpression:lhs.getQualifiedName() != null && lhs.getQualifiedName().contains(".prototype.")
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isGet(lhs) '
+    - '---INS VariableDeclarationStatement@@Node llhs=lhs.getFirstChild(); @TO@ IfStatement@@MethodInvocation:NodeUtil.isGet(lhs) '
+    - '------INS SimpleType@@Node @TO@ VariableDeclarationStatement@@Node llhs=lhs.getFirstChild(); '
+    - '------INS VariableDeclarationFragment@@llhs=lhs.getFirstChild() @TO@ VariableDeclarationStatement@@Node
+      llhs=lhs.getFirstChild(); '
+    - '---------INS SimpleName@@llhs @TO@ VariableDeclarationFragment@@llhs=lhs.getFirstChild() '
+    - '---------INS MethodInvocation@@lhs.getFirstChild() @TO@ VariableDeclarationFragment@@llhs=lhs.getFirstChild() '
+    - '------------INS SimpleName@@Name:lhs @TO@ MethodInvocation@@lhs.getFirstChild() '
+    - '------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@lhs.getFirstChild() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:lhs.getQualifiedName() != null && lhs.getQualifiedName().contains(".prototype.")
+      @TO@ InfixExpression:llhs.getType() == Token.GETPROP && llhs.getLastChild().getString().equals("prototype") '
+    - '---UPD InfixExpression@@lhs.getQualifiedName() != null && lhs.getQualifiedName().contains(".prototype.")
+      @TO@ llhs.getType() == Token.GETPROP && llhs.getLastChild().getString().equals("prototype") '
+    - '------UPD InfixExpression@@lhs.getQualifiedName() != null @TO@ llhs.getType()
+      == Token.GETPROP '
+    - '---------UPD MethodInvocation@@lhs.getQualifiedName() @TO@ llhs.getType() '
+    - '------------UPD SimpleName@@Name:lhs @TO@ Name:llhs '
+    - '------------UPD SimpleName@@MethodName:getQualifiedName:[] @TO@ MethodName:getType:[] '
+    - '---------UPD Operator@@!= @TO@ == '
+    - '---------DEL NullLiteral@@null '
+    - '---------INS QualifiedName@@Token.GETPROP @TO@ InfixExpression@@lhs.getQualifiedName()
+      != null '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETPROP '
+    - '------------INS SimpleName@@GETPROP @TO@ QualifiedName@@Token.GETPROP '
+    - '------UPD MethodInvocation@@lhs.getQualifiedName().contains(".prototype.")
+      @TO@ llhs.getLastChild().getString().equals("prototype") '
+    - '---------UPD SimpleName@@Name:lhs @TO@ Name:llhs '
+    - '---------UPD MethodInvocation@@MethodName:getQualifiedName:[] @TO@ MethodName:getString:[] '
+    - '---------UPD SimpleName@@MethodName:contains:[".prototype."] @TO@ MethodName:equals:["prototype"] '
+    - '------------UPD StringLiteral@@".prototype." @TO@ "prototype" '
+    - '---------INS MethodInvocation@@MethodName:getLastChild:[] @TO@ MethodInvocation@@lhs.getQualifiedName().contains(".prototype.") '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CheckGlobalThis:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:jsDoc != null && (jsDoc.isConstructor() ||
+      jsDoc.hasThisType() || jsDoc.isOverride()) @TO@ InfixExpression:jsDoc != null
+      && (jsDoc.isConstructor() || jsDoc.isInterface() || jsDoc.hasThisType()|| jsDoc.isOverride()) '
+    - '---UPD InfixExpression@@jsDoc != null && (jsDoc.isConstructor() || jsDoc.hasThisType()
+      || jsDoc.isOverride()) @TO@ jsDoc != null && (jsDoc.isConstructor() || jsDoc.isInterface()
+      || jsDoc.hasThisType()|| jsDoc.isOverride()) '
+    - '------UPD ParenthesizedExpression@@(jsDoc.isConstructor() || jsDoc.hasThisType()
+      || jsDoc.isOverride()) @TO@ (jsDoc.isConstructor() || jsDoc.isInterface() ||
+      jsDoc.hasThisType()|| jsDoc.isOverride()) '
+    - '---------UPD InfixExpression@@jsDoc.isConstructor() || jsDoc.hasThisType()
+      || jsDoc.isOverride() @TO@ jsDoc.isConstructor() || jsDoc.isInterface() || jsDoc.hasThisType()||
+      jsDoc.isOverride() '
+    - '------------INS MethodInvocation@@jsDoc.isInterface() @TO@ InfixExpression@@jsDoc.isConstructor()
+      || jsDoc.hasThisType() || jsDoc.isOverride() '
+    - '---------------INS SimpleName@@Name:jsDoc @TO@ MethodInvocation@@jsDoc.isInterface() '
+    - '---------------INS SimpleName@@MethodName:isInterface:[] @TO@ MethodInvocation@@jsDoc.isInterface() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:NodeUtil.isGet(lhs) @TO@ IfStatement@@InfixExpression:n
+      == lhs '
+    - '---MOV IfStatement@@InfixExpression:lhs.getType() == Token.GETPROP && lhs.getLastChild().getString().equals("prototype")
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isGet(lhs) '
+    - '---INS MethodInvocation@@NodeUtil.isGet(lhs) @TO@ IfStatement@@MethodInvocation:NodeUtil.isGet(lhs) '
+    - '------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isGet(lhs) '
+    - '------INS SimpleName@@MethodName:isGet:[lhs] @TO@ MethodInvocation@@NodeUtil.isGet(lhs) '
+    - '---------INS SimpleName@@lhs @TO@ SimpleName@@MethodName:isGet:[lhs] '
+    - '---MOV IfStatement@@InfixExpression:lhs.getQualifiedName() != null && lhs.getQualifiedName().contains(".prototype.")
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isGet(lhs) '
+    - '---INS VariableDeclarationStatement@@Node llhs=lhs.getFirstChild(); @TO@ IfStatement@@MethodInvocation:NodeUtil.isGet(lhs) '
+    - '------INS SimpleType@@Node @TO@ VariableDeclarationStatement@@Node llhs=lhs.getFirstChild(); '
+    - '------INS VariableDeclarationFragment@@llhs=lhs.getFirstChild() @TO@ VariableDeclarationStatement@@Node
+      llhs=lhs.getFirstChild(); '
+    - '---------INS SimpleName@@llhs @TO@ VariableDeclarationFragment@@llhs=lhs.getFirstChild() '
+    - '---------INS MethodInvocation@@lhs.getFirstChild() @TO@ VariableDeclarationFragment@@llhs=lhs.getFirstChild() '
+    - '------------INS SimpleName@@Name:lhs @TO@ MethodInvocation@@lhs.getFirstChild() '
+    - '------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@lhs.getFirstChild() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:lhs.getQualifiedName() != null && lhs.getQualifiedName().contains(".prototype.")
+      @TO@ InfixExpression:llhs.getType() == Token.GETPROP && llhs.getLastChild().getString().equals("prototype") '
+    - '---UPD InfixExpression@@lhs.getQualifiedName() != null && lhs.getQualifiedName().contains(".prototype.")
+      @TO@ llhs.getType() == Token.GETPROP && llhs.getLastChild().getString().equals("prototype") '
+    - '------UPD InfixExpression@@lhs.getQualifiedName() != null @TO@ llhs.getType()
+      == Token.GETPROP '
+    - '---------UPD MethodInvocation@@lhs.getQualifiedName() @TO@ llhs.getType() '
+    - '------------UPD SimpleName@@Name:lhs @TO@ Name:llhs '
+    - '------------UPD SimpleName@@MethodName:getQualifiedName:[] @TO@ MethodName:getType:[] '
+    - '---------UPD Operator@@!= @TO@ == '
+    - '---------DEL NullLiteral@@null '
+    - '---------INS QualifiedName@@Token.GETPROP @TO@ InfixExpression@@lhs.getQualifiedName()
+      != null '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETPROP '
+    - '------------INS SimpleName@@GETPROP @TO@ QualifiedName@@Token.GETPROP '
+    - '------UPD MethodInvocation@@lhs.getQualifiedName().contains(".prototype.")
+      @TO@ llhs.getLastChild().getString().equals("prototype") '
+    - '---------UPD SimpleName@@Name:lhs @TO@ Name:llhs '
+    - '---------UPD MethodInvocation@@MethodName:getQualifiedName:[] @TO@ MethodName:getString:[] '
+    - '---------UPD SimpleName@@MethodName:contains:[".prototype."] @TO@ MethodName:equals:["prototype"] '
+    - '------------UPD StringLiteral@@".prototype." @TO@ "prototype" '
+    - '---------INS MethodInvocation@@MethodName:getLastChild:[] @TO@ MethodInvocation@@lhs.getQualifiedName().contains(".prototype.") '
+  files_cnt: '1'
+  repair_actions_cnt: 3

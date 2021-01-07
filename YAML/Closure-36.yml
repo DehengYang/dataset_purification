@@ -1,0 +1,118 @@
+1 bug_id: Closure-36
+2 src folder:
+  name of src folder: src
+  number of files: 411
+  number of java files: 397
+  number of src classes: 1333
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.IntegrationTest#testSingletonGetter1
+  failing tests:
+  - com.google.javascript.jscomp.IntegrationTest
+  number of all test cases: 7417
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.518
+  purification via delta debugging: 208.929
+  repair actions extraction: 1.527
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.IntegrationTest#testSingletonGetter1: 9818
+  fixed:
+    com.google.javascript.jscomp.IntegrationTest#testSingletonGetter1: 8329
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_36/src/com/google/javascript/jscomp/InlineVariables.java\t\
+    2020-10-22 11:49:25.119853290 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_36/purify/patch/com/google/javascript/jscomp/InlineVariables.java\t\
+    2020-10-22 11:49:25.119853290 -0400\n@@ -572,6 +572,9 @@\n \n           // issue\
+    \ 668: Don't inline singleton getter methods\n           // calls as this confused\
+    \ class removing logic.\n+          if (convention.getSingletonGetterClassName(callNode)\
+    \ != null) {\n+            return false;\n+          }\n         }\n       }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_36/src/com/google/javascript/jscomp/InlineVariables.java\t\
+    2020-10-22 11:53:23.546748262 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_36/purify/purified/com/google/javascript/jscomp/InlineVariables.java\t\
+    2020-10-22 11:53:23.546748262 -0400\n@@ -572,6 +572,9 @@\n \n           // issue\
+    \ 668: Don't inline singleton getter methods\n           // calls as this confused\
+    \ class removing logic.\n+          if (convention.getSingletonGetterClassName(callNode)\
+    \ != null) {\n+            return false;\n+          }\n         }\n       }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/InlineVariables:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:convention.getSingletonGetterClassName(callNode)
+      != null @TO@ IfStatement@@MethodInvocation:reference.getParent().isCall() '
+    - '---INS InfixExpression@@convention.getSingletonGetterClassName(callNode) !=
+      null @TO@ IfStatement@@InfixExpression:convention.getSingletonGetterClassName(callNode)
+      != null '
+    - '------INS MethodInvocation@@convention.getSingletonGetterClassName(callNode)
+      @TO@ InfixExpression@@convention.getSingletonGetterClassName(callNode) != null '
+    - '---------INS SimpleName@@Name:convention @TO@ MethodInvocation@@convention.getSingletonGetterClassName(callNode) '
+    - '---------INS SimpleName@@MethodName:getSingletonGetterClassName:[callNode]
+      @TO@ MethodInvocation@@convention.getSingletonGetterClassName(callNode) '
+    - '------------INS SimpleName@@callNode @TO@ SimpleName@@MethodName:getSingletonGetterClassName:[callNode] '
+    - '------INS Operator@@!= @TO@ InfixExpression@@convention.getSingletonGetterClassName(callNode)
+      != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@convention.getSingletonGetterClassName(callNode)
+      != null '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:convention.getSingletonGetterClassName(callNode)
+      != null '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/InlineVariables:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:convention.getSingletonGetterClassName(callNode)
+      != null @TO@ IfStatement@@MethodInvocation:reference.getParent().isCall() '
+    - '---INS InfixExpression@@convention.getSingletonGetterClassName(callNode) !=
+      null @TO@ IfStatement@@InfixExpression:convention.getSingletonGetterClassName(callNode)
+      != null '
+    - '------INS MethodInvocation@@convention.getSingletonGetterClassName(callNode)
+      @TO@ InfixExpression@@convention.getSingletonGetterClassName(callNode) != null '
+    - '---------INS SimpleName@@Name:convention @TO@ MethodInvocation@@convention.getSingletonGetterClassName(callNode) '
+    - '---------INS SimpleName@@MethodName:getSingletonGetterClassName:[callNode]
+      @TO@ MethodInvocation@@convention.getSingletonGetterClassName(callNode) '
+    - '------------INS SimpleName@@callNode @TO@ SimpleName@@MethodName:getSingletonGetterClassName:[callNode] '
+    - '------INS Operator@@!= @TO@ InfixExpression@@convention.getSingletonGetterClassName(callNode)
+      != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@convention.getSingletonGetterClassName(callNode)
+      != null '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:convention.getSingletonGetterClassName(callNode)
+      != null '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  files_cnt: '1'
+  repair_actions_cnt: 1

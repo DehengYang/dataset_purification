@@ -1,0 +1,132 @@
+1 bug_id: Lang-2
+2 src folder:
+  name of src folder: java
+  number of files: 121
+  number of java files: 108
+  number of src classes: 169
+  number of test classes: 112
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.LocaleUtilsTest#testParseAllLocales
+  failing tests:
+  - org.apache.commons.lang3.LocaleUtilsTest
+  number of all test cases: 2291
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.752
+  purification via delta debugging: 69.045
+  repair actions extraction: 1.594
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.LocaleUtilsTest#testParseAllLocales: 28
+  fixed:
+    org.apache.commons.lang3.LocaleUtilsTest#testParseAllLocales: 30
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_2/src/main/java/org/apache/commons/lang3/LocaleUtils.java\t\
+    2020-10-22 01:10:32.027462421 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_2/purify/patch/org/apache/commons/lang3/LocaleUtils.java\t\
+    2020-10-22 01:10:32.027462421 -0400\n@@ -89,6 +89,9 @@\n         if (str == null)\
+    \ {\n             return null;\n         }\n+        if (str.contains(\"#\"))\
+    \ { // LANG-879 - Cannot handle Java 7 script & extensions\n+            throw\
+    \ new IllegalArgumentException(\"Invalid locale format: \" + str);\n+        }\n\
+    \         final int len = str.length();\n         if (len < 2) {\n           \
+    \  throw new IllegalArgumentException(\"Invalid locale format: \" + str);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_2/src/main/java/org/apache/commons/lang3/LocaleUtils.java\t\
+    2020-10-22 01:11:54.081834988 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_2/purify/purified/org/apache/commons/lang3/LocaleUtils.java\t\
+    2020-10-22 01:11:54.077834873 -0400\n@@ -89,6 +89,9 @@\n         if (str == null)\
+    \ {\n             return null;\n         }\n+        if (str.contains(\"#\"))\
+    \ { // LANG-879 - Cannot handle Java 7 script & extensions\n+            throw\
+    \ new IllegalArgumentException(\"Invalid locale format: \" + str);\n+        }\n\
+    \         final int len = str.length();\n         if (len < 2) {\n           \
+    \  throw new IllegalArgumentException(\"Invalid locale format: \" + str);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/LocaleUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:str.contains("#") @TO@ MethodDeclaration@@public,
+      static, @@Locale, MethodName:toLocale, @@Argus:String+str+ '
+    - '---INS MethodInvocation@@str.contains("#") @TO@ IfStatement@@MethodInvocation:str.contains("#") '
+    - '------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.contains("#") '
+    - '------INS SimpleName@@MethodName:contains:["#"] @TO@ MethodInvocation@@str.contains("#") '
+    - '---------INS StringLiteral@@"#" @TO@ SimpleName@@MethodName:contains:["#"] '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) @TO@ IfStatement@@MethodInvocation:str.contains("#") '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Invalid locale format:
+      " + str] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '---------INS InfixExpression@@"Invalid locale format: " + str @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS StringLiteral@@"Invalid locale format: " @TO@ InfixExpression@@"Invalid
+      locale format: " + str '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Invalid locale format: "
+      + str '
+    - '------------INS SimpleName@@str @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/LocaleUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:str.contains("#") @TO@ MethodDeclaration@@public,
+      static, @@Locale, MethodName:toLocale, @@Argus:String+str+ '
+    - '---INS MethodInvocation@@str.contains("#") @TO@ IfStatement@@MethodInvocation:str.contains("#") '
+    - '------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.contains("#") '
+    - '------INS SimpleName@@MethodName:contains:["#"] @TO@ MethodInvocation@@str.contains("#") '
+    - '---------INS StringLiteral@@"#" @TO@ SimpleName@@MethodName:contains:["#"] '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) @TO@ IfStatement@@MethodInvocation:str.contains("#") '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Invalid locale format:
+      " + str] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '---------INS InfixExpression@@"Invalid locale format: " + str @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS StringLiteral@@"Invalid locale format: " @TO@ InfixExpression@@"Invalid
+      locale format: " + str '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Invalid locale format: "
+      + str '
+    - '------------INS SimpleName@@str @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+  repair_actions_cnt: 1

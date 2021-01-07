@@ -1,0 +1,133 @@
+1 bug_id: Time-2
+2 src folder:
+  name of src folder: java
+  number of files: 186
+  number of java files: 157
+  number of src classes: 232
+  number of test classes: 124
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestPartial_Basics#testWith_baseAndArgHaveNoRange
+  failing tests:
+  - org.joda.time.TestPartial_Basics
+  number of all test cases: 4043
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.603
+  purification via delta debugging: 112.887
+  repair actions extraction: 1.398
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestPartial_Basics#testWith_baseAndArgHaveNoRange: 1746
+  fixed:
+    org.joda.time.TestPartial_Basics#testWith_baseAndArgHaveNoRange: 1752
+6 reduced lines:
+  by all: 5
+  by coverage: 3
+  by delta debugging: 2
+  covAdd: 4
+  covDel: 1
+  cov_patch_lines: 5
+  delta_patch_lines: 3
+  oriAdd: 7
+  oriDel: 1
+  ori_patch_lines: 8
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 2
+  by coverage: 1
+  by delta debugging: 1
+  cov: 2
+  original: 3
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 2
+  passed: 1
+  total: 9
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_2/src/main/java/org/joda/time/Partial.java\t\
+    2020-10-20 18:50:47.379071391 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_2/purify/patch/org/joda/time/Partial.java\t\
+    2020-10-20 18:50:47.379071391 -0400\n@@ -215,7 +215,7 @@\n             DurationField\
+    \ loopUnitField = loopType.getDurationType().getField(iChronology);\n        \
+    \     if (i > 0) {\n                 int compare = lastUnitField.compareTo(loopUnitField);\n\
+    -                if (compare < 0 || (compare != 0 && loopUnitField.isSupported()\
+    \ == false)) {\n+                if (compare < 0) {\n                     throw\
+    \ new IllegalArgumentException(\"Types array must be in order largest-smallest:\
+    \ \" +\n                             types[i - 1].getName() + \" < \" + loopType.getName());\n\
+    \                 } else if (compare == 0) {\n@@ -446,6 +446,9 @@\n          \
+    \               if (compare > 0) {\n                             break;\n    \
+    \                     } else if (compare == 0) {\n+                          \
+    \  if (fieldType.getRangeDurationType() == null) {\n+                        \
+    \        break;\n+                            }\n                            \
+    \ DurationField rangeField = fieldType.getRangeDurationType().getField(iChronology);\n\
+    \                             DurationField loopRangeField = loopType.getRangeDurationType().getField(iChronology);\n\
+    \                             if (rangeField.compareTo(loopRangeField) > 0) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_2/src/main/java/org/joda/time/field/UnsupportedDurationField.java\t\
+    2020-10-20 18:52:58.202852566 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_2/purify/purified/org/joda/time/field/UnsupportedDurationField.java\t\
+    2020-10-20 18:52:58.202852566 -0400\n@@ -224,6 +224,9 @@\n      * @return zero\
+    \ always\n      */\n     public int compareTo(DurationField durationField) {\n\
+    +        if (durationField.isSupported()) {\n+            return 1;\n+       \
+    \ }\n         return 0;\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/joda/time/field/UnsupportedDurationField, org/joda/time/Partial:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:compare < 0 || (compare != 0 && loopUnitField.isSupported()
+      == false) @TO@ InfixExpression:compare < 0 '
+    - '---INS InfixExpression@@compare < 0 @TO@ IfStatement@@InfixExpression:compare
+      < 0 || (compare != 0 && loopUnitField.isSupported() == false) '
+    - '------MOV SimpleName@@compare @TO@ InfixExpression@@compare < 0 '
+    - '------MOV Operator@@< @TO@ InfixExpression@@compare < 0 '
+    - '------MOV NumberLiteral@@0 @TO@ InfixExpression@@compare < 0 '
+    - '---DEL InfixExpression@@compare < 0 || (compare != 0 && loopUnitField.isSupported()
+      == false) '
+    - '------DEL InfixExpression@@compare < 0 '
+    - '------DEL Operator@@|| '
+    - '------DEL ParenthesizedExpression@@(compare != 0 && loopUnitField.isSupported()
+      == false) '
+    - '---------DEL InfixExpression@@compare != 0 && loopUnitField.isSupported() ==
+      false '
+    - '------------DEL InfixExpression@@compare != 0 '
+    - '---------------DEL SimpleName@@compare '
+    - '---------------DEL Operator@@!= '
+    - '---------------DEL NumberLiteral@@0 '
+    - '------------DEL Operator@@&& '
+    - '------------DEL InfixExpression@@loopUnitField.isSupported() == false '
+    - '---------------DEL MethodInvocation@@loopUnitField.isSupported() '
+    - '------------------DEL SimpleName@@Name:loopUnitField '
+    - '------------------DEL SimpleName@@MethodName:isSupported:[] '
+    - '---------------DEL Operator@@== '
+    - '---------------DEL BooleanLiteral@@false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:fieldType.getRangeDurationType() == null @TO@
+      IfStatement@@InfixExpression:compare == 0 '
+    - '---INS InfixExpression@@fieldType.getRangeDurationType() == null @TO@ IfStatement@@InfixExpression:fieldType.getRangeDurationType()
+      == null '
+    - '------INS MethodInvocation@@fieldType.getRangeDurationType() @TO@ InfixExpression@@fieldType.getRangeDurationType()
+      == null '
+    - '---------INS SimpleName@@Name:fieldType @TO@ MethodInvocation@@fieldType.getRangeDurationType() '
+    - '---------INS SimpleName@@MethodName:getRangeDurationType:[] @TO@ MethodInvocation@@fieldType.getRangeDurationType() '
+    - '------INS Operator@@== @TO@ InfixExpression@@fieldType.getRangeDurationType()
+      == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@fieldType.getRangeDurationType()
+      == null '
+    - '---INS BreakStatement@@ @TO@ IfStatement@@InfixExpression:fieldType.getRangeDurationType()
+      == null '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/joda/time/field/UnsupportedDurationField, org/joda/time/Partial: []
+  repair_actions_cnt: 1

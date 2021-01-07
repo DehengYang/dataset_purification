@@ -1,0 +1,15 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_1/src/main/java/org/joda/time/Partial.java	2020-10-20 20:01:06.040987751 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_1/purify/purified/org/joda/time/Partial.java	2020-10-20 20:01:06.040987751 -0400
+@@ -214,6 +214,12 @@
+             DateTimeFieldType loopType = types[i];
+             DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
+             if (i > 0) {
++                if (loopUnitField.isSupported() == false) {
++                    if (lastUnitField.isSupported()) {
++                        throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
++                                        types[i - 1].getName() + " < " + loopType.getName());
++                    }
++                }
+                 int compare = lastUnitField.compareTo(loopUnitField);
+                 if (compare < 0) {
+                     throw new IllegalArgumentException("Types array must be in order largest-smallest: " +

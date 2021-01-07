@@ -1,0 +1,15 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_101/src/com/google/javascript/jscomp/CommandLineRunner.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_101/fixed-version/src/com/google/javascript/jscomp/CommandLineRunner.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_101/src/com/google/javascript/jscomp/CommandLineRunner.java	2020-03-01 00:32:04.254384984 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_101/fixed-version/src/com/google/javascript/jscomp/CommandLineRunner.java	2020-03-01 00:32:07.334530118 -0800
+@@ -430,10 +430,8 @@
+     for (FormattingOption formattingOption : flags.formatting) {
+       formattingOption.applyToOptions(options);
+     }
+-    if (flags.process_closure_primitives) {
+-      options.closurePass = true;
+-    }
+ 
++    options.closurePass = flags.process_closure_primitives;
+     initOptionsFromFlags(options);
+     return options;
+   }

@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_58/src/java/org/apache/commons/lang/math/NumberUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_58/fixed-version/src/java/org/apache/commons/lang/math/NumberUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_58/src/java/org/apache/commons/lang/math/NumberUtils.java	2020-03-01 00:12:09.938110770 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_58/fixed-version/src/java/org/apache/commons/lang/math/NumberUtils.java	2020-03-01 00:12:13.402273988 -0800
+@@ -451,8 +451,7 @@
+                 case 'L' :
+                     if (dec == null
+                         && exp == null
+-                        && isDigits(numeric.substring(1))
+-                        && (numeric.charAt(0) == '-' || Character.isDigit(numeric.charAt(0)))) {
++                        && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
+                         try {
+                             return createLong(numeric);
+                         } catch (NumberFormatException nfe) {

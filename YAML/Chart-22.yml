@@ -1,0 +1,523 @@
+1 bug_id: Chart-22
+2 src folder:
+  name of src folder: source
+  number of files: 630
+  number of java files: 558
+  number of src classes: 582
+  number of test classes: 306
+3 test (cases):
+  failing test cases:
+  - org.jfree.data.junit.KeyedObjects2DTests#testRemoveColumnByIndex
+  - org.jfree.data.junit.KeyedObjects2DTests#testRemoveRowByKey
+  - org.jfree.data.junit.KeyedObjects2DTests#testGetValueByKey
+  - org.jfree.data.junit.KeyedObjects2DTests#testRemoveValue
+  - org.jfree.data.junit.KeyedObjects2DTests#testRemoveColumnByKey
+  - org.jfree.data.junit.KeyedObjects2DTests#testSetObject
+  failing tests:
+  - org.jfree.data.junit.KeyedObjects2DTests
+  number of all test cases: 1654
+  number of failing test cases: 6
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.197
+  purification via delta debugging: 473.932
+  repair actions extraction: 1.415
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.data.junit.KeyedObjects2DTests#testGetValueByKey: 72
+    org.jfree.data.junit.KeyedObjects2DTests#testRemoveColumnByIndex: 67
+    org.jfree.data.junit.KeyedObjects2DTests#testRemoveColumnByKey: 58
+    org.jfree.data.junit.KeyedObjects2DTests#testRemoveRowByKey: 75
+    org.jfree.data.junit.KeyedObjects2DTests#testRemoveValue: 74
+    org.jfree.data.junit.KeyedObjects2DTests#testSetObject: 70
+  fixed:
+    org.jfree.data.junit.KeyedObjects2DTests#testGetValueByKey: 94
+    org.jfree.data.junit.KeyedObjects2DTests#testRemoveColumnByIndex: 97
+    org.jfree.data.junit.KeyedObjects2DTests#testRemoveColumnByKey: 96
+    org.jfree.data.junit.KeyedObjects2DTests#testRemoveRowByKey: 88
+    org.jfree.data.junit.KeyedObjects2DTests#testRemoveValue: 103
+    org.jfree.data.junit.KeyedObjects2DTests#testSetObject: 88
+6 reduced lines:
+  by all: 16
+  by coverage: 3
+  by delta debugging: 13
+  covAdd: 29
+  covDel: 3
+  cov_patch_lines: 32
+  delta_patch_lines: 19
+  oriAdd: 32
+  oriDel: 3
+  ori_patch_lines: 35
+  purAdd: 16
+  purDel: 3
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 7
+  original: 7
+  purifiy: 6
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 52
+  failFail: 3
+  passed: 4
+  total: 59
+9 sibling repair actions:
+- 0 8 0.906058921623124
+- 4 5 0.7557978680120433
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_22/source/org/jfree/data/KeyedObjects2D.java\t\
+    2020-10-21 00:30:11.823624182 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_22/purify/patch/org/jfree/data/KeyedObjects2D.java\t\
+    2020-10-21 00:30:11.823624182 -0400\n@@ -228,9 +228,10 @@\n             throw\
+    \ new UnknownKeyException(\"Column key (\" + columnKey \n                    \
+    \ + \") not recognised.\");\n         }\n-        if (row >= 0) {\n         KeyedObjects\
+    \ rowData = (KeyedObjects) this.rows.get(row);\n-            return rowData.getObject(columnKey);\n\
+    +        int index = rowData.getIndex(columnKey);\n+        if (index >= 0) {\n\
+    +            return rowData.getObject(index);\n         }\n         else {\n \
+    \            return null;\n@@ -315,8 +316,29 @@\n         }\n         \n     \
+    \    // 2. check whether the column is now empty.\n+        allNull = true;\n\
+    \         \n+        for (int item = 0, itemCount = this.rows.size(); item < itemCount;\
+    \ \n+             item++) {\n+            row = (KeyedObjects) this.rows.get(item);\n\
+    +            int columnIndex = row.getIndex(columnKey);\n+            if (columnIndex\
+    \ >= 0 && row.getObject(columnIndex) != null) {\n+                allNull = false;\n\
+    +                break;\n+            }\n+        }\n         \n+        if (allNull)\
+    \ {\n+            for (int item = 0, itemCount = this.rows.size(); item < itemCount;\
+    \ \n+                 item++) {\n+                row = (KeyedObjects) this.rows.get(item);\n\
+    +                int columnIndex = row.getIndex(columnKey);\n+               \
+    \ if (columnIndex >= 0) {\n+                    row.removeValue(columnIndex);\n\
+    +                }\n+            }\n+            this.columnKeys.remove(columnKey);\n\
+    +        }\n     }\n \n     /**\n@@ -342,6 +364,10 @@\n      */\n     public void\
+    \ removeRow(Comparable rowKey) {\n         int index = getRowIndex(rowKey);\n\
+    +        if (index < 0) {\n+            throw new UnknownKeyException(\"Row key\
+    \ (\" + rowKey \n+                    + \") not recognised.\");\n+        }\n\
+    \         removeRow(index);\n     }\n \n@@ -375,7 +401,10 @@\n         Iterator\
+    \ iterator = this.rows.iterator();\n         while (iterator.hasNext()) {\n  \
+    \           KeyedObjects rowData = (KeyedObjects) iterator.next();\n-        \
+    \        rowData.removeValue(columnKey);\n+            int i = rowData.getIndex(columnKey);\n\
+    +            if (i >= 0) {\n+                rowData.removeValue(i);\n+      \
+    \      }\n         }\n         this.columnKeys.remove(columnKey);\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_22/source/org/jfree/data/KeyedObjects2D.java\t\
+    2020-10-21 00:38:21.985781073 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_22/purify/purified/org/jfree/data/KeyedObjects2D.java\t\
+    2020-10-21 00:38:21.985781073 -0400\n@@ -228,9 +228,10 @@\n             throw\
+    \ new UnknownKeyException(\"Column key (\" + columnKey \n                    \
+    \ + \") not recognised.\");\n         }\n-        if (row >= 0) {\n         KeyedObjects\
+    \ rowData = (KeyedObjects) this.rows.get(row);\n-            return rowData.getObject(columnKey);\n\
+    +        int index = rowData.getIndex(columnKey);\n+        if (index >= 0) {\n\
+    +            return rowData.getObject(index);\n         }\n         else {\n \
+    \            return null;\n@@ -316,7 +317,16 @@\n         \n         // 2. check\
+    \ whether the column is now empty.\n         \n+        for (int item = 0, itemCount\
+    \ = this.rows.size(); item < itemCount; \n+             item++) {\n+        }\n\
+    \         \n+        if (allNull) {\n+            for (int item = 0, itemCount\
+    \ = this.rows.size(); item < itemCount; \n+                 item++) {\n+     \
+    \       }\n+            this.columnKeys.remove(columnKey);\n+        }\n     }\n\
+    \ \n     /**\n@@ -342,6 +352,10 @@\n      */\n     public void removeRow(Comparable\
+    \ rowKey) {\n         int index = getRowIndex(rowKey);\n+        if (index < 0)\
+    \ {\n+            throw new UnknownKeyException(\"Row key (\" + rowKey \n+   \
+    \                 + \") not recognised.\");\n+        }\n         removeRow(index);\n\
+    \     }\n \n@@ -375,7 +389,6 @@\n         Iterator iterator = this.rows.iterator();\n\
+    \         while (iterator.hasNext()) {\n             KeyedObjects rowData = (KeyedObjects)\
+    \ iterator.next();\n-                rowData.removeValue(columnKey);\n       \
+    \  }\n         this.columnKeys.remove(columnKey);\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/KeyedObjects2D:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int index=rowData.getIndex(columnKey); @TO@
+      MethodDeclaration@@public, @@Object, MethodName:getObject, @@Argus:Comparable+rowKey+Comparable+columnKey+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int index=rowData.getIndex(columnKey); '
+    - '---INS VariableDeclarationFragment@@index=rowData.getIndex(columnKey) @TO@
+      VariableDeclarationStatement@@int index=rowData.getIndex(columnKey); '
+    - '------INS SimpleName@@index @TO@ VariableDeclarationFragment@@index=rowData.getIndex(columnKey) '
+    - '------INS MethodInvocation@@rowData.getIndex(columnKey) @TO@ VariableDeclarationFragment@@index=rowData.getIndex(columnKey) '
+    - '---------INS SimpleName@@Name:rowData @TO@ MethodInvocation@@rowData.getIndex(columnKey) '
+    - '---------INS SimpleName@@MethodName:getIndex:[columnKey] @TO@ MethodInvocation@@rowData.getIndex(columnKey) '
+    - '------------INS SimpleName@@columnKey @TO@ SimpleName@@MethodName:getIndex:[columnKey] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:row >= 0 @TO@ InfixExpression:index >= 0 '
+    - '---UPD InfixExpression@@row >= 0 @TO@ index >= 0 '
+    - '------UPD SimpleName@@row @TO@ index '
+    - '---UPD ReturnStatement@@MethodInvocation:rowData.getObject(columnKey) @TO@
+      MethodInvocation:rowData.getObject(index) '
+    - '------UPD MethodInvocation@@rowData.getObject(columnKey) @TO@ rowData.getObject(index) '
+    - '---------UPD SimpleName@@MethodName:getObject:[columnKey] @TO@ MethodName:getObject:[index] '
+    - '------------UPD SimpleName@@columnKey @TO@ index '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@KeyedObjects rowData=(KeyedObjects)this.rows.get(row);
+      @TO@ MethodDeclaration@@public, @@Object, MethodName:getObject, @@Argus:Comparable+rowKey+Comparable+columnKey+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:allNull=true @TO@ MethodDeclaration@@public,
+      @@void, MethodName:removeObject, @@Argus:Comparable+rowKey+Comparable+columnKey+ '
+    - '---INS Assignment@@allNull=true @TO@ ExpressionStatement@@Assignment:allNull=true '
+    - '------INS SimpleName@@allNull @TO@ Assignment@@allNull=true '
+    - '------INS Operator@@= @TO@ Assignment@@allNull=true '
+    - '------INS BooleanLiteral@@true @TO@ Assignment@@allNull=true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] @TO@ MethodDeclaration@@public, @@void, MethodName:removeObject, @@Argus:Comparable+rowKey+Comparable+columnKey+ '
+    - '---INS VariableDeclarationExpression@@int item=0, itemCount=this.rows.size()
+      @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int item=0,
+      itemCount=this.rows.size() '
+    - '------INS VariableDeclarationFragment@@item=0 @TO@ VariableDeclarationExpression@@int
+      item=0, itemCount=this.rows.size() '
+    - '---------INS SimpleName@@item @TO@ VariableDeclarationFragment@@item=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@item=0 '
+    - '------INS VariableDeclarationFragment@@itemCount=this.rows.size() @TO@ VariableDeclarationExpression@@int
+      item=0, itemCount=this.rows.size() '
+    - '---------INS SimpleName@@itemCount @TO@ VariableDeclarationFragment@@itemCount=this.rows.size() '
+    - '---------INS MethodInvocation@@this.rows.size() @TO@ VariableDeclarationFragment@@itemCount=this.rows.size() '
+    - '------------INS FieldAccess@@this.rows @TO@ MethodInvocation@@this.rows.size() '
+    - '---------------INS ThisExpression@@this @TO@ FieldAccess@@this.rows '
+    - '---------------INS SimpleName@@rows @TO@ FieldAccess@@this.rows '
+    - '------------INS SimpleName@@MethodName:size:[] @TO@ MethodInvocation@@this.rows.size() '
+    - '---INS InfixExpression@@item < itemCount @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item
+      < itemCount; [item++] '
+    - '------INS SimpleName@@item @TO@ InfixExpression@@item < itemCount '
+    - '------INS Operator@@< @TO@ InfixExpression@@item < itemCount '
+    - '------INS SimpleName@@itemCount @TO@ InfixExpression@@item < itemCount '
+    - '---INS PostfixExpression@@item++ @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item
+      < itemCount; [item++] '
+    - '------INS SimpleName@@item @TO@ PostfixExpression@@item++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@item++ '
+    - '---INS ExpressionStatement@@Assignment:row=(KeyedObjects)this.rows.get(item)
+      @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] '
+    - '------INS Assignment@@row=(KeyedObjects)this.rows.get(item) @TO@ ExpressionStatement@@Assignment:row=(KeyedObjects)this.rows.get(item) '
+    - '---------INS SimpleName@@row @TO@ Assignment@@row=(KeyedObjects)this.rows.get(item) '
+    - '---------INS Operator@@= @TO@ Assignment@@row=(KeyedObjects)this.rows.get(item) '
+    - '---------INS CastExpression@@(KeyedObjects)this.rows.get(item) @TO@ Assignment@@row=(KeyedObjects)this.rows.get(item) '
+    - '------------INS SimpleType@@KeyedObjects @TO@ CastExpression@@(KeyedObjects)this.rows.get(item) '
+    - '------------INS MethodInvocation@@this.rows.get(item) @TO@ CastExpression@@(KeyedObjects)this.rows.get(item) '
+    - '---------------INS FieldAccess@@this.rows @TO@ MethodInvocation@@this.rows.get(item) '
+    - '------------------INS ThisExpression@@this @TO@ FieldAccess@@this.rows '
+    - '------------------INS SimpleName@@rows @TO@ FieldAccess@@this.rows '
+    - '---------------INS SimpleName@@MethodName:get:[item] @TO@ MethodInvocation@@this.rows.get(item) '
+    - '------------------INS SimpleName@@item @TO@ SimpleName@@MethodName:get:[item] '
+    - '---INS VariableDeclarationStatement@@int columnIndex=row.getIndex(columnKey);
+      @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int columnIndex=row.getIndex(columnKey); '
+    - '------INS VariableDeclarationFragment@@columnIndex=row.getIndex(columnKey)
+      @TO@ VariableDeclarationStatement@@int columnIndex=row.getIndex(columnKey); '
+    - '---------INS SimpleName@@columnIndex @TO@ VariableDeclarationFragment@@columnIndex=row.getIndex(columnKey) '
+    - '---------INS MethodInvocation@@row.getIndex(columnKey) @TO@ VariableDeclarationFragment@@columnIndex=row.getIndex(columnKey) '
+    - '------------INS SimpleName@@Name:row @TO@ MethodInvocation@@row.getIndex(columnKey) '
+    - '------------INS SimpleName@@MethodName:getIndex:[columnKey] @TO@ MethodInvocation@@row.getIndex(columnKey) '
+    - '---------------INS SimpleName@@columnKey @TO@ SimpleName@@MethodName:getIndex:[columnKey] '
+    - '---INS IfStatement@@InfixExpression:columnIndex >= 0 && row.getObject(columnIndex)
+      != null @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] '
+    - '------INS InfixExpression@@columnIndex >= 0 && row.getObject(columnIndex) !=
+      null @TO@ IfStatement@@InfixExpression:columnIndex >= 0 && row.getObject(columnIndex)
+      != null '
+    - '---------INS InfixExpression@@columnIndex >= 0 @TO@ InfixExpression@@columnIndex
+      >= 0 && row.getObject(columnIndex) != null '
+    - '------------INS SimpleName@@columnIndex @TO@ InfixExpression@@columnIndex >=
+      0 '
+    - '------------INS Operator@@>= @TO@ InfixExpression@@columnIndex >= 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@columnIndex >= 0 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@columnIndex >= 0 && row.getObject(columnIndex)
+      != null '
+    - '---------INS InfixExpression@@row.getObject(columnIndex) != null @TO@ InfixExpression@@columnIndex
+      >= 0 && row.getObject(columnIndex) != null '
+    - '------------INS MethodInvocation@@row.getObject(columnIndex) @TO@ InfixExpression@@row.getObject(columnIndex)
+      != null '
+    - '---------------INS SimpleName@@Name:row @TO@ MethodInvocation@@row.getObject(columnIndex) '
+    - '---------------INS SimpleName@@MethodName:getObject:[columnIndex] @TO@ MethodInvocation@@row.getObject(columnIndex) '
+    - '------------------INS SimpleName@@columnIndex @TO@ SimpleName@@MethodName:getObject:[columnIndex] '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@row.getObject(columnIndex)
+      != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@row.getObject(columnIndex)
+      != null '
+    - '------INS ExpressionStatement@@Assignment:allNull=false @TO@ IfStatement@@InfixExpression:columnIndex
+      >= 0 && row.getObject(columnIndex) != null '
+    - '---------INS Assignment@@allNull=false @TO@ ExpressionStatement@@Assignment:allNull=false '
+    - '------------INS SimpleName@@allNull @TO@ Assignment@@allNull=false '
+    - '------------INS Operator@@= @TO@ Assignment@@allNull=false '
+    - '------------INS BooleanLiteral@@false @TO@ Assignment@@allNull=false '
+    - '------INS BreakStatement@@ @TO@ IfStatement@@InfixExpression:columnIndex >=
+      0 && row.getObject(columnIndex) != null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:allNull @TO@ MethodDeclaration@@public, @@void,
+      MethodName:removeObject, @@Argus:Comparable+rowKey+Comparable+columnKey+ '
+    - '---INS SimpleName@@allNull @TO@ IfStatement@@SimpleName:allNull '
+    - '---INS ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] @TO@ IfStatement@@SimpleName:allNull '
+    - '------INS VariableDeclarationExpression@@int item=0, itemCount=this.rows.size()
+      @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int item=0,
+      itemCount=this.rows.size() '
+    - '---------INS VariableDeclarationFragment@@item=0 @TO@ VariableDeclarationExpression@@int
+      item=0, itemCount=this.rows.size() '
+    - '------------INS SimpleName@@item @TO@ VariableDeclarationFragment@@item=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@item=0 '
+    - '---------INS VariableDeclarationFragment@@itemCount=this.rows.size() @TO@ VariableDeclarationExpression@@int
+      item=0, itemCount=this.rows.size() '
+    - '------------INS SimpleName@@itemCount @TO@ VariableDeclarationFragment@@itemCount=this.rows.size() '
+    - '------------INS MethodInvocation@@this.rows.size() @TO@ VariableDeclarationFragment@@itemCount=this.rows.size() '
+    - '---------------INS FieldAccess@@this.rows @TO@ MethodInvocation@@this.rows.size() '
+    - '------------------INS ThisExpression@@this @TO@ FieldAccess@@this.rows '
+    - '------------------INS SimpleName@@rows @TO@ FieldAccess@@this.rows '
+    - '---------------INS SimpleName@@MethodName:size:[] @TO@ MethodInvocation@@this.rows.size() '
+    - '------INS InfixExpression@@item < itemCount @TO@ ForStatement@@[int item=0,
+      itemCount=this.rows.size()];item < itemCount; [item++] '
+    - '---------INS SimpleName@@item @TO@ InfixExpression@@item < itemCount '
+    - '---------INS Operator@@< @TO@ InfixExpression@@item < itemCount '
+    - '---------INS SimpleName@@itemCount @TO@ InfixExpression@@item < itemCount '
+    - '------INS PostfixExpression@@item++ @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item
+      < itemCount; [item++] '
+    - '---------INS SimpleName@@item @TO@ PostfixExpression@@item++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@item++ '
+    - '------INS ExpressionStatement@@Assignment:row=(KeyedObjects)this.rows.get(item)
+      @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] '
+    - '---------INS Assignment@@row=(KeyedObjects)this.rows.get(item) @TO@ ExpressionStatement@@Assignment:row=(KeyedObjects)this.rows.get(item) '
+    - '------------INS SimpleName@@row @TO@ Assignment@@row=(KeyedObjects)this.rows.get(item) '
+    - '------------INS Operator@@= @TO@ Assignment@@row=(KeyedObjects)this.rows.get(item) '
+    - '------------INS CastExpression@@(KeyedObjects)this.rows.get(item) @TO@ Assignment@@row=(KeyedObjects)this.rows.get(item) '
+    - '---------------INS SimpleType@@KeyedObjects @TO@ CastExpression@@(KeyedObjects)this.rows.get(item) '
+    - '---------------INS MethodInvocation@@this.rows.get(item) @TO@ CastExpression@@(KeyedObjects)this.rows.get(item) '
+    - '------------------INS FieldAccess@@this.rows @TO@ MethodInvocation@@this.rows.get(item) '
+    - '---------------------INS ThisExpression@@this @TO@ FieldAccess@@this.rows '
+    - '---------------------INS SimpleName@@rows @TO@ FieldAccess@@this.rows '
+    - '------------------INS SimpleName@@MethodName:get:[item] @TO@ MethodInvocation@@this.rows.get(item) '
+    - '---------------------INS SimpleName@@item @TO@ SimpleName@@MethodName:get:[item] '
+    - '------INS VariableDeclarationStatement@@int columnIndex=row.getIndex(columnKey);
+      @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int columnIndex=row.getIndex(columnKey); '
+    - '---------INS VariableDeclarationFragment@@columnIndex=row.getIndex(columnKey)
+      @TO@ VariableDeclarationStatement@@int columnIndex=row.getIndex(columnKey); '
+    - '------------INS SimpleName@@columnIndex @TO@ VariableDeclarationFragment@@columnIndex=row.getIndex(columnKey) '
+    - '------------INS MethodInvocation@@row.getIndex(columnKey) @TO@ VariableDeclarationFragment@@columnIndex=row.getIndex(columnKey) '
+    - '---------------INS SimpleName@@Name:row @TO@ MethodInvocation@@row.getIndex(columnKey) '
+    - '---------------INS SimpleName@@MethodName:getIndex:[columnKey] @TO@ MethodInvocation@@row.getIndex(columnKey) '
+    - '------------------INS SimpleName@@columnKey @TO@ SimpleName@@MethodName:getIndex:[columnKey] '
+    - '------INS IfStatement@@InfixExpression:columnIndex >= 0 @TO@ ForStatement@@[int
+      item=0, itemCount=this.rows.size()];item < itemCount; [item++] '
+    - '---------INS InfixExpression@@columnIndex >= 0 @TO@ IfStatement@@InfixExpression:columnIndex
+      >= 0 '
+    - '------------INS SimpleName@@columnIndex @TO@ InfixExpression@@columnIndex >=
+      0 '
+    - '------------INS Operator@@>= @TO@ InfixExpression@@columnIndex >= 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@columnIndex >= 0 '
+    - '---------INS ExpressionStatement@@MethodInvocation:row.removeValue(columnIndex)
+      @TO@ IfStatement@@InfixExpression:columnIndex >= 0 '
+    - '------------INS MethodInvocation@@row.removeValue(columnIndex) @TO@ ExpressionStatement@@MethodInvocation:row.removeValue(columnIndex) '
+    - '---------------INS SimpleName@@Name:row @TO@ MethodInvocation@@row.removeValue(columnIndex) '
+    - '---------------INS SimpleName@@MethodName:removeValue:[columnIndex] @TO@ MethodInvocation@@row.removeValue(columnIndex) '
+    - '------------------INS SimpleName@@columnIndex @TO@ SimpleName@@MethodName:removeValue:[columnIndex] '
+    - '---INS ExpressionStatement@@MethodInvocation:this.columnKeys.remove(columnKey)
+      @TO@ IfStatement@@SimpleName:allNull '
+    - '------INS MethodInvocation@@this.columnKeys.remove(columnKey) @TO@ ExpressionStatement@@MethodInvocation:this.columnKeys.remove(columnKey) '
+    - '---------INS FieldAccess@@this.columnKeys @TO@ MethodInvocation@@this.columnKeys.remove(columnKey) '
+    - '------------INS ThisExpression@@this @TO@ FieldAccess@@this.columnKeys '
+    - '------------INS SimpleName@@columnKeys @TO@ FieldAccess@@this.columnKeys '
+    - '---------INS SimpleName@@MethodName:remove:[columnKey] @TO@ MethodInvocation@@this.columnKeys.remove(columnKey) '
+    - '------------INS SimpleName@@columnKey @TO@ SimpleName@@MethodName:remove:[columnKey] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:index < 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:removeRow, @@Argus:Comparable+rowKey+ '
+    - '---INS InfixExpression@@index < 0 @TO@ IfStatement@@InfixExpression:index <
+      0 '
+    - '------INS SimpleName@@index @TO@ InfixExpression@@index < 0 '
+    - '------INS Operator@@< @TO@ InfixExpression@@index < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@index < 0 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new UnknownKeyException("Row key
+      (" + rowKey + ") not recognised.") @TO@ IfStatement@@InfixExpression:index <
+      0 '
+    - '------INS ClassInstanceCreation@@UnknownKeyException["Row key (" + rowKey +
+      ") not recognised."] @TO@ ThrowStatement@@ClassInstanceCreation:new UnknownKeyException("Row
+      key (" + rowKey + ") not recognised.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@UnknownKeyException["Row
+      key (" + rowKey + ") not recognised."] '
+    - '---------INS SimpleType@@UnknownKeyException @TO@ ClassInstanceCreation@@UnknownKeyException["Row
+      key (" + rowKey + ") not recognised."] '
+    - '---------INS InfixExpression@@"Row key (" + rowKey + ") not recognised." @TO@
+      ClassInstanceCreation@@UnknownKeyException["Row key (" + rowKey + ") not recognised."] '
+    - '------------INS StringLiteral@@"Row key (" @TO@ InfixExpression@@"Row key ("
+      + rowKey + ") not recognised." '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Row key (" + rowKey + ")
+      not recognised." '
+    - '------------INS SimpleName@@rowKey @TO@ InfixExpression@@"Row key (" + rowKey
+      + ") not recognised." '
+    - '------------INS StringLiteral@@") not recognised." @TO@ InfixExpression@@"Row
+      key (" + rowKey + ") not recognised." '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@MethodInvocation:rowData.removeValue(columnKey) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int i=rowData.getIndex(columnKey); @TO@ WhileStatement@@MethodInvocation:iterator.hasNext() '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int i=rowData.getIndex(columnKey); '
+    - '---INS VariableDeclarationFragment@@i=rowData.getIndex(columnKey) @TO@ VariableDeclarationStatement@@int
+      i=rowData.getIndex(columnKey); '
+    - '------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=rowData.getIndex(columnKey) '
+    - '------INS MethodInvocation@@rowData.getIndex(columnKey) @TO@ VariableDeclarationFragment@@i=rowData.getIndex(columnKey) '
+    - '---------INS SimpleName@@Name:rowData @TO@ MethodInvocation@@rowData.getIndex(columnKey) '
+    - '---------INS SimpleName@@MethodName:getIndex:[columnKey] @TO@ MethodInvocation@@rowData.getIndex(columnKey) '
+    - '------------INS SimpleName@@columnKey @TO@ SimpleName@@MethodName:getIndex:[columnKey] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:i >= 0 @TO@ WhileStatement@@MethodInvocation:iterator.hasNext() '
+    - '---INS InfixExpression@@i >= 0 @TO@ IfStatement@@InfixExpression:i >= 0 '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i >= 0 '
+    - '------INS Operator@@>= @TO@ InfixExpression@@i >= 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@i >= 0 '
+    - '---INS ExpressionStatement@@MethodInvocation:rowData.removeValue(i) @TO@ IfStatement@@InfixExpression:i
+      >= 0 '
+    - '------MOV MethodInvocation@@rowData.removeValue(columnKey) @TO@ ExpressionStatement@@MethodInvocation:rowData.removeValue(i) '
+  repair_actions_cnt: 10
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/KeyedObjects2D:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int index=rowData.getIndex(columnKey); @TO@
+      MethodDeclaration@@public, @@Object, MethodName:getObject, @@Argus:Comparable+rowKey+Comparable+columnKey+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int index=rowData.getIndex(columnKey); '
+    - '---INS VariableDeclarationFragment@@index=rowData.getIndex(columnKey) @TO@
+      VariableDeclarationStatement@@int index=rowData.getIndex(columnKey); '
+    - '------INS SimpleName@@index @TO@ VariableDeclarationFragment@@index=rowData.getIndex(columnKey) '
+    - '------INS MethodInvocation@@rowData.getIndex(columnKey) @TO@ VariableDeclarationFragment@@index=rowData.getIndex(columnKey) '
+    - '---------INS SimpleName@@Name:rowData @TO@ MethodInvocation@@rowData.getIndex(columnKey) '
+    - '---------INS SimpleName@@MethodName:getIndex:[columnKey] @TO@ MethodInvocation@@rowData.getIndex(columnKey) '
+    - '------------INS SimpleName@@columnKey @TO@ SimpleName@@MethodName:getIndex:[columnKey] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:row >= 0 @TO@ InfixExpression:index >= 0 '
+    - '---UPD InfixExpression@@row >= 0 @TO@ index >= 0 '
+    - '------UPD SimpleName@@row @TO@ index '
+    - '---UPD ReturnStatement@@MethodInvocation:rowData.getObject(columnKey) @TO@
+      MethodInvocation:rowData.getObject(index) '
+    - '------UPD MethodInvocation@@rowData.getObject(columnKey) @TO@ rowData.getObject(index) '
+    - '---------UPD SimpleName@@MethodName:getObject:[columnKey] @TO@ MethodName:getObject:[index] '
+    - '------------UPD SimpleName@@columnKey @TO@ index '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@KeyedObjects rowData=(KeyedObjects)this.rows.get(row);
+      @TO@ MethodDeclaration@@public, @@Object, MethodName:getObject, @@Argus:Comparable+rowKey+Comparable+columnKey+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] @TO@ MethodDeclaration@@public, @@void, MethodName:removeObject, @@Argus:Comparable+rowKey+Comparable+columnKey+ '
+    - '---INS VariableDeclarationExpression@@int item=0, itemCount=this.rows.size()
+      @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int item=0,
+      itemCount=this.rows.size() '
+    - '------INS VariableDeclarationFragment@@item=0 @TO@ VariableDeclarationExpression@@int
+      item=0, itemCount=this.rows.size() '
+    - '---------INS SimpleName@@item @TO@ VariableDeclarationFragment@@item=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@item=0 '
+    - '------INS VariableDeclarationFragment@@itemCount=this.rows.size() @TO@ VariableDeclarationExpression@@int
+      item=0, itemCount=this.rows.size() '
+    - '---------INS SimpleName@@itemCount @TO@ VariableDeclarationFragment@@itemCount=this.rows.size() '
+    - '---------INS MethodInvocation@@this.rows.size() @TO@ VariableDeclarationFragment@@itemCount=this.rows.size() '
+    - '------------INS FieldAccess@@this.rows @TO@ MethodInvocation@@this.rows.size() '
+    - '---------------INS ThisExpression@@this @TO@ FieldAccess@@this.rows '
+    - '---------------INS SimpleName@@rows @TO@ FieldAccess@@this.rows '
+    - '------------INS SimpleName@@MethodName:size:[] @TO@ MethodInvocation@@this.rows.size() '
+    - '---INS InfixExpression@@item < itemCount @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item
+      < itemCount; [item++] '
+    - '------INS SimpleName@@item @TO@ InfixExpression@@item < itemCount '
+    - '------INS Operator@@< @TO@ InfixExpression@@item < itemCount '
+    - '------INS SimpleName@@itemCount @TO@ InfixExpression@@item < itemCount '
+    - '---INS PostfixExpression@@item++ @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item
+      < itemCount; [item++] '
+    - '------INS SimpleName@@item @TO@ PostfixExpression@@item++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@item++ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:allNull @TO@ MethodDeclaration@@public, @@void,
+      MethodName:removeObject, @@Argus:Comparable+rowKey+Comparable+columnKey+ '
+    - '---INS SimpleName@@allNull @TO@ IfStatement@@SimpleName:allNull '
+    - '---INS ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] @TO@ IfStatement@@SimpleName:allNull '
+    - '------INS VariableDeclarationExpression@@int item=0, itemCount=this.rows.size()
+      @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item < itemCount;
+      [item++] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int item=0,
+      itemCount=this.rows.size() '
+    - '---------INS VariableDeclarationFragment@@item=0 @TO@ VariableDeclarationExpression@@int
+      item=0, itemCount=this.rows.size() '
+    - '------------INS SimpleName@@item @TO@ VariableDeclarationFragment@@item=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@item=0 '
+    - '---------INS VariableDeclarationFragment@@itemCount=this.rows.size() @TO@ VariableDeclarationExpression@@int
+      item=0, itemCount=this.rows.size() '
+    - '------------INS SimpleName@@itemCount @TO@ VariableDeclarationFragment@@itemCount=this.rows.size() '
+    - '------------INS MethodInvocation@@this.rows.size() @TO@ VariableDeclarationFragment@@itemCount=this.rows.size() '
+    - '---------------INS FieldAccess@@this.rows @TO@ MethodInvocation@@this.rows.size() '
+    - '------------------INS ThisExpression@@this @TO@ FieldAccess@@this.rows '
+    - '------------------INS SimpleName@@rows @TO@ FieldAccess@@this.rows '
+    - '---------------INS SimpleName@@MethodName:size:[] @TO@ MethodInvocation@@this.rows.size() '
+    - '------INS InfixExpression@@item < itemCount @TO@ ForStatement@@[int item=0,
+      itemCount=this.rows.size()];item < itemCount; [item++] '
+    - '---------INS SimpleName@@item @TO@ InfixExpression@@item < itemCount '
+    - '---------INS Operator@@< @TO@ InfixExpression@@item < itemCount '
+    - '---------INS SimpleName@@itemCount @TO@ InfixExpression@@item < itemCount '
+    - '------INS PostfixExpression@@item++ @TO@ ForStatement@@[int item=0, itemCount=this.rows.size()];item
+      < itemCount; [item++] '
+    - '---------INS SimpleName@@item @TO@ PostfixExpression@@item++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@item++ '
+    - '---INS ExpressionStatement@@MethodInvocation:this.columnKeys.remove(columnKey)
+      @TO@ IfStatement@@SimpleName:allNull '
+    - '------INS MethodInvocation@@this.columnKeys.remove(columnKey) @TO@ ExpressionStatement@@MethodInvocation:this.columnKeys.remove(columnKey) '
+    - '---------INS FieldAccess@@this.columnKeys @TO@ MethodInvocation@@this.columnKeys.remove(columnKey) '
+    - '------------INS ThisExpression@@this @TO@ FieldAccess@@this.columnKeys '
+    - '------------INS SimpleName@@columnKeys @TO@ FieldAccess@@this.columnKeys '
+    - '---------INS SimpleName@@MethodName:remove:[columnKey] @TO@ MethodInvocation@@this.columnKeys.remove(columnKey) '
+    - '------------INS SimpleName@@columnKey @TO@ SimpleName@@MethodName:remove:[columnKey] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:index < 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:removeRow, @@Argus:Comparable+rowKey+ '
+    - '---INS InfixExpression@@index < 0 @TO@ IfStatement@@InfixExpression:index <
+      0 '
+    - '------INS SimpleName@@index @TO@ InfixExpression@@index < 0 '
+    - '------INS Operator@@< @TO@ InfixExpression@@index < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@index < 0 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new UnknownKeyException("Row key
+      (" + rowKey + ") not recognised.") @TO@ IfStatement@@InfixExpression:index <
+      0 '
+    - '------INS ClassInstanceCreation@@UnknownKeyException["Row key (" + rowKey +
+      ") not recognised."] @TO@ ThrowStatement@@ClassInstanceCreation:new UnknownKeyException("Row
+      key (" + rowKey + ") not recognised.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@UnknownKeyException["Row
+      key (" + rowKey + ") not recognised."] '
+    - '---------INS SimpleType@@UnknownKeyException @TO@ ClassInstanceCreation@@UnknownKeyException["Row
+      key (" + rowKey + ") not recognised."] '
+    - '---------INS InfixExpression@@"Row key (" + rowKey + ") not recognised." @TO@
+      ClassInstanceCreation@@UnknownKeyException["Row key (" + rowKey + ") not recognised."] '
+    - '------------INS StringLiteral@@"Row key (" @TO@ InfixExpression@@"Row key ("
+      + rowKey + ") not recognised." '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Row key (" + rowKey + ")
+      not recognised." '
+    - '------------INS SimpleName@@rowKey @TO@ InfixExpression@@"Row key (" + rowKey
+      + ") not recognised." '
+    - '------------INS StringLiteral@@") not recognised." @TO@ InfixExpression@@"Row
+      key (" + rowKey + ") not recognised." '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@MethodInvocation:rowData.removeValue(columnKey) '
+    - '---DEL MethodInvocation@@rowData.removeValue(columnKey) '
+    - '------DEL SimpleName@@Name:rowData '
+    - '------DEL SimpleName@@MethodName:removeValue:[columnKey] '
+    - '---------DEL SimpleName@@columnKey '
+  repair_actions_cnt: 7

@@ -1,0 +1,286 @@
+1 bug_id: Time-12
+2 src folder:
+  name of src folder: java
+  number of files: 184
+  number of java files: 156
+  number of src classes: 228
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestLocalDate_Constructors#testFactory_fromCalendarFields_beforeYearZero3
+  - org.joda.time.TestLocalDateTime_Constructors#testFactory_fromDateFields_beforeYearZero1
+  - org.joda.time.TestLocalDateTime_Constructors#testFactory_fromDateFields_beforeYearZero3
+  - org.joda.time.TestLocalDateTime_Constructors#testFactory_fromCalendarFields_beforeYearZero3
+  - org.joda.time.TestLocalDate_Constructors#testFactory_fromCalendarFields_beforeYearZero1
+  - org.joda.time.TestLocalDate_Constructors#testFactory_fromDateFields_beforeYearZero1
+  - org.joda.time.TestLocalDate_Constructors#testFactory_fromDateFields_beforeYearZero3
+  - org.joda.time.TestLocalDateTime_Constructors#testFactory_fromCalendarFields_beforeYearZero1
+  failing tests:
+  - org.joda.time.TestLocalDate_Constructors
+  - org.joda.time.TestLocalDateTime_Constructors
+  number of all test cases: 3938
+  number of failing test cases: 8
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.81
+  purification via delta debugging: 390.179
+  repair actions extraction: 3.056
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestLocalDateTime_Constructors#testFactory_fromCalendarFields_beforeYearZero1: 1817
+    org.joda.time.TestLocalDateTime_Constructors#testFactory_fromCalendarFields_beforeYearZero3: 1818
+    org.joda.time.TestLocalDateTime_Constructors#testFactory_fromDateFields_beforeYearZero1: 1816
+    org.joda.time.TestLocalDateTime_Constructors#testFactory_fromDateFields_beforeYearZero3: 1817
+    org.joda.time.TestLocalDate_Constructors#testFactory_fromCalendarFields_beforeYearZero1: 1662
+    org.joda.time.TestLocalDate_Constructors#testFactory_fromCalendarFields_beforeYearZero3: 1663
+    org.joda.time.TestLocalDate_Constructors#testFactory_fromDateFields_beforeYearZero1: 1661
+    org.joda.time.TestLocalDate_Constructors#testFactory_fromDateFields_beforeYearZero3: 1662
+  fixed:
+    org.joda.time.TestLocalDateTime_Constructors#testFactory_fromCalendarFields_beforeYearZero1: 1515
+    org.joda.time.TestLocalDateTime_Constructors#testFactory_fromCalendarFields_beforeYearZero3: 1513
+    org.joda.time.TestLocalDateTime_Constructors#testFactory_fromDateFields_beforeYearZero1: 1520
+    org.joda.time.TestLocalDateTime_Constructors#testFactory_fromDateFields_beforeYearZero3: 1518
+    org.joda.time.TestLocalDate_Constructors#testFactory_fromCalendarFields_beforeYearZero1: 1480
+    org.joda.time.TestLocalDate_Constructors#testFactory_fromCalendarFields_beforeYearZero3: 1478
+    org.joda.time.TestLocalDate_Constructors#testFactory_fromDateFields_beforeYearZero1: 1485
+    org.joda.time.TestLocalDate_Constructors#testFactory_fromDateFields_beforeYearZero3: 1483
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 14
+  covDel: 2
+  cov_patch_lines: 16
+  delta_patch_lines: 16
+  oriAdd: 14
+  oriDel: 2
+  ori_patch_lines: 16
+  purAdd: 14
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 8
+  original: 8
+  purifiy: 8
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 23
+  failFail: 7
+  passed: 0
+  total: 30
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_12/src/main/java/org/joda/time/LocalDate.java\t\
+    2020-10-22 00:14:00.049370273 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_12/purify/patch/org/joda/time/LocalDate.java\t\
+    2020-10-22 00:14:00.049370273 -0400\n@@ -207,9 +207,10 @@\n         if (calendar\
+    \ == null) {\n             throw new IllegalArgumentException(\"The calendar must\
+    \ not be null\");\n         }\n+        int era = calendar.get(Calendar.ERA);\n\
+    \         int yearOfEra = calendar.get(Calendar.YEAR);\n         return new LocalDate(\n\
+    -            yearOfEra,\n+            (era == GregorianCalendar.AD ? yearOfEra\
+    \ : 1 - yearOfEra),\n             calendar.get(Calendar.MONTH) + 1,\n        \
+    \     calendar.get(Calendar.DAY_OF_MONTH)\n         );\n@@ -240,7 +241,12 @@\n\
+    \         if (date == null) {\n             throw new IllegalArgumentException(\"\
+    The date must not be null\");\n         }\n+        if (date.getTime() < 0) {\n\
+    \             // handle years in era BC\n+            GregorianCalendar cal =\
+    \ new GregorianCalendar();\n+            cal.setTime(date);\n+            return\
+    \ fromCalendarFields(cal);\n+        }\n         return new LocalDate(\n     \
+    \        date.getYear() + 1900,\n             date.getMonth() + 1,"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_12/src/main/java/org/joda/time/LocalDate.java\t\
+    2020-10-22 00:20:52.069288255 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_12/purify/purified/org/joda/time/LocalDate.java\t\
+    2020-10-22 00:20:52.065288139 -0400\n@@ -207,9 +207,10 @@\n         if (calendar\
+    \ == null) {\n             throw new IllegalArgumentException(\"The calendar must\
+    \ not be null\");\n         }\n+        int era = calendar.get(Calendar.ERA);\n\
+    \         int yearOfEra = calendar.get(Calendar.YEAR);\n         return new LocalDate(\n\
+    -            yearOfEra,\n+            (era == GregorianCalendar.AD ? yearOfEra\
+    \ : 1 - yearOfEra),\n             calendar.get(Calendar.MONTH) + 1,\n        \
+    \     calendar.get(Calendar.DAY_OF_MONTH)\n         );\n@@ -240,7 +241,12 @@\n\
+    \         if (date == null) {\n             throw new IllegalArgumentException(\"\
+    The date must not be null\");\n         }\n+        if (date.getTime() < 0) {\n\
+    \             // handle years in era BC\n+            GregorianCalendar cal =\
+    \ new GregorianCalendar();\n+            cal.setTime(date);\n+            return\
+    \ fromCalendarFields(cal);\n+        }\n         return new LocalDate(\n     \
+    \        date.getYear() + 1900,\n             date.getMonth() + 1,"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/joda/time/LocalDate, org/joda/time/LocalDateTime:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int era=calendar.get(Calendar.ERA); @TO@
+      MethodDeclaration@@public, static, @@LocalDateTime, MethodName:fromCalendarFields,
+      @@Argus:Calendar+calendar+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int era=calendar.get(Calendar.ERA); '
+    - '---INS VariableDeclarationFragment@@era=calendar.get(Calendar.ERA) @TO@ VariableDeclarationStatement@@int
+      era=calendar.get(Calendar.ERA); '
+    - '------INS SimpleName@@era @TO@ VariableDeclarationFragment@@era=calendar.get(Calendar.ERA) '
+    - '------INS MethodInvocation@@calendar.get(Calendar.ERA) @TO@ VariableDeclarationFragment@@era=calendar.get(Calendar.ERA) '
+    - '---------INS SimpleName@@Name:calendar @TO@ MethodInvocation@@calendar.get(Calendar.ERA) '
+    - '---------INS SimpleName@@MethodName:get:[Calendar.ERA] @TO@ MethodInvocation@@calendar.get(Calendar.ERA) '
+    - '------------INS QualifiedName@@Calendar.ERA @TO@ SimpleName@@MethodName:get:[Calendar.ERA] '
+    - '---------------INS SimpleName@@Calendar @TO@ QualifiedName@@Calendar.ERA '
+    - '---------------INS SimpleName@@ERA @TO@ QualifiedName@@Calendar.ERA '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@ClassInstanceCreation:new LocalDateTime(yearOfEra,calendar.get(Calendar.MONTH)
+      + 1,calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),calendar.get(Calendar.SECOND),calendar.get(Calendar.MILLISECOND))
+      @TO@ ClassInstanceCreation:new LocalDateTime((era == GregorianCalendar.AD ?
+      yearOfEra : 1 - yearOfEra),calendar.get(Calendar.MONTH) + 1,calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),calendar.get(Calendar.SECOND),calendar.get(Calendar.MILLISECOND)) '
+    - '---UPD ClassInstanceCreation@@LocalDateTime[yearOfEra, calendar.get(Calendar.MONTH)
+      + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY),
+      calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND), calendar.get(Calendar.MILLISECOND)]
+      @TO@ LocalDateTime[(era == GregorianCalendar.AD ? yearOfEra : 1 - yearOfEra),
+      calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY),
+      calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND), calendar.get(Calendar.MILLISECOND)] '
+    - '------DEL SimpleName@@yearOfEra '
+    - '------INS ParenthesizedExpression@@(era == GregorianCalendar.AD ? yearOfEra
+      : 1 - yearOfEra) @TO@ ClassInstanceCreation@@LocalDateTime[yearOfEra, calendar.get(Calendar.MONTH)
+      + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY),
+      calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND), calendar.get(Calendar.MILLISECOND)] '
+    - '---------INS ConditionalExpression@@era == GregorianCalendar.AD ? yearOfEra
+      : 1 - yearOfEra @TO@ ParenthesizedExpression@@(era == GregorianCalendar.AD ?
+      yearOfEra : 1 - yearOfEra) '
+    - '------------INS InfixExpression@@era == GregorianCalendar.AD @TO@ ConditionalExpression@@era
+      == GregorianCalendar.AD ? yearOfEra : 1 - yearOfEra '
+    - '---------------INS SimpleName@@era @TO@ InfixExpression@@era == GregorianCalendar.AD '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@era == GregorianCalendar.AD '
+    - '---------------INS QualifiedName@@GregorianCalendar.AD @TO@ InfixExpression@@era
+      == GregorianCalendar.AD '
+    - '------------------INS SimpleName@@GregorianCalendar @TO@ QualifiedName@@GregorianCalendar.AD '
+    - '------------------INS SimpleName@@AD @TO@ QualifiedName@@GregorianCalendar.AD '
+    - '------------INS SimpleName@@yearOfEra @TO@ ConditionalExpression@@era == GregorianCalendar.AD
+      ? yearOfEra : 1 - yearOfEra '
+    - '------------INS InfixExpression@@1 - yearOfEra @TO@ ConditionalExpression@@era
+      == GregorianCalendar.AD ? yearOfEra : 1 - yearOfEra '
+    - '---------------INS NumberLiteral@@1 @TO@ InfixExpression@@1 - yearOfEra '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@1 - yearOfEra '
+    - '---------------INS SimpleName@@yearOfEra @TO@ InfixExpression@@1 - yearOfEra '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:date.getTime() < 0 @TO@ MethodDeclaration@@public,
+      static, @@LocalDateTime, MethodName:fromDateFields, @@Argus:Date+date+ '
+    - '---INS InfixExpression@@date.getTime() < 0 @TO@ IfStatement@@InfixExpression:date.getTime()
+      < 0 '
+    - '------INS MethodInvocation@@date.getTime() @TO@ InfixExpression@@date.getTime()
+      < 0 '
+    - '---------INS SimpleName@@Name:date @TO@ MethodInvocation@@date.getTime() '
+    - '---------INS SimpleName@@MethodName:getTime:[] @TO@ MethodInvocation@@date.getTime() '
+    - '------INS Operator@@< @TO@ InfixExpression@@date.getTime() < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@date.getTime() < 0 '
+    - '---INS VariableDeclarationStatement@@GregorianCalendar cal=new GregorianCalendar();
+      @TO@ IfStatement@@InfixExpression:date.getTime() < 0 '
+    - '------INS SimpleType@@GregorianCalendar @TO@ VariableDeclarationStatement@@GregorianCalendar
+      cal=new GregorianCalendar(); '
+    - '------INS VariableDeclarationFragment@@cal=new GregorianCalendar() @TO@ VariableDeclarationStatement@@GregorianCalendar
+      cal=new GregorianCalendar(); '
+    - '---------INS SimpleName@@cal @TO@ VariableDeclarationFragment@@cal=new GregorianCalendar() '
+    - '---------INS ClassInstanceCreation@@GregorianCalendar[] @TO@ VariableDeclarationFragment@@cal=new
+      GregorianCalendar() '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@GregorianCalendar[] '
+    - '------------INS SimpleType@@GregorianCalendar @TO@ ClassInstanceCreation@@GregorianCalendar[] '
+    - '---INS ExpressionStatement@@MethodInvocation:cal.setTime(date) @TO@ IfStatement@@InfixExpression:date.getTime()
+      < 0 '
+    - '------INS MethodInvocation@@cal.setTime(date) @TO@ ExpressionStatement@@MethodInvocation:cal.setTime(date) '
+    - '---------INS SimpleName@@Name:cal @TO@ MethodInvocation@@cal.setTime(date) '
+    - '---------INS SimpleName@@MethodName:setTime:[date] @TO@ MethodInvocation@@cal.setTime(date) '
+    - '------------INS SimpleName@@date @TO@ SimpleName@@MethodName:setTime:[date] '
+    - '---INS ReturnStatement@@MethodInvocation:fromCalendarFields(cal) @TO@ IfStatement@@InfixExpression:date.getTime()
+      < 0 '
+    - '------INS MethodInvocation@@fromCalendarFields(cal) @TO@ ReturnStatement@@MethodInvocation:fromCalendarFields(cal) '
+    - '---------INS SimpleName@@MethodName:fromCalendarFields:[cal] @TO@ MethodInvocation@@fromCalendarFields(cal) '
+    - '------------INS SimpleName@@cal @TO@ SimpleName@@MethodName:fromCalendarFields:[cal] '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/joda/time/LocalDate, org/joda/time/LocalDateTime:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int era=calendar.get(Calendar.ERA); @TO@
+      MethodDeclaration@@public, static, @@LocalDateTime, MethodName:fromCalendarFields,
+      @@Argus:Calendar+calendar+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int era=calendar.get(Calendar.ERA); '
+    - '---INS VariableDeclarationFragment@@era=calendar.get(Calendar.ERA) @TO@ VariableDeclarationStatement@@int
+      era=calendar.get(Calendar.ERA); '
+    - '------INS SimpleName@@era @TO@ VariableDeclarationFragment@@era=calendar.get(Calendar.ERA) '
+    - '------INS MethodInvocation@@calendar.get(Calendar.ERA) @TO@ VariableDeclarationFragment@@era=calendar.get(Calendar.ERA) '
+    - '---------INS SimpleName@@Name:calendar @TO@ MethodInvocation@@calendar.get(Calendar.ERA) '
+    - '---------INS SimpleName@@MethodName:get:[Calendar.ERA] @TO@ MethodInvocation@@calendar.get(Calendar.ERA) '
+    - '------------INS QualifiedName@@Calendar.ERA @TO@ SimpleName@@MethodName:get:[Calendar.ERA] '
+    - '---------------INS SimpleName@@Calendar @TO@ QualifiedName@@Calendar.ERA '
+    - '---------------INS SimpleName@@ERA @TO@ QualifiedName@@Calendar.ERA '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@ClassInstanceCreation:new LocalDateTime(yearOfEra,calendar.get(Calendar.MONTH)
+      + 1,calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),calendar.get(Calendar.SECOND),calendar.get(Calendar.MILLISECOND))
+      @TO@ ClassInstanceCreation:new LocalDateTime((era == GregorianCalendar.AD ?
+      yearOfEra : 1 - yearOfEra),calendar.get(Calendar.MONTH) + 1,calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),calendar.get(Calendar.SECOND),calendar.get(Calendar.MILLISECOND)) '
+    - '---UPD ClassInstanceCreation@@LocalDateTime[yearOfEra, calendar.get(Calendar.MONTH)
+      + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY),
+      calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND), calendar.get(Calendar.MILLISECOND)]
+      @TO@ LocalDateTime[(era == GregorianCalendar.AD ? yearOfEra : 1 - yearOfEra),
+      calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY),
+      calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND), calendar.get(Calendar.MILLISECOND)] '
+    - '------DEL SimpleName@@yearOfEra '
+    - '------INS ParenthesizedExpression@@(era == GregorianCalendar.AD ? yearOfEra
+      : 1 - yearOfEra) @TO@ ClassInstanceCreation@@LocalDateTime[yearOfEra, calendar.get(Calendar.MONTH)
+      + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY),
+      calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND), calendar.get(Calendar.MILLISECOND)] '
+    - '---------INS ConditionalExpression@@era == GregorianCalendar.AD ? yearOfEra
+      : 1 - yearOfEra @TO@ ParenthesizedExpression@@(era == GregorianCalendar.AD ?
+      yearOfEra : 1 - yearOfEra) '
+    - '------------INS InfixExpression@@era == GregorianCalendar.AD @TO@ ConditionalExpression@@era
+      == GregorianCalendar.AD ? yearOfEra : 1 - yearOfEra '
+    - '---------------INS SimpleName@@era @TO@ InfixExpression@@era == GregorianCalendar.AD '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@era == GregorianCalendar.AD '
+    - '---------------INS QualifiedName@@GregorianCalendar.AD @TO@ InfixExpression@@era
+      == GregorianCalendar.AD '
+    - '------------------INS SimpleName@@GregorianCalendar @TO@ QualifiedName@@GregorianCalendar.AD '
+    - '------------------INS SimpleName@@AD @TO@ QualifiedName@@GregorianCalendar.AD '
+    - '------------INS SimpleName@@yearOfEra @TO@ ConditionalExpression@@era == GregorianCalendar.AD
+      ? yearOfEra : 1 - yearOfEra '
+    - '------------INS InfixExpression@@1 - yearOfEra @TO@ ConditionalExpression@@era
+      == GregorianCalendar.AD ? yearOfEra : 1 - yearOfEra '
+    - '---------------INS NumberLiteral@@1 @TO@ InfixExpression@@1 - yearOfEra '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@1 - yearOfEra '
+    - '---------------INS SimpleName@@yearOfEra @TO@ InfixExpression@@1 - yearOfEra '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:date.getTime() < 0 @TO@ MethodDeclaration@@public,
+      static, @@LocalDateTime, MethodName:fromDateFields, @@Argus:Date+date+ '
+    - '---INS InfixExpression@@date.getTime() < 0 @TO@ IfStatement@@InfixExpression:date.getTime()
+      < 0 '
+    - '------INS MethodInvocation@@date.getTime() @TO@ InfixExpression@@date.getTime()
+      < 0 '
+    - '---------INS SimpleName@@Name:date @TO@ MethodInvocation@@date.getTime() '
+    - '---------INS SimpleName@@MethodName:getTime:[] @TO@ MethodInvocation@@date.getTime() '
+    - '------INS Operator@@< @TO@ InfixExpression@@date.getTime() < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@date.getTime() < 0 '
+    - '---INS VariableDeclarationStatement@@GregorianCalendar cal=new GregorianCalendar();
+      @TO@ IfStatement@@InfixExpression:date.getTime() < 0 '
+    - '------INS SimpleType@@GregorianCalendar @TO@ VariableDeclarationStatement@@GregorianCalendar
+      cal=new GregorianCalendar(); '
+    - '------INS VariableDeclarationFragment@@cal=new GregorianCalendar() @TO@ VariableDeclarationStatement@@GregorianCalendar
+      cal=new GregorianCalendar(); '
+    - '---------INS SimpleName@@cal @TO@ VariableDeclarationFragment@@cal=new GregorianCalendar() '
+    - '---------INS ClassInstanceCreation@@GregorianCalendar[] @TO@ VariableDeclarationFragment@@cal=new
+      GregorianCalendar() '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@GregorianCalendar[] '
+    - '------------INS SimpleType@@GregorianCalendar @TO@ ClassInstanceCreation@@GregorianCalendar[] '
+    - '---INS ExpressionStatement@@MethodInvocation:cal.setTime(date) @TO@ IfStatement@@InfixExpression:date.getTime()
+      < 0 '
+    - '------INS MethodInvocation@@cal.setTime(date) @TO@ ExpressionStatement@@MethodInvocation:cal.setTime(date) '
+    - '---------INS SimpleName@@Name:cal @TO@ MethodInvocation@@cal.setTime(date) '
+    - '---------INS SimpleName@@MethodName:setTime:[date] @TO@ MethodInvocation@@cal.setTime(date) '
+    - '------------INS SimpleName@@date @TO@ SimpleName@@MethodName:setTime:[date] '
+    - '---INS ReturnStatement@@MethodInvocation:fromCalendarFields(cal) @TO@ IfStatement@@InfixExpression:date.getTime()
+      < 0 '
+    - '------INS MethodInvocation@@fromCalendarFields(cal) @TO@ ReturnStatement@@MethodInvocation:fromCalendarFields(cal) '
+    - '---------INS SimpleName@@MethodName:fromCalendarFields:[cal] @TO@ MethodInvocation@@fromCalendarFields(cal) '
+    - '------------INS SimpleName@@cal @TO@ SimpleName@@MethodName:fromCalendarFields:[cal] '
+  repair_actions_cnt: 3

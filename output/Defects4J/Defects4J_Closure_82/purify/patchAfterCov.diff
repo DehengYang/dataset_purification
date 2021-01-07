@@ -1,0 +1,13 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_82/src/com/google/javascript/rhino/jstype/JSType.java	2020-10-23 10:18:21.590969439 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_82/purify/assertBeforeMut/com/google/javascript/rhino/jstype/JSType.java	2020-10-23 10:18:21.590969439 -0400
+@@ -160,7 +160,9 @@
+   }
+ 
+   public final boolean isEmptyType() {
+-    return isNoType() || isNoObjectType() || isNoResolvedType();
++    return isNoType() || isNoObjectType() || isNoResolvedType() ||
++        (registry.getNativeFunctionType(
++             JSTypeNative.LEAST_FUNCTION_TYPE) == this);
+   }
+ 
+   public boolean isNumberObjectType() {

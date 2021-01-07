@@ -1,0 +1,15 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_89/src/java/org/apache/commons/math/stat/Frequency.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_89/fixed-version/src/java/org/apache/commons/math/stat/Frequency.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_89/src/java/org/apache/commons/math/stat/Frequency.java	2020-03-01 00:23:01.684819453 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_89/fixed-version/src/java/org/apache/commons/math/stat/Frequency.java	2020-03-01 00:23:05.204985322 -0800
+@@ -107,7 +107,11 @@
+      */
+     @Deprecated
+     public void addValue(Object v) {
++        if (v instanceof Comparable<?>){
+             addValue((Comparable<?>) v);            
++        } else {
++            throw new IllegalArgumentException("Object must implement Comparable");
++        }
+     }
+     
+     /**

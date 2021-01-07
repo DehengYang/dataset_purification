@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_9/src/main/java/org/apache/commons/lang3/time/FastDateParser.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_9/fixed-version/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_9/src/main/java/org/apache/commons/lang3/time/FastDateParser.java	2020-03-01 00:06:30.814132553 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_9/fixed-version/src/main/java/org/apache/commons/lang3/time/FastDateParser.java	2020-03-01 00:06:34.238293887 -0800
+@@ -141,6 +141,9 @@
+             currentFormatField= nextFormatField;
+             currentStrategy= nextStrategy;
+         }
++        if (patternMatcher.regionStart() != patternMatcher.regionEnd()) {
++            throw new IllegalArgumentException("Failed to parse \""+pattern+"\" ; gave up at index "+patternMatcher.regionStart());
++        }
+         if(currentStrategy.addRegex(this, regex)) {
+             collector.add(currentStrategy);
+         }

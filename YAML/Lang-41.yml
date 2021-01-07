@@ -1,0 +1,607 @@
+1 bug_id: Lang-41
+2 src folder:
+  name of src folder: java
+  number of files: 93
+  number of java files: 82
+  number of src classes: 121
+  number of test classes: 88
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.ClassUtilsTest#test_getPackageName_Class
+  - org.apache.commons.lang.ClassUtilsTest#test_getShortClassName_Class
+  failing tests:
+  - org.apache.commons.lang.ClassUtilsTest
+  number of all test cases: 1624
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 1.318
+  purification via delta debugging: 595.933
+  repair actions extraction: 1.705
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.ClassUtilsTest#test_getPackageName_Class: 39
+    org.apache.commons.lang.ClassUtilsTest#test_getShortClassName_Class: 43
+  fixed:
+    org.apache.commons.lang.ClassUtilsTest#test_getPackageName_Class: 44
+    org.apache.commons.lang.ClassUtilsTest#test_getShortClassName_Class: 52
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 21
+  covDel: 2
+  cov_patch_lines: 23
+  delta_patch_lines: 23
+  oriAdd: 21
+  oriDel: 2
+  ori_patch_lines: 23
+  purAdd: 21
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 8
+  original: 8
+  purifiy: 8
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 36
+  failFail: 16
+  passed: 0
+  total: 53
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_41/src/java/org/apache/commons/lang/ClassUtils.java\t\
+    2020-10-22 02:32:03.840891739 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_41/purify/patch/org/apache/commons/lang/ClassUtils.java\t\
+    2020-10-22 02:32:03.840891739 -0400\n@@ -188,10 +188,23 @@\n             return\
+    \ StringUtils.EMPTY;\n         }\n \n+        StringBuffer arrayPrefix = new StringBuffer();\n\
+    \ \n         // Handle array encoding\n+        if (className.startsWith(\"[\"\
+    )) {\n+            while (className.charAt(0) == '[') {\n+                className\
+    \ = className.substring(1);\n+                arrayPrefix.append(\"[]\");\n+ \
+    \           }\n             // Strip Object type encoding\n+            if (className.charAt(0)\
+    \ == 'L' && className.charAt(className.length() - 1) == ';') {\n+            \
+    \    className = className.substring(1, className.length() - 1);\n+          \
+    \  }\n+        }\n \n+        if (reverseAbbreviationMap.containsKey(className))\
+    \ {\n+            className = reverseAbbreviationMap.get(className);\n+      \
+    \  }\n \n         int lastDotIdx = className.lastIndexOf(PACKAGE_SEPARATOR_CHAR);\n\
+    \         int innerIdx = className.indexOf(\n@@ -200,7 +213,7 @@\n         if\
+    \ (innerIdx != -1) {\n             out = out.replace(INNER_CLASS_SEPARATOR_CHAR,\
+    \ PACKAGE_SEPARATOR_CHAR);\n         }\n-        return out;\n+        return\
+    \ out + arrayPrefix;\n     }\n \n     // Package name\n@@ -242,12 +255,18 @@\n\
+    \      * @return the package name or an empty string\n      */\n     public static\
+    \ String getPackageName(String className) {\n-        if (className == null) {\n\
+    +        if (className == null || className.length() == 0) {\n             return\
+    \ StringUtils.EMPTY;\n         }\n \n         // Strip array encoding\n+     \
+    \   while (className.charAt(0) == '[') {\n+            className = className.substring(1);\n\
+    +        }\n         // Strip Object type encoding\n+        if (className.charAt(0)\
+    \ == 'L' && className.charAt(className.length() - 1) == ';') {\n+            className\
+    \ = className.substring(1);\n+        }\n \n         int i = className.lastIndexOf(PACKAGE_SEPARATOR_CHAR);\n\
+    \         if (i == -1) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_41/src/java/org/apache/commons/lang/ClassUtils.java\t\
+    2020-10-22 02:42:11.766463968 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_41/purify/purified/org/apache/commons/lang/ClassUtils.java\t\
+    2020-10-22 02:42:11.766463968 -0400\n@@ -188,10 +188,23 @@\n             return\
+    \ StringUtils.EMPTY;\n         }\n \n+        StringBuffer arrayPrefix = new StringBuffer();\n\
+    \ \n         // Handle array encoding\n+        if (className.startsWith(\"[\"\
+    )) {\n+            while (className.charAt(0) == '[') {\n+                className\
+    \ = className.substring(1);\n+                arrayPrefix.append(\"[]\");\n+ \
+    \           }\n             // Strip Object type encoding\n+            if (className.charAt(0)\
+    \ == 'L' && className.charAt(className.length() - 1) == ';') {\n+            \
+    \    className = className.substring(1, className.length() - 1);\n+          \
+    \  }\n+        }\n \n+        if (reverseAbbreviationMap.containsKey(className))\
+    \ {\n+            className = reverseAbbreviationMap.get(className);\n+      \
+    \  }\n \n         int lastDotIdx = className.lastIndexOf(PACKAGE_SEPARATOR_CHAR);\n\
+    \         int innerIdx = className.indexOf(\n@@ -200,7 +213,7 @@\n         if\
+    \ (innerIdx != -1) {\n             out = out.replace(INNER_CLASS_SEPARATOR_CHAR,\
+    \ PACKAGE_SEPARATOR_CHAR);\n         }\n-        return out;\n+        return\
+    \ out + arrayPrefix;\n     }\n \n     // Package name\n@@ -242,12 +255,18 @@\n\
+    \      * @return the package name or an empty string\n      */\n     public static\
+    \ String getPackageName(String className) {\n-        if (className == null) {\n\
+    +        if (className == null || className.length() == 0) {\n             return\
+    \ StringUtils.EMPTY;\n         }\n \n         // Strip array encoding\n+     \
+    \   while (className.charAt(0) == '[') {\n+            className = className.substring(1);\n\
+    +        }\n         // Strip Object type encoding\n+        if (className.charAt(0)\
+    \ == 'L' && className.charAt(className.length() - 1) == ';') {\n+            className\
+    \ = className.substring(1);\n+        }\n \n         int i = className.lastIndexOf(PACKAGE_SEPARATOR_CHAR);\n\
+    \         if (i == -1) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/ClassUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@StringBuffer arrayPrefix=new StringBuffer();
+      @TO@ MethodDeclaration@@public, static, @@String, MethodName:getShortClassName,
+      @@Argus:String+className+ '
+    - '---INS SimpleType@@StringBuffer @TO@ VariableDeclarationStatement@@StringBuffer
+      arrayPrefix=new StringBuffer(); '
+    - '---INS VariableDeclarationFragment@@arrayPrefix=new StringBuffer() @TO@ VariableDeclarationStatement@@StringBuffer
+      arrayPrefix=new StringBuffer(); '
+    - '------INS SimpleName@@arrayPrefix @TO@ VariableDeclarationFragment@@arrayPrefix=new
+      StringBuffer() '
+    - '------INS ClassInstanceCreation@@StringBuffer[] @TO@ VariableDeclarationFragment@@arrayPrefix=new
+      StringBuffer() '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@StringBuffer[] '
+    - '---------INS SimpleType@@StringBuffer @TO@ ClassInstanceCreation@@StringBuffer[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:className.startsWith("[") @TO@ MethodDeclaration@@public,
+      static, @@String, MethodName:getShortClassName, @@Argus:String+className+ '
+    - '---INS MethodInvocation@@className.startsWith("[") @TO@ IfStatement@@MethodInvocation:className.startsWith("[") '
+    - '------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.startsWith("[") '
+    - '------INS SimpleName@@MethodName:startsWith:["["] @TO@ MethodInvocation@@className.startsWith("[") '
+    - '---------INS StringLiteral@@"[" @TO@ SimpleName@@MethodName:startsWith:["["] '
+    - '---INS WhileStatement@@InfixExpression:className.charAt(0) == ''['' @TO@ IfStatement@@MethodInvocation:className.startsWith("[") '
+    - '------INS InfixExpression@@className.charAt(0) == ''['' @TO@ WhileStatement@@InfixExpression:className.charAt(0)
+      == ''['' '
+    - '---------INS MethodInvocation@@className.charAt(0) @TO@ InfixExpression@@className.charAt(0)
+      == ''['' '
+    - '------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.charAt(0) '
+    - '------------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@className.charAt(0) '
+    - '---------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '---------INS Operator@@== @TO@ InfixExpression@@className.charAt(0) == ''['' '
+    - '---------INS CharacterLiteral@@''['' @TO@ InfixExpression@@className.charAt(0)
+      == ''['' '
+    - '------INS ExpressionStatement@@Assignment:className=className.substring(1)
+      @TO@ WhileStatement@@InfixExpression:className.charAt(0) == ''['' '
+    - '---------INS Assignment@@className=className.substring(1) @TO@ ExpressionStatement@@Assignment:className=className.substring(1) '
+    - '------------INS SimpleName@@className @TO@ Assignment@@className=className.substring(1) '
+    - '------------INS Operator@@= @TO@ Assignment@@className=className.substring(1) '
+    - '------------INS MethodInvocation@@className.substring(1) @TO@ Assignment@@className=className.substring(1) '
+    - '---------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.substring(1) '
+    - '---------------INS SimpleName@@MethodName:substring:[1] @TO@ MethodInvocation@@className.substring(1) '
+    - '------------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1] '
+    - '------INS ExpressionStatement@@MethodInvocation:arrayPrefix.append("[]") @TO@
+      WhileStatement@@InfixExpression:className.charAt(0) == ''['' '
+    - '---------INS MethodInvocation@@arrayPrefix.append("[]") @TO@ ExpressionStatement@@MethodInvocation:arrayPrefix.append("[]") '
+    - '------------INS SimpleName@@Name:arrayPrefix @TO@ MethodInvocation@@arrayPrefix.append("[]") '
+    - '------------INS SimpleName@@MethodName:append:["[]"] @TO@ MethodInvocation@@arrayPrefix.append("[]") '
+    - '---------------INS StringLiteral@@"[]" @TO@ SimpleName@@MethodName:append:["[]"] '
+    - '---INS IfStatement@@InfixExpression:className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' @TO@ IfStatement@@MethodInvocation:className.startsWith("[") '
+    - '------INS InfixExpression@@className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' @TO@ IfStatement@@InfixExpression:className.charAt(0) == ''L''
+      && className.charAt(className.length() - 1) == '';'' '
+    - '---------INS InfixExpression@@className.charAt(0) == ''L'' @TO@ InfixExpression@@className.charAt(0)
+      == ''L'' && className.charAt(className.length() - 1) == '';'' '
+    - '------------INS MethodInvocation@@className.charAt(0) @TO@ InfixExpression@@className.charAt(0)
+      == ''L'' '
+    - '---------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.charAt(0) '
+    - '---------------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@className.charAt(0) '
+    - '------------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '------------INS Operator@@== @TO@ InfixExpression@@className.charAt(0) == ''L'' '
+    - '------------INS CharacterLiteral@@''L'' @TO@ InfixExpression@@className.charAt(0)
+      == ''L'' '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@className.charAt(0) == ''L''
+      && className.charAt(className.length() - 1) == '';'' '
+    - '---------INS InfixExpression@@className.charAt(className.length() - 1) == '';''
+      @TO@ InfixExpression@@className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' '
+    - '------------INS MethodInvocation@@className.charAt(className.length() - 1)
+      @TO@ InfixExpression@@className.charAt(className.length() - 1) == '';'' '
+    - '---------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.charAt(className.length()
+      - 1) '
+    - '---------------INS SimpleName@@MethodName:charAt:[className.length() - 1] @TO@
+      MethodInvocation@@className.charAt(className.length() - 1) '
+    - '------------------INS InfixExpression@@className.length() - 1 @TO@ SimpleName@@MethodName:charAt:[className.length()
+      - 1] '
+    - '---------------------INS MethodInvocation@@className.length() @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '------------------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.length() '
+    - '------------------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@className.length() '
+    - '---------------------INS Operator@@- @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '---------------------INS NumberLiteral@@1 @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '------------INS Operator@@== @TO@ InfixExpression@@className.charAt(className.length()
+      - 1) == '';'' '
+    - '------------INS CharacterLiteral@@'';'' @TO@ InfixExpression@@className.charAt(className.length()
+      - 1) == '';'' '
+    - '------INS ExpressionStatement@@Assignment:className=className.substring(1,className.length()
+      - 1) @TO@ IfStatement@@InfixExpression:className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' '
+    - '---------INS Assignment@@className=className.substring(1,className.length()
+      - 1) @TO@ ExpressionStatement@@Assignment:className=className.substring(1,className.length()
+      - 1) '
+    - '------------INS SimpleName@@className @TO@ Assignment@@className=className.substring(1,className.length()
+      - 1) '
+    - '------------INS Operator@@= @TO@ Assignment@@className=className.substring(1,className.length()
+      - 1) '
+    - '------------INS MethodInvocation@@className.substring(1,className.length()
+      - 1) @TO@ Assignment@@className=className.substring(1,className.length() - 1) '
+    - '---------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.substring(1,className.length()
+      - 1) '
+    - '---------------INS SimpleName@@MethodName:substring:[1, className.length()
+      - 1] @TO@ MethodInvocation@@className.substring(1,className.length() - 1) '
+    - '------------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1,
+      className.length() - 1] '
+    - '------------------INS InfixExpression@@className.length() - 1 @TO@ SimpleName@@MethodName:substring:[1,
+      className.length() - 1] '
+    - '---------------------INS MethodInvocation@@className.length() @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '------------------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.length() '
+    - '------------------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@className.length() '
+    - '---------------------INS Operator@@- @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '---------------------INS NumberLiteral@@1 @TO@ InfixExpression@@className.length()
+      - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@SimpleName:out @TO@ InfixExpression:out + arrayPrefix '
+    - '---DEL SimpleName@@out '
+    - '---INS InfixExpression@@out + arrayPrefix @TO@ ReturnStatement@@SimpleName:out '
+    - '------INS SimpleName@@out @TO@ InfixExpression@@out + arrayPrefix '
+    - '------INS Operator@@+ @TO@ InfixExpression@@out + arrayPrefix '
+    - '------INS SimpleName@@arrayPrefix @TO@ InfixExpression@@out + arrayPrefix '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:reverseAbbreviationMap.containsKey(className)
+      @TO@ MethodDeclaration@@public, static, @@String, MethodName:getShortClassName,
+      @@Argus:String+className+ '
+    - '---INS MethodInvocation@@reverseAbbreviationMap.containsKey(className) @TO@
+      IfStatement@@MethodInvocation:reverseAbbreviationMap.containsKey(className) '
+    - '------INS SimpleName@@Name:reverseAbbreviationMap @TO@ MethodInvocation@@reverseAbbreviationMap.containsKey(className) '
+    - '------INS SimpleName@@MethodName:containsKey:[className] @TO@ MethodInvocation@@reverseAbbreviationMap.containsKey(className) '
+    - '---------INS SimpleName@@className @TO@ SimpleName@@MethodName:containsKey:[className] '
+    - '---INS ExpressionStatement@@Assignment:className=reverseAbbreviationMap.get(className)
+      @TO@ IfStatement@@MethodInvocation:reverseAbbreviationMap.containsKey(className) '
+    - '------INS Assignment@@className=reverseAbbreviationMap.get(className) @TO@
+      ExpressionStatement@@Assignment:className=reverseAbbreviationMap.get(className) '
+    - '---------INS SimpleName@@className @TO@ Assignment@@className=reverseAbbreviationMap.get(className) '
+    - '---------INS Operator@@= @TO@ Assignment@@className=reverseAbbreviationMap.get(className) '
+    - '---------INS MethodInvocation@@reverseAbbreviationMap.get(className) @TO@ Assignment@@className=reverseAbbreviationMap.get(className) '
+    - '------------INS SimpleName@@Name:reverseAbbreviationMap @TO@ MethodInvocation@@reverseAbbreviationMap.get(className) '
+    - '------------INS SimpleName@@MethodName:get:[className] @TO@ MethodInvocation@@reverseAbbreviationMap.get(className) '
+    - '---------------INS SimpleName@@className @TO@ SimpleName@@MethodName:get:[className] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:className == null @TO@ InfixExpression:className
+      == null || className.length() == 0 '
+    - '---DEL InfixExpression@@className == null '
+    - '---INS InfixExpression@@className == null || className.length() == 0 @TO@ IfStatement@@InfixExpression:className
+      == null '
+    - '------INS InfixExpression@@className == null @TO@ InfixExpression@@className
+      == null || className.length() == 0 '
+    - '---------MOV SimpleName@@className @TO@ InfixExpression@@className == null '
+    - '---------MOV Operator@@== @TO@ InfixExpression@@className == null '
+    - '---------MOV NullLiteral@@null @TO@ InfixExpression@@className == null '
+    - '------INS Operator@@|| @TO@ InfixExpression@@className == null || className.length()
+      == 0 '
+    - '------INS InfixExpression@@className.length() == 0 @TO@ InfixExpression@@className
+      == null || className.length() == 0 '
+    - '---------INS MethodInvocation@@className.length() @TO@ InfixExpression@@className.length()
+      == 0 '
+    - '------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.length() '
+    - '------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@className.length() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@className.length() == 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@className.length() == 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS WhileStatement@@InfixExpression:className.charAt(0) == ''['' @TO@ MethodDeclaration@@public,
+      static, @@String, MethodName:getPackageName, @@Argus:String+className+ '
+    - '---INS InfixExpression@@className.charAt(0) == ''['' @TO@ WhileStatement@@InfixExpression:className.charAt(0)
+      == ''['' '
+    - '------INS MethodInvocation@@className.charAt(0) @TO@ InfixExpression@@className.charAt(0)
+      == ''['' '
+    - '---------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.charAt(0) '
+    - '---------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@className.charAt(0) '
+    - '------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '------INS Operator@@== @TO@ InfixExpression@@className.charAt(0) == ''['' '
+    - '------INS CharacterLiteral@@''['' @TO@ InfixExpression@@className.charAt(0)
+      == ''['' '
+    - '---INS ExpressionStatement@@Assignment:className=className.substring(1) @TO@
+      WhileStatement@@InfixExpression:className.charAt(0) == ''['' '
+    - '------INS Assignment@@className=className.substring(1) @TO@ ExpressionStatement@@Assignment:className=className.substring(1) '
+    - '---------INS SimpleName@@className @TO@ Assignment@@className=className.substring(1) '
+    - '---------INS Operator@@= @TO@ Assignment@@className=className.substring(1) '
+    - '---------INS MethodInvocation@@className.substring(1) @TO@ Assignment@@className=className.substring(1) '
+    - '------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.substring(1) '
+    - '------------INS SimpleName@@MethodName:substring:[1] @TO@ MethodInvocation@@className.substring(1) '
+    - '---------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' @TO@ MethodDeclaration@@public, static, @@String, MethodName:getPackageName,
+      @@Argus:String+className+ '
+    - '---INS InfixExpression@@className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' @TO@ IfStatement@@InfixExpression:className.charAt(0) == ''L''
+      && className.charAt(className.length() - 1) == '';'' '
+    - '------INS InfixExpression@@className.charAt(0) == ''L'' @TO@ InfixExpression@@className.charAt(0)
+      == ''L'' && className.charAt(className.length() - 1) == '';'' '
+    - '---------INS MethodInvocation@@className.charAt(0) @TO@ InfixExpression@@className.charAt(0)
+      == ''L'' '
+    - '------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.charAt(0) '
+    - '------------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@className.charAt(0) '
+    - '---------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '---------INS Operator@@== @TO@ InfixExpression@@className.charAt(0) == ''L'' '
+    - '---------INS CharacterLiteral@@''L'' @TO@ InfixExpression@@className.charAt(0)
+      == ''L'' '
+    - '------INS Operator@@&& @TO@ InfixExpression@@className.charAt(0) == ''L'' &&
+      className.charAt(className.length() - 1) == '';'' '
+    - '------INS InfixExpression@@className.charAt(className.length() - 1) == '';''
+      @TO@ InfixExpression@@className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' '
+    - '---------INS MethodInvocation@@className.charAt(className.length() - 1) @TO@
+      InfixExpression@@className.charAt(className.length() - 1) == '';'' '
+    - '------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.charAt(className.length()
+      - 1) '
+    - '------------INS SimpleName@@MethodName:charAt:[className.length() - 1] @TO@
+      MethodInvocation@@className.charAt(className.length() - 1) '
+    - '---------------INS InfixExpression@@className.length() - 1 @TO@ SimpleName@@MethodName:charAt:[className.length()
+      - 1] '
+    - '------------------INS MethodInvocation@@className.length() @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '---------------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.length() '
+    - '---------------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@className.length() '
+    - '------------------INS Operator@@- @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '------------------INS NumberLiteral@@1 @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@className.charAt(className.length()
+      - 1) == '';'' '
+    - '---------INS CharacterLiteral@@'';'' @TO@ InfixExpression@@className.charAt(className.length()
+      - 1) == '';'' '
+    - '---INS ExpressionStatement@@Assignment:className=className.substring(1) @TO@
+      IfStatement@@InfixExpression:className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' '
+    - '------INS Assignment@@className=className.substring(1) @TO@ ExpressionStatement@@Assignment:className=className.substring(1) '
+    - '---------INS SimpleName@@className @TO@ Assignment@@className=className.substring(1) '
+    - '---------INS Operator@@= @TO@ Assignment@@className=className.substring(1) '
+    - '---------INS MethodInvocation@@className.substring(1) @TO@ Assignment@@className=className.substring(1) '
+    - '------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.substring(1) '
+    - '------------INS SimpleName@@MethodName:substring:[1] @TO@ MethodInvocation@@className.substring(1) '
+    - '---------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1] '
+  repair_actions_cnt: 7
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/ClassUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@StringBuffer arrayPrefix=new StringBuffer();
+      @TO@ MethodDeclaration@@public, static, @@String, MethodName:getShortClassName,
+      @@Argus:String+className+ '
+    - '---INS SimpleType@@StringBuffer @TO@ VariableDeclarationStatement@@StringBuffer
+      arrayPrefix=new StringBuffer(); '
+    - '---INS VariableDeclarationFragment@@arrayPrefix=new StringBuffer() @TO@ VariableDeclarationStatement@@StringBuffer
+      arrayPrefix=new StringBuffer(); '
+    - '------INS SimpleName@@arrayPrefix @TO@ VariableDeclarationFragment@@arrayPrefix=new
+      StringBuffer() '
+    - '------INS ClassInstanceCreation@@StringBuffer[] @TO@ VariableDeclarationFragment@@arrayPrefix=new
+      StringBuffer() '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@StringBuffer[] '
+    - '---------INS SimpleType@@StringBuffer @TO@ ClassInstanceCreation@@StringBuffer[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:className.startsWith("[") @TO@ MethodDeclaration@@public,
+      static, @@String, MethodName:getShortClassName, @@Argus:String+className+ '
+    - '---INS MethodInvocation@@className.startsWith("[") @TO@ IfStatement@@MethodInvocation:className.startsWith("[") '
+    - '------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.startsWith("[") '
+    - '------INS SimpleName@@MethodName:startsWith:["["] @TO@ MethodInvocation@@className.startsWith("[") '
+    - '---------INS StringLiteral@@"[" @TO@ SimpleName@@MethodName:startsWith:["["] '
+    - '---INS WhileStatement@@InfixExpression:className.charAt(0) == ''['' @TO@ IfStatement@@MethodInvocation:className.startsWith("[") '
+    - '------INS InfixExpression@@className.charAt(0) == ''['' @TO@ WhileStatement@@InfixExpression:className.charAt(0)
+      == ''['' '
+    - '---------INS MethodInvocation@@className.charAt(0) @TO@ InfixExpression@@className.charAt(0)
+      == ''['' '
+    - '------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.charAt(0) '
+    - '------------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@className.charAt(0) '
+    - '---------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '---------INS Operator@@== @TO@ InfixExpression@@className.charAt(0) == ''['' '
+    - '---------INS CharacterLiteral@@''['' @TO@ InfixExpression@@className.charAt(0)
+      == ''['' '
+    - '------INS ExpressionStatement@@Assignment:className=className.substring(1)
+      @TO@ WhileStatement@@InfixExpression:className.charAt(0) == ''['' '
+    - '---------INS Assignment@@className=className.substring(1) @TO@ ExpressionStatement@@Assignment:className=className.substring(1) '
+    - '------------INS SimpleName@@className @TO@ Assignment@@className=className.substring(1) '
+    - '------------INS Operator@@= @TO@ Assignment@@className=className.substring(1) '
+    - '------------INS MethodInvocation@@className.substring(1) @TO@ Assignment@@className=className.substring(1) '
+    - '---------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.substring(1) '
+    - '---------------INS SimpleName@@MethodName:substring:[1] @TO@ MethodInvocation@@className.substring(1) '
+    - '------------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1] '
+    - '------INS ExpressionStatement@@MethodInvocation:arrayPrefix.append("[]") @TO@
+      WhileStatement@@InfixExpression:className.charAt(0) == ''['' '
+    - '---------INS MethodInvocation@@arrayPrefix.append("[]") @TO@ ExpressionStatement@@MethodInvocation:arrayPrefix.append("[]") '
+    - '------------INS SimpleName@@Name:arrayPrefix @TO@ MethodInvocation@@arrayPrefix.append("[]") '
+    - '------------INS SimpleName@@MethodName:append:["[]"] @TO@ MethodInvocation@@arrayPrefix.append("[]") '
+    - '---------------INS StringLiteral@@"[]" @TO@ SimpleName@@MethodName:append:["[]"] '
+    - '---INS IfStatement@@InfixExpression:className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' @TO@ IfStatement@@MethodInvocation:className.startsWith("[") '
+    - '------INS InfixExpression@@className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' @TO@ IfStatement@@InfixExpression:className.charAt(0) == ''L''
+      && className.charAt(className.length() - 1) == '';'' '
+    - '---------INS InfixExpression@@className.charAt(0) == ''L'' @TO@ InfixExpression@@className.charAt(0)
+      == ''L'' && className.charAt(className.length() - 1) == '';'' '
+    - '------------INS MethodInvocation@@className.charAt(0) @TO@ InfixExpression@@className.charAt(0)
+      == ''L'' '
+    - '---------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.charAt(0) '
+    - '---------------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@className.charAt(0) '
+    - '------------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '------------INS Operator@@== @TO@ InfixExpression@@className.charAt(0) == ''L'' '
+    - '------------INS CharacterLiteral@@''L'' @TO@ InfixExpression@@className.charAt(0)
+      == ''L'' '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@className.charAt(0) == ''L''
+      && className.charAt(className.length() - 1) == '';'' '
+    - '---------INS InfixExpression@@className.charAt(className.length() - 1) == '';''
+      @TO@ InfixExpression@@className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' '
+    - '------------INS MethodInvocation@@className.charAt(className.length() - 1)
+      @TO@ InfixExpression@@className.charAt(className.length() - 1) == '';'' '
+    - '---------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.charAt(className.length()
+      - 1) '
+    - '---------------INS SimpleName@@MethodName:charAt:[className.length() - 1] @TO@
+      MethodInvocation@@className.charAt(className.length() - 1) '
+    - '------------------INS InfixExpression@@className.length() - 1 @TO@ SimpleName@@MethodName:charAt:[className.length()
+      - 1] '
+    - '---------------------INS MethodInvocation@@className.length() @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '------------------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.length() '
+    - '------------------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@className.length() '
+    - '---------------------INS Operator@@- @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '---------------------INS NumberLiteral@@1 @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '------------INS Operator@@== @TO@ InfixExpression@@className.charAt(className.length()
+      - 1) == '';'' '
+    - '------------INS CharacterLiteral@@'';'' @TO@ InfixExpression@@className.charAt(className.length()
+      - 1) == '';'' '
+    - '------INS ExpressionStatement@@Assignment:className=className.substring(1,className.length()
+      - 1) @TO@ IfStatement@@InfixExpression:className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' '
+    - '---------INS Assignment@@className=className.substring(1,className.length()
+      - 1) @TO@ ExpressionStatement@@Assignment:className=className.substring(1,className.length()
+      - 1) '
+    - '------------INS SimpleName@@className @TO@ Assignment@@className=className.substring(1,className.length()
+      - 1) '
+    - '------------INS Operator@@= @TO@ Assignment@@className=className.substring(1,className.length()
+      - 1) '
+    - '------------INS MethodInvocation@@className.substring(1,className.length()
+      - 1) @TO@ Assignment@@className=className.substring(1,className.length() - 1) '
+    - '---------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.substring(1,className.length()
+      - 1) '
+    - '---------------INS SimpleName@@MethodName:substring:[1, className.length()
+      - 1] @TO@ MethodInvocation@@className.substring(1,className.length() - 1) '
+    - '------------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1,
+      className.length() - 1] '
+    - '------------------INS InfixExpression@@className.length() - 1 @TO@ SimpleName@@MethodName:substring:[1,
+      className.length() - 1] '
+    - '---------------------INS MethodInvocation@@className.length() @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '------------------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.length() '
+    - '------------------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@className.length() '
+    - '---------------------INS Operator@@- @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '---------------------INS NumberLiteral@@1 @TO@ InfixExpression@@className.length()
+      - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@SimpleName:out @TO@ InfixExpression:out + arrayPrefix '
+    - '---DEL SimpleName@@out '
+    - '---INS InfixExpression@@out + arrayPrefix @TO@ ReturnStatement@@SimpleName:out '
+    - '------INS SimpleName@@out @TO@ InfixExpression@@out + arrayPrefix '
+    - '------INS Operator@@+ @TO@ InfixExpression@@out + arrayPrefix '
+    - '------INS SimpleName@@arrayPrefix @TO@ InfixExpression@@out + arrayPrefix '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:reverseAbbreviationMap.containsKey(className)
+      @TO@ MethodDeclaration@@public, static, @@String, MethodName:getShortClassName,
+      @@Argus:String+className+ '
+    - '---INS MethodInvocation@@reverseAbbreviationMap.containsKey(className) @TO@
+      IfStatement@@MethodInvocation:reverseAbbreviationMap.containsKey(className) '
+    - '------INS SimpleName@@Name:reverseAbbreviationMap @TO@ MethodInvocation@@reverseAbbreviationMap.containsKey(className) '
+    - '------INS SimpleName@@MethodName:containsKey:[className] @TO@ MethodInvocation@@reverseAbbreviationMap.containsKey(className) '
+    - '---------INS SimpleName@@className @TO@ SimpleName@@MethodName:containsKey:[className] '
+    - '---INS ExpressionStatement@@Assignment:className=reverseAbbreviationMap.get(className)
+      @TO@ IfStatement@@MethodInvocation:reverseAbbreviationMap.containsKey(className) '
+    - '------INS Assignment@@className=reverseAbbreviationMap.get(className) @TO@
+      ExpressionStatement@@Assignment:className=reverseAbbreviationMap.get(className) '
+    - '---------INS SimpleName@@className @TO@ Assignment@@className=reverseAbbreviationMap.get(className) '
+    - '---------INS Operator@@= @TO@ Assignment@@className=reverseAbbreviationMap.get(className) '
+    - '---------INS MethodInvocation@@reverseAbbreviationMap.get(className) @TO@ Assignment@@className=reverseAbbreviationMap.get(className) '
+    - '------------INS SimpleName@@Name:reverseAbbreviationMap @TO@ MethodInvocation@@reverseAbbreviationMap.get(className) '
+    - '------------INS SimpleName@@MethodName:get:[className] @TO@ MethodInvocation@@reverseAbbreviationMap.get(className) '
+    - '---------------INS SimpleName@@className @TO@ SimpleName@@MethodName:get:[className] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:className == null @TO@ InfixExpression:className
+      == null || className.length() == 0 '
+    - '---DEL InfixExpression@@className == null '
+    - '---INS InfixExpression@@className == null || className.length() == 0 @TO@ IfStatement@@InfixExpression:className
+      == null '
+    - '------INS InfixExpression@@className == null @TO@ InfixExpression@@className
+      == null || className.length() == 0 '
+    - '---------MOV SimpleName@@className @TO@ InfixExpression@@className == null '
+    - '---------MOV Operator@@== @TO@ InfixExpression@@className == null '
+    - '---------MOV NullLiteral@@null @TO@ InfixExpression@@className == null '
+    - '------INS Operator@@|| @TO@ InfixExpression@@className == null || className.length()
+      == 0 '
+    - '------INS InfixExpression@@className.length() == 0 @TO@ InfixExpression@@className
+      == null || className.length() == 0 '
+    - '---------INS MethodInvocation@@className.length() @TO@ InfixExpression@@className.length()
+      == 0 '
+    - '------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.length() '
+    - '------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@className.length() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@className.length() == 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@className.length() == 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS WhileStatement@@InfixExpression:className.charAt(0) == ''['' @TO@ MethodDeclaration@@public,
+      static, @@String, MethodName:getPackageName, @@Argus:String+className+ '
+    - '---INS InfixExpression@@className.charAt(0) == ''['' @TO@ WhileStatement@@InfixExpression:className.charAt(0)
+      == ''['' '
+    - '------INS MethodInvocation@@className.charAt(0) @TO@ InfixExpression@@className.charAt(0)
+      == ''['' '
+    - '---------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.charAt(0) '
+    - '---------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@className.charAt(0) '
+    - '------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '------INS Operator@@== @TO@ InfixExpression@@className.charAt(0) == ''['' '
+    - '------INS CharacterLiteral@@''['' @TO@ InfixExpression@@className.charAt(0)
+      == ''['' '
+    - '---INS ExpressionStatement@@Assignment:className=className.substring(1) @TO@
+      WhileStatement@@InfixExpression:className.charAt(0) == ''['' '
+    - '------INS Assignment@@className=className.substring(1) @TO@ ExpressionStatement@@Assignment:className=className.substring(1) '
+    - '---------INS SimpleName@@className @TO@ Assignment@@className=className.substring(1) '
+    - '---------INS Operator@@= @TO@ Assignment@@className=className.substring(1) '
+    - '---------INS MethodInvocation@@className.substring(1) @TO@ Assignment@@className=className.substring(1) '
+    - '------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.substring(1) '
+    - '------------INS SimpleName@@MethodName:substring:[1] @TO@ MethodInvocation@@className.substring(1) '
+    - '---------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' @TO@ MethodDeclaration@@public, static, @@String, MethodName:getPackageName,
+      @@Argus:String+className+ '
+    - '---INS InfixExpression@@className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' @TO@ IfStatement@@InfixExpression:className.charAt(0) == ''L''
+      && className.charAt(className.length() - 1) == '';'' '
+    - '------INS InfixExpression@@className.charAt(0) == ''L'' @TO@ InfixExpression@@className.charAt(0)
+      == ''L'' && className.charAt(className.length() - 1) == '';'' '
+    - '---------INS MethodInvocation@@className.charAt(0) @TO@ InfixExpression@@className.charAt(0)
+      == ''L'' '
+    - '------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.charAt(0) '
+    - '------------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@className.charAt(0) '
+    - '---------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '---------INS Operator@@== @TO@ InfixExpression@@className.charAt(0) == ''L'' '
+    - '---------INS CharacterLiteral@@''L'' @TO@ InfixExpression@@className.charAt(0)
+      == ''L'' '
+    - '------INS Operator@@&& @TO@ InfixExpression@@className.charAt(0) == ''L'' &&
+      className.charAt(className.length() - 1) == '';'' '
+    - '------INS InfixExpression@@className.charAt(className.length() - 1) == '';''
+      @TO@ InfixExpression@@className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' '
+    - '---------INS MethodInvocation@@className.charAt(className.length() - 1) @TO@
+      InfixExpression@@className.charAt(className.length() - 1) == '';'' '
+    - '------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.charAt(className.length()
+      - 1) '
+    - '------------INS SimpleName@@MethodName:charAt:[className.length() - 1] @TO@
+      MethodInvocation@@className.charAt(className.length() - 1) '
+    - '---------------INS InfixExpression@@className.length() - 1 @TO@ SimpleName@@MethodName:charAt:[className.length()
+      - 1] '
+    - '------------------INS MethodInvocation@@className.length() @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '---------------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.length() '
+    - '---------------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@className.length() '
+    - '------------------INS Operator@@- @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '------------------INS NumberLiteral@@1 @TO@ InfixExpression@@className.length()
+      - 1 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@className.charAt(className.length()
+      - 1) == '';'' '
+    - '---------INS CharacterLiteral@@'';'' @TO@ InfixExpression@@className.charAt(className.length()
+      - 1) == '';'' '
+    - '---INS ExpressionStatement@@Assignment:className=className.substring(1) @TO@
+      IfStatement@@InfixExpression:className.charAt(0) == ''L'' && className.charAt(className.length()
+      - 1) == '';'' '
+    - '------INS Assignment@@className=className.substring(1) @TO@ ExpressionStatement@@Assignment:className=className.substring(1) '
+    - '---------INS SimpleName@@className @TO@ Assignment@@className=className.substring(1) '
+    - '---------INS Operator@@= @TO@ Assignment@@className=className.substring(1) '
+    - '---------INS MethodInvocation@@className.substring(1) @TO@ Assignment@@className=className.substring(1) '
+    - '------------INS SimpleName@@Name:className @TO@ MethodInvocation@@className.substring(1) '
+    - '------------INS SimpleName@@MethodName:substring:[1] @TO@ MethodInvocation@@className.substring(1) '
+    - '---------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1] '
+  repair_actions_cnt: 7

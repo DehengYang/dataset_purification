@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_20/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_20/fixed-version/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_20/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java	2020-03-01 00:15:24.539279640 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_20/fixed-version/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java	2020-03-01 00:15:28.187451527 -0800
+@@ -918,7 +918,8 @@
+          * @return the original objective variables, possibly repaired.
+          */
+         public double[] repairAndDecode(final double[] x) {
+-            return
++            return boundaries != null && isRepairMode ?
++                decode(repair(x)) :
+                 decode(x);
+         }
+ 

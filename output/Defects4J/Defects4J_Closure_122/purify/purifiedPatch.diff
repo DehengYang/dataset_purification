@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_122/src/com/google/javascript/jscomp/parsing/IRFactory.java	2020-10-23 17:00:31.349581355 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_122/purify/purified/com/google/javascript/jscomp/parsing/IRFactory.java	2020-10-23 17:00:31.341581124 -0400
+@@ -249,7 +249,8 @@
+    * Check to see if the given block comment looks like it should be JSDoc.
+    */
+   private void handleBlockComment(Comment comment) {
+-    if (comment.getValue().indexOf("/* @") != -1 || comment.getValue().indexOf("\n * @") != -1) {
++    Pattern p = Pattern.compile("(/|(\n[ \t]*))\\*[ \t]*@[a-zA-Z]");
++    if (p.matcher(comment.getValue()).find()) {
+       errorReporter.warning(
+           SUSPICIOUS_COMMENT_WARNING,
+           sourceName,

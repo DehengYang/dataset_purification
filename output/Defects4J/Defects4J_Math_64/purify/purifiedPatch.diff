@@ -1,0 +1,44 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_64/src/main/java/org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer.java	2020-10-22 07:57:07.324658808 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_64/purify/purified/org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer.java	2020-10-22 07:57:07.324658808 -0400
+@@ -267,6 +267,8 @@
+         boolean firstIteration = true;
+         VectorialPointValuePair current = new VectorialPointValuePair(point, objective);
+         while (true) {
++            for (int i=0;i<rows;i++) {
++            }
+             incrementIterationsCounter();
+ 
+             // compute the Q.R. decomposition of the jacobian matrix
+@@ -362,7 +364,6 @@
+ 
+                 // evaluate the function at x + p and calculate its norm
+                 updateResidualsAndCost();
+-                current = new VectorialPointValuePair(point, objective);
+ 
+                 // compute the scaled actual reduction
+                 double actRed = -1.0;
+@@ -418,9 +419,14 @@
+                         xNorm    += xK * xK;
+                     }
+                     xNorm = Math.sqrt(xNorm);
++                    current = new VectorialPointValuePair(point, objective);
+ 
+                     // tests for convergence.
++                    if (checker != null) {
+                     // we use the vectorial convergence checker
++                    	if (checker.converged(getIterations(), previous, current)) {
++                    	}
++                    }
+                 } else {
+                     // failed iteration, reset the previous values
+                     cost = previousCost;
+@@ -440,9 +446,7 @@
+                        return current;
+                    }
+                 } else {
+-                    if (checker.converged(getIterations(), previous, current)) {
+                         return current;
+-                    }
+                 }
+                 // tests for termination and stringent tolerances
+                 // (2.2204e-16 is the machine epsilon for IEEE754)

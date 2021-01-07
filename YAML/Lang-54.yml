@@ -1,0 +1,148 @@
+1 bug_id: Lang-54
+2 src folder:
+  name of src folder: java
+  number of files: 87
+  number of java files: 77
+  number of src classes: 124
+  number of test classes: 89
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.LocaleUtilsTest#testLang328
+  failing tests:
+  - org.apache.commons.lang.LocaleUtilsTest
+  number of all test cases: 1710
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 7.0
+  purification via coverage: 0.385
+  purification via delta debugging: 36.106
+  repair actions extraction: 1.444
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.LocaleUtilsTest#testLang328: 19
+  fixed:
+    org.apache.commons.lang.LocaleUtilsTest#testLang328: 18
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_54/src/java/org/apache/commons/lang/LocaleUtils.java\t\
+    2020-10-21 03:58:20.208184182 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_54/purify/patch/org/apache/commons/lang/LocaleUtils.java\t\
+    2020-10-21 03:58:20.208184182 -0400\n@@ -111,6 +111,9 @@\n                 throw\
+    \ new IllegalArgumentException(\"Invalid locale format: \" + str);\n         \
+    \    }\n             char ch3 = str.charAt(3);\n+            if (ch3 == '_') {\n\
+    +                return new Locale(str.substring(0, 2), \"\", str.substring(4));\n\
+    +            }\n             char ch4 = str.charAt(4);\n             if (ch3 <\
+    \ 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {\n                 throw new IllegalArgumentException(\"\
+    Invalid locale format: \" + str);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_54/src/java/org/apache/commons/lang/LocaleUtils.java\t\
+    2020-10-21 03:59:05.781500170 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_54/purify/purified/org/apache/commons/lang/LocaleUtils.java\t\
+    2020-10-21 03:59:05.781500170 -0400\n@@ -111,6 +111,9 @@\n                 throw\
+    \ new IllegalArgumentException(\"Invalid locale format: \" + str);\n         \
+    \    }\n             char ch3 = str.charAt(3);\n+            if (ch3 == '_') {\n\
+    +                return new Locale(str.substring(0, 2), \"\", str.substring(4));\n\
+    +            }\n             char ch4 = str.charAt(4);\n             if (ch3 <\
+    \ 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {\n                 throw new IllegalArgumentException(\"\
+    Invalid locale format: \" + str);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/LocaleUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:ch3 == ''_'' @TO@ IfStatement@@InfixExpression:len
+      == 2 '
+    - '---INS InfixExpression@@ch3 == ''_'' @TO@ IfStatement@@InfixExpression:ch3
+      == ''_'' '
+    - '------INS SimpleName@@ch3 @TO@ InfixExpression@@ch3 == ''_'' '
+    - '------INS Operator@@== @TO@ InfixExpression@@ch3 == ''_'' '
+    - '------INS CharacterLiteral@@''_'' @TO@ InfixExpression@@ch3 == ''_'' '
+    - '---INS ReturnStatement@@ClassInstanceCreation:new Locale(str.substring(0,2),"",str.substring(4))
+      @TO@ IfStatement@@InfixExpression:ch3 == ''_'' '
+    - '------INS ClassInstanceCreation@@Locale[str.substring(0,2), "", str.substring(4)]
+      @TO@ ReturnStatement@@ClassInstanceCreation:new Locale(str.substring(0,2),"",str.substring(4)) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@Locale[str.substring(0,2),
+      "", str.substring(4)] '
+    - '---------INS SimpleType@@Locale @TO@ ClassInstanceCreation@@Locale[str.substring(0,2),
+      "", str.substring(4)] '
+    - '---------INS MethodInvocation@@str.substring(0,2) @TO@ ClassInstanceCreation@@Locale[str.substring(0,2),
+      "", str.substring(4)] '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.substring(0,2) '
+    - '------------INS SimpleName@@MethodName:substring:[0, 2] @TO@ MethodInvocation@@str.substring(0,2) '
+    - '---------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:substring:[0,
+      2] '
+    - '---------------INS NumberLiteral@@2 @TO@ SimpleName@@MethodName:substring:[0,
+      2] '
+    - '---------INS StringLiteral@@"" @TO@ ClassInstanceCreation@@Locale[str.substring(0,2),
+      "", str.substring(4)] '
+    - '---------INS MethodInvocation@@str.substring(4) @TO@ ClassInstanceCreation@@Locale[str.substring(0,2),
+      "", str.substring(4)] '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.substring(4) '
+    - '------------INS SimpleName@@MethodName:substring:[4] @TO@ MethodInvocation@@str.substring(4) '
+    - '---------------INS NumberLiteral@@4 @TO@ SimpleName@@MethodName:substring:[4] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/LocaleUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:ch3 == ''_'' @TO@ IfStatement@@InfixExpression:len
+      == 2 '
+    - '---INS InfixExpression@@ch3 == ''_'' @TO@ IfStatement@@InfixExpression:ch3
+      == ''_'' '
+    - '------INS SimpleName@@ch3 @TO@ InfixExpression@@ch3 == ''_'' '
+    - '------INS Operator@@== @TO@ InfixExpression@@ch3 == ''_'' '
+    - '------INS CharacterLiteral@@''_'' @TO@ InfixExpression@@ch3 == ''_'' '
+    - '---INS ReturnStatement@@ClassInstanceCreation:new Locale(str.substring(0,2),"",str.substring(4))
+      @TO@ IfStatement@@InfixExpression:ch3 == ''_'' '
+    - '------INS ClassInstanceCreation@@Locale[str.substring(0,2), "", str.substring(4)]
+      @TO@ ReturnStatement@@ClassInstanceCreation:new Locale(str.substring(0,2),"",str.substring(4)) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@Locale[str.substring(0,2),
+      "", str.substring(4)] '
+    - '---------INS SimpleType@@Locale @TO@ ClassInstanceCreation@@Locale[str.substring(0,2),
+      "", str.substring(4)] '
+    - '---------INS MethodInvocation@@str.substring(0,2) @TO@ ClassInstanceCreation@@Locale[str.substring(0,2),
+      "", str.substring(4)] '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.substring(0,2) '
+    - '------------INS SimpleName@@MethodName:substring:[0, 2] @TO@ MethodInvocation@@str.substring(0,2) '
+    - '---------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:substring:[0,
+      2] '
+    - '---------------INS NumberLiteral@@2 @TO@ SimpleName@@MethodName:substring:[0,
+      2] '
+    - '---------INS StringLiteral@@"" @TO@ ClassInstanceCreation@@Locale[str.substring(0,2),
+      "", str.substring(4)] '
+    - '---------INS MethodInvocation@@str.substring(4) @TO@ ClassInstanceCreation@@Locale[str.substring(0,2),
+      "", str.substring(4)] '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.substring(4) '
+    - '------------INS SimpleName@@MethodName:substring:[4] @TO@ MethodInvocation@@str.substring(4) '
+    - '---------------INS NumberLiteral@@4 @TO@ SimpleName@@MethodName:substring:[4] '
+  repair_actions_cnt: 1

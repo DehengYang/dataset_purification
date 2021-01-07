@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_12/source/org/jfree/chart/plot/MultiplePiePlot.java	2020-10-22 00:34:58.513768815 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_12/purify/assertBeforeMut/org/jfree/chart/plot/MultiplePiePlot.java	2020-10-22 00:34:58.513768815 -0400
+@@ -142,7 +142,7 @@
+      */
+     public MultiplePiePlot(CategoryDataset dataset) {
+         super();
+-        this.dataset = dataset;
++        setDataset(dataset);
+         PiePlot piePlot = new PiePlot(null);
+         this.pieChart = new JFreeChart(piePlot);
+         this.pieChart.removeLegend();

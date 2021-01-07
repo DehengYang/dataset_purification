@@ -1,0 +1,184 @@
+1 bug_id: Lang-22
+2 src folder:
+  name of src folder: java
+  number of files: 105
+  number of java files: 93
+  number of src classes: 143
+  number of test classes: 94
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.math.FractionTest#testReduce
+  - org.apache.commons.lang3.math.FractionTest#testReducedFactory_int_int
+  failing tests:
+  - org.apache.commons.lang3.math.FractionTest
+  number of all test cases: 1825
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 1.174
+  purification via delta debugging: 51.381
+  repair actions extraction: 1.398
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.math.FractionTest#testReduce: 52
+    org.apache.commons.lang3.math.FractionTest#testReducedFactory_int_int: 53
+  fixed:
+    org.apache.commons.lang3.math.FractionTest#testReduce: 54
+    org.apache.commons.lang3.math.FractionTest#testReducedFactory_int_int: 54
+6 reduced lines:
+  by all: 6
+  by coverage: 4
+  by delta debugging: 2
+  covAdd: 3
+  covDel: 1
+  cov_patch_lines: 4
+  delta_patch_lines: 2
+  oriAdd: 7
+  oriDel: 1
+  ori_patch_lines: 8
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 1
+  total: 3
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_22/src/main/java/org/apache/commons/lang3/math/Fraction.java\t\
+    2020-10-21 01:06:04.689803319 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_22/purify/patch/org/apache/commons/lang3/math/Fraction.java\t\
+    2020-10-21 01:06:04.685803203 -0400\n@@ -580,8 +580,14 @@\n      */\n     private\
+    \ static int greatestCommonDivisor(int u, int v) {\n         // From Commons Math:\n\
+    +        if ((u == 0) || (v == 0)) {\n+            if ((u == Integer.MIN_VALUE)\
+    \ || (v == Integer.MIN_VALUE)) {\n+                throw new ArithmeticException(\"\
+    overflow: gcd is 2^31\");\n+            }\n+            return Math.abs(u) + Math.abs(v);\n\
+    +        }\n         //if either operand is abs 1, return 1:\n-        if (Math.abs(u)\
+    \ <= 1 || Math.abs(v) <= 1) {\n+        if (Math.abs(u) == 1 || Math.abs(v) ==\
+    \ 1) {\n             return 1;\n         }\n         // keep u and v negative,\
+    \ as negative integers range down to"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_22/src/main/java/org/apache/commons/lang3/math/Fraction.java\t\
+    2020-10-21 01:07:07.047604122 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_22/purify/purified/org/apache/commons/lang3/math/Fraction.java\t\
+    2020-10-21 01:07:07.047604122 -0400\n@@ -581,7 +581,7 @@\n     private static\
+    \ int greatestCommonDivisor(int u, int v) {\n         // From Commons Math:\n\
+    \         //if either operand is abs 1, return 1:\n-        if (Math.abs(u) <=\
+    \ 1 || Math.abs(v) <= 1) {\n+        if (Math.abs(u) == 1 || Math.abs(v) == 1)\
+    \ {\n             return 1;\n         }\n         // keep u and v negative, as\
+    \ negative integers range down to"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/Fraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:(u == 0) || (v == 0) @TO@ MethodDeclaration@@private,
+      static, @@int, MethodName:greatestCommonDivisor, @@Argus:int+u+int+v+ '
+    - '---INS InfixExpression@@(u == 0) || (v == 0) @TO@ IfStatement@@InfixExpression:(u
+      == 0) || (v == 0) '
+    - '------INS ParenthesizedExpression@@(u == 0) @TO@ InfixExpression@@(u == 0)
+      || (v == 0) '
+    - '---------INS InfixExpression@@u == 0 @TO@ ParenthesizedExpression@@(u == 0) '
+    - '------------INS SimpleName@@u @TO@ InfixExpression@@u == 0 '
+    - '------------INS Operator@@== @TO@ InfixExpression@@u == 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@u == 0 '
+    - '------INS Operator@@|| @TO@ InfixExpression@@(u == 0) || (v == 0) '
+    - '------INS ParenthesizedExpression@@(v == 0) @TO@ InfixExpression@@(u == 0)
+      || (v == 0) '
+    - '---------INS InfixExpression@@v == 0 @TO@ ParenthesizedExpression@@(v == 0) '
+    - '------------INS SimpleName@@v @TO@ InfixExpression@@v == 0 '
+    - '------------INS Operator@@== @TO@ InfixExpression@@v == 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@v == 0 '
+    - '---INS IfStatement@@InfixExpression:(u == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE)
+      @TO@ IfStatement@@InfixExpression:(u == 0) || (v == 0) '
+    - '------INS InfixExpression@@(u == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE)
+      @TO@ IfStatement@@InfixExpression:(u == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE) '
+    - '---------INS ParenthesizedExpression@@(u == Integer.MIN_VALUE) @TO@ InfixExpression@@(u
+      == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE) '
+    - '------------INS InfixExpression@@u == Integer.MIN_VALUE @TO@ ParenthesizedExpression@@(u
+      == Integer.MIN_VALUE) '
+    - '---------------INS SimpleName@@u @TO@ InfixExpression@@u == Integer.MIN_VALUE '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@u == Integer.MIN_VALUE '
+    - '---------------INS QualifiedName@@Integer.MIN_VALUE @TO@ InfixExpression@@u
+      == Integer.MIN_VALUE '
+    - '------------------INS SimpleName@@Integer @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '------------------INS SimpleName@@MIN_VALUE @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '---------INS Operator@@|| @TO@ InfixExpression@@(u == Integer.MIN_VALUE) ||
+      (v == Integer.MIN_VALUE) '
+    - '---------INS ParenthesizedExpression@@(v == Integer.MIN_VALUE) @TO@ InfixExpression@@(u
+      == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE) '
+    - '------------INS InfixExpression@@v == Integer.MIN_VALUE @TO@ ParenthesizedExpression@@(v
+      == Integer.MIN_VALUE) '
+    - '---------------INS SimpleName@@v @TO@ InfixExpression@@v == Integer.MIN_VALUE '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@v == Integer.MIN_VALUE '
+    - '---------------INS QualifiedName@@Integer.MIN_VALUE @TO@ InfixExpression@@v
+      == Integer.MIN_VALUE '
+    - '------------------INS SimpleName@@Integer @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '------------------INS SimpleName@@MIN_VALUE @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '------INS ThrowStatement@@ClassInstanceCreation:new ArithmeticException("overflow:
+      gcd is 2^31") @TO@ IfStatement@@InfixExpression:(u == Integer.MIN_VALUE) ||
+      (v == Integer.MIN_VALUE) '
+    - '---------INS ClassInstanceCreation@@ArithmeticException["overflow: gcd is 2^31"]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new ArithmeticException("overflow:
+      gcd is 2^31") '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@ArithmeticException["overflow:
+      gcd is 2^31"] '
+    - '------------INS SimpleType@@ArithmeticException @TO@ ClassInstanceCreation@@ArithmeticException["overflow:
+      gcd is 2^31"] '
+    - '------------INS StringLiteral@@"overflow: gcd is 2^31" @TO@ ClassInstanceCreation@@ArithmeticException["overflow:
+      gcd is 2^31"] '
+    - '---INS ReturnStatement@@InfixExpression:Math.abs(u) + Math.abs(v) @TO@ IfStatement@@InfixExpression:(u
+      == 0) || (v == 0) '
+    - '------MOV InfixExpression@@Math.abs(u) <= 1 @TO@ ReturnStatement@@InfixExpression:Math.abs(u)
+      + Math.abs(v) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:Math.abs(u) <= 1 || Math.abs(v) <= 1 @TO@
+      InfixExpression:Math.abs(u) == 1 || Math.abs(v) == 1 '
+    - '---UPD InfixExpression@@Math.abs(u) <= 1 || Math.abs(v) <= 1 @TO@ Math.abs(u)
+      == 1 || Math.abs(v) == 1 '
+    - '------UPD InfixExpression@@Math.abs(u) <= 1 @TO@ Math.abs(u) + Math.abs(v) '
+    - '---------UPD Operator@@<= @TO@ + '
+    - '---------DEL NumberLiteral@@1 '
+    - '---------INS MethodInvocation@@Math.abs(v) @TO@ InfixExpression@@Math.abs(u)
+      <= 1 '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.abs(v) '
+    - '------------INS SimpleName@@MethodName:abs:[v] @TO@ MethodInvocation@@Math.abs(v) '
+    - '---------------INS SimpleName@@v @TO@ SimpleName@@MethodName:abs:[v] '
+    - '------UPD InfixExpression@@Math.abs(v) <= 1 @TO@ Math.abs(v) == 1 '
+    - '---------UPD Operator@@<= @TO@ == '
+    - '------INS InfixExpression@@Math.abs(u) == 1 @TO@ InfixExpression@@Math.abs(u)
+      <= 1 || Math.abs(v) <= 1 '
+    - '---------INS MethodInvocation@@Math.abs(u) @TO@ InfixExpression@@Math.abs(u)
+      == 1 '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.abs(u) '
+    - '------------INS SimpleName@@MethodName:abs:[u] @TO@ MethodInvocation@@Math.abs(u) '
+    - '---------------INS SimpleName@@u @TO@ SimpleName@@MethodName:abs:[u] '
+    - '---------INS Operator@@== @TO@ InfixExpression@@Math.abs(u) == 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@Math.abs(u) == 1 '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/Fraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:Math.abs(u) <= 1 || Math.abs(v) <= 1 @TO@
+      InfixExpression:Math.abs(u) == 1 || Math.abs(v) == 1 '
+    - '---UPD InfixExpression@@Math.abs(u) <= 1 || Math.abs(v) <= 1 @TO@ Math.abs(u)
+      == 1 || Math.abs(v) == 1 '
+    - '------UPD InfixExpression@@Math.abs(u) <= 1 @TO@ Math.abs(u) == 1 '
+    - '---------UPD Operator@@<= @TO@ == '
+    - '------UPD InfixExpression@@Math.abs(v) <= 1 @TO@ Math.abs(v) == 1 '
+    - '---------UPD Operator@@<= @TO@ == '
+  repair_actions_cnt: 1

@@ -1,0 +1,14 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_52/src/java/org/apache/commons/lang/StringEscapeUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_52/fixed-version/src/java/org/apache/commons/lang/StringEscapeUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_52/src/java/org/apache/commons/lang/StringEscapeUtils.java	2020-03-01 00:11:28.556161010 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_52/fixed-version/src/java/org/apache/commons/lang/StringEscapeUtils.java	2020-03-01 00:11:32.000323286 -0800
+@@ -233,6 +233,10 @@
+                         out.write('\\');
+                         out.write('\\');
+                         break;
++                    case '/':
++                        out.write('\\');
++                        out.write('/');
++                        break;
+                     default :
+                         out.write(ch);
+                         break;

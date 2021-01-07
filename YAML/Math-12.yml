@@ -1,0 +1,120 @@
+1 bug_id: Math-12
+2 src folder:
+  name of src folder: java
+  number of files: 752
+  number of java files: 751
+  number of src classes: 1012
+  number of test classes: 370
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.distribution.GammaDistributionTest#testDistributionClone
+  - org.apache.commons.math3.distribution.NormalDistributionTest#testDistributionClone
+  - org.apache.commons.math3.distribution.LogNormalDistributionTest#testDistributionClone
+  failing tests:
+  - org.apache.commons.math3.distribution.GammaDistributionTest
+  - org.apache.commons.math3.distribution.NormalDistributionTest
+  - org.apache.commons.math3.distribution.LogNormalDistributionTest
+  number of all test cases: 4589
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.556
+  purification via delta debugging: 344.934
+  repair actions extraction: 1.181
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.distribution.GammaDistributionTest#testDistributionClone: 385
+    org.apache.commons.math3.distribution.LogNormalDistributionTest#testDistributionClone: 322
+    org.apache.commons.math3.distribution.NormalDistributionTest#testDistributionClone: 289
+  fixed:
+    org.apache.commons.math3.distribution.GammaDistributionTest#testDistributionClone: 383
+    org.apache.commons.math3.distribution.LogNormalDistributionTest#testDistributionClone: 290
+    org.apache.commons.math3.distribution.NormalDistributionTest#testDistributionClone: 257
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 4
+  covDel: 1
+  cov_patch_lines: 5
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 1
+  ori_patch_lines: 5
+  purAdd: 3
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 3
+  original: 3
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 14
+  failFail: 0
+  passed: 1
+  total: 15
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_12/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java\t\
+    2020-10-21 05:02:43.403777070 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_12/purify/patch/org/apache/commons/math3/random/BitsStreamGenerator.java\t\
+    2020-10-21 05:02:43.403777070 -0400\n@@ -16,6 +16,7 @@\n  */\n package org.apache.commons.math3.random;\n\
+    \ \n+import java.io.Serializable;\n \n import org.apache.commons.math3.exception.NotStrictlyPositiveException;\n\
+    \ import org.apache.commons.math3.util.FastMath;\n@@ -26,8 +27,10 @@\n  * @since\
+    \ 2.0\n  */\n public abstract class BitsStreamGenerator\n-    implements RandomGenerator\
+    \ {\n+    implements RandomGenerator,\n+               Serializable {\n     /**\
+    \ Serializable version identifier */\n+    private static final long serialVersionUID\
+    \ = 20130104L;\n     /** Next gaussian. */\n     private double nextGaussian;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_12/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java\t\
+    2020-10-21 05:08:48.166339765 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_12/purify/purified/org/apache/commons/math3/random/BitsStreamGenerator.java\t\
+    2020-10-21 05:08:48.166339765 -0400\n@@ -16,6 +16,7 @@\n  */\n package org.apache.commons.math3.random;\n\
+    \ \n+import java.io.Serializable;\n \n import org.apache.commons.math3.exception.NotStrictlyPositiveException;\n\
+    \ import org.apache.commons.math3.util.FastMath;\n@@ -26,7 +27,8 @@\n  * @since\
+    \ 2.0\n  */\n public abstract class BitsStreamGenerator\n-    implements RandomGenerator\
+    \ {\n+    implements RandomGenerator,\n+               Serializable {\n     /**\
+    \ Serializable version identifier */\n     /** Next gaussian. */\n     private\
+    \ double nextGaussian;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/random/BitsStreamGenerator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD TypeDeclaration@@[public, abstract]BitsStreamGenerator, [RandomGenerator]
+      @TO@ [public, abstract]BitsStreamGenerator, [RandomGenerator, Serializable] '
+    - '---INS SimpleType@@Serializable @TO@ TypeDeclaration@@[public, abstract]BitsStreamGenerator,
+      [RandomGenerator] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, static, final, long, [serialVersionUID=20130104L]
+      @TO@ TypeDeclaration@@[public, abstract]BitsStreamGenerator, [RandomGenerator] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, static, final, long,
+      [serialVersionUID=20130104L] '
+    - '---INS Modifier@@static @TO@ FieldDeclaration@@private, static, final, long,
+      [serialVersionUID=20130104L] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, static, final, long,
+      [serialVersionUID=20130104L] '
+    - '---INS PrimitiveType@@long @TO@ FieldDeclaration@@private, static, final, long,
+      [serialVersionUID=20130104L] '
+    - '---INS VariableDeclarationFragment@@serialVersionUID=20130104L @TO@ FieldDeclaration@@private,
+      static, final, long, [serialVersionUID=20130104L] '
+    - '------INS SimpleName@@serialVersionUID @TO@ VariableDeclarationFragment@@serialVersionUID=20130104L '
+    - '------INS NumberLiteral@@20130104L @TO@ VariableDeclarationFragment@@serialVersionUID=20130104L '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/random/BitsStreamGenerator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD TypeDeclaration@@[public, abstract]BitsStreamGenerator, [RandomGenerator]
+      @TO@ [public, abstract]BitsStreamGenerator, [RandomGenerator, Serializable] '
+    - '---INS SimpleType@@Serializable @TO@ TypeDeclaration@@[public, abstract]BitsStreamGenerator,
+      [RandomGenerator] '
+  repair_actions_cnt: 1

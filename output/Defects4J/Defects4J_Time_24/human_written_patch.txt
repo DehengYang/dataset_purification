@@ -1,0 +1,15 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_24/src/main/java/org/joda/time/format/DateTimeParserBucket.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_24/fixed-version/src/main/java/org/joda/time/format/DateTimeParserBucket.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_24/src/main/java/org/joda/time/format/DateTimeParserBucket.java	2020-03-01 00:02:14.954077430 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_24/fixed-version/src/main/java/org/joda/time/format/DateTimeParserBucket.java	2020-03-01 00:02:16.798164316 -0800
+@@ -352,6 +352,11 @@
+             for (int i = 0; i < count; i++) {
+                 millis = savedFields[i].set(millis, resetFields);
+             }
++            if (resetFields) {
++                for (int i = 0; i < count; i++) {
++                    millis = savedFields[i].set(millis, i == (count - 1));
++                }
++            }
+         } catch (IllegalFieldValueException e) {
+             if (text != null) {
+                 e.prependMessage("Cannot parse \"" + text + '"');

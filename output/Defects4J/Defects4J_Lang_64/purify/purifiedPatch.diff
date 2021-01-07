@@ -1,0 +1,34 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_64/src/java/org/apache/commons/lang/enums/ValuedEnum.java	2020-10-22 02:58:36.122914305 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_64/purify/purified/org/apache/commons/lang/enums/ValuedEnum.java	2020-10-22 02:58:36.122914305 -0400
+@@ -180,6 +180,14 @@
+      * @throws NullPointerException if other is <code>null</code>
+      */
+     public int compareTo(Object other) {
++        if (other == this) {
++        }
++        if (other.getClass() != this.getClass()) {
++            if (other.getClass().getName().equals(this.getClass().getName())) {
++            }
++            throw new ClassCastException(
++                    "Different enum class '" + ClassUtils.getShortClassName(other.getClass()) + "'");
++        }
+         return iValue - ((ValuedEnum) other).iValue;
+     }
+ 
+@@ -189,9 +197,16 @@
+      * @param other  the object to determine the value for
+      * @return the value
+      */
++    private int getValueInOtherClassLoader(Object other) {
++        try {
++        } catch (NoSuchMethodException e) {
+             // ignore - should never happen
++        } catch (IllegalAccessException e) {
+             // ignore - should never happen
++        } catch (InvocationTargetException e) {
+             // ignore - should never happen
++        }
++    }
+ 
+     /**
+      * <p>Human readable description of this <code>Enum</code> item.</p>

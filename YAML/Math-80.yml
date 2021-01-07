@@ -1,0 +1,110 @@
+1 bug_id: Math-80
+2 src folder:
+  name of src folder: java
+  number of files: 430
+  number of java files: 393
+  number of src classes: 486
+  number of test classes: 216
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.linear.EigenDecompositionImplTest#testMathpbx02
+  failing tests:
+  - org.apache.commons.math.linear.EigenDecompositionImplTest
+  number of all test cases: 2102
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 46.111
+  repair actions extraction: 2.911
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.linear.EigenDecompositionImplTest#testMathpbx02: 619
+  fixed:
+    org.apache.commons.math.linear.EigenDecompositionImplTest#testMathpbx02: 639
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_80/src/main/java/org/apache/commons/math/linear/EigenDecompositionImpl.java\t\
+    2020-10-21 13:36:28.023575606 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_80/purify/patch/org/apache/commons/math/linear/EigenDecompositionImpl.java\t\
+    2020-10-21 13:36:28.019575490 -0400\n@@ -1132,7 +1132,7 @@\n     private boolean\
+    \ flipIfWarranted(final int n, final int step) {\n         if (1.5 * work[pingPong]\
+    \ < work[4 * (n - 1) + pingPong]) {\n             // flip array\n-           \
+    \ int j = 4 * n - 1;\n+            int j = 4 * (n - 1);\n             for (int\
+    \ i = 0; i < j; i += 4) {\n                 for (int k = 0; k < 4; k += step)\
+    \ {\n                     final double tmp = work[i + k];"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_80/src/main/java/org/apache/commons/math/linear/EigenDecompositionImpl.java\t\
+    2020-10-21 13:37:31.057398183 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_80/purify/purified/org/apache/commons/math/linear/EigenDecompositionImpl.java\t\
+    2020-10-21 13:37:31.057398183 -0400\n@@ -1132,7 +1132,7 @@\n     private boolean\
+    \ flipIfWarranted(final int n, final int step) {\n         if (1.5 * work[pingPong]\
+    \ < work[4 * (n - 1) + pingPong]) {\n             // flip array\n-           \
+    \ int j = 4 * n - 1;\n+            int j = 4 * (n - 1);\n             for (int\
+    \ i = 0; i < j; i += 4) {\n                 for (int k = 0; k < 4; k += step)\
+    \ {\n                     final double tmp = work[i + k];"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/linear/EigenDecompositionImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int j=4 * n - 1; @TO@ int j=4 * (n - 1); '
+    - '---UPD VariableDeclarationFragment@@j=4 * n - 1 @TO@ j=4 * (n - 1) '
+    - '------UPD InfixExpression@@4 * n - 1 @TO@ 4 * (n - 1) '
+    - '---------MOV NumberLiteral@@4 @TO@ InfixExpression@@4 * n - 1 '
+    - '---------DEL InfixExpression@@4 * n '
+    - '---------MOV Operator@@* @TO@ InfixExpression@@4 * n - 1 '
+    - '---------INS ParenthesizedExpression@@(n - 1) @TO@ InfixExpression@@4 * n -
+      1 '
+    - '------------INS InfixExpression@@n - 1 @TO@ ParenthesizedExpression@@(n - 1) '
+    - '---------------MOV SimpleName@@n @TO@ InfixExpression@@n - 1 '
+    - '---------------MOV Operator@@- @TO@ InfixExpression@@n - 1 '
+    - '---------------MOV NumberLiteral@@1 @TO@ InfixExpression@@n - 1 '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/linear/EigenDecompositionImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int j=4 * n - 1; @TO@ int j=4 * (n - 1); '
+    - '---UPD VariableDeclarationFragment@@j=4 * n - 1 @TO@ j=4 * (n - 1) '
+    - '------UPD InfixExpression@@4 * n - 1 @TO@ 4 * (n - 1) '
+    - '---------MOV NumberLiteral@@4 @TO@ InfixExpression@@4 * n - 1 '
+    - '---------DEL InfixExpression@@4 * n '
+    - '---------MOV Operator@@* @TO@ InfixExpression@@4 * n - 1 '
+    - '---------INS ParenthesizedExpression@@(n - 1) @TO@ InfixExpression@@4 * n -
+      1 '
+    - '------------INS InfixExpression@@n - 1 @TO@ ParenthesizedExpression@@(n - 1) '
+    - '---------------MOV SimpleName@@n @TO@ InfixExpression@@n - 1 '
+    - '---------------MOV Operator@@- @TO@ InfixExpression@@n - 1 '
+    - '---------------MOV NumberLiteral@@1 @TO@ InfixExpression@@n - 1 '
+  repair_actions_cnt: 1

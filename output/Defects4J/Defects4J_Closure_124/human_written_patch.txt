@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_124/src/com/google/javascript/jscomp/ExploitAssigns.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_124/fixed-version/src/com/google/javascript/jscomp/ExploitAssigns.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_124/src/com/google/javascript/jscomp/ExploitAssigns.java	2020-03-01 00:34:22.236886606 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_124/fixed-version/src/com/google/javascript/jscomp/ExploitAssigns.java	2020-03-01 00:34:25.205026463 -0800
+@@ -210,7 +210,9 @@
+     }
+     Preconditions.checkArgument(node.isGetProp());
+ 
++    while (node.isGetProp()) {
+       node = node.getFirstChild();
++    }
+     if (node.isName()
+         && isNameAssignedTo(node.getString(), replacement)) {
+       return false;

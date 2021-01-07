@@ -1,0 +1,40 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_43/src/com/google/javascript/jscomp/TypedScopeCreator.java	2020-10-22 13:11:11.657602509 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_43/purify/purified/com/google/javascript/jscomp/TypedScopeCreator.java	2020-10-22 13:11:11.649602279 -0400
+@@ -417,6 +417,7 @@
+      * For more information, see
+      * http://code.google.com/p/closure-compiler/issues/detail?id=314
+      */
++    private List<Node> lentObjectLiterals = null;
+ 
+     /**
+      * Type-less stubs.
+@@ -544,6 +545,12 @@
+       }
+ 
+       // Analyze any @lends object literals in this statement.
++      if (n.getParent() != null && NodeUtil.isStatement(n) &&
++          lentObjectLiterals != null) {
++        for (Node objLit : lentObjectLiterals) {
++          defineObjectLiteral(objLit);
++        }
++      }
+     }
+ 
+     private void attachLiteralTypes(NodeTraversal t, Node n) {
+@@ -577,7 +584,16 @@
+           break;
+ 
+         case Token.OBJECTLIT:
++          JSDocInfo info = n.getJSDocInfo();
++          if (info != null &&
++              info.getLendsName() != null) {
++            if (lentObjectLiterals == null) {
++              lentObjectLiterals = Lists.newArrayList();
++            }
++            lentObjectLiterals.add(n);
++          } else {
+             defineObjectLiteral(n);
++          }
+           break;
+ 
+           // NOTE(nicksantos): If we ever support Array tuples,

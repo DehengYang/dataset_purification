@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_2/src/main/java/org/joda/time/field/UnsupportedDurationField.java	2020-10-20 18:52:58.202852566 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_2/purify/purified/org/joda/time/field/UnsupportedDurationField.java	2020-10-20 18:52:58.202852566 -0400
+@@ -224,6 +224,9 @@
+      * @return zero always
+      */
+     public int compareTo(DurationField durationField) {
++        if (durationField.isSupported()) {
++            return 1;
++        }
+         return 0;
+     }
+ 

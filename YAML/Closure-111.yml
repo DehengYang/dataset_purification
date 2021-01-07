@@ -1,0 +1,194 @@
+1 bug_id: Closure-111
+2 src folder:
+  name of src folder: src
+  number of files: 447
+  number of java files: 431
+  number of src classes: 1432
+  number of test classes: 237
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.ClosureReverseAbstractInterpreterTest#testGoogIsArray2
+  failing tests:
+  - com.google.javascript.jscomp.ClosureReverseAbstractInterpreterTest
+  number of all test cases: 8357
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.442
+  purification via delta debugging: 267.977
+  repair actions extraction: 0.932
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.ClosureReverseAbstractInterpreterTest#testGoogIsArray2: 2341
+  fixed:
+    com.google.javascript.jscomp.ClosureReverseAbstractInterpreterTest#testGoogIsArray2: 2342
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 2
+  oriDel: 1
+  ori_patch_lines: 3
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 5
+  failFail: 0
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_111/src/com/google/javascript/jscomp/type/ClosureReverseAbstractInterpreter.java\t\
+    2020-10-23 14:44:23.217101606 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_111/purify/patch/com/google/javascript/jscomp/type/ClosureReverseAbstractInterpreter.java\t\
+    2020-10-23 14:44:23.217101606 -0400\n@@ -51,7 +51,8 @@\n       new RestrictByTrueTypeOfResultVisitor()\
+    \ {\n         @Override\n         protected JSType caseTopType(JSType topType)\
+    \ {\n-          return topType;\n+          return topType.isAllType() ?\n+  \
+    \            getNativeType(ARRAY_TYPE) : topType;\n         }\n \n         @Override"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_111/src/com/google/javascript/jscomp/type/ClosureReverseAbstractInterpreter.java\t\
+    2020-10-23 14:49:22.145753783 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_111/purify/purified/com/google/javascript/jscomp/type/ClosureReverseAbstractInterpreter.java\t\
+    2020-10-23 14:49:22.145753783 -0400\n@@ -51,7 +51,8 @@\n       new RestrictByTrueTypeOfResultVisitor()\
+    \ {\n         @Override\n         protected JSType caseTopType(JSType topType)\
+    \ {\n-          return topType;\n+          return topType.isAllType() ?\n+  \
+    \            getNativeType(ARRAY_TYPE) : topType;\n         }\n \n         @Override"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/type/ClosureReverseAbstractInterpreter:
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD FieldDeclaration@@private, final, Visitor<JSType>, [restrictToArrayVisitor=new
+      RestrictByTrueTypeOfResultVisitor()
+    - '  @Override protected JSType caseTopType(  JSType topType)'
+    - '    return topType'
+    - '  '
+    - '  @Override public JSType caseObjectType(  ObjectType type)'
+    - '    JSType arrayType=getNativeType(ARRAY_TYPE)'
+    - '    return arrayType.isSubtype(type) ? arrayType : null'
+    - '  '
+    - ''
+    - '] @TO@ private, final, Visitor<JSType>, [restrictToArrayVisitor=new RestrictByTrueTypeOfResultVisitor()'
+    - '  @Override protected JSType caseTopType(  JSType topType)'
+    - '    return topType.isAllType() ? getNativeType(ARRAY_TYPE) : topType'
+    - '  '
+    - '  @Override public JSType caseObjectType(  ObjectType type)'
+    - '    JSType arrayType=getNativeType(ARRAY_TYPE)'
+    - '    return arrayType.isSubtype(type) ? arrayType : null'
+    - '  '
+    - ''
+    - '] '
+    - '---UPD VariableDeclarationFragment@@restrictToArrayVisitor=new RestrictByTrueTypeOfResultVisitor()'
+    - '  @Override protected JSType caseTopType(  JSType topType)'
+    - '    return topType'
+    - '  '
+    - '  @Override public JSType caseObjectType(  ObjectType type)'
+    - '    JSType arrayType=getNativeType(ARRAY_TYPE)'
+    - '    return arrayType.isSubtype(type) ? arrayType : null'
+    - '  '
+    - ''
+    - ' @TO@ restrictToArrayVisitor=new RestrictByTrueTypeOfResultVisitor()'
+    - '  @Override protected JSType caseTopType(  JSType topType)'
+    - '    return topType.isAllType() ? getNativeType(ARRAY_TYPE) : topType'
+    - '  '
+    - '  @Override public JSType caseObjectType(  ObjectType type)'
+    - '    JSType arrayType=getNativeType(ARRAY_TYPE)'
+    - '    return arrayType.isSubtype(type) ? arrayType : null'
+    - '  '
+    - ''
+    - ' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@SimpleName:topType @TO@ ConditionalExpression:topType.isAllType()
+      ? getNativeType(ARRAY_TYPE) : topType '
+    - '---INS ConditionalExpression@@topType.isAllType() ? getNativeType(ARRAY_TYPE)
+      : topType @TO@ ReturnStatement@@SimpleName:topType '
+    - '------INS MethodInvocation@@topType.isAllType() @TO@ ConditionalExpression@@topType.isAllType()
+      ? getNativeType(ARRAY_TYPE) : topType '
+    - '---------INS SimpleName@@Name:topType @TO@ MethodInvocation@@topType.isAllType() '
+    - '---------INS SimpleName@@MethodName:isAllType:[] @TO@ MethodInvocation@@topType.isAllType() '
+    - '------INS MethodInvocation@@getNativeType(ARRAY_TYPE) @TO@ ConditionalExpression@@topType.isAllType()
+      ? getNativeType(ARRAY_TYPE) : topType '
+    - '---------INS SimpleName@@MethodName:getNativeType:[ARRAY_TYPE] @TO@ MethodInvocation@@getNativeType(ARRAY_TYPE) '
+    - '------------INS SimpleName@@ARRAY_TYPE @TO@ SimpleName@@MethodName:getNativeType:[ARRAY_TYPE] '
+    - '------INS SimpleName@@topType @TO@ ConditionalExpression@@topType.isAllType()
+      ? getNativeType(ARRAY_TYPE) : topType '
+    - '---DEL SimpleName@@topType '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/type/ClosureReverseAbstractInterpreter:
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD FieldDeclaration@@private, final, Visitor<JSType>, [restrictToArrayVisitor=new
+      RestrictByTrueTypeOfResultVisitor()
+    - '  @Override protected JSType caseTopType(  JSType topType)'
+    - '    return topType'
+    - '  '
+    - '  @Override public JSType caseObjectType(  ObjectType type)'
+    - '    JSType arrayType=getNativeType(ARRAY_TYPE)'
+    - '    return arrayType.isSubtype(type) ? arrayType : null'
+    - '  '
+    - ''
+    - '] @TO@ private, final, Visitor<JSType>, [restrictToArrayVisitor=new RestrictByTrueTypeOfResultVisitor()'
+    - '  @Override protected JSType caseTopType(  JSType topType)'
+    - '    return topType.isAllType() ? getNativeType(ARRAY_TYPE) : topType'
+    - '  '
+    - '  @Override public JSType caseObjectType(  ObjectType type)'
+    - '    JSType arrayType=getNativeType(ARRAY_TYPE)'
+    - '    return arrayType.isSubtype(type) ? arrayType : null'
+    - '  '
+    - ''
+    - '] '
+    - '---UPD VariableDeclarationFragment@@restrictToArrayVisitor=new RestrictByTrueTypeOfResultVisitor()'
+    - '  @Override protected JSType caseTopType(  JSType topType)'
+    - '    return topType'
+    - '  '
+    - '  @Override public JSType caseObjectType(  ObjectType type)'
+    - '    JSType arrayType=getNativeType(ARRAY_TYPE)'
+    - '    return arrayType.isSubtype(type) ? arrayType : null'
+    - '  '
+    - ''
+    - ' @TO@ restrictToArrayVisitor=new RestrictByTrueTypeOfResultVisitor()'
+    - '  @Override protected JSType caseTopType(  JSType topType)'
+    - '    return topType.isAllType() ? getNativeType(ARRAY_TYPE) : topType'
+    - '  '
+    - '  @Override public JSType caseObjectType(  ObjectType type)'
+    - '    JSType arrayType=getNativeType(ARRAY_TYPE)'
+    - '    return arrayType.isSubtype(type) ? arrayType : null'
+    - '  '
+    - ''
+    - ' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@SimpleName:topType @TO@ ConditionalExpression:topType.isAllType()
+      ? getNativeType(ARRAY_TYPE) : topType '
+    - '---INS ConditionalExpression@@topType.isAllType() ? getNativeType(ARRAY_TYPE)
+      : topType @TO@ ReturnStatement@@SimpleName:topType '
+    - '------INS MethodInvocation@@topType.isAllType() @TO@ ConditionalExpression@@topType.isAllType()
+      ? getNativeType(ARRAY_TYPE) : topType '
+    - '---------INS SimpleName@@Name:topType @TO@ MethodInvocation@@topType.isAllType() '
+    - '---------INS SimpleName@@MethodName:isAllType:[] @TO@ MethodInvocation@@topType.isAllType() '
+    - '------INS MethodInvocation@@getNativeType(ARRAY_TYPE) @TO@ ConditionalExpression@@topType.isAllType()
+      ? getNativeType(ARRAY_TYPE) : topType '
+    - '---------INS SimpleName@@MethodName:getNativeType:[ARRAY_TYPE] @TO@ MethodInvocation@@getNativeType(ARRAY_TYPE) '
+    - '------------INS SimpleName@@ARRAY_TYPE @TO@ SimpleName@@MethodName:getNativeType:[ARRAY_TYPE] '
+    - '------INS SimpleName@@topType @TO@ ConditionalExpression@@topType.isAllType()
+      ? getNativeType(ARRAY_TYPE) : topType '
+    - '---DEL SimpleName@@topType '
+  files_cnt: '1'
+  repair_actions_cnt: 2

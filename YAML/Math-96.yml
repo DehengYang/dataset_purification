@@ -1,0 +1,170 @@
+1 bug_id: Math-96
+2 src folder:
+  name of src folder: java
+  number of files: 271
+  number of java files: 247
+  number of src classes: 264
+  number of test classes: 146
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.complex.ComplexTest#testMath221
+  failing tests:
+  - org.apache.commons.math.complex.ComplexTest
+  number of all test cases: 1271
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 0.001
+  purification via delta debugging: 48.736
+  repair actions extraction: 1.257
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.complex.ComplexTest#testMath221: 26
+  fixed:
+    org.apache.commons.math.complex.ComplexTest#testMath221: 21
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 1
+  total: 1
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_96/src/java/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 14:08:56.771920185 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_96/purify/patch/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 14:08:56.771920185 -0400\n@@ -255,7 +255,7 @@\n                 if\
+    \ (rhs.isNaN()) {\n                     ret = this.isNaN();\n                \
+    \ } else {\n-                    ret = (Double.doubleToRawLongBits(real) == Double.doubleToRawLongBits(rhs.getReal()))\
+    \ && (Double.doubleToRawLongBits(imaginary) == Double.doubleToRawLongBits(rhs.getImaginary()));\
+    \ \n+                    ret = (real == rhs.real) && (imaginary == rhs.imaginary);\
+    \ \n                 }\n             } catch (ClassCastException ex) {\n     \
+    \            // ignore exception"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_96/src/java/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 14:09:55.305611502 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_96/purify/purified/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 14:09:55.305611502 -0400\n@@ -256,6 +256,7 @@\n                   \
+    \  ret = this.isNaN();\n                 } else {\n                     ret =\
+    \ (Double.doubleToRawLongBits(real) == Double.doubleToRawLongBits(rhs.getReal()))\
+    \ && (Double.doubleToRawLongBits(imaginary) == Double.doubleToRawLongBits(rhs.getImaginary()));\
+    \ \n+                    ret = (real == rhs.real) && (imaginary == rhs.imaginary);\
+    \ \n                 }\n             } catch (ClassCastException ex) {\n     \
+    \            // ignore exception"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/complex/Complex:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:ret=(Double.doubleToRawLongBits(real) ==
+      Double.doubleToRawLongBits(rhs.getReal())) && (Double.doubleToRawLongBits(imaginary)
+      == Double.doubleToRawLongBits(rhs.getImaginary())) @TO@ Assignment:ret=(real
+      == rhs.real) && (imaginary == rhs.imaginary) '
+    - '---UPD Assignment@@ret=(Double.doubleToRawLongBits(real) == Double.doubleToRawLongBits(rhs.getReal()))
+      && (Double.doubleToRawLongBits(imaginary) == Double.doubleToRawLongBits(rhs.getImaginary()))
+      @TO@ ret=(real == rhs.real) && (imaginary == rhs.imaginary) '
+    - '------UPD InfixExpression@@(Double.doubleToRawLongBits(real) == Double.doubleToRawLongBits(rhs.getReal()))
+      && (Double.doubleToRawLongBits(imaginary) == Double.doubleToRawLongBits(rhs.getImaginary()))
+      @TO@ (real == rhs.real) && (imaginary == rhs.imaginary) '
+    - '---------UPD ParenthesizedExpression@@(Double.doubleToRawLongBits(real) ==
+      Double.doubleToRawLongBits(rhs.getReal())) @TO@ (real == rhs.real) '
+    - '------------UPD InfixExpression@@Double.doubleToRawLongBits(real) == Double.doubleToRawLongBits(rhs.getReal())
+      @TO@ real == rhs.real '
+    - '---------------INS SimpleName@@real @TO@ InfixExpression@@Double.doubleToRawLongBits(real)
+      == Double.doubleToRawLongBits(rhs.getReal()) '
+    - '---------------DEL MethodInvocation@@Double.doubleToRawLongBits(real) '
+    - '------------------DEL SimpleName@@Name:Double '
+    - '------------------DEL SimpleName@@MethodName:doubleToRawLongBits:[real] '
+    - '---------------------DEL SimpleName@@real '
+    - '---------------INS QualifiedName@@rhs.real @TO@ InfixExpression@@Double.doubleToRawLongBits(real)
+      == Double.doubleToRawLongBits(rhs.getReal()) '
+    - '------------------INS SimpleName@@rhs @TO@ QualifiedName@@rhs.real '
+    - '------------------INS SimpleName@@real @TO@ QualifiedName@@rhs.real '
+    - '---------------DEL MethodInvocation@@Double.doubleToRawLongBits(rhs.getReal()) '
+    - '------------------DEL SimpleName@@Name:Double '
+    - '------------------DEL SimpleName@@MethodName:doubleToRawLongBits:[rhs.getReal()] '
+    - '---------------------DEL MethodInvocation@@rhs.getReal() '
+    - '------------------------DEL SimpleName@@Name:rhs '
+    - '------------------------DEL SimpleName@@MethodName:getReal:[] '
+    - '---------UPD ParenthesizedExpression@@(Double.doubleToRawLongBits(imaginary)
+      == Double.doubleToRawLongBits(rhs.getImaginary())) @TO@ (imaginary == rhs.imaginary) '
+    - '------------UPD InfixExpression@@Double.doubleToRawLongBits(imaginary) == Double.doubleToRawLongBits(rhs.getImaginary())
+      @TO@ imaginary == rhs.imaginary '
+    - '---------------INS SimpleName@@imaginary @TO@ InfixExpression@@Double.doubleToRawLongBits(imaginary)
+      == Double.doubleToRawLongBits(rhs.getImaginary()) '
+    - '---------------INS QualifiedName@@rhs.imaginary @TO@ InfixExpression@@Double.doubleToRawLongBits(imaginary)
+      == Double.doubleToRawLongBits(rhs.getImaginary()) '
+    - '------------------INS SimpleName@@rhs @TO@ QualifiedName@@rhs.imaginary '
+    - '------------------INS SimpleName@@imaginary @TO@ QualifiedName@@rhs.imaginary '
+    - '---------------DEL MethodInvocation@@Double.doubleToRawLongBits(imaginary) '
+    - '------------------DEL SimpleName@@Name:Double '
+    - '------------------DEL SimpleName@@MethodName:doubleToRawLongBits:[imaginary] '
+    - '---------------------DEL SimpleName@@imaginary '
+    - '---------------DEL MethodInvocation@@Double.doubleToRawLongBits(rhs.getImaginary()) '
+    - '------------------DEL SimpleName@@Name:Double '
+    - '------------------DEL SimpleName@@MethodName:doubleToRawLongBits:[rhs.getImaginary()] '
+    - '---------------------DEL MethodInvocation@@rhs.getImaginary() '
+    - '------------------------DEL SimpleName@@Name:rhs '
+    - '------------------------DEL SimpleName@@MethodName:getImaginary:[] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/complex/Complex:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:ret=(real == rhs.real) && (imaginary ==
+      rhs.imaginary) @TO@ IfStatement@@MethodInvocation:rhs.isNaN() '
+    - '---INS Assignment@@ret=(real == rhs.real) && (imaginary == rhs.imaginary) @TO@
+      ExpressionStatement@@Assignment:ret=(real == rhs.real) && (imaginary == rhs.imaginary) '
+    - '------INS SimpleName@@ret @TO@ Assignment@@ret=(real == rhs.real) && (imaginary
+      == rhs.imaginary) '
+    - '------INS Operator@@= @TO@ Assignment@@ret=(real == rhs.real) && (imaginary
+      == rhs.imaginary) '
+    - '------INS InfixExpression@@(real == rhs.real) && (imaginary == rhs.imaginary)
+      @TO@ Assignment@@ret=(real == rhs.real) && (imaginary == rhs.imaginary) '
+    - '---------INS ParenthesizedExpression@@(real == rhs.real) @TO@ InfixExpression@@(real
+      == rhs.real) && (imaginary == rhs.imaginary) '
+    - '------------INS InfixExpression@@real == rhs.real @TO@ ParenthesizedExpression@@(real
+      == rhs.real) '
+    - '---------------INS SimpleName@@real @TO@ InfixExpression@@real == rhs.real '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@real == rhs.real '
+    - '---------------INS QualifiedName@@rhs.real @TO@ InfixExpression@@real == rhs.real '
+    - '------------------INS SimpleName@@rhs @TO@ QualifiedName@@rhs.real '
+    - '------------------INS SimpleName@@real @TO@ QualifiedName@@rhs.real '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@(real == rhs.real) && (imaginary
+      == rhs.imaginary) '
+    - '---------INS ParenthesizedExpression@@(imaginary == rhs.imaginary) @TO@ InfixExpression@@(real
+      == rhs.real) && (imaginary == rhs.imaginary) '
+    - '------------INS InfixExpression@@imaginary == rhs.imaginary @TO@ ParenthesizedExpression@@(imaginary
+      == rhs.imaginary) '
+    - '---------------INS SimpleName@@imaginary @TO@ InfixExpression@@imaginary ==
+      rhs.imaginary '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@imaginary == rhs.imaginary '
+    - '---------------INS QualifiedName@@rhs.imaginary @TO@ InfixExpression@@imaginary
+      == rhs.imaginary '
+    - '------------------INS SimpleName@@rhs @TO@ QualifiedName@@rhs.imaginary '
+    - '------------------INS SimpleName@@imaginary @TO@ QualifiedName@@rhs.imaginary '
+  repair_actions_cnt: 1

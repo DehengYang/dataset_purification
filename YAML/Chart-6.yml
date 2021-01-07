@@ -1,0 +1,252 @@
+1 bug_id: Chart-6
+2 src folder:
+  name of src folder: source
+  number of files: 652
+  number of java files: 579
+  number of src classes: 605
+  number of test classes: 333
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.util.junit.ShapeListTests#testSerialization
+  - org.jfree.chart.util.junit.ShapeListTests#testEquals
+  - org.jfree.chart.util.junit.ShapeListTests#testSerialization
+  - org.jfree.chart.util.junit.ShapeListTests#testEquals
+  - org.jfree.chart.util.junit.ShapeListTests#testSerialization
+  - org.jfree.chart.util.junit.ShapeListTests#testEquals
+  - org.jfree.chart.renderer.junit.AbstractRendererTests#testCloning
+  - org.jfree.chart.renderer.junit.AbstractRendererTests#testEquals
+  - org.jfree.chart.util.junit.ShapeListTests#testCloning
+  - org.jfree.chart.util.junit.ShapeListTests#testSerialization
+  - org.jfree.chart.util.junit.ShapeListTests#testEquals
+  - org.jfree.chart.util.junit.ShapeListTests#testSerialization
+  - org.jfree.chart.util.junit.ShapeListTests#testEquals
+  - org.jfree.chart.renderer.junit.AbstractRendererTests#testCloning
+  - org.jfree.chart.renderer.junit.AbstractRendererTests#testEquals
+  - org.jfree.chart.util.junit.ShapeListTests#testCloning
+  failing tests:
+  - org.jfree.chart.util.junit.ShapeListTests
+  - org.jfree.chart.renderer.junit.AbstractRendererTests
+  number of all test cases: 1895
+  number of failing test cases: 16
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.381
+  purification via delta debugging: 206.792
+  repair actions extraction: 0.683
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.util.junit.ShapeListTests#testEquals: 51
+    org.jfree.chart.util.junit.ShapeListTests#testSerialization: 146
+  fixed:
+    org.jfree.chart.util.junit.ShapeListTests#testEquals: 64
+    org.jfree.chart.util.junit.ShapeListTests#testSerialization: 143
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 8
+  covDel: 1
+  cov_patch_lines: 9
+  delta_patch_lines: 9
+  oriAdd: 8
+  oriDel: 1
+  ori_patch_lines: 9
+  purAdd: 8
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 21
+  failFail: 2
+  passed: 0
+  total: 23
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_6/source/org/jfree/chart/util/ShapeList.java\t\
+    2020-10-20 23:51:22.880354473 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_6/purify/patch/org/jfree/chart/util/ShapeList.java\t\
+    2020-10-20 23:51:22.880354473 -0400\n@@ -108,7 +108,14 @@\n         if (!(obj\
+    \ instanceof ShapeList)) {\n             return false;\n         }\n-        return\
+    \ super.equals(obj);\n+        ShapeList that = (ShapeList) obj;\n+        int\
+    \ listSize = size();\n+        for (int i = 0; i < listSize; i++) {\n+       \
+    \    if (!ShapeUtilities.equal((Shape) get(i), (Shape) that.get(i))) {\n+    \
+    \           return false;\n+           }\n+        }\n+        return true;\n\
+    \ \n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_6/source/org/jfree/chart/util/ShapeList.java\t\
+    2020-10-20 23:55:04.922766960 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_6/purify/purified/org/jfree/chart/util/ShapeList.java\t\
+    2020-10-20 23:55:04.922766960 -0400\n@@ -108,7 +108,14 @@\n         if (!(obj\
+    \ instanceof ShapeList)) {\n             return false;\n         }\n-        return\
+    \ super.equals(obj);\n+        ShapeList that = (ShapeList) obj;\n+        int\
+    \ listSize = size();\n+        for (int i = 0; i < listSize; i++) {\n+       \
+    \    if (!ShapeUtilities.equal((Shape) get(i), (Shape) that.get(i))) {\n+    \
+    \           return false;\n+           }\n+        }\n+        return true;\n\
+    \ \n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/util/ShapeList:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@ShapeList that=(ShapeList)obj; @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '---INS SimpleType@@ShapeList @TO@ VariableDeclarationStatement@@ShapeList that=(ShapeList)obj; '
+    - '---INS VariableDeclarationFragment@@that=(ShapeList)obj @TO@ VariableDeclarationStatement@@ShapeList
+      that=(ShapeList)obj; '
+    - '------INS SimpleName@@that @TO@ VariableDeclarationFragment@@that=(ShapeList)obj '
+    - '------INS CastExpression@@(ShapeList)obj @TO@ VariableDeclarationFragment@@that=(ShapeList)obj '
+    - '---------INS SimpleType@@ShapeList @TO@ CastExpression@@(ShapeList)obj '
+    - '---------INS SimpleName@@obj @TO@ CastExpression@@(ShapeList)obj '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@SuperMethodInvocation:super.equals(obj) '
+    - '---DEL SuperMethodInvocation@@super.equals(obj) '
+    - '------DEL SimpleName@@MethodName:equals:[obj] '
+    - '------DEL SimpleName@@obj '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int listSize=size(); @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int listSize=size(); '
+    - '---INS VariableDeclarationFragment@@listSize=size() @TO@ VariableDeclarationStatement@@int
+      listSize=size(); '
+    - '------INS SimpleName@@listSize @TO@ VariableDeclarationFragment@@listSize=size() '
+    - '------INS MethodInvocation@@MethodName:size:[] @TO@ VariableDeclarationFragment@@listSize=size() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < listSize; [i++] @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < listSize; [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < listSize @TO@ ForStatement@@[int i=0];i < listSize;
+      [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < listSize '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < listSize '
+    - '------INS SimpleName@@listSize @TO@ InfixExpression@@i < listSize '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < listSize; [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS IfStatement@@PrefixExpression:!ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i))
+      @TO@ ForStatement@@[int i=0];i < listSize; [i++] '
+    - '------INS PrefixExpression@@!ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i))
+      @TO@ IfStatement@@PrefixExpression:!ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i)) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i)) '
+    - '---------INS MethodInvocation@@ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i))
+      @TO@ PrefixExpression@@!ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i)) '
+    - '------------INS SimpleName@@Name:ShapeUtilities @TO@ MethodInvocation@@ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i)) '
+    - '------------INS SimpleName@@MethodName:equal:[(Shape)get(i), (Shape)that.get(i)]
+      @TO@ MethodInvocation@@ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i)) '
+    - '---------------INS CastExpression@@(Shape)get(i) @TO@ SimpleName@@MethodName:equal:[(Shape)get(i),
+      (Shape)that.get(i)] '
+    - '------------------INS SimpleType@@Shape @TO@ CastExpression@@(Shape)get(i) '
+    - '------------------INS MethodInvocation@@get(i) @TO@ CastExpression@@(Shape)get(i) '
+    - '---------------------INS SimpleName@@MethodName:get:[i] @TO@ MethodInvocation@@get(i) '
+    - '------------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:get:[i] '
+    - '---------------INS CastExpression@@(Shape)that.get(i) @TO@ SimpleName@@MethodName:equal:[(Shape)get(i),
+      (Shape)that.get(i)] '
+    - '------------------INS SimpleType@@Shape @TO@ CastExpression@@(Shape)that.get(i) '
+    - '------------------INS MethodInvocation@@that.get(i) @TO@ CastExpression@@(Shape)that.get(i) '
+    - '---------------------INS SimpleName@@Name:that @TO@ MethodInvocation@@that.get(i) '
+    - '---------------------INS SimpleName@@MethodName:get:[i] @TO@ MethodInvocation@@that.get(i) '
+    - '------------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:get:[i] '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@PrefixExpression:!ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i)) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@BooleanLiteral:true @TO@ MethodDeclaration@@public, @@boolean,
+      MethodName:equals, @@Argus:Object+obj+ '
+    - '---INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  repair_actions_cnt: 5
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/util/ShapeList:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@ShapeList that=(ShapeList)obj; @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '---INS SimpleType@@ShapeList @TO@ VariableDeclarationStatement@@ShapeList that=(ShapeList)obj; '
+    - '---INS VariableDeclarationFragment@@that=(ShapeList)obj @TO@ VariableDeclarationStatement@@ShapeList
+      that=(ShapeList)obj; '
+    - '------INS SimpleName@@that @TO@ VariableDeclarationFragment@@that=(ShapeList)obj '
+    - '------INS CastExpression@@(ShapeList)obj @TO@ VariableDeclarationFragment@@that=(ShapeList)obj '
+    - '---------INS SimpleType@@ShapeList @TO@ CastExpression@@(ShapeList)obj '
+    - '---------INS SimpleName@@obj @TO@ CastExpression@@(ShapeList)obj '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@SuperMethodInvocation:super.equals(obj) '
+    - '---DEL SuperMethodInvocation@@super.equals(obj) '
+    - '------DEL SimpleName@@MethodName:equals:[obj] '
+    - '------DEL SimpleName@@obj '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int listSize=size(); @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int listSize=size(); '
+    - '---INS VariableDeclarationFragment@@listSize=size() @TO@ VariableDeclarationStatement@@int
+      listSize=size(); '
+    - '------INS SimpleName@@listSize @TO@ VariableDeclarationFragment@@listSize=size() '
+    - '------INS MethodInvocation@@MethodName:size:[] @TO@ VariableDeclarationFragment@@listSize=size() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < listSize; [i++] @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < listSize; [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < listSize @TO@ ForStatement@@[int i=0];i < listSize;
+      [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < listSize '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < listSize '
+    - '------INS SimpleName@@listSize @TO@ InfixExpression@@i < listSize '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < listSize; [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS IfStatement@@PrefixExpression:!ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i))
+      @TO@ ForStatement@@[int i=0];i < listSize; [i++] '
+    - '------INS PrefixExpression@@!ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i))
+      @TO@ IfStatement@@PrefixExpression:!ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i)) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i)) '
+    - '---------INS MethodInvocation@@ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i))
+      @TO@ PrefixExpression@@!ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i)) '
+    - '------------INS SimpleName@@Name:ShapeUtilities @TO@ MethodInvocation@@ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i)) '
+    - '------------INS SimpleName@@MethodName:equal:[(Shape)get(i), (Shape)that.get(i)]
+      @TO@ MethodInvocation@@ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i)) '
+    - '---------------INS CastExpression@@(Shape)get(i) @TO@ SimpleName@@MethodName:equal:[(Shape)get(i),
+      (Shape)that.get(i)] '
+    - '------------------INS SimpleType@@Shape @TO@ CastExpression@@(Shape)get(i) '
+    - '------------------INS MethodInvocation@@get(i) @TO@ CastExpression@@(Shape)get(i) '
+    - '---------------------INS SimpleName@@MethodName:get:[i] @TO@ MethodInvocation@@get(i) '
+    - '------------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:get:[i] '
+    - '---------------INS CastExpression@@(Shape)that.get(i) @TO@ SimpleName@@MethodName:equal:[(Shape)get(i),
+      (Shape)that.get(i)] '
+    - '------------------INS SimpleType@@Shape @TO@ CastExpression@@(Shape)that.get(i) '
+    - '------------------INS MethodInvocation@@that.get(i) @TO@ CastExpression@@(Shape)that.get(i) '
+    - '---------------------INS SimpleName@@Name:that @TO@ MethodInvocation@@that.get(i) '
+    - '---------------------INS SimpleName@@MethodName:get:[i] @TO@ MethodInvocation@@that.get(i) '
+    - '------------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:get:[i] '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@PrefixExpression:!ShapeUtilities.equal((Shape)get(i),(Shape)that.get(i)) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@BooleanLiteral:true @TO@ MethodDeclaration@@public, @@boolean,
+      MethodName:equals, @@Argus:Object+obj+ '
+    - '---INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  repair_actions_cnt: 5

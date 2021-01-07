@@ -1,0 +1,178 @@
+1 bug_id: Math-100
+2 src folder:
+  name of src folder: java
+  number of files: 244
+  number of java files: 223
+  number of src classes: 236
+  number of test classes: 139
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.estimation.GaussNewtonEstimatorTest#testBoundParameters
+  failing tests:
+  - org.apache.commons.math.estimation.GaussNewtonEstimatorTest
+  number of all test cases: 1179
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 0.603
+  purification via delta debugging: 164.935
+  repair actions extraction: 1.249
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.estimation.GaussNewtonEstimatorTest#testBoundParameters: 236
+  fixed:
+    org.apache.commons.math.estimation.GaussNewtonEstimatorTest#testBoundParameters: 261
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 3
+  covDel: 3
+  cov_patch_lines: 6
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 3
+  ori_patch_lines: 6
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 7
+  failFail: 4
+  passed: 1
+  total: 12
+9 sibling repair actions:
+- 0 1 0.8514492753623188
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_100/src/java/org/apache/commons/math/estimation/AbstractEstimator.java\t\
+    2020-10-22 08:47:10.955579256 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_100/purify/patch/org/apache/commons/math/estimation/AbstractEstimator.java\t\
+    2020-10-22 08:47:10.955579256 -0400\n@@ -163,7 +163,7 @@\n \n         // compute\
+    \ transpose(J).J, avoiding building big intermediate matrices\n         final\
+    \ int rows = problem.getMeasurements().length;\n-        final int cols = problem.getAllParameters().length;\n\
+    +        final int cols = problem.getUnboundParameters().length;\n         final\
+    \ int max  = cols * rows;\n         double[][] jTj = new double[cols][cols];\n\
+    \         for (int i = 0; i < cols; ++i) {\n@@ -199,12 +199,12 @@\n     public\
+    \ double[] guessParametersErrors(EstimationProblem problem)\n       throws EstimationException\
+    \ {\n         int m = problem.getMeasurements().length;\n-        int p = problem.getAllParameters().length;\n\
+    +        int p = problem.getUnboundParameters().length;\n         if (m <= p)\
+    \ {\n             throw new EstimationException(\"no degrees of freedom ({0} measurements,\
+    \ {1} parameters)\",\n                                           new Object[]\
+    \ { new Integer(m), new Integer(p)});\n         }\n-        double[] errors =\
+    \ new double[problem.getAllParameters().length];\n+        double[] errors = new\
+    \ double[problem.getUnboundParameters().length];\n         final double c = Math.sqrt(getChiSquare(problem)\
+    \ / (m - p));\n         double[][] covar = getCovariances(problem);\n        \
+    \ for (int i = 0; i < errors.length; ++i) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_100/src/java/org/apache/commons/math/estimation/AbstractEstimator.java\t\
+    2020-10-22 08:50:06.892669545 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_100/purify/purified/org/apache/commons/math/estimation/AbstractEstimator.java\t\
+    2020-10-22 08:50:06.888669429 -0400\n@@ -163,7 +163,6 @@\n \n         // compute\
+    \ transpose(J).J, avoiding building big intermediate matrices\n         final\
+    \ int rows = problem.getMeasurements().length;\n-        final int cols = problem.getAllParameters().length;\n\
+    \         final int max  = cols * rows;\n         double[][] jTj = new double[cols][cols];\n\
+    \         for (int i = 0; i < cols; ++i) {\n@@ -200,11 +199,13 @@\n       throws\
+    \ EstimationException {\n         int m = problem.getMeasurements().length;\n\
+    \         int p = problem.getAllParameters().length;\n+        int p = problem.getUnboundParameters().length;\n\
+    \         if (m <= p) {\n             throw new EstimationException(\"no degrees\
+    \ of freedom ({0} measurements, {1} parameters)\",\n                         \
+    \                  new Object[] { new Integer(m), new Integer(p)});\n        \
+    \ }\n         double[] errors = new double[problem.getAllParameters().length];\n\
+    +        double[] errors = new double[problem.getUnboundParameters().length];\n\
+    \         final double c = Math.sqrt(getChiSquare(problem) / (m - p));\n     \
+    \    double[][] covar = getCovariances(problem);\n         for (int i = 0; i <\
+    \ errors.length; ++i) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/estimation/AbstractEstimator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final int cols=problem.getAllParameters().length;
+      @TO@ final int cols=problem.getUnboundParameters().length; '
+    - '---UPD VariableDeclarationFragment@@cols=problem.getAllParameters().length
+      @TO@ cols=problem.getUnboundParameters().length '
+    - '------UPD FieldAccess@@problem.getAllParameters().length @TO@ problem.getUnboundParameters().length '
+    - '---------UPD MethodInvocation@@problem.getAllParameters() @TO@ problem.getUnboundParameters() '
+    - '------------UPD SimpleName@@MethodName:getAllParameters:[] @TO@ MethodName:getUnboundParameters:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int p=problem.getAllParameters().length;
+      @TO@ int p=problem.getUnboundParameters().length; '
+    - '---UPD VariableDeclarationFragment@@p=problem.getAllParameters().length @TO@
+      p=problem.getUnboundParameters().length '
+    - '------UPD FieldAccess@@problem.getAllParameters().length @TO@ problem.getUnboundParameters().length '
+    - '---------UPD MethodInvocation@@problem.getAllParameters() @TO@ problem.getUnboundParameters() '
+    - '------------UPD SimpleName@@MethodName:getAllParameters:[] @TO@ MethodName:getUnboundParameters:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double[] errors=new double[problem.getAllParameters().length];
+      @TO@ double[] errors=new double[problem.getUnboundParameters().length]; '
+    - '---UPD VariableDeclarationFragment@@errors=new double[problem.getAllParameters().length]
+      @TO@ errors=new double[problem.getUnboundParameters().length] '
+    - '------UPD ArrayCreation@@new double[problem.getAllParameters().length] @TO@
+      new double[problem.getUnboundParameters().length] '
+    - '---------UPD FieldAccess@@problem.getAllParameters().length @TO@ problem.getUnboundParameters().length '
+    - '------------UPD MethodInvocation@@problem.getAllParameters() @TO@ problem.getUnboundParameters() '
+    - '---------------UPD SimpleName@@MethodName:getAllParameters:[] @TO@ MethodName:getUnboundParameters:[] '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/estimation/AbstractEstimator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@final int cols=problem.getAllParameters().length; '
+    - '---DEL Modifier@@final '
+    - '---DEL PrimitiveType@@int '
+    - '---DEL VariableDeclarationFragment@@cols=problem.getAllParameters().length '
+    - '------DEL SimpleName@@cols '
+    - '------DEL FieldAccess@@problem.getAllParameters().length '
+    - '---------DEL MethodInvocation@@problem.getAllParameters() '
+    - '------------DEL SimpleName@@Name:problem '
+    - '------------DEL SimpleName@@MethodName:getAllParameters:[] '
+    - '---------DEL SimpleName@@length '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int p=problem.getUnboundParameters().length;
+      @TO@ MethodDeclaration@@public, @@double[], MethodName:guessParametersErrors,
+      @@Argus:EstimationProblem+problem+EstimationException,  '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int p=problem.getUnboundParameters().length; '
+    - '---INS VariableDeclarationFragment@@p=problem.getUnboundParameters().length
+      @TO@ VariableDeclarationStatement@@int p=problem.getUnboundParameters().length; '
+    - '------INS SimpleName@@p @TO@ VariableDeclarationFragment@@p=problem.getUnboundParameters().length '
+    - '------INS FieldAccess@@problem.getUnboundParameters().length @TO@ VariableDeclarationFragment@@p=problem.getUnboundParameters().length '
+    - '---------INS MethodInvocation@@problem.getUnboundParameters() @TO@ FieldAccess@@problem.getUnboundParameters().length '
+    - '------------INS SimpleName@@Name:problem @TO@ MethodInvocation@@problem.getUnboundParameters() '
+    - '------------INS SimpleName@@MethodName:getUnboundParameters:[] @TO@ MethodInvocation@@problem.getUnboundParameters() '
+    - '---------INS SimpleName@@length @TO@ FieldAccess@@problem.getUnboundParameters().length '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double[] errors=new double[problem.getUnboundParameters().length];
+      @TO@ MethodDeclaration@@public, @@double[], MethodName:guessParametersErrors,
+      @@Argus:EstimationProblem+problem+EstimationException,  '
+    - '---INS ArrayType@@double[] @TO@ VariableDeclarationStatement@@double[] errors=new
+      double[problem.getUnboundParameters().length]; '
+    - '------INS PrimitiveType@@double @TO@ ArrayType@@double[] '
+    - '---INS VariableDeclarationFragment@@errors=new double[problem.getUnboundParameters().length]
+      @TO@ VariableDeclarationStatement@@double[] errors=new double[problem.getUnboundParameters().length]; '
+    - '------INS SimpleName@@errors @TO@ VariableDeclarationFragment@@errors=new double[problem.getUnboundParameters().length] '
+    - '------INS ArrayCreation@@new double[problem.getUnboundParameters().length]
+      @TO@ VariableDeclarationFragment@@errors=new double[problem.getUnboundParameters().length] '
+    - '---------INS ArrayType@@double[] @TO@ ArrayCreation@@new double[problem.getUnboundParameters().length] '
+    - '------------INS PrimitiveType@@double @TO@ ArrayType@@double[] '
+    - '---------INS FieldAccess@@problem.getUnboundParameters().length @TO@ ArrayCreation@@new
+      double[problem.getUnboundParameters().length] '
+    - '------------INS MethodInvocation@@problem.getUnboundParameters() @TO@ FieldAccess@@problem.getUnboundParameters().length '
+    - '---------------INS SimpleName@@Name:problem @TO@ MethodInvocation@@problem.getUnboundParameters() '
+    - '---------------INS SimpleName@@MethodName:getUnboundParameters:[] @TO@ MethodInvocation@@problem.getUnboundParameters() '
+    - '------------INS SimpleName@@length @TO@ FieldAccess@@problem.getUnboundParameters().length '
+  repair_actions_cnt: 3

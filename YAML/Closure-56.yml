@@ -1,0 +1,139 @@
+1 bug_id: Closure-56
+2 src folder:
+  name of src folder: src
+  number of files: 419
+  number of java files: 405
+  number of src classes: 1304
+  number of test classes: 215
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.JsMessageExtractorTest#testSyntaxError1
+  - com.google.javascript.jscomp.JSCompilerSourceExcerptProviderTest#testExceptNoNewLine
+  - com.google.javascript.jscomp.JsMessageExtractorTest#testSyntaxError2
+  failing tests:
+  - com.google.javascript.jscomp.JsMessageExtractorTest
+  - com.google.javascript.jscomp.JSCompilerSourceExcerptProviderTest
+  number of all test cases: 7194
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.603
+  purification via delta debugging: 230.841
+  repair actions extraction: 1.355
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.JSCompilerSourceExcerptProviderTest#testExceptNoNewLine: 806
+    com.google.javascript.jscomp.JsMessageExtractorTest#testSyntaxError1: 1198
+    com.google.javascript.jscomp.JsMessageExtractorTest#testSyntaxError2: 1201
+  fixed:
+    com.google.javascript.jscomp.JSCompilerSourceExcerptProviderTest#testExceptNoNewLine: 808
+    com.google.javascript.jscomp.JsMessageExtractorTest#testSyntaxError1: 1209
+    com.google.javascript.jscomp.JsMessageExtractorTest#testSyntaxError2: 1212
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 0
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_56/src/com/google/javascript/jscomp/SourceFile.java\t\
+    2020-10-23 07:13:54.682564577 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_56/purify/patch/com/google/javascript/jscomp/SourceFile.java\t\
+    2020-10-23 07:13:54.682564577 -0400\n@@ -239,7 +239,11 @@\n       // If next new\
+    \ line cannot be found, there are two cases\n       // 1. pos already reaches\
+    \ the end of file, then null should be returned\n       // 2. otherwise, return\
+    \ the contents between pos and the end of file.\n+      if (pos >= js.length())\
+    \ {\n         return null;\n+      } else {\n+        return js.substring(pos,\
+    \ js.length());\n+      }\n     } else {\n       return js.substring(pos, js.indexOf('\\\
+    n', pos));\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_56/src/com/google/javascript/jscomp/SourceFile.java\t\
+    2020-10-23 07:18:14.470082747 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_56/purify/purified/com/google/javascript/jscomp/SourceFile.java\t\
+    2020-10-23 07:18:14.470082747 -0400\n@@ -239,7 +239,11 @@\n       // If next new\
+    \ line cannot be found, there are two cases\n       // 1. pos already reaches\
+    \ the end of file, then null should be returned\n       // 2. otherwise, return\
+    \ the contents between pos and the end of file.\n+      if (pos >= js.length())\
+    \ {\n         return null;\n+      } else {\n+        return js.substring(pos,\
+    \ js.length());\n+      }\n     } else {\n       return js.substring(pos, js.indexOf('\\\
+    n', pos));\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/SourceFile:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:pos >= js.length() @TO@ IfStatement@@InfixExpression:js.indexOf(''\n'',pos)
+      == -1 '
+    - '---MOV ReturnStatement@@NullLiteral:null @TO@ IfStatement@@InfixExpression:pos
+      >= js.length() '
+    - '---INS InfixExpression@@pos >= js.length() @TO@ IfStatement@@InfixExpression:pos
+      >= js.length() '
+    - '------INS SimpleName@@pos @TO@ InfixExpression@@pos >= js.length() '
+    - '------INS Operator@@>= @TO@ InfixExpression@@pos >= js.length() '
+    - '------INS MethodInvocation@@js.length() @TO@ InfixExpression@@pos >= js.length() '
+    - '---------INS SimpleName@@Name:js @TO@ MethodInvocation@@js.length() '
+    - '---------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@js.length() '
+    - '---INS ReturnStatement@@MethodInvocation:js.substring(pos,js.length()) @TO@
+      IfStatement@@InfixExpression:pos >= js.length() '
+    - '------INS MethodInvocation@@js.substring(pos,js.length()) @TO@ ReturnStatement@@MethodInvocation:js.substring(pos,js.length()) '
+    - '---------INS SimpleName@@Name:js @TO@ MethodInvocation@@js.substring(pos,js.length()) '
+    - '---------INS SimpleName@@MethodName:substring:[pos, js.length()] @TO@ MethodInvocation@@js.substring(pos,js.length()) '
+    - '------------INS SimpleName@@pos @TO@ SimpleName@@MethodName:substring:[pos,
+      js.length()] '
+    - '------------INS MethodInvocation@@js.length() @TO@ SimpleName@@MethodName:substring:[pos,
+      js.length()] '
+    - '---------------INS SimpleName@@Name:js @TO@ MethodInvocation@@js.length() '
+    - '---------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@js.length() '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/SourceFile:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:pos >= js.length() @TO@ IfStatement@@InfixExpression:js.indexOf(''\n'',pos)
+      == -1 '
+    - '---MOV ReturnStatement@@NullLiteral:null @TO@ IfStatement@@InfixExpression:pos
+      >= js.length() '
+    - '---INS InfixExpression@@pos >= js.length() @TO@ IfStatement@@InfixExpression:pos
+      >= js.length() '
+    - '------INS SimpleName@@pos @TO@ InfixExpression@@pos >= js.length() '
+    - '------INS Operator@@>= @TO@ InfixExpression@@pos >= js.length() '
+    - '------INS MethodInvocation@@js.length() @TO@ InfixExpression@@pos >= js.length() '
+    - '---------INS SimpleName@@Name:js @TO@ MethodInvocation@@js.length() '
+    - '---------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@js.length() '
+    - '---INS ReturnStatement@@MethodInvocation:js.substring(pos,js.length()) @TO@
+      IfStatement@@InfixExpression:pos >= js.length() '
+    - '------INS MethodInvocation@@js.substring(pos,js.length()) @TO@ ReturnStatement@@MethodInvocation:js.substring(pos,js.length()) '
+    - '---------INS SimpleName@@Name:js @TO@ MethodInvocation@@js.substring(pos,js.length()) '
+    - '---------INS SimpleName@@MethodName:substring:[pos, js.length()] @TO@ MethodInvocation@@js.substring(pos,js.length()) '
+    - '------------INS SimpleName@@pos @TO@ SimpleName@@MethodName:substring:[pos,
+      js.length()] '
+    - '------------INS MethodInvocation@@js.length() @TO@ SimpleName@@MethodName:substring:[pos,
+      js.length()] '
+    - '---------------INS SimpleName@@Name:js @TO@ MethodInvocation@@js.length() '
+    - '---------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@js.length() '
+  files_cnt: '1'
+  repair_actions_cnt: 1

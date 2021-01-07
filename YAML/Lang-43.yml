@@ -1,0 +1,94 @@
+1 bug_id: Lang-43
+2 src folder:
+  name of src folder: java
+  number of files: 96
+  number of java files: 85
+  number of src classes: 132
+  number of test classes: 97
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.text.ExtendedMessageFormatTest#testEscapedQuote_LANG_477
+  failing tests:
+  - org.apache.commons.lang.text.ExtendedMessageFormatTest
+  number of all test cases: 1902
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 7.0
+  purification via coverage: 0.0
+  purification via delta debugging: 23.057
+  repair actions extraction: 1.089
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.text.ExtendedMessageFormatTest#testEscapedQuote_LANG_477: 27
+  fixed:
+    org.apache.commons.lang.text.ExtendedMessageFormatTest#testEscapedQuote_LANG_477: 152
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 0
+  cov_patch_lines: 1
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 0
+  ori_patch_lines: 1
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 0
+  total: 0
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_43/src/java/org/apache/commons/lang/text/ExtendedMessageFormat.java\t\
+    2020-10-21 03:41:21.210755276 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_43/purify/patch/org/apache/commons/lang/text/ExtendedMessageFormat.java\t\
+    2020-10-21 03:41:21.210755276 -0400\n@@ -419,6 +419,7 @@\n         int start =\
+    \ pos.getIndex();\n         char[] c = pattern.toCharArray();\n         if (escapingOn\
+    \ && c[start] == QUOTE) {\n+            next(pos);\n             return appendTo\
+    \ == null ? null : appendTo.append(QUOTE);\n         }\n         int lastHold\
+    \ = start;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_43/src/java/org/apache/commons/lang/text/ExtendedMessageFormat.java\t\
+    2020-10-21 03:41:53.471687199 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_43/purify/purified/org/apache/commons/lang/text/ExtendedMessageFormat.java\t\
+    2020-10-21 03:41:53.471687199 -0400\n@@ -419,6 +419,7 @@\n         int start =\
+    \ pos.getIndex();\n         char[] c = pattern.toCharArray();\n         if (escapingOn\
+    \ && c[start] == QUOTE) {\n+            next(pos);\n             return appendTo\
+    \ == null ? null : appendTo.append(QUOTE);\n         }\n         int lastHold\
+    \ = start;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/text/ExtendedMessageFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:next(pos) @TO@ IfStatement@@InfixExpression:escapingOn
+      && c[start] == QUOTE '
+    - '---INS MethodInvocation@@next(pos) @TO@ ExpressionStatement@@MethodInvocation:next(pos) '
+    - '------INS SimpleName@@MethodName:next:[pos] @TO@ MethodInvocation@@next(pos) '
+    - '---------INS SimpleName@@pos @TO@ SimpleName@@MethodName:next:[pos] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/text/ExtendedMessageFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:next(pos) @TO@ IfStatement@@InfixExpression:escapingOn
+      && c[start] == QUOTE '
+    - '---INS MethodInvocation@@next(pos) @TO@ ExpressionStatement@@MethodInvocation:next(pos) '
+    - '------INS SimpleName@@MethodName:next:[pos] @TO@ MethodInvocation@@next(pos) '
+    - '---------INS SimpleName@@pos @TO@ SimpleName@@MethodName:next:[pos] '
+  repair_actions_cnt: 1

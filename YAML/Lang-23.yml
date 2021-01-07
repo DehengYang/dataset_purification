@@ -1,0 +1,434 @@
+1 bug_id: Lang-23
+2 src folder:
+  name of src folder: java
+  number of files: 105
+  number of java files: 93
+  number of src classes: 143
+  number of test classes: 94
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.text.ExtendedMessageFormatTest#testEqualsHashcode
+  failing tests:
+  - org.apache.commons.lang3.text.ExtendedMessageFormatTest
+  number of all test cases: 1825
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 9.0
+  purification via coverage: 1.459
+  purification via delta debugging: 907.446
+  repair actions extraction: 2.71
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.text.ExtendedMessageFormatTest#testEqualsHashcode: 135
+  fixed:
+    org.apache.commons.lang3.text.ExtendedMessageFormatTest#testEqualsHashcode: 158
+6 reduced lines:
+  by all: 8
+  by coverage: 0
+  by delta debugging: 8
+  covAdd: 31
+  covDel: 0
+  cov_patch_lines: 31
+  delta_patch_lines: 23
+  oriAdd: 31
+  oriDel: 0
+  ori_patch_lines: 31
+  purAdd: 23
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 129
+  failFail: 10
+  passed: 8
+  total: 147
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_23/src/main/java/org/apache/commons/lang3/text/ExtendedMessageFormat.java\t\
+    2020-10-22 02:02:36.809811873 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_23/purify/patch/org/apache/commons/lang3/text/ExtendedMessageFormat.java\t\
+    2020-10-22 02:02:36.809811873 -0400\n@@ -70,6 +70,7 @@\n  */\n public class ExtendedMessageFormat\
+    \ extends MessageFormat {\n     private static final long serialVersionUID = -2362048321261811743L;\n\
+    +    private static final int HASH_SEED = 31;\n \n     private static final String\
+    \ DUMMY_PATTERN = \"\";\n     private static final String ESCAPED_QUOTE = \"''\"\
+    ;\n@@ -260,12 +261,42 @@\n      * @param obj the object to compare to\n      *\
+    \ @return true if this object equals the other, otherwise false\n      */\n+ \
+    \   @Override\n+    public boolean equals(Object obj) {\n+        if (obj == this)\
+    \ {\n+            return true;\n+        }\n+        if (obj == null) {\n+   \
+    \         return false;\n+        }\n+        if (!super.equals(obj)) {\n+   \
+    \         return false;\n+        }\n+        if (ObjectUtils.notEqual(getClass(),\
+    \ obj.getClass())) {\n+          return false;\n+        }\n+        ExtendedMessageFormat\
+    \ rhs = (ExtendedMessageFormat)obj;\n+        if (ObjectUtils.notEqual(toPattern,\
+    \ rhs.toPattern)) {\n+            return false;\n+        }\n+        if (ObjectUtils.notEqual(registry,\
+    \ rhs.registry)) {\n+            return false;\n+        }\n+        return true;\n\
+    +    }\n \n     /**\n      * Return the hashcode.\n      *\n      * @return the\
+    \ hashcode\n      */\n+    @Override\n+    public int hashCode() {\n+        int\
+    \ result = super.hashCode();\n+        result = HASH_SEED * result + ObjectUtils.hashCode(registry);\n\
+    +        result = HASH_SEED * result + ObjectUtils.hashCode(toPattern);\n+   \
+    \     return result;\n+    }\n \n     /**\n      * Get a custom format from a\
+    \ format description."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_23/src/main/java/org/apache/commons/lang3/text/ExtendedMessageFormat.java\t\
+    2020-10-22 02:17:58.352452262 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_23/purify/purified/org/apache/commons/lang3/text/ExtendedMessageFormat.java\t\
+    2020-10-22 02:17:58.344452030 -0400\n@@ -70,6 +70,7 @@\n  */\n public class ExtendedMessageFormat\
+    \ extends MessageFormat {\n     private static final long serialVersionUID = -2362048321261811743L;\n\
+    +    private static final int HASH_SEED = 31;\n \n     private static final String\
+    \ DUMMY_PATTERN = \"\";\n     private static final String ESCAPED_QUOTE = \"''\"\
+    ;\n@@ -260,12 +261,34 @@\n      * @param obj the object to compare to\n      *\
+    \ @return true if this object equals the other, otherwise false\n      */\n+ \
+    \   public boolean equals(Object obj) {\n+        if (obj == this) {\n+      \
+    \  }\n+        if (obj == null) {\n+        }\n+        if (!super.equals(obj))\
+    \ {\n+            return false;\n+        }\n+        if (ObjectUtils.notEqual(getClass(),\
+    \ obj.getClass())) {\n+        }\n+        ExtendedMessageFormat rhs = (ExtendedMessageFormat)obj;\n\
+    +        if (ObjectUtils.notEqual(toPattern, rhs.toPattern)) {\n+        }\n+\
+    \        if (ObjectUtils.notEqual(registry, rhs.registry)) {\n+        }\n+  \
+    \      return true;\n+    }\n \n     /**\n      * Return the hashcode.\n     \
+    \ *\n      * @return the hashcode\n      */\n+    public int hashCode() {\n+ \
+    \       int result = super.hashCode();\n+        result = HASH_SEED * result +\
+    \ ObjectUtils.hashCode(registry);\n+        return result;\n+    }\n \n     /**\n\
+    \      * Get a custom format from a format description."
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/ExtendedMessageFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, static, final, int, [HASH_SEED=31] @TO@ TypeDeclaration@@[public]ExtendedMessageFormat,
+      MessageFormat '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, static, final, int,
+      [HASH_SEED=31] '
+    - '---INS Modifier@@static @TO@ FieldDeclaration@@private, static, final, int,
+      [HASH_SEED=31] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, static, final, int,
+      [HASH_SEED=31] '
+    - '---INS PrimitiveType@@int @TO@ FieldDeclaration@@private, static, final, int,
+      [HASH_SEED=31] '
+    - '---INS VariableDeclarationFragment@@HASH_SEED=31 @TO@ FieldDeclaration@@private,
+      static, final, int, [HASH_SEED=31] '
+    - '------INS SimpleName@@HASH_SEED @TO@ VariableDeclarationFragment@@HASH_SEED=31 '
+    - '------INS NumberLiteral@@31 @TO@ VariableDeclarationFragment@@HASH_SEED=31 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+
+      @TO@ TypeDeclaration@@[public]ExtendedMessageFormat, MessageFormat '
+    - '---INS Modifier@@public @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals,
+      @@Argus:Object+obj+ '
+    - '---INS PrimitiveType@@boolean @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals,
+      @@Argus:Object+obj+ '
+    - '---INS SimpleName@@MethodName:equals @TO@ MethodDeclaration@@public, @@boolean,
+      MethodName:equals, @@Argus:Object+obj+ '
+    - '---INS SingleVariableDeclaration@@Object obj @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object obj '
+    - '------INS SimpleName@@obj @TO@ SingleVariableDeclaration@@Object obj '
+    - '---INS IfStatement@@InfixExpression:obj == this @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS InfixExpression@@obj == this @TO@ IfStatement@@InfixExpression:obj
+      == this '
+    - '---------INS SimpleName@@obj @TO@ InfixExpression@@obj == this '
+    - '---------INS Operator@@== @TO@ InfixExpression@@obj == this '
+    - '---------INS ThisExpression@@this @TO@ InfixExpression@@obj == this '
+    - '------INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:obj
+      == this '
+    - '---------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+    - '---INS IfStatement@@InfixExpression:obj == null @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS InfixExpression@@obj == null @TO@ IfStatement@@InfixExpression:obj
+      == null '
+    - '---------INS SimpleName@@obj @TO@ InfixExpression@@obj == null '
+    - '---------INS Operator@@== @TO@ InfixExpression@@obj == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@obj == null '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:obj
+      == null '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS IfStatement@@PrefixExpression:!super.equals(obj) @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS PrefixExpression@@!super.equals(obj) @TO@ IfStatement@@PrefixExpression:!super.equals(obj) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!super.equals(obj) '
+    - '---------INS SuperMethodInvocation@@super.equals(obj) @TO@ PrefixExpression@@!super.equals(obj) '
+    - '------------INS SimpleName@@MethodName:equals:[obj] @TO@ SuperMethodInvocation@@super.equals(obj) '
+    - '------------INS SimpleName@@obj @TO@ SuperMethodInvocation@@super.equals(obj) '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@PrefixExpression:!super.equals(obj) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS IfStatement@@MethodInvocation:ObjectUtils.notEqual(getClass(),obj.getClass())
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS MethodInvocation@@ObjectUtils.notEqual(getClass(),obj.getClass())
+      @TO@ IfStatement@@MethodInvocation:ObjectUtils.notEqual(getClass(),obj.getClass()) '
+    - '---------INS SimpleName@@Name:ObjectUtils @TO@ MethodInvocation@@ObjectUtils.notEqual(getClass(),obj.getClass()) '
+    - '---------INS SimpleName@@MethodName:notEqual:[getClass(), obj.getClass()] @TO@
+      MethodInvocation@@ObjectUtils.notEqual(getClass(),obj.getClass()) '
+    - '------------INS MethodInvocation@@MethodName:getClass:[] @TO@ SimpleName@@MethodName:notEqual:[getClass(),
+      obj.getClass()] '
+    - '------------INS MethodInvocation@@obj.getClass() @TO@ SimpleName@@MethodName:notEqual:[getClass(),
+      obj.getClass()] '
+    - '---------------INS SimpleName@@Name:obj @TO@ MethodInvocation@@obj.getClass() '
+    - '---------------INS SimpleName@@MethodName:getClass:[] @TO@ MethodInvocation@@obj.getClass() '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@MethodInvocation:ObjectUtils.notEqual(getClass(),obj.getClass()) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS VariableDeclarationStatement@@ExtendedMessageFormat rhs=(ExtendedMessageFormat)obj;
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS SimpleType@@ExtendedMessageFormat @TO@ VariableDeclarationStatement@@ExtendedMessageFormat
+      rhs=(ExtendedMessageFormat)obj; '
+    - '------INS VariableDeclarationFragment@@rhs=(ExtendedMessageFormat)obj @TO@
+      VariableDeclarationStatement@@ExtendedMessageFormat rhs=(ExtendedMessageFormat)obj; '
+    - '---------INS SimpleName@@rhs @TO@ VariableDeclarationFragment@@rhs=(ExtendedMessageFormat)obj '
+    - '---------INS CastExpression@@(ExtendedMessageFormat)obj @TO@ VariableDeclarationFragment@@rhs=(ExtendedMessageFormat)obj '
+    - '------------INS SimpleType@@ExtendedMessageFormat @TO@ CastExpression@@(ExtendedMessageFormat)obj '
+    - '------------INS SimpleName@@obj @TO@ CastExpression@@(ExtendedMessageFormat)obj '
+    - '---INS IfStatement@@MethodInvocation:ObjectUtils.notEqual(toPattern,rhs.toPattern)
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS MethodInvocation@@ObjectUtils.notEqual(toPattern,rhs.toPattern) @TO@
+      IfStatement@@MethodInvocation:ObjectUtils.notEqual(toPattern,rhs.toPattern) '
+    - '---------INS SimpleName@@Name:ObjectUtils @TO@ MethodInvocation@@ObjectUtils.notEqual(toPattern,rhs.toPattern) '
+    - '---------INS SimpleName@@MethodName:notEqual:[toPattern, rhs.toPattern] @TO@
+      MethodInvocation@@ObjectUtils.notEqual(toPattern,rhs.toPattern) '
+    - '------------INS SimpleName@@toPattern @TO@ SimpleName@@MethodName:notEqual:[toPattern,
+      rhs.toPattern] '
+    - '------------INS QualifiedName@@rhs.toPattern @TO@ SimpleName@@MethodName:notEqual:[toPattern,
+      rhs.toPattern] '
+    - '---------------INS SimpleName@@rhs @TO@ QualifiedName@@rhs.toPattern '
+    - '---------------INS SimpleName@@toPattern @TO@ QualifiedName@@rhs.toPattern '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@MethodInvocation:ObjectUtils.notEqual(toPattern,rhs.toPattern) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS IfStatement@@MethodInvocation:ObjectUtils.notEqual(registry,rhs.registry)
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS MethodInvocation@@ObjectUtils.notEqual(registry,rhs.registry) @TO@
+      IfStatement@@MethodInvocation:ObjectUtils.notEqual(registry,rhs.registry) '
+    - '---------INS SimpleName@@Name:ObjectUtils @TO@ MethodInvocation@@ObjectUtils.notEqual(registry,rhs.registry) '
+    - '---------INS SimpleName@@MethodName:notEqual:[registry, rhs.registry] @TO@
+      MethodInvocation@@ObjectUtils.notEqual(registry,rhs.registry) '
+    - '------------INS SimpleName@@registry @TO@ SimpleName@@MethodName:notEqual:[registry,
+      rhs.registry] '
+    - '------------INS QualifiedName@@rhs.registry @TO@ SimpleName@@MethodName:notEqual:[registry,
+      rhs.registry] '
+    - '---------------INS SimpleName@@rhs @TO@ QualifiedName@@rhs.registry '
+    - '---------------INS SimpleName@@registry @TO@ QualifiedName@@rhs.registry '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@MethodInvocation:ObjectUtils.notEqual(registry,rhs.registry) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@public, @@int, MethodName:hashCode, @@Argus:null @TO@
+      TypeDeclaration@@[public]ExtendedMessageFormat, MessageFormat '
+    - '---INS Modifier@@public @TO@ MethodDeclaration@@public, @@int, MethodName:hashCode,
+      @@Argus:null '
+    - '---INS PrimitiveType@@int @TO@ MethodDeclaration@@public, @@int, MethodName:hashCode,
+      @@Argus:null '
+    - '---INS SimpleName@@MethodName:hashCode @TO@ MethodDeclaration@@public, @@int,
+      MethodName:hashCode, @@Argus:null '
+    - '---INS VariableDeclarationStatement@@int result=super.hashCode(); @TO@ MethodDeclaration@@public,
+      @@int, MethodName:hashCode, @@Argus:null '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int result=super.hashCode(); '
+    - '------INS VariableDeclarationFragment@@result=super.hashCode() @TO@ VariableDeclarationStatement@@int
+      result=super.hashCode(); '
+    - '---------INS SimpleName@@result @TO@ VariableDeclarationFragment@@result=super.hashCode() '
+    - '---------INS SuperMethodInvocation@@super.hashCode() @TO@ VariableDeclarationFragment@@result=super.hashCode() '
+    - '------------INS SimpleName@@MethodName:hashCode:[] @TO@ SuperMethodInvocation@@super.hashCode() '
+    - '---INS ExpressionStatement@@Assignment:result=HASH_SEED * result + ObjectUtils.hashCode(registry)
+      @TO@ MethodDeclaration@@public, @@int, MethodName:hashCode, @@Argus:null '
+    - '------INS Assignment@@result=HASH_SEED * result + ObjectUtils.hashCode(registry)
+      @TO@ ExpressionStatement@@Assignment:result=HASH_SEED * result + ObjectUtils.hashCode(registry) '
+    - '---------INS SimpleName@@result @TO@ Assignment@@result=HASH_SEED * result
+      + ObjectUtils.hashCode(registry) '
+    - '---------INS Operator@@= @TO@ Assignment@@result=HASH_SEED * result + ObjectUtils.hashCode(registry) '
+    - '---------INS InfixExpression@@HASH_SEED * result + ObjectUtils.hashCode(registry)
+      @TO@ Assignment@@result=HASH_SEED * result + ObjectUtils.hashCode(registry) '
+    - '------------INS InfixExpression@@HASH_SEED * result @TO@ InfixExpression@@HASH_SEED
+      * result + ObjectUtils.hashCode(registry) '
+    - '---------------INS SimpleName@@HASH_SEED @TO@ InfixExpression@@HASH_SEED *
+      result '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@HASH_SEED * result '
+    - '---------------INS SimpleName@@result @TO@ InfixExpression@@HASH_SEED * result '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@HASH_SEED * result + ObjectUtils.hashCode(registry) '
+    - '------------INS MethodInvocation@@ObjectUtils.hashCode(registry) @TO@ InfixExpression@@HASH_SEED
+      * result + ObjectUtils.hashCode(registry) '
+    - '---------------INS SimpleName@@Name:ObjectUtils @TO@ MethodInvocation@@ObjectUtils.hashCode(registry) '
+    - '---------------INS SimpleName@@MethodName:hashCode:[registry] @TO@ MethodInvocation@@ObjectUtils.hashCode(registry) '
+    - '------------------INS SimpleName@@registry @TO@ SimpleName@@MethodName:hashCode:[registry] '
+    - '---INS ExpressionStatement@@Assignment:result=HASH_SEED * result + ObjectUtils.hashCode(toPattern)
+      @TO@ MethodDeclaration@@public, @@int, MethodName:hashCode, @@Argus:null '
+    - '------INS Assignment@@result=HASH_SEED * result + ObjectUtils.hashCode(toPattern)
+      @TO@ ExpressionStatement@@Assignment:result=HASH_SEED * result + ObjectUtils.hashCode(toPattern) '
+    - '---------INS SimpleName@@result @TO@ Assignment@@result=HASH_SEED * result
+      + ObjectUtils.hashCode(toPattern) '
+    - '---------INS Operator@@= @TO@ Assignment@@result=HASH_SEED * result + ObjectUtils.hashCode(toPattern) '
+    - '---------INS InfixExpression@@HASH_SEED * result + ObjectUtils.hashCode(toPattern)
+      @TO@ Assignment@@result=HASH_SEED * result + ObjectUtils.hashCode(toPattern) '
+    - '------------INS InfixExpression@@HASH_SEED * result @TO@ InfixExpression@@HASH_SEED
+      * result + ObjectUtils.hashCode(toPattern) '
+    - '---------------INS SimpleName@@HASH_SEED @TO@ InfixExpression@@HASH_SEED *
+      result '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@HASH_SEED * result '
+    - '---------------INS SimpleName@@result @TO@ InfixExpression@@HASH_SEED * result '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@HASH_SEED * result + ObjectUtils.hashCode(toPattern) '
+    - '------------INS MethodInvocation@@ObjectUtils.hashCode(toPattern) @TO@ InfixExpression@@HASH_SEED
+      * result + ObjectUtils.hashCode(toPattern) '
+    - '---------------INS SimpleName@@Name:ObjectUtils @TO@ MethodInvocation@@ObjectUtils.hashCode(toPattern) '
+    - '---------------INS SimpleName@@MethodName:hashCode:[toPattern] @TO@ MethodInvocation@@ObjectUtils.hashCode(toPattern) '
+    - '------------------INS SimpleName@@toPattern @TO@ SimpleName@@MethodName:hashCode:[toPattern] '
+    - '---INS ReturnStatement@@SimpleName:result @TO@ MethodDeclaration@@public, @@int,
+      MethodName:hashCode, @@Argus:null '
+    - '------INS SimpleName@@result @TO@ ReturnStatement@@SimpleName:result '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/ExtendedMessageFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, static, final, int, [HASH_SEED=31] @TO@ TypeDeclaration@@[public]ExtendedMessageFormat,
+      MessageFormat '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, static, final, int,
+      [HASH_SEED=31] '
+    - '---INS Modifier@@static @TO@ FieldDeclaration@@private, static, final, int,
+      [HASH_SEED=31] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, static, final, int,
+      [HASH_SEED=31] '
+    - '---INS PrimitiveType@@int @TO@ FieldDeclaration@@private, static, final, int,
+      [HASH_SEED=31] '
+    - '---INS VariableDeclarationFragment@@HASH_SEED=31 @TO@ FieldDeclaration@@private,
+      static, final, int, [HASH_SEED=31] '
+    - '------INS SimpleName@@HASH_SEED @TO@ VariableDeclarationFragment@@HASH_SEED=31 '
+    - '------INS NumberLiteral@@31 @TO@ VariableDeclarationFragment@@HASH_SEED=31 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+
+      @TO@ TypeDeclaration@@[public]ExtendedMessageFormat, MessageFormat '
+    - '---INS Modifier@@public @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals,
+      @@Argus:Object+obj+ '
+    - '---INS PrimitiveType@@boolean @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals,
+      @@Argus:Object+obj+ '
+    - '---INS SimpleName@@MethodName:equals @TO@ MethodDeclaration@@public, @@boolean,
+      MethodName:equals, @@Argus:Object+obj+ '
+    - '---INS SingleVariableDeclaration@@Object obj @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object obj '
+    - '------INS SimpleName@@obj @TO@ SingleVariableDeclaration@@Object obj '
+    - '---INS IfStatement@@InfixExpression:obj == this @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS InfixExpression@@obj == this @TO@ IfStatement@@InfixExpression:obj
+      == this '
+    - '---------INS SimpleName@@obj @TO@ InfixExpression@@obj == this '
+    - '---------INS Operator@@== @TO@ InfixExpression@@obj == this '
+    - '---------INS ThisExpression@@this @TO@ InfixExpression@@obj == this '
+    - '---INS IfStatement@@InfixExpression:obj == null @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS InfixExpression@@obj == null @TO@ IfStatement@@InfixExpression:obj
+      == null '
+    - '---------INS SimpleName@@obj @TO@ InfixExpression@@obj == null '
+    - '---------INS Operator@@== @TO@ InfixExpression@@obj == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@obj == null '
+    - '---INS IfStatement@@PrefixExpression:!super.equals(obj) @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS PrefixExpression@@!super.equals(obj) @TO@ IfStatement@@PrefixExpression:!super.equals(obj) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!super.equals(obj) '
+    - '---------INS SuperMethodInvocation@@super.equals(obj) @TO@ PrefixExpression@@!super.equals(obj) '
+    - '------------INS SimpleName@@MethodName:equals:[obj] @TO@ SuperMethodInvocation@@super.equals(obj) '
+    - '------------INS SimpleName@@obj @TO@ SuperMethodInvocation@@super.equals(obj) '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@PrefixExpression:!super.equals(obj) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS IfStatement@@MethodInvocation:ObjectUtils.notEqual(getClass(),obj.getClass())
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS MethodInvocation@@ObjectUtils.notEqual(getClass(),obj.getClass())
+      @TO@ IfStatement@@MethodInvocation:ObjectUtils.notEqual(getClass(),obj.getClass()) '
+    - '---------INS SimpleName@@Name:ObjectUtils @TO@ MethodInvocation@@ObjectUtils.notEqual(getClass(),obj.getClass()) '
+    - '---------INS SimpleName@@MethodName:notEqual:[getClass(), obj.getClass()] @TO@
+      MethodInvocation@@ObjectUtils.notEqual(getClass(),obj.getClass()) '
+    - '------------INS MethodInvocation@@MethodName:getClass:[] @TO@ SimpleName@@MethodName:notEqual:[getClass(),
+      obj.getClass()] '
+    - '------------INS MethodInvocation@@obj.getClass() @TO@ SimpleName@@MethodName:notEqual:[getClass(),
+      obj.getClass()] '
+    - '---------------INS SimpleName@@Name:obj @TO@ MethodInvocation@@obj.getClass() '
+    - '---------------INS SimpleName@@MethodName:getClass:[] @TO@ MethodInvocation@@obj.getClass() '
+    - '---INS VariableDeclarationStatement@@ExtendedMessageFormat rhs=(ExtendedMessageFormat)obj;
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS SimpleType@@ExtendedMessageFormat @TO@ VariableDeclarationStatement@@ExtendedMessageFormat
+      rhs=(ExtendedMessageFormat)obj; '
+    - '------INS VariableDeclarationFragment@@rhs=(ExtendedMessageFormat)obj @TO@
+      VariableDeclarationStatement@@ExtendedMessageFormat rhs=(ExtendedMessageFormat)obj; '
+    - '---------INS SimpleName@@rhs @TO@ VariableDeclarationFragment@@rhs=(ExtendedMessageFormat)obj '
+    - '---------INS CastExpression@@(ExtendedMessageFormat)obj @TO@ VariableDeclarationFragment@@rhs=(ExtendedMessageFormat)obj '
+    - '------------INS SimpleType@@ExtendedMessageFormat @TO@ CastExpression@@(ExtendedMessageFormat)obj '
+    - '------------INS SimpleName@@obj @TO@ CastExpression@@(ExtendedMessageFormat)obj '
+    - '---INS IfStatement@@MethodInvocation:ObjectUtils.notEqual(toPattern,rhs.toPattern)
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS MethodInvocation@@ObjectUtils.notEqual(toPattern,rhs.toPattern) @TO@
+      IfStatement@@MethodInvocation:ObjectUtils.notEqual(toPattern,rhs.toPattern) '
+    - '---------INS SimpleName@@Name:ObjectUtils @TO@ MethodInvocation@@ObjectUtils.notEqual(toPattern,rhs.toPattern) '
+    - '---------INS SimpleName@@MethodName:notEqual:[toPattern, rhs.toPattern] @TO@
+      MethodInvocation@@ObjectUtils.notEqual(toPattern,rhs.toPattern) '
+    - '------------INS SimpleName@@toPattern @TO@ SimpleName@@MethodName:notEqual:[toPattern,
+      rhs.toPattern] '
+    - '------------INS QualifiedName@@rhs.toPattern @TO@ SimpleName@@MethodName:notEqual:[toPattern,
+      rhs.toPattern] '
+    - '---------------INS SimpleName@@rhs @TO@ QualifiedName@@rhs.toPattern '
+    - '---------------INS SimpleName@@toPattern @TO@ QualifiedName@@rhs.toPattern '
+    - '---INS IfStatement@@MethodInvocation:ObjectUtils.notEqual(registry,rhs.registry)
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS MethodInvocation@@ObjectUtils.notEqual(registry,rhs.registry) @TO@
+      IfStatement@@MethodInvocation:ObjectUtils.notEqual(registry,rhs.registry) '
+    - '---------INS SimpleName@@Name:ObjectUtils @TO@ MethodInvocation@@ObjectUtils.notEqual(registry,rhs.registry) '
+    - '---------INS SimpleName@@MethodName:notEqual:[registry, rhs.registry] @TO@
+      MethodInvocation@@ObjectUtils.notEqual(registry,rhs.registry) '
+    - '------------INS SimpleName@@registry @TO@ SimpleName@@MethodName:notEqual:[registry,
+      rhs.registry] '
+    - '------------INS QualifiedName@@rhs.registry @TO@ SimpleName@@MethodName:notEqual:[registry,
+      rhs.registry] '
+    - '---------------INS SimpleName@@rhs @TO@ QualifiedName@@rhs.registry '
+    - '---------------INS SimpleName@@registry @TO@ QualifiedName@@rhs.registry '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@public, @@int, MethodName:hashCode, @@Argus:null @TO@
+      TypeDeclaration@@[public]ExtendedMessageFormat, MessageFormat '
+    - '---INS Modifier@@public @TO@ MethodDeclaration@@public, @@int, MethodName:hashCode,
+      @@Argus:null '
+    - '---INS PrimitiveType@@int @TO@ MethodDeclaration@@public, @@int, MethodName:hashCode,
+      @@Argus:null '
+    - '---INS SimpleName@@MethodName:hashCode @TO@ MethodDeclaration@@public, @@int,
+      MethodName:hashCode, @@Argus:null '
+    - '---INS VariableDeclarationStatement@@int result=super.hashCode(); @TO@ MethodDeclaration@@public,
+      @@int, MethodName:hashCode, @@Argus:null '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int result=super.hashCode(); '
+    - '------INS VariableDeclarationFragment@@result=super.hashCode() @TO@ VariableDeclarationStatement@@int
+      result=super.hashCode(); '
+    - '---------INS SimpleName@@result @TO@ VariableDeclarationFragment@@result=super.hashCode() '
+    - '---------INS SuperMethodInvocation@@super.hashCode() @TO@ VariableDeclarationFragment@@result=super.hashCode() '
+    - '------------INS SimpleName@@MethodName:hashCode:[] @TO@ SuperMethodInvocation@@super.hashCode() '
+    - '---INS ExpressionStatement@@Assignment:result=HASH_SEED * result + ObjectUtils.hashCode(registry)
+      @TO@ MethodDeclaration@@public, @@int, MethodName:hashCode, @@Argus:null '
+    - '------INS Assignment@@result=HASH_SEED * result + ObjectUtils.hashCode(registry)
+      @TO@ ExpressionStatement@@Assignment:result=HASH_SEED * result + ObjectUtils.hashCode(registry) '
+    - '---------INS SimpleName@@result @TO@ Assignment@@result=HASH_SEED * result
+      + ObjectUtils.hashCode(registry) '
+    - '---------INS Operator@@= @TO@ Assignment@@result=HASH_SEED * result + ObjectUtils.hashCode(registry) '
+    - '---------INS InfixExpression@@HASH_SEED * result + ObjectUtils.hashCode(registry)
+      @TO@ Assignment@@result=HASH_SEED * result + ObjectUtils.hashCode(registry) '
+    - '------------INS InfixExpression@@HASH_SEED * result @TO@ InfixExpression@@HASH_SEED
+      * result + ObjectUtils.hashCode(registry) '
+    - '---------------INS SimpleName@@HASH_SEED @TO@ InfixExpression@@HASH_SEED *
+      result '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@HASH_SEED * result '
+    - '---------------INS SimpleName@@result @TO@ InfixExpression@@HASH_SEED * result '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@HASH_SEED * result + ObjectUtils.hashCode(registry) '
+    - '------------INS MethodInvocation@@ObjectUtils.hashCode(registry) @TO@ InfixExpression@@HASH_SEED
+      * result + ObjectUtils.hashCode(registry) '
+    - '---------------INS SimpleName@@Name:ObjectUtils @TO@ MethodInvocation@@ObjectUtils.hashCode(registry) '
+    - '---------------INS SimpleName@@MethodName:hashCode:[registry] @TO@ MethodInvocation@@ObjectUtils.hashCode(registry) '
+    - '------------------INS SimpleName@@registry @TO@ SimpleName@@MethodName:hashCode:[registry] '
+    - '---INS ReturnStatement@@SimpleName:result @TO@ MethodDeclaration@@public, @@int,
+      MethodName:hashCode, @@Argus:null '
+    - '------INS SimpleName@@result @TO@ ReturnStatement@@SimpleName:result '
+  repair_actions_cnt: 3

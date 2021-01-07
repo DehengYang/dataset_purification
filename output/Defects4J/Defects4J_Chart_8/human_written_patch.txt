@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_8/source/org/jfree/data/time/Week.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_8/fixed-version/source/org/jfree/data/time/Week.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_8/source/org/jfree/data/time/Week.java	2020-03-01 00:03:21.873230397 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_8/fixed-version/source/org/jfree/data/time/Week.java	2020-03-01 00:03:25.317392672 -0800
+@@ -172,7 +172,7 @@
+      */
+     public Week(Date time, TimeZone zone) {
+         // defer argument checking...
+-        this(time, RegularTimePeriod.DEFAULT_TIME_ZONE, Locale.getDefault());
++        this(time, zone, Locale.getDefault());
+     }
+ 
+     /**

@@ -1,0 +1,110 @@
+1 bug_id: Closure-18
+2 src folder:
+  name of src folder: src
+  number of files: 419
+  number of java files: 403
+  number of src classes: 1360
+  number of test classes: 224
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.IntegrationTest#testDependencySorting
+  failing tests:
+  - com.google.javascript.jscomp.IntegrationTest
+  number of all test cases: 7592
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.002
+  purification via delta debugging: 159.983
+  repair actions extraction: 2.618
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.IntegrationTest#testDependencySorting: 4556
+  fixed:
+    com.google.javascript.jscomp.IntegrationTest#testDependencySorting: 4748
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_18/src/com/google/javascript/jscomp/Compiler.java\t\
+    2020-10-21 20:25:31.412928350 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_18/purify/patch/com/google/javascript/jscomp/Compiler.java\t\
+    2020-10-21 20:25:31.412928350 -0400\n@@ -1285,7 +1285,7 @@\n \n       // Check\
+    \ if the sources need to be re-ordered.\n       boolean staleInputs = false;\n\
+    -      if (options.dependencyOptions.needsManagement() && options.closurePass)\
+    \ {\n+      if (options.dependencyOptions.needsManagement()) {\n         for (CompilerInput\
+    \ input : inputs) {\n           // Forward-declare all the provided types, so\
+    \ that they\n           // are not flagged even if they are dropped from the process."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_18/src/com/google/javascript/jscomp/Compiler.java\t\
+    2020-10-21 20:28:44.810514888 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_18/purify/purified/com/google/javascript/jscomp/Compiler.java\t\
+    2020-10-21 20:28:44.810514888 -0400\n@@ -1285,7 +1285,7 @@\n \n       // Check\
+    \ if the sources need to be re-ordered.\n       boolean staleInputs = false;\n\
+    -      if (options.dependencyOptions.needsManagement() && options.closurePass)\
+    \ {\n+      if (options.dependencyOptions.needsManagement()) {\n         for (CompilerInput\
+    \ input : inputs) {\n           // Forward-declare all the provided types, so\
+    \ that they\n           // are not flagged even if they are dropped from the process."
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/Compiler:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:options.dependencyOptions.needsManagement()
+      && options.closurePass @TO@ MethodInvocation:options.dependencyOptions.needsManagement() '
+    - '---INS MethodInvocation@@options.dependencyOptions.needsManagement() @TO@ IfStatement@@InfixExpression:options.dependencyOptions.needsManagement()
+      && options.closurePass '
+    - '------MOV QualifiedName@@Name:options.dependencyOptions @TO@ MethodInvocation@@options.dependencyOptions.needsManagement() '
+    - '------MOV SimpleName@@MethodName:needsManagement:[] @TO@ MethodInvocation@@options.dependencyOptions.needsManagement() '
+    - '---DEL InfixExpression@@options.dependencyOptions.needsManagement() && options.closurePass '
+    - '------DEL MethodInvocation@@options.dependencyOptions.needsManagement() '
+    - '------DEL Operator@@&& '
+    - '------DEL QualifiedName@@options.closurePass '
+    - '---------DEL SimpleName@@options '
+    - '---------DEL SimpleName@@closurePass '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/Compiler:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:options.dependencyOptions.needsManagement()
+      && options.closurePass @TO@ MethodInvocation:options.dependencyOptions.needsManagement() '
+    - '---INS MethodInvocation@@options.dependencyOptions.needsManagement() @TO@ IfStatement@@InfixExpression:options.dependencyOptions.needsManagement()
+      && options.closurePass '
+    - '------MOV QualifiedName@@Name:options.dependencyOptions @TO@ MethodInvocation@@options.dependencyOptions.needsManagement() '
+    - '------MOV SimpleName@@MethodName:needsManagement:[] @TO@ MethodInvocation@@options.dependencyOptions.needsManagement() '
+    - '---DEL InfixExpression@@options.dependencyOptions.needsManagement() && options.closurePass '
+    - '------DEL MethodInvocation@@options.dependencyOptions.needsManagement() '
+    - '------DEL Operator@@&& '
+    - '------DEL QualifiedName@@options.closurePass '
+    - '---------DEL SimpleName@@options '
+    - '---------DEL SimpleName@@closurePass '
+  files_cnt: '1'
+  repair_actions_cnt: 1

@@ -1,0 +1,156 @@
+1 bug_id: Math-26
+2 src folder:
+  name of src folder: java
+  number of files: 633
+  number of java files: 632
+  number of src classes: 854
+  number of test classes: 317
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.fraction.FractionTest#testIntegerOverflow
+  failing tests:
+  - org.apache.commons.math3.fraction.FractionTest
+  number of all test cases: 4022
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 135.525
+  repair actions extraction: 1.33
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.fraction.FractionTest#testIntegerOverflow: 448
+  fixed:
+    org.apache.commons.math3.fraction.FractionTest#testIntegerOverflow: 446
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 2
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_26/src/main/java/org/apache/commons/math3/fraction/Fraction.java\t\
+    2020-10-21 10:09:28.092386454 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_26/purify/patch/org/apache/commons/math3/fraction/Fraction.java\t\
+    2020-10-21 10:09:28.092386454 -0400\n@@ -178,7 +178,7 @@\n         long overflow\
+    \ = Integer.MAX_VALUE;\n         double r0 = value;\n         long a0 = (long)FastMath.floor(r0);\n\
+    -        if (a0 > overflow) {\n+        if (FastMath.abs(a0) > overflow) {\n \
+    \            throw new FractionConversionException(value, a0, 1l);\n         }\n\
+    \ \n@@ -206,7 +206,7 @@\n             long a1 = (long)FastMath.floor(r1);\n  \
+    \           p2 = (a1 * p1) + p0;\n             q2 = (a1 * q1) + q0;\n-       \
+    \     if ((p2 > overflow) || (q2 > overflow)) {\n+            if ((FastMath.abs(p2)\
+    \ > overflow) || (FastMath.abs(q2) > overflow)) {\n                 throw new\
+    \ FractionConversionException(value, p2, q2);\n             }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_26/src/main/java/org/apache/commons/math3/fraction/Fraction.java\t\
+    2020-10-21 10:12:02.392848936 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_26/purify/purified/org/apache/commons/math3/fraction/Fraction.java\t\
+    2020-10-21 10:12:02.392848936 -0400\n@@ -178,7 +178,7 @@\n         long overflow\
+    \ = Integer.MAX_VALUE;\n         double r0 = value;\n         long a0 = (long)FastMath.floor(r0);\n\
+    -        if (a0 > overflow) {\n+        if (FastMath.abs(a0) > overflow) {\n \
+    \            throw new FractionConversionException(value, a0, 1l);\n         }\n\
+    \ \n@@ -206,7 +206,7 @@\n             long a1 = (long)FastMath.floor(r1);\n  \
+    \           p2 = (a1 * p1) + p0;\n             q2 = (a1 * q1) + q0;\n-       \
+    \     if ((p2 > overflow) || (q2 > overflow)) {\n+            if ((FastMath.abs(p2)\
+    \ > overflow) || (FastMath.abs(q2) > overflow)) {\n                 throw new\
+    \ FractionConversionException(value, p2, q2);\n             }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/fraction/Fraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:a0 > overflow @TO@ InfixExpression:FastMath.abs(a0)
+      > overflow '
+    - '---UPD InfixExpression@@a0 > overflow @TO@ FastMath.abs(a0) > overflow '
+    - '------INS MethodInvocation@@FastMath.abs(a0) @TO@ InfixExpression@@a0 > overflow '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.abs(a0) '
+    - '---------INS SimpleName@@MethodName:abs:[a0] @TO@ MethodInvocation@@FastMath.abs(a0) '
+    - '------------INS SimpleName@@a0 @TO@ SimpleName@@MethodName:abs:[a0] '
+    - '------DEL SimpleName@@a0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:(p2 > overflow) || (q2 > overflow) @TO@ InfixExpression:(FastMath.abs(p2)
+      > overflow) || (FastMath.abs(q2) > overflow) '
+    - '---UPD InfixExpression@@(p2 > overflow) || (q2 > overflow) @TO@ (FastMath.abs(p2)
+      > overflow) || (FastMath.abs(q2) > overflow) '
+    - '------UPD ParenthesizedExpression@@(p2 > overflow) @TO@ (FastMath.abs(p2) >
+      overflow) '
+    - '---------UPD InfixExpression@@p2 > overflow @TO@ FastMath.abs(p2) > overflow '
+    - '------------DEL SimpleName@@p2 '
+    - '------------INS MethodInvocation@@FastMath.abs(p2) @TO@ InfixExpression@@p2
+      > overflow '
+    - '---------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.abs(p2) '
+    - '---------------INS SimpleName@@MethodName:abs:[p2] @TO@ MethodInvocation@@FastMath.abs(p2) '
+    - '------------------INS SimpleName@@p2 @TO@ SimpleName@@MethodName:abs:[p2] '
+    - '------UPD ParenthesizedExpression@@(q2 > overflow) @TO@ (FastMath.abs(q2) >
+      overflow) '
+    - '---------UPD InfixExpression@@q2 > overflow @TO@ FastMath.abs(q2) > overflow '
+    - '------------DEL SimpleName@@q2 '
+    - '------------INS MethodInvocation@@FastMath.abs(q2) @TO@ InfixExpression@@q2
+      > overflow '
+    - '---------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.abs(q2) '
+    - '---------------INS SimpleName@@MethodName:abs:[q2] @TO@ MethodInvocation@@FastMath.abs(q2) '
+    - '------------------INS SimpleName@@q2 @TO@ SimpleName@@MethodName:abs:[q2] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/fraction/Fraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:a0 > overflow @TO@ InfixExpression:FastMath.abs(a0)
+      > overflow '
+    - '---UPD InfixExpression@@a0 > overflow @TO@ FastMath.abs(a0) > overflow '
+    - '------INS MethodInvocation@@FastMath.abs(a0) @TO@ InfixExpression@@a0 > overflow '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.abs(a0) '
+    - '---------INS SimpleName@@MethodName:abs:[a0] @TO@ MethodInvocation@@FastMath.abs(a0) '
+    - '------------INS SimpleName@@a0 @TO@ SimpleName@@MethodName:abs:[a0] '
+    - '------DEL SimpleName@@a0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:(p2 > overflow) || (q2 > overflow) @TO@ InfixExpression:(FastMath.abs(p2)
+      > overflow) || (FastMath.abs(q2) > overflow) '
+    - '---UPD InfixExpression@@(p2 > overflow) || (q2 > overflow) @TO@ (FastMath.abs(p2)
+      > overflow) || (FastMath.abs(q2) > overflow) '
+    - '------UPD ParenthesizedExpression@@(p2 > overflow) @TO@ (FastMath.abs(p2) >
+      overflow) '
+    - '---------UPD InfixExpression@@p2 > overflow @TO@ FastMath.abs(p2) > overflow '
+    - '------------DEL SimpleName@@p2 '
+    - '------------INS MethodInvocation@@FastMath.abs(p2) @TO@ InfixExpression@@p2
+      > overflow '
+    - '---------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.abs(p2) '
+    - '---------------INS SimpleName@@MethodName:abs:[p2] @TO@ MethodInvocation@@FastMath.abs(p2) '
+    - '------------------INS SimpleName@@p2 @TO@ SimpleName@@MethodName:abs:[p2] '
+    - '------UPD ParenthesizedExpression@@(q2 > overflow) @TO@ (FastMath.abs(q2) >
+      overflow) '
+    - '---------UPD InfixExpression@@q2 > overflow @TO@ FastMath.abs(q2) > overflow '
+    - '------------DEL SimpleName@@q2 '
+    - '------------INS MethodInvocation@@FastMath.abs(q2) @TO@ InfixExpression@@q2
+      > overflow '
+    - '---------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.abs(q2) '
+    - '---------------INS SimpleName@@MethodName:abs:[q2] @TO@ MethodInvocation@@FastMath.abs(q2) '
+    - '------------------INS SimpleName@@q2 @TO@ SimpleName@@MethodName:abs:[q2] '
+  repair_actions_cnt: 2

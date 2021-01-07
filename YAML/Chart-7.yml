@@ -1,0 +1,120 @@
+1 bug_id: Chart-7
+2 src folder:
+  name of src folder: source
+  number of files: 651
+  number of java files: 578
+  number of src classes: 604
+  number of test classes: 330
+3 test (cases):
+  failing test cases:
+  - org.jfree.data.time.junit.TimePeriodValuesTests#testGetMaxMiddleIndex
+  failing tests:
+  - org.jfree.data.time.junit.TimePeriodValuesTests
+  number of all test cases: 1821
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 64.872
+  repair actions extraction: 0.977
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.data.time.junit.TimePeriodValuesTests#testGetMaxMiddleIndex: 155
+  fixed:
+    org.jfree.data.time.junit.TimePeriodValuesTests#testGetMaxMiddleIndex: 156
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 1
+  total: 3
+9 sibling repair actions:
+- 0 1 0.9647798742138365
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_7/source/org/jfree/data/time/TimePeriodValues.java\t\
+    2020-10-20 23:55:43.703886944 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_7/purify/patch/org/jfree/data/time/TimePeriodValues.java\t\
+    2020-10-20 23:55:43.703886944 -0400\n@@ -297,9 +297,9 @@\n         }\n       \
+    \  \n         if (this.maxMiddleIndex >= 0) {\n-            long s = getDataItem(this.minMiddleIndex).getPeriod().getStart()\n\
+    +            long s = getDataItem(this.maxMiddleIndex).getPeriod().getStart()\n\
+    \                 .getTime();\n-            long e = getDataItem(this.minMiddleIndex).getPeriod().getEnd()\n\
+    +            long e = getDataItem(this.maxMiddleIndex).getPeriod().getEnd()\n\
+    \                 .getTime();\n             long maxMiddle = s + (e - s) / 2;\n\
+    \             if (middle > maxMiddle) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_7/source/org/jfree/data/time/TimePeriodValues.java\t\
+    2020-10-20 23:57:04.602223292 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_7/purify/purified/org/jfree/data/time/TimePeriodValues.java\t\
+    2020-10-20 23:57:04.598223176 -0400\n@@ -299,7 +299,7 @@\n         if (this.maxMiddleIndex\
+    \ >= 0) {\n             long s = getDataItem(this.minMiddleIndex).getPeriod().getStart()\n\
+    \                 .getTime();\n-            long e = getDataItem(this.minMiddleIndex).getPeriod().getEnd()\n\
+    +            long e = getDataItem(this.maxMiddleIndex).getPeriod().getEnd()\n\
+    \                 .getTime();\n             long maxMiddle = s + (e - s) / 2;\n\
+    \             if (middle > maxMiddle) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/time/TimePeriodValues:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@long s=getDataItem(this.minMiddleIndex).getPeriod().getStart().getTime();
+      @TO@ long s=getDataItem(this.maxMiddleIndex).getPeriod().getStart().getTime(); '
+    - '---UPD VariableDeclarationFragment@@s=getDataItem(this.minMiddleIndex).getPeriod().getStart().getTime()
+      @TO@ s=getDataItem(this.maxMiddleIndex).getPeriod().getStart().getTime() '
+    - '------UPD MethodInvocation@@getDataItem(this.minMiddleIndex).getPeriod().getStart().getTime()
+      @TO@ getDataItem(this.maxMiddleIndex).getPeriod().getStart().getTime() '
+    - '---------UPD MethodInvocation@@MethodName:getDataItem:[this.minMiddleIndex]
+      @TO@ MethodName:getDataItem:[this.maxMiddleIndex] '
+    - '------------UPD FieldAccess@@this.minMiddleIndex @TO@ this.maxMiddleIndex '
+    - '---------------UPD SimpleName@@minMiddleIndex @TO@ maxMiddleIndex '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@long e=getDataItem(this.minMiddleIndex).getPeriod().getEnd().getTime();
+      @TO@ long e=getDataItem(this.maxMiddleIndex).getPeriod().getEnd().getTime(); '
+    - '---UPD VariableDeclarationFragment@@e=getDataItem(this.minMiddleIndex).getPeriod().getEnd().getTime()
+      @TO@ e=getDataItem(this.maxMiddleIndex).getPeriod().getEnd().getTime() '
+    - '------UPD MethodInvocation@@getDataItem(this.minMiddleIndex).getPeriod().getEnd().getTime()
+      @TO@ getDataItem(this.maxMiddleIndex).getPeriod().getEnd().getTime() '
+    - '---------UPD MethodInvocation@@MethodName:getDataItem:[this.minMiddleIndex]
+      @TO@ MethodName:getDataItem:[this.maxMiddleIndex] '
+    - '------------UPD FieldAccess@@this.minMiddleIndex @TO@ this.maxMiddleIndex '
+    - '---------------UPD SimpleName@@minMiddleIndex @TO@ maxMiddleIndex '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/time/TimePeriodValues:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@long e=getDataItem(this.minMiddleIndex).getPeriod().getEnd().getTime();
+      @TO@ long e=getDataItem(this.maxMiddleIndex).getPeriod().getEnd().getTime(); '
+    - '---UPD VariableDeclarationFragment@@e=getDataItem(this.minMiddleIndex).getPeriod().getEnd().getTime()
+      @TO@ e=getDataItem(this.maxMiddleIndex).getPeriod().getEnd().getTime() '
+    - '------UPD MethodInvocation@@getDataItem(this.minMiddleIndex).getPeriod().getEnd().getTime()
+      @TO@ getDataItem(this.maxMiddleIndex).getPeriod().getEnd().getTime() '
+    - '---------UPD MethodInvocation@@MethodName:getDataItem:[this.minMiddleIndex]
+      @TO@ MethodName:getDataItem:[this.maxMiddleIndex] '
+    - '------------UPD FieldAccess@@this.minMiddleIndex @TO@ this.maxMiddleIndex '
+    - '---------------UPD SimpleName@@minMiddleIndex @TO@ maxMiddleIndex '
+  repair_actions_cnt: 1

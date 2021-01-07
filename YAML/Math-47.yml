@@ -1,0 +1,261 @@
+1 bug_id: Math-47
+2 src folder:
+  name of src folder: java
+  number of files: 615
+  number of java files: 568
+  number of src classes: 746
+  number of test classes: 278
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.complex.ComplexTest#testAtanI
+  - org.apache.commons.math.complex.ComplexTest#testDivideZero
+  - org.apache.commons.math.complex.ComplexTest#testAtanI
+  - org.apache.commons.math.complex.ComplexTest#testDivideZero
+  - org.apache.commons.math.complex.ComplexTest#testAtanI
+  - org.apache.commons.math.complex.ComplexTest#testDivideZero
+  - org.apache.commons.math.complex.ComplexTest#testScalarDivideZero
+  - org.apache.commons.math.complex.ComplexTest#testAtanI
+  - org.apache.commons.math.complex.ComplexTest#testDivideZero
+  - org.apache.commons.math.complex.ComplexTest#testAtanI
+  - org.apache.commons.math.complex.ComplexTest#testDivideZero
+  - org.apache.commons.math.complex.ComplexTest#testScalarDivideZero
+  failing tests:
+  - org.apache.commons.math.complex.ComplexTest
+  number of all test cases: 2998
+  number of failing test cases: 12
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.814
+  purification via delta debugging: 331.196
+  repair actions extraction: 1.096
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.complex.ComplexTest#testAtanI: 397
+    org.apache.commons.math.complex.ComplexTest#testDivideZero: 26
+  fixed:
+    org.apache.commons.math.complex.ComplexTest#testAtanI: 403
+    org.apache.commons.math.complex.ComplexTest#testDivideZero: 21
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 5
+  covDel: 3
+  cov_patch_lines: 8
+  delta_patch_lines: 7
+  oriAdd: 5
+  oriDel: 3
+  ori_patch_lines: 8
+  purAdd: 4
+  purDel: 3
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 16
+  failFail: 4
+  passed: 1
+  total: 21
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_47/src/main/java/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 11:52:32.263269737 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_47/purify/patch/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 11:52:32.263269737 -0400\n@@ -79,6 +79,7 @@\n     /** Record whether\
+    \ this complex number is infinite. */\n     private final transient boolean isInfinite;\n\
+    \     /** Record whether this complex number is zero. */\n+    private final transient\
+    \ boolean isZero;\n \n     /**\n      * Create a complex number given only the\
+    \ real part.\n@@ -102,6 +103,7 @@\n         isNaN = Double.isNaN(real) || Double.isNaN(imaginary);\n\
+    \         isInfinite = !isNaN &&\n             (Double.isInfinite(real) || Double.isInfinite(imaginary));\n\
+    +        isZero = real == 0 && imaginary == 0;\n     }\n \n     /**\n@@ -253,8\
+    \ +255,8 @@\n             return NaN;\n         }\n \n-        if (divisor.getReal()\
+    \ == 0.0 && divisor.getImaginary() == 0.0) {\n-            return NaN;\n+    \
+    \    if (divisor.isZero) {\n+            return isZero ? NaN : INF;\n        \
+    \ }\n \n         if (divisor.isInfinite() && !isInfinite()) {\n@@ -290,7 +292,7\
+    \ @@\n             return NaN;\n         }\n         if (divisor == 0d) {\n- \
+    \           return NaN;\n+            return isZero ? NaN : INF;\n         }\n\
+    \         if (Double.isInfinite(divisor)) {\n             return !isInfinite()\
+    \ ? ZERO : NaN;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_47/src/main/java/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 11:58:23.409424248 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_47/purify/purified/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 11:58:23.405424132 -0400\n@@ -79,6 +79,7 @@\n     /** Record whether\
+    \ this complex number is infinite. */\n     private final transient boolean isInfinite;\n\
+    \     /** Record whether this complex number is zero. */\n+    private final transient\
+    \ boolean isZero;\n \n     /**\n      * Create a complex number given only the\
+    \ real part.\n@@ -102,6 +103,7 @@\n         isNaN = Double.isNaN(real) || Double.isNaN(imaginary);\n\
+    \         isInfinite = !isNaN &&\n             (Double.isInfinite(real) || Double.isInfinite(imaginary));\n\
+    +        isZero = real == 0 && imaginary == 0;\n     }\n \n     /**\n@@ -253,8\
+    \ +255,8 @@\n             return NaN;\n         }\n \n-        if (divisor.getReal()\
+    \ == 0.0 && divisor.getImaginary() == 0.0) {\n-            return NaN;\n+    \
+    \    if (divisor.isZero) {\n+            return isZero ? NaN : INF;\n        \
+    \ }\n \n         if (divisor.isInfinite() && !isInfinite()) {\n@@ -290,7 +292,6\
+    \ @@\n             return NaN;\n         }\n         if (divisor == 0d) {\n- \
+    \           return NaN;\n         }\n         if (Double.isInfinite(divisor))\
+    \ {\n             return !isInfinite() ? ZERO : NaN;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/complex/Complex:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, final, transient, boolean, [isZero] @TO@ TypeDeclaration@@[public]Complex,
+      [FieldElement<Complex>, Serializable] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, final, transient,
+      boolean, [isZero] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, final, transient, boolean,
+      [isZero] '
+    - '---INS Modifier@@transient @TO@ FieldDeclaration@@private, final, transient,
+      boolean, [isZero] '
+    - '---INS PrimitiveType@@boolean @TO@ FieldDeclaration@@private, final, transient,
+      boolean, [isZero] '
+    - '---INS VariableDeclarationFragment@@isZero @TO@ FieldDeclaration@@private,
+      final, transient, boolean, [isZero] '
+    - '------INS SimpleName@@isZero @TO@ VariableDeclarationFragment@@isZero '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:isZero=real == 0 && imaginary == 0 @TO@
+      MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:Complex, @@Argus:double+real+double+imaginary+ '
+    - '---INS Assignment@@isZero=real == 0 && imaginary == 0 @TO@ ExpressionStatement@@Assignment:isZero=real
+      == 0 && imaginary == 0 '
+    - '------INS SimpleName@@isZero @TO@ Assignment@@isZero=real == 0 && imaginary
+      == 0 '
+    - '------INS Operator@@= @TO@ Assignment@@isZero=real == 0 && imaginary == 0 '
+    - '------INS InfixExpression@@real == 0 && imaginary == 0 @TO@ Assignment@@isZero=real
+      == 0 && imaginary == 0 '
+    - '---------INS InfixExpression@@real == 0 @TO@ InfixExpression@@real == 0 &&
+      imaginary == 0 '
+    - '------------INS SimpleName@@real @TO@ InfixExpression@@real == 0 '
+    - '------------INS Operator@@== @TO@ InfixExpression@@real == 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@real == 0 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@real == 0 && imaginary == 0 '
+    - '---------INS InfixExpression@@imaginary == 0 @TO@ InfixExpression@@real ==
+      0 && imaginary == 0 '
+    - '------------INS SimpleName@@imaginary @TO@ InfixExpression@@imaginary == 0 '
+    - '------------INS Operator@@== @TO@ InfixExpression@@imaginary == 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@imaginary == 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:divisor.getReal() == 0.0 && divisor.getImaginary()
+      == 0.0 @TO@ QualifiedName:divisor.isZero '
+    - '---DEL InfixExpression@@divisor.getReal() == 0.0 && divisor.getImaginary()
+      == 0.0 '
+    - '------DEL InfixExpression@@divisor.getReal() == 0.0 '
+    - '---------DEL MethodInvocation@@divisor.getReal() '
+    - '------------DEL SimpleName@@Name:divisor '
+    - '------------DEL SimpleName@@MethodName:getReal:[] '
+    - '---------DEL Operator@@== '
+    - '---------DEL NumberLiteral@@0.0 '
+    - '------DEL Operator@@&& '
+    - '------DEL InfixExpression@@divisor.getImaginary() == 0.0 '
+    - '---------DEL MethodInvocation@@divisor.getImaginary() '
+    - '------------DEL SimpleName@@Name:divisor '
+    - '------------DEL SimpleName@@MethodName:getImaginary:[] '
+    - '---------DEL Operator@@== '
+    - '---------DEL NumberLiteral@@0.0 '
+    - '---UPD ReturnStatement@@SimpleName:NaN @TO@ ConditionalExpression:isZero ?
+      NaN : INF '
+    - '------DEL SimpleName@@NaN '
+    - '------INS ConditionalExpression@@isZero ? NaN : INF @TO@ ReturnStatement@@SimpleName:NaN '
+    - '---------INS SimpleName@@isZero @TO@ ConditionalExpression@@isZero ? NaN :
+      INF '
+    - '---------INS SimpleName@@NaN @TO@ ConditionalExpression@@isZero ? NaN : INF '
+    - '---------INS SimpleName@@INF @TO@ ConditionalExpression@@isZero ? NaN : INF '
+    - '---INS QualifiedName@@divisor.isZero @TO@ IfStatement@@InfixExpression:divisor.getReal()
+      == 0.0 && divisor.getImaginary() == 0.0 '
+    - '------INS SimpleName@@divisor @TO@ QualifiedName@@divisor.isZero '
+    - '------INS SimpleName@@isZero @TO@ QualifiedName@@divisor.isZero '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@SimpleName:NaN @TO@ ConditionalExpression:isZero ? NaN
+      : INF '
+    - '---DEL SimpleName@@NaN '
+    - '---INS ConditionalExpression@@isZero ? NaN : INF @TO@ ReturnStatement@@SimpleName:NaN '
+    - '------INS SimpleName@@isZero @TO@ ConditionalExpression@@isZero ? NaN : INF '
+    - '------INS SimpleName@@NaN @TO@ ConditionalExpression@@isZero ? NaN : INF '
+    - '------INS SimpleName@@INF @TO@ ConditionalExpression@@isZero ? NaN : INF '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/complex/Complex:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, final, transient, boolean, [isZero] @TO@ TypeDeclaration@@[public]Complex,
+      [FieldElement<Complex>, Serializable] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, final, transient,
+      boolean, [isZero] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, final, transient, boolean,
+      [isZero] '
+    - '---INS Modifier@@transient @TO@ FieldDeclaration@@private, final, transient,
+      boolean, [isZero] '
+    - '---INS PrimitiveType@@boolean @TO@ FieldDeclaration@@private, final, transient,
+      boolean, [isZero] '
+    - '---INS VariableDeclarationFragment@@isZero @TO@ FieldDeclaration@@private,
+      final, transient, boolean, [isZero] '
+    - '------INS SimpleName@@isZero @TO@ VariableDeclarationFragment@@isZero '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:isZero=real == 0 && imaginary == 0 @TO@
+      MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:Complex, @@Argus:double+real+double+imaginary+ '
+    - '---INS Assignment@@isZero=real == 0 && imaginary == 0 @TO@ ExpressionStatement@@Assignment:isZero=real
+      == 0 && imaginary == 0 '
+    - '------INS SimpleName@@isZero @TO@ Assignment@@isZero=real == 0 && imaginary
+      == 0 '
+    - '------INS Operator@@= @TO@ Assignment@@isZero=real == 0 && imaginary == 0 '
+    - '------INS InfixExpression@@real == 0 && imaginary == 0 @TO@ Assignment@@isZero=real
+      == 0 && imaginary == 0 '
+    - '---------INS InfixExpression@@real == 0 @TO@ InfixExpression@@real == 0 &&
+      imaginary == 0 '
+    - '------------INS SimpleName@@real @TO@ InfixExpression@@real == 0 '
+    - '------------INS Operator@@== @TO@ InfixExpression@@real == 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@real == 0 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@real == 0 && imaginary == 0 '
+    - '---------INS InfixExpression@@imaginary == 0 @TO@ InfixExpression@@real ==
+      0 && imaginary == 0 '
+    - '------------INS SimpleName@@imaginary @TO@ InfixExpression@@imaginary == 0 '
+    - '------------INS Operator@@== @TO@ InfixExpression@@imaginary == 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@imaginary == 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:divisor.getReal() == 0.0 && divisor.getImaginary()
+      == 0.0 @TO@ QualifiedName:divisor.isZero '
+    - '---DEL InfixExpression@@divisor.getReal() == 0.0 && divisor.getImaginary()
+      == 0.0 '
+    - '------DEL InfixExpression@@divisor.getReal() == 0.0 '
+    - '---------DEL MethodInvocation@@divisor.getReal() '
+    - '------------DEL SimpleName@@Name:divisor '
+    - '------------DEL SimpleName@@MethodName:getReal:[] '
+    - '---------DEL Operator@@== '
+    - '---------DEL NumberLiteral@@0.0 '
+    - '------DEL Operator@@&& '
+    - '------DEL InfixExpression@@divisor.getImaginary() == 0.0 '
+    - '---------DEL MethodInvocation@@divisor.getImaginary() '
+    - '------------DEL SimpleName@@Name:divisor '
+    - '------------DEL SimpleName@@MethodName:getImaginary:[] '
+    - '---------DEL Operator@@== '
+    - '---------DEL NumberLiteral@@0.0 '
+    - '---UPD ReturnStatement@@SimpleName:NaN @TO@ ConditionalExpression:isZero ?
+      NaN : INF '
+    - '------DEL SimpleName@@NaN '
+    - '------INS ConditionalExpression@@isZero ? NaN : INF @TO@ ReturnStatement@@SimpleName:NaN '
+    - '---------INS SimpleName@@isZero @TO@ ConditionalExpression@@isZero ? NaN :
+      INF '
+    - '---------INS SimpleName@@NaN @TO@ ConditionalExpression@@isZero ? NaN : INF '
+    - '---------INS SimpleName@@INF @TO@ ConditionalExpression@@isZero ? NaN : INF '
+    - '---INS QualifiedName@@divisor.isZero @TO@ IfStatement@@InfixExpression:divisor.getReal()
+      == 0.0 && divisor.getImaginary() == 0.0 '
+    - '------INS SimpleName@@divisor @TO@ QualifiedName@@divisor.isZero '
+    - '------INS SimpleName@@isZero @TO@ QualifiedName@@divisor.isZero '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@SimpleName:NaN '
+    - '---DEL SimpleName@@NaN '
+  repair_actions_cnt: 4

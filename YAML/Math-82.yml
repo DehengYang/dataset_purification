@@ -1,0 +1,98 @@
+1 bug_id: Math-82
+2 src folder:
+  name of src folder: java
+  number of files: 425
+  number of java files: 388
+  number of src classes: 477
+  number of test classes: 215
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.linear.SimplexSolverTest#testMath288
+  failing tests:
+  - org.apache.commons.math.optimization.linear.SimplexSolverTest
+  number of all test cases: 2056
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 35.551
+  repair actions extraction: 0.767
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.linear.SimplexSolverTest#testMath288: 253
+  fixed:
+    org.apache.commons.math.optimization.linear.SimplexSolverTest#testMath288: 253
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_82/src/main/java/org/apache/commons/math/optimization/linear/SimplexSolver.java\t\
+    2020-10-21 13:40:14.018110106 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_82/purify/patch/org/apache/commons/math/optimization/linear/SimplexSolver.java\t\
+    2020-10-21 13:40:14.014109991 -0400\n@@ -79,7 +79,7 @@\n         for (int i =\
+    \ tableau.getNumObjectiveFunctions(); i < tableau.getHeight(); i++) {\n      \
+    \       final double rhs = tableau.getEntry(i, tableau.getWidth() - 1);\n    \
+    \         final double entry = tableau.getEntry(i, col);\n-            if (MathUtils.compareTo(entry,\
+    \ 0, epsilon) >= 0) {\n+            if (MathUtils.compareTo(entry, 0, epsilon)\
+    \ > 0) {\n                 final double ratio = rhs / entry;\n               \
+    \  if (ratio < minRatio) {\n                     minRatio = ratio;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_82/src/main/java/org/apache/commons/math/optimization/linear/SimplexSolver.java\t\
+    2020-10-21 13:41:03.851551023 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_82/purify/purified/org/apache/commons/math/optimization/linear/SimplexSolver.java\t\
+    2020-10-21 13:41:03.851551023 -0400\n@@ -79,7 +79,7 @@\n         for (int i =\
+    \ tableau.getNumObjectiveFunctions(); i < tableau.getHeight(); i++) {\n      \
+    \       final double rhs = tableau.getEntry(i, tableau.getWidth() - 1);\n    \
+    \         final double entry = tableau.getEntry(i, col);\n-            if (MathUtils.compareTo(entry,\
+    \ 0, epsilon) >= 0) {\n+            if (MathUtils.compareTo(entry, 0, epsilon)\
+    \ > 0) {\n                 final double ratio = rhs / entry;\n               \
+    \  if (ratio < minRatio) {\n                     minRatio = ratio;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/linear/SimplexSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:MathUtils.compareTo(entry,0,epsilon) >= 0
+      @TO@ InfixExpression:MathUtils.compareTo(entry,0,epsilon) > 0 '
+    - '---UPD InfixExpression@@MathUtils.compareTo(entry,0,epsilon) >= 0 @TO@ MathUtils.compareTo(entry,0,epsilon)
+      > 0 '
+    - '------UPD Operator@@>= @TO@ > '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/linear/SimplexSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:MathUtils.compareTo(entry,0,epsilon) >= 0
+      @TO@ InfixExpression:MathUtils.compareTo(entry,0,epsilon) > 0 '
+    - '---UPD InfixExpression@@MathUtils.compareTo(entry,0,epsilon) >= 0 @TO@ MathUtils.compareTo(entry,0,epsilon)
+      > 0 '
+    - '------UPD Operator@@>= @TO@ > '
+  repair_actions_cnt: 1

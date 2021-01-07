@@ -1,0 +1,109 @@
+1 bug_id: Closure-79
+2 src folder:
+  name of src folder: src
+  number of files: 378
+  number of java files: 365
+  number of src classes: 1164
+  number of test classes: 191
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.VarCheckTest#testCallInExterns
+  - com.google.javascript.jscomp.NormalizeTest#testIssue
+  - com.google.javascript.jscomp.VarCheckTest#testVarReferenceInExterns
+  - com.google.javascript.jscomp.VarCheckTest#testPropReferenceInExterns1
+  - com.google.javascript.jscomp.VarCheckTest#testPropReferenceInExterns3
+  failing tests:
+  - com.google.javascript.jscomp.VarCheckTest
+  - com.google.javascript.jscomp.NormalizeTest
+  number of all test cases: 6702
+  number of failing test cases: 5
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.904
+  purification via delta debugging: 173.207
+  repair actions extraction: 2.345
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.NormalizeTest#testIssue: 2091
+    com.google.javascript.jscomp.VarCheckTest#testCallInExterns: 2314
+    com.google.javascript.jscomp.VarCheckTest#testPropReferenceInExterns1: 2303
+    com.google.javascript.jscomp.VarCheckTest#testPropReferenceInExterns3: 2303
+    com.google.javascript.jscomp.VarCheckTest#testVarReferenceInExterns: 2291
+  fixed:
+    com.google.javascript.jscomp.NormalizeTest#testIssue: 2446
+    com.google.javascript.jscomp.VarCheckTest#testCallInExterns: 2524
+    com.google.javascript.jscomp.VarCheckTest#testPropReferenceInExterns1: 2488
+    com.google.javascript.jscomp.VarCheckTest#testPropReferenceInExterns3: 2491
+    com.google.javascript.jscomp.VarCheckTest#testVarReferenceInExterns: 2476
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 2
+  oriDel: 1
+  ori_patch_lines: 3
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_79/src/com/google/javascript/jscomp/Normalize.java\t\
+    2020-10-23 10:02:54.492126036 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_79/purify/patch/com/google/javascript/jscomp/Normalize.java\t\
+    2020-10-23 10:02:54.492126036 -0400\n@@ -119,7 +119,7 @@\n   public void process(Node\
+    \ externs, Node root) {\n     new NodeTraversal(\n         compiler, new NormalizeStatements(compiler,\
+    \ assertOnChange))\n-        .traverse(root);\n+        .traverseRoots(externs,\
+    \ root);\n     if (MAKE_LOCAL_NAMES_UNIQUE) {\n       MakeDeclaredNamesUnique\
+    \ renamer = new MakeDeclaredNamesUnique();\n       NodeTraversal t = new NodeTraversal(compiler,\
+    \ renamer);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_79/src/com/google/javascript/jscomp/Normalize.java\t\
+    2020-10-23 10:06:19.058049654 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_79/purify/purified/com/google/javascript/jscomp/Normalize.java\t\
+    2020-10-23 10:06:19.058049654 -0400\n@@ -119,7 +119,7 @@\n   public void process(Node\
+    \ externs, Node root) {\n     new NodeTraversal(\n         compiler, new NormalizeStatements(compiler,\
+    \ assertOnChange))\n-        .traverse(root);\n+        .traverseRoots(externs,\
+    \ root);\n     if (MAKE_LOCAL_NAMES_UNIQUE) {\n       MakeDeclaredNamesUnique\
+    \ renamer = new MakeDeclaredNamesUnique();\n       NodeTraversal t = new NodeTraversal(compiler,\
+    \ renamer);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '2'
+  com/google/javascript/jscomp/Normalize, com/google/javascript/jscomp/VarCheck:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:compiler.reportCodeChange() @TO@
+      MethodDeclaration@@private, @@void, MethodName:createSynthesizedExternVar, @@Argus:String+varName+ '
+    - '---INS MethodInvocation@@compiler.reportCodeChange() @TO@ ExpressionStatement@@MethodInvocation:compiler.reportCodeChange() '
+    - '------INS SimpleName@@Name:compiler @TO@ MethodInvocation@@compiler.reportCodeChange() '
+    - '------INS SimpleName@@MethodName:reportCodeChange:[] @TO@ MethodInvocation@@compiler.reportCodeChange() '
+  files_cnt: '2'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '2'
+  com/google/javascript/jscomp/Normalize, com/google/javascript/jscomp/VarCheck:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:compiler.reportCodeChange() @TO@
+      MethodDeclaration@@private, @@void, MethodName:createSynthesizedExternVar, @@Argus:String+varName+ '
+    - '---INS MethodInvocation@@compiler.reportCodeChange() @TO@ ExpressionStatement@@MethodInvocation:compiler.reportCodeChange() '
+    - '------INS SimpleName@@Name:compiler @TO@ MethodInvocation@@compiler.reportCodeChange() '
+    - '------INS SimpleName@@MethodName:reportCodeChange:[] @TO@ MethodInvocation@@compiler.reportCodeChange() '
+  files_cnt: '2'
+  repair_actions_cnt: 1

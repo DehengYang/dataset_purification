@@ -1,0 +1,293 @@
+1 bug_id: Mockito-33
+2 src folder:
+  name of src folder: src
+  number of files: 269
+  number of java files: 233
+  number of src classes: 258
+  number of test classes: 204
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.bugs.InheritedGenericsPolimorphicCallTest#shouldStubbingWork
+  - org.mockitousage.bugs.InheritedGenericsPolimorphicCallTest#shouldVerificationWorks
+  failing tests:
+  - org.mockitousage.bugs.InheritedGenericsPolimorphicCallTest
+  number of all test cases: 0
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.799
+  purification via delta debugging: 384.899
+  repair actions extraction: 0.775
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 12
+  covDel: 1
+  cov_patch_lines: 13
+  delta_patch_lines: 13
+  oriAdd: 12
+  oriDel: 1
+  ori_patch_lines: 13
+  purAdd: 12
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 0
+  failFail: 26
+  passed: 0
+  total: 27
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_33/src/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-24 20:35:06.439973857 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_33/purify/patch/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-24 20:35:06.435973741 -0400\n@@ -95,8 +95,19 @@\n         Method m1 =\
+    \ invocation.getMethod();\n         Method m2 = candidate.getMethod();\n     \
+    \    \n+        if (m1.getName() != null && m1.getName().equals(m2.getName()))\
+    \ {\n         \t/* Avoid unnecessary cloning */\n-        return m1.equals(m2);\n\
+    +        \tClass[] params1 = m1.getParameterTypes();\n+        \tClass[] params2\
+    \ = m2.getParameterTypes();\n+        \tif (params1.length == params2.length)\
+    \ {\n+        \t    for (int i = 0; i < params1.length; i++) {\n+        \t\t\
+    if (params1[i] != params2[i])\n+        \t\t    return false;\n+        \t   \
+    \ }\n+        \t    return true;\n+        \t}\n+        }\n+        return false;\n\
+    \     }\n     \n     public Location getLocation() {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_33/src/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-24 20:41:49.327608191 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_33/purify/purified/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-24 20:41:49.327608191 -0400\n@@ -95,8 +95,19 @@\n         Method m1 =\
+    \ invocation.getMethod();\n         Method m2 = candidate.getMethod();\n     \
+    \    \n+        if (m1.getName() != null && m1.getName().equals(m2.getName()))\
+    \ {\n         \t/* Avoid unnecessary cloning */\n-        return m1.equals(m2);\n\
+    +        \tClass[] params1 = m1.getParameterTypes();\n+        \tClass[] params2\
+    \ = m2.getParameterTypes();\n+        \tif (params1.length == params2.length)\
+    \ {\n+        \t    for (int i = 0; i < params1.length; i++) {\n+        \t\t\
+    if (params1[i] != params2[i])\n+        \t\t    return false;\n+        \t   \
+    \ }\n+        \t    return true;\n+        \t}\n+        }\n+        return false;\n\
+    \     }\n     \n     public Location getLocation() {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/invocation/InvocationMatcher:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:m1.getName() != null && m1.getName().equals(m2.getName())
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:hasSameMethod, @@Argus:Invocation+candidate+ '
+    - '---INS InfixExpression@@m1.getName() != null && m1.getName().equals(m2.getName())
+      @TO@ IfStatement@@InfixExpression:m1.getName() != null && m1.getName().equals(m2.getName()) '
+    - '------INS InfixExpression@@m1.getName() != null @TO@ InfixExpression@@m1.getName()
+      != null && m1.getName().equals(m2.getName()) '
+    - '---------INS MethodInvocation@@m1.getName() @TO@ InfixExpression@@m1.getName()
+      != null '
+    - '------------INS SimpleName@@Name:m1 @TO@ MethodInvocation@@m1.getName() '
+    - '------------INS SimpleName@@MethodName:getName:[] @TO@ MethodInvocation@@m1.getName() '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@m1.getName() != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@m1.getName() != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@m1.getName() != null && m1.getName().equals(m2.getName()) '
+    - '------INS MethodInvocation@@m1.getName().equals(m2.getName()) @TO@ InfixExpression@@m1.getName()
+      != null && m1.getName().equals(m2.getName()) '
+    - '---------INS MethodInvocation@@MethodName:getName:[] @TO@ MethodInvocation@@m1.getName().equals(m2.getName()) '
+    - '---------MOV SimpleName@@Name:m1 @TO@ MethodInvocation@@m1.getName().equals(m2.getName()) '
+    - '---------MOV SimpleName@@MethodName:equals:[m2] @TO@ MethodInvocation@@m1.getName().equals(m2.getName()) '
+    - '---INS VariableDeclarationStatement@@Class[] params1=m1.getParameterTypes();
+      @TO@ IfStatement@@InfixExpression:m1.getName() != null && m1.getName().equals(m2.getName()) '
+    - '------INS ArrayType@@Class[] @TO@ VariableDeclarationStatement@@Class[] params1=m1.getParameterTypes(); '
+    - '---------INS SimpleType@@Class @TO@ ArrayType@@Class[] '
+    - '------INS VariableDeclarationFragment@@params1=m1.getParameterTypes() @TO@
+      VariableDeclarationStatement@@Class[] params1=m1.getParameterTypes(); '
+    - '---------INS SimpleName@@params1 @TO@ VariableDeclarationFragment@@params1=m1.getParameterTypes() '
+    - '---------INS MethodInvocation@@m1.getParameterTypes() @TO@ VariableDeclarationFragment@@params1=m1.getParameterTypes() '
+    - '------------INS SimpleName@@Name:m1 @TO@ MethodInvocation@@m1.getParameterTypes() '
+    - '------------INS SimpleName@@MethodName:getParameterTypes:[] @TO@ MethodInvocation@@m1.getParameterTypes() '
+    - '---INS VariableDeclarationStatement@@Class[] params2=m2.getParameterTypes();
+      @TO@ IfStatement@@InfixExpression:m1.getName() != null && m1.getName().equals(m2.getName()) '
+    - '------INS ArrayType@@Class[] @TO@ VariableDeclarationStatement@@Class[] params2=m2.getParameterTypes(); '
+    - '---------INS SimpleType@@Class @TO@ ArrayType@@Class[] '
+    - '------INS VariableDeclarationFragment@@params2=m2.getParameterTypes() @TO@
+      VariableDeclarationStatement@@Class[] params2=m2.getParameterTypes(); '
+    - '---------INS SimpleName@@params2 @TO@ VariableDeclarationFragment@@params2=m2.getParameterTypes() '
+    - '---------INS MethodInvocation@@m2.getParameterTypes() @TO@ VariableDeclarationFragment@@params2=m2.getParameterTypes() '
+    - '------------INS SimpleName@@Name:m2 @TO@ MethodInvocation@@m2.getParameterTypes() '
+    - '------------INS SimpleName@@MethodName:getParameterTypes:[] @TO@ MethodInvocation@@m2.getParameterTypes() '
+    - '---INS IfStatement@@InfixExpression:params1.length == params2.length @TO@ IfStatement@@InfixExpression:m1.getName()
+      != null && m1.getName().equals(m2.getName()) '
+    - '------INS InfixExpression@@params1.length == params2.length @TO@ IfStatement@@InfixExpression:params1.length
+      == params2.length '
+    - '---------INS QualifiedName@@params1.length @TO@ InfixExpression@@params1.length
+      == params2.length '
+    - '------------INS SimpleName@@params1 @TO@ QualifiedName@@params1.length '
+    - '------------INS SimpleName@@length @TO@ QualifiedName@@params1.length '
+    - '---------INS Operator@@== @TO@ InfixExpression@@params1.length == params2.length '
+    - '---------INS QualifiedName@@params2.length @TO@ InfixExpression@@params1.length
+      == params2.length '
+    - '------------INS SimpleName@@params2 @TO@ QualifiedName@@params2.length '
+    - '------------INS SimpleName@@length @TO@ QualifiedName@@params2.length '
+    - '------INS ForStatement@@[int i=0];i < params1.length; [i++] @TO@ IfStatement@@InfixExpression:params1.length
+      == params2.length '
+    - '---------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int
+      i=0];i < params1.length; [i++] '
+    - '------------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS InfixExpression@@i < params1.length @TO@ ForStatement@@[int i=0];i
+      < params1.length; [i++] '
+    - '------------INS SimpleName@@i @TO@ InfixExpression@@i < params1.length '
+    - '------------INS Operator@@< @TO@ InfixExpression@@i < params1.length '
+    - '------------INS QualifiedName@@params1.length @TO@ InfixExpression@@i < params1.length '
+    - '---------------INS SimpleName@@params1 @TO@ QualifiedName@@params1.length '
+    - '---------------INS SimpleName@@length @TO@ QualifiedName@@params1.length '
+    - '---------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < params1.length;
+      [i++] '
+    - '------------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---------INS IfStatement@@InfixExpression:params1[i] != params2[i] @TO@ ForStatement@@[int
+      i=0];i < params1.length; [i++] '
+    - '------------INS InfixExpression@@params1[i] != params2[i] @TO@ IfStatement@@InfixExpression:params1[i]
+      != params2[i] '
+    - '---------------INS ArrayAccess@@params1[i] @TO@ InfixExpression@@params1[i]
+      != params2[i] '
+    - '------------------INS SimpleName@@params1 @TO@ ArrayAccess@@params1[i] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@params1[i] '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@params1[i] != params2[i] '
+    - '---------------INS ArrayAccess@@params2[i] @TO@ InfixExpression@@params1[i]
+      != params2[i] '
+    - '------------------INS SimpleName@@params2 @TO@ ArrayAccess@@params2[i] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@params2[i] '
+    - '------------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:params1[i]
+      != params2[i] '
+    - '---------------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '------INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:params1.length
+      == params2.length '
+    - '---------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@MethodInvocation:m1.equals(m2) '
+    - '---DEL MethodInvocation@@m1.equals(m2) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@BooleanLiteral:false @TO@ MethodDeclaration@@public, @@boolean,
+      MethodName:hasSameMethod, @@Argus:Invocation+candidate+ '
+    - '---INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/invocation/InvocationMatcher:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:m1.getName() != null && m1.getName().equals(m2.getName())
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:hasSameMethod, @@Argus:Invocation+candidate+ '
+    - '---INS InfixExpression@@m1.getName() != null && m1.getName().equals(m2.getName())
+      @TO@ IfStatement@@InfixExpression:m1.getName() != null && m1.getName().equals(m2.getName()) '
+    - '------INS InfixExpression@@m1.getName() != null @TO@ InfixExpression@@m1.getName()
+      != null && m1.getName().equals(m2.getName()) '
+    - '---------INS MethodInvocation@@m1.getName() @TO@ InfixExpression@@m1.getName()
+      != null '
+    - '------------INS SimpleName@@Name:m1 @TO@ MethodInvocation@@m1.getName() '
+    - '------------INS SimpleName@@MethodName:getName:[] @TO@ MethodInvocation@@m1.getName() '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@m1.getName() != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@m1.getName() != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@m1.getName() != null && m1.getName().equals(m2.getName()) '
+    - '------INS MethodInvocation@@m1.getName().equals(m2.getName()) @TO@ InfixExpression@@m1.getName()
+      != null && m1.getName().equals(m2.getName()) '
+    - '---------INS MethodInvocation@@MethodName:getName:[] @TO@ MethodInvocation@@m1.getName().equals(m2.getName()) '
+    - '---------MOV SimpleName@@Name:m1 @TO@ MethodInvocation@@m1.getName().equals(m2.getName()) '
+    - '---------MOV SimpleName@@MethodName:equals:[m2] @TO@ MethodInvocation@@m1.getName().equals(m2.getName()) '
+    - '---INS VariableDeclarationStatement@@Class[] params1=m1.getParameterTypes();
+      @TO@ IfStatement@@InfixExpression:m1.getName() != null && m1.getName().equals(m2.getName()) '
+    - '------INS ArrayType@@Class[] @TO@ VariableDeclarationStatement@@Class[] params1=m1.getParameterTypes(); '
+    - '---------INS SimpleType@@Class @TO@ ArrayType@@Class[] '
+    - '------INS VariableDeclarationFragment@@params1=m1.getParameterTypes() @TO@
+      VariableDeclarationStatement@@Class[] params1=m1.getParameterTypes(); '
+    - '---------INS SimpleName@@params1 @TO@ VariableDeclarationFragment@@params1=m1.getParameterTypes() '
+    - '---------INS MethodInvocation@@m1.getParameterTypes() @TO@ VariableDeclarationFragment@@params1=m1.getParameterTypes() '
+    - '------------INS SimpleName@@Name:m1 @TO@ MethodInvocation@@m1.getParameterTypes() '
+    - '------------INS SimpleName@@MethodName:getParameterTypes:[] @TO@ MethodInvocation@@m1.getParameterTypes() '
+    - '---INS VariableDeclarationStatement@@Class[] params2=m2.getParameterTypes();
+      @TO@ IfStatement@@InfixExpression:m1.getName() != null && m1.getName().equals(m2.getName()) '
+    - '------INS ArrayType@@Class[] @TO@ VariableDeclarationStatement@@Class[] params2=m2.getParameterTypes(); '
+    - '---------INS SimpleType@@Class @TO@ ArrayType@@Class[] '
+    - '------INS VariableDeclarationFragment@@params2=m2.getParameterTypes() @TO@
+      VariableDeclarationStatement@@Class[] params2=m2.getParameterTypes(); '
+    - '---------INS SimpleName@@params2 @TO@ VariableDeclarationFragment@@params2=m2.getParameterTypes() '
+    - '---------INS MethodInvocation@@m2.getParameterTypes() @TO@ VariableDeclarationFragment@@params2=m2.getParameterTypes() '
+    - '------------INS SimpleName@@Name:m2 @TO@ MethodInvocation@@m2.getParameterTypes() '
+    - '------------INS SimpleName@@MethodName:getParameterTypes:[] @TO@ MethodInvocation@@m2.getParameterTypes() '
+    - '---INS IfStatement@@InfixExpression:params1.length == params2.length @TO@ IfStatement@@InfixExpression:m1.getName()
+      != null && m1.getName().equals(m2.getName()) '
+    - '------INS InfixExpression@@params1.length == params2.length @TO@ IfStatement@@InfixExpression:params1.length
+      == params2.length '
+    - '---------INS QualifiedName@@params1.length @TO@ InfixExpression@@params1.length
+      == params2.length '
+    - '------------INS SimpleName@@params1 @TO@ QualifiedName@@params1.length '
+    - '------------INS SimpleName@@length @TO@ QualifiedName@@params1.length '
+    - '---------INS Operator@@== @TO@ InfixExpression@@params1.length == params2.length '
+    - '---------INS QualifiedName@@params2.length @TO@ InfixExpression@@params1.length
+      == params2.length '
+    - '------------INS SimpleName@@params2 @TO@ QualifiedName@@params2.length '
+    - '------------INS SimpleName@@length @TO@ QualifiedName@@params2.length '
+    - '------INS ForStatement@@[int i=0];i < params1.length; [i++] @TO@ IfStatement@@InfixExpression:params1.length
+      == params2.length '
+    - '---------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int
+      i=0];i < params1.length; [i++] '
+    - '------------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS InfixExpression@@i < params1.length @TO@ ForStatement@@[int i=0];i
+      < params1.length; [i++] '
+    - '------------INS SimpleName@@i @TO@ InfixExpression@@i < params1.length '
+    - '------------INS Operator@@< @TO@ InfixExpression@@i < params1.length '
+    - '------------INS QualifiedName@@params1.length @TO@ InfixExpression@@i < params1.length '
+    - '---------------INS SimpleName@@params1 @TO@ QualifiedName@@params1.length '
+    - '---------------INS SimpleName@@length @TO@ QualifiedName@@params1.length '
+    - '---------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < params1.length;
+      [i++] '
+    - '------------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---------INS IfStatement@@InfixExpression:params1[i] != params2[i] @TO@ ForStatement@@[int
+      i=0];i < params1.length; [i++] '
+    - '------------INS InfixExpression@@params1[i] != params2[i] @TO@ IfStatement@@InfixExpression:params1[i]
+      != params2[i] '
+    - '---------------INS ArrayAccess@@params1[i] @TO@ InfixExpression@@params1[i]
+      != params2[i] '
+    - '------------------INS SimpleName@@params1 @TO@ ArrayAccess@@params1[i] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@params1[i] '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@params1[i] != params2[i] '
+    - '---------------INS ArrayAccess@@params2[i] @TO@ InfixExpression@@params1[i]
+      != params2[i] '
+    - '------------------INS SimpleName@@params2 @TO@ ArrayAccess@@params2[i] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@params2[i] '
+    - '------------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:params1[i]
+      != params2[i] '
+    - '---------------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '------INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:params1.length
+      == params2.length '
+    - '---------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@MethodInvocation:m1.equals(m2) '
+    - '---DEL MethodInvocation@@m1.equals(m2) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@BooleanLiteral:false @TO@ MethodDeclaration@@public, @@boolean,
+      MethodName:hasSameMethod, @@Argus:Invocation+candidate+ '
+    - '---INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  repair_actions_cnt: 3

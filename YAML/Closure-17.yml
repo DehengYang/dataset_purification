@@ -1,0 +1,174 @@
+1 bug_id: Closure-17
+2 src folder:
+  name of src folder: src
+  number of files: 419
+  number of java files: 403
+  number of src classes: 1360
+  number of test classes: 224
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testIssue688
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 7593
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.166
+  purification via delta debugging: 469.439
+  repair actions extraction: 2.242
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue688: 5055
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue688: 5030
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 5
+  covDel: 1
+  cov_patch_lines: 6
+  delta_patch_lines: 5
+  oriAdd: 5
+  oriDel: 1
+  ori_patch_lines: 6
+  purAdd: 4
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 13
+  failFail: 1
+  passed: 1
+  total: 15
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_17/src/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-22 09:18:19.373634623 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_17/purify/patch/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-22 09:18:19.373634623 -0400\n@@ -1288,8 +1288,12 @@\n           if (info.isConstant())\
+    \ {\n             JSType knownType = null;\n             if (rValue != null) {\n\
+    -              if (rValue.getJSType() != null && !rValue.getJSType().isUnknownType())\
+    \ {\n+              JSDocInfo rValueInfo = rValue.getJSDocInfo();\n+         \
+    \     if (rValueInfo != null && rValueInfo.hasType()) {\n                 // If\
+    \ rValue has a type-cast, we use the type in the type-cast.\n+               \
+    \ return rValueInfo.getType().evaluate(scope, typeRegistry);\n+              }\
+    \ else if (rValue.getJSType() != null\n+                  && !rValue.getJSType().isUnknownType())\
+    \ {\n                 // If rValue's type was already computed during scope creation,\n\
+    \                 // then we can safely use that.\n                 return rValue.getJSType();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_17/src/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-22 09:26:41.644162839 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_17/purify/purified/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-22 09:26:41.644162839 -0400\n@@ -1288,8 +1288,11 @@\n           if (info.isConstant())\
+    \ {\n             JSType knownType = null;\n             if (rValue != null) {\n\
+    -              if (rValue.getJSType() != null && !rValue.getJSType().isUnknownType())\
+    \ {\n+              JSDocInfo rValueInfo = rValue.getJSDocInfo();\n+         \
+    \     if (rValueInfo != null && rValueInfo.hasType()) {\n                 // If\
+    \ rValue has a type-cast, we use the type in the type-cast.\n+              }\
+    \ else if (rValue.getJSType() != null\n+                  && !rValue.getJSType().isUnknownType())\
+    \ {\n                 // If rValue's type was already computed during scope creation,\n\
+    \                 // then we can safely use that.\n                 return rValue.getJSType();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypedScopeCreator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:rValue != null @TO@ IfStatement@@MethodInvocation:info.isConstant() '
+    - '---MOV IfStatement@@InfixExpression:rValue != null @TO@ IfStatement@@InfixExpression:rValue
+      != null '
+    - '---INS InfixExpression@@rValue != null @TO@ IfStatement@@InfixExpression:rValue
+      != null '
+    - '------INS SimpleName@@rValue @TO@ InfixExpression@@rValue != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@rValue != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@rValue != null '
+    - '---INS VariableDeclarationStatement@@JSDocInfo rValueInfo=rValue.getJSDocInfo();
+      @TO@ IfStatement@@InfixExpression:rValue != null '
+    - '------INS SimpleType@@JSDocInfo @TO@ VariableDeclarationStatement@@JSDocInfo
+      rValueInfo=rValue.getJSDocInfo(); '
+    - '------INS VariableDeclarationFragment@@rValueInfo=rValue.getJSDocInfo() @TO@
+      VariableDeclarationStatement@@JSDocInfo rValueInfo=rValue.getJSDocInfo(); '
+    - '---------INS SimpleName@@rValueInfo @TO@ VariableDeclarationFragment@@rValueInfo=rValue.getJSDocInfo() '
+    - '---------INS MethodInvocation@@rValue.getJSDocInfo() @TO@ VariableDeclarationFragment@@rValueInfo=rValue.getJSDocInfo() '
+    - '------------INS SimpleName@@Name:rValue @TO@ MethodInvocation@@rValue.getJSDocInfo() '
+    - '------------INS SimpleName@@MethodName:getJSDocInfo:[] @TO@ MethodInvocation@@rValue.getJSDocInfo() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:rValue != null @TO@ InfixExpression:rValueInfo
+      != null && rValueInfo.hasType() '
+    - '---DEL InfixExpression@@rValue != null '
+    - '---INS InfixExpression@@rValueInfo != null && rValueInfo.hasType() @TO@ IfStatement@@InfixExpression:rValue
+      != null '
+    - '------INS InfixExpression@@rValueInfo != null @TO@ InfixExpression@@rValueInfo
+      != null && rValueInfo.hasType() '
+    - '---------MOV SimpleName@@rValue @TO@ InfixExpression@@rValueInfo != null '
+    - '---------MOV Operator@@!= @TO@ InfixExpression@@rValueInfo != null '
+    - '---------MOV NullLiteral@@null @TO@ InfixExpression@@rValueInfo != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@rValueInfo != null && rValueInfo.hasType() '
+    - '------INS MethodInvocation@@rValueInfo.hasType() @TO@ InfixExpression@@rValueInfo
+      != null && rValueInfo.hasType() '
+    - '---------INS SimpleName@@Name:rValueInfo @TO@ MethodInvocation@@rValueInfo.hasType() '
+    - '---------INS SimpleName@@MethodName:hasType:[] @TO@ MethodInvocation@@rValueInfo.hasType() '
+    - '---INS ReturnStatement@@MethodInvocation:rValueInfo.getType().evaluate(scope,typeRegistry)
+      @TO@ IfStatement@@InfixExpression:rValue != null '
+    - '------INS MethodInvocation@@rValueInfo.getType().evaluate(scope,typeRegistry)
+      @TO@ ReturnStatement@@MethodInvocation:rValueInfo.getType().evaluate(scope,typeRegistry) '
+    - '---------INS SimpleName@@Name:rValueInfo @TO@ MethodInvocation@@rValueInfo.getType().evaluate(scope,typeRegistry) '
+    - '---------INS MethodInvocation@@MethodName:getType:[] @TO@ MethodInvocation@@rValueInfo.getType().evaluate(scope,typeRegistry) '
+    - '---------INS SimpleName@@MethodName:evaluate:[scope, typeRegistry] @TO@ MethodInvocation@@rValueInfo.getType().evaluate(scope,typeRegistry) '
+    - '------------INS SimpleName@@scope @TO@ SimpleName@@MethodName:evaluate:[scope,
+      typeRegistry] '
+    - '------------INS SimpleName@@typeRegistry @TO@ SimpleName@@MethodName:evaluate:[scope,
+      typeRegistry] '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypedScopeCreator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:rValue != null @TO@ IfStatement@@MethodInvocation:info.isConstant() '
+    - '---MOV IfStatement@@InfixExpression:rValue != null @TO@ IfStatement@@InfixExpression:rValue
+      != null '
+    - '---INS InfixExpression@@rValue != null @TO@ IfStatement@@InfixExpression:rValue
+      != null '
+    - '------INS SimpleName@@rValue @TO@ InfixExpression@@rValue != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@rValue != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@rValue != null '
+    - '---INS VariableDeclarationStatement@@JSDocInfo rValueInfo=rValue.getJSDocInfo();
+      @TO@ IfStatement@@InfixExpression:rValue != null '
+    - '------INS SimpleType@@JSDocInfo @TO@ VariableDeclarationStatement@@JSDocInfo
+      rValueInfo=rValue.getJSDocInfo(); '
+    - '------INS VariableDeclarationFragment@@rValueInfo=rValue.getJSDocInfo() @TO@
+      VariableDeclarationStatement@@JSDocInfo rValueInfo=rValue.getJSDocInfo(); '
+    - '---------INS SimpleName@@rValueInfo @TO@ VariableDeclarationFragment@@rValueInfo=rValue.getJSDocInfo() '
+    - '---------INS MethodInvocation@@rValue.getJSDocInfo() @TO@ VariableDeclarationFragment@@rValueInfo=rValue.getJSDocInfo() '
+    - '------------INS SimpleName@@Name:rValue @TO@ MethodInvocation@@rValue.getJSDocInfo() '
+    - '------------INS SimpleName@@MethodName:getJSDocInfo:[] @TO@ MethodInvocation@@rValue.getJSDocInfo() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:rValue != null @TO@ InfixExpression:rValueInfo
+      != null && rValueInfo.hasType() '
+    - '---DEL InfixExpression@@rValue != null '
+    - '---INS InfixExpression@@rValueInfo != null && rValueInfo.hasType() @TO@ IfStatement@@InfixExpression:rValue
+      != null '
+    - '------INS InfixExpression@@rValueInfo != null @TO@ InfixExpression@@rValueInfo
+      != null && rValueInfo.hasType() '
+    - '---------MOV SimpleName@@rValue @TO@ InfixExpression@@rValueInfo != null '
+    - '---------MOV Operator@@!= @TO@ InfixExpression@@rValueInfo != null '
+    - '---------MOV NullLiteral@@null @TO@ InfixExpression@@rValueInfo != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@rValueInfo != null && rValueInfo.hasType() '
+    - '------INS MethodInvocation@@rValueInfo.hasType() @TO@ InfixExpression@@rValueInfo
+      != null && rValueInfo.hasType() '
+    - '---------INS SimpleName@@Name:rValueInfo @TO@ MethodInvocation@@rValueInfo.hasType() '
+    - '---------INS SimpleName@@MethodName:hasType:[] @TO@ MethodInvocation@@rValueInfo.hasType() '
+  files_cnt: '1'
+  repair_actions_cnt: 2

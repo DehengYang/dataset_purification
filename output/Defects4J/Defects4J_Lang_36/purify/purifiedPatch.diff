@@ -1,0 +1,23 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_36/src/java/org/apache/commons/lang3/math/NumberUtils.java	2020-10-21 01:31:24.817709031 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_36/purify/purified/org/apache/commons/lang3/math/NumberUtils.java	2020-10-21 01:31:24.813708915 -0400
+@@ -488,7 +488,7 @@
+             }
+             dec = null;
+         }
+-        if (!Character.isDigit(lastChar)) {
++        if (!Character.isDigit(lastChar) && lastChar != '.') {
+             if (expPos > -1 && expPos < str.length() - 1) {
+                 exp = str.substring(expPos + 1, str.length() - 1);
+             } else {
+@@ -1385,6 +1385,11 @@
+                 // can't have an E at the last byte
+                 return false;
+             }
++            if (chars[i] == '.') {
++                if (hasDecPoint || hasExp) {
++                }
++                return foundDigit;
++            }
+             if (!allowSigns
+                 && (chars[i] == 'd'
+                     || chars[i] == 'D'

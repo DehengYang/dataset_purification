@@ -1,0 +1,207 @@
+1 bug_id: Math-18
+2 src folder:
+  name of src folder: java
+  number of files: 665
+  number of java files: 664
+  number of src classes: 873
+  number of test classes: 328
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.optimization.direct.CMAESOptimizerTest#testFitAccuracyDependsOnBoundary
+  failing tests:
+  - org.apache.commons.math3.optimization.direct.CMAESOptimizerTest
+  number of all test cases: 4213
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.777
+  purification via delta debugging: 795.821
+  repair actions extraction: 2.233
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.optimization.direct.CMAESOptimizerTest#testFitAccuracyDependsOnBoundary: 1107
+  fixed:
+    org.apache.commons.math3.optimization.direct.CMAESOptimizerTest#testFitAccuracyDependsOnBoundary: 1102
+6 reduced lines:
+  by all: 8
+  by coverage: 0
+  by delta debugging: 8
+  covAdd: 6
+  covDel: 4
+  cov_patch_lines: 10
+  delta_patch_lines: 2
+  oriAdd: 6
+  oriDel: 4
+  ori_patch_lines: 10
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  cov: 5
+  original: 5
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 1
+  failFail: 9
+  passed: 4
+  total: 14
+9 sibling repair actions:
+- 2 3 0.9726390114739629
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_18/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java\t\
+    2020-10-22 05:21:14.806147150 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_18/purify/patch/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java\t\
+    2020-10-22 05:21:14.806147150 -0400\n@@ -929,7 +929,7 @@\n             double[]\
+    \ res = new double[x.length];\n             for (int i = 0; i < x.length; i++)\
+    \ {\n                 double diff = boundaries[1][i] - boundaries[0][i];\n-  \
+    \              res[i] = (x[i] - boundaries[0][i]) / diff;\n+                res[i]\
+    \ = x[i] / diff;\n             }\n             return res;\n         }\n@@ -955,7\
+    \ +955,7 @@\n             double[] res = new double[x.length];\n             for\
+    \ (int i = 0; i < x.length; i++) {\n                 double diff = boundaries[1][i]\
+    \ - boundaries[0][i];\n-                res[i] = diff * x[i] + boundaries[0][i];\n\
+    +                res[i] = diff * x[i];\n             }\n             return res;\n\
+    \         }\n@@ -987,12 +987,14 @@\n                 return true;\n          \
+    \   }\n \n+            final double[] bLoEnc = encode(boundaries[0]);\n+     \
+    \       final double[] bHiEnc = encode(boundaries[1]);\n \n             for (int\
+    \ i = 0; i < x.length; i++) {\n-                if (x[i] < 0) {\n+           \
+    \     if (x[i] < bLoEnc[i]) {\n                     return false;\n          \
+    \       }\n-                if (x[i] > 1.0) {\n+                if (x[i] > bHiEnc[i])\
+    \ {\n                     return false;\n                 }\n             }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_18/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java\t\
+    2020-10-22 05:34:53.181771815 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_18/purify/purified/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java\t\
+    2020-10-22 05:34:53.181771815 -0400\n@@ -930,6 +930,7 @@\n             for (int\
+    \ i = 0; i < x.length; i++) {\n                 double diff = boundaries[1][i]\
+    \ - boundaries[0][i];\n                 res[i] = (x[i] - boundaries[0][i]) / diff;\n\
+    +                res[i] = x[i] / diff;\n             }\n             return res;\n\
+    \         }\n@@ -956,6 +957,7 @@\n             for (int i = 0; i < x.length; i++)\
+    \ {\n                 double diff = boundaries[1][i] - boundaries[0][i];\n   \
+    \              res[i] = diff * x[i] + boundaries[0][i];\n+                res[i]\
+    \ = diff * x[i];\n             }\n             return res;\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/direct/CMAESOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:res[i]=(x[i] - boundaries[0][i]) / diff
+      @TO@ Assignment:res[i]=x[i] / diff '
+    - '---UPD Assignment@@res[i]=(x[i] - boundaries[0][i]) / diff @TO@ res[i]=x[i]
+      / diff '
+    - '------UPD InfixExpression@@(x[i] - boundaries[0][i]) / diff @TO@ x[i] / diff '
+    - '---------DEL ParenthesizedExpression@@(x[i] - boundaries[0][i]) '
+    - '------------DEL InfixExpression@@x[i] - boundaries[0][i] '
+    - '---------------DEL Operator@@- '
+    - '---------------DEL ArrayAccess@@boundaries[0][i] '
+    - '------------------DEL ArrayAccess@@boundaries[0] '
+    - '---------------------DEL SimpleName@@boundaries '
+    - '---------------------DEL NumberLiteral@@0 '
+    - '------------------DEL SimpleName@@i '
+    - '---------MOV ArrayAccess@@x[i] @TO@ InfixExpression@@(x[i] - boundaries[0][i])
+      / diff '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:res[i]=diff * x[i] + boundaries[0][i] @TO@
+      Assignment:res[i]=diff * x[i] '
+    - '---UPD Assignment@@res[i]=diff * x[i] + boundaries[0][i] @TO@ res[i]=diff *
+      x[i] '
+    - '------MOV InfixExpression@@diff * x[i] @TO@ Assignment@@res[i]=diff * x[i]
+      + boundaries[0][i] '
+    - '------DEL InfixExpression@@diff * x[i] + boundaries[0][i] '
+    - '---------DEL Operator@@+ '
+    - '---------DEL ArrayAccess@@boundaries[0][i] '
+    - '------------DEL ArrayAccess@@boundaries[0] '
+    - '---------------DEL SimpleName@@boundaries '
+    - '---------------DEL NumberLiteral@@0 '
+    - '------------DEL SimpleName@@i '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double[] bLoEnc=encode(boundaries[0]);
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:isFeasible, @@Argus:double[]+x+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double[] bLoEnc=encode(boundaries[0]); '
+    - '---INS ArrayType@@double[] @TO@ VariableDeclarationStatement@@final double[]
+      bLoEnc=encode(boundaries[0]); '
+    - '------INS PrimitiveType@@double @TO@ ArrayType@@double[] '
+    - '---INS VariableDeclarationFragment@@bLoEnc=encode(boundaries[0]) @TO@ VariableDeclarationStatement@@final
+      double[] bLoEnc=encode(boundaries[0]); '
+    - '------INS SimpleName@@bLoEnc @TO@ VariableDeclarationFragment@@bLoEnc=encode(boundaries[0]) '
+    - '------INS MethodInvocation@@encode(boundaries[0]) @TO@ VariableDeclarationFragment@@bLoEnc=encode(boundaries[0]) '
+    - '---------INS SimpleName@@MethodName:encode:[boundaries[0]] @TO@ MethodInvocation@@encode(boundaries[0]) '
+    - '------------INS ArrayAccess@@boundaries[0] @TO@ SimpleName@@MethodName:encode:[boundaries[0]] '
+    - '---------------INS SimpleName@@boundaries @TO@ ArrayAccess@@boundaries[0] '
+    - '---------------INS NumberLiteral@@0 @TO@ ArrayAccess@@boundaries[0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double[] bHiEnc=encode(boundaries[1]);
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:isFeasible, @@Argus:double[]+x+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double[] bHiEnc=encode(boundaries[1]); '
+    - '---INS ArrayType@@double[] @TO@ VariableDeclarationStatement@@final double[]
+      bHiEnc=encode(boundaries[1]); '
+    - '------INS PrimitiveType@@double @TO@ ArrayType@@double[] '
+    - '---INS VariableDeclarationFragment@@bHiEnc=encode(boundaries[1]) @TO@ VariableDeclarationStatement@@final
+      double[] bHiEnc=encode(boundaries[1]); '
+    - '------INS SimpleName@@bHiEnc @TO@ VariableDeclarationFragment@@bHiEnc=encode(boundaries[1]) '
+    - '------INS MethodInvocation@@encode(boundaries[1]) @TO@ VariableDeclarationFragment@@bHiEnc=encode(boundaries[1]) '
+    - '---------INS SimpleName@@MethodName:encode:[boundaries[1]] @TO@ MethodInvocation@@encode(boundaries[1]) '
+    - '------------INS ArrayAccess@@boundaries[1] @TO@ SimpleName@@MethodName:encode:[boundaries[1]] '
+    - '---------------INS SimpleName@@boundaries @TO@ ArrayAccess@@boundaries[1] '
+    - '---------------INS NumberLiteral@@1 @TO@ ArrayAccess@@boundaries[1] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:x[i] < 0 @TO@ InfixExpression:x[i] < bLoEnc[i] '
+    - '---UPD InfixExpression@@x[i] < 0 @TO@ x[i] < bLoEnc[i] '
+    - '------DEL NumberLiteral@@0 '
+    - '------INS ArrayAccess@@bLoEnc[i] @TO@ InfixExpression@@x[i] < 0 '
+    - '---------INS SimpleName@@bLoEnc @TO@ ArrayAccess@@bLoEnc[i] '
+    - '---------INS SimpleName@@i @TO@ ArrayAccess@@bLoEnc[i] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:x[i] > 1.0 @TO@ InfixExpression:x[i] > bHiEnc[i] '
+    - '---UPD InfixExpression@@x[i] > 1.0 @TO@ x[i] > bHiEnc[i] '
+    - '------DEL NumberLiteral@@1.0 '
+    - '------INS ArrayAccess@@bHiEnc[i] @TO@ InfixExpression@@x[i] > 1.0 '
+    - '---------INS SimpleName@@bHiEnc @TO@ ArrayAccess@@bHiEnc[i] '
+    - '---------INS SimpleName@@i @TO@ ArrayAccess@@bHiEnc[i] '
+  repair_actions_cnt: 6
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/direct/CMAESOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:res[i]=x[i] / diff @TO@ ForStatement@@[int
+      i=0];i < x.length; [i++] '
+    - '---INS Assignment@@res[i]=x[i] / diff @TO@ ExpressionStatement@@Assignment:res[i]=x[i]
+      / diff '
+    - '------INS ArrayAccess@@res[i] @TO@ Assignment@@res[i]=x[i] / diff '
+    - '---------INS SimpleName@@res @TO@ ArrayAccess@@res[i] '
+    - '---------INS SimpleName@@i @TO@ ArrayAccess@@res[i] '
+    - '------INS Operator@@= @TO@ Assignment@@res[i]=x[i] / diff '
+    - '------INS InfixExpression@@x[i] / diff @TO@ Assignment@@res[i]=x[i] / diff '
+    - '---------INS ArrayAccess@@x[i] @TO@ InfixExpression@@x[i] / diff '
+    - '------------INS SimpleName@@x @TO@ ArrayAccess@@x[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@x[i] '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@x[i] / diff '
+    - '---------INS SimpleName@@diff @TO@ InfixExpression@@x[i] / diff '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:res[i]=diff * x[i] @TO@ ForStatement@@[int
+      i=0];i < x.length; [i++] '
+    - '---INS Assignment@@res[i]=diff * x[i] @TO@ ExpressionStatement@@Assignment:res[i]=diff
+      * x[i] '
+    - '------INS ArrayAccess@@res[i] @TO@ Assignment@@res[i]=diff * x[i] '
+    - '---------INS SimpleName@@res @TO@ ArrayAccess@@res[i] '
+    - '---------INS SimpleName@@i @TO@ ArrayAccess@@res[i] '
+    - '------INS Operator@@= @TO@ Assignment@@res[i]=diff * x[i] '
+    - '------INS InfixExpression@@diff * x[i] @TO@ Assignment@@res[i]=diff * x[i] '
+    - '---------INS SimpleName@@diff @TO@ InfixExpression@@diff * x[i] '
+    - '---------INS Operator@@* @TO@ InfixExpression@@diff * x[i] '
+    - '---------INS ArrayAccess@@x[i] @TO@ InfixExpression@@diff * x[i] '
+    - '------------INS SimpleName@@x @TO@ ArrayAccess@@x[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@x[i] '
+  repair_actions_cnt: 2

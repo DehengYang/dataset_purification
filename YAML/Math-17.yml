@@ -1,0 +1,128 @@
+1 bug_id: Math-17
+2 src folder:
+  name of src folder: java
+  number of files: 669
+  number of java files: 668
+  number of src classes: 879
+  number of test classes: 330
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.dfp.DfpTest#testMultiply
+  failing tests:
+  - org.apache.commons.math3.dfp.DfpTest
+  number of all test cases: 4218
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.148
+  purification via delta debugging: 131.024
+  repair actions extraction: 2.968
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.dfp.DfpTest#testMultiply: 718
+  fixed:
+    org.apache.commons.math3.dfp.DfpTest#testMultiply: 716
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 0
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_17/src/main/java/org/apache/commons/math3/dfp/Dfp.java\t\
+    2020-10-21 05:27:46.355271008 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_17/purify/patch/org/apache/commons/math3/dfp/Dfp.java\t\
+    2020-10-21 05:27:46.351270893 -0400\n@@ -1600,7 +1600,11 @@\n      * @return product\
+    \ of this and x\n      */\n     public Dfp multiply(final int x) {\n+        if\
+    \ (x >= 0 && x < RADIX) {\n             return multiplyFast(x);\n+        } else\
+    \ {\n+            return multiply(newInstance(x));\n+        }\n     }\n \n  \
+    \   /** Multiply this by a single digit 0&lt;=x&lt;radix."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_17/src/main/java/org/apache/commons/math3/dfp/Dfp.java\t\
+    2020-10-21 05:30:17.111631799 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_17/purify/purified/org/apache/commons/math3/dfp/Dfp.java\t\
+    2020-10-21 05:30:17.111631799 -0400\n@@ -1600,7 +1600,11 @@\n      * @return product\
+    \ of this and x\n      */\n     public Dfp multiply(final int x) {\n+        if\
+    \ (x >= 0 && x < RADIX) {\n             return multiplyFast(x);\n+        } else\
+    \ {\n+            return multiply(newInstance(x));\n+        }\n     }\n \n  \
+    \   /** Multiply this by a single digit 0&lt;=x&lt;radix."
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/dfp/Dfp:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x >= 0 && x < RADIX @TO@ MethodDeclaration@@public,
+      @@Dfp, MethodName:multiply, @@Argus:int+x+ '
+    - '---INS InfixExpression@@x >= 0 && x < RADIX @TO@ IfStatement@@InfixExpression:x
+      >= 0 && x < RADIX '
+    - '------INS InfixExpression@@x >= 0 @TO@ InfixExpression@@x >= 0 && x < RADIX '
+    - '---------INS SimpleName@@x @TO@ InfixExpression@@x >= 0 '
+    - '---------INS Operator@@>= @TO@ InfixExpression@@x >= 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@x >= 0 '
+    - '------INS Operator@@&& @TO@ InfixExpression@@x >= 0 && x < RADIX '
+    - '------INS InfixExpression@@x < RADIX @TO@ InfixExpression@@x >= 0 && x < RADIX '
+    - '---------INS SimpleName@@x @TO@ InfixExpression@@x < RADIX '
+    - '---------INS Operator@@< @TO@ InfixExpression@@x < RADIX '
+    - '---------INS SimpleName@@RADIX @TO@ InfixExpression@@x < RADIX '
+    - '---MOV ReturnStatement@@MethodInvocation:multiplyFast(x) @TO@ IfStatement@@InfixExpression:x
+      >= 0 && x < RADIX '
+    - '---INS ReturnStatement@@MethodInvocation:multiply(newInstance(x)) @TO@ IfStatement@@InfixExpression:x
+      >= 0 && x < RADIX '
+    - '------INS MethodInvocation@@multiply(newInstance(x)) @TO@ ReturnStatement@@MethodInvocation:multiply(newInstance(x)) '
+    - '---------INS SimpleName@@MethodName:multiply:[newInstance(x)] @TO@ MethodInvocation@@multiply(newInstance(x)) '
+    - '------------INS MethodInvocation@@newInstance(x) @TO@ SimpleName@@MethodName:multiply:[newInstance(x)] '
+    - '---------------INS SimpleName@@MethodName:newInstance:[x] @TO@ MethodInvocation@@newInstance(x) '
+    - '------------------INS SimpleName@@x @TO@ SimpleName@@MethodName:newInstance:[x] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/dfp/Dfp:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x >= 0 && x < RADIX @TO@ MethodDeclaration@@public,
+      @@Dfp, MethodName:multiply, @@Argus:int+x+ '
+    - '---INS InfixExpression@@x >= 0 && x < RADIX @TO@ IfStatement@@InfixExpression:x
+      >= 0 && x < RADIX '
+    - '------INS InfixExpression@@x >= 0 @TO@ InfixExpression@@x >= 0 && x < RADIX '
+    - '---------INS SimpleName@@x @TO@ InfixExpression@@x >= 0 '
+    - '---------INS Operator@@>= @TO@ InfixExpression@@x >= 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@x >= 0 '
+    - '------INS Operator@@&& @TO@ InfixExpression@@x >= 0 && x < RADIX '
+    - '------INS InfixExpression@@x < RADIX @TO@ InfixExpression@@x >= 0 && x < RADIX '
+    - '---------INS SimpleName@@x @TO@ InfixExpression@@x < RADIX '
+    - '---------INS Operator@@< @TO@ InfixExpression@@x < RADIX '
+    - '---------INS SimpleName@@RADIX @TO@ InfixExpression@@x < RADIX '
+    - '---MOV ReturnStatement@@MethodInvocation:multiplyFast(x) @TO@ IfStatement@@InfixExpression:x
+      >= 0 && x < RADIX '
+    - '---INS ReturnStatement@@MethodInvocation:multiply(newInstance(x)) @TO@ IfStatement@@InfixExpression:x
+      >= 0 && x < RADIX '
+    - '------INS MethodInvocation@@multiply(newInstance(x)) @TO@ ReturnStatement@@MethodInvocation:multiply(newInstance(x)) '
+    - '---------INS SimpleName@@MethodName:multiply:[newInstance(x)] @TO@ MethodInvocation@@multiply(newInstance(x)) '
+    - '------------INS MethodInvocation@@newInstance(x) @TO@ SimpleName@@MethodName:multiply:[newInstance(x)] '
+    - '---------------INS SimpleName@@MethodName:newInstance:[x] @TO@ MethodInvocation@@newInstance(x) '
+    - '------------------INS SimpleName@@x @TO@ SimpleName@@MethodName:newInstance:[x] '
+  repair_actions_cnt: 1

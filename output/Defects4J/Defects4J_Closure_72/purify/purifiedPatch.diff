@@ -1,0 +1,22 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_72/src/com/google/javascript/jscomp/RenameLabels.java	2020-10-23 08:51:31.800138290 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_72/purify/purified/com/google/javascript/jscomp/RenameLabels.java	2020-10-23 08:51:31.792138058 -0400
+@@ -212,7 +212,7 @@
+       String name = nameNode.getString();
+       LabelInfo li = getLabelInfo(name);
+       // This is a label...
+-      if (li.referenced) {
++      if (li.referenced || !removeUnused) {
+         String newName = getNameForId(li.id);
+         if (!name.equals(newName)) {
+           // ... and it is used, give it the short name.
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_72/src/com/google/javascript/jscomp/FunctionToBlockMutator.java	2020-10-23 08:51:31.804138405 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_72/purify/purified/com/google/javascript/jscomp/FunctionToBlockMutator.java	2020-10-23 08:51:31.804138405 -0400
+@@ -149,6 +149,8 @@
+                 "inline_",
+                 isCallInLoop)));
+     // Make label names unique to this instance.
++    new RenameLabels(compiler, new LabelNameSupplier(idSupplier), false)
++        .process(null, fnNode);
+   }
+ 
+   static class LabelNameSupplier implements Supplier<String> {

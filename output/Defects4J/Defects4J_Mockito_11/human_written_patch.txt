@@ -1,0 +1,25 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_11/src/org/mockito/internal/creation/DelegatingMethod.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_11/fixed-version/src/org/mockito/internal/creation/DelegatingMethod.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_11/src/org/mockito/internal/creation/DelegatingMethod.java	2020-03-01 00:36:37.247248175 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_11/fixed-version/src/org/mockito/internal/creation/DelegatingMethod.java	2020-03-01 00:36:40.911420827 -0800
+@@ -52,11 +52,19 @@
+      */
+     @Override
+     public boolean equals(Object o) {
++        if (this == o) {
++            return true;
++        }
++        if (o instanceof DelegatingMethod) {
++            DelegatingMethod that = (DelegatingMethod) o;
++            return method.equals(that.method);
++        } else {
+             return method.equals(o);
++        }
+     }
+ 
+     @Override
+     public int hashCode() {
+-        return 1;
++        return method.hashCode();
+     }
+ }
+\ No newline at end of file

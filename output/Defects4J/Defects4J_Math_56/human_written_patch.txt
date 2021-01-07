@@ -1,0 +1,18 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_56/src/main/java/org/apache/commons/math/util/MultidimensionalCounter.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_56/fixed-version/src/main/java/org/apache/commons/math/util/MultidimensionalCounter.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_56/src/main/java/org/apache/commons/math/util/MultidimensionalCounter.java	2020-03-01 00:19:38.771258253 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_56/fixed-version/src/main/java/org/apache/commons/math/util/MultidimensionalCounter.java	2020-03-01 00:19:41.383381334 -0800
+@@ -234,13 +234,7 @@
+             indices[i] = idx;
+         }
+ 
+-        int idx = 1;
+-        while (count < index) {
+-            count += idx;
+-            ++idx;
+-        }
+-        --idx;
+-        indices[last] = idx;
++        indices[last] = index - count;
+ 
+         return indices;
+     }

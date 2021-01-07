@@ -1,0 +1,177 @@
+1 bug_id: Math-52
+2 src folder:
+  name of src folder: java
+  number of files: 612
+  number of java files: 565
+  number of src classes: 741
+  number of test classes: 273
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.geometry.euclidean.threed.RotationTest#testIssue639
+  failing tests:
+  - org.apache.commons.math.geometry.euclidean.threed.RotationTest
+  number of all test cases: 2919
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.87
+  purification via delta debugging: 155.912
+  repair actions extraction: 1.667
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.geometry.euclidean.threed.RotationTest#testIssue639: 412
+  fixed:
+    org.apache.commons.math.geometry.euclidean.threed.RotationTest#testIssue639: 424
+6 reduced lines:
+  by all: 4
+  by coverage: 0
+  by delta debugging: 4
+  covAdd: 4
+  covDel: 3
+  cov_patch_lines: 7
+  delta_patch_lines: 3
+  oriAdd: 4
+  oriDel: 3
+  ori_patch_lines: 7
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  cov: 3
+  original: 3
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 0
+  passed: 1
+  total: 7
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_52/src/main/java/org/apache/commons/math/geometry/euclidean/threed/Rotation.java\t\
+    2020-10-21 12:08:25.582838325 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_52/purify/patch/org/apache/commons/math/geometry/euclidean/threed/Rotation.java\t\
+    2020-10-21 12:08:25.582838325 -0400\n@@ -341,7 +341,8 @@\n   Vector3D k     =\
+    \ v1Su1.crossProduct(v2Su2);\n   Vector3D u3    = u1.crossProduct(u2);\n   double\
+    \ c       = k.dotProduct(u3);\n-  if (c == 0) {\n+  final double inPlaneThreshold\
+    \ = 0.001;\n+  if (c <= inPlaneThreshold * k.getNorm() * u3.getNorm()) {\n   \
+    \  // the (q1, q2, q3) vector is close to the (u1, u2) plane\n     // we try other\
+    \ vectors\n     Vector3D v3 = Vector3D.crossProduct(v1, v2);\n@@ -350,13 +351,13\
+    \ @@\n     Vector3D u2Prime = u1.crossProduct(u3);\n     c = k.dotProduct(u2Prime);\n\
+    \ \n-    if (c == 0) {\n+    if (c <= inPlaneThreshold * k.getNorm() * u2Prime.getNorm())\
+    \ {\n       // the (q1, q2, q3) vector is also close to the (u1, u3) plane,\n\
+    \       // it is almost aligned with u1: we try (u2, u3) and (v2, v3)\n      \
+    \ k = v2Su2.crossProduct(v3Su3);;\n       c = k.dotProduct(u2.crossProduct(u3));;\n\
+    \ \n-      if (c == 0) {\n+      if (c <= 0) {\n         // the (q1, q2, q3) vector\
+    \ is aligned with everything\n         // this is really the identity rotation\n\
+    \         q0 = 1.0;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_52/src/main/java/org/apache/commons/math/geometry/euclidean/threed/Rotation.java\t\
+    2020-10-21 12:11:22.779962693 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_52/purify/purified/org/apache/commons/math/geometry/euclidean/threed/Rotation.java\t\
+    2020-10-21 12:11:22.775962578 -0400\n@@ -341,7 +341,8 @@\n   Vector3D k     =\
+    \ v1Su1.crossProduct(v2Su2);\n   Vector3D u3    = u1.crossProduct(u2);\n   double\
+    \ c       = k.dotProduct(u3);\n-  if (c == 0) {\n+  final double inPlaneThreshold\
+    \ = 0.001;\n+  if (c <= inPlaneThreshold * k.getNorm() * u3.getNorm()) {\n   \
+    \  // the (q1, q2, q3) vector is close to the (u1, u2) plane\n     // we try other\
+    \ vectors\n     Vector3D v3 = Vector3D.crossProduct(v1, v2);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/geometry/euclidean/threed/Rotation:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double inPlaneThreshold=0.001; @TO@
+      MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:Rotation, @@Argus:Vector3D+u1+Vector3D+u2+Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double inPlaneThreshold=0.001; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      inPlaneThreshold=0.001; '
+    - '---INS VariableDeclarationFragment@@inPlaneThreshold=0.001 @TO@ VariableDeclarationStatement@@final
+      double inPlaneThreshold=0.001; '
+    - '------INS SimpleName@@inPlaneThreshold @TO@ VariableDeclarationFragment@@inPlaneThreshold=0.001 '
+    - '------INS NumberLiteral@@0.001 @TO@ VariableDeclarationFragment@@inPlaneThreshold=0.001 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:c == 0 @TO@ InfixExpression:c <= inPlaneThreshold
+      * k.getNorm() * u3.getNorm() '
+    - '---UPD InfixExpression@@c == 0 @TO@ c <= inPlaneThreshold * k.getNorm() * u3.getNorm() '
+    - '------UPD Operator@@== @TO@ <= '
+    - '------DEL NumberLiteral@@0 '
+    - '------INS InfixExpression@@inPlaneThreshold * k.getNorm() * u3.getNorm() @TO@
+      InfixExpression@@c == 0 '
+    - '---------INS SimpleName@@inPlaneThreshold @TO@ InfixExpression@@inPlaneThreshold
+      * k.getNorm() * u3.getNorm() '
+    - '---------INS Operator@@* @TO@ InfixExpression@@inPlaneThreshold * k.getNorm()
+      * u3.getNorm() '
+    - '---------INS MethodInvocation@@k.getNorm() @TO@ InfixExpression@@inPlaneThreshold
+      * k.getNorm() * u3.getNorm() '
+    - '------------INS SimpleName@@Name:k @TO@ MethodInvocation@@k.getNorm() '
+    - '------------INS SimpleName@@MethodName:getNorm:[] @TO@ MethodInvocation@@k.getNorm() '
+    - '---------INS MethodInvocation@@u3.getNorm() @TO@ InfixExpression@@inPlaneThreshold
+      * k.getNorm() * u3.getNorm() '
+    - '------------INS SimpleName@@Name:u3 @TO@ MethodInvocation@@u3.getNorm() '
+    - '------------INS SimpleName@@MethodName:getNorm:[] @TO@ MethodInvocation@@u3.getNorm() '
+    - '---UPD IfStatement@@InfixExpression:c == 0 @TO@ InfixExpression:c <= inPlaneThreshold
+      * k.getNorm() * u2Prime.getNorm() '
+    - '------UPD InfixExpression@@c == 0 @TO@ c <= inPlaneThreshold * k.getNorm()
+      * u2Prime.getNorm() '
+    - '---------UPD Operator@@== @TO@ <= '
+    - '---------DEL NumberLiteral@@0 '
+    - '---------INS InfixExpression@@inPlaneThreshold * k.getNorm() * u2Prime.getNorm()
+      @TO@ InfixExpression@@c == 0 '
+    - '------------INS SimpleName@@inPlaneThreshold @TO@ InfixExpression@@inPlaneThreshold
+      * k.getNorm() * u2Prime.getNorm() '
+    - '------------INS Operator@@* @TO@ InfixExpression@@inPlaneThreshold * k.getNorm()
+      * u2Prime.getNorm() '
+    - '------------INS MethodInvocation@@k.getNorm() @TO@ InfixExpression@@inPlaneThreshold
+      * k.getNorm() * u2Prime.getNorm() '
+    - '---------------INS SimpleName@@Name:k @TO@ MethodInvocation@@k.getNorm() '
+    - '---------------INS SimpleName@@MethodName:getNorm:[] @TO@ MethodInvocation@@k.getNorm() '
+    - '------------INS MethodInvocation@@u2Prime.getNorm() @TO@ InfixExpression@@inPlaneThreshold
+      * k.getNorm() * u2Prime.getNorm() '
+    - '---------------INS SimpleName@@Name:u2Prime @TO@ MethodInvocation@@u2Prime.getNorm() '
+    - '---------------INS SimpleName@@MethodName:getNorm:[] @TO@ MethodInvocation@@u2Prime.getNorm() '
+    - '------UPD IfStatement@@InfixExpression:c == 0 @TO@ InfixExpression:c <= 0 '
+    - '---------UPD InfixExpression@@c == 0 @TO@ c <= 0 '
+    - '------------UPD Operator@@== @TO@ <= '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/geometry/euclidean/threed/Rotation:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double inPlaneThreshold=0.001; @TO@
+      MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:Rotation, @@Argus:Vector3D+u1+Vector3D+u2+Vector3D+v1+Vector3D+v2+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double inPlaneThreshold=0.001; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      inPlaneThreshold=0.001; '
+    - '---INS VariableDeclarationFragment@@inPlaneThreshold=0.001 @TO@ VariableDeclarationStatement@@final
+      double inPlaneThreshold=0.001; '
+    - '------INS SimpleName@@inPlaneThreshold @TO@ VariableDeclarationFragment@@inPlaneThreshold=0.001 '
+    - '------INS NumberLiteral@@0.001 @TO@ VariableDeclarationFragment@@inPlaneThreshold=0.001 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:c == 0 @TO@ InfixExpression:c <= inPlaneThreshold
+      * k.getNorm() * u3.getNorm() '
+    - '---UPD InfixExpression@@c == 0 @TO@ c <= inPlaneThreshold * k.getNorm() * u3.getNorm() '
+    - '------UPD Operator@@== @TO@ <= '
+    - '------DEL NumberLiteral@@0 '
+    - '------INS InfixExpression@@inPlaneThreshold * k.getNorm() * u3.getNorm() @TO@
+      InfixExpression@@c == 0 '
+    - '---------INS SimpleName@@inPlaneThreshold @TO@ InfixExpression@@inPlaneThreshold
+      * k.getNorm() * u3.getNorm() '
+    - '---------INS Operator@@* @TO@ InfixExpression@@inPlaneThreshold * k.getNorm()
+      * u3.getNorm() '
+    - '---------INS MethodInvocation@@k.getNorm() @TO@ InfixExpression@@inPlaneThreshold
+      * k.getNorm() * u3.getNorm() '
+    - '------------INS SimpleName@@Name:k @TO@ MethodInvocation@@k.getNorm() '
+    - '------------INS SimpleName@@MethodName:getNorm:[] @TO@ MethodInvocation@@k.getNorm() '
+    - '---------INS MethodInvocation@@u3.getNorm() @TO@ InfixExpression@@inPlaneThreshold
+      * k.getNorm() * u3.getNorm() '
+    - '------------INS SimpleName@@Name:u3 @TO@ MethodInvocation@@u3.getNorm() '
+    - '------------INS SimpleName@@MethodName:getNorm:[] @TO@ MethodInvocation@@u3.getNorm() '
+  repair_actions_cnt: 2

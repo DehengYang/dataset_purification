@@ -1,0 +1,117 @@
+1 bug_id: Closure-1
+2 src folder:
+  name of src folder: src
+  number of files: 428
+  number of java files: 412
+  number of src classes: 1375
+  number of test classes: 225
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.RemoveUnusedVarsTest#testIssue168b
+  - com.google.javascript.jscomp.CommandLineRunnerTest#testDebugFlag1
+  - com.google.javascript.jscomp.RemoveUnusedVarsTest#testRemoveGlobal1
+  - com.google.javascript.jscomp.RemoveUnusedVarsTest#testRemoveGlobal2
+  - com.google.javascript.jscomp.RemoveUnusedVarsTest#testRemoveGlobal3
+  - com.google.javascript.jscomp.CommandLineRunnerTest#testForwardDeclareDroppedTypes
+  - com.google.javascript.jscomp.IntegrationTest#testIssue787
+  - com.google.javascript.jscomp.CommandLineRunnerTest#testSimpleModeLeavesUnusedParams
+  failing tests:
+  - com.google.javascript.jscomp.RemoveUnusedVarsTest
+  - com.google.javascript.jscomp.CommandLineRunnerTest
+  - com.google.javascript.jscomp.IntegrationTest
+  number of all test cases: 7911
+  number of failing test cases: 8
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.629
+  purification via delta debugging: 311.996
+  repair actions extraction: 2.398
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testDebugFlag1: 7199
+    com.google.javascript.jscomp.CommandLineRunnerTest#testForwardDeclareDroppedTypes: 9907
+    com.google.javascript.jscomp.CommandLineRunnerTest#testSimpleModeLeavesUnusedParams: 7337
+    com.google.javascript.jscomp.IntegrationTest#testIssue787: 8251
+    com.google.javascript.jscomp.RemoveUnusedVarsTest#testIssue168b: 3345
+    com.google.javascript.jscomp.RemoveUnusedVarsTest#testRemoveGlobal1: 3319
+    com.google.javascript.jscomp.RemoveUnusedVarsTest#testRemoveGlobal2: 3299
+    com.google.javascript.jscomp.RemoveUnusedVarsTest#testRemoveGlobal3: 3435
+  fixed:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testDebugFlag1: 7317
+    com.google.javascript.jscomp.CommandLineRunnerTest#testForwardDeclareDroppedTypes: 10111
+    com.google.javascript.jscomp.CommandLineRunnerTest#testSimpleModeLeavesUnusedParams: 7451
+    com.google.javascript.jscomp.IntegrationTest#testIssue787: 8239
+    com.google.javascript.jscomp.RemoveUnusedVarsTest#testIssue168b: 3243
+    com.google.javascript.jscomp.RemoveUnusedVarsTest#testRemoveGlobal1: 3224
+    com.google.javascript.jscomp.RemoveUnusedVarsTest#testRemoveGlobal2: 3205
+    com.google.javascript.jscomp.RemoveUnusedVarsTest#testRemoveGlobal3: 3339
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_1/src/com/google/javascript/jscomp/RemoveUnusedVars.java\t\
+    2020-10-22 08:55:02.009207944 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_1/purify/patch/com/google/javascript/jscomp/RemoveUnusedVars.java\t\
+    2020-10-22 08:55:02.005207828 -0400\n@@ -376,6 +376,9 @@\n     // is removing\
+    \ globals, then it's OK to remove unused function args.\n     //\n     // See\
+    \ http://code.google.com/p/closure-compiler/issues/detail?id=253\n+    if (!removeGlobals)\
+    \ {\n+      return;\n+    }\n \n     Node function = fnScope.getRootNode();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_1/src/com/google/javascript/jscomp/RemoveUnusedVars.java\t\
+    2020-10-22 09:00:56.715470346 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_1/purify/purified/com/google/javascript/jscomp/RemoveUnusedVars.java\t\
+    2020-10-22 09:00:56.707470114 -0400\n@@ -376,6 +376,9 @@\n     // is removing\
+    \ globals, then it's OK to remove unused function args.\n     //\n     // See\
+    \ http://code.google.com/p/closure-compiler/issues/detail?id=253\n+    if (!removeGlobals)\
+    \ {\n+      return;\n+    }\n \n     Node function = fnScope.getRootNode();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/RemoveUnusedVars:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!removeGlobals @TO@ MethodDeclaration@@private,
+      @@void, MethodName:removeUnreferencedFunctionArgs, @@Argus:Scope+fnScope+ '
+    - '---INS PrefixExpression@@!removeGlobals @TO@ IfStatement@@PrefixExpression:!removeGlobals '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!removeGlobals '
+    - '------INS SimpleName@@removeGlobals @TO@ PrefixExpression@@!removeGlobals '
+    - '---INS ReturnStatement@@ @TO@ IfStatement@@PrefixExpression:!removeGlobals '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/RemoveUnusedVars:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!removeGlobals @TO@ MethodDeclaration@@private,
+      @@void, MethodName:removeUnreferencedFunctionArgs, @@Argus:Scope+fnScope+ '
+    - '---INS PrefixExpression@@!removeGlobals @TO@ IfStatement@@PrefixExpression:!removeGlobals '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!removeGlobals '
+    - '------INS SimpleName@@removeGlobals @TO@ PrefixExpression@@!removeGlobals '
+    - '---INS ReturnStatement@@ @TO@ IfStatement@@PrefixExpression:!removeGlobals '
+  files_cnt: '1'
+  repair_actions_cnt: 1

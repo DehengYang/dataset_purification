@@ -1,0 +1,116 @@
+1 bug_id: Closure-107
+2 src folder:
+  name of src folder: src
+  number of files: 559
+  number of java files: 543
+  number of src classes: 1566
+  number of test classes: 239
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CommandLineRunnerTest#testGetMsgWiringNoWarnings
+  failing tests:
+  - com.google.javascript.jscomp.CommandLineRunnerTest
+  number of all test cases: 8443
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.001
+  purification via delta debugging: 202.373
+  repair actions extraction: 1.714
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testGetMsgWiringNoWarnings: 5242
+  fixed:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testGetMsgWiringNoWarnings: 8556
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 0
+  cov_patch_lines: 1
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 0
+  ori_patch_lines: 1
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 0
+  total: 0
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_107/src/com/google/javascript/jscomp/CommandLineRunner.java\t\
+    2020-10-23 13:26:29.689764844 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_107/purify/patch/com/google/javascript/jscomp/CommandLineRunner.java\t\
+    2020-10-23 13:26:29.689764844 -0400\n@@ -859,6 +859,7 @@\n       // so we might\
+    \ as well inline it. But shut off the i18n warnings,\n       // because the user\
+    \ didn't really ask for i18n.\n       options.messageBundle = new EmptyMessageBundle();\n\
+    +      options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS, CheckLevel.OFF);\n\
+    \     }\n \n     return options;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_107/src/com/google/javascript/jscomp/CommandLineRunner.java\t\
+    2020-10-23 13:30:29.156699947 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_107/purify/purified/com/google/javascript/jscomp/CommandLineRunner.java\t\
+    2020-10-23 13:30:29.156699947 -0400\n@@ -859,6 +859,7 @@\n       // so we might\
+    \ as well inline it. But shut off the i18n warnings,\n       // because the user\
+    \ didn't really ask for i18n.\n       options.messageBundle = new EmptyMessageBundle();\n\
+    +      options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS, CheckLevel.OFF);\n\
+    \     }\n \n     return options;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CommandLineRunner:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS,CheckLevel.OFF)
+      @TO@ IfStatement@@InfixExpression:CompilationLevel.ADVANCED_OPTIMIZATIONS ==
+      level '
+    - '---INS MethodInvocation@@options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS,CheckLevel.OFF)
+      @TO@ ExpressionStatement@@MethodInvocation:options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS,CheckLevel.OFF) '
+    - '------INS SimpleName@@Name:options @TO@ MethodInvocation@@options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS,CheckLevel.OFF) '
+    - '------INS SimpleName@@MethodName:setWarningLevel:[JsMessageVisitor.MSG_CONVENTIONS,
+      CheckLevel.OFF] @TO@ MethodInvocation@@options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS,CheckLevel.OFF) '
+    - '---------INS QualifiedName@@JsMessageVisitor.MSG_CONVENTIONS @TO@ SimpleName@@MethodName:setWarningLevel:[JsMessageVisitor.MSG_CONVENTIONS,
+      CheckLevel.OFF] '
+    - '------------INS SimpleName@@JsMessageVisitor @TO@ QualifiedName@@JsMessageVisitor.MSG_CONVENTIONS '
+    - '------------INS SimpleName@@MSG_CONVENTIONS @TO@ QualifiedName@@JsMessageVisitor.MSG_CONVENTIONS '
+    - '---------INS QualifiedName@@CheckLevel.OFF @TO@ SimpleName@@MethodName:setWarningLevel:[JsMessageVisitor.MSG_CONVENTIONS,
+      CheckLevel.OFF] '
+    - '------------INS SimpleName@@CheckLevel @TO@ QualifiedName@@CheckLevel.OFF '
+    - '------------INS SimpleName@@OFF @TO@ QualifiedName@@CheckLevel.OFF '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CommandLineRunner:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS,CheckLevel.OFF)
+      @TO@ IfStatement@@InfixExpression:CompilationLevel.ADVANCED_OPTIMIZATIONS ==
+      level '
+    - '---INS MethodInvocation@@options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS,CheckLevel.OFF)
+      @TO@ ExpressionStatement@@MethodInvocation:options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS,CheckLevel.OFF) '
+    - '------INS SimpleName@@Name:options @TO@ MethodInvocation@@options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS,CheckLevel.OFF) '
+    - '------INS SimpleName@@MethodName:setWarningLevel:[JsMessageVisitor.MSG_CONVENTIONS,
+      CheckLevel.OFF] @TO@ MethodInvocation@@options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS,CheckLevel.OFF) '
+    - '---------INS QualifiedName@@JsMessageVisitor.MSG_CONVENTIONS @TO@ SimpleName@@MethodName:setWarningLevel:[JsMessageVisitor.MSG_CONVENTIONS,
+      CheckLevel.OFF] '
+    - '------------INS SimpleName@@JsMessageVisitor @TO@ QualifiedName@@JsMessageVisitor.MSG_CONVENTIONS '
+    - '------------INS SimpleName@@MSG_CONVENTIONS @TO@ QualifiedName@@JsMessageVisitor.MSG_CONVENTIONS '
+    - '---------INS QualifiedName@@CheckLevel.OFF @TO@ SimpleName@@MethodName:setWarningLevel:[JsMessageVisitor.MSG_CONVENTIONS,
+      CheckLevel.OFF] '
+    - '------------INS SimpleName@@CheckLevel @TO@ QualifiedName@@CheckLevel.OFF '
+    - '------------INS SimpleName@@OFF @TO@ QualifiedName@@CheckLevel.OFF '
+  files_cnt: '1'
+  repair_actions_cnt: 1

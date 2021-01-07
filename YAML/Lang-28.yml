@@ -1,0 +1,158 @@
+1 bug_id: Lang-28
+2 src folder:
+  name of src folder: java
+  number of files: 99
+  number of java files: 88
+  number of src classes: 135
+  number of test classes: 89
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest#testSupplementaryUnescaping
+  failing tests:
+  - org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest
+  number of all test cases: 1763
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 8.0
+  purification via coverage: 0.312
+  purification via delta debugging: 80.205
+  repair actions extraction: 0.641
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest#testSupplementaryUnescaping: 31
+  fixed:
+    org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest#testSupplementaryUnescaping: 35
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 6
+  covDel: 0
+  cov_patch_lines: 6
+  delta_patch_lines: 6
+  oriAdd: 6
+  oriDel: 0
+  ori_patch_lines: 6
+  purAdd: 6
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 8
+  failFail: 4
+  passed: 0
+  total: 12
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_28/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java\t\
+    2020-10-21 01:16:20.947601051 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_28/purify/patch/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java\t\
+    2020-10-21 01:16:20.947601051 -0400\n@@ -60,7 +60,13 @@\n                 return\
+    \ 0;\n             }\n \n+            if(entityValue > 0xFFFF) {\n+          \
+    \      char[] chrs = Character.toChars(entityValue);\n+                out.write(chrs[0]);\n\
+    +                out.write(chrs[1]);\n+            } else {\n                \
+    \ out.write(entityValue);\n+            }\n             return 2 + (end - start)\
+    \ + (isHex ? 1 : 0) + 1;\n         }\n         return 0;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_28/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java\t\
+    2020-10-21 01:17:50.834197199 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_28/purify/purified/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java\t\
+    2020-10-21 01:17:50.834197199 -0400\n@@ -60,7 +60,13 @@\n                 return\
+    \ 0;\n             }\n \n+            if(entityValue > 0xFFFF) {\n+          \
+    \      char[] chrs = Character.toChars(entityValue);\n+                out.write(chrs[0]);\n\
+    +                out.write(chrs[1]);\n+            } else {\n                \
+    \ out.write(entityValue);\n+            }\n             return 2 + (end - start)\
+    \ + (isHex ? 1 : 0) + 1;\n         }\n         return 0;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/translate/NumericEntityUnescaper:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:entityValue > 0xFFFF @TO@ IfStatement@@InfixExpression:input.charAt(index)
+      == ''&'' && input.charAt(index + 1) == ''#'' '
+    - '---INS InfixExpression@@entityValue > 0xFFFF @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS SimpleName@@entityValue @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '------INS Operator@@> @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '------INS NumberLiteral@@0xFFFF @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '---MOV ExpressionStatement@@MethodInvocation:out.write(entityValue) @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '---INS VariableDeclarationStatement@@char[] chrs=Character.toChars(entityValue);
+      @TO@ IfStatement@@InfixExpression:entityValue > 0xFFFF '
+    - '------INS ArrayType@@char[] @TO@ VariableDeclarationStatement@@char[] chrs=Character.toChars(entityValue); '
+    - '---------INS PrimitiveType@@char @TO@ ArrayType@@char[] '
+    - '------INS VariableDeclarationFragment@@chrs=Character.toChars(entityValue)
+      @TO@ VariableDeclarationStatement@@char[] chrs=Character.toChars(entityValue); '
+    - '---------INS SimpleName@@chrs @TO@ VariableDeclarationFragment@@chrs=Character.toChars(entityValue) '
+    - '---------INS MethodInvocation@@Character.toChars(entityValue) @TO@ VariableDeclarationFragment@@chrs=Character.toChars(entityValue) '
+    - '------------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.toChars(entityValue) '
+    - '------------INS SimpleName@@MethodName:toChars:[entityValue] @TO@ MethodInvocation@@Character.toChars(entityValue) '
+    - '---------------INS SimpleName@@entityValue @TO@ SimpleName@@MethodName:toChars:[entityValue] '
+    - '---INS ExpressionStatement@@MethodInvocation:out.write(chrs[0]) @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS MethodInvocation@@out.write(chrs[0]) @TO@ ExpressionStatement@@MethodInvocation:out.write(chrs[0]) '
+    - '---------INS SimpleName@@Name:out @TO@ MethodInvocation@@out.write(chrs[0]) '
+    - '---------INS SimpleName@@MethodName:write:[chrs[0]] @TO@ MethodInvocation@@out.write(chrs[0]) '
+    - '------------INS ArrayAccess@@chrs[0] @TO@ SimpleName@@MethodName:write:[chrs[0]] '
+    - '---------------INS SimpleName@@chrs @TO@ ArrayAccess@@chrs[0] '
+    - '---------------INS NumberLiteral@@0 @TO@ ArrayAccess@@chrs[0] '
+    - '---INS ExpressionStatement@@MethodInvocation:out.write(chrs[1]) @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS MethodInvocation@@out.write(chrs[1]) @TO@ ExpressionStatement@@MethodInvocation:out.write(chrs[1]) '
+    - '---------INS SimpleName@@Name:out @TO@ MethodInvocation@@out.write(chrs[1]) '
+    - '---------INS SimpleName@@MethodName:write:[chrs[1]] @TO@ MethodInvocation@@out.write(chrs[1]) '
+    - '------------INS ArrayAccess@@chrs[1] @TO@ SimpleName@@MethodName:write:[chrs[1]] '
+    - '---------------INS SimpleName@@chrs @TO@ ArrayAccess@@chrs[1] '
+    - '---------------INS NumberLiteral@@1 @TO@ ArrayAccess@@chrs[1] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/translate/NumericEntityUnescaper:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:entityValue > 0xFFFF @TO@ IfStatement@@InfixExpression:input.charAt(index)
+      == ''&'' && input.charAt(index + 1) == ''#'' '
+    - '---INS InfixExpression@@entityValue > 0xFFFF @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS SimpleName@@entityValue @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '------INS Operator@@> @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '------INS NumberLiteral@@0xFFFF @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '---MOV ExpressionStatement@@MethodInvocation:out.write(entityValue) @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '---INS VariableDeclarationStatement@@char[] chrs=Character.toChars(entityValue);
+      @TO@ IfStatement@@InfixExpression:entityValue > 0xFFFF '
+    - '------INS ArrayType@@char[] @TO@ VariableDeclarationStatement@@char[] chrs=Character.toChars(entityValue); '
+    - '---------INS PrimitiveType@@char @TO@ ArrayType@@char[] '
+    - '------INS VariableDeclarationFragment@@chrs=Character.toChars(entityValue)
+      @TO@ VariableDeclarationStatement@@char[] chrs=Character.toChars(entityValue); '
+    - '---------INS SimpleName@@chrs @TO@ VariableDeclarationFragment@@chrs=Character.toChars(entityValue) '
+    - '---------INS MethodInvocation@@Character.toChars(entityValue) @TO@ VariableDeclarationFragment@@chrs=Character.toChars(entityValue) '
+    - '------------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.toChars(entityValue) '
+    - '------------INS SimpleName@@MethodName:toChars:[entityValue] @TO@ MethodInvocation@@Character.toChars(entityValue) '
+    - '---------------INS SimpleName@@entityValue @TO@ SimpleName@@MethodName:toChars:[entityValue] '
+    - '---INS ExpressionStatement@@MethodInvocation:out.write(chrs[0]) @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS MethodInvocation@@out.write(chrs[0]) @TO@ ExpressionStatement@@MethodInvocation:out.write(chrs[0]) '
+    - '---------INS SimpleName@@Name:out @TO@ MethodInvocation@@out.write(chrs[0]) '
+    - '---------INS SimpleName@@MethodName:write:[chrs[0]] @TO@ MethodInvocation@@out.write(chrs[0]) '
+    - '------------INS ArrayAccess@@chrs[0] @TO@ SimpleName@@MethodName:write:[chrs[0]] '
+    - '---------------INS SimpleName@@chrs @TO@ ArrayAccess@@chrs[0] '
+    - '---------------INS NumberLiteral@@0 @TO@ ArrayAccess@@chrs[0] '
+    - '---INS ExpressionStatement@@MethodInvocation:out.write(chrs[1]) @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS MethodInvocation@@out.write(chrs[1]) @TO@ ExpressionStatement@@MethodInvocation:out.write(chrs[1]) '
+    - '---------INS SimpleName@@Name:out @TO@ MethodInvocation@@out.write(chrs[1]) '
+    - '---------INS SimpleName@@MethodName:write:[chrs[1]] @TO@ MethodInvocation@@out.write(chrs[1]) '
+    - '------------INS ArrayAccess@@chrs[1] @TO@ SimpleName@@MethodName:write:[chrs[1]] '
+    - '---------------INS SimpleName@@chrs @TO@ ArrayAccess@@chrs[1] '
+    - '---------------INS NumberLiteral@@1 @TO@ ArrayAccess@@chrs[1] '
+  repair_actions_cnt: 1

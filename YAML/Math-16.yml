@@ -1,0 +1,537 @@
+1 bug_id: Math-16
+2 src folder:
+  name of src folder: java
+  number of files: 675
+  number of java files: 674
+  number of src classes: 899
+  number of test classes: 339
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.util.FastMathTest#testMath905LargePositive
+  - org.apache.commons.math3.util.FastMathTest#testMath905LargeNegative
+  failing tests:
+  - org.apache.commons.math3.util.FastMathTest
+  number of all test cases: 4304
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 2.651
+  purification via delta debugging: 582.027
+  repair actions extraction: 3.969
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.util.FastMathTest#testMath905LargeNegative: 703
+    org.apache.commons.math3.util.FastMathTest#testMath905LargePositive: 702
+  fixed:
+    org.apache.commons.math3.util.FastMathTest#testMath905LargeNegative: 712
+    org.apache.commons.math3.util.FastMathTest#testMath905LargePositive: 710
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 21
+  covDel: 2
+  cov_patch_lines: 23
+  delta_patch_lines: 23
+  oriAdd: 21
+  oriDel: 2
+  ori_patch_lines: 23
+  purAdd: 21
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 11
+  original: 11
+  purifiy: 11
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 43
+  failFail: 10
+  passed: 0
+  total: 53
+9 sibling repair actions:
+- 1 3 0.8578158458244112
+- 1 5 1.0
+- 2 4 1.0
+- 3 6 0.915142078629817
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_16/src/main/java/org/apache/commons/math3/util/FastMath.java\t\
+    2020-10-22 05:09:26.889702799 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_16/purify/patch/org/apache/commons/math3/util/FastMath.java\t\
+    2020-10-22 05:09:26.885702683 -0400\n@@ -79,6 +79,7 @@\n  */\n public class FastMath\
+    \ {\n     /** StrictMath.log(Double.MAX_VALUE): {@value} */\n+    private static\
+    \ final double LOG_MAX_VALUE = StrictMath.log(Double.MAX_VALUE);\n \n     /**\
+    \ Archimede's constant PI, ratio of circle circumference to diameter. */\n   \
+    \  public static final double PI = 105414357.0 / 33554432.0 + 1.984187159361080883e-9;\n\
+    @@ -391,12 +392,21 @@\n       // exp(-z) can be ignored in comparison with exp(z)\n\
+    \ \n       if (x > 20) {\n+          if (x >= LOG_MAX_VALUE) {\n             \
+    \  // Avoid overflow (MATH-905).\n+              final double t = exp(0.5 * x);\n\
+    +              return (0.5 * t) * t;\n+          } else {\n               return\
+    \ 0.5 * exp(x);\n           }\n-      if (x < -20) {\n+      } else if (x < -20)\
+    \ {\n+          if (x <= -LOG_MAX_VALUE) {\n               // Avoid overflow (MATH-905).\n\
+    +              final double t = exp(-0.5 * x);\n+              return (0.5 * t)\
+    \ * t;\n+          } else {\n               return 0.5 * exp(-x);\n+         \
+    \ }\n       }\n \n       final double hiPrec[] = new double[2];\n@@ -452,12 +462,21\
+    \ @@\n       // exp(-z) can be ignored in comparison with exp(z)\n \n       if\
+    \ (x > 20) {\n+          if (x >= LOG_MAX_VALUE) {\n               // Avoid overflow\
+    \ (MATH-905).\n+              final double t = exp(0.5 * x);\n+              return\
+    \ (0.5 * t) * t;\n+          } else {\n               return 0.5 * exp(x);\n \
+    \          }\n-      if (x < -20) {\n+      } else if (x < -20) {\n+         \
+    \ if (x <= -LOG_MAX_VALUE) {\n               // Avoid overflow (MATH-905).\n+\
+    \              final double t = exp(-0.5 * x);\n+              return (-0.5 *\
+    \ t) * t;\n+          } else {\n               return -0.5 * exp(-x);\n+     \
+    \     }\n       }\n \n       if (x == 0) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_16/src/main/java/org/apache/commons/math3/util/FastMath.java\t\
+    2020-10-22 05:19:35.987290645 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_16/purify/purified/org/apache/commons/math3/util/FastMath.java\t\
+    2020-10-22 05:19:35.987290645 -0400\n@@ -79,6 +79,7 @@\n  */\n public class FastMath\
+    \ {\n     /** StrictMath.log(Double.MAX_VALUE): {@value} */\n+    private static\
+    \ final double LOG_MAX_VALUE = StrictMath.log(Double.MAX_VALUE);\n \n     /**\
+    \ Archimede's constant PI, ratio of circle circumference to diameter. */\n   \
+    \  public static final double PI = 105414357.0 / 33554432.0 + 1.984187159361080883e-9;\n\
+    @@ -391,12 +392,21 @@\n       // exp(-z) can be ignored in comparison with exp(z)\n\
+    \ \n       if (x > 20) {\n+          if (x >= LOG_MAX_VALUE) {\n             \
+    \  // Avoid overflow (MATH-905).\n+              final double t = exp(0.5 * x);\n\
+    +              return (0.5 * t) * t;\n+          } else {\n               return\
+    \ 0.5 * exp(x);\n           }\n-      if (x < -20) {\n+      } else if (x < -20)\
+    \ {\n+          if (x <= -LOG_MAX_VALUE) {\n               // Avoid overflow (MATH-905).\n\
+    +              final double t = exp(-0.5 * x);\n+              return (0.5 * t)\
+    \ * t;\n+          } else {\n               return 0.5 * exp(-x);\n+         \
+    \ }\n       }\n \n       final double hiPrec[] = new double[2];\n@@ -452,12 +462,21\
+    \ @@\n       // exp(-z) can be ignored in comparison with exp(z)\n \n       if\
+    \ (x > 20) {\n+          if (x >= LOG_MAX_VALUE) {\n               // Avoid overflow\
+    \ (MATH-905).\n+              final double t = exp(0.5 * x);\n+              return\
+    \ (0.5 * t) * t;\n+          } else {\n               return 0.5 * exp(x);\n \
+    \          }\n-      if (x < -20) {\n+      } else if (x < -20) {\n+         \
+    \ if (x <= -LOG_MAX_VALUE) {\n               // Avoid overflow (MATH-905).\n+\
+    \              final double t = exp(-0.5 * x);\n+              return (-0.5 *\
+    \ t) * t;\n+          } else {\n               return -0.5 * exp(-x);\n+     \
+    \     }\n       }\n \n       if (x == 0) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/util/FastMath:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, static, final, double, [LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)]
+      @TO@ TypeDeclaration@@[public]FastMath,  '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, static, final, double,
+      [LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)] '
+    - '---INS Modifier@@static @TO@ FieldDeclaration@@private, static, final, double,
+      [LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, static, final, double,
+      [LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)] '
+    - '---INS PrimitiveType@@double @TO@ FieldDeclaration@@private, static, final,
+      double, [LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)] '
+    - '---INS VariableDeclarationFragment@@LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)
+      @TO@ FieldDeclaration@@private, static, final, double, [LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)] '
+    - '------INS SimpleName@@LOG_MAX_VALUE @TO@ VariableDeclarationFragment@@LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE) '
+    - '------INS MethodInvocation@@StrictMath.log(Double.MAX_VALUE) @TO@ VariableDeclarationFragment@@LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE) '
+    - '---------INS SimpleName@@Name:StrictMath @TO@ MethodInvocation@@StrictMath.log(Double.MAX_VALUE) '
+    - '---------INS SimpleName@@MethodName:log:[Double.MAX_VALUE] @TO@ MethodInvocation@@StrictMath.log(Double.MAX_VALUE) '
+    - '------------INS QualifiedName@@Double.MAX_VALUE @TO@ SimpleName@@MethodName:log:[Double.MAX_VALUE] '
+    - '---------------INS SimpleName@@Double @TO@ QualifiedName@@Double.MAX_VALUE '
+    - '---------------INS SimpleName@@MAX_VALUE @TO@ QualifiedName@@Double.MAX_VALUE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x >= LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      > 20 '
+    - '---MOV ReturnStatement@@InfixExpression:0.5 * exp(x) @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '---INS InfixExpression@@x >= LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '------INS SimpleName@@x @TO@ InfixExpression@@x >= LOG_MAX_VALUE '
+    - '------INS Operator@@>= @TO@ InfixExpression@@x >= LOG_MAX_VALUE '
+    - '------INS SimpleName@@LOG_MAX_VALUE @TO@ InfixExpression@@x >= LOG_MAX_VALUE '
+    - '---INS VariableDeclarationStatement@@final double t=exp(0.5 * x); @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double t=exp(0.5
+      * x); '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      t=exp(0.5 * x); '
+    - '------INS VariableDeclarationFragment@@t=exp(0.5 * x) @TO@ VariableDeclarationStatement@@final
+      double t=exp(0.5 * x); '
+    - '---------INS SimpleName@@t @TO@ VariableDeclarationFragment@@t=exp(0.5 * x) '
+    - '---------INS MethodInvocation@@exp(0.5 * x) @TO@ VariableDeclarationFragment@@t=exp(0.5
+      * x) '
+    - '------------INS SimpleName@@MethodName:exp:[0.5 * x] @TO@ MethodInvocation@@exp(0.5
+      * x) '
+    - '---------------INS InfixExpression@@0.5 * x @TO@ SimpleName@@MethodName:exp:[0.5
+      * x] '
+    - '------------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * x '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@0.5 * x '
+    - '------------------INS SimpleName@@x @TO@ InfixExpression@@0.5 * x '
+    - '---INS ReturnStatement@@InfixExpression:(0.5 * t) * t @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '------INS InfixExpression@@(0.5 * t) * t @TO@ ReturnStatement@@InfixExpression:(0.5
+      * t) * t '
+    - '---------INS ParenthesizedExpression@@(0.5 * t) @TO@ InfixExpression@@(0.5
+      * t) * t '
+    - '------------INS InfixExpression@@0.5 * t @TO@ ParenthesizedExpression@@(0.5
+      * t) '
+    - '---------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * t '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@0.5 * t '
+    - '---------------INS SimpleName@@t @TO@ InfixExpression@@0.5 * t '
+    - '---------INS Operator@@* @TO@ InfixExpression@@(0.5 * t) * t '
+    - '---------INS SimpleName@@t @TO@ InfixExpression@@(0.5 * t) * t '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:x < -20 @TO@ IfStatement@@InfixExpression:x
+      > 20 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x <= -LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      < -20 '
+    - '---MOV ReturnStatement@@InfixExpression:0.5 * exp(-x) @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '---INS InfixExpression@@x <= -LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '------INS SimpleName@@x @TO@ InfixExpression@@x <= -LOG_MAX_VALUE '
+    - '------INS Operator@@<= @TO@ InfixExpression@@x <= -LOG_MAX_VALUE '
+    - '------INS PrefixExpression@@-LOG_MAX_VALUE @TO@ InfixExpression@@x <= -LOG_MAX_VALUE '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-LOG_MAX_VALUE '
+    - '---------INS SimpleName@@LOG_MAX_VALUE @TO@ PrefixExpression@@-LOG_MAX_VALUE '
+    - '---INS VariableDeclarationStatement@@final double t=exp(-0.5 * x); @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double t=exp(-0.5
+      * x); '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      t=exp(-0.5 * x); '
+    - '------INS VariableDeclarationFragment@@t=exp(-0.5 * x) @TO@ VariableDeclarationStatement@@final
+      double t=exp(-0.5 * x); '
+    - '---------INS SimpleName@@t @TO@ VariableDeclarationFragment@@t=exp(-0.5 * x) '
+    - '---------INS MethodInvocation@@exp(-0.5 * x) @TO@ VariableDeclarationFragment@@t=exp(-0.5
+      * x) '
+    - '------------INS SimpleName@@MethodName:exp:[-0.5 * x] @TO@ MethodInvocation@@exp(-0.5
+      * x) '
+    - '---------------INS InfixExpression@@-0.5 * x @TO@ SimpleName@@MethodName:exp:[-0.5
+      * x] '
+    - '------------------INS PrefixExpression@@-0.5 @TO@ InfixExpression@@-0.5 * x '
+    - '---------------------INS Operator@@- @TO@ PrefixExpression@@-0.5 '
+    - '---------------------INS NumberLiteral@@0.5 @TO@ PrefixExpression@@-0.5 '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@-0.5 * x '
+    - '------------------INS SimpleName@@x @TO@ InfixExpression@@-0.5 * x '
+    - '---INS ReturnStatement@@InfixExpression:(0.5 * t) * t @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '------INS InfixExpression@@(0.5 * t) * t @TO@ ReturnStatement@@InfixExpression:(0.5
+      * t) * t '
+    - '---------INS ParenthesizedExpression@@(0.5 * t) @TO@ InfixExpression@@(0.5
+      * t) * t '
+    - '------------INS InfixExpression@@0.5 * t @TO@ ParenthesizedExpression@@(0.5
+      * t) '
+    - '---------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * t '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@0.5 * t '
+    - '---------------INS SimpleName@@t @TO@ InfixExpression@@0.5 * t '
+    - '---------INS Operator@@* @TO@ InfixExpression@@(0.5 * t) * t '
+    - '---------INS SimpleName@@t @TO@ InfixExpression@@(0.5 * t) * t '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:x < -20 @TO@ IfStatement@@InfixExpression:x
+      > 20 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x >= LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      > 20 '
+    - '---MOV ReturnStatement@@InfixExpression:0.5 * exp(x) @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '---INS InfixExpression@@x >= LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '------INS SimpleName@@x @TO@ InfixExpression@@x >= LOG_MAX_VALUE '
+    - '------INS Operator@@>= @TO@ InfixExpression@@x >= LOG_MAX_VALUE '
+    - '------INS SimpleName@@LOG_MAX_VALUE @TO@ InfixExpression@@x >= LOG_MAX_VALUE '
+    - '---INS VariableDeclarationStatement@@final double t=exp(0.5 * x); @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double t=exp(0.5
+      * x); '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      t=exp(0.5 * x); '
+    - '------INS VariableDeclarationFragment@@t=exp(0.5 * x) @TO@ VariableDeclarationStatement@@final
+      double t=exp(0.5 * x); '
+    - '---------INS SimpleName@@t @TO@ VariableDeclarationFragment@@t=exp(0.5 * x) '
+    - '---------INS MethodInvocation@@exp(0.5 * x) @TO@ VariableDeclarationFragment@@t=exp(0.5
+      * x) '
+    - '------------INS SimpleName@@MethodName:exp:[0.5 * x] @TO@ MethodInvocation@@exp(0.5
+      * x) '
+    - '---------------INS InfixExpression@@0.5 * x @TO@ SimpleName@@MethodName:exp:[0.5
+      * x] '
+    - '------------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * x '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@0.5 * x '
+    - '------------------INS SimpleName@@x @TO@ InfixExpression@@0.5 * x '
+    - '---INS ReturnStatement@@InfixExpression:(0.5 * t) * t @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '------INS InfixExpression@@(0.5 * t) * t @TO@ ReturnStatement@@InfixExpression:(0.5
+      * t) * t '
+    - '---------INS ParenthesizedExpression@@(0.5 * t) @TO@ InfixExpression@@(0.5
+      * t) * t '
+    - '------------INS InfixExpression@@0.5 * t @TO@ ParenthesizedExpression@@(0.5
+      * t) '
+    - '---------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * t '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@0.5 * t '
+    - '---------------INS SimpleName@@t @TO@ InfixExpression@@0.5 * t '
+    - '---------INS Operator@@* @TO@ InfixExpression@@(0.5 * t) * t '
+    - '---------INS SimpleName@@t @TO@ InfixExpression@@(0.5 * t) * t '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x <= -LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      < -20 '
+    - '---MOV ReturnStatement@@InfixExpression:-0.5 * exp(-x) @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '---INS InfixExpression@@x <= -LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '------INS SimpleName@@x @TO@ InfixExpression@@x <= -LOG_MAX_VALUE '
+    - '------INS Operator@@<= @TO@ InfixExpression@@x <= -LOG_MAX_VALUE '
+    - '------INS PrefixExpression@@-LOG_MAX_VALUE @TO@ InfixExpression@@x <= -LOG_MAX_VALUE '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-LOG_MAX_VALUE '
+    - '---------INS SimpleName@@LOG_MAX_VALUE @TO@ PrefixExpression@@-LOG_MAX_VALUE '
+    - '---INS VariableDeclarationStatement@@final double t=exp(-0.5 * x); @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double t=exp(-0.5
+      * x); '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      t=exp(-0.5 * x); '
+    - '------INS VariableDeclarationFragment@@t=exp(-0.5 * x) @TO@ VariableDeclarationStatement@@final
+      double t=exp(-0.5 * x); '
+    - '---------INS SimpleName@@t @TO@ VariableDeclarationFragment@@t=exp(-0.5 * x) '
+    - '---------INS MethodInvocation@@exp(-0.5 * x) @TO@ VariableDeclarationFragment@@t=exp(-0.5
+      * x) '
+    - '------------INS SimpleName@@MethodName:exp:[-0.5 * x] @TO@ MethodInvocation@@exp(-0.5
+      * x) '
+    - '---------------INS InfixExpression@@-0.5 * x @TO@ SimpleName@@MethodName:exp:[-0.5
+      * x] '
+    - '------------------INS PrefixExpression@@-0.5 @TO@ InfixExpression@@-0.5 * x '
+    - '---------------------INS Operator@@- @TO@ PrefixExpression@@-0.5 '
+    - '---------------------INS NumberLiteral@@0.5 @TO@ PrefixExpression@@-0.5 '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@-0.5 * x '
+    - '------------------INS SimpleName@@x @TO@ InfixExpression@@-0.5 * x '
+    - '---INS ReturnStatement@@InfixExpression:(-0.5 * t) * t @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '------INS InfixExpression@@(-0.5 * t) * t @TO@ ReturnStatement@@InfixExpression:(-0.5
+      * t) * t '
+    - '---------INS ParenthesizedExpression@@(-0.5 * t) @TO@ InfixExpression@@(-0.5
+      * t) * t '
+    - '------------INS InfixExpression@@-0.5 * t @TO@ ParenthesizedExpression@@(-0.5
+      * t) '
+    - '---------------INS PrefixExpression@@-0.5 @TO@ InfixExpression@@-0.5 * t '
+    - '------------------INS Operator@@- @TO@ PrefixExpression@@-0.5 '
+    - '------------------INS NumberLiteral@@0.5 @TO@ PrefixExpression@@-0.5 '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@-0.5 * t '
+    - '---------------INS SimpleName@@t @TO@ InfixExpression@@-0.5 * t '
+    - '---------INS Operator@@* @TO@ InfixExpression@@(-0.5 * t) * t '
+    - '---------INS SimpleName@@t @TO@ InfixExpression@@(-0.5 * t) * t '
+  repair_actions_cnt: 7
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/util/FastMath:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, static, final, double, [LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)]
+      @TO@ TypeDeclaration@@[public]FastMath,  '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, static, final, double,
+      [LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)] '
+    - '---INS Modifier@@static @TO@ FieldDeclaration@@private, static, final, double,
+      [LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, static, final, double,
+      [LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)] '
+    - '---INS PrimitiveType@@double @TO@ FieldDeclaration@@private, static, final,
+      double, [LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)] '
+    - '---INS VariableDeclarationFragment@@LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)
+      @TO@ FieldDeclaration@@private, static, final, double, [LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE)] '
+    - '------INS SimpleName@@LOG_MAX_VALUE @TO@ VariableDeclarationFragment@@LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE) '
+    - '------INS MethodInvocation@@StrictMath.log(Double.MAX_VALUE) @TO@ VariableDeclarationFragment@@LOG_MAX_VALUE=StrictMath.log(Double.MAX_VALUE) '
+    - '---------INS SimpleName@@Name:StrictMath @TO@ MethodInvocation@@StrictMath.log(Double.MAX_VALUE) '
+    - '---------INS SimpleName@@MethodName:log:[Double.MAX_VALUE] @TO@ MethodInvocation@@StrictMath.log(Double.MAX_VALUE) '
+    - '------------INS QualifiedName@@Double.MAX_VALUE @TO@ SimpleName@@MethodName:log:[Double.MAX_VALUE] '
+    - '---------------INS SimpleName@@Double @TO@ QualifiedName@@Double.MAX_VALUE '
+    - '---------------INS SimpleName@@MAX_VALUE @TO@ QualifiedName@@Double.MAX_VALUE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x >= LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      > 20 '
+    - '---MOV ReturnStatement@@InfixExpression:0.5 * exp(x) @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '---INS InfixExpression@@x >= LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '------INS SimpleName@@x @TO@ InfixExpression@@x >= LOG_MAX_VALUE '
+    - '------INS Operator@@>= @TO@ InfixExpression@@x >= LOG_MAX_VALUE '
+    - '------INS SimpleName@@LOG_MAX_VALUE @TO@ InfixExpression@@x >= LOG_MAX_VALUE '
+    - '---INS VariableDeclarationStatement@@final double t=exp(0.5 * x); @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double t=exp(0.5
+      * x); '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      t=exp(0.5 * x); '
+    - '------INS VariableDeclarationFragment@@t=exp(0.5 * x) @TO@ VariableDeclarationStatement@@final
+      double t=exp(0.5 * x); '
+    - '---------INS SimpleName@@t @TO@ VariableDeclarationFragment@@t=exp(0.5 * x) '
+    - '---------INS MethodInvocation@@exp(0.5 * x) @TO@ VariableDeclarationFragment@@t=exp(0.5
+      * x) '
+    - '------------INS SimpleName@@MethodName:exp:[0.5 * x] @TO@ MethodInvocation@@exp(0.5
+      * x) '
+    - '---------------INS InfixExpression@@0.5 * x @TO@ SimpleName@@MethodName:exp:[0.5
+      * x] '
+    - '------------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * x '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@0.5 * x '
+    - '------------------INS SimpleName@@x @TO@ InfixExpression@@0.5 * x '
+    - '---INS ReturnStatement@@InfixExpression:(0.5 * t) * t @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '------INS InfixExpression@@(0.5 * t) * t @TO@ ReturnStatement@@InfixExpression:(0.5
+      * t) * t '
+    - '---------INS ParenthesizedExpression@@(0.5 * t) @TO@ InfixExpression@@(0.5
+      * t) * t '
+    - '------------INS InfixExpression@@0.5 * t @TO@ ParenthesizedExpression@@(0.5
+      * t) '
+    - '---------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * t '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@0.5 * t '
+    - '---------------INS SimpleName@@t @TO@ InfixExpression@@0.5 * t '
+    - '---------INS Operator@@* @TO@ InfixExpression@@(0.5 * t) * t '
+    - '---------INS SimpleName@@t @TO@ InfixExpression@@(0.5 * t) * t '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:x < -20 @TO@ IfStatement@@InfixExpression:x
+      > 20 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x <= -LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      < -20 '
+    - '---MOV ReturnStatement@@InfixExpression:0.5 * exp(-x) @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '---INS InfixExpression@@x <= -LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '------INS SimpleName@@x @TO@ InfixExpression@@x <= -LOG_MAX_VALUE '
+    - '------INS Operator@@<= @TO@ InfixExpression@@x <= -LOG_MAX_VALUE '
+    - '------INS PrefixExpression@@-LOG_MAX_VALUE @TO@ InfixExpression@@x <= -LOG_MAX_VALUE '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-LOG_MAX_VALUE '
+    - '---------INS SimpleName@@LOG_MAX_VALUE @TO@ PrefixExpression@@-LOG_MAX_VALUE '
+    - '---INS VariableDeclarationStatement@@final double t=exp(-0.5 * x); @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double t=exp(-0.5
+      * x); '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      t=exp(-0.5 * x); '
+    - '------INS VariableDeclarationFragment@@t=exp(-0.5 * x) @TO@ VariableDeclarationStatement@@final
+      double t=exp(-0.5 * x); '
+    - '---------INS SimpleName@@t @TO@ VariableDeclarationFragment@@t=exp(-0.5 * x) '
+    - '---------INS MethodInvocation@@exp(-0.5 * x) @TO@ VariableDeclarationFragment@@t=exp(-0.5
+      * x) '
+    - '------------INS SimpleName@@MethodName:exp:[-0.5 * x] @TO@ MethodInvocation@@exp(-0.5
+      * x) '
+    - '---------------INS InfixExpression@@-0.5 * x @TO@ SimpleName@@MethodName:exp:[-0.5
+      * x] '
+    - '------------------INS PrefixExpression@@-0.5 @TO@ InfixExpression@@-0.5 * x '
+    - '---------------------INS Operator@@- @TO@ PrefixExpression@@-0.5 '
+    - '---------------------INS NumberLiteral@@0.5 @TO@ PrefixExpression@@-0.5 '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@-0.5 * x '
+    - '------------------INS SimpleName@@x @TO@ InfixExpression@@-0.5 * x '
+    - '---INS ReturnStatement@@InfixExpression:(0.5 * t) * t @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '------INS InfixExpression@@(0.5 * t) * t @TO@ ReturnStatement@@InfixExpression:(0.5
+      * t) * t '
+    - '---------INS ParenthesizedExpression@@(0.5 * t) @TO@ InfixExpression@@(0.5
+      * t) * t '
+    - '------------INS InfixExpression@@0.5 * t @TO@ ParenthesizedExpression@@(0.5
+      * t) '
+    - '---------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * t '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@0.5 * t '
+    - '---------------INS SimpleName@@t @TO@ InfixExpression@@0.5 * t '
+    - '---------INS Operator@@* @TO@ InfixExpression@@(0.5 * t) * t '
+    - '---------INS SimpleName@@t @TO@ InfixExpression@@(0.5 * t) * t '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:x < -20 @TO@ IfStatement@@InfixExpression:x
+      > 20 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x >= LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      > 20 '
+    - '---MOV ReturnStatement@@InfixExpression:0.5 * exp(x) @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '---INS InfixExpression@@x >= LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '------INS SimpleName@@x @TO@ InfixExpression@@x >= LOG_MAX_VALUE '
+    - '------INS Operator@@>= @TO@ InfixExpression@@x >= LOG_MAX_VALUE '
+    - '------INS SimpleName@@LOG_MAX_VALUE @TO@ InfixExpression@@x >= LOG_MAX_VALUE '
+    - '---INS VariableDeclarationStatement@@final double t=exp(0.5 * x); @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double t=exp(0.5
+      * x); '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      t=exp(0.5 * x); '
+    - '------INS VariableDeclarationFragment@@t=exp(0.5 * x) @TO@ VariableDeclarationStatement@@final
+      double t=exp(0.5 * x); '
+    - '---------INS SimpleName@@t @TO@ VariableDeclarationFragment@@t=exp(0.5 * x) '
+    - '---------INS MethodInvocation@@exp(0.5 * x) @TO@ VariableDeclarationFragment@@t=exp(0.5
+      * x) '
+    - '------------INS SimpleName@@MethodName:exp:[0.5 * x] @TO@ MethodInvocation@@exp(0.5
+      * x) '
+    - '---------------INS InfixExpression@@0.5 * x @TO@ SimpleName@@MethodName:exp:[0.5
+      * x] '
+    - '------------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * x '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@0.5 * x '
+    - '------------------INS SimpleName@@x @TO@ InfixExpression@@0.5 * x '
+    - '---INS ReturnStatement@@InfixExpression:(0.5 * t) * t @TO@ IfStatement@@InfixExpression:x
+      >= LOG_MAX_VALUE '
+    - '------INS InfixExpression@@(0.5 * t) * t @TO@ ReturnStatement@@InfixExpression:(0.5
+      * t) * t '
+    - '---------INS ParenthesizedExpression@@(0.5 * t) @TO@ InfixExpression@@(0.5
+      * t) * t '
+    - '------------INS InfixExpression@@0.5 * t @TO@ ParenthesizedExpression@@(0.5
+      * t) '
+    - '---------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * t '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@0.5 * t '
+    - '---------------INS SimpleName@@t @TO@ InfixExpression@@0.5 * t '
+    - '---------INS Operator@@* @TO@ InfixExpression@@(0.5 * t) * t '
+    - '---------INS SimpleName@@t @TO@ InfixExpression@@(0.5 * t) * t '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x <= -LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      < -20 '
+    - '---MOV ReturnStatement@@InfixExpression:-0.5 * exp(-x) @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '---INS InfixExpression@@x <= -LOG_MAX_VALUE @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '------INS SimpleName@@x @TO@ InfixExpression@@x <= -LOG_MAX_VALUE '
+    - '------INS Operator@@<= @TO@ InfixExpression@@x <= -LOG_MAX_VALUE '
+    - '------INS PrefixExpression@@-LOG_MAX_VALUE @TO@ InfixExpression@@x <= -LOG_MAX_VALUE '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-LOG_MAX_VALUE '
+    - '---------INS SimpleName@@LOG_MAX_VALUE @TO@ PrefixExpression@@-LOG_MAX_VALUE '
+    - '---INS VariableDeclarationStatement@@final double t=exp(-0.5 * x); @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double t=exp(-0.5
+      * x); '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      t=exp(-0.5 * x); '
+    - '------INS VariableDeclarationFragment@@t=exp(-0.5 * x) @TO@ VariableDeclarationStatement@@final
+      double t=exp(-0.5 * x); '
+    - '---------INS SimpleName@@t @TO@ VariableDeclarationFragment@@t=exp(-0.5 * x) '
+    - '---------INS MethodInvocation@@exp(-0.5 * x) @TO@ VariableDeclarationFragment@@t=exp(-0.5
+      * x) '
+    - '------------INS SimpleName@@MethodName:exp:[-0.5 * x] @TO@ MethodInvocation@@exp(-0.5
+      * x) '
+    - '---------------INS InfixExpression@@-0.5 * x @TO@ SimpleName@@MethodName:exp:[-0.5
+      * x] '
+    - '------------------INS PrefixExpression@@-0.5 @TO@ InfixExpression@@-0.5 * x '
+    - '---------------------INS Operator@@- @TO@ PrefixExpression@@-0.5 '
+    - '---------------------INS NumberLiteral@@0.5 @TO@ PrefixExpression@@-0.5 '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@-0.5 * x '
+    - '------------------INS SimpleName@@x @TO@ InfixExpression@@-0.5 * x '
+    - '---INS ReturnStatement@@InfixExpression:(-0.5 * t) * t @TO@ IfStatement@@InfixExpression:x
+      <= -LOG_MAX_VALUE '
+    - '------INS InfixExpression@@(-0.5 * t) * t @TO@ ReturnStatement@@InfixExpression:(-0.5
+      * t) * t '
+    - '---------INS ParenthesizedExpression@@(-0.5 * t) @TO@ InfixExpression@@(-0.5
+      * t) * t '
+    - '------------INS InfixExpression@@-0.5 * t @TO@ ParenthesizedExpression@@(-0.5
+      * t) '
+    - '---------------INS PrefixExpression@@-0.5 @TO@ InfixExpression@@-0.5 * t '
+    - '------------------INS Operator@@- @TO@ PrefixExpression@@-0.5 '
+    - '------------------INS NumberLiteral@@0.5 @TO@ PrefixExpression@@-0.5 '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@-0.5 * t '
+    - '---------------INS SimpleName@@t @TO@ InfixExpression@@-0.5 * t '
+    - '---------INS Operator@@* @TO@ InfixExpression@@(-0.5 * t) * t '
+    - '---------INS SimpleName@@t @TO@ InfixExpression@@(-0.5 * t) * t '
+  repair_actions_cnt: 7

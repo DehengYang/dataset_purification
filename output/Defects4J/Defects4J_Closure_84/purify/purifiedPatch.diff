@@ -1,0 +1,42 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_84/src/com/google/javascript/jscomp/parsing/IRFactory.java	2020-10-23 10:51:10.867984307 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_84/purify/purified/com/google/javascript/jscomp/parsing/IRFactory.java	2020-10-23 10:51:10.867984307 -0400
+@@ -338,6 +338,13 @@
+     @Override
+     Node processAssignment(Assignment assignmentNode) {
+       Node assign = processInfixExpression(assignmentNode);
++      Node target = assign.getFirstChild();
++      if (!validAssignmentTarget(target)) {
++        errorReporter.error(
++          "invalid assignment target",
++          sourceName,
++          target.getLineno(), "", 0);
++      }
+       return assign;
+     }
+ 
+@@ -794,6 +801,10 @@
+         operand.setDouble(-operand.getDouble());
+         return operand;
+       } else {
++        if (type == Token.INC || type == Token.DEC) {
++          if (!validAssignmentTarget(operand)) {
++          }
++        }
+ 
+         Node node = newNode(type, operand);
+         if (exprNode.isPostfix()) {
+@@ -803,6 +814,14 @@
+       }
+     }
+ 
++    private boolean validAssignmentTarget(Node target) {
++      switch (target.getType()) {
++        case Token.NAME:
++        case Token.GETPROP:
++        case Token.GETELEM:
++      }
++      return false;
++    }
+ 
+     @Override
+     Node processVariableDeclaration(VariableDeclaration declarationNode) {

@@ -1,0 +1,311 @@
+1 bug_id: Math-19
+2 src folder:
+  name of src folder: java
+  number of files: 664
+  number of java files: 663
+  number of src classes: 872
+  number of test classes: 328
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.optimization.direct.CMAESOptimizerTest#testBoundaryRangeTooLarge
+  failing tests:
+  - org.apache.commons.math3.optimization.direct.CMAESOptimizerTest
+  number of all test cases: 4207
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.724
+  purification via delta debugging: 477.211
+  repair actions extraction: 2.335
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.optimization.direct.CMAESOptimizerTest#testBoundaryRangeTooLarge: 788
+  fixed:
+    org.apache.commons.math3.optimization.direct.CMAESOptimizerTest#testBoundaryRangeTooLarge: 528
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 13
+  covDel: 0
+  cov_patch_lines: 13
+  delta_patch_lines: 10
+  oriAdd: 13
+  oriDel: 0
+  ori_patch_lines: 13
+  purAdd: 10
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 33
+  failFail: 2
+  passed: 2
+  total: 37
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_19/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java\t\
+    2020-10-21 05:32:12.522970107 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_19/purify/patch/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java\t\
+    2020-10-21 05:32:12.522970107 -0400\n@@ -537,6 +537,19 @@\n                 boundaries[1]\
+    \ = uB;\n \n                 // Abort early if the normalization will overflow\
+    \ (cf. \"encode\" method).\n+                for (int i = 0; i < lB.length; i++)\
+    \ {\n+                    if (Double.isInfinite(boundaries[1][i] - boundaries[0][i]))\
+    \ {\n+                        final double max = Double.MAX_VALUE + boundaries[0][i];\n\
+    +                        final NumberIsTooLargeException e\n+                \
+    \            = new NumberIsTooLargeException(boundaries[1][i],\n+            \
+    \                                                max,\n+                     \
+    \                                       true);\n+                        e.getContext().addMessage(LocalizedFormats.OVERFLOW);\n\
+    +                        e.getContext().addMessage(LocalizedFormats.INDEX, i);\n\
+    +\n+                        throw e;\n+                    }\n+              \
+    \  }\n             }\n         } else {\n             // Convert API to internal\
+    \ handling of boundaries."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_19/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java\t\
+    2020-10-21 05:40:30.037360020 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_19/purify/purified/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java\t\
+    2020-10-21 05:40:30.037360020 -0400\n@@ -537,6 +537,16 @@\n                 boundaries[1]\
+    \ = uB;\n \n                 // Abort early if the normalization will overflow\
+    \ (cf. \"encode\" method).\n+                for (int i = 0; i < lB.length; i++)\
+    \ {\n+                    if (Double.isInfinite(boundaries[1][i] - boundaries[0][i]))\
+    \ {\n+                        final double max = Double.MAX_VALUE + boundaries[0][i];\n\
+    +                        final NumberIsTooLargeException e\n+                \
+    \            = new NumberIsTooLargeException(boundaries[1][i],\n+            \
+    \                                                max,\n+                     \
+    \                                       true);\n+                        throw\
+    \ e;\n+                    }\n+                }\n             }\n         } else\
+    \ {\n             // Convert API to internal handling of boundaries."
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/direct/CMAESOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < lB.length; [i++] @TO@ IfStatement@@SimpleName:hasInfiniteBounds '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < lB.length; [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < lB.length @TO@ ForStatement@@[int i=0];i < lB.length;
+      [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < lB.length '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < lB.length '
+    - '------INS QualifiedName@@lB.length @TO@ InfixExpression@@i < lB.length '
+    - '---------INS SimpleName@@lB @TO@ QualifiedName@@lB.length '
+    - '---------INS SimpleName@@length @TO@ QualifiedName@@lB.length '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < lB.length; [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS IfStatement@@MethodInvocation:Double.isInfinite(boundaries[1][i] - boundaries[0][i])
+      @TO@ ForStatement@@[int i=0];i < lB.length; [i++] '
+    - '------INS MethodInvocation@@Double.isInfinite(boundaries[1][i] - boundaries[0][i])
+      @TO@ IfStatement@@MethodInvocation:Double.isInfinite(boundaries[1][i] - boundaries[0][i]) '
+    - '---------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isInfinite(boundaries[1][i]
+      - boundaries[0][i]) '
+    - '---------INS SimpleName@@MethodName:isInfinite:[boundaries[1][i] - boundaries[0][i]]
+      @TO@ MethodInvocation@@Double.isInfinite(boundaries[1][i] - boundaries[0][i]) '
+    - '------------INS InfixExpression@@boundaries[1][i] - boundaries[0][i] @TO@ SimpleName@@MethodName:isInfinite:[boundaries[1][i]
+      - boundaries[0][i]] '
+    - '---------------INS ArrayAccess@@boundaries[1][i] @TO@ InfixExpression@@boundaries[1][i]
+      - boundaries[0][i] '
+    - '------------------INS ArrayAccess@@boundaries[1] @TO@ ArrayAccess@@boundaries[1][i] '
+    - '---------------------INS SimpleName@@boundaries @TO@ ArrayAccess@@boundaries[1] '
+    - '---------------------INS NumberLiteral@@1 @TO@ ArrayAccess@@boundaries[1] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@boundaries[1][i] '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@boundaries[1][i] - boundaries[0][i] '
+    - '---------------INS ArrayAccess@@boundaries[0][i] @TO@ InfixExpression@@boundaries[1][i]
+      - boundaries[0][i] '
+    - '------------------INS ArrayAccess@@boundaries[0] @TO@ ArrayAccess@@boundaries[0][i] '
+    - '---------------------INS SimpleName@@boundaries @TO@ ArrayAccess@@boundaries[0] '
+    - '---------------------INS NumberLiteral@@0 @TO@ ArrayAccess@@boundaries[0] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@boundaries[0][i] '
+    - '------INS VariableDeclarationStatement@@final double max=Double.MAX_VALUE +
+      boundaries[0][i]; @TO@ IfStatement@@MethodInvocation:Double.isInfinite(boundaries[1][i]
+      - boundaries[0][i]) '
+    - '---------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double
+      max=Double.MAX_VALUE + boundaries[0][i]; '
+    - '---------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final
+      double max=Double.MAX_VALUE + boundaries[0][i]; '
+    - '---------INS VariableDeclarationFragment@@max=Double.MAX_VALUE + boundaries[0][i]
+      @TO@ VariableDeclarationStatement@@final double max=Double.MAX_VALUE + boundaries[0][i]; '
+    - '------------INS SimpleName@@max @TO@ VariableDeclarationFragment@@max=Double.MAX_VALUE
+      + boundaries[0][i] '
+    - '------------INS InfixExpression@@Double.MAX_VALUE + boundaries[0][i] @TO@ VariableDeclarationFragment@@max=Double.MAX_VALUE
+      + boundaries[0][i] '
+    - '---------------INS QualifiedName@@Double.MAX_VALUE @TO@ InfixExpression@@Double.MAX_VALUE
+      + boundaries[0][i] '
+    - '------------------INS SimpleName@@Double @TO@ QualifiedName@@Double.MAX_VALUE '
+    - '------------------INS SimpleName@@MAX_VALUE @TO@ QualifiedName@@Double.MAX_VALUE '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@Double.MAX_VALUE + boundaries[0][i] '
+    - '---------------INS ArrayAccess@@boundaries[0][i] @TO@ InfixExpression@@Double.MAX_VALUE
+      + boundaries[0][i] '
+    - '------------------INS ArrayAccess@@boundaries[0] @TO@ ArrayAccess@@boundaries[0][i] '
+    - '---------------------INS SimpleName@@boundaries @TO@ ArrayAccess@@boundaries[0] '
+    - '---------------------INS NumberLiteral@@0 @TO@ ArrayAccess@@boundaries[0] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@boundaries[0][i] '
+    - '------INS VariableDeclarationStatement@@final NumberIsTooLargeException e=new
+      NumberIsTooLargeException(boundaries[1][i],max,true); @TO@ IfStatement@@MethodInvocation:Double.isInfinite(boundaries[1][i]
+      - boundaries[0][i]) '
+    - '---------INS Modifier@@final @TO@ VariableDeclarationStatement@@final NumberIsTooLargeException
+      e=new NumberIsTooLargeException(boundaries[1][i],max,true); '
+    - '---------INS SimpleType@@NumberIsTooLargeException @TO@ VariableDeclarationStatement@@final
+      NumberIsTooLargeException e=new NumberIsTooLargeException(boundaries[1][i],max,true); '
+    - '---------INS VariableDeclarationFragment@@e=new NumberIsTooLargeException(boundaries[1][i],max,true)
+      @TO@ VariableDeclarationStatement@@final NumberIsTooLargeException e=new NumberIsTooLargeException(boundaries[1][i],max,true); '
+    - '------------INS SimpleName@@e @TO@ VariableDeclarationFragment@@e=new NumberIsTooLargeException(boundaries[1][i],max,true) '
+    - '------------INS ClassInstanceCreation@@NumberIsTooLargeException[boundaries[1][i],
+      max, true] @TO@ VariableDeclarationFragment@@e=new NumberIsTooLargeException(boundaries[1][i],max,true) '
+    - '---------------INS New@@new @TO@ ClassInstanceCreation@@NumberIsTooLargeException[boundaries[1][i],
+      max, true] '
+    - '---------------INS SimpleType@@NumberIsTooLargeException @TO@ ClassInstanceCreation@@NumberIsTooLargeException[boundaries[1][i],
+      max, true] '
+    - '---------------INS ArrayAccess@@boundaries[1][i] @TO@ ClassInstanceCreation@@NumberIsTooLargeException[boundaries[1][i],
+      max, true] '
+    - '------------------INS ArrayAccess@@boundaries[1] @TO@ ArrayAccess@@boundaries[1][i] '
+    - '---------------------INS SimpleName@@boundaries @TO@ ArrayAccess@@boundaries[1] '
+    - '---------------------INS NumberLiteral@@1 @TO@ ArrayAccess@@boundaries[1] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@boundaries[1][i] '
+    - '---------------INS SimpleName@@max @TO@ ClassInstanceCreation@@NumberIsTooLargeException[boundaries[1][i],
+      max, true] '
+    - '---------------INS BooleanLiteral@@true @TO@ ClassInstanceCreation@@NumberIsTooLargeException[boundaries[1][i],
+      max, true] '
+    - '------INS ExpressionStatement@@MethodInvocation:e.getContext().addMessage(LocalizedFormats.OVERFLOW)
+      @TO@ IfStatement@@MethodInvocation:Double.isInfinite(boundaries[1][i] - boundaries[0][i]) '
+    - '---------INS MethodInvocation@@e.getContext().addMessage(LocalizedFormats.OVERFLOW)
+      @TO@ ExpressionStatement@@MethodInvocation:e.getContext().addMessage(LocalizedFormats.OVERFLOW) '
+    - '------------INS SimpleName@@Name:e @TO@ MethodInvocation@@e.getContext().addMessage(LocalizedFormats.OVERFLOW) '
+    - '------------INS MethodInvocation@@MethodName:getContext:[] @TO@ MethodInvocation@@e.getContext().addMessage(LocalizedFormats.OVERFLOW) '
+    - '------------INS SimpleName@@MethodName:addMessage:[LocalizedFormats.OVERFLOW]
+      @TO@ MethodInvocation@@e.getContext().addMessage(LocalizedFormats.OVERFLOW) '
+    - '---------------INS QualifiedName@@LocalizedFormats.OVERFLOW @TO@ SimpleName@@MethodName:addMessage:[LocalizedFormats.OVERFLOW] '
+    - '------------------INS SimpleName@@LocalizedFormats @TO@ QualifiedName@@LocalizedFormats.OVERFLOW '
+    - '------------------INS SimpleName@@OVERFLOW @TO@ QualifiedName@@LocalizedFormats.OVERFLOW '
+    - '------INS ExpressionStatement@@MethodInvocation:e.getContext().addMessage(LocalizedFormats.INDEX,i)
+      @TO@ IfStatement@@MethodInvocation:Double.isInfinite(boundaries[1][i] - boundaries[0][i]) '
+    - '---------INS MethodInvocation@@e.getContext().addMessage(LocalizedFormats.INDEX,i)
+      @TO@ ExpressionStatement@@MethodInvocation:e.getContext().addMessage(LocalizedFormats.INDEX,i) '
+    - '------------INS SimpleName@@Name:e @TO@ MethodInvocation@@e.getContext().addMessage(LocalizedFormats.INDEX,i) '
+    - '------------INS MethodInvocation@@MethodName:getContext:[] @TO@ MethodInvocation@@e.getContext().addMessage(LocalizedFormats.INDEX,i) '
+    - '------------INS SimpleName@@MethodName:addMessage:[LocalizedFormats.INDEX,
+      i] @TO@ MethodInvocation@@e.getContext().addMessage(LocalizedFormats.INDEX,i) '
+    - '---------------INS QualifiedName@@LocalizedFormats.INDEX @TO@ SimpleName@@MethodName:addMessage:[LocalizedFormats.INDEX,
+      i] '
+    - '------------------INS SimpleName@@LocalizedFormats @TO@ QualifiedName@@LocalizedFormats.INDEX '
+    - '------------------INS SimpleName@@INDEX @TO@ QualifiedName@@LocalizedFormats.INDEX '
+    - '---------------INS SimpleName@@i @TO@ SimpleName@@MethodName:addMessage:[LocalizedFormats.INDEX,
+      i] '
+    - '------INS ThrowStatement@@SimpleName:e @TO@ IfStatement@@MethodInvocation:Double.isInfinite(boundaries[1][i]
+      - boundaries[0][i]) '
+    - '---------INS SimpleName@@e @TO@ ThrowStatement@@SimpleName:e '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/direct/CMAESOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < lB.length; [i++] @TO@ IfStatement@@SimpleName:hasInfiniteBounds '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < lB.length; [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < lB.length @TO@ ForStatement@@[int i=0];i < lB.length;
+      [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < lB.length '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < lB.length '
+    - '------INS QualifiedName@@lB.length @TO@ InfixExpression@@i < lB.length '
+    - '---------INS SimpleName@@lB @TO@ QualifiedName@@lB.length '
+    - '---------INS SimpleName@@length @TO@ QualifiedName@@lB.length '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < lB.length; [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS IfStatement@@MethodInvocation:Double.isInfinite(boundaries[1][i] - boundaries[0][i])
+      @TO@ ForStatement@@[int i=0];i < lB.length; [i++] '
+    - '------INS MethodInvocation@@Double.isInfinite(boundaries[1][i] - boundaries[0][i])
+      @TO@ IfStatement@@MethodInvocation:Double.isInfinite(boundaries[1][i] - boundaries[0][i]) '
+    - '---------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isInfinite(boundaries[1][i]
+      - boundaries[0][i]) '
+    - '---------INS SimpleName@@MethodName:isInfinite:[boundaries[1][i] - boundaries[0][i]]
+      @TO@ MethodInvocation@@Double.isInfinite(boundaries[1][i] - boundaries[0][i]) '
+    - '------------INS InfixExpression@@boundaries[1][i] - boundaries[0][i] @TO@ SimpleName@@MethodName:isInfinite:[boundaries[1][i]
+      - boundaries[0][i]] '
+    - '---------------INS ArrayAccess@@boundaries[1][i] @TO@ InfixExpression@@boundaries[1][i]
+      - boundaries[0][i] '
+    - '------------------INS ArrayAccess@@boundaries[1] @TO@ ArrayAccess@@boundaries[1][i] '
+    - '---------------------INS SimpleName@@boundaries @TO@ ArrayAccess@@boundaries[1] '
+    - '---------------------INS NumberLiteral@@1 @TO@ ArrayAccess@@boundaries[1] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@boundaries[1][i] '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@boundaries[1][i] - boundaries[0][i] '
+    - '---------------INS ArrayAccess@@boundaries[0][i] @TO@ InfixExpression@@boundaries[1][i]
+      - boundaries[0][i] '
+    - '------------------INS ArrayAccess@@boundaries[0] @TO@ ArrayAccess@@boundaries[0][i] '
+    - '---------------------INS SimpleName@@boundaries @TO@ ArrayAccess@@boundaries[0] '
+    - '---------------------INS NumberLiteral@@0 @TO@ ArrayAccess@@boundaries[0] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@boundaries[0][i] '
+    - '------INS VariableDeclarationStatement@@final double max=Double.MAX_VALUE +
+      boundaries[0][i]; @TO@ IfStatement@@MethodInvocation:Double.isInfinite(boundaries[1][i]
+      - boundaries[0][i]) '
+    - '---------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double
+      max=Double.MAX_VALUE + boundaries[0][i]; '
+    - '---------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final
+      double max=Double.MAX_VALUE + boundaries[0][i]; '
+    - '---------INS VariableDeclarationFragment@@max=Double.MAX_VALUE + boundaries[0][i]
+      @TO@ VariableDeclarationStatement@@final double max=Double.MAX_VALUE + boundaries[0][i]; '
+    - '------------INS SimpleName@@max @TO@ VariableDeclarationFragment@@max=Double.MAX_VALUE
+      + boundaries[0][i] '
+    - '------------INS InfixExpression@@Double.MAX_VALUE + boundaries[0][i] @TO@ VariableDeclarationFragment@@max=Double.MAX_VALUE
+      + boundaries[0][i] '
+    - '---------------INS QualifiedName@@Double.MAX_VALUE @TO@ InfixExpression@@Double.MAX_VALUE
+      + boundaries[0][i] '
+    - '------------------INS SimpleName@@Double @TO@ QualifiedName@@Double.MAX_VALUE '
+    - '------------------INS SimpleName@@MAX_VALUE @TO@ QualifiedName@@Double.MAX_VALUE '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@Double.MAX_VALUE + boundaries[0][i] '
+    - '---------------INS ArrayAccess@@boundaries[0][i] @TO@ InfixExpression@@Double.MAX_VALUE
+      + boundaries[0][i] '
+    - '------------------INS ArrayAccess@@boundaries[0] @TO@ ArrayAccess@@boundaries[0][i] '
+    - '---------------------INS SimpleName@@boundaries @TO@ ArrayAccess@@boundaries[0] '
+    - '---------------------INS NumberLiteral@@0 @TO@ ArrayAccess@@boundaries[0] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@boundaries[0][i] '
+    - '------INS VariableDeclarationStatement@@final NumberIsTooLargeException e=new
+      NumberIsTooLargeException(boundaries[1][i],max,true); @TO@ IfStatement@@MethodInvocation:Double.isInfinite(boundaries[1][i]
+      - boundaries[0][i]) '
+    - '---------INS Modifier@@final @TO@ VariableDeclarationStatement@@final NumberIsTooLargeException
+      e=new NumberIsTooLargeException(boundaries[1][i],max,true); '
+    - '---------INS SimpleType@@NumberIsTooLargeException @TO@ VariableDeclarationStatement@@final
+      NumberIsTooLargeException e=new NumberIsTooLargeException(boundaries[1][i],max,true); '
+    - '---------INS VariableDeclarationFragment@@e=new NumberIsTooLargeException(boundaries[1][i],max,true)
+      @TO@ VariableDeclarationStatement@@final NumberIsTooLargeException e=new NumberIsTooLargeException(boundaries[1][i],max,true); '
+    - '------------INS SimpleName@@e @TO@ VariableDeclarationFragment@@e=new NumberIsTooLargeException(boundaries[1][i],max,true) '
+    - '------------INS ClassInstanceCreation@@NumberIsTooLargeException[boundaries[1][i],
+      max, true] @TO@ VariableDeclarationFragment@@e=new NumberIsTooLargeException(boundaries[1][i],max,true) '
+    - '---------------INS New@@new @TO@ ClassInstanceCreation@@NumberIsTooLargeException[boundaries[1][i],
+      max, true] '
+    - '---------------INS SimpleType@@NumberIsTooLargeException @TO@ ClassInstanceCreation@@NumberIsTooLargeException[boundaries[1][i],
+      max, true] '
+    - '---------------INS ArrayAccess@@boundaries[1][i] @TO@ ClassInstanceCreation@@NumberIsTooLargeException[boundaries[1][i],
+      max, true] '
+    - '------------------INS ArrayAccess@@boundaries[1] @TO@ ArrayAccess@@boundaries[1][i] '
+    - '---------------------INS SimpleName@@boundaries @TO@ ArrayAccess@@boundaries[1] '
+    - '---------------------INS NumberLiteral@@1 @TO@ ArrayAccess@@boundaries[1] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@boundaries[1][i] '
+    - '---------------INS SimpleName@@max @TO@ ClassInstanceCreation@@NumberIsTooLargeException[boundaries[1][i],
+      max, true] '
+    - '---------------INS BooleanLiteral@@true @TO@ ClassInstanceCreation@@NumberIsTooLargeException[boundaries[1][i],
+      max, true] '
+    - '------INS ThrowStatement@@SimpleName:e @TO@ IfStatement@@MethodInvocation:Double.isInfinite(boundaries[1][i]
+      - boundaries[0][i]) '
+    - '---------INS SimpleName@@e @TO@ ThrowStatement@@SimpleName:e '
+  repair_actions_cnt: 1

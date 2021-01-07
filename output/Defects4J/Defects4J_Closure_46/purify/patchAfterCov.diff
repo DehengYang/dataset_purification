@@ -1,0 +1,25 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_46/src/com/google/javascript/rhino/jstype/RecordType.java	2020-10-24 13:45:56.259642110 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_46/purify/assertBeforeMut/com/google/javascript/rhino/jstype/RecordType.java	2020-10-24 13:45:56.259642110 -0400
+@@ -137,22 +137,6 @@
+         propertyNode);
+   }
+ 
+-  @Override
+-  public JSType getLeastSupertype(JSType that) {
+-    if (!that.isRecordType()) {
+-      return super.getLeastSupertype(that);
+-    }
+-    RecordTypeBuilder builder = new RecordTypeBuilder(registry);
+-    for (String property : properties.keySet()) {
+-      if (that.toMaybeRecordType().hasProperty(property) &&
+-          that.toMaybeRecordType().getPropertyType(property).isEquivalentTo(
+-              getPropertyType(property))) {
+-        builder.addProperty(property, getPropertyType(property),
+-            getPropertyNode(property));
+-      }
+-    }
+-    return builder.build();
+-  }
+   JSType getGreatestSubtypeHelper(JSType that) {
+     if (that.isRecordType()) {
+       RecordType thatRecord = that.toMaybeRecordType();

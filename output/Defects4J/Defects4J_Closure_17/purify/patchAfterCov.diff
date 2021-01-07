@@ -1,0 +1,16 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_17/src/com/google/javascript/jscomp/TypedScopeCreator.java	2020-10-22 09:19:17.459315033 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_17/purify/assertBeforeMut/com/google/javascript/jscomp/TypedScopeCreator.java	2020-10-22 09:19:17.455314917 -0400
+@@ -1288,8 +1288,12 @@
+           if (info.isConstant()) {
+             JSType knownType = null;
+             if (rValue != null) {
+-              if (rValue.getJSType() != null && !rValue.getJSType().isUnknownType()) {
++              JSDocInfo rValueInfo = rValue.getJSDocInfo();
++              if (rValueInfo != null && rValueInfo.hasType()) {
+                 // If rValue has a type-cast, we use the type in the type-cast.
++                return rValueInfo.getType().evaluate(scope, typeRegistry);
++              } else if (rValue.getJSType() != null
++                  && !rValue.getJSType().isUnknownType()) {
+                 // If rValue's type was already computed during scope creation,
+                 // then we can safely use that.
+                 return rValue.getJSType();

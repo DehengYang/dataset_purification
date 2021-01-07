@@ -1,0 +1,147 @@
+1 bug_id: Chart-14
+2 src folder:
+  name of src folder: source
+  number of files: 651
+  number of java files: 578
+  number of src classes: 604
+  number of test classes: 325
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.plot.junit.XYPlotTests#testRemoveDomainMarker
+  - org.jfree.chart.plot.junit.CategoryPlotTests#testRemoveRangeMarker
+  - org.jfree.chart.plot.junit.CategoryPlotTests#testRemoveDomainMarker
+  - org.jfree.chart.plot.junit.XYPlotTests#testRemoveRangeMarker
+  failing tests:
+  - org.jfree.chart.plot.junit.XYPlotTests
+  - org.jfree.chart.plot.junit.CategoryPlotTests
+  number of all test cases: 1795
+  number of failing test cases: 4
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 2.312
+  purification via delta debugging: 274.33
+  repair actions extraction: 4.144
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.plot.junit.CategoryPlotTests#testRemoveDomainMarker: 402
+    org.jfree.chart.plot.junit.CategoryPlotTests#testRemoveRangeMarker: 391
+    org.jfree.chart.plot.junit.XYPlotTests#testRemoveDomainMarker: 348
+    org.jfree.chart.plot.junit.XYPlotTests#testRemoveRangeMarker: 349
+  fixed:
+    org.jfree.chart.plot.junit.CategoryPlotTests#testRemoveDomainMarker: 404
+    org.jfree.chart.plot.junit.CategoryPlotTests#testRemoveRangeMarker: 393
+    org.jfree.chart.plot.junit.XYPlotTests#testRemoveDomainMarker: 350
+    org.jfree.chart.plot.junit.XYPlotTests#testRemoveRangeMarker: 351
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 12
+  covDel: 0
+  cov_patch_lines: 12
+  delta_patch_lines: 12
+  oriAdd: 12
+  oriDel: 0
+  ori_patch_lines: 12
+  purAdd: 12
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 15
+  failFail: 11
+  passed: 0
+  total: 26
+9 sibling repair actions:
+- 0 1 0.991466252909232
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_14/source/org/jfree/chart/plot/CategoryPlot.java\t\
+    2020-10-21 00:06:48.391084375 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_14/purify/patch/org/jfree/chart/plot/CategoryPlot.java\t\
+    2020-10-21 00:06:48.387084260 -0400\n@@ -2163,6 +2163,9 @@\n             markers\
+    \ = (ArrayList) this.backgroundDomainMarkers.get(new Integer(\n              \
+    \       index));\n         }\n+        if (markers == null) {\n+            return\
+    \ false;\n+        }\n         boolean removed = markers.remove(marker);\n   \
+    \      if (removed && notify) {\n             fireChangeEvent();\n@@ -2445,6 +2448,9\
+    \ @@\n             markers = (ArrayList) this.backgroundRangeMarkers.get(new Integer(\n\
+    \                     index));\n         }\n+        if (markers == null) {\n\
+    +            return false;\n+        }\n         boolean removed = markers.remove(marker);\n\
+    \         if (removed && notify) {\n             fireChangeEvent();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_14/source/org/jfree/chart/plot/CategoryPlot.java\t\
+    2020-10-21 00:11:46.503695287 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_14/purify/purified/org/jfree/chart/plot/CategoryPlot.java\t\
+    2020-10-21 00:11:46.503695287 -0400\n@@ -2163,6 +2163,9 @@\n             markers\
+    \ = (ArrayList) this.backgroundDomainMarkers.get(new Integer(\n              \
+    \       index));\n         }\n+        if (markers == null) {\n+            return\
+    \ false;\n+        }\n         boolean removed = markers.remove(marker);\n   \
+    \      if (removed && notify) {\n             fireChangeEvent();\n@@ -2445,6 +2448,9\
+    \ @@\n             markers = (ArrayList) this.backgroundRangeMarkers.get(new Integer(\n\
+    \                     index));\n         }\n+        if (markers == null) {\n\
+    +            return false;\n+        }\n         boolean removed = markers.remove(marker);\n\
+    \         if (removed && notify) {\n             fireChangeEvent();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/jfree/chart/plot/CategoryPlot, org/jfree/chart/plot/XYPlot:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:markers == null @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:removeDomainMarker, @@Argus:int+index+Marker+marker+Layer+layer+boolean+notify+ '
+    - '---INS InfixExpression@@markers == null @TO@ IfStatement@@InfixExpression:markers
+      == null '
+    - '------INS SimpleName@@markers @TO@ InfixExpression@@markers == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@markers == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@markers == null '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:markers
+      == null '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:markers == null @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:removeRangeMarker, @@Argus:int+index+Marker+marker+Layer+layer+boolean+notify+ '
+    - '---INS InfixExpression@@markers == null @TO@ IfStatement@@InfixExpression:markers
+      == null '
+    - '------INS SimpleName@@markers @TO@ InfixExpression@@markers == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@markers == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@markers == null '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:markers
+      == null '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/jfree/chart/plot/CategoryPlot, org/jfree/chart/plot/XYPlot:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:markers == null @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:removeDomainMarker, @@Argus:int+index+Marker+marker+Layer+layer+boolean+notify+ '
+    - '---INS InfixExpression@@markers == null @TO@ IfStatement@@InfixExpression:markers
+      == null '
+    - '------INS SimpleName@@markers @TO@ InfixExpression@@markers == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@markers == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@markers == null '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:markers
+      == null '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:markers == null @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:removeRangeMarker, @@Argus:int+index+Marker+marker+Layer+layer+boolean+notify+ '
+    - '---INS InfixExpression@@markers == null @TO@ IfStatement@@InfixExpression:markers
+      == null '
+    - '------INS SimpleName@@markers @TO@ InfixExpression@@markers == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@markers == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@markers == null '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:markers
+      == null '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  repair_actions_cnt: 2

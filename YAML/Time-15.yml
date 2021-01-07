@@ -1,0 +1,148 @@
+1 bug_id: Time-15
+2 src folder:
+  name of src folder: java
+  number of files: 183
+  number of java files: 156
+  number of src classes: 228
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.field.TestFieldUtils#testSafeMultiplyLongInt
+  failing tests:
+  - org.joda.time.field.TestFieldUtils
+  number of all test cases: 3896
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.518
+  purification via delta debugging: 59.665
+  repair actions extraction: 0.784
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.field.TestFieldUtils#testSafeMultiplyLongInt: 7
+  fixed:
+    org.joda.time.field.TestFieldUtils#testSafeMultiplyLongInt: 10
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_15/src/main/java/org/joda/time/field/FieldUtils.java\t\
+    2020-10-20 22:42:50.353507679 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_15/purify/patch/org/joda/time/field/FieldUtils.java\t\
+    2020-10-20 22:42:50.353507679 -0400\n@@ -135,6 +135,9 @@\n     public static long\
+    \ safeMultiply(long val1, int val2) {\n         switch (val2) {\n            \
+    \ case -1:\n+                if (val1 == Long.MIN_VALUE) {\n+                \
+    \    throw new ArithmeticException(\"Multiplication overflows a long: \" + val1\
+    \ + \" * \" + val2);\n+                }\n                 return -val1;\n   \
+    \          case 0:\n                 return 0L;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_15/src/main/java/org/joda/time/field/FieldUtils.java\t\
+    2020-10-20 22:44:03.551623187 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_15/purify/purified/org/joda/time/field/FieldUtils.java\t\
+    2020-10-20 22:44:03.551623187 -0400\n@@ -135,6 +135,9 @@\n     public static long\
+    \ safeMultiply(long val1, int val2) {\n         switch (val2) {\n            \
+    \ case -1:\n+                if (val1 == Long.MIN_VALUE) {\n+                \
+    \    throw new ArithmeticException(\"Multiplication overflows a long: \" + val1\
+    \ + \" * \" + val2);\n+                }\n                 return -val1;\n   \
+    \          case 0:\n                 return 0L;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/field/FieldUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:val1 == Long.MIN_VALUE @TO@ SwitchStatement@@SimpleName:val2 '
+    - '---INS InfixExpression@@val1 == Long.MIN_VALUE @TO@ IfStatement@@InfixExpression:val1
+      == Long.MIN_VALUE '
+    - '------INS SimpleName@@val1 @TO@ InfixExpression@@val1 == Long.MIN_VALUE '
+    - '------INS Operator@@== @TO@ InfixExpression@@val1 == Long.MIN_VALUE '
+    - '------INS QualifiedName@@Long.MIN_VALUE @TO@ InfixExpression@@val1 == Long.MIN_VALUE '
+    - '---------INS SimpleName@@Long @TO@ QualifiedName@@Long.MIN_VALUE '
+    - '---------INS SimpleName@@MIN_VALUE @TO@ QualifiedName@@Long.MIN_VALUE '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new ArithmeticException("Multiplication
+      overflows a long: " + val1 + " * "+ val2) @TO@ IfStatement@@InfixExpression:val1
+      == Long.MIN_VALUE '
+    - '------INS ClassInstanceCreation@@ArithmeticException["Multiplication overflows
+      a long: " + val1 + " * "+ val2] @TO@ ThrowStatement@@ClassInstanceCreation:new
+      ArithmeticException("Multiplication overflows a long: " + val1 + " * "+ val2) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@ArithmeticException["Multiplication
+      overflows a long: " + val1 + " * "+ val2] '
+    - '---------INS SimpleType@@ArithmeticException @TO@ ClassInstanceCreation@@ArithmeticException["Multiplication
+      overflows a long: " + val1 + " * "+ val2] '
+    - '---------INS InfixExpression@@"Multiplication overflows a long: " + val1 +
+      " * "+ val2 @TO@ ClassInstanceCreation@@ArithmeticException["Multiplication
+      overflows a long: " + val1 + " * "+ val2] '
+    - '------------INS StringLiteral@@"Multiplication overflows a long: " @TO@ InfixExpression@@"Multiplication
+      overflows a long: " + val1 + " * "+ val2 '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Multiplication overflows
+      a long: " + val1 + " * "+ val2 '
+    - '------------INS SimpleName@@val1 @TO@ InfixExpression@@"Multiplication overflows
+      a long: " + val1 + " * "+ val2 '
+    - '------------INS StringLiteral@@" * " @TO@ InfixExpression@@"Multiplication
+      overflows a long: " + val1 + " * "+ val2 '
+    - '------------INS SimpleName@@val2 @TO@ InfixExpression@@"Multiplication overflows
+      a long: " + val1 + " * "+ val2 '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/field/FieldUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:val1 == Long.MIN_VALUE @TO@ SwitchStatement@@SimpleName:val2 '
+    - '---INS InfixExpression@@val1 == Long.MIN_VALUE @TO@ IfStatement@@InfixExpression:val1
+      == Long.MIN_VALUE '
+    - '------INS SimpleName@@val1 @TO@ InfixExpression@@val1 == Long.MIN_VALUE '
+    - '------INS Operator@@== @TO@ InfixExpression@@val1 == Long.MIN_VALUE '
+    - '------INS QualifiedName@@Long.MIN_VALUE @TO@ InfixExpression@@val1 == Long.MIN_VALUE '
+    - '---------INS SimpleName@@Long @TO@ QualifiedName@@Long.MIN_VALUE '
+    - '---------INS SimpleName@@MIN_VALUE @TO@ QualifiedName@@Long.MIN_VALUE '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new ArithmeticException("Multiplication
+      overflows a long: " + val1 + " * "+ val2) @TO@ IfStatement@@InfixExpression:val1
+      == Long.MIN_VALUE '
+    - '------INS ClassInstanceCreation@@ArithmeticException["Multiplication overflows
+      a long: " + val1 + " * "+ val2] @TO@ ThrowStatement@@ClassInstanceCreation:new
+      ArithmeticException("Multiplication overflows a long: " + val1 + " * "+ val2) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@ArithmeticException["Multiplication
+      overflows a long: " + val1 + " * "+ val2] '
+    - '---------INS SimpleType@@ArithmeticException @TO@ ClassInstanceCreation@@ArithmeticException["Multiplication
+      overflows a long: " + val1 + " * "+ val2] '
+    - '---------INS InfixExpression@@"Multiplication overflows a long: " + val1 +
+      " * "+ val2 @TO@ ClassInstanceCreation@@ArithmeticException["Multiplication
+      overflows a long: " + val1 + " * "+ val2] '
+    - '------------INS StringLiteral@@"Multiplication overflows a long: " @TO@ InfixExpression@@"Multiplication
+      overflows a long: " + val1 + " * "+ val2 '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Multiplication overflows
+      a long: " + val1 + " * "+ val2 '
+    - '------------INS SimpleName@@val1 @TO@ InfixExpression@@"Multiplication overflows
+      a long: " + val1 + " * "+ val2 '
+    - '------------INS StringLiteral@@" * " @TO@ InfixExpression@@"Multiplication
+      overflows a long: " + val1 + " * "+ val2 '
+    - '------------INS SimpleName@@val2 @TO@ InfixExpression@@"Multiplication overflows
+      a long: " + val1 + " * "+ val2 '
+  repair_actions_cnt: 1

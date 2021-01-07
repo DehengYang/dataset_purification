@@ -1,0 +1,115 @@
+1 bug_id: Closure-70
+2 src folder:
+  name of src folder: src
+  number of files: 402
+  number of java files: 389
+  number of src classes: 1266
+  number of test classes: 207
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testFunctionArguments13
+  - com.google.javascript.jscomp.TypeCheckTest#testScoping12
+  - com.google.javascript.jscomp.LooseTypeCheckTest#testDuplicateLocalVarDecl
+  - com.google.javascript.jscomp.LooseTypeCheckTest#testFunctionArguments13
+  - com.google.javascript.jscomp.TypeCheckTest#testDuplicateLocalVarDecl
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  - com.google.javascript.jscomp.LooseTypeCheckTest
+  number of all test cases: 7055
+  number of failing test cases: 5
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.526
+  purification via delta debugging: 155.215
+  repair actions extraction: 2.034
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.LooseTypeCheckTest#testDuplicateLocalVarDecl: 3828
+    com.google.javascript.jscomp.LooseTypeCheckTest#testFunctionArguments13: 4461
+    com.google.javascript.jscomp.TypeCheckTest#testDuplicateLocalVarDecl: 3834
+    com.google.javascript.jscomp.TypeCheckTest#testFunctionArguments13: 4459
+    com.google.javascript.jscomp.TypeCheckTest#testScoping12: 4238
+  fixed:
+    com.google.javascript.jscomp.LooseTypeCheckTest#testDuplicateLocalVarDecl: 3820
+    com.google.javascript.jscomp.LooseTypeCheckTest#testFunctionArguments13: 4546
+    com.google.javascript.jscomp.TypeCheckTest#testDuplicateLocalVarDecl: 3821
+    com.google.javascript.jscomp.TypeCheckTest#testFunctionArguments13: 4544
+    com.google.javascript.jscomp.TypeCheckTest#testScoping12: 4325
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_70/src/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 08:39:42.443604899 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_70/purify/patch/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 08:39:42.439604783 -0400\n@@ -1742,7 +1742,7 @@\n           for (Node\
+    \ astParameter : astParameters.children()) {\n             if (jsDocParameter\
+    \ != null) {\n               defineSlot(astParameter, functionNode,\n-       \
+    \           jsDocParameter.getJSType(), true);\n+                  jsDocParameter.getJSType(),\
+    \ false);\n               jsDocParameter = jsDocParameter.getNext();\n       \
+    \      } else {\n               defineSlot(astParameter, functionNode, null, true);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_70/src/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 08:42:50.645051837 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_70/purify/purified/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 08:42:50.641051722 -0400\n@@ -1742,7 +1742,7 @@\n           for (Node\
+    \ astParameter : astParameters.children()) {\n             if (jsDocParameter\
+    \ != null) {\n               defineSlot(astParameter, functionNode,\n-       \
+    \           jsDocParameter.getJSType(), true);\n+                  jsDocParameter.getJSType(),\
+    \ false);\n               jsDocParameter = jsDocParameter.getNext();\n       \
+    \      } else {\n               defineSlot(astParameter, functionNode, null, true);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypedScopeCreator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:defineSlot(astParameter,functionNode,jsDocParameter.getJSType(),true)
+      @TO@ MethodInvocation:defineSlot(astParameter,functionNode,jsDocParameter.getJSType(),false) '
+    - '---UPD MethodInvocation@@defineSlot(astParameter,functionNode,jsDocParameter.getJSType(),true)
+      @TO@ defineSlot(astParameter,functionNode,jsDocParameter.getJSType(),false) '
+    - '------UPD SimpleName@@MethodName:defineSlot:[astParameter, functionNode, jsDocParameter.getJSType(),
+      true] @TO@ MethodName:defineSlot:[astParameter, functionNode, jsDocParameter.getJSType(),
+      false] '
+    - '---------UPD BooleanLiteral@@true @TO@ false '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypedScopeCreator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:defineSlot(astParameter,functionNode,jsDocParameter.getJSType(),true)
+      @TO@ MethodInvocation:defineSlot(astParameter,functionNode,jsDocParameter.getJSType(),false) '
+    - '---UPD MethodInvocation@@defineSlot(astParameter,functionNode,jsDocParameter.getJSType(),true)
+      @TO@ defineSlot(astParameter,functionNode,jsDocParameter.getJSType(),false) '
+    - '------UPD SimpleName@@MethodName:defineSlot:[astParameter, functionNode, jsDocParameter.getJSType(),
+      true] @TO@ MethodName:defineSlot:[astParameter, functionNode, jsDocParameter.getJSType(),
+      false] '
+    - '---------UPD BooleanLiteral@@true @TO@ false '
+  files_cnt: '1'
+  repair_actions_cnt: 1

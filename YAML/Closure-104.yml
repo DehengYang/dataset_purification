@@ -1,0 +1,104 @@
+1 bug_id: Closure-104
+2 src folder:
+  name of src folder: src
+  number of files: 322
+  number of java files: 312
+  number of src classes: 994
+  number of test classes: 158
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.rhino.jstype.UnionTypeTest#testGreatestSubtypeUnionTypes5
+  failing tests:
+  - com.google.javascript.rhino.jstype.UnionTypeTest
+  number of all test cases: 4512
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.002
+  purification via delta debugging: 81.351
+  repair actions extraction: 1.049
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.rhino.jstype.UnionTypeTest#testGreatestSubtypeUnionTypes5: 844
+  fixed:
+    com.google.javascript.rhino.jstype.UnionTypeTest#testGreatestSubtypeUnionTypes5: 849
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_104/src/com/google/javascript/rhino/jstype/UnionType.java\t\
+    2020-10-23 13:11:18.851384847 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_104/purify/patch/com/google/javascript/rhino/jstype/UnionType.java\t\
+    2020-10-23 13:11:18.851384847 -0400\n@@ -288,7 +288,7 @@\n       builder.addAlternate(that);\n\
+    \     }\n     JSType result = builder.build();\n-    if (result != null) {\n+\
+    \    if (!result.isNoType()) {\n       return result;\n     } else if (this.isObject()\
+    \ && that.isObject()) {\n       return getNativeType(JSTypeNative.NO_OBJECT_TYPE);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_104/src/com/google/javascript/rhino/jstype/UnionType.java\t\
+    2020-10-23 13:12:57.666246502 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_104/purify/purified/com/google/javascript/rhino/jstype/UnionType.java\t\
+    2020-10-23 13:12:57.666246502 -0400\n@@ -288,7 +288,7 @@\n       builder.addAlternate(that);\n\
+    \     }\n     JSType result = builder.build();\n-    if (result != null) {\n+\
+    \    if (!result.isNoType()) {\n       return result;\n     } else if (this.isObject()\
+    \ && that.isObject()) {\n       return getNativeType(JSTypeNative.NO_OBJECT_TYPE);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/rhino/jstype/UnionType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:result != null @TO@ PrefixExpression:!result.isNoType() '
+    - '---INS PrefixExpression@@!result.isNoType() @TO@ IfStatement@@InfixExpression:result
+      != null '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!result.isNoType() '
+    - '------INS MethodInvocation@@result.isNoType() @TO@ PrefixExpression@@!result.isNoType() '
+    - '---------INS SimpleName@@Name:result @TO@ MethodInvocation@@result.isNoType() '
+    - '---------INS SimpleName@@MethodName:isNoType:[] @TO@ MethodInvocation@@result.isNoType() '
+    - '---DEL InfixExpression@@result != null '
+    - '------DEL SimpleName@@result '
+    - '------DEL Operator@@!= '
+    - '------DEL NullLiteral@@null '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/rhino/jstype/UnionType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:result != null @TO@ PrefixExpression:!result.isNoType() '
+    - '---INS PrefixExpression@@!result.isNoType() @TO@ IfStatement@@InfixExpression:result
+      != null '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!result.isNoType() '
+    - '------INS MethodInvocation@@result.isNoType() @TO@ PrefixExpression@@!result.isNoType() '
+    - '---------INS SimpleName@@Name:result @TO@ MethodInvocation@@result.isNoType() '
+    - '---------INS SimpleName@@MethodName:isNoType:[] @TO@ MethodInvocation@@result.isNoType() '
+    - '---DEL InfixExpression@@result != null '
+    - '------DEL SimpleName@@result '
+    - '------DEL Operator@@!= '
+    - '------DEL NullLiteral@@null '
+  files_cnt: '1'
+  repair_actions_cnt: 1

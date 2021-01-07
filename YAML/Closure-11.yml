@@ -1,0 +1,143 @@
+1 bug_id: Closure-11
+2 src folder:
+  name of src folder: src
+  number of files: 420
+  number of java files: 404
+  number of src classes: 1366
+  number of test classes: 225
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testIssue810
+  - com.google.javascript.jscomp.TypeCheckTest#testGetprop4
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 7647
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.002
+  purification via delta debugging: 356.296
+  repair actions extraction: 3.085
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testGetprop4: 4796
+    com.google.javascript.jscomp.TypeCheckTest#testIssue810: 4811
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testGetprop4: 4890
+    com.google.javascript.jscomp.TypeCheckTest#testIssue810: 4939
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 0
+  covDel: 2
+  cov_patch_lines: 2
+  delta_patch_lines: 1
+  oriAdd: 0
+  oriDel: 2
+  ori_patch_lines: 2
+  purAdd: 0
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 1
+  passed: 1
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_11/src/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-21 17:34:21.373058299 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_11/purify/patch/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-21 17:34:21.373058299 -0400\n@@ -1311,8 +1311,6 @@\n \n     if (childType.isDict())\
+    \ {\n       report(t, property, TypeValidator.ILLEGAL_PROPERTY_ACCESS, \"'.'\"\
+    , \"dict\");\n-    } else if (n.getJSType() != null && parent.isAssign()) {\n\
+    -      return;\n     } else if (validator.expectNotNullOrUndefined(t, n, childType,\n\
+    \         \"No properties on this expression\", getNativeType(OBJECT_TYPE))) {\n\
+    \       checkPropertyAccess(childType, property.getString(), t, n);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_11/src/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-21 17:40:53.000299689 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_11/purify/purified/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-21 17:40:53.000299689 -0400\n@@ -1311,7 +1311,6 @@\n \n     if (childType.isDict())\
+    \ {\n       report(t, property, TypeValidator.ILLEGAL_PROPERTY_ACCESS, \"'.'\"\
+    , \"dict\");\n-    } else if (n.getJSType() != null && parent.isAssign()) {\n\
+    \       return;\n     } else if (validator.expectNotNullOrUndefined(t, n, childType,\n\
+    \         \"No properties on this expression\", getNativeType(OBJECT_TYPE))) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeCheck:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:childType.isDict() '
+    - '---DEL MethodInvocation@@childType.isDict() '
+    - '------DEL SimpleName@@Name:childType '
+    - '------DEL SimpleName@@MethodName:isDict:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:n.getJSType() != null && parent.isAssign()
+      @TO@ MethodInvocation:childType.isDict() '
+    - '---INS MethodInvocation@@childType.isDict() @TO@ IfStatement@@InfixExpression:n.getJSType()
+      != null && parent.isAssign() '
+    - '------MOV SimpleName@@Name:n @TO@ MethodInvocation@@childType.isDict() '
+    - '------MOV SimpleName@@MethodName:getJSType:[] @TO@ MethodInvocation@@childType.isDict() '
+    - '---MOV ExpressionStatement@@MethodInvocation:report(t,property,TypeValidator.ILLEGAL_PROPERTY_ACCESS,"''.''","dict")
+      @TO@ IfStatement@@InfixExpression:n.getJSType() != null && parent.isAssign() '
+    - '---DEL InfixExpression@@n.getJSType() != null && parent.isAssign() '
+    - '------DEL InfixExpression@@n.getJSType() != null '
+    - '---------DEL MethodInvocation@@n.getJSType() '
+    - '---------DEL Operator@@!= '
+    - '---------DEL NullLiteral@@null '
+    - '------DEL Operator@@&& '
+    - '------DEL MethodInvocation@@parent.isAssign() '
+    - '---------DEL SimpleName@@Name:parent '
+    - '---------DEL SimpleName@@MethodName:isAssign:[] '
+    - '---DEL ReturnStatement@@ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:n.getJSType() != null && parent.isAssign()
+      @TO@ MethodDeclaration@@private, @@void, MethodName:visitGetProp, @@Argus:NodeTraversal+t+Node+n+Node+parent+ '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeCheck:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:childType.isDict() '
+    - '---DEL MethodInvocation@@childType.isDict() '
+    - '------DEL SimpleName@@Name:childType '
+    - '------DEL SimpleName@@MethodName:isDict:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:n.getJSType() != null && parent.isAssign()
+      @TO@ MethodInvocation:childType.isDict() '
+    - '---INS MethodInvocation@@childType.isDict() @TO@ IfStatement@@InfixExpression:n.getJSType()
+      != null && parent.isAssign() '
+    - '------MOV SimpleName@@Name:n @TO@ MethodInvocation@@childType.isDict() '
+    - '------MOV SimpleName@@MethodName:getJSType:[] @TO@ MethodInvocation@@childType.isDict() '
+    - '---MOV ExpressionStatement@@MethodInvocation:report(t,property,TypeValidator.ILLEGAL_PROPERTY_ACCESS,"''.''","dict")
+      @TO@ IfStatement@@InfixExpression:n.getJSType() != null && parent.isAssign() '
+    - '---DEL InfixExpression@@n.getJSType() != null && parent.isAssign() '
+    - '------DEL InfixExpression@@n.getJSType() != null '
+    - '---------DEL MethodInvocation@@n.getJSType() '
+    - '---------DEL Operator@@!= '
+    - '---------DEL NullLiteral@@null '
+    - '------DEL Operator@@&& '
+    - '------DEL MethodInvocation@@parent.isAssign() '
+    - '---------DEL SimpleName@@Name:parent '
+    - '---------DEL SimpleName@@MethodName:isAssign:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:n.getJSType() != null && parent.isAssign()
+      @TO@ MethodDeclaration@@private, @@void, MethodName:visitGetProp, @@Argus:NodeTraversal+t+Node+n+Node+parent+ '
+  files_cnt: '1'
+  repair_actions_cnt: 3

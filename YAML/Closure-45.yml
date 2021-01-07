@@ -1,0 +1,181 @@
+1 bug_id: Closure-45
+2 src folder:
+  name of src folder: src
+  number of files: 406
+  number of java files: 392
+  number of src classes: 1309
+  number of test classes: 217
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.RemoveUnusedVarsTest#testIssue618_1
+  failing tests:
+  - com.google.javascript.jscomp.RemoveUnusedVarsTest
+  number of all test cases: 7193
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.751
+  purification via delta debugging: 481.674
+  repair actions extraction: 2.277
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.RemoveUnusedVarsTest#testIssue618_1: 3489
+  fixed:
+    com.google.javascript.jscomp.RemoveUnusedVarsTest#testIssue618_1: 3346
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 6
+  covDel: 2
+  cov_patch_lines: 8
+  delta_patch_lines: 6
+  oriAdd: 6
+  oriDel: 2
+  ori_patch_lines: 8
+  purAdd: 5
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 4
+  original: 4
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 10
+  failFail: 4
+  passed: 1
+  total: 15
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_45/src/com/google/javascript/jscomp/RemoveUnusedVars.java\t\
+    2020-10-23 04:00:47.655359304 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_45/purify/patch/com/google/javascript/jscomp/RemoveUnusedVars.java\t\
+    2020-10-23 04:00:47.655359304 -0400\n@@ -729,6 +729,7 @@\n             assignedToUnknownValue\
+    \ = true;\n           }\n \n+          boolean maybeEscaped = false;\n       \
+    \    for (Assign assign : assignsByVar.get(var)) {\n             if (assign.isPropertyAssign)\
+    \ {\n               hasPropertyAssign = true;\n@@ -736,9 +737,12 @@\n        \
+    \         assign.assignNode.getLastChild(), true)) {\n               assignedToUnknownValue\
+    \ = true;\n             }\n+            if (assign.maybeAliased) {\n+        \
+    \      maybeEscaped = true;\n+            }\n           }\n \n-          if (assignedToUnknownValue\
+    \ && hasPropertyAssign) {\n+          if ((assignedToUnknownValue || maybeEscaped)\
+    \ && hasPropertyAssign) {\n             changes = markReferencedVar(var) || changes;\n\
+    \             maybeUnreferenced.remove(current);\n             current--;\n@@\
+    \ -901,7 +905,7 @@\n       this.nameNode = nameNode;\n       this.isPropertyAssign\
+    \ = isPropertyAssign;\n \n-      this.maybeAliased = !assignNode.getParent().isExprResult();\n\
+    +      this.maybeAliased = NodeUtil.isExpressionResultUsed(assignNode);\n    \
+    \   this.mayHaveSecondarySideEffects =\n           maybeAliased ||\n         \
+    \  NodeUtil.mayHaveSideEffects(assignNode.getFirstChild()) ||"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_45/src/com/google/javascript/jscomp/RemoveUnusedVars.java\t\
+    2020-10-23 04:09:19.562170257 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_45/purify/purified/com/google/javascript/jscomp/RemoveUnusedVars.java\t\
+    2020-10-23 04:09:19.562170257 -0400\n@@ -729,6 +729,7 @@\n             assignedToUnknownValue\
+    \ = true;\n           }\n \n+          boolean maybeEscaped = false;\n       \
+    \    for (Assign assign : assignsByVar.get(var)) {\n             if (assign.isPropertyAssign)\
+    \ {\n               hasPropertyAssign = true;\n@@ -736,9 +737,12 @@\n        \
+    \         assign.assignNode.getLastChild(), true)) {\n               assignedToUnknownValue\
+    \ = true;\n             }\n+            if (assign.maybeAliased) {\n+        \
+    \      maybeEscaped = true;\n+            }\n           }\n \n-          if (assignedToUnknownValue\
+    \ && hasPropertyAssign) {\n+          if ((assignedToUnknownValue || maybeEscaped)\
+    \ && hasPropertyAssign) {\n             changes = markReferencedVar(var) || changes;\n\
+    \             maybeUnreferenced.remove(current);\n             current--;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/RemoveUnusedVars:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean maybeEscaped=false; @TO@ IfStatement@@MethodInvocation:referenced.contains(var) '
+    - '---INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean maybeEscaped=false; '
+    - '---INS VariableDeclarationFragment@@maybeEscaped=false @TO@ VariableDeclarationStatement@@boolean
+      maybeEscaped=false; '
+    - '------INS SimpleName@@maybeEscaped @TO@ VariableDeclarationFragment@@maybeEscaped=false '
+    - '------INS BooleanLiteral@@false @TO@ VariableDeclarationFragment@@maybeEscaped=false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:assignedToUnknownValue && hasPropertyAssign
+      @TO@ InfixExpression:(assignedToUnknownValue || maybeEscaped) && hasPropertyAssign '
+    - '---UPD InfixExpression@@assignedToUnknownValue && hasPropertyAssign @TO@ (assignedToUnknownValue
+      || maybeEscaped) && hasPropertyAssign '
+    - '------INS ParenthesizedExpression@@(assignedToUnknownValue || maybeEscaped)
+      @TO@ InfixExpression@@assignedToUnknownValue && hasPropertyAssign '
+    - '---------INS InfixExpression@@assignedToUnknownValue || maybeEscaped @TO@ ParenthesizedExpression@@(assignedToUnknownValue
+      || maybeEscaped) '
+    - '------------MOV SimpleName@@assignedToUnknownValue @TO@ InfixExpression@@assignedToUnknownValue
+      || maybeEscaped '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@assignedToUnknownValue ||
+      maybeEscaped '
+    - '------------INS SimpleName@@maybeEscaped @TO@ InfixExpression@@assignedToUnknownValue
+      || maybeEscaped '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@QualifiedName:assign.maybeAliased @TO@ EnhancedForStatement@@Assign
+      assign, MethodInvocation:assignsByVar.get(var) '
+    - '---INS QualifiedName@@assign.maybeAliased @TO@ IfStatement@@QualifiedName:assign.maybeAliased '
+    - '------INS SimpleName@@assign @TO@ QualifiedName@@assign.maybeAliased '
+    - '------INS SimpleName@@maybeAliased @TO@ QualifiedName@@assign.maybeAliased '
+    - '---INS ExpressionStatement@@Assignment:maybeEscaped=true @TO@ IfStatement@@QualifiedName:assign.maybeAliased '
+    - '------INS Assignment@@maybeEscaped=true @TO@ ExpressionStatement@@Assignment:maybeEscaped=true '
+    - '---------INS SimpleName@@maybeEscaped @TO@ Assignment@@maybeEscaped=true '
+    - '---------INS Operator@@= @TO@ Assignment@@maybeEscaped=true '
+    - '---------INS BooleanLiteral@@true @TO@ Assignment@@maybeEscaped=true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:this.maybeAliased=!assignNode.getParent().isExprResult()
+      @TO@ Assignment:this.maybeAliased=NodeUtil.isExpressionResultUsed(assignNode) '
+    - '---UPD Assignment@@this.maybeAliased=!assignNode.getParent().isExprResult()
+      @TO@ this.maybeAliased=NodeUtil.isExpressionResultUsed(assignNode) '
+    - '------DEL PrefixExpression@@!assignNode.getParent().isExprResult() '
+    - '---------DEL Operator@@! '
+    - '---------DEL MethodInvocation@@assignNode.getParent().isExprResult() '
+    - '------------DEL MethodInvocation@@MethodName:getParent:[] '
+    - '------INS MethodInvocation@@NodeUtil.isExpressionResultUsed(assignNode) @TO@
+      Assignment@@this.maybeAliased=!assignNode.getParent().isExprResult() '
+    - '---------MOV SimpleName@@Name:assignNode @TO@ MethodInvocation@@NodeUtil.isExpressionResultUsed(assignNode) '
+    - '---------MOV SimpleName@@MethodName:isExprResult:[] @TO@ MethodInvocation@@NodeUtil.isExpressionResultUsed(assignNode) '
+  files_cnt: '1'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/RemoveUnusedVars:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean maybeEscaped=false; @TO@ IfStatement@@MethodInvocation:referenced.contains(var) '
+    - '---INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean maybeEscaped=false; '
+    - '---INS VariableDeclarationFragment@@maybeEscaped=false @TO@ VariableDeclarationStatement@@boolean
+      maybeEscaped=false; '
+    - '------INS SimpleName@@maybeEscaped @TO@ VariableDeclarationFragment@@maybeEscaped=false '
+    - '------INS BooleanLiteral@@false @TO@ VariableDeclarationFragment@@maybeEscaped=false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:assignedToUnknownValue && hasPropertyAssign
+      @TO@ InfixExpression:(assignedToUnknownValue || maybeEscaped) && hasPropertyAssign '
+    - '---UPD InfixExpression@@assignedToUnknownValue && hasPropertyAssign @TO@ (assignedToUnknownValue
+      || maybeEscaped) && hasPropertyAssign '
+    - '------INS ParenthesizedExpression@@(assignedToUnknownValue || maybeEscaped)
+      @TO@ InfixExpression@@assignedToUnknownValue && hasPropertyAssign '
+    - '---------INS InfixExpression@@assignedToUnknownValue || maybeEscaped @TO@ ParenthesizedExpression@@(assignedToUnknownValue
+      || maybeEscaped) '
+    - '------------MOV SimpleName@@assignedToUnknownValue @TO@ InfixExpression@@assignedToUnknownValue
+      || maybeEscaped '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@assignedToUnknownValue ||
+      maybeEscaped '
+    - '------------INS SimpleName@@maybeEscaped @TO@ InfixExpression@@assignedToUnknownValue
+      || maybeEscaped '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@QualifiedName:assign.maybeAliased @TO@ EnhancedForStatement@@Assign
+      assign, MethodInvocation:assignsByVar.get(var) '
+    - '---INS QualifiedName@@assign.maybeAliased @TO@ IfStatement@@QualifiedName:assign.maybeAliased '
+    - '------INS SimpleName@@assign @TO@ QualifiedName@@assign.maybeAliased '
+    - '------INS SimpleName@@maybeAliased @TO@ QualifiedName@@assign.maybeAliased '
+    - '---INS ExpressionStatement@@Assignment:maybeEscaped=true @TO@ IfStatement@@QualifiedName:assign.maybeAliased '
+    - '------INS Assignment@@maybeEscaped=true @TO@ ExpressionStatement@@Assignment:maybeEscaped=true '
+    - '---------INS SimpleName@@maybeEscaped @TO@ Assignment@@maybeEscaped=true '
+    - '---------INS Operator@@= @TO@ Assignment@@maybeEscaped=true '
+    - '---------INS BooleanLiteral@@true @TO@ Assignment@@maybeEscaped=true '
+  files_cnt: '1'
+  repair_actions_cnt: 3

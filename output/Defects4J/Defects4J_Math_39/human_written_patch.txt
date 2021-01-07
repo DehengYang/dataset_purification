@@ -1,0 +1,19 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_39/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_39/fixed-version/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_39/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java	2020-03-01 00:17:43.589831179 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_39/fixed-version/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java	2020-03-01 00:17:47.206001559 -0800
+@@ -247,6 +247,15 @@
+         }
+ 
+         stepSize = hNew;
++        if (forward) {
++            if (stepStart + stepSize >= t) {
++                stepSize = t - stepStart;
++            }
++        } else {
++            if (stepStart + stepSize <= t) {
++                stepSize = t - stepStart;
++            }
++        }
+ 
+         // next stages
+         for (int k = 1; k < stages; ++k) {

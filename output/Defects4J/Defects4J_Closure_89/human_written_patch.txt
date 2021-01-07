@@ -1,0 +1,25 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_89/src/com/google/javascript/jscomp/CollapseProperties.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_89/fixed-version/src/com/google/javascript/jscomp/CollapseProperties.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_89/src/com/google/javascript/jscomp/CollapseProperties.java	2020-03-01 00:31:09.175789723 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_89/fixed-version/src/com/google/javascript/jscomp/CollapseProperties.java	2020-03-01 00:31:11.191884720 -0800
+@@ -481,6 +481,9 @@
+     Node greatGramps = gramps.getParent();
+     Node greatGreatGramps = greatGramps.getParent();
+ 
++    if (rvalue != null && rvalue.getType() == Token.FUNCTION) {
++      checkForHosedThisReferences(rvalue, refName.docInfo, refName);
++    }
+ 
+     // Create the new alias node.
+     Node nameNode = NodeUtil.newName(
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_89/src/com/google/javascript/jscomp/GlobalNamespace.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_89/fixed-version/src/com/google/javascript/jscomp/GlobalNamespace.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_89/src/com/google/javascript/jscomp/GlobalNamespace.java	2020-03-01 00:31:09.175789723 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_89/fixed-version/src/com/google/javascript/jscomp/GlobalNamespace.java	2020-03-01 00:31:11.191884720 -0800
+@@ -917,7 +917,7 @@
+       }
+ 
+       // If this is aliased, then its properties can't be collapsed either.
+-      if (type != Type.FUNCTION && aliasingGets > 0) {
++      if (aliasingGets > 0) {
+         return false;
+       }
+ 

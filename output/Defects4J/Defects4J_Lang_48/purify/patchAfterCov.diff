@@ -1,0 +1,15 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_48/src/java/org/apache/commons/lang/builder/EqualsBuilder.java	2020-10-21 03:47:42.229759861 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_48/purify/assertBeforeMut/org/apache/commons/lang/builder/EqualsBuilder.java	2020-10-21 03:47:42.225759746 -0400
+@@ -377,8 +377,12 @@
+         }
+         Class lhsClass = lhs.getClass();
+         if (!lhsClass.isArray()) {
++            if (lhs instanceof java.math.BigDecimal) {
++                isEquals = (((java.math.BigDecimal)lhs).compareTo(rhs) == 0);
++            } else {
+                 // The simple case, not an array, just test the element
+                 isEquals = lhs.equals(rhs);
++            }
+         } else if (lhs.getClass() != rhs.getClass()) {
+             // Here when we compare different dimensions, for example: a boolean[][] to a boolean[] 
+             this.setEquals(false);

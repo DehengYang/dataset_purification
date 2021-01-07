@@ -1,0 +1,134 @@
+1 bug_id: Math-46
+2 src folder:
+  name of src folder: java
+  number of files: 615
+  number of java files: 568
+  number of src classes: 746
+  number of test classes: 278
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.complex.ComplexTest#testAtanI
+  - org.apache.commons.math.complex.ComplexTest#testDivideZero
+  - org.apache.commons.math.complex.ComplexTest#testAtanI
+  - org.apache.commons.math.complex.ComplexTest#testDivideZero
+  - org.apache.commons.math.complex.ComplexTest#testAtanI
+  - org.apache.commons.math.complex.ComplexTest#testDivideZero
+  - org.apache.commons.math.complex.ComplexTest#testScalarDivideZero
+  - org.apache.commons.math.complex.ComplexTest#testAtanI
+  - org.apache.commons.math.complex.ComplexTest#testDivideZero
+  - org.apache.commons.math.complex.ComplexTest#testAtanI
+  - org.apache.commons.math.complex.ComplexTest#testDivideZero
+  - org.apache.commons.math.complex.ComplexTest#testScalarDivideZero
+  failing tests:
+  - org.apache.commons.math.complex.ComplexTest
+  number of all test cases: 2998
+  number of failing test cases: 12
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.78
+  purification via delta debugging: 256.644
+  repair actions extraction: 1.231
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.complex.ComplexTest#testAtanI: 346
+    org.apache.commons.math.complex.ComplexTest#testDivideZero: 25
+  fixed:
+    org.apache.commons.math.complex.ComplexTest#testAtanI: 330
+    org.apache.commons.math.complex.ComplexTest#testDivideZero: 21
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 3
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 1
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 4
+  passed: 1
+  total: 7
+9 sibling repair actions:
+- 0 1 1.0
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_46/src/main/java/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 11:45:14.714617023 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_46/purify/patch/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 11:45:14.714617023 -0400\n@@ -257,7 +257,7 @@\n \n         if (divisor.isZero)\
+    \ {\n             // return isZero ? NaN : INF; // See MATH-657\n-           \
+    \ return isZero ? NaN : INF;\n+            return NaN;\n         }\n \n      \
+    \   if (divisor.isInfinite() && !isInfinite()) {\n@@ -294,7 +294,7 @@\n      \
+    \   }\n         if (divisor == 0d) {\n             // return isZero ? NaN : INF;\
+    \ // See MATH-657\n-            return isZero ? NaN : INF;\n+            return\
+    \ NaN;\n         }\n         if (Double.isInfinite(divisor)) {\n             return\
+    \ !isInfinite() ? ZERO : NaN;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_46/src/main/java/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 11:49:50.666596775 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_46/purify/purified/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 11:49:50.662596660 -0400\n@@ -257,7 +257,6 @@\n \n         if (divisor.isZero)\
+    \ {\n             // return isZero ? NaN : INF; // See MATH-657\n-           \
+    \ return isZero ? NaN : INF;\n         }\n \n         if (divisor.isInfinite()\
+    \ && !isInfinite()) {\n@@ -294,7 +293,7 @@\n         }\n         if (divisor ==\
+    \ 0d) {\n             // return isZero ? NaN : INF; // See MATH-657\n-       \
+    \     return isZero ? NaN : INF;\n+            return NaN;\n         }\n     \
+    \    if (Double.isInfinite(divisor)) {\n             return !isInfinite() ? ZERO\
+    \ : NaN;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/complex/Complex:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@ConditionalExpression:isZero ? NaN : INF @TO@ SimpleName:NaN '
+    - '---INS SimpleName@@NaN @TO@ ReturnStatement@@ConditionalExpression:isZero ?
+      NaN : INF '
+    - '---DEL ConditionalExpression@@isZero ? NaN : INF '
+    - '------DEL SimpleName@@isZero '
+    - '------DEL SimpleName@@NaN '
+    - '------DEL SimpleName@@INF '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@ConditionalExpression:isZero ? NaN : INF @TO@ SimpleName:NaN '
+    - '---INS SimpleName@@NaN @TO@ ReturnStatement@@ConditionalExpression:isZero ?
+      NaN : INF '
+    - '---DEL ConditionalExpression@@isZero ? NaN : INF '
+    - '------DEL SimpleName@@isZero '
+    - '------DEL SimpleName@@NaN '
+    - '------DEL SimpleName@@INF '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/complex/Complex:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@ConditionalExpression:isZero ? NaN : INF '
+    - '---DEL ConditionalExpression@@isZero ? NaN : INF '
+    - '------DEL SimpleName@@isZero '
+    - '------DEL SimpleName@@NaN '
+    - '------DEL SimpleName@@INF '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@ConditionalExpression:isZero ? NaN : INF @TO@ SimpleName:NaN '
+    - '---INS SimpleName@@NaN @TO@ ReturnStatement@@ConditionalExpression:isZero ?
+      NaN : INF '
+    - '---DEL ConditionalExpression@@isZero ? NaN : INF '
+    - '------DEL SimpleName@@isZero '
+    - '------DEL SimpleName@@NaN '
+    - '------DEL SimpleName@@INF '
+  repair_actions_cnt: 2

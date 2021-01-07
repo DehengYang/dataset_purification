@@ -1,0 +1,13 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_75/src/com/google/javascript/jscomp/NodeUtil.java	2020-10-23 09:14:03.411264678 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_75/purify/purified/com/google/javascript/jscomp/NodeUtil.java	2020-10-23 09:14:03.411264678 -0400
+@@ -310,7 +310,10 @@
+   }
+ 
+   static Double getStringNumberValue(String rawJsString) {
++    if (rawJsString.contains("\u000b")) {
+       // vertical tab is not always whitespace
++      return null;
++    }
+ 
+     String s = trimJsWhiteSpace(rawJsString);
+     // return ScriptRuntime.toNumber(s);

@@ -1,0 +1,184 @@
+1 bug_id: Chart-4
+2 src folder:
+  name of src folder: source
+  number of files: 707
+  number of java files: 633
+  number of src classes: 660
+  number of test classes: 357
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.junit.XYStepAreaChartTests#testReplaceDataset
+  - org.jfree.chart.junit.XYStepChartTests#testReplaceDataset
+  - org.jfree.chart.axis.junit.NumberAxisTests#testXYAutoRange1
+  - org.jfree.chart.junit.ScatterPlotTests#testDrawWithNullInfo
+  - org.jfree.chart.axis.junit.NumberAxisTests#testXYAutoRange2
+  - org.jfree.chart.axis.junit.ValueAxisTests#testAxisMargins
+  - org.jfree.chart.junit.XYStepChartTests#testSetSeriesToolTipGenerator
+  - org.jfree.chart.plot.junit.XYPlotTests#testDrawRangeGridlines
+  - org.jfree.chart.junit.TimeSeriesChartTests#testSetSeriesToolTipGenerator
+  - org.jfree.chart.junit.XYAreaChartTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.XYAreaChartTests#testReplaceDataset
+  - org.jfree.chart.junit.TimeSeriesChartTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.XYStepAreaChartTests#testSetSeriesToolTipGenerator
+  - org.jfree.chart.junit.XYStepChartTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.JFreeChartTests#testSerialization4
+  - org.jfree.chart.junit.XYAreaChartTests#testSetSeriesToolTipGenerator
+  - org.jfree.chart.junit.ScatterPlotTests#testReplaceDataset
+  - org.jfree.chart.junit.TimeSeriesChartTests#testReplaceDataset
+  - org.jfree.chart.junit.XYStepAreaChartTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.ScatterPlotTests#testSetSeriesToolTipGenerator
+  - org.jfree.chart.axis.junit.LogAxisTests#testXYAutoRange1
+  - org.jfree.chart.axis.junit.LogAxisTests#testXYAutoRange2
+  failing tests:
+  - org.jfree.chart.junit.XYStepAreaChartTests
+  - org.jfree.chart.junit.XYStepChartTests
+  - org.jfree.chart.axis.junit.NumberAxisTests
+  - org.jfree.chart.junit.ScatterPlotTests
+  - org.jfree.chart.axis.junit.ValueAxisTests
+  - org.jfree.chart.plot.junit.XYPlotTests
+  - org.jfree.chart.junit.TimeSeriesChartTests
+  - org.jfree.chart.junit.XYAreaChartTests
+  - org.jfree.chart.junit.JFreeChartTests
+  - org.jfree.chart.axis.junit.LogAxisTests
+  number of all test cases: 2187
+  number of failing test cases: 22
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.329
+  purification via delta debugging: 109.225
+  repair actions extraction: 4.172
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.axis.junit.LogAxisTests#testXYAutoRange1: 796
+    org.jfree.chart.axis.junit.LogAxisTests#testXYAutoRange2: 796
+    org.jfree.chart.axis.junit.NumberAxisTests#testXYAutoRange1: 796
+    org.jfree.chart.axis.junit.NumberAxisTests#testXYAutoRange2: 796
+    org.jfree.chart.axis.junit.ValueAxisTests#testAxisMargins: 798
+    org.jfree.chart.junit.JFreeChartTests#testSerialization4: 1598
+    org.jfree.chart.junit.ScatterPlotTests#testDrawWithNullInfo: 791
+    org.jfree.chart.junit.ScatterPlotTests#testReplaceDataset: 791
+    org.jfree.chart.junit.ScatterPlotTests#testSetSeriesToolTipGenerator: 791
+    org.jfree.chart.junit.TimeSeriesChartTests#testDrawWithNullInfo: 960
+    org.jfree.chart.junit.TimeSeriesChartTests#testReplaceDataset: 960
+    org.jfree.chart.junit.TimeSeriesChartTests#testSetSeriesToolTipGenerator: 960
+    org.jfree.chart.junit.XYAreaChartTests#testDrawWithNullInfo: 790
+    org.jfree.chart.junit.XYAreaChartTests#testReplaceDataset: 790
+    org.jfree.chart.junit.XYAreaChartTests#testSetSeriesToolTipGenerator: 790
+    org.jfree.chart.junit.XYStepAreaChartTests#testDrawWithNullInfo: 979
+    org.jfree.chart.junit.XYStepAreaChartTests#testReplaceDataset: 979
+    org.jfree.chart.junit.XYStepAreaChartTests#testSetSeriesToolTipGenerator: 979
+    org.jfree.chart.junit.XYStepChartTests#testDrawWithNullInfo: 1180
+    org.jfree.chart.junit.XYStepChartTests#testReplaceDataset: 1180
+    org.jfree.chart.junit.XYStepChartTests#testSetSeriesToolTipGenerator: 1180
+    org.jfree.chart.plot.junit.XYPlotTests#testDrawRangeGridlines: 1507
+  fixed:
+    org.jfree.chart.axis.junit.LogAxisTests#testXYAutoRange1: 1745
+    org.jfree.chart.axis.junit.LogAxisTests#testXYAutoRange2: 1745
+    org.jfree.chart.axis.junit.NumberAxisTests#testXYAutoRange1: 1659
+    org.jfree.chart.axis.junit.NumberAxisTests#testXYAutoRange2: 1659
+    org.jfree.chart.axis.junit.ValueAxisTests#testAxisMargins: 1672
+    org.jfree.chart.junit.JFreeChartTests#testSerialization4: 3328
+    org.jfree.chart.junit.ScatterPlotTests#testDrawWithNullInfo: 3919
+    org.jfree.chart.junit.ScatterPlotTests#testReplaceDataset: 1801
+    org.jfree.chart.junit.ScatterPlotTests#testSetSeriesToolTipGenerator: 1777
+    org.jfree.chart.junit.TimeSeriesChartTests#testDrawWithNullInfo: 4111
+    org.jfree.chart.junit.TimeSeriesChartTests#testReplaceDataset: 1997
+    org.jfree.chart.junit.TimeSeriesChartTests#testSetSeriesToolTipGenerator: 1977
+    org.jfree.chart.junit.XYAreaChartTests#testDrawWithNullInfo: 3895
+    org.jfree.chart.junit.XYAreaChartTests#testReplaceDataset: 1836
+    org.jfree.chart.junit.XYAreaChartTests#testSetSeriesToolTipGenerator: 1812
+    org.jfree.chart.junit.XYStepAreaChartTests#testDrawWithNullInfo: 3952
+    org.jfree.chart.junit.XYStepAreaChartTests#testReplaceDataset: 1815
+    org.jfree.chart.junit.XYStepAreaChartTests#testSetSeriesToolTipGenerator: 1791
+    org.jfree.chart.junit.XYStepChartTests#testDrawWithNullInfo: 4195
+    org.jfree.chart.junit.XYStepChartTests#testReplaceDataset: 2037
+    org.jfree.chart.junit.XYStepChartTests#testSetSeriesToolTipGenerator: 2013
+    org.jfree.chart.plot.junit.XYPlotTests#testDrawRangeGridlines: 2929
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 0
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 0
+  ori_patch_lines: 2
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_4/source/org/jfree/chart/plot/XYPlot.java\t\
+    2020-10-22 00:27:08.744182712 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_4/purify/patch/org/jfree/chart/plot/XYPlot.java\t\
+    2020-10-22 00:27:08.732182365 -0400\n@@ -4490,6 +4490,7 @@\n                 \
+    \    }\n                 }\n                 \n+                if (r != null)\
+    \ {\n                     Collection c = r.getAnnotations();\n               \
+    \      Iterator i = c.iterator();\n                     while (i.hasNext()) {\n\
+    @@ -4498,6 +4499,7 @@\n                             includedAnnotations.add(a);\n\
+    \                         }\n                     }\n+                }\n    \
+    \         }\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_4/source/org/jfree/chart/plot/XYPlot.java\t\
+    2020-10-22 00:29:34.728404709 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_4/purify/purified/org/jfree/chart/plot/XYPlot.java\t\
+    2020-10-22 00:29:34.724404594 -0400\n@@ -4490,6 +4490,7 @@\n                 \
+    \    }\n                 }\n                 \n+                if (r != null)\
+    \ {\n                     Collection c = r.getAnnotations();\n               \
+    \      Iterator i = c.iterator();\n                     while (i.hasNext()) {\n\
+    @@ -4498,6 +4499,7 @@\n                             includedAnnotations.add(a);\n\
+    \                         }\n                     }\n+                }\n    \
+    \         }\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/plot/XYPlot:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:r != null @TO@ IfStatement@@InfixExpression:d
+      != null '
+    - '---INS InfixExpression@@r != null @TO@ IfStatement@@InfixExpression:r != null '
+    - '------INS SimpleName@@r @TO@ InfixExpression@@r != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@r != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@r != null '
+    - '---MOV VariableDeclarationStatement@@Collection c=r.getAnnotations(); @TO@
+      IfStatement@@InfixExpression:r != null '
+    - '---MOV VariableDeclarationStatement@@Iterator i=c.iterator(); @TO@ IfStatement@@InfixExpression:r
+      != null '
+    - '---MOV WhileStatement@@MethodInvocation:i.hasNext() @TO@ IfStatement@@InfixExpression:r
+      != null '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/plot/XYPlot:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:r != null @TO@ IfStatement@@InfixExpression:d
+      != null '
+    - '---INS InfixExpression@@r != null @TO@ IfStatement@@InfixExpression:r != null '
+    - '------INS SimpleName@@r @TO@ InfixExpression@@r != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@r != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@r != null '
+    - '---MOV VariableDeclarationStatement@@Collection c=r.getAnnotations(); @TO@
+      IfStatement@@InfixExpression:r != null '
+    - '---MOV VariableDeclarationStatement@@Iterator i=c.iterator(); @TO@ IfStatement@@InfixExpression:r
+      != null '
+    - '---MOV WhileStatement@@MethodInvocation:i.hasNext() @TO@ IfStatement@@InfixExpression:r
+      != null '
+  repair_actions_cnt: 1

@@ -1,0 +1,142 @@
+1 bug_id: Chart-15
+2 src folder:
+  name of src folder: source
+  number of files: 650
+  number of java files: 577
+  number of src classes: 603
+  number of test classes: 325
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.plot.junit.PiePlot3DTests#testDrawWithNullDataset
+  failing tests:
+  - org.jfree.chart.plot.junit.PiePlot3DTests
+  number of all test cases: 1790
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.522
+  purification via delta debugging: 155.751
+  repair actions extraction: 2.556
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.plot.junit.PiePlot3DTests#testDrawWithNullDataset: 1143
+  fixed:
+    org.jfree.chart.plot.junit.PiePlot3DTests#testDrawWithNullDataset: 1207
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 5
+  covDel: 0
+  cov_patch_lines: 5
+  delta_patch_lines: 5
+  oriAdd: 5
+  oriDel: 0
+  ori_patch_lines: 5
+  purAdd: 5
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 8
+  failFail: 3
+  passed: 0
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_15/source/org/jfree/chart/plot/PiePlot.java\t\
+    2020-10-22 00:37:06.649474467 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_15/purify/patch/org/jfree/chart/plot/PiePlot.java\t\
+    2020-10-22 00:37:06.645474351 -0400\n@@ -1375,6 +1375,9 @@\n      * @return The\
+    \ percent.\n      */\n     public double getMaximumExplodePercent() {\n+     \
+    \   if (this.dataset == null) {\n+            return 0.0;\n+        }\n      \
+    \   double result = 0.0;\n         Iterator iterator = this.dataset.getKeys().iterator();\n\
+    \         while (iterator.hasNext()) {\n@@ -2048,8 +2051,10 @@\n      \n     \
+    \    PiePlotState state = new PiePlotState(info);\n         state.setPassesRequired(2);\n\
+    +        if (this.dataset != null) {\n             state.setTotal(DatasetUtilities.calculatePieDatasetTotal(\n\
+    \                     plot.getDataset()));\n+        }\n         state.setLatestAngle(plot.getStartAngle());\n\
+    \         return state;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_15/source/org/jfree/chart/plot/PiePlot.java\t\
+    2020-10-22 00:40:06.650679941 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_15/purify/purified/org/jfree/chart/plot/PiePlot.java\t\
+    2020-10-22 00:40:06.642679710 -0400\n@@ -1375,6 +1375,9 @@\n      * @return The\
+    \ percent.\n      */\n     public double getMaximumExplodePercent() {\n+     \
+    \   if (this.dataset == null) {\n+            return 0.0;\n+        }\n      \
+    \   double result = 0.0;\n         Iterator iterator = this.dataset.getKeys().iterator();\n\
+    \         while (iterator.hasNext()) {\n@@ -2048,8 +2051,10 @@\n      \n     \
+    \    PiePlotState state = new PiePlotState(info);\n         state.setPassesRequired(2);\n\
+    +        if (this.dataset != null) {\n             state.setTotal(DatasetUtilities.calculatePieDatasetTotal(\n\
+    \                     plot.getDataset()));\n+        }\n         state.setLatestAngle(plot.getStartAngle());\n\
+    \         return state;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/plot/PiePlot:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:this.dataset == null @TO@ MethodDeclaration@@public,
+      @@double, MethodName:getMaximumExplodePercent, @@Argus:null '
+    - '---INS InfixExpression@@this.dataset == null @TO@ IfStatement@@InfixExpression:this.dataset
+      == null '
+    - '------INS FieldAccess@@this.dataset @TO@ InfixExpression@@this.dataset == null '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.dataset '
+    - '---------INS SimpleName@@dataset @TO@ FieldAccess@@this.dataset '
+    - '------INS Operator@@== @TO@ InfixExpression@@this.dataset == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@this.dataset == null '
+    - '---INS ReturnStatement@@NumberLiteral:0.0 @TO@ IfStatement@@InfixExpression:this.dataset
+      == null '
+    - '------INS NumberLiteral@@0.0 @TO@ ReturnStatement@@NumberLiteral:0.0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:this.dataset != null @TO@ MethodDeclaration@@public,
+      @@PiePlotState, MethodName:initialise, @@Argus:Graphics2D+g2+Rectangle2D+plotArea+PiePlot+plot+Integer+index+PlotRenderingInfo+info+ '
+    - '---INS InfixExpression@@this.dataset != null @TO@ IfStatement@@InfixExpression:this.dataset
+      != null '
+    - '------INS FieldAccess@@this.dataset @TO@ InfixExpression@@this.dataset != null '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.dataset '
+    - '---------INS SimpleName@@dataset @TO@ FieldAccess@@this.dataset '
+    - '------INS Operator@@!= @TO@ InfixExpression@@this.dataset != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@this.dataset != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:state.setTotal(DatasetUtilities.calculatePieDatasetTotal(plot.getDataset()))
+      @TO@ IfStatement@@InfixExpression:this.dataset != null '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/plot/PiePlot:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:this.dataset == null @TO@ MethodDeclaration@@public,
+      @@double, MethodName:getMaximumExplodePercent, @@Argus:null '
+    - '---INS InfixExpression@@this.dataset == null @TO@ IfStatement@@InfixExpression:this.dataset
+      == null '
+    - '------INS FieldAccess@@this.dataset @TO@ InfixExpression@@this.dataset == null '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.dataset '
+    - '---------INS SimpleName@@dataset @TO@ FieldAccess@@this.dataset '
+    - '------INS Operator@@== @TO@ InfixExpression@@this.dataset == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@this.dataset == null '
+    - '---INS ReturnStatement@@NumberLiteral:0.0 @TO@ IfStatement@@InfixExpression:this.dataset
+      == null '
+    - '------INS NumberLiteral@@0.0 @TO@ ReturnStatement@@NumberLiteral:0.0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:this.dataset != null @TO@ MethodDeclaration@@public,
+      @@PiePlotState, MethodName:initialise, @@Argus:Graphics2D+g2+Rectangle2D+plotArea+PiePlot+plot+Integer+index+PlotRenderingInfo+info+ '
+    - '---INS InfixExpression@@this.dataset != null @TO@ IfStatement@@InfixExpression:this.dataset
+      != null '
+    - '------INS FieldAccess@@this.dataset @TO@ InfixExpression@@this.dataset != null '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.dataset '
+    - '---------INS SimpleName@@dataset @TO@ FieldAccess@@this.dataset '
+    - '------INS Operator@@!= @TO@ InfixExpression@@this.dataset != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@this.dataset != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:state.setTotal(DatasetUtilities.calculatePieDatasetTotal(plot.getDataset()))
+      @TO@ IfStatement@@InfixExpression:this.dataset != null '
+  repair_actions_cnt: 2

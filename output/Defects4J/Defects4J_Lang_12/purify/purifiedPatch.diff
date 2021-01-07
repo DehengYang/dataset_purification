@@ -1,0 +1,19 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_12/src/main/java/org/apache/commons/lang3/RandomStringUtils.java	2020-10-22 01:48:05.968632427 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_12/purify/purified/org/apache/commons/lang3/RandomStringUtils.java	2020-10-22 01:48:05.968632427 -0400
+@@ -229,12 +229,16 @@
+         }
+ 
+         if (start == 0 && end == 0) {
++            if (chars != null) {
++                end = chars.length;
++            } else {
+                 if (!letters && !numbers) {
+                     end = Integer.MAX_VALUE;
+                 } else {
+                     end = 'z' + 1;
+                     start = ' ';                
+                 }
++            }
+         }
+ 
+         char[] buffer = new char[count];

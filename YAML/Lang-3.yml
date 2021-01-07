@@ -1,0 +1,146 @@
+1 bug_id: Lang-3
+2 src folder:
+  name of src folder: java
+  number of files: 121
+  number of java files: 108
+  number of src classes: 169
+  number of test classes: 112
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.math.NumberUtilsTest#testStringCreateNumberEnsureNoPrecisionLoss
+  failing tests:
+  - org.apache.commons.lang3.math.NumberUtilsTest
+  number of all test cases: 2290
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.058
+  purification via delta debugging: 78.525
+  repair actions extraction: 2.56
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.math.NumberUtilsTest#testStringCreateNumberEnsureNoPrecisionLoss: 56
+  fixed:
+    org.apache.commons.lang3.math.NumberUtilsTest#testStringCreateNumberEnsureNoPrecisionLoss: 70
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 2
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_3/src/main/java/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-22 01:12:36.855071754 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_3/purify/patch/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-22 01:12:36.851071638 -0400\n@@ -590,18 +590,22 @@\n         //Must be\
+    \ a Float, Double, BigDecimal\n         final boolean allZeros = isAllZeros(mant)\
+    \ && isAllZeros(exp);\n         try {\n+            if(numDecimals <= 7){// If\
+    \ number has 7 or fewer digits past the decimal point then make it a float\n \
+    \                final Float f = createFloat(str);\n                 if (!(f.isInfinite()\
+    \ || (f.floatValue() == 0.0F && !allZeros))) {\n                     return f;\n\
+    \                 }\n+            }\n         } catch (final NumberFormatException\
+    \ nfe) { // NOPMD\n             // ignore the bad number\n         }\n       \
+    \  try {\n+            if(numDecimals <= 16){// If number has between 8 and 16\
+    \ digits past the decimal point then make it a double\n                 final\
+    \ Double d = createDouble(str);\n                 if (!(d.isInfinite() || (d.doubleValue()\
+    \ == 0.0D && !allZeros))) {\n                     return d;\n                \
+    \ }\n+            }\n         } catch (final NumberFormatException nfe) { // NOPMD\n\
+    \             // ignore the bad number\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_3/src/main/java/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-22 01:14:09.413748025 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_3/purify/purified/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-22 01:14:09.409747910 -0400\n@@ -590,18 +590,22 @@\n         //Must be\
+    \ a Float, Double, BigDecimal\n         final boolean allZeros = isAllZeros(mant)\
+    \ && isAllZeros(exp);\n         try {\n+            if(numDecimals <= 7){// If\
+    \ number has 7 or fewer digits past the decimal point then make it a float\n \
+    \                final Float f = createFloat(str);\n                 if (!(f.isInfinite()\
+    \ || (f.floatValue() == 0.0F && !allZeros))) {\n                     return f;\n\
+    \                 }\n+            }\n         } catch (final NumberFormatException\
+    \ nfe) { // NOPMD\n             // ignore the bad number\n         }\n       \
+    \  try {\n+            if(numDecimals <= 16){// If number has between 8 and 16\
+    \ digits past the decimal point then make it a double\n                 final\
+    \ Double d = createDouble(str);\n                 if (!(d.isInfinite() || (d.doubleValue()\
+    \ == 0.0D && !allZeros))) {\n                     return d;\n                \
+    \ }\n+            }\n         } catch (final NumberFormatException nfe) { // NOPMD\n\
+    \             // ignore the bad number\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:numDecimals <= 7 @TO@ TryStatement@@try:[] '
+    - '---INS InfixExpression@@numDecimals <= 7 @TO@ IfStatement@@InfixExpression:numDecimals
+      <= 7 '
+    - '------INS SimpleName@@numDecimals @TO@ InfixExpression@@numDecimals <= 7 '
+    - '------INS Operator@@<= @TO@ InfixExpression@@numDecimals <= 7 '
+    - '------INS NumberLiteral@@7 @TO@ InfixExpression@@numDecimals <= 7 '
+    - '---MOV VariableDeclarationStatement@@final Float f=createFloat(str); @TO@ IfStatement@@InfixExpression:numDecimals
+      <= 7 '
+    - '---MOV IfStatement@@PrefixExpression:!(f.isInfinite() || (f.floatValue() ==
+      0.0F && !allZeros)) @TO@ IfStatement@@InfixExpression:numDecimals <= 7 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:numDecimals <= 16 @TO@ TryStatement@@try:[] '
+    - '---MOV VariableDeclarationStatement@@final Double d=createDouble(str); @TO@
+      IfStatement@@InfixExpression:numDecimals <= 16 '
+    - '---MOV IfStatement@@PrefixExpression:!(d.isInfinite() || (d.doubleValue() ==
+      0.0D && !allZeros)) @TO@ IfStatement@@InfixExpression:numDecimals <= 16 '
+    - '---INS InfixExpression@@numDecimals <= 16 @TO@ IfStatement@@InfixExpression:numDecimals
+      <= 16 '
+    - '------INS SimpleName@@numDecimals @TO@ InfixExpression@@numDecimals <= 16 '
+    - '------INS Operator@@<= @TO@ InfixExpression@@numDecimals <= 16 '
+    - '------INS NumberLiteral@@16 @TO@ InfixExpression@@numDecimals <= 16 '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:numDecimals <= 7 @TO@ TryStatement@@try:[] '
+    - '---INS InfixExpression@@numDecimals <= 7 @TO@ IfStatement@@InfixExpression:numDecimals
+      <= 7 '
+    - '------INS SimpleName@@numDecimals @TO@ InfixExpression@@numDecimals <= 7 '
+    - '------INS Operator@@<= @TO@ InfixExpression@@numDecimals <= 7 '
+    - '------INS NumberLiteral@@7 @TO@ InfixExpression@@numDecimals <= 7 '
+    - '---MOV VariableDeclarationStatement@@final Float f=createFloat(str); @TO@ IfStatement@@InfixExpression:numDecimals
+      <= 7 '
+    - '---MOV IfStatement@@PrefixExpression:!(f.isInfinite() || (f.floatValue() ==
+      0.0F && !allZeros)) @TO@ IfStatement@@InfixExpression:numDecimals <= 7 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:numDecimals <= 16 @TO@ TryStatement@@try:[] '
+    - '---MOV VariableDeclarationStatement@@final Double d=createDouble(str); @TO@
+      IfStatement@@InfixExpression:numDecimals <= 16 '
+    - '---MOV IfStatement@@PrefixExpression:!(d.isInfinite() || (d.doubleValue() ==
+      0.0D && !allZeros)) @TO@ IfStatement@@InfixExpression:numDecimals <= 16 '
+    - '---INS InfixExpression@@numDecimals <= 16 @TO@ IfStatement@@InfixExpression:numDecimals
+      <= 16 '
+    - '------INS SimpleName@@numDecimals @TO@ InfixExpression@@numDecimals <= 16 '
+    - '------INS Operator@@<= @TO@ InfixExpression@@numDecimals <= 16 '
+    - '------INS NumberLiteral@@16 @TO@ InfixExpression@@numDecimals <= 16 '
+  repair_actions_cnt: 2

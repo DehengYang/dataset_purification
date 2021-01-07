@@ -1,0 +1,118 @@
+1 bug_id: Mockito-28
+2 src folder:
+  name of src folder: src
+  number of files: 276
+  number of java files: 240
+  number of src classes: 268
+  number of test classes: 220
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.bugs.InjectionByTypeShouldFirstLookForExactTypeThenAncestorTest#mock_should_be_injected_once_and_in_the_best_matching_type
+  failing tests:
+  - org.mockitousage.bugs.InjectionByTypeShouldFirstLookForExactTypeThenAncestorTest
+  number of all test cases: 0
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.401
+  purification via delta debugging: 265.78
+  repair actions extraction: 0.693
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 2
+  oriDel: 1
+  ori_patch_lines: 3
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 1
+  total: 3
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_28/src/org/mockito/internal/configuration/DefaultInjectionEngine.java\t\
+    2020-10-24 20:04:42.343471497 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_28/purify/patch/org/mockito/internal/configuration/DefaultInjectionEngine.java\t\
+    2020-10-24 20:04:42.343471497 -0400\n@@ -90,7 +90,8 @@\n \n     private void injectMockCandidate(Class<?>\
+    \ awaitingInjectionClazz, Set<Object> mocks, Object fieldInstance) {\n       \
+    \  for(Field field : orderedInstanceFieldsFrom(awaitingInjectionClazz)) {\n- \
+    \           mockCandidateFilter.filterCandidate(mocks, field, fieldInstance).thenInject();\n\
+    +            Object injected = mockCandidateFilter.filterCandidate(mocks, field,\
+    \ fieldInstance).thenInject();\n+            mocks.remove(injected);\n       \
+    \  }\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_28/src/org/mockito/internal/configuration/DefaultInjectionEngine.java\t\
+    2020-10-24 20:09:25.247621725 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_28/purify/purified/org/mockito/internal/configuration/DefaultInjectionEngine.java\t\
+    2020-10-24 20:09:25.247621725 -0400\n@@ -90,7 +90,8 @@\n \n     private void injectMockCandidate(Class<?>\
+    \ awaitingInjectionClazz, Set<Object> mocks, Object fieldInstance) {\n       \
+    \  for(Field field : orderedInstanceFieldsFrom(awaitingInjectionClazz)) {\n- \
+    \           mockCandidateFilter.filterCandidate(mocks, field, fieldInstance).thenInject();\n\
+    +            Object injected = mockCandidateFilter.filterCandidate(mocks, field,\
+    \ fieldInstance).thenInject();\n+            mocks.remove(injected);\n       \
+    \  }\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/configuration/DefaultInjectionEngine:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Object injected=mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject();
+      @TO@ EnhancedForStatement@@Field field, MethodInvocation:orderedInstanceFieldsFrom(awaitingInjectionClazz) '
+    - '---INS SimpleType@@Object @TO@ VariableDeclarationStatement@@Object injected=mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject(); '
+    - '---INS VariableDeclarationFragment@@injected=mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject()
+      @TO@ VariableDeclarationStatement@@Object injected=mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject(); '
+    - '------INS SimpleName@@injected @TO@ VariableDeclarationFragment@@injected=mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject() '
+    - '------MOV MethodInvocation@@mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject()
+      @TO@ VariableDeclarationFragment@@injected=mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject()
+      @TO@ MethodInvocation:mocks.remove(injected) '
+    - '---INS MethodInvocation@@mocks.remove(injected) @TO@ ExpressionStatement@@MethodInvocation:mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject() '
+    - '------INS SimpleName@@Name:mocks @TO@ MethodInvocation@@mocks.remove(injected) '
+    - '------INS SimpleName@@MethodName:remove:[injected] @TO@ MethodInvocation@@mocks.remove(injected) '
+    - '---------INS SimpleName@@injected @TO@ SimpleName@@MethodName:remove:[injected] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/configuration/DefaultInjectionEngine:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Object injected=mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject();
+      @TO@ EnhancedForStatement@@Field field, MethodInvocation:orderedInstanceFieldsFrom(awaitingInjectionClazz) '
+    - '---INS SimpleType@@Object @TO@ VariableDeclarationStatement@@Object injected=mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject(); '
+    - '---INS VariableDeclarationFragment@@injected=mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject()
+      @TO@ VariableDeclarationStatement@@Object injected=mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject(); '
+    - '------INS SimpleName@@injected @TO@ VariableDeclarationFragment@@injected=mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject() '
+    - '------MOV MethodInvocation@@mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject()
+      @TO@ VariableDeclarationFragment@@injected=mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject()
+      @TO@ MethodInvocation:mocks.remove(injected) '
+    - '---INS MethodInvocation@@mocks.remove(injected) @TO@ ExpressionStatement@@MethodInvocation:mockCandidateFilter.filterCandidate(mocks,field,fieldInstance).thenInject() '
+    - '------INS SimpleName@@Name:mocks @TO@ MethodInvocation@@mocks.remove(injected) '
+    - '------INS SimpleName@@MethodName:remove:[injected] @TO@ MethodInvocation@@mocks.remove(injected) '
+    - '---------INS SimpleName@@injected @TO@ SimpleName@@MethodName:remove:[injected] '
+  repair_actions_cnt: 2

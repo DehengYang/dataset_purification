@@ -1,0 +1,421 @@
+1 bug_id: Chart-2
+2 src folder:
+  name of src folder: source
+  number of files: 728
+  number of java files: 654
+  number of src classes: 681
+  number of test classes: 357
+3 test (cases):
+  failing test cases:
+  - org.jfree.data.general.junit.DatasetUtilitiesTests#testBug2849731_2
+  - org.jfree.data.general.junit.DatasetUtilitiesTests#testBug2849731_3
+  failing tests:
+  - org.jfree.data.general.junit.DatasetUtilitiesTests
+  number of all test cases: 2199
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.173
+  purification via delta debugging: 452.359
+  repair actions extraction: 2.111
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.data.general.junit.DatasetUtilitiesTests#testBug2849731_2: 139
+    org.jfree.data.general.junit.DatasetUtilitiesTests#testBug2849731_3: 138
+  fixed:
+    org.jfree.data.general.junit.DatasetUtilitiesTests#testBug2849731_2: 189
+    org.jfree.data.general.junit.DatasetUtilitiesTests#testBug2849731_3: 185
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 14
+  covDel: 0
+  cov_patch_lines: 14
+  delta_patch_lines: 13
+  oriAdd: 14
+  oriDel: 0
+  ori_patch_lines: 14
+  purAdd: 13
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 8
+  original: 8
+  purifiy: 7
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 22
+  failFail: 18
+  passed: 1
+  total: 41
+9 sibling repair actions:
+- 0 4 0.9114533205004812
+- 1 5 1.0
+- 2 3 0.8176605504587156
+- 2 6 1.0
+- 2 7 0.8176605504587156
+- 3 6 0.8176605504587156
+- 3 7 1.0
+- 6 7 0.8176605504587156
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_2/source/org/jfree/data/general/DatasetUtilities.java\t\
+    2020-10-20 23:37:55.273022456 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_2/purify/patch/org/jfree/data/general/DatasetUtilities.java\t\
+    2020-10-20 23:37:55.269022340 -0400\n@@ -752,12 +752,19 @@\n             for (int\
+    \ series = 0; series < seriesCount; series++) {\n                 int itemCount\
+    \ = dataset.getItemCount(series);\n                 for (int item = 0; item <\
+    \ itemCount; item++) {\n+                    double value = intervalXYData.getXValue(series,\
+    \ item);\n                     lvalue = intervalXYData.getStartXValue(series,\
+    \ item);\n                     uvalue = intervalXYData.getEndXValue(series, item);\n\
+    +                    if (!Double.isNaN(value)) {\n+                        minimum\
+    \ = Math.min(minimum, value);\n+                        maximum = Math.max(maximum,\
+    \ value);\n+                    }\n                     if (!Double.isNaN(lvalue))\
+    \ {\n                         minimum = Math.min(minimum, lvalue);\n+        \
+    \                maximum = Math.max(maximum, lvalue);\n                     }\n\
+    \                     if (!Double.isNaN(uvalue)) {\n+                        minimum\
+    \ = Math.min(minimum, uvalue);\n                         maximum = Math.max(maximum,\
+    \ uvalue);\n                     }\n                 }\n@@ -1239,12 +1246,19 @@\n\
+    \             for (int series = 0; series < seriesCount; series++) {\n       \
+    \          int itemCount = dataset.getItemCount(series);\n                 for\
+    \ (int item = 0; item < itemCount; item++) {\n+                    double value\
+    \ = ixyd.getYValue(series, item);\n                     double lvalue = ixyd.getStartYValue(series,\
+    \ item);\n                     double uvalue = ixyd.getEndYValue(series, item);\n\
+    +                    if (!Double.isNaN(value)) {\n+                        minimum\
+    \ = Math.min(minimum, value);\n+                        maximum = Math.max(maximum,\
+    \ value);\n+                    }\n                     if (!Double.isNaN(lvalue))\
+    \ {\n                         minimum = Math.min(minimum, lvalue);\n+        \
+    \                maximum = Math.max(maximum, lvalue);\n                     }\n\
+    \                     if (!Double.isNaN(uvalue)) {\n+                        minimum\
+    \ = Math.min(minimum, uvalue);\n                         maximum = Math.max(maximum,\
+    \ uvalue);\n                     }\n                 }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_2/source/org/jfree/data/general/DatasetUtilities.java\t\
+    2020-10-20 23:45:46.206627529 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_2/purify/purified/org/jfree/data/general/DatasetUtilities.java\t\
+    2020-10-20 23:45:46.206627529 -0400\n@@ -752,12 +752,19 @@\n             for (int\
+    \ series = 0; series < seriesCount; series++) {\n                 int itemCount\
+    \ = dataset.getItemCount(series);\n                 for (int item = 0; item <\
+    \ itemCount; item++) {\n+                    double value = intervalXYData.getXValue(series,\
+    \ item);\n                     lvalue = intervalXYData.getStartXValue(series,\
+    \ item);\n                     uvalue = intervalXYData.getEndXValue(series, item);\n\
+    +                    if (!Double.isNaN(value)) {\n+                        minimum\
+    \ = Math.min(minimum, value);\n+                        maximum = Math.max(maximum,\
+    \ value);\n+                    }\n                     if (!Double.isNaN(lvalue))\
+    \ {\n                         minimum = Math.min(minimum, lvalue);\n+        \
+    \                maximum = Math.max(maximum, lvalue);\n                     }\n\
+    \                     if (!Double.isNaN(uvalue)) {\n+                        minimum\
+    \ = Math.min(minimum, uvalue);\n                         maximum = Math.max(maximum,\
+    \ uvalue);\n                     }\n                 }\n@@ -1239,10 +1246,16 @@\n\
+    \             for (int series = 0; series < seriesCount; series++) {\n       \
+    \          int itemCount = dataset.getItemCount(series);\n                 for\
+    \ (int item = 0; item < itemCount; item++) {\n+                    double value\
+    \ = ixyd.getYValue(series, item);\n                     double lvalue = ixyd.getStartYValue(series,\
+    \ item);\n                     double uvalue = ixyd.getEndYValue(series, item);\n\
+    +                    if (!Double.isNaN(value)) {\n+                        minimum\
+    \ = Math.min(minimum, value);\n+                        maximum = Math.max(maximum,\
+    \ value);\n+                    }\n                     if (!Double.isNaN(lvalue))\
+    \ {\n                         minimum = Math.min(minimum, lvalue);\n+        \
+    \                maximum = Math.max(maximum, lvalue);\n                     }\n\
+    \                     if (!Double.isNaN(uvalue)) {\n                         maximum\
+    \ = Math.max(maximum, uvalue);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/general/DatasetUtilities:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double value=intervalXYData.getXValue(series,item);
+      @TO@ ForStatement@@[int item=0];item < itemCount; [item++] '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double value=intervalXYData.getXValue(series,item); '
+    - '---INS VariableDeclarationFragment@@value=intervalXYData.getXValue(series,item)
+      @TO@ VariableDeclarationStatement@@double value=intervalXYData.getXValue(series,item); '
+    - '------INS SimpleName@@value @TO@ VariableDeclarationFragment@@value=intervalXYData.getXValue(series,item) '
+    - '------INS MethodInvocation@@intervalXYData.getXValue(series,item) @TO@ VariableDeclarationFragment@@value=intervalXYData.getXValue(series,item) '
+    - '---------INS SimpleName@@Name:intervalXYData @TO@ MethodInvocation@@intervalXYData.getXValue(series,item) '
+    - '---------INS SimpleName@@MethodName:getXValue:[series, item] @TO@ MethodInvocation@@intervalXYData.getXValue(series,item) '
+    - '------------INS SimpleName@@series @TO@ SimpleName@@MethodName:getXValue:[series,
+      item] '
+    - '------------INS SimpleName@@item @TO@ SimpleName@@MethodName:getXValue:[series,
+      item] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!Double.isNaN(value) @TO@ ForStatement@@[int
+      item=0];item < itemCount; [item++] '
+    - '---INS PrefixExpression@@!Double.isNaN(value) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(value) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!Double.isNaN(value) '
+    - '------INS MethodInvocation@@Double.isNaN(value) @TO@ PrefixExpression@@!Double.isNaN(value) '
+    - '---------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(value) '
+    - '---------INS SimpleName@@MethodName:isNaN:[value] @TO@ MethodInvocation@@Double.isNaN(value) '
+    - '------------INS SimpleName@@value @TO@ SimpleName@@MethodName:isNaN:[value] '
+    - '---INS ExpressionStatement@@Assignment:minimum=Math.min(minimum,value) @TO@
+      IfStatement@@PrefixExpression:!Double.isNaN(value) '
+    - '------INS Assignment@@minimum=Math.min(minimum,value) @TO@ ExpressionStatement@@Assignment:minimum=Math.min(minimum,value) '
+    - '---------INS SimpleName@@minimum @TO@ Assignment@@minimum=Math.min(minimum,value) '
+    - '---------INS Operator@@= @TO@ Assignment@@minimum=Math.min(minimum,value) '
+    - '---------INS MethodInvocation@@Math.min(minimum,value) @TO@ Assignment@@minimum=Math.min(minimum,value) '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.min(minimum,value) '
+    - '------------INS SimpleName@@MethodName:min:[minimum, value] @TO@ MethodInvocation@@Math.min(minimum,value) '
+    - '---------------INS SimpleName@@minimum @TO@ SimpleName@@MethodName:min:[minimum,
+      value] '
+    - '---------------INS SimpleName@@value @TO@ SimpleName@@MethodName:min:[minimum,
+      value] '
+    - '---INS ExpressionStatement@@Assignment:maximum=Math.max(maximum,value) @TO@
+      IfStatement@@PrefixExpression:!Double.isNaN(value) '
+    - '------INS Assignment@@maximum=Math.max(maximum,value) @TO@ ExpressionStatement@@Assignment:maximum=Math.max(maximum,value) '
+    - '---------INS SimpleName@@maximum @TO@ Assignment@@maximum=Math.max(maximum,value) '
+    - '---------INS Operator@@= @TO@ Assignment@@maximum=Math.max(maximum,value) '
+    - '---------INS MethodInvocation@@Math.max(maximum,value) @TO@ Assignment@@maximum=Math.max(maximum,value) '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(maximum,value) '
+    - '------------INS SimpleName@@MethodName:max:[maximum, value] @TO@ MethodInvocation@@Math.max(maximum,value) '
+    - '---------------INS SimpleName@@maximum @TO@ SimpleName@@MethodName:max:[maximum,
+      value] '
+    - '---------------INS SimpleName@@value @TO@ SimpleName@@MethodName:max:[maximum,
+      value] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:maximum=Math.max(maximum,lvalue) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(lvalue) '
+    - '---INS Assignment@@maximum=Math.max(maximum,lvalue) @TO@ ExpressionStatement@@Assignment:maximum=Math.max(maximum,lvalue) '
+    - '------INS SimpleName@@maximum @TO@ Assignment@@maximum=Math.max(maximum,lvalue) '
+    - '------INS Operator@@= @TO@ Assignment@@maximum=Math.max(maximum,lvalue) '
+    - '------INS MethodInvocation@@Math.max(maximum,lvalue) @TO@ Assignment@@maximum=Math.max(maximum,lvalue) '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(maximum,lvalue) '
+    - '---------INS SimpleName@@MethodName:max:[maximum, lvalue] @TO@ MethodInvocation@@Math.max(maximum,lvalue) '
+    - '------------INS SimpleName@@maximum @TO@ SimpleName@@MethodName:max:[maximum,
+      lvalue] '
+    - '------------INS SimpleName@@lvalue @TO@ SimpleName@@MethodName:max:[maximum,
+      lvalue] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:minimum=Math.min(minimum,uvalue) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(uvalue) '
+    - '---INS Assignment@@minimum=Math.min(minimum,uvalue) @TO@ ExpressionStatement@@Assignment:minimum=Math.min(minimum,uvalue) '
+    - '------INS SimpleName@@minimum @TO@ Assignment@@minimum=Math.min(minimum,uvalue) '
+    - '------INS Operator@@= @TO@ Assignment@@minimum=Math.min(minimum,uvalue) '
+    - '------INS MethodInvocation@@Math.min(minimum,uvalue) @TO@ Assignment@@minimum=Math.min(minimum,uvalue) '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.min(minimum,uvalue) '
+    - '---------INS SimpleName@@MethodName:min:[minimum, uvalue] @TO@ MethodInvocation@@Math.min(minimum,uvalue) '
+    - '------------INS SimpleName@@minimum @TO@ SimpleName@@MethodName:min:[minimum,
+      uvalue] '
+    - '------------INS SimpleName@@uvalue @TO@ SimpleName@@MethodName:min:[minimum,
+      uvalue] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double value=ixyd.getYValue(series,item);
+      @TO@ ForStatement@@[int item=0];item < itemCount; [item++] '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double value=ixyd.getYValue(series,item); '
+    - '---INS VariableDeclarationFragment@@value=ixyd.getYValue(series,item) @TO@
+      VariableDeclarationStatement@@double value=ixyd.getYValue(series,item); '
+    - '------INS SimpleName@@value @TO@ VariableDeclarationFragment@@value=ixyd.getYValue(series,item) '
+    - '------INS MethodInvocation@@ixyd.getYValue(series,item) @TO@ VariableDeclarationFragment@@value=ixyd.getYValue(series,item) '
+    - '---------INS SimpleName@@Name:ixyd @TO@ MethodInvocation@@ixyd.getYValue(series,item) '
+    - '---------INS SimpleName@@MethodName:getYValue:[series, item] @TO@ MethodInvocation@@ixyd.getYValue(series,item) '
+    - '------------INS SimpleName@@series @TO@ SimpleName@@MethodName:getYValue:[series,
+      item] '
+    - '------------INS SimpleName@@item @TO@ SimpleName@@MethodName:getYValue:[series,
+      item] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!Double.isNaN(value) @TO@ ForStatement@@[int
+      item=0];item < itemCount; [item++] '
+    - '---INS PrefixExpression@@!Double.isNaN(value) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(value) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!Double.isNaN(value) '
+    - '------INS MethodInvocation@@Double.isNaN(value) @TO@ PrefixExpression@@!Double.isNaN(value) '
+    - '---------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(value) '
+    - '---------INS SimpleName@@MethodName:isNaN:[value] @TO@ MethodInvocation@@Double.isNaN(value) '
+    - '------------INS SimpleName@@value @TO@ SimpleName@@MethodName:isNaN:[value] '
+    - '---INS ExpressionStatement@@Assignment:minimum=Math.min(minimum,value) @TO@
+      IfStatement@@PrefixExpression:!Double.isNaN(value) '
+    - '------INS Assignment@@minimum=Math.min(minimum,value) @TO@ ExpressionStatement@@Assignment:minimum=Math.min(minimum,value) '
+    - '---------INS SimpleName@@minimum @TO@ Assignment@@minimum=Math.min(minimum,value) '
+    - '---------INS Operator@@= @TO@ Assignment@@minimum=Math.min(minimum,value) '
+    - '---------INS MethodInvocation@@Math.min(minimum,value) @TO@ Assignment@@minimum=Math.min(minimum,value) '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.min(minimum,value) '
+    - '------------INS SimpleName@@MethodName:min:[minimum, value] @TO@ MethodInvocation@@Math.min(minimum,value) '
+    - '---------------INS SimpleName@@minimum @TO@ SimpleName@@MethodName:min:[minimum,
+      value] '
+    - '---------------INS SimpleName@@value @TO@ SimpleName@@MethodName:min:[minimum,
+      value] '
+    - '---INS ExpressionStatement@@Assignment:maximum=Math.max(maximum,value) @TO@
+      IfStatement@@PrefixExpression:!Double.isNaN(value) '
+    - '------INS Assignment@@maximum=Math.max(maximum,value) @TO@ ExpressionStatement@@Assignment:maximum=Math.max(maximum,value) '
+    - '---------INS SimpleName@@maximum @TO@ Assignment@@maximum=Math.max(maximum,value) '
+    - '---------INS Operator@@= @TO@ Assignment@@maximum=Math.max(maximum,value) '
+    - '---------INS MethodInvocation@@Math.max(maximum,value) @TO@ Assignment@@maximum=Math.max(maximum,value) '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(maximum,value) '
+    - '------------INS SimpleName@@MethodName:max:[maximum, value] @TO@ MethodInvocation@@Math.max(maximum,value) '
+    - '---------------INS SimpleName@@maximum @TO@ SimpleName@@MethodName:max:[maximum,
+      value] '
+    - '---------------INS SimpleName@@value @TO@ SimpleName@@MethodName:max:[maximum,
+      value] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:maximum=Math.max(maximum,lvalue) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(lvalue) '
+    - '---INS Assignment@@maximum=Math.max(maximum,lvalue) @TO@ ExpressionStatement@@Assignment:maximum=Math.max(maximum,lvalue) '
+    - '------INS SimpleName@@maximum @TO@ Assignment@@maximum=Math.max(maximum,lvalue) '
+    - '------INS Operator@@= @TO@ Assignment@@maximum=Math.max(maximum,lvalue) '
+    - '------INS MethodInvocation@@Math.max(maximum,lvalue) @TO@ Assignment@@maximum=Math.max(maximum,lvalue) '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(maximum,lvalue) '
+    - '---------INS SimpleName@@MethodName:max:[maximum, lvalue] @TO@ MethodInvocation@@Math.max(maximum,lvalue) '
+    - '------------INS SimpleName@@maximum @TO@ SimpleName@@MethodName:max:[maximum,
+      lvalue] '
+    - '------------INS SimpleName@@lvalue @TO@ SimpleName@@MethodName:max:[maximum,
+      lvalue] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:minimum=Math.min(minimum,uvalue) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(uvalue) '
+    - '---INS Assignment@@minimum=Math.min(minimum,uvalue) @TO@ ExpressionStatement@@Assignment:minimum=Math.min(minimum,uvalue) '
+    - '------INS SimpleName@@minimum @TO@ Assignment@@minimum=Math.min(minimum,uvalue) '
+    - '------INS Operator@@= @TO@ Assignment@@minimum=Math.min(minimum,uvalue) '
+    - '------INS MethodInvocation@@Math.min(minimum,uvalue) @TO@ Assignment@@minimum=Math.min(minimum,uvalue) '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.min(minimum,uvalue) '
+    - '---------INS SimpleName@@MethodName:min:[minimum, uvalue] @TO@ MethodInvocation@@Math.min(minimum,uvalue) '
+    - '------------INS SimpleName@@minimum @TO@ SimpleName@@MethodName:min:[minimum,
+      uvalue] '
+    - '------------INS SimpleName@@uvalue @TO@ SimpleName@@MethodName:min:[minimum,
+      uvalue] '
+  repair_actions_cnt: 8
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/general/DatasetUtilities:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double value=intervalXYData.getXValue(series,item);
+      @TO@ ForStatement@@[int item=0];item < itemCount; [item++] '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double value=intervalXYData.getXValue(series,item); '
+    - '---INS VariableDeclarationFragment@@value=intervalXYData.getXValue(series,item)
+      @TO@ VariableDeclarationStatement@@double value=intervalXYData.getXValue(series,item); '
+    - '------INS SimpleName@@value @TO@ VariableDeclarationFragment@@value=intervalXYData.getXValue(series,item) '
+    - '------INS MethodInvocation@@intervalXYData.getXValue(series,item) @TO@ VariableDeclarationFragment@@value=intervalXYData.getXValue(series,item) '
+    - '---------INS SimpleName@@Name:intervalXYData @TO@ MethodInvocation@@intervalXYData.getXValue(series,item) '
+    - '---------INS SimpleName@@MethodName:getXValue:[series, item] @TO@ MethodInvocation@@intervalXYData.getXValue(series,item) '
+    - '------------INS SimpleName@@series @TO@ SimpleName@@MethodName:getXValue:[series,
+      item] '
+    - '------------INS SimpleName@@item @TO@ SimpleName@@MethodName:getXValue:[series,
+      item] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!Double.isNaN(value) @TO@ ForStatement@@[int
+      item=0];item < itemCount; [item++] '
+    - '---INS PrefixExpression@@!Double.isNaN(value) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(value) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!Double.isNaN(value) '
+    - '------INS MethodInvocation@@Double.isNaN(value) @TO@ PrefixExpression@@!Double.isNaN(value) '
+    - '---------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(value) '
+    - '---------INS SimpleName@@MethodName:isNaN:[value] @TO@ MethodInvocation@@Double.isNaN(value) '
+    - '------------INS SimpleName@@value @TO@ SimpleName@@MethodName:isNaN:[value] '
+    - '---INS ExpressionStatement@@Assignment:minimum=Math.min(minimum,value) @TO@
+      IfStatement@@PrefixExpression:!Double.isNaN(value) '
+    - '------INS Assignment@@minimum=Math.min(minimum,value) @TO@ ExpressionStatement@@Assignment:minimum=Math.min(minimum,value) '
+    - '---------INS SimpleName@@minimum @TO@ Assignment@@minimum=Math.min(minimum,value) '
+    - '---------INS Operator@@= @TO@ Assignment@@minimum=Math.min(minimum,value) '
+    - '---------INS MethodInvocation@@Math.min(minimum,value) @TO@ Assignment@@minimum=Math.min(minimum,value) '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.min(minimum,value) '
+    - '------------INS SimpleName@@MethodName:min:[minimum, value] @TO@ MethodInvocation@@Math.min(minimum,value) '
+    - '---------------INS SimpleName@@minimum @TO@ SimpleName@@MethodName:min:[minimum,
+      value] '
+    - '---------------INS SimpleName@@value @TO@ SimpleName@@MethodName:min:[minimum,
+      value] '
+    - '---INS ExpressionStatement@@Assignment:maximum=Math.max(maximum,value) @TO@
+      IfStatement@@PrefixExpression:!Double.isNaN(value) '
+    - '------INS Assignment@@maximum=Math.max(maximum,value) @TO@ ExpressionStatement@@Assignment:maximum=Math.max(maximum,value) '
+    - '---------INS SimpleName@@maximum @TO@ Assignment@@maximum=Math.max(maximum,value) '
+    - '---------INS Operator@@= @TO@ Assignment@@maximum=Math.max(maximum,value) '
+    - '---------INS MethodInvocation@@Math.max(maximum,value) @TO@ Assignment@@maximum=Math.max(maximum,value) '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(maximum,value) '
+    - '------------INS SimpleName@@MethodName:max:[maximum, value] @TO@ MethodInvocation@@Math.max(maximum,value) '
+    - '---------------INS SimpleName@@maximum @TO@ SimpleName@@MethodName:max:[maximum,
+      value] '
+    - '---------------INS SimpleName@@value @TO@ SimpleName@@MethodName:max:[maximum,
+      value] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:maximum=Math.max(maximum,lvalue) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(lvalue) '
+    - '---INS Assignment@@maximum=Math.max(maximum,lvalue) @TO@ ExpressionStatement@@Assignment:maximum=Math.max(maximum,lvalue) '
+    - '------INS SimpleName@@maximum @TO@ Assignment@@maximum=Math.max(maximum,lvalue) '
+    - '------INS Operator@@= @TO@ Assignment@@maximum=Math.max(maximum,lvalue) '
+    - '------INS MethodInvocation@@Math.max(maximum,lvalue) @TO@ Assignment@@maximum=Math.max(maximum,lvalue) '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(maximum,lvalue) '
+    - '---------INS SimpleName@@MethodName:max:[maximum, lvalue] @TO@ MethodInvocation@@Math.max(maximum,lvalue) '
+    - '------------INS SimpleName@@maximum @TO@ SimpleName@@MethodName:max:[maximum,
+      lvalue] '
+    - '------------INS SimpleName@@lvalue @TO@ SimpleName@@MethodName:max:[maximum,
+      lvalue] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:minimum=Math.min(minimum,uvalue) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(uvalue) '
+    - '---INS Assignment@@minimum=Math.min(minimum,uvalue) @TO@ ExpressionStatement@@Assignment:minimum=Math.min(minimum,uvalue) '
+    - '------INS SimpleName@@minimum @TO@ Assignment@@minimum=Math.min(minimum,uvalue) '
+    - '------INS Operator@@= @TO@ Assignment@@minimum=Math.min(minimum,uvalue) '
+    - '------INS MethodInvocation@@Math.min(minimum,uvalue) @TO@ Assignment@@minimum=Math.min(minimum,uvalue) '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.min(minimum,uvalue) '
+    - '---------INS SimpleName@@MethodName:min:[minimum, uvalue] @TO@ MethodInvocation@@Math.min(minimum,uvalue) '
+    - '------------INS SimpleName@@minimum @TO@ SimpleName@@MethodName:min:[minimum,
+      uvalue] '
+    - '------------INS SimpleName@@uvalue @TO@ SimpleName@@MethodName:min:[minimum,
+      uvalue] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double value=ixyd.getYValue(series,item);
+      @TO@ ForStatement@@[int item=0];item < itemCount; [item++] '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double value=ixyd.getYValue(series,item); '
+    - '---INS VariableDeclarationFragment@@value=ixyd.getYValue(series,item) @TO@
+      VariableDeclarationStatement@@double value=ixyd.getYValue(series,item); '
+    - '------INS SimpleName@@value @TO@ VariableDeclarationFragment@@value=ixyd.getYValue(series,item) '
+    - '------INS MethodInvocation@@ixyd.getYValue(series,item) @TO@ VariableDeclarationFragment@@value=ixyd.getYValue(series,item) '
+    - '---------INS SimpleName@@Name:ixyd @TO@ MethodInvocation@@ixyd.getYValue(series,item) '
+    - '---------INS SimpleName@@MethodName:getYValue:[series, item] @TO@ MethodInvocation@@ixyd.getYValue(series,item) '
+    - '------------INS SimpleName@@series @TO@ SimpleName@@MethodName:getYValue:[series,
+      item] '
+    - '------------INS SimpleName@@item @TO@ SimpleName@@MethodName:getYValue:[series,
+      item] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!Double.isNaN(value) @TO@ ForStatement@@[int
+      item=0];item < itemCount; [item++] '
+    - '---INS PrefixExpression@@!Double.isNaN(value) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(value) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!Double.isNaN(value) '
+    - '------INS MethodInvocation@@Double.isNaN(value) @TO@ PrefixExpression@@!Double.isNaN(value) '
+    - '---------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(value) '
+    - '---------INS SimpleName@@MethodName:isNaN:[value] @TO@ MethodInvocation@@Double.isNaN(value) '
+    - '------------INS SimpleName@@value @TO@ SimpleName@@MethodName:isNaN:[value] '
+    - '---INS ExpressionStatement@@Assignment:minimum=Math.min(minimum,value) @TO@
+      IfStatement@@PrefixExpression:!Double.isNaN(value) '
+    - '------INS Assignment@@minimum=Math.min(minimum,value) @TO@ ExpressionStatement@@Assignment:minimum=Math.min(minimum,value) '
+    - '---------INS SimpleName@@minimum @TO@ Assignment@@minimum=Math.min(minimum,value) '
+    - '---------INS Operator@@= @TO@ Assignment@@minimum=Math.min(minimum,value) '
+    - '---------INS MethodInvocation@@Math.min(minimum,value) @TO@ Assignment@@minimum=Math.min(minimum,value) '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.min(minimum,value) '
+    - '------------INS SimpleName@@MethodName:min:[minimum, value] @TO@ MethodInvocation@@Math.min(minimum,value) '
+    - '---------------INS SimpleName@@minimum @TO@ SimpleName@@MethodName:min:[minimum,
+      value] '
+    - '---------------INS SimpleName@@value @TO@ SimpleName@@MethodName:min:[minimum,
+      value] '
+    - '---INS ExpressionStatement@@Assignment:maximum=Math.max(maximum,value) @TO@
+      IfStatement@@PrefixExpression:!Double.isNaN(value) '
+    - '------INS Assignment@@maximum=Math.max(maximum,value) @TO@ ExpressionStatement@@Assignment:maximum=Math.max(maximum,value) '
+    - '---------INS SimpleName@@maximum @TO@ Assignment@@maximum=Math.max(maximum,value) '
+    - '---------INS Operator@@= @TO@ Assignment@@maximum=Math.max(maximum,value) '
+    - '---------INS MethodInvocation@@Math.max(maximum,value) @TO@ Assignment@@maximum=Math.max(maximum,value) '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(maximum,value) '
+    - '------------INS SimpleName@@MethodName:max:[maximum, value] @TO@ MethodInvocation@@Math.max(maximum,value) '
+    - '---------------INS SimpleName@@maximum @TO@ SimpleName@@MethodName:max:[maximum,
+      value] '
+    - '---------------INS SimpleName@@value @TO@ SimpleName@@MethodName:max:[maximum,
+      value] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:maximum=Math.max(maximum,lvalue) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(lvalue) '
+    - '---INS Assignment@@maximum=Math.max(maximum,lvalue) @TO@ ExpressionStatement@@Assignment:maximum=Math.max(maximum,lvalue) '
+    - '------INS SimpleName@@maximum @TO@ Assignment@@maximum=Math.max(maximum,lvalue) '
+    - '------INS Operator@@= @TO@ Assignment@@maximum=Math.max(maximum,lvalue) '
+    - '------INS MethodInvocation@@Math.max(maximum,lvalue) @TO@ Assignment@@maximum=Math.max(maximum,lvalue) '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(maximum,lvalue) '
+    - '---------INS SimpleName@@MethodName:max:[maximum, lvalue] @TO@ MethodInvocation@@Math.max(maximum,lvalue) '
+    - '------------INS SimpleName@@maximum @TO@ SimpleName@@MethodName:max:[maximum,
+      lvalue] '
+    - '------------INS SimpleName@@lvalue @TO@ SimpleName@@MethodName:max:[maximum,
+      lvalue] '
+  repair_actions_cnt: 7

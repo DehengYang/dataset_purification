@@ -1,0 +1,342 @@
+1 bug_id: Math-68
+2 src folder:
+  name of src folder: java
+  number of files: 452
+  number of java files: 414
+  number of src classes: 571
+  number of test classes: 229
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.general.MinpackTest#testMinpackFreudensteinRoth
+  - org.apache.commons.math.optimization.general.MinpackTest#testMinpackJennrichSampson
+  - org.apache.commons.math.optimization.general.MinpackTest#testMinpackFreudensteinRoth
+  - org.apache.commons.math.optimization.general.MinpackTest#testMinpackJennrichSampson
+  - org.apache.commons.math.optimization.general.MinpackTest#testMinpackFreudensteinRoth
+  - org.apache.commons.math.optimization.general.MinpackTest#testMinpackJennrichSampson
+  - org.apache.commons.math.optimization.general.LevenbergMarquardtOptimizerTest#testCircleFittingBadInit
+  - org.apache.commons.math.optimization.general.MinpackTest#testMinpackFreudensteinRoth
+  - org.apache.commons.math.optimization.general.MinpackTest#testMinpackJennrichSampson
+  - org.apache.commons.math.optimization.general.MinpackTest#testMinpackFreudensteinRoth
+  - org.apache.commons.math.optimization.general.MinpackTest#testMinpackJennrichSampson
+  - org.apache.commons.math.optimization.general.LevenbergMarquardtOptimizerTest#testCircleFittingBadInit
+  failing tests:
+  - org.apache.commons.math.optimization.general.MinpackTest
+  - org.apache.commons.math.optimization.general.LevenbergMarquardtOptimizerTest
+  number of all test cases: 2186
+  number of failing test cases: 12
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 2.041
+  purification via delta debugging: 216.935
+  repair actions extraction: 1.454
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.general.MinpackTest#testMinpackFreudensteinRoth: 375
+    org.apache.commons.math.optimization.general.MinpackTest#testMinpackJennrichSampson: 376
+  fixed:
+    org.apache.commons.math.optimization.general.MinpackTest#testMinpackFreudensteinRoth: 380
+    org.apache.commons.math.optimization.general.MinpackTest#testMinpackJennrichSampson: 381
+6 reduced lines:
+  by all: 2
+  by coverage: 2
+  by delta debugging: 0
+  covAdd: 11
+  covDel: 1
+  cov_patch_lines: 12
+  delta_patch_lines: 12
+  oriAdd: 12
+  oriDel: 2
+  ori_patch_lines: 14
+  purAdd: 11
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 1
+  by delta debugging: 0
+  cov: 8
+  original: 9
+  purifiy: 8
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 19
+  failFail: 7
+  passed: 0
+  total: 26
+9 sibling repair actions:
+- 3 6 1.0
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_68/src/main/java/org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer.java\t\
+    2020-10-21 13:02:59.865516220 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_68/purify/patch/org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer.java\t\
+    2020-10-21 13:02:59.865516220 -0400\n@@ -163,6 +163,7 @@\n         setMaxIterations(1000);\n\
+    \ \n         // default values for the tuning parameters\n+        setConvergenceChecker(null);\n\
+    \         setInitialStepBoundFactor(100.0);\n         setCostRelativeTolerance(1.0e-10);\n\
+    \         setParRelativeTolerance(1.0e-10);\n@@ -244,11 +245,13 @@\n         //\
+    \ outer loop\n         lmPar = 0;\n         boolean firstIteration = true;\n+\
+    \        VectorialPointValuePair current = new VectorialPointValuePair(point,\
+    \ objective);\n         while (true) {\n \n             incrementIterationsCounter();\n\
+    \ \n             // compute the Q.R. decomposition of the jacobian matrix\n+ \
+    \           VectorialPointValuePair previous = current;\n             updateJacobian();\n\
+    \             qrDecomposition();\n \n@@ -300,7 +303,7 @@\n             }\n   \
+    \          if (maxCosine <= orthoTolerance) {\n                 // convergence\
+    \ has been reached\n-                return new VectorialPointValuePair(point,\
+    \ objective);\n+                return current;\n             }\n \n         \
+    \    // rescale if necessary\n@@ -342,6 +345,7 @@\n \n                 // evaluate\
+    \ the function at x + p and calculate its norm\n                 updateResidualsAndCost();\n\
+    +                current = new VectorialPointValuePair(point, objective);\n \n\
+    \                 // compute the scaled actual reduction\n                 double\
+    \ actRed = -1.0;\n@@ -410,14 +414,20 @@\n                 }\n \n             \
+    \    // tests for convergence.\n+                if (checker != null) {\n    \
+    \                 // we use the vectorial convergence checker\n+             \
+    \       if (checker.converged(getIterations(), previous, current)) {\n+      \
+    \                  return current;                        \n+                \
+    \    }\n+                } else {\n                     // we use the Levenberg-Marquardt\
+    \ specific convergence parameters\n                     if (((Math.abs(actRed)\
+    \ <= costRelativeTolerance) &&\n                          (preRed <= costRelativeTolerance)\
+    \ &&\n                          (ratio <= 2.0)) ||\n                         (delta\
+    \ <= parRelativeTolerance * xNorm)) {\n-                        return new VectorialPointValuePair(point,\
+    \ objective);\n+                        return current;\n                    \
+    \ }\n+                }\n \n                 // tests for termination and stringent\
+    \ tolerances\n                 // (2.2204e-16 is the machine epsilon for IEEE754)"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_68/src/main/java/org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer.java\t\
+    2020-10-21 13:06:50.556185046 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_68/purify/purified/org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer.java\t\
+    2020-10-21 13:06:50.556185046 -0400\n@@ -163,6 +163,7 @@\n         setMaxIterations(1000);\n\
+    \ \n         // default values for the tuning parameters\n+        setConvergenceChecker(null);\n\
+    \         setInitialStepBoundFactor(100.0);\n         setCostRelativeTolerance(1.0e-10);\n\
+    \         setParRelativeTolerance(1.0e-10);\n@@ -244,11 +245,13 @@\n         //\
+    \ outer loop\n         lmPar = 0;\n         boolean firstIteration = true;\n+\
+    \        VectorialPointValuePair current = new VectorialPointValuePair(point,\
+    \ objective);\n         while (true) {\n \n             incrementIterationsCounter();\n\
+    \ \n             // compute the Q.R. decomposition of the jacobian matrix\n+ \
+    \           VectorialPointValuePair previous = current;\n             updateJacobian();\n\
+    \             qrDecomposition();\n \n@@ -342,6 +345,7 @@\n \n                \
+    \ // evaluate the function at x + p and calculate its norm\n                 updateResidualsAndCost();\n\
+    +                current = new VectorialPointValuePair(point, objective);\n \n\
+    \                 // compute the scaled actual reduction\n                 double\
+    \ actRed = -1.0;\n@@ -410,14 +414,20 @@\n                 }\n \n             \
+    \    // tests for convergence.\n+                if (checker != null) {\n    \
+    \                 // we use the vectorial convergence checker\n+             \
+    \       if (checker.converged(getIterations(), previous, current)) {\n+      \
+    \                  return current;                        \n+                \
+    \    }\n+                } else {\n                     // we use the Levenberg-Marquardt\
+    \ specific convergence parameters\n                     if (((Math.abs(actRed)\
+    \ <= costRelativeTolerance) &&\n                          (preRed <= costRelativeTolerance)\
+    \ &&\n                          (ratio <= 2.0)) ||\n                         (delta\
+    \ <= parRelativeTolerance * xNorm)) {\n-                        return new VectorialPointValuePair(point,\
+    \ objective);\n+                        return current;\n                    \
+    \ }\n+                }\n \n                 // tests for termination and stringent\
+    \ tolerances\n                 // (2.2204e-16 is the machine epsilon for IEEE754)"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:setConvergenceChecker(null) @TO@
+      MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:LevenbergMarquardtOptimizer,
+      @@Argus:null '
+    - '---INS MethodInvocation@@setConvergenceChecker(null) @TO@ ExpressionStatement@@MethodInvocation:setConvergenceChecker(null) '
+    - '------INS SimpleName@@MethodName:setConvergenceChecker:[null] @TO@ MethodInvocation@@setConvergenceChecker(null) '
+    - '---------INS NullLiteral@@null @TO@ SimpleName@@MethodName:setConvergenceChecker:[null] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@VectorialPointValuePair current=new VectorialPointValuePair(point,objective);
+      @TO@ MethodDeclaration@@protected, @@VectorialPointValuePair, MethodName:doOptimize,
+      @@Argus:nullFunctionEvaluationException, OptimizationException, IllegalArgumentException,  '
+    - '---INS SimpleType@@VectorialPointValuePair @TO@ VariableDeclarationStatement@@VectorialPointValuePair
+      current=new VectorialPointValuePair(point,objective); '
+    - '---INS VariableDeclarationFragment@@current=new VectorialPointValuePair(point,objective)
+      @TO@ VariableDeclarationStatement@@VectorialPointValuePair current=new VectorialPointValuePair(point,objective); '
+    - '------INS SimpleName@@current @TO@ VariableDeclarationFragment@@current=new
+      VectorialPointValuePair(point,objective) '
+    - '------INS ClassInstanceCreation@@VectorialPointValuePair[point, objective]
+      @TO@ VariableDeclarationFragment@@current=new VectorialPointValuePair(point,objective) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleType@@VectorialPointValuePair @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleName@@point @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleName@@objective @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@VectorialPointValuePair previous=current;
+      @TO@ WhileStatement@@BooleanLiteral:true '
+    - '---INS SimpleType@@VectorialPointValuePair @TO@ VariableDeclarationStatement@@VectorialPointValuePair
+      previous=current; '
+    - '---INS VariableDeclarationFragment@@previous=current @TO@ VariableDeclarationStatement@@VectorialPointValuePair
+      previous=current; '
+    - '------INS SimpleName@@previous @TO@ VariableDeclarationFragment@@previous=current '
+    - '------INS SimpleName@@current @TO@ VariableDeclarationFragment@@previous=current '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@ClassInstanceCreation:new VectorialPointValuePair(point,objective)
+      @TO@ SimpleName:current '
+    - '---DEL ClassInstanceCreation@@VectorialPointValuePair[point, objective] '
+    - '------DEL New@@new '
+    - '------DEL SimpleType@@VectorialPointValuePair '
+    - '------DEL SimpleName@@point '
+    - '------DEL SimpleName@@objective '
+    - '---INS SimpleName@@current @TO@ ReturnStatement@@ClassInstanceCreation:new
+      VectorialPointValuePair(point,objective) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:current=new VectorialPointValuePair(point,objective)
+      @TO@ ForStatement@@[double ratio=0];ratio < 1.0e-4; [] '
+    - '---INS Assignment@@current=new VectorialPointValuePair(point,objective) @TO@
+      ExpressionStatement@@Assignment:current=new VectorialPointValuePair(point,objective) '
+    - '------INS SimpleName@@current @TO@ Assignment@@current=new VectorialPointValuePair(point,objective) '
+    - '------INS Operator@@= @TO@ Assignment@@current=new VectorialPointValuePair(point,objective) '
+    - '------INS ClassInstanceCreation@@VectorialPointValuePair[point, objective]
+      @TO@ Assignment@@current=new VectorialPointValuePair(point,objective) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleType@@VectorialPointValuePair @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleName@@point @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleName@@objective @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:checker != null @TO@ ForStatement@@[double
+      ratio=0];ratio < 1.0e-4; [] '
+    - '---MOV IfStatement@@InfixExpression:((Math.abs(actRed) <= costRelativeTolerance)
+      && (preRed <= costRelativeTolerance) && (ratio <= 2.0)) || (delta <= parRelativeTolerance
+      * xNorm) @TO@ IfStatement@@InfixExpression:checker != null '
+    - '---INS InfixExpression@@checker != null @TO@ IfStatement@@InfixExpression:checker
+      != null '
+    - '------INS SimpleName@@checker @TO@ InfixExpression@@checker != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@checker != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@checker != null '
+    - '---INS IfStatement@@MethodInvocation:checker.converged(getIterations(),previous,current)
+      @TO@ IfStatement@@InfixExpression:checker != null '
+    - '------INS MethodInvocation@@checker.converged(getIterations(),previous,current)
+      @TO@ IfStatement@@MethodInvocation:checker.converged(getIterations(),previous,current) '
+    - '---------INS SimpleName@@Name:checker @TO@ MethodInvocation@@checker.converged(getIterations(),previous,current) '
+    - '---------INS SimpleName@@MethodName:converged:[getIterations(), previous, current]
+      @TO@ MethodInvocation@@checker.converged(getIterations(),previous,current) '
+    - '------------INS MethodInvocation@@MethodName:getIterations:[] @TO@ SimpleName@@MethodName:converged:[getIterations(),
+      previous, current] '
+    - '------------INS SimpleName@@previous @TO@ SimpleName@@MethodName:converged:[getIterations(),
+      previous, current] '
+    - '------------INS SimpleName@@current @TO@ SimpleName@@MethodName:converged:[getIterations(),
+      previous, current] '
+    - '------INS ReturnStatement@@SimpleName:current @TO@ IfStatement@@MethodInvocation:checker.converged(getIterations(),previous,current) '
+    - '---------INS SimpleName@@current @TO@ ReturnStatement@@SimpleName:current '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@ClassInstanceCreation:new VectorialPointValuePair(point,objective)
+      @TO@ SimpleName:current '
+    - '---DEL ClassInstanceCreation@@VectorialPointValuePair[point, objective] '
+    - '------DEL New@@new '
+    - '------DEL SimpleType@@VectorialPointValuePair '
+    - '------DEL SimpleName@@point '
+    - '------DEL SimpleName@@objective '
+    - '---INS SimpleName@@current @TO@ ReturnStatement@@ClassInstanceCreation:new
+      VectorialPointValuePair(point,objective) '
+  repair_actions_cnt: 7
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:setConvergenceChecker(null) @TO@
+      MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:LevenbergMarquardtOptimizer,
+      @@Argus:null '
+    - '---INS MethodInvocation@@setConvergenceChecker(null) @TO@ ExpressionStatement@@MethodInvocation:setConvergenceChecker(null) '
+    - '------INS SimpleName@@MethodName:setConvergenceChecker:[null] @TO@ MethodInvocation@@setConvergenceChecker(null) '
+    - '---------INS NullLiteral@@null @TO@ SimpleName@@MethodName:setConvergenceChecker:[null] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@VectorialPointValuePair current=new VectorialPointValuePair(point,objective);
+      @TO@ MethodDeclaration@@protected, @@VectorialPointValuePair, MethodName:doOptimize,
+      @@Argus:nullFunctionEvaluationException, OptimizationException, IllegalArgumentException,  '
+    - '---INS SimpleType@@VectorialPointValuePair @TO@ VariableDeclarationStatement@@VectorialPointValuePair
+      current=new VectorialPointValuePair(point,objective); '
+    - '---INS VariableDeclarationFragment@@current=new VectorialPointValuePair(point,objective)
+      @TO@ VariableDeclarationStatement@@VectorialPointValuePair current=new VectorialPointValuePair(point,objective); '
+    - '------INS SimpleName@@current @TO@ VariableDeclarationFragment@@current=new
+      VectorialPointValuePair(point,objective) '
+    - '------INS ClassInstanceCreation@@VectorialPointValuePair[point, objective]
+      @TO@ VariableDeclarationFragment@@current=new VectorialPointValuePair(point,objective) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleType@@VectorialPointValuePair @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleName@@point @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleName@@objective @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@VectorialPointValuePair previous=current;
+      @TO@ WhileStatement@@BooleanLiteral:true '
+    - '---INS SimpleType@@VectorialPointValuePair @TO@ VariableDeclarationStatement@@VectorialPointValuePair
+      previous=current; '
+    - '---INS VariableDeclarationFragment@@previous=current @TO@ VariableDeclarationStatement@@VectorialPointValuePair
+      previous=current; '
+    - '------INS SimpleName@@previous @TO@ VariableDeclarationFragment@@previous=current '
+    - '------INS SimpleName@@current @TO@ VariableDeclarationFragment@@previous=current '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:current=new VectorialPointValuePair(point,objective)
+      @TO@ ForStatement@@[double ratio=0];ratio < 1.0e-4; [] '
+    - '---INS Assignment@@current=new VectorialPointValuePair(point,objective) @TO@
+      ExpressionStatement@@Assignment:current=new VectorialPointValuePair(point,objective) '
+    - '------INS SimpleName@@current @TO@ Assignment@@current=new VectorialPointValuePair(point,objective) '
+    - '------INS Operator@@= @TO@ Assignment@@current=new VectorialPointValuePair(point,objective) '
+    - '------INS ClassInstanceCreation@@VectorialPointValuePair[point, objective]
+      @TO@ Assignment@@current=new VectorialPointValuePair(point,objective) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleType@@VectorialPointValuePair @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleName@@point @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleName@@objective @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:checker != null @TO@ ForStatement@@[double
+      ratio=0];ratio < 1.0e-4; [] '
+    - '---MOV IfStatement@@InfixExpression:((Math.abs(actRed) <= costRelativeTolerance)
+      && (preRed <= costRelativeTolerance) && (ratio <= 2.0)) || (delta <= parRelativeTolerance
+      * xNorm) @TO@ IfStatement@@InfixExpression:checker != null '
+    - '---INS InfixExpression@@checker != null @TO@ IfStatement@@InfixExpression:checker
+      != null '
+    - '------INS SimpleName@@checker @TO@ InfixExpression@@checker != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@checker != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@checker != null '
+    - '---INS IfStatement@@MethodInvocation:checker.converged(getIterations(),previous,current)
+      @TO@ IfStatement@@InfixExpression:checker != null '
+    - '------INS MethodInvocation@@checker.converged(getIterations(),previous,current)
+      @TO@ IfStatement@@MethodInvocation:checker.converged(getIterations(),previous,current) '
+    - '---------INS SimpleName@@Name:checker @TO@ MethodInvocation@@checker.converged(getIterations(),previous,current) '
+    - '---------INS SimpleName@@MethodName:converged:[getIterations(), previous, current]
+      @TO@ MethodInvocation@@checker.converged(getIterations(),previous,current) '
+    - '------------INS MethodInvocation@@MethodName:getIterations:[] @TO@ SimpleName@@MethodName:converged:[getIterations(),
+      previous, current] '
+    - '------------INS SimpleName@@previous @TO@ SimpleName@@MethodName:converged:[getIterations(),
+      previous, current] '
+    - '------------INS SimpleName@@current @TO@ SimpleName@@MethodName:converged:[getIterations(),
+      previous, current] '
+    - '------INS ReturnStatement@@SimpleName:current @TO@ IfStatement@@MethodInvocation:checker.converged(getIterations(),previous,current) '
+    - '---------INS SimpleName@@current @TO@ ReturnStatement@@SimpleName:current '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@ClassInstanceCreation:new VectorialPointValuePair(point,objective)
+      @TO@ SimpleName:current '
+    - '---DEL ClassInstanceCreation@@VectorialPointValuePair[point, objective] '
+    - '------DEL New@@new '
+    - '------DEL SimpleType@@VectorialPointValuePair '
+    - '------DEL SimpleName@@point '
+    - '------DEL SimpleName@@objective '
+    - '---INS SimpleName@@current @TO@ ReturnStatement@@ClassInstanceCreation:new
+      VectorialPointValuePair(point,objective) '
+  repair_actions_cnt: 6

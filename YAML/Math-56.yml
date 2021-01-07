@@ -1,0 +1,137 @@
+1 bug_id: Math-56
+2 src folder:
+  name of src folder: java
+  number of files: 537
+  number of java files: 497
+  number of src classes: 636
+  number of test classes: 256
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.util.MultidimensionalCounterTest#testIterationConsistency
+  failing tests:
+  - org.apache.commons.math.util.MultidimensionalCounterTest
+  number of all test cases: 2401
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.447
+  purification via delta debugging: 441.513
+  repair actions extraction: 1.223
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.util.MultidimensionalCounterTest#testIterationConsistency: 351
+  fixed:
+    org.apache.commons.math.util.MultidimensionalCounterTest#testIterationConsistency: 348
+6 reduced lines:
+  by all: 4
+  by coverage: 0
+  by delta debugging: 4
+  covAdd: 1
+  covDel: 7
+  cov_patch_lines: 8
+  delta_patch_lines: 4
+  oriAdd: 1
+  oriDel: 7
+  ori_patch_lines: 8
+  purAdd: 1
+  purDel: 3
+7 reduced chunks:
+  by all: -2
+  by coverage: 0
+  by delta debugging: -2
+  cov: 1
+  original: 1
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 13
+  failFail: 5
+  passed: 4
+  total: 22
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_56/src/main/java/org/apache/commons/math/util/MultidimensionalCounter.java\t\
+    2020-10-21 12:28:17.085295317 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_56/purify/patch/org/apache/commons/math/util/MultidimensionalCounter.java\t\
+    2020-10-21 12:28:17.085295317 -0400\n@@ -234,13 +234,7 @@\n             indices[i]\
+    \ = idx;\n         }\n \n-        int idx = 1;\n-        while (count < index)\
+    \ {\n-            count += idx;\n-            ++idx;\n-        }\n-        --idx;\n\
+    -        indices[last] = idx;\n+        indices[last] = index - count;\n \n  \
+    \       return indices;\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_56/src/main/java/org/apache/commons/math/util/MultidimensionalCounter.java\t\
+    2020-10-21 12:35:57.842618198 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_56/purify/purified/org/apache/commons/math/util/MultidimensionalCounter.java\t\
+    2020-10-21 12:35:57.842618198 -0400\n@@ -235,12 +235,10 @@\n         }\n \n  \
+    \       int idx = 1;\n-        while (count < index) {\n-            count +=\
+    \ idx;\n             ++idx;\n-        }\n         --idx;\n         indices[last]\
+    \ = idx;\n+        indices[last] = index - count;\n \n         return indices;\n\
+    \     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/MultidimensionalCounter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@int idx=1; '
+    - '---DEL PrimitiveType@@int '
+    - '---DEL VariableDeclarationFragment@@idx=1 '
+    - '------DEL SimpleName@@idx '
+    - '------DEL NumberLiteral@@1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL WhileStatement@@InfixExpression:count < index '
+    - '---DEL InfixExpression@@count < index '
+    - '------DEL SimpleName@@count '
+    - '------DEL Operator@@< '
+    - '------DEL SimpleName@@index '
+    - '---DEL ExpressionStatement@@Assignment:count+=idx '
+    - '------DEL Assignment@@count+=idx '
+    - '---------DEL SimpleName@@count '
+    - '---------DEL Operator@@+= '
+    - '---------DEL SimpleName@@idx '
+    - '---DEL ExpressionStatement@@PrefixExpression:++idx '
+    - '------DEL PrefixExpression@@++idx '
+    - '---------DEL Operator@@++ '
+    - '---------DEL SimpleName@@idx '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@PrefixExpression:--idx '
+    - '---DEL PrefixExpression@@--idx '
+    - '------DEL Operator@@-- '
+    - '------DEL SimpleName@@idx '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:indices[last]=idx @TO@ Assignment:indices[last]=index
+      - count '
+    - '---UPD Assignment@@indices[last]=idx @TO@ indices[last]=index - count '
+    - '------INS InfixExpression@@index - count @TO@ Assignment@@indices[last]=idx '
+    - '---------INS SimpleName@@index @TO@ InfixExpression@@index - count '
+    - '---------INS Operator@@- @TO@ InfixExpression@@index - count '
+    - '---------INS SimpleName@@count @TO@ InfixExpression@@index - count '
+    - '------DEL SimpleName@@idx '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/MultidimensionalCounter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL WhileStatement@@InfixExpression:count < index '
+    - '---DEL InfixExpression@@count < index '
+    - '------DEL SimpleName@@count '
+    - '------DEL Operator@@< '
+    - '------DEL SimpleName@@index '
+    - '---DEL ExpressionStatement@@Assignment:count+=idx '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@PrefixExpression:++idx @TO@ MethodDeclaration@@public,
+      @@int[], MethodName:getCounts, @@Argus:int+index+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:indices[last]=index - count @TO@ MethodDeclaration@@public,
+      @@int[], MethodName:getCounts, @@Argus:int+index+ '
+    - '---MOV Assignment@@count+=idx @TO@ ExpressionStatement@@Assignment:indices[last]=index
+      - count '
+  repair_actions_cnt: 3

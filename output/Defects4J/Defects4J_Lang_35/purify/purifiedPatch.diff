@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_35/src/main/java/org/apache/commons/lang3/ArrayUtils.java	2020-10-22 02:28:57.579507694 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_35/purify/purified/org/apache/commons/lang3/ArrayUtils.java	2020-10-22 02:28:57.579507694 -0400
+@@ -3293,6 +3293,7 @@
+             type = element.getClass();
+         } else {
+             type = Object.class;
++            throw new IllegalArgumentException("Arguments cannot both be null");            
+         }
+         @SuppressWarnings("unchecked") // type must be T
+         T[] newArray = (T[]) copyArrayGrow1(array, type);
+@@ -3572,6 +3573,7 @@
+             clss = element.getClass();
+         } else {
+             return (T[]) new Object[] { null };
++            throw new IllegalArgumentException("Array and element cannot both be null");            
+         }
+         @SuppressWarnings("unchecked") // the add method creates an array of type clss, which is type T
+         final T[] newArray = (T[]) add(array, index, element, clss);

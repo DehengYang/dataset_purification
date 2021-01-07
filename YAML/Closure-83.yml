@@ -1,0 +1,124 @@
+1 bug_id: Closure-83
+2 src folder:
+  name of src folder: src
+  number of files: 370
+  number of java files: 358
+  number of src classes: 1140
+  number of test classes: 188
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CommandLineRunnerTest#testVersionFlag2
+  failing tests:
+  - com.google.javascript.jscomp.CommandLineRunnerTest
+  number of all test cases: 6500
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 9.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.539
+  purification via delta debugging: 496.795
+  repair actions extraction: 3.086
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testVersionFlag2: 180
+  fixed:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testVersionFlag2: 4989
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 1
+  cov_patch_lines: 5
+  delta_patch_lines: 5
+  oriAdd: 4
+  oriDel: 1
+  ori_patch_lines: 5
+  purAdd: 4
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 9
+  failFail: 1
+  passed: 0
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_83/src/com/google/javascript/jscomp/CommandLineRunner.java\t\
+    2020-10-23 10:22:11.821634318 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_83/purify/patch/com/google/javascript/jscomp/CommandLineRunner.java\t\
+    2020-10-23 10:22:11.821634318 -0400\n@@ -331,7 +331,10 @@\n \n       @Override\n\
+    \       public int parseArguments(Parameters params) throws CmdLineException {\n\
+    -        String param = params.getParameter(0);\n+        String param = null;\n\
+    +        try {\n+          param = params.getParameter(0);\n+        } catch (CmdLineException\
+    \ e) {}\n \n         if (param == null) {\n           setter.addValue(true);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_83/src/com/google/javascript/jscomp/CommandLineRunner.java\t\
+    2020-10-23 10:31:03.901041333 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_83/purify/purified/com/google/javascript/jscomp/CommandLineRunner.java\t\
+    2020-10-23 10:31:03.901041333 -0400\n@@ -331,7 +331,10 @@\n \n       @Override\n\
+    \       public int parseArguments(Parameters params) throws CmdLineException {\n\
+    -        String param = params.getParameter(0);\n+        String param = null;\n\
+    +        try {\n+          param = params.getParameter(0);\n+        } catch (CmdLineException\
+    \ e) {}\n \n         if (param == null) {\n           setter.addValue(true);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CommandLineRunner:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@String param=params.getParameter(0); @TO@
+      String param=null; '
+    - '---UPD VariableDeclarationFragment@@param=params.getParameter(0) @TO@ param=null '
+    - '------INS NullLiteral@@null @TO@ VariableDeclarationFragment@@param=params.getParameter(0) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS TryStatement@@try:[] @TO@ MethodDeclaration@@public, @@int, MethodName:parseArguments,
+      @@Argus:Parameters+params+CmdLineException,  '
+    - '---INS ExpressionStatement@@Assignment:param=params.getParameter(0) @TO@ TryStatement@@try:[] '
+    - '------INS Assignment@@param=params.getParameter(0) @TO@ ExpressionStatement@@Assignment:param=params.getParameter(0) '
+    - '---------MOV MethodInvocation@@params.getParameter(0) @TO@ Assignment@@param=params.getParameter(0) '
+    - '---------INS SimpleName@@param @TO@ Assignment@@param=params.getParameter(0) '
+    - '---------INS Operator@@= @TO@ Assignment@@param=params.getParameter(0) '
+    - '---INS CatchClause@@CmdLineException e @TO@ TryStatement@@try:[] '
+    - '------INS SingleVariableDeclaration@@CmdLineException e @TO@ CatchClause@@CmdLineException
+      e '
+    - '---------INS SimpleType@@CmdLineException @TO@ SingleVariableDeclaration@@CmdLineException
+      e '
+    - '---------INS SimpleName@@e @TO@ SingleVariableDeclaration@@CmdLineException
+      e '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CommandLineRunner:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@String param=params.getParameter(0); @TO@
+      String param=null; '
+    - '---UPD VariableDeclarationFragment@@param=params.getParameter(0) @TO@ param=null '
+    - '------INS NullLiteral@@null @TO@ VariableDeclarationFragment@@param=params.getParameter(0) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS TryStatement@@try:[] @TO@ MethodDeclaration@@public, @@int, MethodName:parseArguments,
+      @@Argus:Parameters+params+CmdLineException,  '
+    - '---INS ExpressionStatement@@Assignment:param=params.getParameter(0) @TO@ TryStatement@@try:[] '
+    - '------INS Assignment@@param=params.getParameter(0) @TO@ ExpressionStatement@@Assignment:param=params.getParameter(0) '
+    - '---------MOV MethodInvocation@@params.getParameter(0) @TO@ Assignment@@param=params.getParameter(0) '
+    - '---------INS SimpleName@@param @TO@ Assignment@@param=params.getParameter(0) '
+    - '---------INS Operator@@= @TO@ Assignment@@param=params.getParameter(0) '
+    - '---INS CatchClause@@CmdLineException e @TO@ TryStatement@@try:[] '
+    - '------INS SingleVariableDeclaration@@CmdLineException e @TO@ CatchClause@@CmdLineException
+      e '
+    - '---------INS SimpleType@@CmdLineException @TO@ SingleVariableDeclaration@@CmdLineException
+      e '
+    - '---------INS SimpleName@@e @TO@ SingleVariableDeclaration@@CmdLineException
+      e '
+  files_cnt: '1'
+  repair_actions_cnt: 2

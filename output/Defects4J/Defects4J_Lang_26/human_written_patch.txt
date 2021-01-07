@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_26/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_26/fixed-version/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_26/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java	2020-03-01 00:08:28.275666886 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_26/fixed-version/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java	2020-03-01 00:08:31.735829916 -0800
+@@ -817,7 +817,7 @@
+      * @return the formatted string
+      */
+     public String format(Date date) {
+-        Calendar c = new GregorianCalendar(mTimeZone);
++        Calendar c = new GregorianCalendar(mTimeZone, mLocale);
+         c.setTime(date);
+         return applyRules(c, new StringBuffer(mMaxLengthEstimate)).toString();
+     }

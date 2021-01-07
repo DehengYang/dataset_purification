@@ -1,0 +1,214 @@
+1 bug_id: Closure-105
+2 src folder:
+  name of src folder: src
+  number of files: 317
+  number of java files: 308
+  number of src classes: 980
+  number of test classes: 155
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.FoldConstantsTest#testStringJoinAdd
+  failing tests:
+  - com.google.javascript.jscomp.FoldConstantsTest
+  number of all test cases: 4484
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.254
+  purification via delta debugging: 416.716
+  repair actions extraction: 3.032
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.FoldConstantsTest#testStringJoinAdd: 2283
+  fixed:
+    com.google.javascript.jscomp.FoldConstantsTest#testStringJoinAdd: 2188
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 7
+  covDel: 5
+  cov_patch_lines: 12
+  delta_patch_lines: 11
+  oriAdd: 7
+  oriDel: 5
+  ori_patch_lines: 12
+  purAdd: 7
+  purDel: 4
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 5
+  original: 5
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 20
+  failFail: 13
+  passed: 1
+  total: 34
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_105/src/com/google/javascript/jscomp/FoldConstants.java\t\
+    2020-10-23 13:13:42.659549434 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_105/purify/patch/com/google/javascript/jscomp/FoldConstants.java\t\
+    2020-10-23 13:13:42.659549434 -0400\n@@ -1474,22 +1474,24 @@\n \n     String joinString\
+    \ = NodeUtil.getStringValue(right);\n     List<Node> arrayFoldedChildren = Lists.newLinkedList();\n\
+    -    StringBuilder sb = new StringBuilder();\n+    StringBuilder sb = null;\n\
+    \     int foldedSize = 0;\n     Node elem = arrayNode.getFirstChild();\n     //\
+    \ Merges adjacent String nodes.\n     while (elem != null) {\n       if (NodeUtil.isImmutableValue(elem))\
+    \ {\n-        if (sb.length() > 0) {\n+        if (sb == null) {\n+          sb\
+    \ = new StringBuilder();\n+        } else {\n           sb.append(joinString);\n\
+    \         }\n         sb.append(NodeUtil.getStringValue(elem));\n       } else\
+    \ {\n-        if (sb.length() > 0) {\n+        if (sb != null) {\n           //\
+    \ + 2 for the quotes.\n           foldedSize += sb.length() + 2;\n           arrayFoldedChildren.add(Node.newString(sb.toString()));\n\
+    -          sb = new StringBuilder();\n+          sb = null;\n         }\n    \
+    \     foldedSize += InlineCostEstimator.getCost(elem);\n         arrayFoldedChildren.add(elem);\n\
+    @@ -1497,7 +1499,7 @@\n       elem = elem.getNext();\n     }\n \n-    if (sb.length()\
+    \ > 0) {\n+    if (sb != null) {\n       // + 2 for the quotes.\n       foldedSize\
+    \ += sb.length() + 2;\n       arrayFoldedChildren.add(Node.newString(sb.toString()));"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_105/src/com/google/javascript/jscomp/FoldConstants.java\t\
+    2020-10-23 13:21:04.272340319 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_105/purify/purified/com/google/javascript/jscomp/FoldConstants.java\t\
+    2020-10-23 13:21:04.272340319 -0400\n@@ -1474,22 +1474,25 @@\n \n     String joinString\
+    \ = NodeUtil.getStringValue(right);\n     List<Node> arrayFoldedChildren = Lists.newLinkedList();\n\
+    -    StringBuilder sb = new StringBuilder();\n+    StringBuilder sb = null;\n\
+    \     int foldedSize = 0;\n     Node elem = arrayNode.getFirstChild();\n     //\
+    \ Merges adjacent String nodes.\n     while (elem != null) {\n       if (NodeUtil.isImmutableValue(elem))\
+    \ {\n-        if (sb.length() > 0) {\n+        if (sb == null) {\n+          sb\
+    \ = new StringBuilder();\n+        } else {\n           sb.append(joinString);\n\
+    \         }\n         sb.append(NodeUtil.getStringValue(elem));\n       } else\
+    \ {\n-        if (sb.length() > 0) {\n+        if (sb != null) {\n           //\
+    \ + 2 for the quotes.\n           foldedSize += sb.length() + 2;\n           arrayFoldedChildren.add(Node.newString(sb.toString()));\n\
+    \           sb = new StringBuilder();\n+          sb = null;\n         }\n   \
+    \      foldedSize += InlineCostEstimator.getCost(elem);\n         arrayFoldedChildren.add(elem);\n\
+    @@ -1497,7 +1500,7 @@\n       elem = elem.getNext();\n     }\n \n-    if (sb.length()\
+    \ > 0) {\n+    if (sb != null) {\n       // + 2 for the quotes.\n       foldedSize\
+    \ += sb.length() + 2;\n       arrayFoldedChildren.add(Node.newString(sb.toString()));"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/FoldConstants:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@StringBuilder sb=new StringBuilder(); @TO@
+      StringBuilder sb=null; '
+    - '---UPD VariableDeclarationFragment@@sb=new StringBuilder() @TO@ sb=null '
+    - '------INS NullLiteral@@null @TO@ VariableDeclarationFragment@@sb=new StringBuilder() '
+    - '------DEL ClassInstanceCreation@@StringBuilder[] '
+    - '---------DEL New@@new '
+    - '---------DEL SimpleType@@StringBuilder '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:sb.length() > 0 @TO@ InfixExpression:sb ==
+      null '
+    - '---UPD InfixExpression@@sb.length() > 0 @TO@ sb == null '
+    - '------INS SimpleName@@sb @TO@ InfixExpression@@sb.length() > 0 '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@sb.length() > 0 '
+    - '------DEL MethodInvocation@@sb.length() '
+    - '---------DEL SimpleName@@Name:sb '
+    - '---------DEL SimpleName@@MethodName:length:[] '
+    - '------UPD Operator@@> @TO@ == '
+    - '------DEL NumberLiteral@@0 '
+    - '---MOV ExpressionStatement@@Assignment:sb=new StringBuilder() @TO@ IfStatement@@InfixExpression:sb.length()
+      > 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:sb.length() > 0 @TO@ InfixExpression:sb !=
+      null '
+    - '---UPD InfixExpression@@sb.length() > 0 @TO@ sb != null '
+    - '------DEL MethodInvocation@@sb.length() '
+    - '---------DEL SimpleName@@Name:sb '
+    - '---------DEL SimpleName@@MethodName:length:[] '
+    - '------UPD Operator@@> @TO@ != '
+    - '------DEL NumberLiteral@@0 '
+    - '------INS SimpleName@@sb @TO@ InfixExpression@@sb.length() > 0 '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@sb.length() > 0 '
+    - '---INS ExpressionStatement@@Assignment:sb=null @TO@ IfStatement@@InfixExpression:sb.length()
+      > 0 '
+    - '------INS Assignment@@sb=null @TO@ ExpressionStatement@@Assignment:sb=null '
+    - '---------INS SimpleName@@sb @TO@ Assignment@@sb=null '
+    - '---------INS Operator@@= @TO@ Assignment@@sb=null '
+    - '---------INS NullLiteral@@null @TO@ Assignment@@sb=null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:sb.length() > 0 @TO@ InfixExpression:sb !=
+      null '
+    - '---UPD InfixExpression@@sb.length() > 0 @TO@ sb != null '
+    - '------DEL MethodInvocation@@sb.length() '
+    - '---------DEL SimpleName@@Name:sb '
+    - '---------DEL SimpleName@@MethodName:length:[] '
+    - '------UPD Operator@@> @TO@ != '
+    - '------INS SimpleName@@sb @TO@ InfixExpression@@sb.length() > 0 '
+    - '------DEL NumberLiteral@@0 '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@sb.length() > 0 '
+  files_cnt: '1'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/FoldConstants:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@StringBuilder sb=new StringBuilder(); @TO@
+      StringBuilder sb=null; '
+    - '---UPD VariableDeclarationFragment@@sb=new StringBuilder() @TO@ sb=null '
+    - '------INS NullLiteral@@null @TO@ VariableDeclarationFragment@@sb=new StringBuilder() '
+    - '------DEL ClassInstanceCreation@@StringBuilder[] '
+    - '---------DEL New@@new '
+    - '---------DEL SimpleType@@StringBuilder '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:sb.length() > 0 @TO@ InfixExpression:sb ==
+      null '
+    - '---UPD InfixExpression@@sb.length() > 0 @TO@ sb == null '
+    - '------INS SimpleName@@sb @TO@ InfixExpression@@sb.length() > 0 '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@sb.length() > 0 '
+    - '------DEL MethodInvocation@@sb.length() '
+    - '---------DEL SimpleName@@Name:sb '
+    - '---------DEL SimpleName@@MethodName:length:[] '
+    - '------UPD Operator@@> @TO@ == '
+    - '------DEL NumberLiteral@@0 '
+    - '---INS ExpressionStatement@@Assignment:sb=new StringBuilder() @TO@ IfStatement@@InfixExpression:sb.length()
+      > 0 '
+    - '------INS Assignment@@sb=new StringBuilder() @TO@ ExpressionStatement@@Assignment:sb=new
+      StringBuilder() '
+    - '---------INS SimpleName@@sb @TO@ Assignment@@sb=new StringBuilder() '
+    - '---------INS Operator@@= @TO@ Assignment@@sb=new StringBuilder() '
+    - '---------INS ClassInstanceCreation@@StringBuilder[] @TO@ Assignment@@sb=new
+      StringBuilder() '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@StringBuilder[] '
+    - '------------INS SimpleType@@StringBuilder @TO@ ClassInstanceCreation@@StringBuilder[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:sb.length() > 0 @TO@ InfixExpression:sb !=
+      null '
+    - '---UPD InfixExpression@@sb.length() > 0 @TO@ sb != null '
+    - '------DEL MethodInvocation@@sb.length() '
+    - '---------DEL SimpleName@@Name:sb '
+    - '---------DEL SimpleName@@MethodName:length:[] '
+    - '------UPD Operator@@> @TO@ != '
+    - '------DEL NumberLiteral@@0 '
+    - '------INS SimpleName@@sb @TO@ InfixExpression@@sb.length() > 0 '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@sb.length() > 0 '
+    - '---INS ExpressionStatement@@Assignment:sb=null @TO@ IfStatement@@InfixExpression:sb.length()
+      > 0 '
+    - '------INS Assignment@@sb=null @TO@ ExpressionStatement@@Assignment:sb=null '
+    - '---------INS SimpleName@@sb @TO@ Assignment@@sb=null '
+    - '---------INS Operator@@= @TO@ Assignment@@sb=null '
+    - '---------INS NullLiteral@@null @TO@ Assignment@@sb=null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:sb.length() > 0 @TO@ InfixExpression:sb !=
+      null '
+    - '---UPD InfixExpression@@sb.length() > 0 @TO@ sb != null '
+    - '------DEL MethodInvocation@@sb.length() '
+    - '---------DEL SimpleName@@Name:sb '
+    - '---------DEL SimpleName@@MethodName:length:[] '
+    - '------UPD Operator@@> @TO@ != '
+    - '------DEL NumberLiteral@@0 '
+    - '------INS SimpleName@@sb @TO@ InfixExpression@@sb.length() > 0 '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@sb.length() > 0 '
+  files_cnt: '1'
+  repair_actions_cnt: 4

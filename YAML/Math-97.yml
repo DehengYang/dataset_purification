@@ -1,0 +1,243 @@
+1 bug_id: Math-97
+2 src folder:
+  name of src folder: java
+  number of files: 255
+  number of java files: 231
+  number of src classes: 244
+  number of test classes: 140
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.analysis.BrentSolverTest#testRootEndpoints
+  failing tests:
+  - org.apache.commons.math.analysis.BrentSolverTest
+  number of all test cases: 1095
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 7.0
+  purification via coverage: 0.933
+  purification via delta debugging: 321.657
+  repair actions extraction: 1.459
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.analysis.BrentSolverTest#testRootEndpoints: 48
+  fixed:
+    org.apache.commons.math.analysis.BrentSolverTest#testRootEndpoints: 52
+6 reduced lines:
+  by all: 11
+  by coverage: 0
+  by delta debugging: 11
+  covAdd: 16
+  covDel: 2
+  cov_patch_lines: 18
+  delta_patch_lines: 7
+  oriAdd: 16
+  oriDel: 2
+  ori_patch_lines: 18
+  purAdd: 6
+  purDel: 1
+7 reduced chunks:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  cov: 5
+  original: 5
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 20
+  failFail: 18
+  passed: 6
+  total: 44
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_97/src/java/org/apache/commons/math/analysis/BrentSolver.java\t\
+    2020-10-22 08:41:03.696953504 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_97/purify/patch/org/apache/commons/math/analysis/BrentSolver.java\t\
+    2020-10-22 08:41:03.696953504 -0400\n@@ -135,17 +135,31 @@\n         \n      \
+    \   // Verify bracketing\n         double sign = yMin * yMax;\n-        if (sign\
+    \ >= 0) {\n+        if (sign > 0) {\n             // check if either value is\
+    \ close to a zero\n+            if (Math.abs(yMin) <= functionValueAccuracy) {\n\
+    +                setResult(min, 0);\n+                ret = min;\n+          \
+    \  } else if (Math.abs(yMax) <= functionValueAccuracy) {\n+                setResult(max,\
+    \ 0);\n+                ret = max;\n+            } else {\n                 //\
+    \ neither value is close to zero and min and max do not bracket root.\n      \
+    \           throw new IllegalArgumentException\n                 (\"Function values\
+    \ at endpoints do not have different signs.\" +\n                         \" \
+    \ Endpoints: [\" + min + \",\" + max + \"]\" + \n                         \" \
+    \ Values: [\" + yMin + \",\" + yMax + \"]\");\n-        } else {\n+          \
+    \  }\n+        } else if (sign < 0){\n             // solve using only the first\
+    \ endpoint as initial guess\n             ret = solve(min, yMin, max, yMax, min,\
+    \ yMin);\n+        } else {\n             // either min or max is a root\n+  \
+    \          if (yMin == 0.0) {\n+                ret = min;\n+            } else\
+    \ {\n+                ret = max;\n+            }\n         }\n \n         return\
+    \ ret;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_97/src/java/org/apache/commons/math/analysis/BrentSolver.java\t\
+    2020-10-22 08:46:35.462552354 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_97/purify/purified/org/apache/commons/math/analysis/BrentSolver.java\t\
+    2020-10-22 08:46:35.462552354 -0400\n@@ -137,12 +137,17 @@\n         double sign\
+    \ = yMin * yMax;\n         if (sign >= 0) {\n             // check if either value\
+    \ is close to a zero\n+            if (Math.abs(yMin) <= functionValueAccuracy)\
+    \ {\n+            } else if (Math.abs(yMax) <= functionValueAccuracy) {\n+   \
+    \             ret = max;\n+            } else {\n                 // neither value\
+    \ is close to zero and min and max do not bracket root.\n                 throw\
+    \ new IllegalArgumentException\n                 (\"Function values at endpoints\
+    \ do not have different signs.\" +\n                         \"  Endpoints: [\"\
+    \ + min + \",\" + max + \"]\" + \n                         \"  Values: [\" + yMin\
+    \ + \",\" + yMax + \"]\");\n-        } else {\n+            }\n+        } else\
+    \ if (sign < 0){\n             // solve using only the first endpoint as initial\
+    \ guess\n             ret = solve(min, yMin, max, yMax, min, yMin);\n        \
+    \     // either min or max is a root"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/BrentSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:sign > 0 @TO@ MethodDeclaration@@public, @@double,
+      MethodName:solve, @@Argus:double+min+double+max+MaxIterationsExceededException,
+      FunctionEvaluationException,  '
+    - '---INS InfixExpression@@sign > 0 @TO@ IfStatement@@InfixExpression:sign > 0 '
+    - '------INS SimpleName@@sign @TO@ InfixExpression@@sign > 0 '
+    - '------INS Operator@@> @TO@ InfixExpression@@sign > 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@sign > 0 '
+    - '---INS IfStatement@@InfixExpression:Math.abs(yMin) <= functionValueAccuracy
+      @TO@ IfStatement@@InfixExpression:sign > 0 '
+    - '------MOV IfStatement@@InfixExpression:sign >= 0 @TO@ IfStatement@@InfixExpression:Math.abs(yMin)
+      <= functionValueAccuracy '
+    - '------INS InfixExpression@@Math.abs(yMin) <= functionValueAccuracy @TO@ IfStatement@@InfixExpression:Math.abs(yMin)
+      <= functionValueAccuracy '
+    - '---------INS MethodInvocation@@Math.abs(yMin) @TO@ InfixExpression@@Math.abs(yMin)
+      <= functionValueAccuracy '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.abs(yMin) '
+    - '------------INS SimpleName@@MethodName:abs:[yMin] @TO@ MethodInvocation@@Math.abs(yMin) '
+    - '---------------INS SimpleName@@yMin @TO@ SimpleName@@MethodName:abs:[yMin] '
+    - '---------INS Operator@@<= @TO@ InfixExpression@@Math.abs(yMin) <= functionValueAccuracy '
+    - '---------INS SimpleName@@functionValueAccuracy @TO@ InfixExpression@@Math.abs(yMin)
+      <= functionValueAccuracy '
+    - '------INS ExpressionStatement@@MethodInvocation:setResult(min,0) @TO@ IfStatement@@InfixExpression:Math.abs(yMin)
+      <= functionValueAccuracy '
+    - '---------INS MethodInvocation@@setResult(min,0) @TO@ ExpressionStatement@@MethodInvocation:setResult(min,0) '
+    - '------------INS SimpleName@@MethodName:setResult:[min, 0] @TO@ MethodInvocation@@setResult(min,0) '
+    - '---------------INS SimpleName@@min @TO@ SimpleName@@MethodName:setResult:[min,
+      0] '
+    - '---------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:setResult:[min,
+      0] '
+    - '------INS ExpressionStatement@@Assignment:ret=min @TO@ IfStatement@@InfixExpression:Math.abs(yMin)
+      <= functionValueAccuracy '
+    - '---------INS Assignment@@ret=min @TO@ ExpressionStatement@@Assignment:ret=min '
+    - '------------INS SimpleName@@ret @TO@ Assignment@@ret=min '
+    - '------------INS Operator@@= @TO@ Assignment@@ret=min '
+    - '------------INS SimpleName@@min @TO@ Assignment@@ret=min '
+    - '---INS IfStatement@@InfixExpression:sign < 0 @TO@ IfStatement@@InfixExpression:sign
+      > 0 '
+    - '------MOV ExpressionStatement@@Assignment:ret=solve(min,yMin,max,yMax,min,yMin)
+      @TO@ IfStatement@@InfixExpression:sign < 0 '
+    - '------INS InfixExpression@@sign < 0 @TO@ IfStatement@@InfixExpression:sign
+      < 0 '
+    - '---------INS SimpleName@@sign @TO@ InfixExpression@@sign < 0 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@sign < 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@sign < 0 '
+    - '------INS IfStatement@@InfixExpression:yMin == 0.0 @TO@ IfStatement@@InfixExpression:sign
+      < 0 '
+    - '---------INS InfixExpression@@yMin == 0.0 @TO@ IfStatement@@InfixExpression:yMin
+      == 0.0 '
+    - '------------INS SimpleName@@yMin @TO@ InfixExpression@@yMin == 0.0 '
+    - '------------INS Operator@@== @TO@ InfixExpression@@yMin == 0.0 '
+    - '------------INS NumberLiteral@@0.0 @TO@ InfixExpression@@yMin == 0.0 '
+    - '---------INS ExpressionStatement@@Assignment:ret=min @TO@ IfStatement@@InfixExpression:yMin
+      == 0.0 '
+    - '------------INS Assignment@@ret=min @TO@ ExpressionStatement@@Assignment:ret=min '
+    - '---------------INS SimpleName@@ret @TO@ Assignment@@ret=min '
+    - '---------------INS Operator@@= @TO@ Assignment@@ret=min '
+    - '---------------INS SimpleName@@min @TO@ Assignment@@ret=min '
+    - '---------INS ExpressionStatement@@Assignment:ret=max @TO@ IfStatement@@InfixExpression:yMin
+      == 0.0 '
+    - '------------INS Assignment@@ret=max @TO@ ExpressionStatement@@Assignment:ret=max '
+    - '---------------INS SimpleName@@ret @TO@ Assignment@@ret=max '
+    - '---------------INS Operator@@= @TO@ Assignment@@ret=max '
+    - '---------------INS SimpleName@@max @TO@ Assignment@@ret=max '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:sign >= 0 @TO@ InfixExpression:Math.abs(yMax)
+      <= functionValueAccuracy '
+    - '---DEL InfixExpression@@sign >= 0 '
+    - '------DEL SimpleName@@sign '
+    - '------DEL NumberLiteral@@0 '
+    - '---INS InfixExpression@@Math.abs(yMax) <= functionValueAccuracy @TO@ IfStatement@@InfixExpression:sign
+      >= 0 '
+    - '------MOV Operator@@>= @TO@ InfixExpression@@Math.abs(yMax) <= functionValueAccuracy '
+    - '------INS MethodInvocation@@Math.abs(yMax) @TO@ InfixExpression@@Math.abs(yMax)
+      <= functionValueAccuracy '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.abs(yMax) '
+    - '---------INS SimpleName@@MethodName:abs:[yMax] @TO@ MethodInvocation@@Math.abs(yMax) '
+    - '------------INS SimpleName@@yMax @TO@ SimpleName@@MethodName:abs:[yMax] '
+    - '------INS SimpleName@@functionValueAccuracy @TO@ InfixExpression@@Math.abs(yMax)
+      <= functionValueAccuracy '
+    - '---INS ExpressionStatement@@MethodInvocation:setResult(max,0) @TO@ IfStatement@@InfixExpression:sign
+      >= 0 '
+    - '------INS MethodInvocation@@setResult(max,0) @TO@ ExpressionStatement@@MethodInvocation:setResult(max,0) '
+    - '---------INS SimpleName@@MethodName:setResult:[max, 0] @TO@ MethodInvocation@@setResult(max,0) '
+    - '------------INS SimpleName@@max @TO@ SimpleName@@MethodName:setResult:[max,
+      0] '
+    - '------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:setResult:[max,
+      0] '
+    - '---INS ExpressionStatement@@Assignment:ret=max @TO@ IfStatement@@InfixExpression:sign
+      >= 0 '
+    - '------INS Assignment@@ret=max @TO@ ExpressionStatement@@Assignment:ret=max '
+    - '---------INS SimpleName@@ret @TO@ Assignment@@ret=max '
+    - '---------INS Operator@@= @TO@ Assignment@@ret=max '
+    - '---------INS SimpleName@@max @TO@ Assignment@@ret=max '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/BrentSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:Math.abs(yMin) <= functionValueAccuracy @TO@
+      IfStatement@@InfixExpression:sign >= 0 '
+    - '---INS InfixExpression@@Math.abs(yMin) <= functionValueAccuracy @TO@ IfStatement@@InfixExpression:Math.abs(yMin)
+      <= functionValueAccuracy '
+    - '------INS MethodInvocation@@Math.abs(yMin) @TO@ InfixExpression@@Math.abs(yMin)
+      <= functionValueAccuracy '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.abs(yMin) '
+    - '---------INS SimpleName@@MethodName:abs:[yMin] @TO@ MethodInvocation@@Math.abs(yMin) '
+    - '------------INS SimpleName@@yMin @TO@ SimpleName@@MethodName:abs:[yMin] '
+    - '------INS Operator@@<= @TO@ InfixExpression@@Math.abs(yMin) <= functionValueAccuracy '
+    - '------INS SimpleName@@functionValueAccuracy @TO@ InfixExpression@@Math.abs(yMin)
+      <= functionValueAccuracy '
+    - '---INS IfStatement@@InfixExpression:Math.abs(yMax) <= functionValueAccuracy
+      @TO@ IfStatement@@InfixExpression:Math.abs(yMin) <= functionValueAccuracy '
+    - '------INS InfixExpression@@Math.abs(yMax) <= functionValueAccuracy @TO@ IfStatement@@InfixExpression:Math.abs(yMax)
+      <= functionValueAccuracy '
+    - '---------INS MethodInvocation@@Math.abs(yMax) @TO@ InfixExpression@@Math.abs(yMax)
+      <= functionValueAccuracy '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.abs(yMax) '
+    - '------------INS SimpleName@@MethodName:abs:[yMax] @TO@ MethodInvocation@@Math.abs(yMax) '
+    - '---------------INS SimpleName@@yMax @TO@ SimpleName@@MethodName:abs:[yMax] '
+    - '---------INS Operator@@<= @TO@ InfixExpression@@Math.abs(yMax) <= functionValueAccuracy '
+    - '---------INS SimpleName@@functionValueAccuracy @TO@ InfixExpression@@Math.abs(yMax)
+      <= functionValueAccuracy '
+    - '------MOV ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Function
+      values at endpoints do not have different signs." + "  Endpoints: [" + min +
+      ","+ max+ "]"+ "  Values: ["+ yMin+ ","+ yMax+ "]") @TO@ IfStatement@@InfixExpression:Math.abs(yMax)
+      <= functionValueAccuracy '
+    - '------INS ExpressionStatement@@Assignment:ret=max @TO@ IfStatement@@InfixExpression:Math.abs(yMax)
+      <= functionValueAccuracy '
+    - '---------INS Assignment@@ret=max @TO@ ExpressionStatement@@Assignment:ret=max '
+    - '------------INS SimpleName@@ret @TO@ Assignment@@ret=max '
+    - '------------INS Operator@@= @TO@ Assignment@@ret=max '
+    - '------------INS SimpleName@@max @TO@ Assignment@@ret=max '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:sign < 0 @TO@ IfStatement@@InfixExpression:sign
+      >= 0 '
+    - '---MOV ExpressionStatement@@Assignment:ret=solve(min,yMin,max,yMax,min,yMin)
+      @TO@ IfStatement@@InfixExpression:sign < 0 '
+    - '---INS InfixExpression@@sign < 0 @TO@ IfStatement@@InfixExpression:sign < 0 '
+    - '------INS SimpleName@@sign @TO@ InfixExpression@@sign < 0 '
+    - '------INS Operator@@< @TO@ InfixExpression@@sign < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@sign < 0 '
+  repair_actions_cnt: 2

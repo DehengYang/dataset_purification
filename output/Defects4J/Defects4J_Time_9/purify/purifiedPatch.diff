@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_9/src/main/java/org/joda/time/DateTimeZone.java	2020-10-20 20:09:53.912246501 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_9/purify/purified/org/joda/time/DateTimeZone.java	2020-10-20 20:09:53.908246386 -0400
+@@ -255,6 +255,9 @@
+         if (hoursOffset == 0 && minutesOffset == 0) {
+             return DateTimeZone.UTC;
+         }
++        if (hoursOffset < -23 || hoursOffset > 23) {
++            throw new IllegalArgumentException("Hours out of range: " + hoursOffset);
++        }
+         if (minutesOffset < 0 || minutesOffset > 59) {
+             throw new IllegalArgumentException("Minutes out of range: " + minutesOffset);
+         }

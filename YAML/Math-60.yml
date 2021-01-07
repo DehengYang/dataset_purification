@@ -1,0 +1,204 @@
+1 bug_id: Math-60
+2 src folder:
+  name of src folder: java
+  number of files: 531
+  number of java files: 493
+  number of src classes: 622
+  number of test classes: 244
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.distribution.NormalDistributionTest#testExtremeValues
+  failing tests:
+  - org.apache.commons.math.distribution.NormalDistributionTest
+  number of all test cases: 2219
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.804
+  purification via delta debugging: 171.614
+  repair actions extraction: 0.803
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.distribution.NormalDistributionTest#testExtremeValues: 763
+  fixed:
+    org.apache.commons.math.distribution.NormalDistributionTest#testExtremeValues: 453
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 3
+  covDel: 10
+  cov_patch_lines: 13
+  delta_patch_lines: 10
+  oriAdd: 3
+  oriDel: 10
+  ori_patch_lines: 13
+  purAdd: 3
+  purDel: 7
+7 reduced chunks:
+  by all: -3
+  by coverage: 0
+  by delta debugging: -3
+  cov: 2
+  original: 2
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 25
+  failFail: 2
+  passed: 0
+  total: 27
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_60/src/main/java/org/apache/commons/math/distribution/NormalDistributionImpl.java\t\
+    2020-10-22 07:29:20.928417302 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_60/purify/patch/org/apache/commons/math/distribution/NormalDistributionImpl.java\t\
+    2020-10-22 07:29:20.924417186 -0400\n@@ -123,18 +123,11 @@\n      */\n     public\
+    \ double cumulativeProbability(double x) throws MathException {\n         final\
+    \ double dev = x - mean;\n-        try {\n+        if (FastMath.abs(dev) > 40\
+    \ * standardDeviation) { \n+            return dev < 0 ? 0.0d : 1.0d;\n+     \
+    \   }\n         return 0.5 * (1.0 + Erf.erf((dev) /\n                     (standardDeviation\
+    \ * FastMath.sqrt(2.0))));\n-        } catch (MaxIterationsExceededException ex)\
+    \ {\n-            if (x < (mean - 20 * standardDeviation)) { // JDK 1.5 blows\
+    \ at 38\n-                return 0;\n-            } else if (x > (mean + 20 *\
+    \ standardDeviation)) {\n-                return 1;\n-            } else {\n-\
+    \                throw ex;\n-            }\n-        }\n     }\n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_60/src/main/java/org/apache/commons/math/distribution/NormalDistributionImpl.java\t\
+    2020-10-22 07:32:30.733909672 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_60/purify/purified/org/apache/commons/math/distribution/NormalDistributionImpl.java\t\
+    2020-10-22 07:32:30.733909672 -0400\n@@ -123,18 +123,14 @@\n      */\n     public\
+    \ double cumulativeProbability(double x) throws MathException {\n         final\
+    \ double dev = x - mean;\n-        try {\n+        if (FastMath.abs(dev) > 40\
+    \ * standardDeviation) { \n+            return dev < 0 ? 0.0d : 1.0d;\n+     \
+    \   }\n         return 0.5 * (1.0 + Erf.erf((dev) /\n                     (standardDeviation\
+    \ * FastMath.sqrt(2.0))));\n-        } catch (MaxIterationsExceededException ex)\
+    \ {\n-            if (x < (mean - 20 * standardDeviation)) { // JDK 1.5 blows\
+    \ at 38\n                 return 0;\n-            } else if (x > (mean + 20 *\
+    \ standardDeviation)) {\n                 return 1;\n-            } else {\n \
+    \                throw ex;\n-            }\n-        }\n     }\n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/distribution/NormalDistributionImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:FastMath.abs(dev) > 40 * standardDeviation
+      @TO@ MethodDeclaration@@public, @@double, MethodName:cumulativeProbability,
+      @@Argus:double+x+MathException,  '
+    - '---INS ReturnStatement@@ConditionalExpression:dev < 0 ? 0.0d : 1.0d @TO@ IfStatement@@InfixExpression:FastMath.abs(dev)
+      > 40 * standardDeviation '
+    - '------INS ConditionalExpression@@dev < 0 ? 0.0d : 1.0d @TO@ ReturnStatement@@ConditionalExpression:dev
+      < 0 ? 0.0d : 1.0d '
+    - '---------INS InfixExpression@@dev < 0 @TO@ ConditionalExpression@@dev < 0 ?
+      0.0d : 1.0d '
+    - '------------MOV SimpleName@@mean @TO@ InfixExpression@@dev < 0 '
+    - '------------MOV Operator@@+ @TO@ InfixExpression@@dev < 0 '
+    - '------------MOV NumberLiteral@@20 @TO@ InfixExpression@@dev < 0 '
+    - '---------INS NumberLiteral@@0.0d @TO@ ConditionalExpression@@dev < 0 ? 0.0d
+      : 1.0d '
+    - '---------INS NumberLiteral@@1.0d @TO@ ConditionalExpression@@dev < 0 ? 0.0d
+      : 1.0d '
+    - '---MOV InfixExpression@@x < (mean - 20 * standardDeviation) @TO@ IfStatement@@InfixExpression:FastMath.abs(dev)
+      > 40 * standardDeviation '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL TryStatement@@try:[] '
+    - '---DEL CatchClause@@MaxIterationsExceededException ex '
+    - '------DEL SingleVariableDeclaration@@MaxIterationsExceededException ex '
+    - '---------DEL SimpleType@@MaxIterationsExceededException '
+    - '---------DEL SimpleName@@ex '
+    - '------DEL IfStatement@@InfixExpression:x < (mean - 20 * standardDeviation) '
+    - '---------DEL ReturnStatement@@NumberLiteral:0 '
+    - '------------DEL NumberLiteral@@0 '
+    - '---------DEL IfStatement@@InfixExpression:x > (mean + 20 * standardDeviation) '
+    - '------------DEL InfixExpression@@x > (mean + 20 * standardDeviation) '
+    - '---------------DEL SimpleName@@x '
+    - '---------------DEL Operator@@> '
+    - '---------------DEL ParenthesizedExpression@@(mean + 20 * standardDeviation) '
+    - '------------------DEL InfixExpression@@mean + 20 * standardDeviation '
+    - '---------------------DEL InfixExpression@@20 * standardDeviation '
+    - '------------------------DEL Operator@@* '
+    - '------------------------DEL SimpleName@@standardDeviation '
+    - '------------DEL ReturnStatement@@NumberLiteral:1 '
+    - '---------------DEL NumberLiteral@@1 '
+    - '------------DEL ThrowStatement@@SimpleName:ex '
+    - '---------------DEL SimpleName@@ex '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ReturnStatement@@InfixExpression:0.5 * (1.0 + Erf.erf((dev) / (standardDeviation
+      * FastMath.sqrt(2.0)))) @TO@ MethodDeclaration@@public, @@double, MethodName:cumulativeProbability,
+      @@Argus:double+x+MathException,  '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/distribution/NormalDistributionImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:FastMath.abs(dev) > 40 * standardDeviation
+      @TO@ MethodDeclaration@@public, @@double, MethodName:cumulativeProbability,
+      @@Argus:double+x+MathException,  '
+    - '---MOV InfixExpression@@x < (mean - 20 * standardDeviation) @TO@ IfStatement@@InfixExpression:FastMath.abs(dev)
+      > 40 * standardDeviation '
+    - '---MOV ReturnStatement@@NumberLiteral:0 @TO@ IfStatement@@InfixExpression:FastMath.abs(dev)
+      > 40 * standardDeviation '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL TryStatement@@try:[] '
+    - '---DEL CatchClause@@MaxIterationsExceededException ex '
+    - '------DEL SingleVariableDeclaration@@MaxIterationsExceededException ex '
+    - '---------DEL SimpleType@@MaxIterationsExceededException '
+    - '---------DEL SimpleName@@ex '
+    - '------DEL IfStatement@@InfixExpression:x < (mean - 20 * standardDeviation) '
+    - '---------DEL IfStatement@@InfixExpression:x > (mean + 20 * standardDeviation) '
+    - '------------DEL InfixExpression@@x > (mean + 20 * standardDeviation) '
+    - '---------------DEL SimpleName@@x '
+    - '---------------DEL Operator@@> '
+    - '---------------DEL ParenthesizedExpression@@(mean + 20 * standardDeviation) '
+    - '------------------DEL InfixExpression@@mean + 20 * standardDeviation '
+    - '---------------------DEL SimpleName@@mean '
+    - '---------------------DEL Operator@@+ '
+    - '---------------------DEL InfixExpression@@20 * standardDeviation '
+    - '------------------------DEL NumberLiteral@@20 '
+    - '------------------------DEL Operator@@* '
+    - '------------------------DEL SimpleName@@standardDeviation '
+    - '------------DEL ReturnStatement@@NumberLiteral:1 '
+    - '------------DEL ThrowStatement@@SimpleName:ex '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ReturnStatement@@InfixExpression:0.5 * (1.0 + Erf.erf((dev) / (standardDeviation
+      * FastMath.sqrt(2.0)))) @TO@ MethodDeclaration@@public, @@double, MethodName:cumulativeProbability,
+      @@Argus:double+x+MathException,  '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@NumberLiteral:0 @TO@ MethodDeclaration@@public, @@double,
+      MethodName:cumulativeProbability, @@Argus:double+x+MathException,  '
+    - '---INS NumberLiteral@@0 @TO@ ReturnStatement@@NumberLiteral:0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@NumberLiteral:1 @TO@ MethodDeclaration@@public, @@double,
+      MethodName:cumulativeProbability, @@Argus:double+x+MathException,  '
+    - '---MOV NumberLiteral@@1 @TO@ ReturnStatement@@NumberLiteral:1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@NumberLiteral:0 @TO@ ConditionalExpression:dev < 0 ? 0.0d
+      : 1.0d '
+    - '---INS ConditionalExpression@@dev < 0 ? 0.0d : 1.0d @TO@ ReturnStatement@@NumberLiteral:0 '
+    - '------INS InfixExpression@@dev < 0 @TO@ ConditionalExpression@@dev < 0 ? 0.0d
+      : 1.0d '
+    - '---------INS SimpleName@@dev @TO@ InfixExpression@@dev < 0 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@dev < 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@dev < 0 '
+    - '------INS NumberLiteral@@0.0d @TO@ ConditionalExpression@@dev < 0 ? 0.0d :
+      1.0d '
+    - '------INS NumberLiteral@@1.0d @TO@ ConditionalExpression@@dev < 0 ? 0.0d :
+      1.0d '
+    - '---DEL NumberLiteral@@0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ThrowStatement@@SimpleName:ex @TO@ MethodDeclaration@@public, @@double,
+      MethodName:cumulativeProbability, @@Argus:double+x+MathException,  '
+    - '---MOV SimpleName@@ex @TO@ ThrowStatement@@SimpleName:ex '
+  repair_actions_cnt: 7

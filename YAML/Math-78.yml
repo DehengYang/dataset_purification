@@ -1,0 +1,306 @@
+1 bug_id: Math-78
+2 src folder:
+  name of src folder: java
+  number of files: 430
+  number of java files: 393
+  number of src classes: 486
+  number of test classes: 217
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.ode.events.EventStateTest#closeEvents
+  failing tests:
+  - org.apache.commons.math.ode.events.EventStateTest
+  number of all test cases: 2106
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.978
+  purification via delta debugging: 268.562
+  repair actions extraction: 0.948
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.ode.events.EventStateTest#closeEvents: 182
+  fixed:
+    org.apache.commons.math.ode.events.EventStateTest#closeEvents: 182
+6 reduced lines:
+  by all: 5
+  by coverage: 1
+  by delta debugging: 4
+  covAdd: 10
+  covDel: 0
+  cov_patch_lines: 10
+  delta_patch_lines: 6
+  oriAdd: 11
+  oriDel: 0
+  ori_patch_lines: 11
+  purAdd: 6
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 24
+  failFail: 5
+  passed: 3
+  total: 32
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_78/src/main/java/org/apache/commons/math/ode/events/EventState.java\t\
+    2020-10-21 13:28:53.254426495 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_78/purify/patch/org/apache/commons/math/ode/events/EventState.java\t\
+    2020-10-21 13:28:53.254426495 -0400\n@@ -188,6 +188,7 @@\n                 if\
+    \ (g0Positive ^ (gb >= 0)) {\n                     // there is a sign change:\
+    \ an event is expected during this step\n \n+                    if (ga * gb >\
+    \ 0) {\n                         // this is a corner case:\n                 \
+    \        // - there was an event near ta,\n                         // - there\
+    \ is another event between ta and tb\n@@ -195,7 +196,17 @@\n                 \
+    \        // this implies that the real sign of ga is the same as gb, so we need\
+    \ to slightly\n                         // shift ta to make sure ga and gb get\
+    \ opposite signs and the solver won't complain\n                         // about\
+    \ bracketing\n+                        final double epsilon = (forward ? 0.25\
+    \ : -0.25) * convergence;\n+                        for (int k = 0; (k < 4) &&\
+    \ (ga * gb > 0); ++k) {\n+                            ta += epsilon;\n+      \
+    \                      interpolator.setInterpolatedTime(ta);\n+              \
+    \              ga = handler.g(ta, interpolator.getInterpolatedState());\n+   \
+    \                     }\n+                        if (ga * gb > 0) {\n       \
+    \                      // this should never happen\n+                        \
+    \    throw MathRuntimeException.createInternalError(null);\n+                \
+    \        }\n+                    }\n                          \n             \
+    \        // variation direction, with respect to the integration direction\n \
+    \                    increasing = gb >= ga;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_78/src/main/java/org/apache/commons/math/ode/events/EventState.java\t\
+    2020-10-21 13:33:35.794595764 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_78/purify/purified/org/apache/commons/math/ode/events/EventState.java\t\
+    2020-10-21 13:33:35.794595764 -0400\n@@ -188,6 +188,7 @@\n                 if\
+    \ (g0Positive ^ (gb >= 0)) {\n                     // there is a sign change:\
+    \ an event is expected during this step\n \n+                    if (ga * gb >\
+    \ 0) {\n                         // this is a corner case:\n                 \
+    \        // - there was an event near ta,\n                         // - there\
+    \ is another event between ta and tb\n@@ -195,7 +196,12 @@\n                 \
+    \        // this implies that the real sign of ga is the same as gb, so we need\
+    \ to slightly\n                         // shift ta to make sure ga and gb get\
+    \ opposite signs and the solver won't complain\n                         // about\
+    \ bracketing\n+                        final double epsilon = (forward ? 0.25\
+    \ : -0.25) * convergence;\n+                        for (int k = 0; (k < 4) &&\
+    \ (ga * gb > 0); ++k) {\n+                            ta += epsilon;\n       \
+    \                      // this should never happen\n+                        }\n\
+    +                    }\n                          \n                     // variation\
+    \ direction, with respect to the integration direction\n                     increasing\
+    \ = gb >= ga;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/ode/events/EventState:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:ga * gb > 0 @TO@ IfStatement@@InfixExpression:g0Positive
+      ^ (gb >= 0) '
+    - '---INS InfixExpression@@ga * gb > 0 @TO@ IfStatement@@InfixExpression:ga *
+      gb > 0 '
+    - '------INS InfixExpression@@ga * gb @TO@ InfixExpression@@ga * gb > 0 '
+    - '---------INS SimpleName@@ga @TO@ InfixExpression@@ga * gb '
+    - '---------INS Operator@@* @TO@ InfixExpression@@ga * gb '
+    - '---------INS SimpleName@@gb @TO@ InfixExpression@@ga * gb '
+    - '------INS Operator@@> @TO@ InfixExpression@@ga * gb > 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@ga * gb > 0 '
+    - '---INS VariableDeclarationStatement@@final double epsilon=(forward ? 0.25 :
+      -0.25) * convergence; @TO@ IfStatement@@InfixExpression:ga * gb > 0 '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double epsilon=(forward
+      ? 0.25 : -0.25) * convergence; '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      epsilon=(forward ? 0.25 : -0.25) * convergence; '
+    - '------INS VariableDeclarationFragment@@epsilon=(forward ? 0.25 : -0.25) * convergence
+      @TO@ VariableDeclarationStatement@@final double epsilon=(forward ? 0.25 : -0.25)
+      * convergence; '
+    - '---------INS SimpleName@@epsilon @TO@ VariableDeclarationFragment@@epsilon=(forward
+      ? 0.25 : -0.25) * convergence '
+    - '---------INS InfixExpression@@(forward ? 0.25 : -0.25) * convergence @TO@ VariableDeclarationFragment@@epsilon=(forward
+      ? 0.25 : -0.25) * convergence '
+    - '------------INS ParenthesizedExpression@@(forward ? 0.25 : -0.25) @TO@ InfixExpression@@(forward
+      ? 0.25 : -0.25) * convergence '
+    - '---------------INS ConditionalExpression@@forward ? 0.25 : -0.25 @TO@ ParenthesizedExpression@@(forward
+      ? 0.25 : -0.25) '
+    - '------------------INS SimpleName@@forward @TO@ ConditionalExpression@@forward
+      ? 0.25 : -0.25 '
+    - '------------------INS NumberLiteral@@0.25 @TO@ ConditionalExpression@@forward
+      ? 0.25 : -0.25 '
+    - '------------------INS PrefixExpression@@-0.25 @TO@ ConditionalExpression@@forward
+      ? 0.25 : -0.25 '
+    - '---------------------INS Operator@@- @TO@ PrefixExpression@@-0.25 '
+    - '---------------------INS NumberLiteral@@0.25 @TO@ PrefixExpression@@-0.25 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@(forward ? 0.25 : -0.25)
+      * convergence '
+    - '------------INS SimpleName@@convergence @TO@ InfixExpression@@(forward ? 0.25
+      : -0.25) * convergence '
+    - '---INS ForStatement@@[int k=0];(k < 4) && (ga * gb > 0); [++k] @TO@ IfStatement@@InfixExpression:ga
+      * gb > 0 '
+    - '------INS VariableDeclarationExpression@@int k=0 @TO@ ForStatement@@[int k=0];(k
+      < 4) && (ga * gb > 0); [++k] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int k=0 '
+    - '---------INS VariableDeclarationFragment@@k=0 @TO@ VariableDeclarationExpression@@int
+      k=0 '
+    - '------------INS SimpleName@@k @TO@ VariableDeclarationFragment@@k=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@k=0 '
+    - '------INS InfixExpression@@(k < 4) && (ga * gb > 0) @TO@ ForStatement@@[int
+      k=0];(k < 4) && (ga * gb > 0); [++k] '
+    - '---------INS ParenthesizedExpression@@(k < 4) @TO@ InfixExpression@@(k < 4)
+      && (ga * gb > 0) '
+    - '------------INS InfixExpression@@k < 4 @TO@ ParenthesizedExpression@@(k < 4) '
+    - '---------------INS SimpleName@@k @TO@ InfixExpression@@k < 4 '
+    - '---------------INS Operator@@< @TO@ InfixExpression@@k < 4 '
+    - '---------------INS NumberLiteral@@4 @TO@ InfixExpression@@k < 4 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@(k < 4) && (ga * gb > 0) '
+    - '---------INS ParenthesizedExpression@@(ga * gb > 0) @TO@ InfixExpression@@(k
+      < 4) && (ga * gb > 0) '
+    - '------------INS InfixExpression@@ga * gb > 0 @TO@ ParenthesizedExpression@@(ga
+      * gb > 0) '
+    - '---------------INS InfixExpression@@ga * gb @TO@ InfixExpression@@ga * gb >
+      0 '
+    - '------------------INS SimpleName@@ga @TO@ InfixExpression@@ga * gb '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@ga * gb '
+    - '------------------INS SimpleName@@gb @TO@ InfixExpression@@ga * gb '
+    - '---------------INS Operator@@> @TO@ InfixExpression@@ga * gb > 0 '
+    - '---------------INS NumberLiteral@@0 @TO@ InfixExpression@@ga * gb > 0 '
+    - '------INS PrefixExpression@@++k @TO@ ForStatement@@[int k=0];(k < 4) && (ga
+      * gb > 0); [++k] '
+    - '---------INS Operator@@++ @TO@ PrefixExpression@@++k '
+    - '---------INS SimpleName@@k @TO@ PrefixExpression@@++k '
+    - '------INS ExpressionStatement@@Assignment:ta+=epsilon @TO@ ForStatement@@[int
+      k=0];(k < 4) && (ga * gb > 0); [++k] '
+    - '---------INS Assignment@@ta+=epsilon @TO@ ExpressionStatement@@Assignment:ta+=epsilon '
+    - '------------INS SimpleName@@ta @TO@ Assignment@@ta+=epsilon '
+    - '------------INS Operator@@+= @TO@ Assignment@@ta+=epsilon '
+    - '------------INS SimpleName@@epsilon @TO@ Assignment@@ta+=epsilon '
+    - '------INS ExpressionStatement@@MethodInvocation:interpolator.setInterpolatedTime(ta)
+      @TO@ ForStatement@@[int k=0];(k < 4) && (ga * gb > 0); [++k] '
+    - '---------INS MethodInvocation@@interpolator.setInterpolatedTime(ta) @TO@ ExpressionStatement@@MethodInvocation:interpolator.setInterpolatedTime(ta) '
+    - '------------INS SimpleName@@Name:interpolator @TO@ MethodInvocation@@interpolator.setInterpolatedTime(ta) '
+    - '------------INS SimpleName@@MethodName:setInterpolatedTime:[ta] @TO@ MethodInvocation@@interpolator.setInterpolatedTime(ta) '
+    - '---------------INS SimpleName@@ta @TO@ SimpleName@@MethodName:setInterpolatedTime:[ta] '
+    - '------INS ExpressionStatement@@Assignment:ga=handler.g(ta,interpolator.getInterpolatedState())
+      @TO@ ForStatement@@[int k=0];(k < 4) && (ga * gb > 0); [++k] '
+    - '---------INS Assignment@@ga=handler.g(ta,interpolator.getInterpolatedState())
+      @TO@ ExpressionStatement@@Assignment:ga=handler.g(ta,interpolator.getInterpolatedState()) '
+    - '------------INS SimpleName@@ga @TO@ Assignment@@ga=handler.g(ta,interpolator.getInterpolatedState()) '
+    - '------------INS Operator@@= @TO@ Assignment@@ga=handler.g(ta,interpolator.getInterpolatedState()) '
+    - '------------INS MethodInvocation@@handler.g(ta,interpolator.getInterpolatedState())
+      @TO@ Assignment@@ga=handler.g(ta,interpolator.getInterpolatedState()) '
+    - '---------------INS SimpleName@@Name:handler @TO@ MethodInvocation@@handler.g(ta,interpolator.getInterpolatedState()) '
+    - '---------------INS SimpleName@@MethodName:g:[ta, interpolator.getInterpolatedState()]
+      @TO@ MethodInvocation@@handler.g(ta,interpolator.getInterpolatedState()) '
+    - '------------------INS SimpleName@@ta @TO@ SimpleName@@MethodName:g:[ta, interpolator.getInterpolatedState()] '
+    - '------------------INS MethodInvocation@@interpolator.getInterpolatedState()
+      @TO@ SimpleName@@MethodName:g:[ta, interpolator.getInterpolatedState()] '
+    - '---------------------INS SimpleName@@Name:interpolator @TO@ MethodInvocation@@interpolator.getInterpolatedState() '
+    - '---------------------INS SimpleName@@MethodName:getInterpolatedState:[] @TO@
+      MethodInvocation@@interpolator.getInterpolatedState() '
+    - '---INS IfStatement@@InfixExpression:ga * gb > 0 @TO@ IfStatement@@InfixExpression:ga
+      * gb > 0 '
+    - '------INS InfixExpression@@ga * gb > 0 @TO@ IfStatement@@InfixExpression:ga
+      * gb > 0 '
+    - '---------INS InfixExpression@@ga * gb @TO@ InfixExpression@@ga * gb > 0 '
+    - '------------INS SimpleName@@ga @TO@ InfixExpression@@ga * gb '
+    - '------------INS Operator@@* @TO@ InfixExpression@@ga * gb '
+    - '------------INS SimpleName@@gb @TO@ InfixExpression@@ga * gb '
+    - '---------INS Operator@@> @TO@ InfixExpression@@ga * gb > 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@ga * gb > 0 '
+    - '------INS ThrowStatement@@MethodInvocation:MathRuntimeException.createInternalError(null)
+      @TO@ IfStatement@@InfixExpression:ga * gb > 0 '
+    - '---------INS MethodInvocation@@MathRuntimeException.createInternalError(null)
+      @TO@ ThrowStatement@@MethodInvocation:MathRuntimeException.createInternalError(null) '
+    - '------------INS SimpleName@@Name:MathRuntimeException @TO@ MethodInvocation@@MathRuntimeException.createInternalError(null) '
+    - '------------INS SimpleName@@MethodName:createInternalError:[null] @TO@ MethodInvocation@@MathRuntimeException.createInternalError(null) '
+    - '---------------INS NullLiteral@@null @TO@ SimpleName@@MethodName:createInternalError:[null] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/ode/events/EventState:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:ga * gb > 0 @TO@ IfStatement@@InfixExpression:g0Positive
+      ^ (gb >= 0) '
+    - '---INS InfixExpression@@ga * gb > 0 @TO@ IfStatement@@InfixExpression:ga *
+      gb > 0 '
+    - '------INS InfixExpression@@ga * gb @TO@ InfixExpression@@ga * gb > 0 '
+    - '---------INS SimpleName@@ga @TO@ InfixExpression@@ga * gb '
+    - '---------INS Operator@@* @TO@ InfixExpression@@ga * gb '
+    - '---------INS SimpleName@@gb @TO@ InfixExpression@@ga * gb '
+    - '------INS Operator@@> @TO@ InfixExpression@@ga * gb > 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@ga * gb > 0 '
+    - '---INS VariableDeclarationStatement@@final double epsilon=(forward ? 0.25 :
+      -0.25) * convergence; @TO@ IfStatement@@InfixExpression:ga * gb > 0 '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double epsilon=(forward
+      ? 0.25 : -0.25) * convergence; '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      epsilon=(forward ? 0.25 : -0.25) * convergence; '
+    - '------INS VariableDeclarationFragment@@epsilon=(forward ? 0.25 : -0.25) * convergence
+      @TO@ VariableDeclarationStatement@@final double epsilon=(forward ? 0.25 : -0.25)
+      * convergence; '
+    - '---------INS SimpleName@@epsilon @TO@ VariableDeclarationFragment@@epsilon=(forward
+      ? 0.25 : -0.25) * convergence '
+    - '---------INS InfixExpression@@(forward ? 0.25 : -0.25) * convergence @TO@ VariableDeclarationFragment@@epsilon=(forward
+      ? 0.25 : -0.25) * convergence '
+    - '------------INS ParenthesizedExpression@@(forward ? 0.25 : -0.25) @TO@ InfixExpression@@(forward
+      ? 0.25 : -0.25) * convergence '
+    - '---------------INS ConditionalExpression@@forward ? 0.25 : -0.25 @TO@ ParenthesizedExpression@@(forward
+      ? 0.25 : -0.25) '
+    - '------------------INS SimpleName@@forward @TO@ ConditionalExpression@@forward
+      ? 0.25 : -0.25 '
+    - '------------------INS NumberLiteral@@0.25 @TO@ ConditionalExpression@@forward
+      ? 0.25 : -0.25 '
+    - '------------------INS PrefixExpression@@-0.25 @TO@ ConditionalExpression@@forward
+      ? 0.25 : -0.25 '
+    - '---------------------INS Operator@@- @TO@ PrefixExpression@@-0.25 '
+    - '---------------------INS NumberLiteral@@0.25 @TO@ PrefixExpression@@-0.25 '
+    - '------------INS Operator@@* @TO@ InfixExpression@@(forward ? 0.25 : -0.25)
+      * convergence '
+    - '------------INS SimpleName@@convergence @TO@ InfixExpression@@(forward ? 0.25
+      : -0.25) * convergence '
+    - '---INS ForStatement@@[int k=0];(k < 4) && (ga * gb > 0); [++k] @TO@ IfStatement@@InfixExpression:ga
+      * gb > 0 '
+    - '------INS VariableDeclarationExpression@@int k=0 @TO@ ForStatement@@[int k=0];(k
+      < 4) && (ga * gb > 0); [++k] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int k=0 '
+    - '---------INS VariableDeclarationFragment@@k=0 @TO@ VariableDeclarationExpression@@int
+      k=0 '
+    - '------------INS SimpleName@@k @TO@ VariableDeclarationFragment@@k=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@k=0 '
+    - '------INS InfixExpression@@(k < 4) && (ga * gb > 0) @TO@ ForStatement@@[int
+      k=0];(k < 4) && (ga * gb > 0); [++k] '
+    - '---------INS ParenthesizedExpression@@(k < 4) @TO@ InfixExpression@@(k < 4)
+      && (ga * gb > 0) '
+    - '------------INS InfixExpression@@k < 4 @TO@ ParenthesizedExpression@@(k < 4) '
+    - '---------------INS SimpleName@@k @TO@ InfixExpression@@k < 4 '
+    - '---------------INS Operator@@< @TO@ InfixExpression@@k < 4 '
+    - '---------------INS NumberLiteral@@4 @TO@ InfixExpression@@k < 4 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@(k < 4) && (ga * gb > 0) '
+    - '---------INS ParenthesizedExpression@@(ga * gb > 0) @TO@ InfixExpression@@(k
+      < 4) && (ga * gb > 0) '
+    - '------------INS InfixExpression@@ga * gb > 0 @TO@ ParenthesizedExpression@@(ga
+      * gb > 0) '
+    - '---------------INS InfixExpression@@ga * gb @TO@ InfixExpression@@ga * gb >
+      0 '
+    - '------------------INS SimpleName@@ga @TO@ InfixExpression@@ga * gb '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@ga * gb '
+    - '------------------INS SimpleName@@gb @TO@ InfixExpression@@ga * gb '
+    - '---------------INS Operator@@> @TO@ InfixExpression@@ga * gb > 0 '
+    - '---------------INS NumberLiteral@@0 @TO@ InfixExpression@@ga * gb > 0 '
+    - '------INS PrefixExpression@@++k @TO@ ForStatement@@[int k=0];(k < 4) && (ga
+      * gb > 0); [++k] '
+    - '---------INS Operator@@++ @TO@ PrefixExpression@@++k '
+    - '---------INS SimpleName@@k @TO@ PrefixExpression@@++k '
+    - '------INS ExpressionStatement@@Assignment:ta+=epsilon @TO@ ForStatement@@[int
+      k=0];(k < 4) && (ga * gb > 0); [++k] '
+    - '---------INS Assignment@@ta+=epsilon @TO@ ExpressionStatement@@Assignment:ta+=epsilon '
+    - '------------INS SimpleName@@ta @TO@ Assignment@@ta+=epsilon '
+    - '------------INS Operator@@+= @TO@ Assignment@@ta+=epsilon '
+    - '------------INS SimpleName@@epsilon @TO@ Assignment@@ta+=epsilon '
+  repair_actions_cnt: 1

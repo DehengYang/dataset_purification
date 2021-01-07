@@ -1,0 +1,282 @@
+1 bug_id: Closure-69
+2 src folder:
+  name of src folder: src
+  number of files: 404
+  number of java files: 391
+  number of src classes: 1272
+  number of test classes: 207
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testThisTypeOfFunction3
+  - com.google.javascript.jscomp.TypeCheckTest#testThisTypeOfFunction2
+  - com.google.javascript.jscomp.TypeCheckTest#testThisTypeOfFunction4
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 7071
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.99
+  purification via delta debugging: 556.362
+  repair actions extraction: 2.527
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testThisTypeOfFunction2: 4269
+    com.google.javascript.jscomp.TypeCheckTest#testThisTypeOfFunction3: 4525
+    com.google.javascript.jscomp.TypeCheckTest#testThisTypeOfFunction4: 4925
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testThisTypeOfFunction2: 4350
+    com.google.javascript.jscomp.TypeCheckTest#testThisTypeOfFunction3: 4605
+    com.google.javascript.jscomp.TypeCheckTest#testThisTypeOfFunction4: 5010
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 7
+  covDel: 0
+  cov_patch_lines: 7
+  delta_patch_lines: 7
+  oriAdd: 7
+  oriDel: 0
+  ori_patch_lines: 7
+  purAdd: 7
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 3
+  failCompile: 9
+  failFail: 1
+  passed: 0
+  total: 13
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_69/src/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-23 08:28:43.112519907 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_69/purify/patch/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-23 08:28:43.112519907 -0400\n@@ -1577,6 +1577,13 @@\n \n       // Functions\
+    \ with explcit 'this' types must be called in a GETPROP\n       // or GETELEM.\n\
+    +      if (functionType.isOrdinaryFunction() &&\n+          !functionType.getTypeOfThis().isUnknownType()\
+    \ &&\n+          !functionType.getTypeOfThis().isNativeObjectType() &&\n+    \
+    \      !(child.getType() == Token.GETELEM ||\n+            child.getType() ==\
+    \ Token.GETPROP)) {\n+        report(t, n, EXPECTED_THIS_TYPE, functionType.toString());\n\
+    +      }\n \n       visitParameterList(t, n, functionType);\n       ensureTyped(t,\
+    \ n, functionType.getReturnType());"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_69/src/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-23 08:38:32.365576616 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_69/purify/purified/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-23 08:38:32.361576500 -0400\n@@ -1577,6 +1577,13 @@\n \n       // Functions\
+    \ with explcit 'this' types must be called in a GETPROP\n       // or GETELEM.\n\
+    +      if (functionType.isOrdinaryFunction() &&\n+          !functionType.getTypeOfThis().isUnknownType()\
+    \ &&\n+          !functionType.getTypeOfThis().isNativeObjectType() &&\n+    \
+    \      !(child.getType() == Token.GETELEM ||\n+            child.getType() ==\
+    \ Token.GETPROP)) {\n+        report(t, n, EXPECTED_THIS_TYPE, functionType.toString());\n\
+    +      }\n \n       visitParameterList(t, n, functionType);\n       ensureTyped(t,\
+    \ n, functionType.getReturnType());"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeCheck:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:functionType.isOrdinaryFunction() && !functionType.getTypeOfThis().isUnknownType()
+      && !functionType.getTypeOfThis().isNativeObjectType()&& !(child.getType() ==
+      Token.GETELEM || child.getType() == Token.GETPROP) @TO@ IfStatement@@InstanceofExpression:childType
+      instanceof FunctionType '
+    - '---INS InfixExpression@@functionType.isOrdinaryFunction() && !functionType.getTypeOfThis().isUnknownType()
+      && !functionType.getTypeOfThis().isNativeObjectType()&& !(child.getType() ==
+      Token.GETELEM || child.getType() == Token.GETPROP) @TO@ IfStatement@@InfixExpression:functionType.isOrdinaryFunction()
+      && !functionType.getTypeOfThis().isUnknownType() && !functionType.getTypeOfThis().isNativeObjectType()&&
+      !(child.getType() == Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '------INS MethodInvocation@@functionType.isOrdinaryFunction() @TO@ InfixExpression@@functionType.isOrdinaryFunction()
+      && !functionType.getTypeOfThis().isUnknownType() && !functionType.getTypeOfThis().isNativeObjectType()&&
+      !(child.getType() == Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '---------INS SimpleName@@Name:functionType @TO@ MethodInvocation@@functionType.isOrdinaryFunction() '
+    - '---------INS SimpleName@@MethodName:isOrdinaryFunction:[] @TO@ MethodInvocation@@functionType.isOrdinaryFunction() '
+    - '------INS Operator@@&& @TO@ InfixExpression@@functionType.isOrdinaryFunction()
+      && !functionType.getTypeOfThis().isUnknownType() && !functionType.getTypeOfThis().isNativeObjectType()&&
+      !(child.getType() == Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '------INS PrefixExpression@@!functionType.getTypeOfThis().isUnknownType() @TO@
+      InfixExpression@@functionType.isOrdinaryFunction() && !functionType.getTypeOfThis().isUnknownType()
+      && !functionType.getTypeOfThis().isNativeObjectType()&& !(child.getType() ==
+      Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!functionType.getTypeOfThis().isUnknownType() '
+    - '---------INS MethodInvocation@@functionType.getTypeOfThis().isUnknownType()
+      @TO@ PrefixExpression@@!functionType.getTypeOfThis().isUnknownType() '
+    - '------------INS SimpleName@@Name:functionType @TO@ MethodInvocation@@functionType.getTypeOfThis().isUnknownType() '
+    - '------------INS MethodInvocation@@MethodName:getTypeOfThis:[] @TO@ MethodInvocation@@functionType.getTypeOfThis().isUnknownType() '
+    - '------------INS SimpleName@@MethodName:isUnknownType:[] @TO@ MethodInvocation@@functionType.getTypeOfThis().isUnknownType() '
+    - '------INS PrefixExpression@@!functionType.getTypeOfThis().isNativeObjectType()
+      @TO@ InfixExpression@@functionType.isOrdinaryFunction() && !functionType.getTypeOfThis().isUnknownType()
+      && !functionType.getTypeOfThis().isNativeObjectType()&& !(child.getType() ==
+      Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!functionType.getTypeOfThis().isNativeObjectType() '
+    - '---------INS MethodInvocation@@functionType.getTypeOfThis().isNativeObjectType()
+      @TO@ PrefixExpression@@!functionType.getTypeOfThis().isNativeObjectType() '
+    - '------------INS SimpleName@@Name:functionType @TO@ MethodInvocation@@functionType.getTypeOfThis().isNativeObjectType() '
+    - '------------INS MethodInvocation@@MethodName:getTypeOfThis:[] @TO@ MethodInvocation@@functionType.getTypeOfThis().isNativeObjectType() '
+    - '------------INS SimpleName@@MethodName:isNativeObjectType:[] @TO@ MethodInvocation@@functionType.getTypeOfThis().isNativeObjectType() '
+    - '------INS PrefixExpression@@!(child.getType() == Token.GETELEM || child.getType()
+      == Token.GETPROP) @TO@ InfixExpression@@functionType.isOrdinaryFunction() &&
+      !functionType.getTypeOfThis().isUnknownType() && !functionType.getTypeOfThis().isNativeObjectType()&&
+      !(child.getType() == Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!(child.getType() == Token.GETELEM
+      || child.getType() == Token.GETPROP) '
+    - '---------INS ParenthesizedExpression@@(child.getType() == Token.GETELEM ||
+      child.getType() == Token.GETPROP) @TO@ PrefixExpression@@!(child.getType() ==
+      Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '------------INS InfixExpression@@child.getType() == Token.GETELEM || child.getType()
+      == Token.GETPROP @TO@ ParenthesizedExpression@@(child.getType() == Token.GETELEM
+      || child.getType() == Token.GETPROP) '
+    - '---------------INS InfixExpression@@child.getType() == Token.GETELEM @TO@ InfixExpression@@child.getType()
+      == Token.GETELEM || child.getType() == Token.GETPROP '
+    - '------------------INS MethodInvocation@@child.getType() @TO@ InfixExpression@@child.getType()
+      == Token.GETELEM '
+    - '---------------------INS SimpleName@@Name:child @TO@ MethodInvocation@@child.getType() '
+    - '---------------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@child.getType() '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@child.getType() ==
+      Token.GETELEM '
+    - '------------------INS QualifiedName@@Token.GETELEM @TO@ InfixExpression@@child.getType()
+      == Token.GETELEM '
+    - '---------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETELEM '
+    - '---------------------INS SimpleName@@GETELEM @TO@ QualifiedName@@Token.GETELEM '
+    - '---------------INS Operator@@|| @TO@ InfixExpression@@child.getType() == Token.GETELEM
+      || child.getType() == Token.GETPROP '
+    - '---------------INS InfixExpression@@child.getType() == Token.GETPROP @TO@ InfixExpression@@child.getType()
+      == Token.GETELEM || child.getType() == Token.GETPROP '
+    - '------------------INS MethodInvocation@@child.getType() @TO@ InfixExpression@@child.getType()
+      == Token.GETPROP '
+    - '---------------------INS SimpleName@@Name:child @TO@ MethodInvocation@@child.getType() '
+    - '---------------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@child.getType() '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@child.getType() ==
+      Token.GETPROP '
+    - '------------------INS QualifiedName@@Token.GETPROP @TO@ InfixExpression@@child.getType()
+      == Token.GETPROP '
+    - '---------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETPROP '
+    - '---------------------INS SimpleName@@GETPROP @TO@ QualifiedName@@Token.GETPROP '
+    - '---INS ExpressionStatement@@MethodInvocation:report(t,n,EXPECTED_THIS_TYPE,functionType.toString())
+      @TO@ IfStatement@@InfixExpression:functionType.isOrdinaryFunction() && !functionType.getTypeOfThis().isUnknownType()
+      && !functionType.getTypeOfThis().isNativeObjectType()&& !(child.getType() ==
+      Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '------INS MethodInvocation@@report(t,n,EXPECTED_THIS_TYPE,functionType.toString())
+      @TO@ ExpressionStatement@@MethodInvocation:report(t,n,EXPECTED_THIS_TYPE,functionType.toString()) '
+    - '---------INS SimpleName@@MethodName:report:[t, n, EXPECTED_THIS_TYPE, functionType.toString()]
+      @TO@ MethodInvocation@@report(t,n,EXPECTED_THIS_TYPE,functionType.toString()) '
+    - '------------INS SimpleName@@t @TO@ SimpleName@@MethodName:report:[t, n, EXPECTED_THIS_TYPE,
+      functionType.toString()] '
+    - '------------INS SimpleName@@n @TO@ SimpleName@@MethodName:report:[t, n, EXPECTED_THIS_TYPE,
+      functionType.toString()] '
+    - '------------INS SimpleName@@EXPECTED_THIS_TYPE @TO@ SimpleName@@MethodName:report:[t,
+      n, EXPECTED_THIS_TYPE, functionType.toString()] '
+    - '------------INS MethodInvocation@@functionType.toString() @TO@ SimpleName@@MethodName:report:[t,
+      n, EXPECTED_THIS_TYPE, functionType.toString()] '
+    - '---------------INS SimpleName@@Name:functionType @TO@ MethodInvocation@@functionType.toString() '
+    - '---------------INS SimpleName@@MethodName:toString:[] @TO@ MethodInvocation@@functionType.toString() '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeCheck:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:functionType.isOrdinaryFunction() && !functionType.getTypeOfThis().isUnknownType()
+      && !functionType.getTypeOfThis().isNativeObjectType()&& !(child.getType() ==
+      Token.GETELEM || child.getType() == Token.GETPROP) @TO@ IfStatement@@InstanceofExpression:childType
+      instanceof FunctionType '
+    - '---INS InfixExpression@@functionType.isOrdinaryFunction() && !functionType.getTypeOfThis().isUnknownType()
+      && !functionType.getTypeOfThis().isNativeObjectType()&& !(child.getType() ==
+      Token.GETELEM || child.getType() == Token.GETPROP) @TO@ IfStatement@@InfixExpression:functionType.isOrdinaryFunction()
+      && !functionType.getTypeOfThis().isUnknownType() && !functionType.getTypeOfThis().isNativeObjectType()&&
+      !(child.getType() == Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '------INS MethodInvocation@@functionType.isOrdinaryFunction() @TO@ InfixExpression@@functionType.isOrdinaryFunction()
+      && !functionType.getTypeOfThis().isUnknownType() && !functionType.getTypeOfThis().isNativeObjectType()&&
+      !(child.getType() == Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '---------INS SimpleName@@Name:functionType @TO@ MethodInvocation@@functionType.isOrdinaryFunction() '
+    - '---------INS SimpleName@@MethodName:isOrdinaryFunction:[] @TO@ MethodInvocation@@functionType.isOrdinaryFunction() '
+    - '------INS Operator@@&& @TO@ InfixExpression@@functionType.isOrdinaryFunction()
+      && !functionType.getTypeOfThis().isUnknownType() && !functionType.getTypeOfThis().isNativeObjectType()&&
+      !(child.getType() == Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '------INS PrefixExpression@@!functionType.getTypeOfThis().isUnknownType() @TO@
+      InfixExpression@@functionType.isOrdinaryFunction() && !functionType.getTypeOfThis().isUnknownType()
+      && !functionType.getTypeOfThis().isNativeObjectType()&& !(child.getType() ==
+      Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!functionType.getTypeOfThis().isUnknownType() '
+    - '---------INS MethodInvocation@@functionType.getTypeOfThis().isUnknownType()
+      @TO@ PrefixExpression@@!functionType.getTypeOfThis().isUnknownType() '
+    - '------------INS SimpleName@@Name:functionType @TO@ MethodInvocation@@functionType.getTypeOfThis().isUnknownType() '
+    - '------------INS MethodInvocation@@MethodName:getTypeOfThis:[] @TO@ MethodInvocation@@functionType.getTypeOfThis().isUnknownType() '
+    - '------------INS SimpleName@@MethodName:isUnknownType:[] @TO@ MethodInvocation@@functionType.getTypeOfThis().isUnknownType() '
+    - '------INS PrefixExpression@@!functionType.getTypeOfThis().isNativeObjectType()
+      @TO@ InfixExpression@@functionType.isOrdinaryFunction() && !functionType.getTypeOfThis().isUnknownType()
+      && !functionType.getTypeOfThis().isNativeObjectType()&& !(child.getType() ==
+      Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!functionType.getTypeOfThis().isNativeObjectType() '
+    - '---------INS MethodInvocation@@functionType.getTypeOfThis().isNativeObjectType()
+      @TO@ PrefixExpression@@!functionType.getTypeOfThis().isNativeObjectType() '
+    - '------------INS SimpleName@@Name:functionType @TO@ MethodInvocation@@functionType.getTypeOfThis().isNativeObjectType() '
+    - '------------INS MethodInvocation@@MethodName:getTypeOfThis:[] @TO@ MethodInvocation@@functionType.getTypeOfThis().isNativeObjectType() '
+    - '------------INS SimpleName@@MethodName:isNativeObjectType:[] @TO@ MethodInvocation@@functionType.getTypeOfThis().isNativeObjectType() '
+    - '------INS PrefixExpression@@!(child.getType() == Token.GETELEM || child.getType()
+      == Token.GETPROP) @TO@ InfixExpression@@functionType.isOrdinaryFunction() &&
+      !functionType.getTypeOfThis().isUnknownType() && !functionType.getTypeOfThis().isNativeObjectType()&&
+      !(child.getType() == Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!(child.getType() == Token.GETELEM
+      || child.getType() == Token.GETPROP) '
+    - '---------INS ParenthesizedExpression@@(child.getType() == Token.GETELEM ||
+      child.getType() == Token.GETPROP) @TO@ PrefixExpression@@!(child.getType() ==
+      Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '------------INS InfixExpression@@child.getType() == Token.GETELEM || child.getType()
+      == Token.GETPROP @TO@ ParenthesizedExpression@@(child.getType() == Token.GETELEM
+      || child.getType() == Token.GETPROP) '
+    - '---------------INS InfixExpression@@child.getType() == Token.GETELEM @TO@ InfixExpression@@child.getType()
+      == Token.GETELEM || child.getType() == Token.GETPROP '
+    - '------------------INS MethodInvocation@@child.getType() @TO@ InfixExpression@@child.getType()
+      == Token.GETELEM '
+    - '---------------------INS SimpleName@@Name:child @TO@ MethodInvocation@@child.getType() '
+    - '---------------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@child.getType() '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@child.getType() ==
+      Token.GETELEM '
+    - '------------------INS QualifiedName@@Token.GETELEM @TO@ InfixExpression@@child.getType()
+      == Token.GETELEM '
+    - '---------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETELEM '
+    - '---------------------INS SimpleName@@GETELEM @TO@ QualifiedName@@Token.GETELEM '
+    - '---------------INS Operator@@|| @TO@ InfixExpression@@child.getType() == Token.GETELEM
+      || child.getType() == Token.GETPROP '
+    - '---------------INS InfixExpression@@child.getType() == Token.GETPROP @TO@ InfixExpression@@child.getType()
+      == Token.GETELEM || child.getType() == Token.GETPROP '
+    - '------------------INS MethodInvocation@@child.getType() @TO@ InfixExpression@@child.getType()
+      == Token.GETPROP '
+    - '---------------------INS SimpleName@@Name:child @TO@ MethodInvocation@@child.getType() '
+    - '---------------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@child.getType() '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@child.getType() ==
+      Token.GETPROP '
+    - '------------------INS QualifiedName@@Token.GETPROP @TO@ InfixExpression@@child.getType()
+      == Token.GETPROP '
+    - '---------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETPROP '
+    - '---------------------INS SimpleName@@GETPROP @TO@ QualifiedName@@Token.GETPROP '
+    - '---INS ExpressionStatement@@MethodInvocation:report(t,n,EXPECTED_THIS_TYPE,functionType.toString())
+      @TO@ IfStatement@@InfixExpression:functionType.isOrdinaryFunction() && !functionType.getTypeOfThis().isUnknownType()
+      && !functionType.getTypeOfThis().isNativeObjectType()&& !(child.getType() ==
+      Token.GETELEM || child.getType() == Token.GETPROP) '
+    - '------INS MethodInvocation@@report(t,n,EXPECTED_THIS_TYPE,functionType.toString())
+      @TO@ ExpressionStatement@@MethodInvocation:report(t,n,EXPECTED_THIS_TYPE,functionType.toString()) '
+    - '---------INS SimpleName@@MethodName:report:[t, n, EXPECTED_THIS_TYPE, functionType.toString()]
+      @TO@ MethodInvocation@@report(t,n,EXPECTED_THIS_TYPE,functionType.toString()) '
+    - '------------INS SimpleName@@t @TO@ SimpleName@@MethodName:report:[t, n, EXPECTED_THIS_TYPE,
+      functionType.toString()] '
+    - '------------INS SimpleName@@n @TO@ SimpleName@@MethodName:report:[t, n, EXPECTED_THIS_TYPE,
+      functionType.toString()] '
+    - '------------INS SimpleName@@EXPECTED_THIS_TYPE @TO@ SimpleName@@MethodName:report:[t,
+      n, EXPECTED_THIS_TYPE, functionType.toString()] '
+    - '------------INS MethodInvocation@@functionType.toString() @TO@ SimpleName@@MethodName:report:[t,
+      n, EXPECTED_THIS_TYPE, functionType.toString()] '
+    - '---------------INS SimpleName@@Name:functionType @TO@ MethodInvocation@@functionType.toString() '
+    - '---------------INS SimpleName@@MethodName:toString:[] @TO@ MethodInvocation@@functionType.toString() '
+  files_cnt: '1'
+  repair_actions_cnt: 1

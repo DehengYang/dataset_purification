@@ -1,0 +1,15 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_12/src/com/google/javascript/jscomp/MaybeReachingVariableUse.java	2020-10-21 17:47:24.651546984 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_12/purify/purified/com/google/javascript/jscomp/MaybeReachingVariableUse.java	2020-10-21 17:47:24.651546984 -0400
+@@ -157,6 +157,12 @@
+   }
+ 
+   private boolean hasExceptionHandler(Node cfgNode) {
++    List<DiGraphEdge<Node, Branch>> branchEdges = getCfg().getOutEdges(cfgNode);
++    for (DiGraphEdge<Node, Branch> edge : branchEdges) {
++      if (edge.getValue() == Branch.ON_EX) {
++        return true;
++      }
++    }
+     return false;
+   }
+ 

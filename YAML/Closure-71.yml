@@ -1,0 +1,131 @@
+1 bug_id: Closure-71
+2 src folder:
+  name of src folder: src
+  number of files: 397
+  number of java files: 384
+  number of src classes: 1243
+  number of test classes: 204
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CheckAccessControlsTest#testNoPrivateAccessForProperties6
+  - com.google.javascript.jscomp.CheckAccessControlsTest#testNoPrivateAccessForProperties8
+  failing tests:
+  - com.google.javascript.jscomp.CheckAccessControlsTest
+  number of all test cases: 6995
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.001
+  purification via delta debugging: 144.35
+  repair actions extraction: 1.252
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CheckAccessControlsTest#testNoPrivateAccessForProperties6: 4432
+    com.google.javascript.jscomp.CheckAccessControlsTest#testNoPrivateAccessForProperties8: 4176
+  fixed:
+    com.google.javascript.jscomp.CheckAccessControlsTest#testNoPrivateAccessForProperties6: 4449
+    com.google.javascript.jscomp.CheckAccessControlsTest#testNoPrivateAccessForProperties8: 4259
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_71/src/com/google/javascript/jscomp/CheckAccessControls.java\t\
+    2020-10-23 08:43:58.019002228 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_71/purify/patch/com/google/javascript/jscomp/CheckAccessControls.java\t\
+    2020-10-23 08:43:58.019002228 -0400\n@@ -413,7 +413,7 @@\n     if (objectType\
+    \ != null) {\n       // Is this a normal property access, or are we trying to\
+    \ override\n       // an existing property?\n-      boolean isOverride = t.inGlobalScope()\
+    \ &&\n+      boolean isOverride = parent.getJSDocInfo() != null &&\n         \
+    \  parent.getType() == Token.ASSIGN &&\n           parent.getFirstChild() == getprop;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_71/src/com/google/javascript/jscomp/CheckAccessControls.java\t\
+    2020-10-23 08:46:51.636028338 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_71/purify/purified/com/google/javascript/jscomp/CheckAccessControls.java\t\
+    2020-10-23 08:46:51.636028338 -0400\n@@ -413,7 +413,7 @@\n     if (objectType\
+    \ != null) {\n       // Is this a normal property access, or are we trying to\
+    \ override\n       // an existing property?\n-      boolean isOverride = t.inGlobalScope()\
+    \ &&\n+      boolean isOverride = parent.getJSDocInfo() != null &&\n         \
+    \  parent.getType() == Token.ASSIGN &&\n           parent.getFirstChild() == getprop;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CheckAccessControls:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@boolean isOverride=t.inGlobalScope() && parent.getType()
+      == Token.ASSIGN && parent.getFirstChild() == getprop; @TO@ boolean isOverride=parent.getJSDocInfo()
+      != null && parent.getType() == Token.ASSIGN && parent.getFirstChild() == getprop; '
+    - '---UPD VariableDeclarationFragment@@isOverride=t.inGlobalScope() && parent.getType()
+      == Token.ASSIGN && parent.getFirstChild() == getprop @TO@ isOverride=parent.getJSDocInfo()
+      != null && parent.getType() == Token.ASSIGN && parent.getFirstChild() == getprop '
+    - '------UPD InfixExpression@@t.inGlobalScope() && parent.getType() == Token.ASSIGN
+      && parent.getFirstChild() == getprop @TO@ parent.getJSDocInfo() != null && parent.getType()
+      == Token.ASSIGN && parent.getFirstChild() == getprop '
+    - '---------UPD InfixExpression@@t.inGlobalScope() && parent.getType() == Token.ASSIGN
+      @TO@ parent.getJSDocInfo() != null && parent.getType() == Token.ASSIGN '
+    - '------------INS InfixExpression@@parent.getJSDocInfo() != null @TO@ InfixExpression@@t.inGlobalScope()
+      && parent.getType() == Token.ASSIGN '
+    - '---------------MOV MethodInvocation@@t.inGlobalScope() @TO@ InfixExpression@@parent.getJSDocInfo()
+      != null '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@parent.getJSDocInfo()
+      != null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@parent.getJSDocInfo()
+      != null '
+    - '------------UPD MethodInvocation@@t.inGlobalScope() @TO@ parent.getJSDocInfo() '
+    - '---------------UPD SimpleName@@Name:t @TO@ Name:parent '
+    - '---------------UPD SimpleName@@MethodName:inGlobalScope:[] @TO@ MethodName:getJSDocInfo:[] '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CheckAccessControls:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@boolean isOverride=t.inGlobalScope() && parent.getType()
+      == Token.ASSIGN && parent.getFirstChild() == getprop; @TO@ boolean isOverride=parent.getJSDocInfo()
+      != null && parent.getType() == Token.ASSIGN && parent.getFirstChild() == getprop; '
+    - '---UPD VariableDeclarationFragment@@isOverride=t.inGlobalScope() && parent.getType()
+      == Token.ASSIGN && parent.getFirstChild() == getprop @TO@ isOverride=parent.getJSDocInfo()
+      != null && parent.getType() == Token.ASSIGN && parent.getFirstChild() == getprop '
+    - '------UPD InfixExpression@@t.inGlobalScope() && parent.getType() == Token.ASSIGN
+      && parent.getFirstChild() == getprop @TO@ parent.getJSDocInfo() != null && parent.getType()
+      == Token.ASSIGN && parent.getFirstChild() == getprop '
+    - '---------UPD InfixExpression@@t.inGlobalScope() && parent.getType() == Token.ASSIGN
+      @TO@ parent.getJSDocInfo() != null && parent.getType() == Token.ASSIGN '
+    - '------------INS InfixExpression@@parent.getJSDocInfo() != null @TO@ InfixExpression@@t.inGlobalScope()
+      && parent.getType() == Token.ASSIGN '
+    - '---------------MOV MethodInvocation@@t.inGlobalScope() @TO@ InfixExpression@@parent.getJSDocInfo()
+      != null '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@parent.getJSDocInfo()
+      != null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@parent.getJSDocInfo()
+      != null '
+    - '------------UPD MethodInvocation@@t.inGlobalScope() @TO@ parent.getJSDocInfo() '
+    - '---------------UPD SimpleName@@Name:t @TO@ Name:parent '
+    - '---------------UPD SimpleName@@MethodName:inGlobalScope:[] @TO@ MethodName:getJSDocInfo:[] '
+  files_cnt: '1'
+  repair_actions_cnt: 1

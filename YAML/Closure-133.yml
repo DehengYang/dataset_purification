@@ -1,0 +1,92 @@
+1 bug_id: Closure-133
+2 src folder:
+  name of src folder: src
+  number of files: 430
+  number of java files: 414
+  number of src classes: 1378
+  number of test classes: 226
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testTextExtents
+  failing tests:
+  - com.google.javascript.jscomp.parsing.JsDocInfoParserTest
+  number of all test cases: 7960
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 9.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.002
+  purification via delta debugging: 187.58
+  repair actions extraction: 2.255
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testTextExtents: 1336
+  fixed:
+    com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testTextExtents: 1463
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 0
+  cov_patch_lines: 1
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 0
+  ori_patch_lines: 1
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 0
+  total: 0
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_133/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java\t\
+    2020-10-23 18:19:43.531150373 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_133/purify/patch/com/google/javascript/jscomp/parsing/JsDocInfoParser.java\t\
+    2020-10-23 18:19:43.527150257 -0400\n@@ -2398,6 +2398,7 @@\n    */\n   private\
+    \ String getRemainingJSDocLine() {\n     String result = stream.getRemainingJSDocLine();\n\
+    +    unreadToken = NO_UNREAD_TOKEN;\n     return result;\n   }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_133/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java\t\
+    2020-10-23 18:23:18.257367258 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_133/purify/purified/com/google/javascript/jscomp/parsing/JsDocInfoParser.java\t\
+    2020-10-23 18:23:18.253367142 -0400\n@@ -2398,6 +2398,7 @@\n    */\n   private\
+    \ String getRemainingJSDocLine() {\n     String result = stream.getRemainingJSDocLine();\n\
+    +    unreadToken = NO_UNREAD_TOKEN;\n     return result;\n   }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/JsDocInfoParser:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:unreadToken=NO_UNREAD_TOKEN @TO@ MethodDeclaration@@private,
+      @@String, MethodName:getRemainingJSDocLine, @@Argus:null '
+    - '---INS Assignment@@unreadToken=NO_UNREAD_TOKEN @TO@ ExpressionStatement@@Assignment:unreadToken=NO_UNREAD_TOKEN '
+    - '------INS SimpleName@@unreadToken @TO@ Assignment@@unreadToken=NO_UNREAD_TOKEN '
+    - '------INS Operator@@= @TO@ Assignment@@unreadToken=NO_UNREAD_TOKEN '
+    - '------INS SimpleName@@NO_UNREAD_TOKEN @TO@ Assignment@@unreadToken=NO_UNREAD_TOKEN '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/JsDocInfoParser:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:unreadToken=NO_UNREAD_TOKEN @TO@ MethodDeclaration@@private,
+      @@String, MethodName:getRemainingJSDocLine, @@Argus:null '
+    - '---INS Assignment@@unreadToken=NO_UNREAD_TOKEN @TO@ ExpressionStatement@@Assignment:unreadToken=NO_UNREAD_TOKEN '
+    - '------INS SimpleName@@unreadToken @TO@ Assignment@@unreadToken=NO_UNREAD_TOKEN '
+    - '------INS Operator@@= @TO@ Assignment@@unreadToken=NO_UNREAD_TOKEN '
+    - '------INS SimpleName@@NO_UNREAD_TOKEN @TO@ Assignment@@unreadToken=NO_UNREAD_TOKEN '
+  files_cnt: '1'
+  repair_actions_cnt: 1

@@ -1,0 +1,150 @@
+1 bug_id: Closure-114
+2 src folder:
+  name of src folder: src
+  number of files: 444
+  number of java files: 428
+  number of src classes: 1428
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.NameAnalyzerTest#testAssignWithCall
+  failing tests:
+  - com.google.javascript.jscomp.NameAnalyzerTest
+  number of all test cases: 8320
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.747
+  purification via delta debugging: 372.657
+  repair actions extraction: 2.455
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.NameAnalyzerTest#testAssignWithCall: 4122
+  fixed:
+    com.google.javascript.jscomp.NameAnalyzerTest#testAssignWithCall: 4109
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 1
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_114/src/com/google/javascript/jscomp/NameAnalyzer.java\t\
+    2020-10-23 15:12:27.317839808 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_114/purify/patch/com/google/javascript/jscomp/NameAnalyzer.java\t\
+    2020-10-23 15:12:27.317839808 -0400\n@@ -575,7 +575,7 @@\n           } else {\n\
+    \             recordDepScope(nameNode, ns);\n           }\n-        } else {\n\
+    +        } else if (!(parent.isCall() && parent.getFirstChild() == n)) {\n   \
+    \        // The rhs of the assignment is the caller, so it's used by the\n   \
+    \        // context. Don't associate it w/ the lhs.\n           // FYI: this fixes\
+    \ only the specific case where the assignment is the"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_114/src/com/google/javascript/jscomp/NameAnalyzer.java\t\
+    2020-10-23 15:19:13.517593991 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_114/purify/purified/com/google/javascript/jscomp/NameAnalyzer.java\t\
+    2020-10-23 15:19:13.517593991 -0400\n@@ -575,7 +575,7 @@\n           } else {\n\
+    \             recordDepScope(nameNode, ns);\n           }\n-        } else {\n\
+    +        } else if (!(parent.isCall() && parent.getFirstChild() == n)) {\n   \
+    \        // The rhs of the assignment is the caller, so it's used by the\n   \
+    \        // context. Don't associate it w/ the lhs.\n           // FYI: this fixes\
+    \ only the specific case where the assignment is the"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NameAnalyzer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!(parent.isCall() && parent.getFirstChild()
+      == n) @TO@ IfStatement@@InfixExpression:parent.isFor() && !NodeUtil.isForIn(parent) '
+    - '---INS PrefixExpression@@!(parent.isCall() && parent.getFirstChild() == n)
+      @TO@ IfStatement@@PrefixExpression:!(parent.isCall() && parent.getFirstChild()
+      == n) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!(parent.isCall() && parent.getFirstChild()
+      == n) '
+    - '------INS ParenthesizedExpression@@(parent.isCall() && parent.getFirstChild()
+      == n) @TO@ PrefixExpression@@!(parent.isCall() && parent.getFirstChild() ==
+      n) '
+    - '---------INS InfixExpression@@parent.isCall() && parent.getFirstChild() ==
+      n @TO@ ParenthesizedExpression@@(parent.isCall() && parent.getFirstChild() ==
+      n) '
+    - '------------INS MethodInvocation@@parent.isCall() @TO@ InfixExpression@@parent.isCall()
+      && parent.getFirstChild() == n '
+    - '---------------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.isCall() '
+    - '---------------INS SimpleName@@MethodName:isCall:[] @TO@ MethodInvocation@@parent.isCall() '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@parent.isCall() && parent.getFirstChild()
+      == n '
+    - '------------INS InfixExpression@@parent.getFirstChild() == n @TO@ InfixExpression@@parent.isCall()
+      && parent.getFirstChild() == n '
+    - '---------------INS MethodInvocation@@parent.getFirstChild() @TO@ InfixExpression@@parent.getFirstChild()
+      == n '
+    - '------------------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.getFirstChild() '
+    - '------------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@parent.getFirstChild() '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@parent.getFirstChild()
+      == n '
+    - '---------------INS SimpleName@@n @TO@ InfixExpression@@parent.getFirstChild()
+      == n '
+    - '---MOV ExpressionStatement@@MethodInvocation:recordDepScope(recordNode,ns)
+      @TO@ IfStatement@@PrefixExpression:!(parent.isCall() && parent.getFirstChild()
+      == n) '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NameAnalyzer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!(parent.isCall() && parent.getFirstChild()
+      == n) @TO@ IfStatement@@InfixExpression:parent.isFor() && !NodeUtil.isForIn(parent) '
+    - '---INS PrefixExpression@@!(parent.isCall() && parent.getFirstChild() == n)
+      @TO@ IfStatement@@PrefixExpression:!(parent.isCall() && parent.getFirstChild()
+      == n) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!(parent.isCall() && parent.getFirstChild()
+      == n) '
+    - '------INS ParenthesizedExpression@@(parent.isCall() && parent.getFirstChild()
+      == n) @TO@ PrefixExpression@@!(parent.isCall() && parent.getFirstChild() ==
+      n) '
+    - '---------INS InfixExpression@@parent.isCall() && parent.getFirstChild() ==
+      n @TO@ ParenthesizedExpression@@(parent.isCall() && parent.getFirstChild() ==
+      n) '
+    - '------------INS MethodInvocation@@parent.isCall() @TO@ InfixExpression@@parent.isCall()
+      && parent.getFirstChild() == n '
+    - '---------------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.isCall() '
+    - '---------------INS SimpleName@@MethodName:isCall:[] @TO@ MethodInvocation@@parent.isCall() '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@parent.isCall() && parent.getFirstChild()
+      == n '
+    - '------------INS InfixExpression@@parent.getFirstChild() == n @TO@ InfixExpression@@parent.isCall()
+      && parent.getFirstChild() == n '
+    - '---------------INS MethodInvocation@@parent.getFirstChild() @TO@ InfixExpression@@parent.getFirstChild()
+      == n '
+    - '------------------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.getFirstChild() '
+    - '------------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@parent.getFirstChild() '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@parent.getFirstChild()
+      == n '
+    - '---------------INS SimpleName@@n @TO@ InfixExpression@@parent.getFirstChild()
+      == n '
+    - '---MOV ExpressionStatement@@MethodInvocation:recordDepScope(recordNode,ns)
+      @TO@ IfStatement@@PrefixExpression:!(parent.isCall() && parent.getFirstChild()
+      == n) '
+  files_cnt: '1'
+  repair_actions_cnt: 1

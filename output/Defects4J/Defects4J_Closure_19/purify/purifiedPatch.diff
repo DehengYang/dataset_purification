@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_19/src/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java	2020-10-21 20:33:48.055274519 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_19/purify/purified/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java	2020-10-21 20:33:48.055274519 -0400
+@@ -169,7 +169,9 @@
+         scope.inferQualifiedSlot(node, qualifiedName, origType, type);
+         break;
+ 
++      case Token.THIS:
+         // "this" references aren't currently modeled in the CFG.
++        break;
+ 
+       default:
+         throw new IllegalArgumentException("Node cannot be refined. \n" +

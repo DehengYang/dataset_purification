@@ -1,0 +1,202 @@
+1 bug_id: Math-43
+2 src folder:
+  name of src folder: java
+  number of files: 621
+  number of java files: 620
+  number of src classes: 847
+  number of test classes: 293
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest#testOverrideMeanWithMathClass
+  - org.apache.commons.math.stat.descriptive.SummaryStatisticsTest#testOverrideVarianceWithMathClass
+  - org.apache.commons.math.stat.descriptive.SummaryStatisticsTest#testOverrideMeanWithMathClass
+  - org.apache.commons.math.stat.descriptive.SummaryStatisticsTest#testOverrideGeoMeanWithMathClass
+  - org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest#testOverrideGeoMeanWithMathClass
+  - org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest#testOverrideVarianceWithMathClass
+  failing tests:
+  - org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest
+  - org.apache.commons.math.stat.descriptive.SummaryStatisticsTest
+  number of all test cases: 3154
+  number of failing test cases: 6
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.003
+  purification via delta debugging: 152.653
+  repair actions extraction: 1.394
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.stat.descriptive.SummaryStatisticsTest#testOverrideGeoMeanWithMathClass: 265
+    org.apache.commons.math.stat.descriptive.SummaryStatisticsTest#testOverrideMeanWithMathClass: 236
+    org.apache.commons.math.stat.descriptive.SummaryStatisticsTest#testOverrideVarianceWithMathClass: 279
+    org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest#testOverrideGeoMeanWithMathClass: 265
+    org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest#testOverrideMeanWithMathClass: 236
+    org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest#testOverrideVarianceWithMathClass: 279
+  fixed:
+    org.apache.commons.math.stat.descriptive.SummaryStatisticsTest#testOverrideGeoMeanWithMathClass: 269
+    org.apache.commons.math.stat.descriptive.SummaryStatisticsTest#testOverrideMeanWithMathClass: 240
+    org.apache.commons.math.stat.descriptive.SummaryStatisticsTest#testOverrideVarianceWithMathClass: 285
+    org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest#testOverrideGeoMeanWithMathClass: 269
+    org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest#testOverrideMeanWithMathClass: 240
+    org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest#testOverrideVarianceWithMathClass: 285
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 3
+  cov_patch_lines: 6
+  delta_patch_lines: 6
+  oriAdd: 3
+  oriDel: 3
+  ori_patch_lines: 6
+  purAdd: 3
+  purDel: 3
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 10
+  failFail: 2
+  passed: 0
+  total: 12
+9 sibling repair actions:
+- 0 1 0.7057291666666666
+- 0 2 0.7764857881136951
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_43/src/main/java/org/apache/commons/math/stat/descriptive/SummaryStatistics.java\t\
+    2020-10-21 11:34:44.460392730 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_43/purify/patch/org/apache/commons/math/stat/descriptive/SummaryStatistics.java\t\
+    2020-10-21 11:34:44.460392730 -0400\n@@ -155,13 +155,13 @@\n         secondMoment.increment(value);\n\
+    \         // If mean, variance or geomean have been overridden,\n         // need\
+    \ to increment these\n-        if (!(meanImpl instanceof Mean)) {\n+        if\
+    \ (meanImpl != mean) {\n             meanImpl.increment(value);\n         }\n\
+    -        if (!(varianceImpl instanceof Variance)) {\n+        if (varianceImpl\
+    \ != variance) {\n             varianceImpl.increment(value);\n         }\n- \
+    \       if (!(geoMeanImpl instanceof GeometricMean)) {\n+        if (geoMeanImpl\
+    \ != geoMean) {\n             geoMeanImpl.increment(value);\n         }\n    \
+    \     n++;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_43/src/main/java/org/apache/commons/math/stat/descriptive/SummaryStatistics.java\t\
+    2020-10-21 11:37:37.489395575 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_43/purify/purified/org/apache/commons/math/stat/descriptive/SummaryStatistics.java\t\
+    2020-10-21 11:37:37.485395459 -0400\n@@ -155,13 +155,13 @@\n         secondMoment.increment(value);\n\
+    \         // If mean, variance or geomean have been overridden,\n         // need\
+    \ to increment these\n-        if (!(meanImpl instanceof Mean)) {\n+        if\
+    \ (meanImpl != mean) {\n             meanImpl.increment(value);\n         }\n\
+    -        if (!(varianceImpl instanceof Variance)) {\n+        if (varianceImpl\
+    \ != variance) {\n             varianceImpl.increment(value);\n         }\n- \
+    \       if (!(geoMeanImpl instanceof GeometricMean)) {\n+        if (geoMeanImpl\
+    \ != geoMean) {\n             geoMeanImpl.increment(value);\n         }\n    \
+    \     n++;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/descriptive/SummaryStatistics:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!(meanImpl instanceof Mean) @TO@ InfixExpression:meanImpl
+      != mean '
+    - '---INS InfixExpression@@meanImpl != mean @TO@ IfStatement@@PrefixExpression:!(meanImpl
+      instanceof Mean) '
+    - '------INS SimpleName@@meanImpl @TO@ InfixExpression@@meanImpl != mean '
+    - '------INS Operator@@!= @TO@ InfixExpression@@meanImpl != mean '
+    - '------INS SimpleName@@mean @TO@ InfixExpression@@meanImpl != mean '
+    - '---DEL PrefixExpression@@!(meanImpl instanceof Mean) '
+    - '------DEL Operator@@! '
+    - '------DEL ParenthesizedExpression@@(meanImpl instanceof Mean) '
+    - '---------DEL InstanceofExpression@@meanImpl instanceof Mean '
+    - '------------DEL SimpleName@@meanImpl '
+    - '------------DEL Instanceof@@instanceof '
+    - '------------DEL SimpleType@@Mean '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!(varianceImpl instanceof Variance) @TO@
+      InfixExpression:varianceImpl != variance '
+    - '---INS InfixExpression@@varianceImpl != variance @TO@ IfStatement@@PrefixExpression:!(varianceImpl
+      instanceof Variance) '
+    - '------INS SimpleName@@varianceImpl @TO@ InfixExpression@@varianceImpl != variance '
+    - '------INS Operator@@!= @TO@ InfixExpression@@varianceImpl != variance '
+    - '------INS SimpleName@@variance @TO@ InfixExpression@@varianceImpl != variance '
+    - '---DEL PrefixExpression@@!(varianceImpl instanceof Variance) '
+    - '------DEL Operator@@! '
+    - '------DEL ParenthesizedExpression@@(varianceImpl instanceof Variance) '
+    - '---------DEL InstanceofExpression@@varianceImpl instanceof Variance '
+    - '------------DEL SimpleName@@varianceImpl '
+    - '------------DEL Instanceof@@instanceof '
+    - '------------DEL SimpleType@@Variance '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!(geoMeanImpl instanceof GeometricMean) @TO@
+      InfixExpression:geoMeanImpl != geoMean '
+    - '---INS InfixExpression@@geoMeanImpl != geoMean @TO@ IfStatement@@PrefixExpression:!(geoMeanImpl
+      instanceof GeometricMean) '
+    - '------INS SimpleName@@geoMeanImpl @TO@ InfixExpression@@geoMeanImpl != geoMean '
+    - '------INS Operator@@!= @TO@ InfixExpression@@geoMeanImpl != geoMean '
+    - '------INS SimpleName@@geoMean @TO@ InfixExpression@@geoMeanImpl != geoMean '
+    - '---DEL PrefixExpression@@!(geoMeanImpl instanceof GeometricMean) '
+    - '------DEL Operator@@! '
+    - '------DEL ParenthesizedExpression@@(geoMeanImpl instanceof GeometricMean) '
+    - '---------DEL InstanceofExpression@@geoMeanImpl instanceof GeometricMean '
+    - '------------DEL SimpleName@@geoMeanImpl '
+    - '------------DEL Instanceof@@instanceof '
+    - '------------DEL SimpleType@@GeometricMean '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/descriptive/SummaryStatistics:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!(meanImpl instanceof Mean) @TO@ InfixExpression:meanImpl
+      != mean '
+    - '---INS InfixExpression@@meanImpl != mean @TO@ IfStatement@@PrefixExpression:!(meanImpl
+      instanceof Mean) '
+    - '------INS SimpleName@@meanImpl @TO@ InfixExpression@@meanImpl != mean '
+    - '------INS Operator@@!= @TO@ InfixExpression@@meanImpl != mean '
+    - '------INS SimpleName@@mean @TO@ InfixExpression@@meanImpl != mean '
+    - '---DEL PrefixExpression@@!(meanImpl instanceof Mean) '
+    - '------DEL Operator@@! '
+    - '------DEL ParenthesizedExpression@@(meanImpl instanceof Mean) '
+    - '---------DEL InstanceofExpression@@meanImpl instanceof Mean '
+    - '------------DEL SimpleName@@meanImpl '
+    - '------------DEL Instanceof@@instanceof '
+    - '------------DEL SimpleType@@Mean '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!(varianceImpl instanceof Variance) @TO@
+      InfixExpression:varianceImpl != variance '
+    - '---INS InfixExpression@@varianceImpl != variance @TO@ IfStatement@@PrefixExpression:!(varianceImpl
+      instanceof Variance) '
+    - '------INS SimpleName@@varianceImpl @TO@ InfixExpression@@varianceImpl != variance '
+    - '------INS Operator@@!= @TO@ InfixExpression@@varianceImpl != variance '
+    - '------INS SimpleName@@variance @TO@ InfixExpression@@varianceImpl != variance '
+    - '---DEL PrefixExpression@@!(varianceImpl instanceof Variance) '
+    - '------DEL Operator@@! '
+    - '------DEL ParenthesizedExpression@@(varianceImpl instanceof Variance) '
+    - '---------DEL InstanceofExpression@@varianceImpl instanceof Variance '
+    - '------------DEL SimpleName@@varianceImpl '
+    - '------------DEL Instanceof@@instanceof '
+    - '------------DEL SimpleType@@Variance '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!(geoMeanImpl instanceof GeometricMean) @TO@
+      InfixExpression:geoMeanImpl != geoMean '
+    - '---INS InfixExpression@@geoMeanImpl != geoMean @TO@ IfStatement@@PrefixExpression:!(geoMeanImpl
+      instanceof GeometricMean) '
+    - '------INS SimpleName@@geoMeanImpl @TO@ InfixExpression@@geoMeanImpl != geoMean '
+    - '------INS Operator@@!= @TO@ InfixExpression@@geoMeanImpl != geoMean '
+    - '------INS SimpleName@@geoMean @TO@ InfixExpression@@geoMeanImpl != geoMean '
+    - '---DEL PrefixExpression@@!(geoMeanImpl instanceof GeometricMean) '
+    - '------DEL Operator@@! '
+    - '------DEL ParenthesizedExpression@@(geoMeanImpl instanceof GeometricMean) '
+    - '---------DEL InstanceofExpression@@geoMeanImpl instanceof GeometricMean '
+    - '------------DEL SimpleName@@geoMeanImpl '
+    - '------------DEL Instanceof@@instanceof '
+    - '------------DEL SimpleType@@GeometricMean '
+  repair_actions_cnt: 3

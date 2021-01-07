@@ -1,0 +1,556 @@
+1 bug_id: Closure-76
+2 src folder:
+  name of src folder: src
+  number of files: 379
+  number of java files: 366
+  number of src classes: 1172
+  number of test classes: 193
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue384d
+  - com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue384b
+  - com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testInExpression2
+  - com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue384c
+  failing tests:
+  - com.google.javascript.jscomp.DeadAssignmentsEliminationTest
+  number of all test cases: 6752
+  number of failing test cases: 4
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.925
+  purification via delta debugging: 2311.0601
+  repair actions extraction: 1.222
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testInExpression2: 3081
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue384b: 3134
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue384c: 3134
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue384d: 3103
+  fixed:
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testInExpression2: 3107
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue384b: 3025
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue384c: 3015
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue384d: 2989
+6 reduced lines:
+  by all: 20
+  by coverage: 0
+  by delta debugging: 20
+  covAdd: 37
+  covDel: 6
+  cov_patch_lines: 43
+  delta_patch_lines: 23
+  oriAdd: 37
+  oriDel: 6
+  ori_patch_lines: 43
+  purAdd: 20
+  purDel: 3
+7 reduced chunks:
+  by all: 4
+  by coverage: 0
+  by delta debugging: 4
+  cov: 11
+  original: 11
+  purifiy: 7
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 187
+  failFail: 16
+  passed: 8
+  total: 211
+9 sibling repair actions:
+- 1 6 1.0
+- 3 9 0.73224043715847
+- 9 10 0.7048710601719198
+- 11 12 0.9264969523126568
+- 11 14 0.9826548672566372
+- 12 14 0.9558718861209965
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_76/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java\t\
+    2020-10-23 09:15:11.889247452 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_76/purify/patch/com/google/javascript/jscomp/DeadAssignmentsElimination.java\t\
+    2020-10-23 09:15:11.889247452 -0400\n@@ -297,26 +297,40 @@\n           // If the\
+    \ currently node is the first child of\n           // AND/OR, be conservative\
+    \ only consider the READs\n           // of the second operand.\n+          if\
+    \ (n.getNext() != null) {\n+            state = isVariableReadBeforeKill(\n+ \
+    \               n.getNext(), variable);\n+            if (state == VariableLiveness.KILL)\
+    \ {\n+              state = VariableLiveness.MAYBE_LIVE;\n+            }\n+  \
+    \        }\n+          break;\n \n         case Token.HOOK:\n           // If\
+    \ current node is the condition, check each following\n           // branch, otherwise\
+    \ it is a conditional branch and the\n           // other branch can be ignored.\n\
+    +          if (n.getNext() != null && n.getNext().getNext() != null) {\n+    \
+    \        state = checkHookBranchReadBeforeKill(\n+                n.getNext(),\
+    \ n.getNext().getNext(), variable);\n+          }\n+          break;\n \n    \
+    \     default:\n           for(Node sibling = n.getNext(); sibling != null;\n\
+    \               sibling = sibling.getNext()) {\n-            if (!ControlFlowGraph.isEnteringNewCfgNode(sibling))\
+    \ {\n             state = isVariableReadBeforeKill(sibling, variable);\n+    \
+    \        if (state != VariableLiveness.MAYBE_LIVE) {\n+              break;\n\
+    +            }\n+          }\n+      }\n \n       // If we see a READ or KILL\
+    \ there is no need to continue.\n       if (state == VariableLiveness.READ) {\n\
+    \         return true;\n       } else if (state == VariableLiveness.KILL) {\n\
+    \         return false;\n-            }\n-          }\n-      }\n       }\n  \
+    \     n = n.getParent();\n     }\n@@ -337,6 +351,9 @@\n    */\n   private VariableLiveness\
+    \ isVariableReadBeforeKill(\n       Node n, String variable) {\n+    if (ControlFlowGraph.isEnteringNewCfgNode(n))\
+    \ { // Not a FUNCTION\n+      return VariableLiveness.MAYBE_LIVE;\n+    }\n \n\
+    \     if (NodeUtil.isName(n) && variable.equals(n.getString())) {\n       if (NodeUtil.isLhs(n,\
+    \ n.getParent())) {\n@@ -359,9 +376,25 @@\n       // Conditionals\n       case\
+    \ Token.OR:\n       case Token.AND:\n+        VariableLiveness v1 = isVariableReadBeforeKill(\n\
+    +          n.getFirstChild(), variable);\n+        VariableLiveness v2 = isVariableReadBeforeKill(\n\
+    +          n.getLastChild(), variable);\n         // With a AND/OR the first branch\
+    \ always runs, but the second is\n         // may not.\n+        if (v1 != VariableLiveness.MAYBE_LIVE)\
+    \ {\n+          return v1;\n+        } else if (v2 == VariableLiveness.READ) {\n\
+    +          return VariableLiveness.READ;\n+        } else {\n+          return\
+    \ VariableLiveness.MAYBE_LIVE;\n+        }\n       case Token.HOOK:\n+       \
+    \ VariableLiveness first = isVariableReadBeforeKill(\n+            n.getFirstChild(),\
+    \ variable);\n+        if (first != VariableLiveness.MAYBE_LIVE) {\n+        \
+    \  return first;\n+        }\n         return checkHookBranchReadBeforeKill(\n\
+    \             n.getFirstChild().getNext(), n.getLastChild(), variable);\n \n@@\
+    \ -369,13 +402,11 @@\n         // Expressions are evaluated left-right, depth\
+    \ first.\n         for (Node child = n.getFirstChild();\n             child !=\
+    \ null; child = child.getNext()) {\n-          if (!ControlFlowGraph.isEnteringNewCfgNode(child))\
+    \ { // Not a FUNCTION\n           VariableLiveness state = isVariableReadBeforeKill(child,\
+    \ variable);\n           if (state != VariableLiveness.MAYBE_LIVE) {\n       \
+    \      return state;\n           }\n         }\n-      }\n     }\n \n     return\
+    \ VariableLiveness.MAYBE_LIVE;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_76/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java\t\
+    2020-10-23 09:54:12.469011858 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_76/purify/purified/com/google/javascript/jscomp/DeadAssignmentsElimination.java\t\
+    2020-10-23 09:54:12.469011858 -0400\n@@ -297,26 +297,37 @@\n           // If the\
+    \ currently node is the first child of\n           // AND/OR, be conservative\
+    \ only consider the READs\n           // of the second operand.\n+          if\
+    \ (n.getNext() != null) {\n+            state = isVariableReadBeforeKill(\n+ \
+    \               n.getNext(), variable);\n+            if (state == VariableLiveness.KILL)\
+    \ {\n+              state = VariableLiveness.MAYBE_LIVE;\n+            }\n+  \
+    \        }\n \n         case Token.HOOK:\n           // If current node is the\
+    \ condition, check each following\n           // branch, otherwise it is a conditional\
+    \ branch and the\n           // other branch can be ignored.\n+          if (n.getNext()\
+    \ != null && n.getNext().getNext() != null) {\n+            state = checkHookBranchReadBeforeKill(\n\
+    +                n.getNext(), n.getNext().getNext(), variable);\n+          }\n\
+    \ \n         default:\n           for(Node sibling = n.getNext(); sibling != null;\n\
+    \               sibling = sibling.getNext()) {\n             if (!ControlFlowGraph.isEnteringNewCfgNode(sibling))\
+    \ {\n             state = isVariableReadBeforeKill(sibling, variable);\n+    \
+    \        }\n+          }\n+      }\n \n       // If we see a READ or KILL there\
+    \ is no need to continue.\n       if (state == VariableLiveness.READ) {\n    \
+    \     return true;\n       } else if (state == VariableLiveness.KILL) {\n    \
+    \     return false;\n-            }\n-          }\n-      }\n       }\n      \
+    \ n = n.getParent();\n     }\n@@ -359,9 +370,15 @@\n       // Conditionals\n \
+    \      case Token.OR:\n       case Token.AND:\n+        VariableLiveness v1 =\
+    \ isVariableReadBeforeKill(\n+          n.getFirstChild(), variable);\n      \
+    \   // With a AND/OR the first branch always runs, but the second is\n       \
+    \  // may not.\n+        if (v1 != VariableLiveness.MAYBE_LIVE) {\n+        }\n\
+    \       case Token.HOOK:\n+        if (first != VariableLiveness.MAYBE_LIVE) {\n\
+    +        }\n         return checkHookBranchReadBeforeKill(\n             n.getFirstChild().getNext(),\
+    \ n.getLastChild(), variable);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/DeadAssignmentsElimination:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n.getNext() != null @TO@ SwitchStatement@@MethodInvocation:n.getParent().getType() '
+    - '---INS InfixExpression@@n.getNext() != null @TO@ IfStatement@@InfixExpression:n.getNext()
+      != null '
+    - '------INS MethodInvocation@@n.getNext() @TO@ InfixExpression@@n.getNext() !=
+      null '
+    - '---------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext() '
+    - '---------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext() '
+    - '------INS Operator@@!= @TO@ InfixExpression@@n.getNext() != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@n.getNext() != null '
+    - '---INS ExpressionStatement@@Assignment:state=isVariableReadBeforeKill(n.getNext(),variable)
+      @TO@ IfStatement@@InfixExpression:n.getNext() != null '
+    - '------INS Assignment@@state=isVariableReadBeforeKill(n.getNext(),variable)
+      @TO@ ExpressionStatement@@Assignment:state=isVariableReadBeforeKill(n.getNext(),variable) '
+    - '---------INS SimpleName@@state @TO@ Assignment@@state=isVariableReadBeforeKill(n.getNext(),variable) '
+    - '---------INS Operator@@= @TO@ Assignment@@state=isVariableReadBeforeKill(n.getNext(),variable) '
+    - '---------INS MethodInvocation@@isVariableReadBeforeKill(n.getNext(),variable)
+      @TO@ Assignment@@state=isVariableReadBeforeKill(n.getNext(),variable) '
+    - '------------INS SimpleName@@MethodName:isVariableReadBeforeKill:[n.getNext(),
+      variable] @TO@ MethodInvocation@@isVariableReadBeforeKill(n.getNext(),variable) '
+    - '---------------INS MethodInvocation@@n.getNext() @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[n.getNext(),
+      variable] '
+    - '------------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext() '
+    - '------------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext() '
+    - '---------------INS SimpleName@@variable @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[n.getNext(),
+      variable] '
+    - '---INS IfStatement@@InfixExpression:state == VariableLiveness.KILL @TO@ IfStatement@@InfixExpression:n.getNext()
+      != null '
+    - '------INS InfixExpression@@state == VariableLiveness.KILL @TO@ IfStatement@@InfixExpression:state
+      == VariableLiveness.KILL '
+    - '---------INS SimpleName@@state @TO@ InfixExpression@@state == VariableLiveness.KILL '
+    - '---------INS Operator@@== @TO@ InfixExpression@@state == VariableLiveness.KILL '
+    - '---------INS QualifiedName@@VariableLiveness.KILL @TO@ InfixExpression@@state
+      == VariableLiveness.KILL '
+    - '------------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.KILL '
+    - '------------INS SimpleName@@KILL @TO@ QualifiedName@@VariableLiveness.KILL '
+    - '------INS ExpressionStatement@@Assignment:state=VariableLiveness.MAYBE_LIVE
+      @TO@ IfStatement@@InfixExpression:state == VariableLiveness.KILL '
+    - '---------INS Assignment@@state=VariableLiveness.MAYBE_LIVE @TO@ ExpressionStatement@@Assignment:state=VariableLiveness.MAYBE_LIVE '
+    - '------------INS SimpleName@@state @TO@ Assignment@@state=VariableLiveness.MAYBE_LIVE '
+    - '------------INS Operator@@= @TO@ Assignment@@state=VariableLiveness.MAYBE_LIVE '
+    - '------------INS QualifiedName@@VariableLiveness.MAYBE_LIVE @TO@ Assignment@@state=VariableLiveness.MAYBE_LIVE '
+    - '---------------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+    - '---------------INS SimpleName@@MAYBE_LIVE @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS BreakStatement@@ @TO@ SwitchStatement@@MethodInvocation:n.getParent().getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!ControlFlowGraph.isEnteringNewCfgNode(sibling)
+      @TO@ InfixExpression:state != VariableLiveness.MAYBE_LIVE '
+    - '---DEL PrefixExpression@@!ControlFlowGraph.isEnteringNewCfgNode(sibling) '
+    - '------DEL Operator@@! '
+    - '------DEL MethodInvocation@@ControlFlowGraph.isEnteringNewCfgNode(sibling) '
+    - '---------DEL SimpleName@@Name:ControlFlowGraph '
+    - '---------DEL SimpleName@@MethodName:isEnteringNewCfgNode:[sibling] '
+    - '------------DEL SimpleName@@sibling '
+    - '---INS InfixExpression@@state != VariableLiveness.MAYBE_LIVE @TO@ IfStatement@@PrefixExpression:!ControlFlowGraph.isEnteringNewCfgNode(sibling) '
+    - '------INS SimpleName@@state @TO@ InfixExpression@@state != VariableLiveness.MAYBE_LIVE '
+    - '------INS Operator@@!= @TO@ InfixExpression@@state != VariableLiveness.MAYBE_LIVE '
+    - '------INS QualifiedName@@VariableLiveness.MAYBE_LIVE @TO@ InfixExpression@@state
+      != VariableLiveness.MAYBE_LIVE '
+    - '---------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+    - '---------INS SimpleName@@MAYBE_LIVE @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+    - '---INS BreakStatement@@ @TO@ IfStatement@@PrefixExpression:!ControlFlowGraph.isEnteringNewCfgNode(sibling) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:state=isVariableReadBeforeKill(sibling,variable)
+      @TO@ ForStatement@@[Node sibling=n.getNext()];sibling != null; [sibling=sibling.getNext()] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n.getNext() != null && n.getNext().getNext()
+      != null @TO@ SwitchStatement@@MethodInvocation:n.getParent().getType() '
+    - '---INS InfixExpression@@n.getNext() != null && n.getNext().getNext() != null
+      @TO@ IfStatement@@InfixExpression:n.getNext() != null && n.getNext().getNext()
+      != null '
+    - '------INS InfixExpression@@n.getNext() != null @TO@ InfixExpression@@n.getNext()
+      != null && n.getNext().getNext() != null '
+    - '---------INS MethodInvocation@@n.getNext() @TO@ InfixExpression@@n.getNext()
+      != null '
+    - '------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext() '
+    - '------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext() '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@n.getNext() != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@n.getNext() != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@n.getNext() != null && n.getNext().getNext()
+      != null '
+    - '------INS InfixExpression@@n.getNext().getNext() != null @TO@ InfixExpression@@n.getNext()
+      != null && n.getNext().getNext() != null '
+    - '---------INS MethodInvocation@@n.getNext().getNext() @TO@ InfixExpression@@n.getNext().getNext()
+      != null '
+    - '------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext().getNext() '
+    - '------------INS MethodInvocation@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext().getNext() '
+    - '------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext().getNext() '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@n.getNext().getNext() != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@n.getNext().getNext()
+      != null '
+    - '---INS ExpressionStatement@@Assignment:state=checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable)
+      @TO@ IfStatement@@InfixExpression:n.getNext() != null && n.getNext().getNext()
+      != null '
+    - '------INS Assignment@@state=checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable)
+      @TO@ ExpressionStatement@@Assignment:state=checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable) '
+    - '---------INS SimpleName@@state @TO@ Assignment@@state=checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable) '
+    - '---------INS Operator@@= @TO@ Assignment@@state=checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable) '
+    - '---------INS MethodInvocation@@checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable)
+      @TO@ Assignment@@state=checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable) '
+    - '------------INS SimpleName@@MethodName:checkHookBranchReadBeforeKill:[n.getNext(),
+      n.getNext().getNext(), variable] @TO@ MethodInvocation@@checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable) '
+    - '---------------INS MethodInvocation@@n.getNext() @TO@ SimpleName@@MethodName:checkHookBranchReadBeforeKill:[n.getNext(),
+      n.getNext().getNext(), variable] '
+    - '------------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext() '
+    - '------------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext() '
+    - '---------------INS MethodInvocation@@n.getNext().getNext() @TO@ SimpleName@@MethodName:checkHookBranchReadBeforeKill:[n.getNext(),
+      n.getNext().getNext(), variable] '
+    - '------------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext().getNext() '
+    - '------------------INS MethodInvocation@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext().getNext() '
+    - '------------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext().getNext() '
+    - '---------------INS SimpleName@@variable @TO@ SimpleName@@MethodName:checkHookBranchReadBeforeKill:[n.getNext(),
+      n.getNext().getNext(), variable] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:state == VariableLiveness.READ @TO@ WhileStatement@@InfixExpression:n
+      != exprRoot '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS BreakStatement@@ @TO@ SwitchStatement@@MethodInvocation:n.getParent().getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:ControlFlowGraph.isEnteringNewCfgNode(n)
+      @TO@ MethodDeclaration@@private, @@VariableLiveness, MethodName:isVariableReadBeforeKill,
+      @@Argus:Node+n+String+variable+ '
+    - '---INS MethodInvocation@@ControlFlowGraph.isEnteringNewCfgNode(n) @TO@ IfStatement@@MethodInvocation:ControlFlowGraph.isEnteringNewCfgNode(n) '
+    - '------INS SimpleName@@Name:ControlFlowGraph @TO@ MethodInvocation@@ControlFlowGraph.isEnteringNewCfgNode(n) '
+    - '------INS SimpleName@@MethodName:isEnteringNewCfgNode:[n] @TO@ MethodInvocation@@ControlFlowGraph.isEnteringNewCfgNode(n) '
+    - '---------INS SimpleName@@n @TO@ SimpleName@@MethodName:isEnteringNewCfgNode:[n] '
+    - '---INS ReturnStatement@@QualifiedName:VariableLiveness.MAYBE_LIVE @TO@ IfStatement@@MethodInvocation:ControlFlowGraph.isEnteringNewCfgNode(n) '
+    - '------INS QualifiedName@@VariableLiveness.MAYBE_LIVE @TO@ ReturnStatement@@QualifiedName:VariableLiveness.MAYBE_LIVE '
+    - '---------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+    - '---------INS SimpleName@@MAYBE_LIVE @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@PrefixExpression:!ControlFlowGraph.isEnteringNewCfgNode(child) '
+    - '---DEL PrefixExpression@@!ControlFlowGraph.isEnteringNewCfgNode(child) '
+    - '------DEL Operator@@! '
+    - '------DEL MethodInvocation@@ControlFlowGraph.isEnteringNewCfgNode(child) '
+    - '---------DEL SimpleName@@Name:ControlFlowGraph '
+    - '---------DEL SimpleName@@MethodName:isEnteringNewCfgNode:[child] '
+    - '------------DEL SimpleName@@child '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@VariableLiveness state=isVariableReadBeforeKill(child,variable);
+      @TO@ ForStatement@@[Node child=n.getFirstChild()];child != null; [child=child.getNext()] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:state != VariableLiveness.MAYBE_LIVE @TO@
+      ForStatement@@[Node child=n.getFirstChild()];child != null; [child=child.getNext()] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@VariableLiveness v1=isVariableReadBeforeKill(n.getFirstChild(),variable);
+      @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS SimpleType@@VariableLiveness @TO@ VariableDeclarationStatement@@VariableLiveness
+      v1=isVariableReadBeforeKill(n.getFirstChild(),variable); '
+    - '---INS VariableDeclarationFragment@@v1=isVariableReadBeforeKill(n.getFirstChild(),variable)
+      @TO@ VariableDeclarationStatement@@VariableLiveness v1=isVariableReadBeforeKill(n.getFirstChild(),variable); '
+    - '------INS SimpleName@@v1 @TO@ VariableDeclarationFragment@@v1=isVariableReadBeforeKill(n.getFirstChild(),variable) '
+    - '------INS MethodInvocation@@isVariableReadBeforeKill(n.getFirstChild(),variable)
+      @TO@ VariableDeclarationFragment@@v1=isVariableReadBeforeKill(n.getFirstChild(),variable) '
+    - '---------INS SimpleName@@MethodName:isVariableReadBeforeKill:[n.getFirstChild(),
+      variable] @TO@ MethodInvocation@@isVariableReadBeforeKill(n.getFirstChild(),variable) '
+    - '------------INS MethodInvocation@@n.getFirstChild() @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[n.getFirstChild(),
+      variable] '
+    - '---------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getFirstChild() '
+    - '---------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@n.getFirstChild() '
+    - '------------INS SimpleName@@variable @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[n.getFirstChild(),
+      variable] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@VariableLiveness v2=isVariableReadBeforeKill(n.getLastChild(),variable);
+      @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS SimpleType@@VariableLiveness @TO@ VariableDeclarationStatement@@VariableLiveness
+      v2=isVariableReadBeforeKill(n.getLastChild(),variable); '
+    - '---INS VariableDeclarationFragment@@v2=isVariableReadBeforeKill(n.getLastChild(),variable)
+      @TO@ VariableDeclarationStatement@@VariableLiveness v2=isVariableReadBeforeKill(n.getLastChild(),variable); '
+    - '------INS SimpleName@@v2 @TO@ VariableDeclarationFragment@@v2=isVariableReadBeforeKill(n.getLastChild(),variable) '
+    - '------INS MethodInvocation@@isVariableReadBeforeKill(n.getLastChild(),variable)
+      @TO@ VariableDeclarationFragment@@v2=isVariableReadBeforeKill(n.getLastChild(),variable) '
+    - '---------INS SimpleName@@MethodName:isVariableReadBeforeKill:[n.getLastChild(),
+      variable] @TO@ MethodInvocation@@isVariableReadBeforeKill(n.getLastChild(),variable) '
+    - '------------INS MethodInvocation@@n.getLastChild() @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[n.getLastChild(),
+      variable] '
+    - '---------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getLastChild() '
+    - '---------------INS SimpleName@@MethodName:getLastChild:[] @TO@ MethodInvocation@@n.getLastChild() '
+    - '------------INS SimpleName@@variable @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[n.getLastChild(),
+      variable] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:v1 != VariableLiveness.MAYBE_LIVE @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS InfixExpression@@v1 != VariableLiveness.MAYBE_LIVE @TO@ IfStatement@@InfixExpression:v1
+      != VariableLiveness.MAYBE_LIVE '
+    - '------INS SimpleName@@v1 @TO@ InfixExpression@@v1 != VariableLiveness.MAYBE_LIVE '
+    - '------INS Operator@@!= @TO@ InfixExpression@@v1 != VariableLiveness.MAYBE_LIVE '
+    - '------INS QualifiedName@@VariableLiveness.MAYBE_LIVE @TO@ InfixExpression@@v1
+      != VariableLiveness.MAYBE_LIVE '
+    - '---------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+    - '---------INS SimpleName@@MAYBE_LIVE @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+    - '---INS ReturnStatement@@SimpleName:v1 @TO@ IfStatement@@InfixExpression:v1
+      != VariableLiveness.MAYBE_LIVE '
+    - '------INS SimpleName@@v1 @TO@ ReturnStatement@@SimpleName:v1 '
+    - '---INS IfStatement@@InfixExpression:v2 == VariableLiveness.READ @TO@ IfStatement@@InfixExpression:v1
+      != VariableLiveness.MAYBE_LIVE '
+    - '------INS InfixExpression@@v2 == VariableLiveness.READ @TO@ IfStatement@@InfixExpression:v2
+      == VariableLiveness.READ '
+    - '---------INS SimpleName@@v2 @TO@ InfixExpression@@v2 == VariableLiveness.READ '
+    - '---------INS Operator@@== @TO@ InfixExpression@@v2 == VariableLiveness.READ '
+    - '---------INS QualifiedName@@VariableLiveness.READ @TO@ InfixExpression@@v2
+      == VariableLiveness.READ '
+    - '------------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.READ '
+    - '------------INS SimpleName@@READ @TO@ QualifiedName@@VariableLiveness.READ '
+    - '------INS ReturnStatement@@QualifiedName:VariableLiveness.READ @TO@ IfStatement@@InfixExpression:v2
+      == VariableLiveness.READ '
+    - '---------INS QualifiedName@@VariableLiveness.READ @TO@ ReturnStatement@@QualifiedName:VariableLiveness.READ '
+    - '------------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.READ '
+    - '------------INS SimpleName@@READ @TO@ QualifiedName@@VariableLiveness.READ '
+    - '------INS ReturnStatement@@QualifiedName:VariableLiveness.MAYBE_LIVE @TO@ IfStatement@@InfixExpression:v2
+      == VariableLiveness.READ '
+    - '---------INS QualifiedName@@VariableLiveness.MAYBE_LIVE @TO@ ReturnStatement@@QualifiedName:VariableLiveness.MAYBE_LIVE '
+    - '------------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+    - '------------INS SimpleName@@MAYBE_LIVE @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@VariableLiveness first=isVariableReadBeforeKill(n.getFirstChild(),variable);
+      @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS SimpleType@@VariableLiveness @TO@ VariableDeclarationStatement@@VariableLiveness
+      first=isVariableReadBeforeKill(n.getFirstChild(),variable); '
+    - '---INS VariableDeclarationFragment@@first=isVariableReadBeforeKill(n.getFirstChild(),variable)
+      @TO@ VariableDeclarationStatement@@VariableLiveness first=isVariableReadBeforeKill(n.getFirstChild(),variable); '
+    - '------INS SimpleName@@first @TO@ VariableDeclarationFragment@@first=isVariableReadBeforeKill(n.getFirstChild(),variable) '
+    - '------INS MethodInvocation@@isVariableReadBeforeKill(n.getFirstChild(),variable)
+      @TO@ VariableDeclarationFragment@@first=isVariableReadBeforeKill(n.getFirstChild(),variable) '
+    - '---------INS SimpleName@@MethodName:isVariableReadBeforeKill:[n.getFirstChild(),
+      variable] @TO@ MethodInvocation@@isVariableReadBeforeKill(n.getFirstChild(),variable) '
+    - '------------INS MethodInvocation@@n.getFirstChild() @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[n.getFirstChild(),
+      variable] '
+    - '---------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getFirstChild() '
+    - '---------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@n.getFirstChild() '
+    - '------------INS SimpleName@@variable @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[n.getFirstChild(),
+      variable] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:first != VariableLiveness.MAYBE_LIVE @TO@
+      SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS InfixExpression@@first != VariableLiveness.MAYBE_LIVE @TO@ IfStatement@@InfixExpression:first
+      != VariableLiveness.MAYBE_LIVE '
+    - '------INS SimpleName@@first @TO@ InfixExpression@@first != VariableLiveness.MAYBE_LIVE '
+    - '------INS Operator@@!= @TO@ InfixExpression@@first != VariableLiveness.MAYBE_LIVE '
+    - '------INS QualifiedName@@VariableLiveness.MAYBE_LIVE @TO@ InfixExpression@@first
+      != VariableLiveness.MAYBE_LIVE '
+    - '---------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+    - '---------INS SimpleName@@MAYBE_LIVE @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+    - '---INS ReturnStatement@@SimpleName:first @TO@ IfStatement@@InfixExpression:first
+      != VariableLiveness.MAYBE_LIVE '
+    - '------INS SimpleName@@first @TO@ ReturnStatement@@SimpleName:first '
+  files_cnt: '1'
+  repair_actions_cnt: 16
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/DeadAssignmentsElimination:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n.getNext() != null @TO@ SwitchStatement@@MethodInvocation:n.getParent().getType() '
+    - '---INS InfixExpression@@n.getNext() != null @TO@ IfStatement@@InfixExpression:n.getNext()
+      != null '
+    - '------INS MethodInvocation@@n.getNext() @TO@ InfixExpression@@n.getNext() !=
+      null '
+    - '---------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext() '
+    - '---------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext() '
+    - '------INS Operator@@!= @TO@ InfixExpression@@n.getNext() != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@n.getNext() != null '
+    - '---INS ExpressionStatement@@Assignment:state=isVariableReadBeforeKill(n.getNext(),variable)
+      @TO@ IfStatement@@InfixExpression:n.getNext() != null '
+    - '------INS Assignment@@state=isVariableReadBeforeKill(n.getNext(),variable)
+      @TO@ ExpressionStatement@@Assignment:state=isVariableReadBeforeKill(n.getNext(),variable) '
+    - '---------INS SimpleName@@state @TO@ Assignment@@state=isVariableReadBeforeKill(n.getNext(),variable) '
+    - '---------INS Operator@@= @TO@ Assignment@@state=isVariableReadBeforeKill(n.getNext(),variable) '
+    - '---------INS MethodInvocation@@isVariableReadBeforeKill(n.getNext(),variable)
+      @TO@ Assignment@@state=isVariableReadBeforeKill(n.getNext(),variable) '
+    - '------------INS SimpleName@@MethodName:isVariableReadBeforeKill:[n.getNext(),
+      variable] @TO@ MethodInvocation@@isVariableReadBeforeKill(n.getNext(),variable) '
+    - '---------------INS MethodInvocation@@n.getNext() @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[n.getNext(),
+      variable] '
+    - '------------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext() '
+    - '------------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext() '
+    - '---------------INS SimpleName@@variable @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[n.getNext(),
+      variable] '
+    - '---INS IfStatement@@InfixExpression:state == VariableLiveness.KILL @TO@ IfStatement@@InfixExpression:n.getNext()
+      != null '
+    - '------INS InfixExpression@@state == VariableLiveness.KILL @TO@ IfStatement@@InfixExpression:state
+      == VariableLiveness.KILL '
+    - '---------INS SimpleName@@state @TO@ InfixExpression@@state == VariableLiveness.KILL '
+    - '---------INS Operator@@== @TO@ InfixExpression@@state == VariableLiveness.KILL '
+    - '---------INS QualifiedName@@VariableLiveness.KILL @TO@ InfixExpression@@state
+      == VariableLiveness.KILL '
+    - '------------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.KILL '
+    - '------------INS SimpleName@@KILL @TO@ QualifiedName@@VariableLiveness.KILL '
+    - '------INS ExpressionStatement@@Assignment:state=VariableLiveness.MAYBE_LIVE
+      @TO@ IfStatement@@InfixExpression:state == VariableLiveness.KILL '
+    - '---------INS Assignment@@state=VariableLiveness.MAYBE_LIVE @TO@ ExpressionStatement@@Assignment:state=VariableLiveness.MAYBE_LIVE '
+    - '------------INS SimpleName@@state @TO@ Assignment@@state=VariableLiveness.MAYBE_LIVE '
+    - '------------INS Operator@@= @TO@ Assignment@@state=VariableLiveness.MAYBE_LIVE '
+    - '------------INS QualifiedName@@VariableLiveness.MAYBE_LIVE @TO@ Assignment@@state=VariableLiveness.MAYBE_LIVE '
+    - '---------------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+    - '---------------INS SimpleName@@MAYBE_LIVE @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n.getNext() != null && n.getNext().getNext()
+      != null @TO@ SwitchStatement@@MethodInvocation:n.getParent().getType() '
+    - '---INS InfixExpression@@n.getNext() != null && n.getNext().getNext() != null
+      @TO@ IfStatement@@InfixExpression:n.getNext() != null && n.getNext().getNext()
+      != null '
+    - '------INS InfixExpression@@n.getNext() != null @TO@ InfixExpression@@n.getNext()
+      != null && n.getNext().getNext() != null '
+    - '---------INS MethodInvocation@@n.getNext() @TO@ InfixExpression@@n.getNext()
+      != null '
+    - '------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext() '
+    - '------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext() '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@n.getNext() != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@n.getNext() != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@n.getNext() != null && n.getNext().getNext()
+      != null '
+    - '------INS InfixExpression@@n.getNext().getNext() != null @TO@ InfixExpression@@n.getNext()
+      != null && n.getNext().getNext() != null '
+    - '---------INS MethodInvocation@@n.getNext().getNext() @TO@ InfixExpression@@n.getNext().getNext()
+      != null '
+    - '------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext().getNext() '
+    - '------------INS MethodInvocation@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext().getNext() '
+    - '------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext().getNext() '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@n.getNext().getNext() != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@n.getNext().getNext()
+      != null '
+    - '---INS ExpressionStatement@@Assignment:state=checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable)
+      @TO@ IfStatement@@InfixExpression:n.getNext() != null && n.getNext().getNext()
+      != null '
+    - '------INS Assignment@@state=checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable)
+      @TO@ ExpressionStatement@@Assignment:state=checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable) '
+    - '---------INS SimpleName@@state @TO@ Assignment@@state=checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable) '
+    - '---------INS Operator@@= @TO@ Assignment@@state=checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable) '
+    - '---------INS MethodInvocation@@checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable)
+      @TO@ Assignment@@state=checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable) '
+    - '------------INS SimpleName@@MethodName:checkHookBranchReadBeforeKill:[n.getNext(),
+      n.getNext().getNext(), variable] @TO@ MethodInvocation@@checkHookBranchReadBeforeKill(n.getNext(),n.getNext().getNext(),variable) '
+    - '---------------INS MethodInvocation@@n.getNext() @TO@ SimpleName@@MethodName:checkHookBranchReadBeforeKill:[n.getNext(),
+      n.getNext().getNext(), variable] '
+    - '------------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext() '
+    - '------------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext() '
+    - '---------------INS MethodInvocation@@n.getNext().getNext() @TO@ SimpleName@@MethodName:checkHookBranchReadBeforeKill:[n.getNext(),
+      n.getNext().getNext(), variable] '
+    - '------------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext().getNext() '
+    - '------------------INS MethodInvocation@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext().getNext() '
+    - '------------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext().getNext() '
+    - '---------------INS SimpleName@@variable @TO@ SimpleName@@MethodName:checkHookBranchReadBeforeKill:[n.getNext(),
+      n.getNext().getNext(), variable] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:state == VariableLiveness.READ @TO@ WhileStatement@@InfixExpression:n
+      != exprRoot '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@VariableLiveness v1=isVariableReadBeforeKill(n.getFirstChild(),variable);
+      @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS SimpleType@@VariableLiveness @TO@ VariableDeclarationStatement@@VariableLiveness
+      v1=isVariableReadBeforeKill(n.getFirstChild(),variable); '
+    - '---INS VariableDeclarationFragment@@v1=isVariableReadBeforeKill(n.getFirstChild(),variable)
+      @TO@ VariableDeclarationStatement@@VariableLiveness v1=isVariableReadBeforeKill(n.getFirstChild(),variable); '
+    - '------INS SimpleName@@v1 @TO@ VariableDeclarationFragment@@v1=isVariableReadBeforeKill(n.getFirstChild(),variable) '
+    - '------INS MethodInvocation@@isVariableReadBeforeKill(n.getFirstChild(),variable)
+      @TO@ VariableDeclarationFragment@@v1=isVariableReadBeforeKill(n.getFirstChild(),variable) '
+    - '---------INS SimpleName@@MethodName:isVariableReadBeforeKill:[n.getFirstChild(),
+      variable] @TO@ MethodInvocation@@isVariableReadBeforeKill(n.getFirstChild(),variable) '
+    - '------------INS MethodInvocation@@n.getFirstChild() @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[n.getFirstChild(),
+      variable] '
+    - '---------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getFirstChild() '
+    - '---------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@n.getFirstChild() '
+    - '------------INS SimpleName@@variable @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[n.getFirstChild(),
+      variable] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:v1 != VariableLiveness.MAYBE_LIVE @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS InfixExpression@@v1 != VariableLiveness.MAYBE_LIVE @TO@ IfStatement@@InfixExpression:v1
+      != VariableLiveness.MAYBE_LIVE '
+    - '------INS SimpleName@@v1 @TO@ InfixExpression@@v1 != VariableLiveness.MAYBE_LIVE '
+    - '------INS Operator@@!= @TO@ InfixExpression@@v1 != VariableLiveness.MAYBE_LIVE '
+    - '------INS QualifiedName@@VariableLiveness.MAYBE_LIVE @TO@ InfixExpression@@v1
+      != VariableLiveness.MAYBE_LIVE '
+    - '---------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+    - '---------INS SimpleName@@MAYBE_LIVE @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:first != VariableLiveness.MAYBE_LIVE @TO@
+      SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS InfixExpression@@first != VariableLiveness.MAYBE_LIVE @TO@ IfStatement@@InfixExpression:first
+      != VariableLiveness.MAYBE_LIVE '
+    - '------INS SimpleName@@first @TO@ InfixExpression@@first != VariableLiveness.MAYBE_LIVE '
+    - '------INS Operator@@!= @TO@ InfixExpression@@first != VariableLiveness.MAYBE_LIVE '
+    - '------INS QualifiedName@@VariableLiveness.MAYBE_LIVE @TO@ InfixExpression@@first
+      != VariableLiveness.MAYBE_LIVE '
+    - '---------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+    - '---------INS SimpleName@@MAYBE_LIVE @TO@ QualifiedName@@VariableLiveness.MAYBE_LIVE '
+  files_cnt: '1'
+  repair_actions_cnt: 6

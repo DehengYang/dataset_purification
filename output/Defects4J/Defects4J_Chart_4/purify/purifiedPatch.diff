@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_4/source/org/jfree/chart/plot/XYPlot.java	2020-10-22 00:29:34.728404709 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_4/purify/purified/org/jfree/chart/plot/XYPlot.java	2020-10-22 00:29:34.724404594 -0400
+@@ -4490,6 +4490,7 @@
+                     }
+                 }
+                 
++                if (r != null) {
+                     Collection c = r.getAnnotations();
+                     Iterator i = c.iterator();
+                     while (i.hasNext()) {
+@@ -4498,6 +4499,7 @@
+                             includedAnnotations.add(a);
+                         }
+                     }
++                }
+             }
+         }
+ 

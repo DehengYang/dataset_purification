@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_12/source/org/jfree/chart/plot/MultiplePiePlot.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_12/fixed-version/source/org/jfree/chart/plot/MultiplePiePlot.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_12/source/org/jfree/chart/plot/MultiplePiePlot.java	2020-03-01 00:03:49.854548766 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_12/fixed-version/source/org/jfree/chart/plot/MultiplePiePlot.java	2020-03-01 00:03:53.274709911 -0800
+@@ -142,7 +142,7 @@
+      */
+     public MultiplePiePlot(CategoryDataset dataset) {
+         super();
+-        this.dataset = dataset;
++        setDataset(dataset);
+         PiePlot piePlot = new PiePlot(null);
+         this.pieChart = new JFreeChart(piePlot);
+         this.pieChart.removeLegend();

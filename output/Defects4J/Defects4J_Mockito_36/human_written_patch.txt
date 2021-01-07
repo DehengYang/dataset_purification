@@ -1,0 +1,21 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_36/src/org/mockito/internal/invocation/Invocation.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_36/fixed-version/src/org/mockito/internal/invocation/Invocation.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_36/src/org/mockito/internal/invocation/Invocation.java	2020-03-01 00:39:11.202502399 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_36/fixed-version/src/org/mockito/internal/invocation/Invocation.java	2020-03-01 00:39:13.782623972 -0800
+@@ -8,6 +8,7 @@
+ 
+ import org.hamcrest.Matcher;
+ import org.mockito.exceptions.PrintableInvocation;
++import org.mockito.exceptions.Reporter;
+ import org.mockito.internal.debugging.Location;
+ import org.mockito.internal.invocation.realmethod.RealMethod;
+ import org.mockito.internal.matchers.*;
+@@ -199,6 +200,9 @@
+     }
+ 
+     public Object callRealMethod() throws Throwable {
++        if (this.getMethod().getDeclaringClass().isInterface()) {
++            new Reporter().cannotCallRealMethodOnInterface();
++        }
+         return realMethod.invoke(mock, rawArguments);
+     }
+ 

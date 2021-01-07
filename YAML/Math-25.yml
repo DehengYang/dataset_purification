@@ -1,0 +1,118 @@
+1 bug_id: Math-25
+2 src folder:
+  name of src folder: java
+  number of files: 643
+  number of java files: 642
+  number of src classes: 866
+  number of test classes: 322
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.optimization.fitting.HarmonicFitterTest#testMath844
+  failing tests:
+  - org.apache.commons.math3.optimization.fitting.HarmonicFitterTest
+  number of all test cases: 4103
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.526
+  purification via delta debugging: 126.594
+  repair actions extraction: 0.878
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.optimization.fitting.HarmonicFitterTest#testMath844: 167
+  fixed:
+    org.apache.commons.math3.optimization.fitting.HarmonicFitterTest#testMath844: 383
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_25/src/main/java/org/apache/commons/math3/optimization/fitting/HarmonicFitter.java\t\
+    2020-10-21 10:06:16.778853535 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_25/purify/patch/org/apache/commons/math3/optimization/fitting/HarmonicFitter.java\t\
+    2020-10-21 10:06:16.778853535 -0400\n@@ -320,8 +320,11 @@\n                 }\n\
+    \                 a = 0.5 * (yMax - yMin);\n             } else {\n+         \
+    \       if (c2 == 0) {\n                     // In some ill-conditioned cases\
+    \ (cf. MATH-844), the guesser\n                     // procedure cannot produce\
+    \ sensible results.\n+                    throw new MathIllegalStateException(LocalizedFormats.ZERO_DENOMINATOR);\n\
+    +                }\n \n                 a = FastMath.sqrt(c1 / c2);\n        \
+    \         omega = FastMath.sqrt(c2 / c3);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_25/src/main/java/org/apache/commons/math3/optimization/fitting/HarmonicFitter.java\t\
+    2020-10-21 10:08:40.475009326 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_25/purify/purified/org/apache/commons/math3/optimization/fitting/HarmonicFitter.java\t\
+    2020-10-21 10:08:40.475009326 -0400\n@@ -320,8 +320,11 @@\n                 }\n\
+    \                 a = 0.5 * (yMax - yMin);\n             } else {\n+         \
+    \       if (c2 == 0) {\n                     // In some ill-conditioned cases\
+    \ (cf. MATH-844), the guesser\n                     // procedure cannot produce\
+    \ sensible results.\n+                    throw new MathIllegalStateException(LocalizedFormats.ZERO_DENOMINATOR);\n\
+    +                }\n \n                 a = FastMath.sqrt(c1 / c2);\n        \
+    \         omega = FastMath.sqrt(c2 / c3);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/fitting/HarmonicFitter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:c2 == 0 @TO@ IfStatement@@InfixExpression:(c1
+      / c2 < 0) || (c2 / c3 < 0) '
+    - '---INS InfixExpression@@c2 == 0 @TO@ IfStatement@@InfixExpression:c2 == 0 '
+    - '------INS SimpleName@@c2 @TO@ InfixExpression@@c2 == 0 '
+    - '------INS Operator@@== @TO@ InfixExpression@@c2 == 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@c2 == 0 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new MathIllegalStateException(LocalizedFormats.ZERO_DENOMINATOR)
+      @TO@ IfStatement@@InfixExpression:c2 == 0 '
+    - '------INS ClassInstanceCreation@@MathIllegalStateException[LocalizedFormats.ZERO_DENOMINATOR]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new MathIllegalStateException(LocalizedFormats.ZERO_DENOMINATOR) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@MathIllegalStateException[LocalizedFormats.ZERO_DENOMINATOR] '
+    - '---------INS SimpleType@@MathIllegalStateException @TO@ ClassInstanceCreation@@MathIllegalStateException[LocalizedFormats.ZERO_DENOMINATOR] '
+    - '---------INS QualifiedName@@LocalizedFormats.ZERO_DENOMINATOR @TO@ ClassInstanceCreation@@MathIllegalStateException[LocalizedFormats.ZERO_DENOMINATOR] '
+    - '------------INS SimpleName@@LocalizedFormats @TO@ QualifiedName@@LocalizedFormats.ZERO_DENOMINATOR '
+    - '------------INS SimpleName@@ZERO_DENOMINATOR @TO@ QualifiedName@@LocalizedFormats.ZERO_DENOMINATOR '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/fitting/HarmonicFitter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:c2 == 0 @TO@ IfStatement@@InfixExpression:(c1
+      / c2 < 0) || (c2 / c3 < 0) '
+    - '---INS InfixExpression@@c2 == 0 @TO@ IfStatement@@InfixExpression:c2 == 0 '
+    - '------INS SimpleName@@c2 @TO@ InfixExpression@@c2 == 0 '
+    - '------INS Operator@@== @TO@ InfixExpression@@c2 == 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@c2 == 0 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new MathIllegalStateException(LocalizedFormats.ZERO_DENOMINATOR)
+      @TO@ IfStatement@@InfixExpression:c2 == 0 '
+    - '------INS ClassInstanceCreation@@MathIllegalStateException[LocalizedFormats.ZERO_DENOMINATOR]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new MathIllegalStateException(LocalizedFormats.ZERO_DENOMINATOR) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@MathIllegalStateException[LocalizedFormats.ZERO_DENOMINATOR] '
+    - '---------INS SimpleType@@MathIllegalStateException @TO@ ClassInstanceCreation@@MathIllegalStateException[LocalizedFormats.ZERO_DENOMINATOR] '
+    - '---------INS QualifiedName@@LocalizedFormats.ZERO_DENOMINATOR @TO@ ClassInstanceCreation@@MathIllegalStateException[LocalizedFormats.ZERO_DENOMINATOR] '
+    - '------------INS SimpleName@@LocalizedFormats @TO@ QualifiedName@@LocalizedFormats.ZERO_DENOMINATOR '
+    - '------------INS SimpleName@@ZERO_DENOMINATOR @TO@ QualifiedName@@LocalizedFormats.ZERO_DENOMINATOR '
+  repair_actions_cnt: 1

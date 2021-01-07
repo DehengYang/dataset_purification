@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_41/src/main/java/org/apache/commons/math/stat/descriptive/moment/Variance.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_41/fixed-version/src/main/java/org/apache/commons/math/stat/descriptive/moment/Variance.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_41/src/main/java/org/apache/commons/math/stat/descriptive/moment/Variance.java	2020-03-01 00:17:58.162517789 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_41/fixed-version/src/main/java/org/apache/commons/math/stat/descriptive/moment/Variance.java	2020-03-01 00:18:01.854691751 -0800
+@@ -517,7 +517,7 @@
+                 }
+ 
+                 double sumWts = 0;
+-                for (int i = 0; i < weights.length; i++) {
++                for (int i = begin; i < begin + length; i++) {
+                     sumWts += weights[i];
+                 }
+ 

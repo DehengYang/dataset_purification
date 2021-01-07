@@ -1,0 +1,11 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_133/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_133/fixed-version/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_133/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java	2020-03-01 00:35:16.231430783 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_133/fixed-version/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java	2020-03-01 00:35:19.191570262 -0800
+@@ -2398,6 +2398,7 @@
+    */
+   private String getRemainingJSDocLine() {
+     String result = stream.getRemainingJSDocLine();
++    unreadToken = NO_UNREAD_TOKEN;
+     return result;
+   }
+ 

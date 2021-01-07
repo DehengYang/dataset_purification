@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_27/src/main/java/org/apache/commons/lang3/math/NumberUtils.java	2020-10-21 01:15:49.562694589 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_27/purify/purified/org/apache/commons/lang3/math/NumberUtils.java	2020-10-21 01:15:49.558694472 -0400
+@@ -486,6 +486,9 @@
+             mant = str.substring(0, decPos);
+         } else {
+             if (expPos > -1) {
++                if (expPos > str.length()) {
++                    throw new NumberFormatException(str + " is not a valid number.");
++                }
+                 mant = str.substring(0, expPos);
+             } else {
+                 mant = str;

@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_36/src/com/google/javascript/jscomp/InlineVariables.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_36/fixed-version/src/com/google/javascript/jscomp/InlineVariables.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_36/src/com/google/javascript/jscomp/InlineVariables.java	2020-03-01 00:27:36.209754913 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_36/fixed-version/src/com/google/javascript/jscomp/InlineVariables.java	2020-03-01 00:27:38.193848402 -0800
+@@ -572,6 +572,9 @@
+ 
+           // issue 668: Don't inline singleton getter methods
+           // calls as this confused class removing logic.
++          if (convention.getSingletonGetterClassName(callNode) != null) {
++            return false;
++          }
+         }
+       }
+ 

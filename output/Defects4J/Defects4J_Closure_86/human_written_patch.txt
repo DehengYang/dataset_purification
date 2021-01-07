@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_86/src/com/google/javascript/jscomp/NodeUtil.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_86/fixed-version/src/com/google/javascript/jscomp/NodeUtil.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_86/src/com/google/javascript/jscomp/NodeUtil.java	2020-03-01 00:30:57.127222004 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_86/fixed-version/src/com/google/javascript/jscomp/NodeUtil.java	2020-03-01 00:30:59.183318886 -0800
+@@ -2462,7 +2462,7 @@
+         // TODO(nicksantos): This needs to be changed so that it
+         // returns true iff we're sure the value was never aliased from inside
+         // the constructor (similar to callHasLocalResult)
+-        return true;
++        return false;
+       case Token.FUNCTION:
+       case Token.REGEXP:
+       case Token.ARRAYLIT:

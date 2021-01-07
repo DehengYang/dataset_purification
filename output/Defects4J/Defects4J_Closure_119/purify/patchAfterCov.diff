@@ -1,0 +1,10 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_119/src/com/google/javascript/jscomp/GlobalNamespace.java	2020-10-23 16:37:06.760929606 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_119/purify/assertBeforeMut/com/google/javascript/jscomp/GlobalNamespace.java	2020-10-23 16:37:06.756929490 -0400
+@@ -363,6 +363,7 @@
+                 isSet = true;
+                 type = Name.Type.FUNCTION;
+                 break;
++              case Token.CATCH:
+               case Token.INC:
+               case Token.DEC:
+                 isSet = true;

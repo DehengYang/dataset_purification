@@ -1,0 +1,181 @@
+1 bug_id: Closure-26
+2 src folder:
+  name of src folder: src
+  number of files: 418
+  number of java files: 402
+  number of src classes: 1347
+  number of test classes: 223
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CommandLineRunnerTest#testProcessCJS
+  - com.google.javascript.jscomp.CommandLineRunnerTest#testTransformAMDAndProcessCJS
+  - com.google.javascript.jscomp.ProcessCommonJSModulesTest#testModuleName
+  - com.google.javascript.jscomp.ProcessCommonJSModulesTest#testExports
+  - com.google.javascript.jscomp.ProcessCommonJSModulesTest#testVarRenaming
+  - com.google.javascript.jscomp.ProcessCommonJSModulesTest#testWithoutExports
+  - com.google.javascript.jscomp.ProcessCommonJSModulesTest#testDash
+  failing tests:
+  - com.google.javascript.jscomp.CommandLineRunnerTest
+  - com.google.javascript.jscomp.ProcessCommonJSModulesTest
+  number of all test cases: 7521
+  number of failing test cases: 7
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.59
+  purification via delta debugging: 432.31
+  repair actions extraction: 1.326
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testProcessCJS: 7685
+    com.google.javascript.jscomp.CommandLineRunnerTest#testTransformAMDAndProcessCJS: 7804
+    com.google.javascript.jscomp.ProcessCommonJSModulesTest#testDash: 3053
+    com.google.javascript.jscomp.ProcessCommonJSModulesTest#testExports: 3053
+    com.google.javascript.jscomp.ProcessCommonJSModulesTest#testModuleName: 2999
+    com.google.javascript.jscomp.ProcessCommonJSModulesTest#testVarRenaming: 3188
+    com.google.javascript.jscomp.ProcessCommonJSModulesTest#testWithoutExports: 2998
+  fixed:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testProcessCJS: 7304
+    com.google.javascript.jscomp.CommandLineRunnerTest#testTransformAMDAndProcessCJS: 7450
+    com.google.javascript.jscomp.ProcessCommonJSModulesTest#testDash: 2916
+    com.google.javascript.jscomp.ProcessCommonJSModulesTest#testExports: 3166
+    com.google.javascript.jscomp.ProcessCommonJSModulesTest#testModuleName: 2829
+    com.google.javascript.jscomp.ProcessCommonJSModulesTest#testVarRenaming: 3048
+    com.google.javascript.jscomp.ProcessCommonJSModulesTest#testWithoutExports: 2993
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 5
+  covDel: 0
+  cov_patch_lines: 5
+  delta_patch_lines: 5
+  oriAdd: 5
+  oriDel: 0
+  ori_patch_lines: 5
+  purAdd: 5
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 8
+  failFail: 3
+  passed: 0
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_26/src/com/google/javascript/jscomp/ProcessCommonJSModules.java\t\
+    2020-10-21 21:04:22.036262320 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_26/purify/patch/com/google/javascript/jscomp/ProcessCommonJSModules.java\t\
+    2020-10-21 21:04:22.036262320 -0400\n@@ -125,6 +125,7 @@\n       AbstractPostOrderCallback\
+    \ {\n \n     private int scriptNodeCount = 0;\n+    private Set<String> modulesWithExports\
+    \ = Sets.newHashSet();\n \n     @Override\n     public void visit(NodeTraversal\
+    \ t, Node n, Node parent) {\n@@ -204,6 +205,9 @@\n      */\n     private void\
+    \ emitOptionalModuleExportsOverride(Node script,\n         String moduleName)\
+    \ {\n+      if (!modulesWithExports.contains(moduleName)) {\n+        return;\n\
+    +      }\n \n       Node moduleExportsProp = IR.getprop(IR.name(moduleName),\n\
+    \           IR.string(\"module$exports\"));\n@@ -225,6 +229,7 @@\n       Node\
+    \ exports = prop.getChildAtIndex(1);\n       exports.putProp(Node.ORIGINALNAME_PROP,\
+    \ \"exports\");\n       exports.setString(\"module$exports\");\n+      modulesWithExports.add(moduleName);\n\
+    \     }\n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_26/src/com/google/javascript/jscomp/ProcessCommonJSModules.java\t\
+    2020-10-21 21:12:13.065877048 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_26/purify/purified/com/google/javascript/jscomp/ProcessCommonJSModules.java\t\
+    2020-10-21 21:12:13.065877048 -0400\n@@ -125,6 +125,7 @@\n       AbstractPostOrderCallback\
+    \ {\n \n     private int scriptNodeCount = 0;\n+    private Set<String> modulesWithExports\
+    \ = Sets.newHashSet();\n \n     @Override\n     public void visit(NodeTraversal\
+    \ t, Node n, Node parent) {\n@@ -204,6 +205,9 @@\n      */\n     private void\
+    \ emitOptionalModuleExportsOverride(Node script,\n         String moduleName)\
+    \ {\n+      if (!modulesWithExports.contains(moduleName)) {\n+        return;\n\
+    +      }\n \n       Node moduleExportsProp = IR.getprop(IR.name(moduleName),\n\
+    \           IR.string(\"module$exports\"));\n@@ -225,6 +229,7 @@\n       Node\
+    \ exports = prop.getChildAtIndex(1);\n       exports.putProp(Node.ORIGINALNAME_PROP,\
+    \ \"exports\");\n       exports.setString(\"module$exports\");\n+      modulesWithExports.add(moduleName);\n\
+    \     }\n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ProcessCommonJSModules:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, Set<String>, [modulesWithExports=Sets.newHashSet()]
+      @TO@ TypeDeclaration@@[private]ProcessCommonJsModulesCallback, AbstractPostOrderCallback '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, Set<String>, [modulesWithExports=Sets.newHashSet()] '
+    - '---INS ParameterizedType@@Set<String> @TO@ FieldDeclaration@@private, Set<String>,
+      [modulesWithExports=Sets.newHashSet()] '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<String> '
+    - '------INS SimpleType@@String @TO@ ParameterizedType@@Set<String> '
+    - '---INS VariableDeclarationFragment@@modulesWithExports=Sets.newHashSet() @TO@
+      FieldDeclaration@@private, Set<String>, [modulesWithExports=Sets.newHashSet()] '
+    - '------INS SimpleName@@modulesWithExports @TO@ VariableDeclarationFragment@@modulesWithExports=Sets.newHashSet() '
+    - '------INS MethodInvocation@@Sets.newHashSet() @TO@ VariableDeclarationFragment@@modulesWithExports=Sets.newHashSet() '
+    - '---------INS SimpleName@@Name:Sets @TO@ MethodInvocation@@Sets.newHashSet() '
+    - '---------INS SimpleName@@MethodName:newHashSet:[] @TO@ MethodInvocation@@Sets.newHashSet() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!modulesWithExports.contains(moduleName)
+      @TO@ MethodDeclaration@@private, @@void, MethodName:emitOptionalModuleExportsOverride,
+      @@Argus:Node+script+String+moduleName+ '
+    - '---INS PrefixExpression@@!modulesWithExports.contains(moduleName) @TO@ IfStatement@@PrefixExpression:!modulesWithExports.contains(moduleName) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!modulesWithExports.contains(moduleName) '
+    - '------INS MethodInvocation@@modulesWithExports.contains(moduleName) @TO@ PrefixExpression@@!modulesWithExports.contains(moduleName) '
+    - '---------INS SimpleName@@Name:modulesWithExports @TO@ MethodInvocation@@modulesWithExports.contains(moduleName) '
+    - '---------INS SimpleName@@MethodName:contains:[moduleName] @TO@ MethodInvocation@@modulesWithExports.contains(moduleName) '
+    - '------------INS SimpleName@@moduleName @TO@ SimpleName@@MethodName:contains:[moduleName] '
+    - '---INS ReturnStatement@@ @TO@ IfStatement@@PrefixExpression:!modulesWithExports.contains(moduleName) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:modulesWithExports.add(moduleName)
+      @TO@ MethodDeclaration@@private, @@void, MethodName:visitModuleExports, @@Argus:Node+prop+ '
+    - '---INS MethodInvocation@@modulesWithExports.add(moduleName) @TO@ ExpressionStatement@@MethodInvocation:modulesWithExports.add(moduleName) '
+    - '------INS SimpleName@@Name:modulesWithExports @TO@ MethodInvocation@@modulesWithExports.add(moduleName) '
+    - '------INS SimpleName@@MethodName:add:[moduleName] @TO@ MethodInvocation@@modulesWithExports.add(moduleName) '
+    - '---------INS SimpleName@@moduleName @TO@ SimpleName@@MethodName:add:[moduleName] '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ProcessCommonJSModules:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, Set<String>, [modulesWithExports=Sets.newHashSet()]
+      @TO@ TypeDeclaration@@[private]ProcessCommonJsModulesCallback, AbstractPostOrderCallback '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, Set<String>, [modulesWithExports=Sets.newHashSet()] '
+    - '---INS ParameterizedType@@Set<String> @TO@ FieldDeclaration@@private, Set<String>,
+      [modulesWithExports=Sets.newHashSet()] '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<String> '
+    - '------INS SimpleType@@String @TO@ ParameterizedType@@Set<String> '
+    - '---INS VariableDeclarationFragment@@modulesWithExports=Sets.newHashSet() @TO@
+      FieldDeclaration@@private, Set<String>, [modulesWithExports=Sets.newHashSet()] '
+    - '------INS SimpleName@@modulesWithExports @TO@ VariableDeclarationFragment@@modulesWithExports=Sets.newHashSet() '
+    - '------INS MethodInvocation@@Sets.newHashSet() @TO@ VariableDeclarationFragment@@modulesWithExports=Sets.newHashSet() '
+    - '---------INS SimpleName@@Name:Sets @TO@ MethodInvocation@@Sets.newHashSet() '
+    - '---------INS SimpleName@@MethodName:newHashSet:[] @TO@ MethodInvocation@@Sets.newHashSet() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!modulesWithExports.contains(moduleName)
+      @TO@ MethodDeclaration@@private, @@void, MethodName:emitOptionalModuleExportsOverride,
+      @@Argus:Node+script+String+moduleName+ '
+    - '---INS PrefixExpression@@!modulesWithExports.contains(moduleName) @TO@ IfStatement@@PrefixExpression:!modulesWithExports.contains(moduleName) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!modulesWithExports.contains(moduleName) '
+    - '------INS MethodInvocation@@modulesWithExports.contains(moduleName) @TO@ PrefixExpression@@!modulesWithExports.contains(moduleName) '
+    - '---------INS SimpleName@@Name:modulesWithExports @TO@ MethodInvocation@@modulesWithExports.contains(moduleName) '
+    - '---------INS SimpleName@@MethodName:contains:[moduleName] @TO@ MethodInvocation@@modulesWithExports.contains(moduleName) '
+    - '------------INS SimpleName@@moduleName @TO@ SimpleName@@MethodName:contains:[moduleName] '
+    - '---INS ReturnStatement@@ @TO@ IfStatement@@PrefixExpression:!modulesWithExports.contains(moduleName) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:modulesWithExports.add(moduleName)
+      @TO@ MethodDeclaration@@private, @@void, MethodName:visitModuleExports, @@Argus:Node+prop+ '
+    - '---INS MethodInvocation@@modulesWithExports.add(moduleName) @TO@ ExpressionStatement@@MethodInvocation:modulesWithExports.add(moduleName) '
+    - '------INS SimpleName@@Name:modulesWithExports @TO@ MethodInvocation@@modulesWithExports.add(moduleName) '
+    - '------INS SimpleName@@MethodName:add:[moduleName] @TO@ MethodInvocation@@modulesWithExports.add(moduleName) '
+    - '---------INS SimpleName@@moduleName @TO@ SimpleName@@MethodName:add:[moduleName] '
+  files_cnt: '1'
+  repair_actions_cnt: 3

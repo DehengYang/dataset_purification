@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_24/src/main/java/org/apache/commons/lang3/math/NumberUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_24/fixed-version/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_24/src/main/java/org/apache/commons/lang3/math/NumberUtils.java	2020-03-01 00:08:14.427014391 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_24/fixed-version/src/main/java/org/apache/commons/lang3/math/NumberUtils.java	2020-03-01 00:08:17.879177043 -0800
+@@ -1410,7 +1410,7 @@
+             if (chars[i] == 'l'
+                 || chars[i] == 'L') {
+                 // not allowing L with an exponent or decimal point
+-                return foundDigit && !hasExp;
++                return foundDigit && !hasExp && !hasDecPoint;
+             }
+             // last character is illegal
+             return false;

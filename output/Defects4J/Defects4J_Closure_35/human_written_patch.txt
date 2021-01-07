@@ -1,0 +1,27 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_35/src/com/google/javascript/jscomp/TypeInference.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_35/fixed-version/src/com/google/javascript/jscomp/TypeInference.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_35/src/com/google/javascript/jscomp/TypeInference.java	2020-03-01 00:27:32.173564730 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_35/fixed-version/src/com/google/javascript/jscomp/TypeInference.java	2020-03-01 00:27:34.269663497 -0800
+@@ -1118,21 +1118,8 @@
+ 
+     ObjectType constraintObj =
+         ObjectType.cast(constraint.restrictByNotNullOrUndefined());
+-    if (constraintObj != null && constraintObj.isRecordType()) {
+-      ObjectType objType = ObjectType.cast(type.restrictByNotNullOrUndefined());
+-      if (objType != null) {
+-        for (String prop : constraintObj.getOwnPropertyNames()) {
+-          JSType propType = constraintObj.getPropertyType(prop);
+-          if (!objType.isPropertyTypeDeclared(prop)) {
+-            JSType typeToInfer = propType;
+-            if (!objType.hasProperty(prop)) {
+-              typeToInfer =
+-                  getNativeType(VOID_TYPE).getLeastSupertype(propType);
+-            }
+-            objType.defineInferredProperty(prop, typeToInfer, null);
+-          }
+-        }
+-      }
++    if (constraintObj != null) {
++      type.matchConstraint(constraintObj);
+     }
+   }
+ 

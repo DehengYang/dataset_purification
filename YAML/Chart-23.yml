@@ -1,0 +1,284 @@
+1 bug_id: Chart-23
+2 src folder:
+  name of src folder: source
+  number of files: 630
+  number of java files: 558
+  number of src classes: 582
+  number of test classes: 306
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.renderer.category.junit.MinMaxCategoryRendererTests#testEquals
+  failing tests:
+  - org.jfree.chart.renderer.category.junit.MinMaxCategoryRendererTests
+  number of all test cases: 1633
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.079
+  purification via delta debugging: 272.757
+  repair actions extraction: 0.946
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.renderer.category.junit.MinMaxCategoryRendererTests#testEquals: 287
+  fixed:
+    org.jfree.chart.renderer.category.junit.MinMaxCategoryRendererTests#testEquals: 320
+6 reduced lines:
+  by all: 4
+  by coverage: 2
+  by delta debugging: 2
+  covAdd: 17
+  covDel: 0
+  cov_patch_lines: 17
+  delta_patch_lines: 15
+  oriAdd: 19
+  oriDel: 0
+  ori_patch_lines: 19
+  purAdd: 15
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 37
+  failFail: 6
+  passed: 1
+  total: 44
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_23/source/org/jfree/chart/renderer/category/MinMaxCategoryRenderer.java\t\
+    2020-10-21 00:38:59.986878682 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_23/purify/patch/org/jfree/chart/renderer/category/MinMaxCategoryRenderer.java\t\
+    2020-10-21 00:38:59.986878682 -0400\n@@ -432,6 +432,25 @@\n      *\n      * @since\
+    \ 1.0.7\n      */\n+    public boolean equals(Object obj) {\n+        if (obj\
+    \ == this) {\n+            return true;\n+        }\n+        if (!(obj instanceof\
+    \ MinMaxCategoryRenderer)) {\n+            return false;\n+        }\n+      \
+    \  MinMaxCategoryRenderer that = (MinMaxCategoryRenderer) obj;\n+        if (this.plotLines\
+    \ != that.plotLines) {\n+            return false;\n+        }\n+        if (!PaintUtilities.equal(this.groupPaint,\
+    \ that.groupPaint)) {\n+            return false;\n+        }\n+        if (!this.groupStroke.equals(that.groupStroke))\
+    \ {\n+            return false;\n+        }\n+        return super.equals(obj);\n\
+    +    }\n \n     /**\n      * Returns an icon."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_23/source/org/jfree/chart/renderer/category/MinMaxCategoryRenderer.java\t\
+    2020-10-21 00:43:48.991226434 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_23/purify/purified/org/jfree/chart/renderer/category/MinMaxCategoryRenderer.java\t\
+    2020-10-21 00:43:48.991226434 -0400\n@@ -432,6 +432,21 @@\n      *\n      * @since\
+    \ 1.0.7\n      */\n+    public boolean equals(Object obj) {\n+        if (obj\
+    \ == this) {\n+        }\n+        MinMaxCategoryRenderer that = (MinMaxCategoryRenderer)\
+    \ obj;\n+        if (this.plotLines != that.plotLines) {\n+            return\
+    \ false;\n+        }\n+        if (!PaintUtilities.equal(this.groupPaint, that.groupPaint))\
+    \ {\n+            return false;\n+        }\n+        if (!this.groupStroke.equals(that.groupStroke))\
+    \ {\n+            return false;\n+        }\n+        return super.equals(obj);\n\
+    +    }\n \n     /**\n      * Returns an icon."
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/renderer/category/MinMaxCategoryRenderer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+
+      @TO@ TypeDeclaration@@[public]MinMaxCategoryRenderer, AbstractCategoryItemRenderer '
+    - '---INS Modifier@@public @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals,
+      @@Argus:Object+obj+ '
+    - '---INS PrimitiveType@@boolean @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals,
+      @@Argus:Object+obj+ '
+    - '---INS SimpleName@@MethodName:equals @TO@ MethodDeclaration@@public, @@boolean,
+      MethodName:equals, @@Argus:Object+obj+ '
+    - '---INS SingleVariableDeclaration@@Object obj @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object obj '
+    - '------INS SimpleName@@obj @TO@ SingleVariableDeclaration@@Object obj '
+    - '---INS IfStatement@@InfixExpression:obj == this @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS InfixExpression@@obj == this @TO@ IfStatement@@InfixExpression:obj
+      == this '
+    - '---------INS SimpleName@@obj @TO@ InfixExpression@@obj == this '
+    - '---------INS Operator@@== @TO@ InfixExpression@@obj == this '
+    - '---------INS ThisExpression@@this @TO@ InfixExpression@@obj == this '
+    - '------INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:obj
+      == this '
+    - '---------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+    - '---INS IfStatement@@PrefixExpression:!(obj instanceof MinMaxCategoryRenderer)
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS PrefixExpression@@!(obj instanceof MinMaxCategoryRenderer) @TO@ IfStatement@@PrefixExpression:!(obj
+      instanceof MinMaxCategoryRenderer) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!(obj instanceof MinMaxCategoryRenderer) '
+    - '---------INS ParenthesizedExpression@@(obj instanceof MinMaxCategoryRenderer)
+      @TO@ PrefixExpression@@!(obj instanceof MinMaxCategoryRenderer) '
+    - '------------INS InstanceofExpression@@obj instanceof MinMaxCategoryRenderer
+      @TO@ ParenthesizedExpression@@(obj instanceof MinMaxCategoryRenderer) '
+    - '---------------INS SimpleName@@obj @TO@ InstanceofExpression@@obj instanceof
+      MinMaxCategoryRenderer '
+    - '---------------INS Instanceof@@instanceof @TO@ InstanceofExpression@@obj instanceof
+      MinMaxCategoryRenderer '
+    - '---------------INS SimpleType@@MinMaxCategoryRenderer @TO@ InstanceofExpression@@obj
+      instanceof MinMaxCategoryRenderer '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@PrefixExpression:!(obj
+      instanceof MinMaxCategoryRenderer) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS VariableDeclarationStatement@@MinMaxCategoryRenderer that=(MinMaxCategoryRenderer)obj;
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS SimpleType@@MinMaxCategoryRenderer @TO@ VariableDeclarationStatement@@MinMaxCategoryRenderer
+      that=(MinMaxCategoryRenderer)obj; '
+    - '------INS VariableDeclarationFragment@@that=(MinMaxCategoryRenderer)obj @TO@
+      VariableDeclarationStatement@@MinMaxCategoryRenderer that=(MinMaxCategoryRenderer)obj; '
+    - '---------INS SimpleName@@that @TO@ VariableDeclarationFragment@@that=(MinMaxCategoryRenderer)obj '
+    - '---------INS CastExpression@@(MinMaxCategoryRenderer)obj @TO@ VariableDeclarationFragment@@that=(MinMaxCategoryRenderer)obj '
+    - '------------INS SimpleType@@MinMaxCategoryRenderer @TO@ CastExpression@@(MinMaxCategoryRenderer)obj '
+    - '------------INS SimpleName@@obj @TO@ CastExpression@@(MinMaxCategoryRenderer)obj '
+    - '---INS IfStatement@@InfixExpression:this.plotLines != that.plotLines @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS InfixExpression@@this.plotLines != that.plotLines @TO@ IfStatement@@InfixExpression:this.plotLines
+      != that.plotLines '
+    - '---------INS FieldAccess@@this.plotLines @TO@ InfixExpression@@this.plotLines
+      != that.plotLines '
+    - '------------INS ThisExpression@@this @TO@ FieldAccess@@this.plotLines '
+    - '------------INS SimpleName@@plotLines @TO@ FieldAccess@@this.plotLines '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@this.plotLines != that.plotLines '
+    - '---------INS QualifiedName@@that.plotLines @TO@ InfixExpression@@this.plotLines
+      != that.plotLines '
+    - '------------INS SimpleName@@that @TO@ QualifiedName@@that.plotLines '
+    - '------------INS SimpleName@@plotLines @TO@ QualifiedName@@that.plotLines '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:this.plotLines
+      != that.plotLines '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS IfStatement@@PrefixExpression:!PaintUtilities.equal(this.groupPaint,that.groupPaint)
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS PrefixExpression@@!PaintUtilities.equal(this.groupPaint,that.groupPaint)
+      @TO@ IfStatement@@PrefixExpression:!PaintUtilities.equal(this.groupPaint,that.groupPaint) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!PaintUtilities.equal(this.groupPaint,that.groupPaint) '
+    - '---------INS MethodInvocation@@PaintUtilities.equal(this.groupPaint,that.groupPaint)
+      @TO@ PrefixExpression@@!PaintUtilities.equal(this.groupPaint,that.groupPaint) '
+    - '------------INS SimpleName@@Name:PaintUtilities @TO@ MethodInvocation@@PaintUtilities.equal(this.groupPaint,that.groupPaint) '
+    - '------------INS SimpleName@@MethodName:equal:[this.groupPaint, that.groupPaint]
+      @TO@ MethodInvocation@@PaintUtilities.equal(this.groupPaint,that.groupPaint) '
+    - '---------------INS FieldAccess@@this.groupPaint @TO@ SimpleName@@MethodName:equal:[this.groupPaint,
+      that.groupPaint] '
+    - '------------------INS ThisExpression@@this @TO@ FieldAccess@@this.groupPaint '
+    - '------------------INS SimpleName@@groupPaint @TO@ FieldAccess@@this.groupPaint '
+    - '---------------INS QualifiedName@@that.groupPaint @TO@ SimpleName@@MethodName:equal:[this.groupPaint,
+      that.groupPaint] '
+    - '------------------INS SimpleName@@that @TO@ QualifiedName@@that.groupPaint '
+    - '------------------INS SimpleName@@groupPaint @TO@ QualifiedName@@that.groupPaint '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@PrefixExpression:!PaintUtilities.equal(this.groupPaint,that.groupPaint) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS IfStatement@@PrefixExpression:!this.groupStroke.equals(that.groupStroke)
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS PrefixExpression@@!this.groupStroke.equals(that.groupStroke) @TO@
+      IfStatement@@PrefixExpression:!this.groupStroke.equals(that.groupStroke) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!this.groupStroke.equals(that.groupStroke) '
+    - '---------INS MethodInvocation@@this.groupStroke.equals(that.groupStroke) @TO@
+      PrefixExpression@@!this.groupStroke.equals(that.groupStroke) '
+    - '------------INS FieldAccess@@this.groupStroke @TO@ MethodInvocation@@this.groupStroke.equals(that.groupStroke) '
+    - '---------------INS ThisExpression@@this @TO@ FieldAccess@@this.groupStroke '
+    - '---------------INS SimpleName@@groupStroke @TO@ FieldAccess@@this.groupStroke '
+    - '------------INS SimpleName@@MethodName:equals:[that.groupStroke] @TO@ MethodInvocation@@this.groupStroke.equals(that.groupStroke) '
+    - '---------------INS QualifiedName@@that.groupStroke @TO@ SimpleName@@MethodName:equals:[that.groupStroke] '
+    - '------------------INS SimpleName@@that @TO@ QualifiedName@@that.groupStroke '
+    - '------------------INS SimpleName@@groupStroke @TO@ QualifiedName@@that.groupStroke '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@PrefixExpression:!this.groupStroke.equals(that.groupStroke) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS ReturnStatement@@SuperMethodInvocation:super.equals(obj) @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS SuperMethodInvocation@@super.equals(obj) @TO@ ReturnStatement@@SuperMethodInvocation:super.equals(obj) '
+    - '---------INS SimpleName@@MethodName:equals:[obj] @TO@ SuperMethodInvocation@@super.equals(obj) '
+    - '---------INS SimpleName@@obj @TO@ SuperMethodInvocation@@super.equals(obj) '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/renderer/category/MinMaxCategoryRenderer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+
+      @TO@ TypeDeclaration@@[public]MinMaxCategoryRenderer, AbstractCategoryItemRenderer '
+    - '---INS Modifier@@public @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals,
+      @@Argus:Object+obj+ '
+    - '---INS PrimitiveType@@boolean @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals,
+      @@Argus:Object+obj+ '
+    - '---INS SimpleName@@MethodName:equals @TO@ MethodDeclaration@@public, @@boolean,
+      MethodName:equals, @@Argus:Object+obj+ '
+    - '---INS SingleVariableDeclaration@@Object obj @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object obj '
+    - '------INS SimpleName@@obj @TO@ SingleVariableDeclaration@@Object obj '
+    - '---INS IfStatement@@InfixExpression:obj == this @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS InfixExpression@@obj == this @TO@ IfStatement@@InfixExpression:obj
+      == this '
+    - '---------INS SimpleName@@obj @TO@ InfixExpression@@obj == this '
+    - '---------INS Operator@@== @TO@ InfixExpression@@obj == this '
+    - '---------INS ThisExpression@@this @TO@ InfixExpression@@obj == this '
+    - '---INS VariableDeclarationStatement@@MinMaxCategoryRenderer that=(MinMaxCategoryRenderer)obj;
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS SimpleType@@MinMaxCategoryRenderer @TO@ VariableDeclarationStatement@@MinMaxCategoryRenderer
+      that=(MinMaxCategoryRenderer)obj; '
+    - '------INS VariableDeclarationFragment@@that=(MinMaxCategoryRenderer)obj @TO@
+      VariableDeclarationStatement@@MinMaxCategoryRenderer that=(MinMaxCategoryRenderer)obj; '
+    - '---------INS SimpleName@@that @TO@ VariableDeclarationFragment@@that=(MinMaxCategoryRenderer)obj '
+    - '---------INS CastExpression@@(MinMaxCategoryRenderer)obj @TO@ VariableDeclarationFragment@@that=(MinMaxCategoryRenderer)obj '
+    - '------------INS SimpleType@@MinMaxCategoryRenderer @TO@ CastExpression@@(MinMaxCategoryRenderer)obj '
+    - '------------INS SimpleName@@obj @TO@ CastExpression@@(MinMaxCategoryRenderer)obj '
+    - '---INS IfStatement@@InfixExpression:this.plotLines != that.plotLines @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS InfixExpression@@this.plotLines != that.plotLines @TO@ IfStatement@@InfixExpression:this.plotLines
+      != that.plotLines '
+    - '---------INS FieldAccess@@this.plotLines @TO@ InfixExpression@@this.plotLines
+      != that.plotLines '
+    - '------------INS ThisExpression@@this @TO@ FieldAccess@@this.plotLines '
+    - '------------INS SimpleName@@plotLines @TO@ FieldAccess@@this.plotLines '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@this.plotLines != that.plotLines '
+    - '---------INS QualifiedName@@that.plotLines @TO@ InfixExpression@@this.plotLines
+      != that.plotLines '
+    - '------------INS SimpleName@@that @TO@ QualifiedName@@that.plotLines '
+    - '------------INS SimpleName@@plotLines @TO@ QualifiedName@@that.plotLines '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:this.plotLines
+      != that.plotLines '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS IfStatement@@PrefixExpression:!PaintUtilities.equal(this.groupPaint,that.groupPaint)
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS PrefixExpression@@!PaintUtilities.equal(this.groupPaint,that.groupPaint)
+      @TO@ IfStatement@@PrefixExpression:!PaintUtilities.equal(this.groupPaint,that.groupPaint) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!PaintUtilities.equal(this.groupPaint,that.groupPaint) '
+    - '---------INS MethodInvocation@@PaintUtilities.equal(this.groupPaint,that.groupPaint)
+      @TO@ PrefixExpression@@!PaintUtilities.equal(this.groupPaint,that.groupPaint) '
+    - '------------INS SimpleName@@Name:PaintUtilities @TO@ MethodInvocation@@PaintUtilities.equal(this.groupPaint,that.groupPaint) '
+    - '------------INS SimpleName@@MethodName:equal:[this.groupPaint, that.groupPaint]
+      @TO@ MethodInvocation@@PaintUtilities.equal(this.groupPaint,that.groupPaint) '
+    - '---------------INS FieldAccess@@this.groupPaint @TO@ SimpleName@@MethodName:equal:[this.groupPaint,
+      that.groupPaint] '
+    - '------------------INS ThisExpression@@this @TO@ FieldAccess@@this.groupPaint '
+    - '------------------INS SimpleName@@groupPaint @TO@ FieldAccess@@this.groupPaint '
+    - '---------------INS QualifiedName@@that.groupPaint @TO@ SimpleName@@MethodName:equal:[this.groupPaint,
+      that.groupPaint] '
+    - '------------------INS SimpleName@@that @TO@ QualifiedName@@that.groupPaint '
+    - '------------------INS SimpleName@@groupPaint @TO@ QualifiedName@@that.groupPaint '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@PrefixExpression:!PaintUtilities.equal(this.groupPaint,that.groupPaint) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS IfStatement@@PrefixExpression:!this.groupStroke.equals(that.groupStroke)
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS PrefixExpression@@!this.groupStroke.equals(that.groupStroke) @TO@
+      IfStatement@@PrefixExpression:!this.groupStroke.equals(that.groupStroke) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!this.groupStroke.equals(that.groupStroke) '
+    - '---------INS MethodInvocation@@this.groupStroke.equals(that.groupStroke) @TO@
+      PrefixExpression@@!this.groupStroke.equals(that.groupStroke) '
+    - '------------INS FieldAccess@@this.groupStroke @TO@ MethodInvocation@@this.groupStroke.equals(that.groupStroke) '
+    - '---------------INS ThisExpression@@this @TO@ FieldAccess@@this.groupStroke '
+    - '---------------INS SimpleName@@groupStroke @TO@ FieldAccess@@this.groupStroke '
+    - '------------INS SimpleName@@MethodName:equals:[that.groupStroke] @TO@ MethodInvocation@@this.groupStroke.equals(that.groupStroke) '
+    - '---------------INS QualifiedName@@that.groupStroke @TO@ SimpleName@@MethodName:equals:[that.groupStroke] '
+    - '------------------INS SimpleName@@that @TO@ QualifiedName@@that.groupStroke '
+    - '------------------INS SimpleName@@groupStroke @TO@ QualifiedName@@that.groupStroke '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@PrefixExpression:!this.groupStroke.equals(that.groupStroke) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS ReturnStatement@@SuperMethodInvocation:super.equals(obj) @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+obj+ '
+    - '------INS SuperMethodInvocation@@super.equals(obj) @TO@ ReturnStatement@@SuperMethodInvocation:super.equals(obj) '
+    - '---------INS SimpleName@@MethodName:equals:[obj] @TO@ SuperMethodInvocation@@super.equals(obj) '
+    - '---------INS SimpleName@@obj @TO@ SuperMethodInvocation@@super.equals(obj) '
+  repair_actions_cnt: 1

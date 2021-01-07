@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_21/src/main/java/org/apache/commons/lang3/time/DateUtils.java	2020-10-21 01:04:48.043589922 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_21/purify/assertBeforeMut/org/apache/commons/lang3/time/DateUtils.java	2020-10-21 01:04:48.039589806 -0400
+@@ -262,7 +262,7 @@
+         return (cal1.get(Calendar.MILLISECOND) == cal2.get(Calendar.MILLISECOND) &&
+                 cal1.get(Calendar.SECOND) == cal2.get(Calendar.SECOND) &&
+                 cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE) &&
+-                cal1.get(Calendar.HOUR) == cal2.get(Calendar.HOUR) &&
++                cal1.get(Calendar.HOUR_OF_DAY) == cal2.get(Calendar.HOUR_OF_DAY) &&
+                 cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+                 cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                 cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) &&

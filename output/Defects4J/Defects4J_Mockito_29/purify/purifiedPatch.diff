@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_29/src/org/mockito/internal/matchers/Same.java	2020-10-24 20:15:02.365333680 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_29/purify/purified/org/mockito/internal/matchers/Same.java	2020-10-24 20:15:02.365333680 -0400
+@@ -26,7 +26,7 @@
+     public void describeTo(Description description) {
+         description.appendText("same(");
+         appendQuoting(description);
+-        description.appendText(wanted.toString());
++        description.appendText(wanted == null ? "null" : wanted.toString());
+         appendQuoting(description);
+         description.appendText(")");
+     }

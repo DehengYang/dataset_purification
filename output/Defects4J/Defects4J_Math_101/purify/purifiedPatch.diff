@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_101/src/java/org/apache/commons/math/complex/ComplexFormat.java	2020-10-21 14:17:08.854139048 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_101/purify/purified/org/apache/commons/math/complex/ComplexFormat.java	2020-10-21 14:17:08.854139048 -0400
+@@ -374,7 +374,7 @@
+         int n = getImaginaryCharacter().length();
+         startIndex = pos.getIndex();
+         int endIndex = startIndex + n;
+-        if (
++        if ((startIndex >= source.length()) ||
+             source.substring(startIndex, endIndex).compareTo(
+             getImaginaryCharacter()) != 0) {
+             // set index back to initial, error index should be the start index

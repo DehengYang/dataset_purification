@@ -1,0 +1,962 @@
+1 bug_id: Lang-30
+2 src folder:
+  name of src folder: java
+  number of files: 95
+  number of java files: 84
+  number of src classes: 131
+  number of test classes: 88
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringCharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringStringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringCharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringCharArrayWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringStringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringCharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringStringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringCharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringCharArrayWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringStringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringCharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringStringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringCharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringCharArrayWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringStringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringString
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringCharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringStringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringCharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringCharArrayWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringStringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringCharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringStringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringCharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringCharArrayWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringStringWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithBadSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringString
+  failing tests:
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest
+  number of all test cases: 1733
+  number of failing test cases: 52
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 5.298
+  purification via delta debugging: 1621.449
+  repair actions extraction: 3.194
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringCharArrayWithBadSupplementaryChars: 34
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringWithBadSupplementaryChars: 36
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithBadSupplementaryChars: 9
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithSupplementaryChars: 8
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithBadSupplementaryChars: 11
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithSupplementaryChars: 10
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringCharArrayWithSupplementaryChars: 31
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringStringWithSupplementaryChars: 7
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringCharArrayWithSupplementaryChars: 30
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringStringWithSupplementaryChars: 32
+  fixed:
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringCharArrayWithBadSupplementaryChars: 36
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAny_StringWithBadSupplementaryChars: 38
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithBadSupplementaryChars: 14
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_CharArrayWithSupplementaryChars: 14
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithBadSupplementaryChars: 16
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsNone_StringWithSupplementaryChars: 16
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringCharArrayWithSupplementaryChars: 36
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAnyBut_StringStringWithSupplementaryChars: 13
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringCharArrayWithSupplementaryChars: 35
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testIndexOfAny_StringStringWithSupplementaryChars: 37
+6 reduced lines:
+  by all: 4
+  by coverage: 0
+  by delta debugging: 4
+  covAdd: 43
+  covDel: 5
+  cov_patch_lines: 48
+  delta_patch_lines: 44
+  oriAdd: 43
+  oriDel: 5
+  ori_patch_lines: 48
+  purAdd: 39
+  purDel: 5
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 20
+  original: 20
+  purifiy: 19
+8 mutants by delta debugging:
+  failAll: 4
+  failCompile: 0
+  failFail: 304
+  passed: 4
+  total: 312
+9 sibling repair actions:
+- 0 1 0.904887714663144
+- 0 6 0.9979238754325259
+- 0 7 0.9030982201713909
+- 0 12 0.9779005524861878
+- 0 13 0.8842105263157894
+- 1 6 0.9030982201713909
+- 1 7 0.9981120201384519
+- 1 12 0.8842105263157894
+- 1 13 0.9798994974874372
+- 3 5 0.963302752293578
+- 6 7 0.9052631578947369
+- 6 12 0.9758787043418332
+- 6 13 0.8824688115561392
+- 7 12 0.8824688115561392
+- 7 13 0.9780564263322884
+- 12 13 0.9056356487549148
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_30/src/main/java/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-24 05:34:36.061148068 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_30/purify/patch/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-24 05:34:36.057148023 -0400\n@@ -1373,13 +1373,21 @@\n             return\
+    \ INDEX_NOT_FOUND;\n         }\n         int csLen = cs.length();\n+        int\
+    \ csLast = csLen - 1;\n         int searchLen = searchChars.length;\n+       \
+    \ int searchLast = searchLen - 1;\n         for (int i = 0; i < csLen; i++) {\n\
+    \             char ch = cs.charAt(i);\n             for (int j = 0; j < searchLen;\
+    \ j++) {\n                 if (searchChars[j] == ch) {\n+                    if\
+    \ (i < csLast && j < searchLast && Character.isHighSurrogate(ch)) {\n        \
+    \                 // ch is a supplementary character\n+                      \
+    \  if (searchChars[j + 1] == cs.charAt(i + 1)) {\n+                          \
+    \  return i;\n+                        }\n+                    } else {\n    \
+    \                     return i;\n+                    }\n                 }\n\
+    \             }\n         }\n@@ -1440,7 +1448,7 @@\n      * <code>false</code>\
+    \ if no match or null input\n      * @since 2.4\n      */\n-    public static\
+    \ boolean containsAny(CharSequence cs, char[] searchChars) {\n+    public static\
+    \ boolean containsAny(String cs, char[] searchChars) {\n         if (isEmpty(cs)\
+    \ || ArrayUtils.isEmpty(searchChars)) {\n             return false;\n        \
+    \ }\n@@ -1452,9 +1460,12 @@\n             char ch = cs.charAt(i);\n          \
+    \   for (int j = 0; j < searchLength; j++) {\n                 if (searchChars[j]\
+    \ == ch) {\n-                    if (i < csLast && j < searchLast && ch >= Character.MIN_HIGH_SURROGATE\
+    \ && ch <= Character.MAX_HIGH_SURROGATE) {\n+                    if (Character.isHighSurrogate(ch))\
+    \ {\n+                        if (j == searchLast) {\n                       \
+    \      // missing low surrogate, fine, like String.indexOf(String)\n-        \
+    \                if (searchChars[j + 1] == cs.charAt(i + 1)) {\n+            \
+    \                return true;\n+                        }\n+                 \
+    \       if (i < csLast && searchChars[j + 1] == cs.charAt(i + 1)) {\n        \
+    \                     return true;\n                         }\n             \
+    \        } else {\n@@ -1494,7 +1505,7 @@\n      * @return the <code>true</code>\
+    \ if any of the chars are found, <code>false</code> if no match or null input\n\
+    \      * @since 2.4\n      */\n-    public static boolean containsAny(CharSequence\
+    \ cs, String searchChars) {\n+    public static boolean containsAny(String cs,\
+    \ String searchChars) {\n         if (searchChars == null) {\n             return\
+    \ false;\n         }\n@@ -1530,13 +1541,21 @@\n             return INDEX_NOT_FOUND;\n\
+    \         }\n         int csLen = cs.length();\n+        int csLast = csLen -\
+    \ 1;\n         int searchLen = searchChars.length;\n+        int searchLast =\
+    \ searchLen - 1;\n         outer:\n         for (int i = 0; i < csLen; i++) {\n\
+    \             char ch = cs.charAt(i);\n             for (int j = 0; j < searchLen;\
+    \ j++) {\n                 if (searchChars[j] == ch) {\n+                    if\
+    \ (i < csLast && j < searchLast && Character.isHighSurrogate(ch)) {\n+       \
+    \                 if (searchChars[j + 1] == cs.charAt(i + 1)) {\n+           \
+    \                 continue outer;\n+                        }\n+             \
+    \       } else {\n                         continue outer;\n+                \
+    \    }\n                 }\n             }\n             return i;\n@@ -1573,8\
+    \ +1592,16 @@\n         int strLen = str.length();\n         for (int i = 0; i\
+    \ < strLen; i++) {\n             char ch = str.charAt(i);\n-            if (searchChars.indexOf(ch)\
+    \ < 0) {\n+            boolean chFound = searchChars.indexOf(ch) >= 0;\n+    \
+    \        if (i + 1 < strLen && Character.isHighSurrogate(ch)) {\n+           \
+    \     char ch2 = str.charAt(i + 1);\n+                if (chFound && searchChars.indexOf(ch2)\
+    \ < 0) {\n                     return i;\n+                }\n+            } else\
+    \ {\n+                if (!chFound) {\n+                    return i;\n+     \
+    \           }\n             }\n         }\n         return INDEX_NOT_FOUND;\n\
+    @@ -1675,14 +1702,25 @@\n             return true;\n         }\n         int csLen\
+    \ = cs.length();\n+        int csLast = csLen - 1;\n         int searchLen = searchChars.length;\n\
+    +        int searchLast = searchLen - 1;\n         for (int i = 0; i < csLen;\
+    \ i++) {\n             char ch = cs.charAt(i);\n             for (int j = 0; j\
+    \ < searchLen; j++) {\n                 if (searchChars[j] == ch) {\n+       \
+    \             if (Character.isHighSurrogate(ch)) {\n+                        if\
+    \ (j == searchLast) {\n                             // missing low surrogate,\
+    \ fine, like String.indexOf(String)\n+                            return false;\n\
+    +                        }\n+                        if (i < csLast && searchChars[j\
+    \ + 1] == cs.charAt(i + 1)) {\n+                            return false;\n+ \
+    \                       }\n+                    } else {\n                   \
+    \      // ch is in the Basic Multilingual Plane\n                         return\
+    \ false;\n+                    }\n                 }\n             }\n       \
+    \  }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_30/src/main/java/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-24 06:02:04.861101070 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_30/purify/purified/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-24 06:02:04.861101070 -0400\n@@ -1373,13 +1373,21 @@\n             return\
+    \ INDEX_NOT_FOUND;\n         }\n         int csLen = cs.length();\n+        int\
+    \ csLast = csLen - 1;\n         int searchLen = searchChars.length;\n+       \
+    \ int searchLast = searchLen - 1;\n         for (int i = 0; i < csLen; i++) {\n\
+    \             char ch = cs.charAt(i);\n             for (int j = 0; j < searchLen;\
+    \ j++) {\n                 if (searchChars[j] == ch) {\n+                    if\
+    \ (i < csLast && j < searchLast && Character.isHighSurrogate(ch)) {\n        \
+    \                 // ch is a supplementary character\n+                      \
+    \  if (searchChars[j + 1] == cs.charAt(i + 1)) {\n+                          \
+    \  return i;\n+                        }\n+                    } else {\n    \
+    \                     return i;\n+                    }\n                 }\n\
+    \             }\n         }\n@@ -1440,7 +1448,7 @@\n      * <code>false</code>\
+    \ if no match or null input\n      * @since 2.4\n      */\n-    public static\
+    \ boolean containsAny(CharSequence cs, char[] searchChars) {\n+    public static\
+    \ boolean containsAny(String cs, char[] searchChars) {\n         if (isEmpty(cs)\
+    \ || ArrayUtils.isEmpty(searchChars)) {\n             return false;\n        \
+    \ }\n@@ -1452,9 +1460,12 @@\n             char ch = cs.charAt(i);\n          \
+    \   for (int j = 0; j < searchLength; j++) {\n                 if (searchChars[j]\
+    \ == ch) {\n-                    if (i < csLast && j < searchLast && ch >= Character.MIN_HIGH_SURROGATE\
+    \ && ch <= Character.MAX_HIGH_SURROGATE) {\n+                    if (Character.isHighSurrogate(ch))\
+    \ {\n+                        if (j == searchLast) {\n                       \
+    \      // missing low surrogate, fine, like String.indexOf(String)\n-        \
+    \                if (searchChars[j + 1] == cs.charAt(i + 1)) {\n+            \
+    \                return true;\n+                        }\n+                 \
+    \       if (i < csLast && searchChars[j + 1] == cs.charAt(i + 1)) {\n        \
+    \                     return true;\n                         }\n             \
+    \        } else {\n@@ -1494,7 +1505,7 @@\n      * @return the <code>true</code>\
+    \ if any of the chars are found, <code>false</code> if no match or null input\n\
+    \      * @since 2.4\n      */\n-    public static boolean containsAny(CharSequence\
+    \ cs, String searchChars) {\n+    public static boolean containsAny(String cs,\
+    \ String searchChars) {\n         if (searchChars == null) {\n             return\
+    \ false;\n         }\n@@ -1530,13 +1541,21 @@\n             return INDEX_NOT_FOUND;\n\
+    \         }\n         int csLen = cs.length();\n+        int csLast = csLen -\
+    \ 1;\n         int searchLen = searchChars.length;\n+        int searchLast =\
+    \ searchLen - 1;\n         outer:\n         for (int i = 0; i < csLen; i++) {\n\
+    \             char ch = cs.charAt(i);\n             for (int j = 0; j < searchLen;\
+    \ j++) {\n                 if (searchChars[j] == ch) {\n+                    if\
+    \ (i < csLast && j < searchLast && Character.isHighSurrogate(ch)) {\n+       \
+    \                 if (searchChars[j + 1] == cs.charAt(i + 1)) {\n+           \
+    \                 continue outer;\n+                        }\n+             \
+    \       } else {\n                         continue outer;\n+                \
+    \    }\n                 }\n             }\n             return i;\n@@ -1573,8\
+    \ +1592,16 @@\n         int strLen = str.length();\n         for (int i = 0; i\
+    \ < strLen; i++) {\n             char ch = str.charAt(i);\n-            if (searchChars.indexOf(ch)\
+    \ < 0) {\n+            boolean chFound = searchChars.indexOf(ch) >= 0;\n+    \
+    \        if (i + 1 < strLen && Character.isHighSurrogate(ch)) {\n+           \
+    \     char ch2 = str.charAt(i + 1);\n+                if (chFound && searchChars.indexOf(ch2)\
+    \ < 0) {\n+                    return i;\n+                }\n+            } else\
+    \ {\n+                if (!chFound) {\n                     return i;\n+     \
+    \           }\n             }\n         }\n         return INDEX_NOT_FOUND;\n\
+    @@ -1676,13 +1703,20 @@\n         }\n         int csLen = cs.length();\n     \
+    \    int searchLen = searchChars.length;\n+        int searchLast = searchLen\
+    \ - 1;\n         for (int i = 0; i < csLen; i++) {\n             char ch = cs.charAt(i);\n\
+    \             for (int j = 0; j < searchLen; j++) {\n                 if (searchChars[j]\
+    \ == ch) {\n+                    if (Character.isHighSurrogate(ch)) {\n+     \
+    \                   if (j == searchLast) {\n                             // missing\
+    \ low surrogate, fine, like String.indexOf(String)\n+                        \
+    \    return false;\n+                        }\n+                    } else {\n\
+    \                         // ch is in the Basic Multilingual Plane\n         \
+    \                return false;\n+                    }\n                 }\n \
+    \            }\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/StringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int csLast=csLen - 1; @TO@ MethodDeclaration@@public,
+      static, @@int, MethodName:indexOfAny, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int csLast=csLen
+      - 1; '
+    - '---INS VariableDeclarationFragment@@csLast=csLen - 1 @TO@ VariableDeclarationStatement@@int
+      csLast=csLen - 1; '
+    - '------INS SimpleName@@csLast @TO@ VariableDeclarationFragment@@csLast=csLen
+      - 1 '
+    - '------INS InfixExpression@@csLen - 1 @TO@ VariableDeclarationFragment@@csLast=csLen
+      - 1 '
+    - '---------INS SimpleName@@csLen @TO@ InfixExpression@@csLen - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@csLen - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@csLen - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int searchLast=searchLen - 1; @TO@ MethodDeclaration@@public,
+      static, @@int, MethodName:indexOfAny, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int searchLast=searchLen
+      - 1; '
+    - '---INS VariableDeclarationFragment@@searchLast=searchLen - 1 @TO@ VariableDeclarationStatement@@int
+      searchLast=searchLen - 1; '
+    - '------INS SimpleName@@searchLast @TO@ VariableDeclarationFragment@@searchLast=searchLen
+      - 1 '
+    - '------INS InfixExpression@@searchLen - 1 @TO@ VariableDeclarationFragment@@searchLast=searchLen
+      - 1 '
+    - '---------INS SimpleName@@searchLen @TO@ InfixExpression@@searchLen - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@searchLen - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@searchLen - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:i < csLast && j < searchLast && Character.isHighSurrogate(ch)
+      @TO@ IfStatement@@InfixExpression:searchChars[j] == ch '
+    - '---INS InfixExpression@@i < csLast && j < searchLast && Character.isHighSurrogate(ch)
+      @TO@ IfStatement@@InfixExpression:i < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '------INS Operator@@&& @TO@ InfixExpression@@i < csLast && j < searchLast &&
+      Character.isHighSurrogate(ch) '
+    - '------INS MethodInvocation@@Character.isHighSurrogate(ch) @TO@ InfixExpression@@i
+      < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@MethodName:isHighSurrogate:[ch] @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '------------INS SimpleName@@ch @TO@ SimpleName@@MethodName:isHighSurrogate:[ch] '
+    - '------MOV InfixExpression@@i < csLast && j < searchLast @TO@ InfixExpression@@i
+      < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '---INS IfStatement@@InfixExpression:searchChars[j + 1] == cs.charAt(i + 1)
+      @TO@ IfStatement@@InfixExpression:i < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '------MOV ReturnStatement@@SimpleName:i @TO@ IfStatement@@InfixExpression:searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------MOV InfixExpression@@searchChars[j + 1] == cs.charAt(i + 1) @TO@ IfStatement@@InfixExpression:searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '---INS ReturnStatement@@SimpleName:i @TO@ IfStatement@@InfixExpression:i <
+      csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '------INS SimpleName@@i @TO@ ReturnStatement@@SimpleName:i '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, static, @@boolean, MethodName:containsAny, @@Argus:CharSequence+cs+char[]+searchChars+
+      @TO@ public, static, @@boolean, MethodName:containsAny, @@Argus:String+cs+char[]+searchChars+ '
+    - '---UPD SingleVariableDeclaration@@CharSequence cs @TO@ String cs '
+    - '------UPD SimpleType@@CharSequence @TO@ String '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:i < csLast && j < searchLast && ch >= Character.MIN_HIGH_SURROGATE
+      && ch <= Character.MAX_HIGH_SURROGATE @TO@ MethodInvocation:Character.isHighSurrogate(ch) '
+    - '---DEL InfixExpression@@i < csLast && j < searchLast && ch >= Character.MIN_HIGH_SURROGATE
+      && ch <= Character.MAX_HIGH_SURROGATE '
+    - '------DEL InfixExpression@@i < csLast && j < searchLast && ch >= Character.MIN_HIGH_SURROGATE '
+    - '---------DEL Operator@@&& '
+    - '------DEL InfixExpression@@ch <= Character.MAX_HIGH_SURROGATE '
+    - '---------DEL SimpleName@@ch '
+    - '---------DEL Operator@@<= '
+    - '---------DEL QualifiedName@@Character.MAX_HIGH_SURROGATE '
+    - '------------DEL SimpleName@@Character '
+    - '------------DEL SimpleName@@MAX_HIGH_SURROGATE '
+    - '---DEL IfStatement@@InfixExpression:searchChars[j + 1] == cs.charAt(i + 1) '
+    - '---INS MethodInvocation@@Character.isHighSurrogate(ch) @TO@ IfStatement@@InfixExpression:i
+      < csLast && j < searchLast && ch >= Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE '
+    - '------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '------INS SimpleName@@MethodName:isHighSurrogate:[ch] @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@ch @TO@ SimpleName@@MethodName:isHighSurrogate:[ch] '
+    - '---INS IfStatement@@InfixExpression:j == searchLast @TO@ IfStatement@@InfixExpression:i
+      < csLast && j < searchLast && ch >= Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE '
+    - '------INS InfixExpression@@j == searchLast @TO@ IfStatement@@InfixExpression:j
+      == searchLast '
+    - '---------MOV SimpleName@@j @TO@ InfixExpression@@j == searchLast '
+    - '---------MOV Operator@@< @TO@ InfixExpression@@j == searchLast '
+    - '---------MOV SimpleName@@searchLast @TO@ InfixExpression@@j == searchLast '
+    - '------INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:j
+      == searchLast '
+    - '---------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+    - '---INS IfStatement@@InfixExpression:i < csLast && searchChars[j + 1] == cs.charAt(i
+      + 1) @TO@ IfStatement@@InfixExpression:i < csLast && j < searchLast && ch >=
+      Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE '
+    - '------MOV ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:i
+      < csLast && searchChars[j + 1] == cs.charAt(i + 1) '
+    - '------INS InfixExpression@@i < csLast && searchChars[j + 1] == cs.charAt(i
+      + 1) @TO@ IfStatement@@InfixExpression:i < csLast && searchChars[j + 1] == cs.charAt(i
+      + 1) '
+    - '---------MOV InfixExpression@@ch >= Character.MIN_HIGH_SURROGATE @TO@ InfixExpression@@i
+      < csLast && searchChars[j + 1] == cs.charAt(i + 1) '
+    - '---------MOV Operator@@&& @TO@ InfixExpression@@i < csLast && searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '---------INS InfixExpression@@searchChars[j + 1] == cs.charAt(i + 1) @TO@ InfixExpression@@i
+      < csLast && searchChars[j + 1] == cs.charAt(i + 1) '
+    - '------------MOV ArrayAccess@@searchChars[j + 1] @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------------MOV Operator@@== @TO@ InfixExpression@@searchChars[j + 1] == cs.charAt(i
+      + 1) '
+    - '------------MOV MethodInvocation@@cs.charAt(i + 1) @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, static, @@boolean, MethodName:containsAny, @@Argus:CharSequence+cs+String+searchChars+
+      @TO@ public, static, @@boolean, MethodName:containsAny, @@Argus:String+cs+String+searchChars+ '
+    - '---UPD SingleVariableDeclaration@@CharSequence cs @TO@ String cs '
+    - '------UPD SimpleType@@CharSequence @TO@ String '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int csLast=csLen - 1; @TO@ MethodDeclaration@@public,
+      static, @@int, MethodName:indexOfAnyBut, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int csLast=csLen
+      - 1; '
+    - '---INS VariableDeclarationFragment@@csLast=csLen - 1 @TO@ VariableDeclarationStatement@@int
+      csLast=csLen - 1; '
+    - '------INS SimpleName@@csLast @TO@ VariableDeclarationFragment@@csLast=csLen
+      - 1 '
+    - '------INS InfixExpression@@csLen - 1 @TO@ VariableDeclarationFragment@@csLast=csLen
+      - 1 '
+    - '---------INS SimpleName@@csLen @TO@ InfixExpression@@csLen - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@csLen - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@csLen - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int searchLast=searchLen - 1; @TO@ MethodDeclaration@@public,
+      static, @@int, MethodName:indexOfAnyBut, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int searchLast=searchLen
+      - 1; '
+    - '---INS VariableDeclarationFragment@@searchLast=searchLen - 1 @TO@ VariableDeclarationStatement@@int
+      searchLast=searchLen - 1; '
+    - '------INS SimpleName@@searchLast @TO@ VariableDeclarationFragment@@searchLast=searchLen
+      - 1 '
+    - '------INS InfixExpression@@searchLen - 1 @TO@ VariableDeclarationFragment@@searchLast=searchLen
+      - 1 '
+    - '---------INS SimpleName@@searchLen @TO@ InfixExpression@@searchLen - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@searchLen - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@searchLen - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:i < csLast && j < searchLast && Character.isHighSurrogate(ch)
+      @TO@ IfStatement@@InfixExpression:searchChars[j] == ch '
+    - '---INS InfixExpression@@i < csLast && j < searchLast && Character.isHighSurrogate(ch)
+      @TO@ IfStatement@@InfixExpression:i < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '------INS InfixExpression@@i < csLast && j < searchLast @TO@ InfixExpression@@i
+      < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '---------INS InfixExpression@@i < csLast @TO@ InfixExpression@@i < csLast &&
+      j < searchLast '
+    - '------------INS SimpleName@@i @TO@ InfixExpression@@i < csLast '
+    - '------------INS Operator@@< @TO@ InfixExpression@@i < csLast '
+    - '------------INS SimpleName@@csLast @TO@ InfixExpression@@i < csLast '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@i < csLast && j < searchLast '
+    - '---------INS InfixExpression@@j < searchLast @TO@ InfixExpression@@i < csLast
+      && j < searchLast '
+    - '------------INS SimpleName@@j @TO@ InfixExpression@@j < searchLast '
+    - '------------INS Operator@@< @TO@ InfixExpression@@j < searchLast '
+    - '------------INS SimpleName@@searchLast @TO@ InfixExpression@@j < searchLast '
+    - '------INS Operator@@&& @TO@ InfixExpression@@i < csLast && j < searchLast &&
+      Character.isHighSurrogate(ch) '
+    - '------INS MethodInvocation@@Character.isHighSurrogate(ch) @TO@ InfixExpression@@i
+      < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@MethodName:isHighSurrogate:[ch] @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '------------INS SimpleName@@ch @TO@ SimpleName@@MethodName:isHighSurrogate:[ch] '
+    - '---INS IfStatement@@InfixExpression:searchChars[j + 1] == cs.charAt(i + 1)
+      @TO@ IfStatement@@InfixExpression:i < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '------MOV ContinueStatement@@outer @TO@ IfStatement@@InfixExpression:searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------INS InfixExpression@@searchChars[j + 1] == cs.charAt(i + 1) @TO@ IfStatement@@InfixExpression:searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '---------INS ArrayAccess@@searchChars[j + 1] @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------------INS SimpleName@@searchChars @TO@ ArrayAccess@@searchChars[j + 1] '
+    - '------------INS InfixExpression@@j + 1 @TO@ ArrayAccess@@searchChars[j + 1] '
+    - '---------------INS SimpleName@@j @TO@ InfixExpression@@j + 1 '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@j + 1 '
+    - '---------------INS NumberLiteral@@1 @TO@ InfixExpression@@j + 1 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@searchChars[j + 1] == cs.charAt(i
+      + 1) '
+    - '---------INS MethodInvocation@@cs.charAt(i + 1) @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------------INS SimpleName@@Name:cs @TO@ MethodInvocation@@cs.charAt(i + 1) '
+    - '------------INS SimpleName@@MethodName:charAt:[i + 1] @TO@ MethodInvocation@@cs.charAt(i
+      + 1) '
+    - '---------------INS InfixExpression@@i + 1 @TO@ SimpleName@@MethodName:charAt:[i
+      + 1] '
+    - '------------------INS SimpleName@@i @TO@ InfixExpression@@i + 1 '
+    - '------------------INS Operator@@+ @TO@ InfixExpression@@i + 1 '
+    - '------------------INS NumberLiteral@@1 @TO@ InfixExpression@@i + 1 '
+    - '---INS ContinueStatement@@outer @TO@ IfStatement@@InfixExpression:i < csLast
+      && j < searchLast && Character.isHighSurrogate(ch) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:searchChars.indexOf(ch) < 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean chFound=searchChars.indexOf(ch) >=
+      0; @TO@ ForStatement@@[int i=0];i < strLen; [i++] '
+    - '---INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean chFound=searchChars.indexOf(ch)
+      >= 0; '
+    - '---INS VariableDeclarationFragment@@chFound=searchChars.indexOf(ch) >= 0 @TO@
+      VariableDeclarationStatement@@boolean chFound=searchChars.indexOf(ch) >= 0; '
+    - '------MOV InfixExpression@@searchChars.indexOf(ch) < 0 @TO@ VariableDeclarationFragment@@chFound=searchChars.indexOf(ch)
+      >= 0 '
+    - '------INS SimpleName@@chFound @TO@ VariableDeclarationFragment@@chFound=searchChars.indexOf(ch)
+      >= 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:i + 1 < strLen && Character.isHighSurrogate(ch)
+      @TO@ ForStatement@@[int i=0];i < strLen; [i++] '
+    - '---INS InfixExpression@@i + 1 < strLen && Character.isHighSurrogate(ch) @TO@
+      IfStatement@@InfixExpression:i + 1 < strLen && Character.isHighSurrogate(ch) '
+    - '------INS InfixExpression@@i + 1 < strLen @TO@ InfixExpression@@i + 1 < strLen
+      && Character.isHighSurrogate(ch) '
+    - '---------INS InfixExpression@@i + 1 @TO@ InfixExpression@@i + 1 < strLen '
+    - '------------INS SimpleName@@i @TO@ InfixExpression@@i + 1 '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@i + 1 '
+    - '------------INS NumberLiteral@@1 @TO@ InfixExpression@@i + 1 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@i + 1 < strLen '
+    - '---------INS SimpleName@@strLen @TO@ InfixExpression@@i + 1 < strLen '
+    - '------INS Operator@@&& @TO@ InfixExpression@@i + 1 < strLen && Character.isHighSurrogate(ch) '
+    - '------INS MethodInvocation@@Character.isHighSurrogate(ch) @TO@ InfixExpression@@i
+      + 1 < strLen && Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@MethodName:isHighSurrogate:[ch] @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '------------INS SimpleName@@ch @TO@ SimpleName@@MethodName:isHighSurrogate:[ch] '
+    - '---INS VariableDeclarationStatement@@char ch2=str.charAt(i + 1); @TO@ IfStatement@@InfixExpression:i
+      + 1 < strLen && Character.isHighSurrogate(ch) '
+    - '------INS PrimitiveType@@char @TO@ VariableDeclarationStatement@@char ch2=str.charAt(i
+      + 1); '
+    - '------INS VariableDeclarationFragment@@ch2=str.charAt(i + 1) @TO@ VariableDeclarationStatement@@char
+      ch2=str.charAt(i + 1); '
+    - '---------INS SimpleName@@ch2 @TO@ VariableDeclarationFragment@@ch2=str.charAt(i
+      + 1) '
+    - '---------INS MethodInvocation@@str.charAt(i + 1) @TO@ VariableDeclarationFragment@@ch2=str.charAt(i
+      + 1) '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.charAt(i +
+      1) '
+    - '------------INS SimpleName@@MethodName:charAt:[i + 1] @TO@ MethodInvocation@@str.charAt(i
+      + 1) '
+    - '---------------INS InfixExpression@@i + 1 @TO@ SimpleName@@MethodName:charAt:[i
+      + 1] '
+    - '------------------INS SimpleName@@i @TO@ InfixExpression@@i + 1 '
+    - '------------------INS Operator@@+ @TO@ InfixExpression@@i + 1 '
+    - '------------------INS NumberLiteral@@1 @TO@ InfixExpression@@i + 1 '
+    - '---INS IfStatement@@InfixExpression:chFound && searchChars.indexOf(ch2) < 0
+      @TO@ IfStatement@@InfixExpression:i + 1 < strLen && Character.isHighSurrogate(ch) '
+    - '------MOV ReturnStatement@@SimpleName:i @TO@ IfStatement@@InfixExpression:chFound
+      && searchChars.indexOf(ch2) < 0 '
+    - '------INS InfixExpression@@chFound && searchChars.indexOf(ch2) < 0 @TO@ IfStatement@@InfixExpression:chFound
+      && searchChars.indexOf(ch2) < 0 '
+    - '---------INS SimpleName@@chFound @TO@ InfixExpression@@chFound && searchChars.indexOf(ch2)
+      < 0 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@chFound && searchChars.indexOf(ch2)
+      < 0 '
+    - '---------INS InfixExpression@@searchChars.indexOf(ch2) < 0 @TO@ InfixExpression@@chFound
+      && searchChars.indexOf(ch2) < 0 '
+    - '------------INS MethodInvocation@@searchChars.indexOf(ch2) @TO@ InfixExpression@@searchChars.indexOf(ch2)
+      < 0 '
+    - '---------------INS SimpleName@@Name:searchChars @TO@ MethodInvocation@@searchChars.indexOf(ch2) '
+    - '---------------INS SimpleName@@MethodName:indexOf:[ch2] @TO@ MethodInvocation@@searchChars.indexOf(ch2) '
+    - '------------------INS SimpleName@@ch2 @TO@ SimpleName@@MethodName:indexOf:[ch2] '
+    - '------------INS Operator@@< @TO@ InfixExpression@@searchChars.indexOf(ch2)
+      < 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@searchChars.indexOf(ch2)
+      < 0 '
+    - '---INS IfStatement@@PrefixExpression:!chFound @TO@ IfStatement@@InfixExpression:i
+      + 1 < strLen && Character.isHighSurrogate(ch) '
+    - '------INS PrefixExpression@@!chFound @TO@ IfStatement@@PrefixExpression:!chFound '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!chFound '
+    - '---------INS SimpleName@@chFound @TO@ PrefixExpression@@!chFound '
+    - '------INS ReturnStatement@@SimpleName:i @TO@ IfStatement@@PrefixExpression:!chFound '
+    - '---------INS SimpleName@@i @TO@ ReturnStatement@@SimpleName:i '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int csLast=csLen - 1; @TO@ MethodDeclaration@@public,
+      static, @@boolean, MethodName:containsNone, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int csLast=csLen
+      - 1; '
+    - '---INS VariableDeclarationFragment@@csLast=csLen - 1 @TO@ VariableDeclarationStatement@@int
+      csLast=csLen - 1; '
+    - '------INS SimpleName@@csLast @TO@ VariableDeclarationFragment@@csLast=csLen
+      - 1 '
+    - '------INS InfixExpression@@csLen - 1 @TO@ VariableDeclarationFragment@@csLast=csLen
+      - 1 '
+    - '---------INS SimpleName@@csLen @TO@ InfixExpression@@csLen - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@csLen - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@csLen - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int searchLast=searchLen - 1; @TO@ MethodDeclaration@@public,
+      static, @@boolean, MethodName:containsNone, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int searchLast=searchLen
+      - 1; '
+    - '---INS VariableDeclarationFragment@@searchLast=searchLen - 1 @TO@ VariableDeclarationStatement@@int
+      searchLast=searchLen - 1; '
+    - '------INS SimpleName@@searchLast @TO@ VariableDeclarationFragment@@searchLast=searchLen
+      - 1 '
+    - '------INS InfixExpression@@searchLen - 1 @TO@ VariableDeclarationFragment@@searchLast=searchLen
+      - 1 '
+    - '---------INS SimpleName@@searchLen @TO@ InfixExpression@@searchLen - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@searchLen - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@searchLen - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:Character.isHighSurrogate(ch) @TO@ IfStatement@@InfixExpression:searchChars[j]
+      == ch '
+    - '---INS MethodInvocation@@Character.isHighSurrogate(ch) @TO@ IfStatement@@MethodInvocation:Character.isHighSurrogate(ch) '
+    - '------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '------INS SimpleName@@MethodName:isHighSurrogate:[ch] @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@ch @TO@ SimpleName@@MethodName:isHighSurrogate:[ch] '
+    - '---INS IfStatement@@InfixExpression:j == searchLast @TO@ IfStatement@@MethodInvocation:Character.isHighSurrogate(ch) '
+    - '------MOV ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:j
+      == searchLast '
+    - '------INS InfixExpression@@j == searchLast @TO@ IfStatement@@InfixExpression:j
+      == searchLast '
+    - '---------INS SimpleName@@j @TO@ InfixExpression@@j == searchLast '
+    - '---------INS Operator@@== @TO@ InfixExpression@@j == searchLast '
+    - '---------INS SimpleName@@searchLast @TO@ InfixExpression@@j == searchLast '
+    - '---INS IfStatement@@InfixExpression:i < csLast && searchChars[j + 1] == cs.charAt(i
+      + 1) @TO@ IfStatement@@MethodInvocation:Character.isHighSurrogate(ch) '
+    - '------INS InfixExpression@@i < csLast && searchChars[j + 1] == cs.charAt(i
+      + 1) @TO@ IfStatement@@InfixExpression:i < csLast && searchChars[j + 1] == cs.charAt(i
+      + 1) '
+    - '---------INS InfixExpression@@i < csLast @TO@ InfixExpression@@i < csLast &&
+      searchChars[j + 1] == cs.charAt(i + 1) '
+    - '------------INS SimpleName@@i @TO@ InfixExpression@@i < csLast '
+    - '------------INS Operator@@< @TO@ InfixExpression@@i < csLast '
+    - '------------INS SimpleName@@csLast @TO@ InfixExpression@@i < csLast '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@i < csLast && searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '---------INS InfixExpression@@searchChars[j + 1] == cs.charAt(i + 1) @TO@ InfixExpression@@i
+      < csLast && searchChars[j + 1] == cs.charAt(i + 1) '
+    - '------------INS ArrayAccess@@searchChars[j + 1] @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '---------------INS SimpleName@@searchChars @TO@ ArrayAccess@@searchChars[j
+      + 1] '
+    - '---------------INS InfixExpression@@j + 1 @TO@ ArrayAccess@@searchChars[j +
+      1] '
+    - '------------------INS SimpleName@@j @TO@ InfixExpression@@j + 1 '
+    - '------------------INS Operator@@+ @TO@ InfixExpression@@j + 1 '
+    - '------------------INS NumberLiteral@@1 @TO@ InfixExpression@@j + 1 '
+    - '------------INS Operator@@== @TO@ InfixExpression@@searchChars[j + 1] == cs.charAt(i
+      + 1) '
+    - '------------INS MethodInvocation@@cs.charAt(i + 1) @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '---------------INS SimpleName@@Name:cs @TO@ MethodInvocation@@cs.charAt(i +
+      1) '
+    - '---------------INS SimpleName@@MethodName:charAt:[i + 1] @TO@ MethodInvocation@@cs.charAt(i
+      + 1) '
+    - '------------------INS InfixExpression@@i + 1 @TO@ SimpleName@@MethodName:charAt:[i
+      + 1] '
+    - '---------------------INS SimpleName@@i @TO@ InfixExpression@@i + 1 '
+    - '---------------------INS Operator@@+ @TO@ InfixExpression@@i + 1 '
+    - '---------------------INS NumberLiteral@@1 @TO@ InfixExpression@@i + 1 '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:i
+      < csLast && searchChars[j + 1] == cs.charAt(i + 1) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@MethodInvocation:Character.isHighSurrogate(ch) '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  repair_actions_cnt: 15
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/StringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int csLast=csLen - 1; @TO@ MethodDeclaration@@public,
+      static, @@int, MethodName:indexOfAny, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int csLast=csLen
+      - 1; '
+    - '---INS VariableDeclarationFragment@@csLast=csLen - 1 @TO@ VariableDeclarationStatement@@int
+      csLast=csLen - 1; '
+    - '------INS SimpleName@@csLast @TO@ VariableDeclarationFragment@@csLast=csLen
+      - 1 '
+    - '------INS InfixExpression@@csLen - 1 @TO@ VariableDeclarationFragment@@csLast=csLen
+      - 1 '
+    - '---------INS SimpleName@@csLen @TO@ InfixExpression@@csLen - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@csLen - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@csLen - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int searchLast=searchLen - 1; @TO@ MethodDeclaration@@public,
+      static, @@int, MethodName:indexOfAny, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int searchLast=searchLen
+      - 1; '
+    - '---INS VariableDeclarationFragment@@searchLast=searchLen - 1 @TO@ VariableDeclarationStatement@@int
+      searchLast=searchLen - 1; '
+    - '------INS SimpleName@@searchLast @TO@ VariableDeclarationFragment@@searchLast=searchLen
+      - 1 '
+    - '------INS InfixExpression@@searchLen - 1 @TO@ VariableDeclarationFragment@@searchLast=searchLen
+      - 1 '
+    - '---------INS SimpleName@@searchLen @TO@ InfixExpression@@searchLen - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@searchLen - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@searchLen - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:i < csLast && j < searchLast && Character.isHighSurrogate(ch)
+      @TO@ IfStatement@@InfixExpression:searchChars[j] == ch '
+    - '---INS InfixExpression@@i < csLast && j < searchLast && Character.isHighSurrogate(ch)
+      @TO@ IfStatement@@InfixExpression:i < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '------INS Operator@@&& @TO@ InfixExpression@@i < csLast && j < searchLast &&
+      Character.isHighSurrogate(ch) '
+    - '------INS MethodInvocation@@Character.isHighSurrogate(ch) @TO@ InfixExpression@@i
+      < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@MethodName:isHighSurrogate:[ch] @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '------------INS SimpleName@@ch @TO@ SimpleName@@MethodName:isHighSurrogate:[ch] '
+    - '------MOV InfixExpression@@i < csLast && j < searchLast @TO@ InfixExpression@@i
+      < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '---INS IfStatement@@InfixExpression:searchChars[j + 1] == cs.charAt(i + 1)
+      @TO@ IfStatement@@InfixExpression:i < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '------MOV ReturnStatement@@SimpleName:i @TO@ IfStatement@@InfixExpression:searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------MOV InfixExpression@@searchChars[j + 1] == cs.charAt(i + 1) @TO@ IfStatement@@InfixExpression:searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '---INS ReturnStatement@@SimpleName:i @TO@ IfStatement@@InfixExpression:i <
+      csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '------INS SimpleName@@i @TO@ ReturnStatement@@SimpleName:i '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, static, @@boolean, MethodName:containsAny, @@Argus:CharSequence+cs+char[]+searchChars+
+      @TO@ public, static, @@boolean, MethodName:containsAny, @@Argus:String+cs+char[]+searchChars+ '
+    - '---UPD SingleVariableDeclaration@@CharSequence cs @TO@ String cs '
+    - '------UPD SimpleType@@CharSequence @TO@ String '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:i < csLast && j < searchLast && ch >= Character.MIN_HIGH_SURROGATE
+      && ch <= Character.MAX_HIGH_SURROGATE @TO@ MethodInvocation:Character.isHighSurrogate(ch) '
+    - '---DEL InfixExpression@@i < csLast && j < searchLast && ch >= Character.MIN_HIGH_SURROGATE
+      && ch <= Character.MAX_HIGH_SURROGATE '
+    - '------DEL InfixExpression@@i < csLast && j < searchLast && ch >= Character.MIN_HIGH_SURROGATE '
+    - '---------DEL Operator@@&& '
+    - '------DEL InfixExpression@@ch <= Character.MAX_HIGH_SURROGATE '
+    - '---------DEL SimpleName@@ch '
+    - '---------DEL Operator@@<= '
+    - '---------DEL QualifiedName@@Character.MAX_HIGH_SURROGATE '
+    - '------------DEL SimpleName@@Character '
+    - '------------DEL SimpleName@@MAX_HIGH_SURROGATE '
+    - '---DEL IfStatement@@InfixExpression:searchChars[j + 1] == cs.charAt(i + 1) '
+    - '---INS MethodInvocation@@Character.isHighSurrogate(ch) @TO@ IfStatement@@InfixExpression:i
+      < csLast && j < searchLast && ch >= Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE '
+    - '------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '------INS SimpleName@@MethodName:isHighSurrogate:[ch] @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@ch @TO@ SimpleName@@MethodName:isHighSurrogate:[ch] '
+    - '---INS IfStatement@@InfixExpression:j == searchLast @TO@ IfStatement@@InfixExpression:i
+      < csLast && j < searchLast && ch >= Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE '
+    - '------INS InfixExpression@@j == searchLast @TO@ IfStatement@@InfixExpression:j
+      == searchLast '
+    - '---------MOV SimpleName@@j @TO@ InfixExpression@@j == searchLast '
+    - '---------MOV Operator@@< @TO@ InfixExpression@@j == searchLast '
+    - '---------MOV SimpleName@@searchLast @TO@ InfixExpression@@j == searchLast '
+    - '------INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:j
+      == searchLast '
+    - '---------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+    - '---INS IfStatement@@InfixExpression:i < csLast && searchChars[j + 1] == cs.charAt(i
+      + 1) @TO@ IfStatement@@InfixExpression:i < csLast && j < searchLast && ch >=
+      Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE '
+    - '------MOV ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:i
+      < csLast && searchChars[j + 1] == cs.charAt(i + 1) '
+    - '------INS InfixExpression@@i < csLast && searchChars[j + 1] == cs.charAt(i
+      + 1) @TO@ IfStatement@@InfixExpression:i < csLast && searchChars[j + 1] == cs.charAt(i
+      + 1) '
+    - '---------MOV InfixExpression@@ch >= Character.MIN_HIGH_SURROGATE @TO@ InfixExpression@@i
+      < csLast && searchChars[j + 1] == cs.charAt(i + 1) '
+    - '---------MOV Operator@@&& @TO@ InfixExpression@@i < csLast && searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '---------INS InfixExpression@@searchChars[j + 1] == cs.charAt(i + 1) @TO@ InfixExpression@@i
+      < csLast && searchChars[j + 1] == cs.charAt(i + 1) '
+    - '------------MOV ArrayAccess@@searchChars[j + 1] @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------------MOV Operator@@== @TO@ InfixExpression@@searchChars[j + 1] == cs.charAt(i
+      + 1) '
+    - '------------MOV MethodInvocation@@cs.charAt(i + 1) @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, static, @@boolean, MethodName:containsAny, @@Argus:CharSequence+cs+String+searchChars+
+      @TO@ public, static, @@boolean, MethodName:containsAny, @@Argus:String+cs+String+searchChars+ '
+    - '---UPD SingleVariableDeclaration@@CharSequence cs @TO@ String cs '
+    - '------UPD SimpleType@@CharSequence @TO@ String '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int csLast=csLen - 1; @TO@ MethodDeclaration@@public,
+      static, @@int, MethodName:indexOfAnyBut, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int csLast=csLen
+      - 1; '
+    - '---INS VariableDeclarationFragment@@csLast=csLen - 1 @TO@ VariableDeclarationStatement@@int
+      csLast=csLen - 1; '
+    - '------INS SimpleName@@csLast @TO@ VariableDeclarationFragment@@csLast=csLen
+      - 1 '
+    - '------INS InfixExpression@@csLen - 1 @TO@ VariableDeclarationFragment@@csLast=csLen
+      - 1 '
+    - '---------INS SimpleName@@csLen @TO@ InfixExpression@@csLen - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@csLen - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@csLen - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int searchLast=searchLen - 1; @TO@ MethodDeclaration@@public,
+      static, @@int, MethodName:indexOfAnyBut, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int searchLast=searchLen
+      - 1; '
+    - '---INS VariableDeclarationFragment@@searchLast=searchLen - 1 @TO@ VariableDeclarationStatement@@int
+      searchLast=searchLen - 1; '
+    - '------INS SimpleName@@searchLast @TO@ VariableDeclarationFragment@@searchLast=searchLen
+      - 1 '
+    - '------INS InfixExpression@@searchLen - 1 @TO@ VariableDeclarationFragment@@searchLast=searchLen
+      - 1 '
+    - '---------INS SimpleName@@searchLen @TO@ InfixExpression@@searchLen - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@searchLen - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@searchLen - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:i < csLast && j < searchLast && Character.isHighSurrogate(ch)
+      @TO@ IfStatement@@InfixExpression:searchChars[j] == ch '
+    - '---INS InfixExpression@@i < csLast && j < searchLast && Character.isHighSurrogate(ch)
+      @TO@ IfStatement@@InfixExpression:i < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '------INS InfixExpression@@i < csLast && j < searchLast @TO@ InfixExpression@@i
+      < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '---------INS InfixExpression@@i < csLast @TO@ InfixExpression@@i < csLast &&
+      j < searchLast '
+    - '------------INS SimpleName@@i @TO@ InfixExpression@@i < csLast '
+    - '------------INS Operator@@< @TO@ InfixExpression@@i < csLast '
+    - '------------INS SimpleName@@csLast @TO@ InfixExpression@@i < csLast '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@i < csLast && j < searchLast '
+    - '---------INS InfixExpression@@j < searchLast @TO@ InfixExpression@@i < csLast
+      && j < searchLast '
+    - '------------INS SimpleName@@j @TO@ InfixExpression@@j < searchLast '
+    - '------------INS Operator@@< @TO@ InfixExpression@@j < searchLast '
+    - '------------INS SimpleName@@searchLast @TO@ InfixExpression@@j < searchLast '
+    - '------INS Operator@@&& @TO@ InfixExpression@@i < csLast && j < searchLast &&
+      Character.isHighSurrogate(ch) '
+    - '------INS MethodInvocation@@Character.isHighSurrogate(ch) @TO@ InfixExpression@@i
+      < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@MethodName:isHighSurrogate:[ch] @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '------------INS SimpleName@@ch @TO@ SimpleName@@MethodName:isHighSurrogate:[ch] '
+    - '---INS IfStatement@@InfixExpression:searchChars[j + 1] == cs.charAt(i + 1)
+      @TO@ IfStatement@@InfixExpression:i < csLast && j < searchLast && Character.isHighSurrogate(ch) '
+    - '------MOV ContinueStatement@@outer @TO@ IfStatement@@InfixExpression:searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------INS InfixExpression@@searchChars[j + 1] == cs.charAt(i + 1) @TO@ IfStatement@@InfixExpression:searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '---------INS ArrayAccess@@searchChars[j + 1] @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------------INS SimpleName@@searchChars @TO@ ArrayAccess@@searchChars[j + 1] '
+    - '------------INS InfixExpression@@j + 1 @TO@ ArrayAccess@@searchChars[j + 1] '
+    - '---------------INS SimpleName@@j @TO@ InfixExpression@@j + 1 '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@j + 1 '
+    - '---------------INS NumberLiteral@@1 @TO@ InfixExpression@@j + 1 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@searchChars[j + 1] == cs.charAt(i
+      + 1) '
+    - '---------INS MethodInvocation@@cs.charAt(i + 1) @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------------INS SimpleName@@Name:cs @TO@ MethodInvocation@@cs.charAt(i + 1) '
+    - '------------INS SimpleName@@MethodName:charAt:[i + 1] @TO@ MethodInvocation@@cs.charAt(i
+      + 1) '
+    - '---------------INS InfixExpression@@i + 1 @TO@ SimpleName@@MethodName:charAt:[i
+      + 1] '
+    - '------------------INS SimpleName@@i @TO@ InfixExpression@@i + 1 '
+    - '------------------INS Operator@@+ @TO@ InfixExpression@@i + 1 '
+    - '------------------INS NumberLiteral@@1 @TO@ InfixExpression@@i + 1 '
+    - '---INS ContinueStatement@@outer @TO@ IfStatement@@InfixExpression:i < csLast
+      && j < searchLast && Character.isHighSurrogate(ch) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:searchChars.indexOf(ch) < 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean chFound=searchChars.indexOf(ch) >=
+      0; @TO@ ForStatement@@[int i=0];i < strLen; [i++] '
+    - '---INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean chFound=searchChars.indexOf(ch)
+      >= 0; '
+    - '---INS VariableDeclarationFragment@@chFound=searchChars.indexOf(ch) >= 0 @TO@
+      VariableDeclarationStatement@@boolean chFound=searchChars.indexOf(ch) >= 0; '
+    - '------MOV InfixExpression@@searchChars.indexOf(ch) < 0 @TO@ VariableDeclarationFragment@@chFound=searchChars.indexOf(ch)
+      >= 0 '
+    - '------INS SimpleName@@chFound @TO@ VariableDeclarationFragment@@chFound=searchChars.indexOf(ch)
+      >= 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:i + 1 < strLen && Character.isHighSurrogate(ch)
+      @TO@ ForStatement@@[int i=0];i < strLen; [i++] '
+    - '---INS InfixExpression@@i + 1 < strLen && Character.isHighSurrogate(ch) @TO@
+      IfStatement@@InfixExpression:i + 1 < strLen && Character.isHighSurrogate(ch) '
+    - '------INS InfixExpression@@i + 1 < strLen @TO@ InfixExpression@@i + 1 < strLen
+      && Character.isHighSurrogate(ch) '
+    - '---------INS InfixExpression@@i + 1 @TO@ InfixExpression@@i + 1 < strLen '
+    - '------------INS SimpleName@@i @TO@ InfixExpression@@i + 1 '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@i + 1 '
+    - '------------INS NumberLiteral@@1 @TO@ InfixExpression@@i + 1 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@i + 1 < strLen '
+    - '---------INS SimpleName@@strLen @TO@ InfixExpression@@i + 1 < strLen '
+    - '------INS Operator@@&& @TO@ InfixExpression@@i + 1 < strLen && Character.isHighSurrogate(ch) '
+    - '------INS MethodInvocation@@Character.isHighSurrogate(ch) @TO@ InfixExpression@@i
+      + 1 < strLen && Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@MethodName:isHighSurrogate:[ch] @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '------------INS SimpleName@@ch @TO@ SimpleName@@MethodName:isHighSurrogate:[ch] '
+    - '---INS VariableDeclarationStatement@@char ch2=str.charAt(i + 1); @TO@ IfStatement@@InfixExpression:i
+      + 1 < strLen && Character.isHighSurrogate(ch) '
+    - '------INS PrimitiveType@@char @TO@ VariableDeclarationStatement@@char ch2=str.charAt(i
+      + 1); '
+    - '------INS VariableDeclarationFragment@@ch2=str.charAt(i + 1) @TO@ VariableDeclarationStatement@@char
+      ch2=str.charAt(i + 1); '
+    - '---------INS SimpleName@@ch2 @TO@ VariableDeclarationFragment@@ch2=str.charAt(i
+      + 1) '
+    - '---------INS MethodInvocation@@str.charAt(i + 1) @TO@ VariableDeclarationFragment@@ch2=str.charAt(i
+      + 1) '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.charAt(i +
+      1) '
+    - '------------INS SimpleName@@MethodName:charAt:[i + 1] @TO@ MethodInvocation@@str.charAt(i
+      + 1) '
+    - '---------------INS InfixExpression@@i + 1 @TO@ SimpleName@@MethodName:charAt:[i
+      + 1] '
+    - '------------------INS SimpleName@@i @TO@ InfixExpression@@i + 1 '
+    - '------------------INS Operator@@+ @TO@ InfixExpression@@i + 1 '
+    - '------------------INS NumberLiteral@@1 @TO@ InfixExpression@@i + 1 '
+    - '---INS IfStatement@@InfixExpression:chFound && searchChars.indexOf(ch2) < 0
+      @TO@ IfStatement@@InfixExpression:i + 1 < strLen && Character.isHighSurrogate(ch) '
+    - '------MOV ReturnStatement@@SimpleName:i @TO@ IfStatement@@InfixExpression:chFound
+      && searchChars.indexOf(ch2) < 0 '
+    - '------INS InfixExpression@@chFound && searchChars.indexOf(ch2) < 0 @TO@ IfStatement@@InfixExpression:chFound
+      && searchChars.indexOf(ch2) < 0 '
+    - '---------INS SimpleName@@chFound @TO@ InfixExpression@@chFound && searchChars.indexOf(ch2)
+      < 0 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@chFound && searchChars.indexOf(ch2)
+      < 0 '
+    - '---------INS InfixExpression@@searchChars.indexOf(ch2) < 0 @TO@ InfixExpression@@chFound
+      && searchChars.indexOf(ch2) < 0 '
+    - '------------INS MethodInvocation@@searchChars.indexOf(ch2) @TO@ InfixExpression@@searchChars.indexOf(ch2)
+      < 0 '
+    - '---------------INS SimpleName@@Name:searchChars @TO@ MethodInvocation@@searchChars.indexOf(ch2) '
+    - '---------------INS SimpleName@@MethodName:indexOf:[ch2] @TO@ MethodInvocation@@searchChars.indexOf(ch2) '
+    - '------------------INS SimpleName@@ch2 @TO@ SimpleName@@MethodName:indexOf:[ch2] '
+    - '------------INS Operator@@< @TO@ InfixExpression@@searchChars.indexOf(ch2)
+      < 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@searchChars.indexOf(ch2)
+      < 0 '
+    - '---INS IfStatement@@PrefixExpression:!chFound @TO@ IfStatement@@InfixExpression:i
+      + 1 < strLen && Character.isHighSurrogate(ch) '
+    - '------INS PrefixExpression@@!chFound @TO@ IfStatement@@PrefixExpression:!chFound '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!chFound '
+    - '---------INS SimpleName@@chFound @TO@ PrefixExpression@@!chFound '
+    - '------INS ReturnStatement@@SimpleName:i @TO@ IfStatement@@PrefixExpression:!chFound '
+    - '---------INS SimpleName@@i @TO@ ReturnStatement@@SimpleName:i '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int searchLast=searchLen - 1; @TO@ MethodDeclaration@@public,
+      static, @@boolean, MethodName:containsNone, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int searchLast=searchLen
+      - 1; '
+    - '---INS VariableDeclarationFragment@@searchLast=searchLen - 1 @TO@ VariableDeclarationStatement@@int
+      searchLast=searchLen - 1; '
+    - '------INS SimpleName@@searchLast @TO@ VariableDeclarationFragment@@searchLast=searchLen
+      - 1 '
+    - '------INS InfixExpression@@searchLen - 1 @TO@ VariableDeclarationFragment@@searchLast=searchLen
+      - 1 '
+    - '---------INS SimpleName@@searchLen @TO@ InfixExpression@@searchLen - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@searchLen - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@searchLen - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:Character.isHighSurrogate(ch) @TO@ IfStatement@@InfixExpression:searchChars[j]
+      == ch '
+    - '---INS MethodInvocation@@Character.isHighSurrogate(ch) @TO@ IfStatement@@MethodInvocation:Character.isHighSurrogate(ch) '
+    - '------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '------INS SimpleName@@MethodName:isHighSurrogate:[ch] @TO@ MethodInvocation@@Character.isHighSurrogate(ch) '
+    - '---------INS SimpleName@@ch @TO@ SimpleName@@MethodName:isHighSurrogate:[ch] '
+    - '---INS IfStatement@@InfixExpression:j == searchLast @TO@ IfStatement@@MethodInvocation:Character.isHighSurrogate(ch) '
+    - '------MOV ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:j
+      == searchLast '
+    - '------INS InfixExpression@@j == searchLast @TO@ IfStatement@@InfixExpression:j
+      == searchLast '
+    - '---------INS SimpleName@@j @TO@ InfixExpression@@j == searchLast '
+    - '---------INS Operator@@== @TO@ InfixExpression@@j == searchLast '
+    - '---------INS SimpleName@@searchLast @TO@ InfixExpression@@j == searchLast '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@MethodInvocation:Character.isHighSurrogate(ch) '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  repair_actions_cnt: 14

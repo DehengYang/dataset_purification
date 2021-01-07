@@ -1,0 +1,16 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_58/src/com/google/javascript/jscomp/LiveVariablesAnalysis.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_58/fixed-version/src/com/google/javascript/jscomp/LiveVariablesAnalysis.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_58/src/com/google/javascript/jscomp/LiveVariablesAnalysis.java	2020-03-01 00:29:04.209901421 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_58/fixed-version/src/com/google/javascript/jscomp/LiveVariablesAnalysis.java	2020-03-01 00:29:06.185994533 -0800
+@@ -203,8 +203,12 @@
+             // for(var x in y) {...}
+             lhs = lhs.getLastChild();
+           }
++          if (NodeUtil.isName(lhs)) {
+             addToSetIfLocal(lhs, kill);
+             addToSetIfLocal(lhs, gen);
++          } else {
++            computeGenKill(lhs, gen, kill, conditional);
++          }
+           computeGenKill(rhs, gen, kill, conditional);
+         }
+         return;

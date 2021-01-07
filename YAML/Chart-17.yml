@@ -1,0 +1,154 @@
+1 bug_id: Chart-17
+2 src folder:
+  name of src folder: source
+  number of files: 650
+  number of java files: 577
+  number of src classes: 603
+  number of test classes: 322
+3 test (cases):
+  failing test cases:
+  - org.jfree.data.time.junit.TimeSeriesTests#testBug1832432
+  failing tests:
+  - org.jfree.data.time.junit.TimeSeriesTests
+  number of all test cases: 1750
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.002
+  purification via delta debugging: 84.512
+  repair actions extraction: 1.319
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.data.time.junit.TimeSeriesTests#testBug1832432: 124
+  fixed:
+    org.jfree.data.time.junit.TimeSeriesTests#testBug1832432: 234
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 2
+  oriDel: 1
+  ori_patch_lines: 3
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_17/source/org/jfree/data/time/TimeSeries.java\t\
+    2020-10-21 00:18:07.138690525 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_17/purify/patch/org/jfree/data/time/TimeSeries.java\t\
+    2020-10-21 00:18:07.134690410 -0400\n@@ -854,7 +854,8 @@\n      *         subclasses\
+    \ may differ.\n      */\n     public Object clone() throws CloneNotSupportedException\
+    \ {\n-        Object clone = createCopy(0, getItemCount() - 1);\n+        TimeSeries\
+    \ clone = (TimeSeries) super.clone();\n+        clone.data = (List) ObjectUtilities.deepClone(this.data);\n\
+    \         return clone;\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_17/source/org/jfree/data/time/TimeSeries.java\t\
+    2020-10-21 00:19:46.709566906 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_17/purify/purified/org/jfree/data/time/TimeSeries.java\t\
+    2020-10-21 00:19:46.709566906 -0400\n@@ -854,7 +854,8 @@\n      *         subclasses\
+    \ may differ.\n      */\n     public Object clone() throws CloneNotSupportedException\
+    \ {\n-        Object clone = createCopy(0, getItemCount() - 1);\n+        TimeSeries\
+    \ clone = (TimeSeries) super.clone();\n+        clone.data = (List) ObjectUtilities.deepClone(this.data);\n\
+    \         return clone;\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/time/TimeSeries:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:clone.data=(List)ObjectUtilities.deepClone(this.data)
+      @TO@ MethodDeclaration@@public, @@Object, MethodName:clone, @@Argus:nullCloneNotSupportedException,  '
+    - '---INS Assignment@@clone.data=(List)ObjectUtilities.deepClone(this.data) @TO@
+      ExpressionStatement@@Assignment:clone.data=(List)ObjectUtilities.deepClone(this.data) '
+    - '------INS QualifiedName@@clone.data @TO@ Assignment@@clone.data=(List)ObjectUtilities.deepClone(this.data) '
+    - '---------INS SimpleName@@clone @TO@ QualifiedName@@clone.data '
+    - '---------INS SimpleName@@data @TO@ QualifiedName@@clone.data '
+    - '------INS Operator@@= @TO@ Assignment@@clone.data=(List)ObjectUtilities.deepClone(this.data) '
+    - '------INS CastExpression@@(List)ObjectUtilities.deepClone(this.data) @TO@ Assignment@@clone.data=(List)ObjectUtilities.deepClone(this.data) '
+    - '---------INS SimpleType@@List @TO@ CastExpression@@(List)ObjectUtilities.deepClone(this.data) '
+    - '---------INS MethodInvocation@@ObjectUtilities.deepClone(this.data) @TO@ CastExpression@@(List)ObjectUtilities.deepClone(this.data) '
+    - '------------INS SimpleName@@Name:ObjectUtilities @TO@ MethodInvocation@@ObjectUtilities.deepClone(this.data) '
+    - '------------INS SimpleName@@MethodName:deepClone:[this.data] @TO@ MethodInvocation@@ObjectUtilities.deepClone(this.data) '
+    - '---------------INS FieldAccess@@this.data @TO@ SimpleName@@MethodName:deepClone:[this.data] '
+    - '------------------INS ThisExpression@@this @TO@ FieldAccess@@this.data '
+    - '------------------INS SimpleName@@data @TO@ FieldAccess@@this.data '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Object clone=createCopy(0,getItemCount()
+      - 1); @TO@ TimeSeries clone=(TimeSeries)super.clone(); '
+    - '---UPD SimpleType@@Object @TO@ TimeSeries '
+    - '---UPD VariableDeclarationFragment@@clone=createCopy(0,getItemCount() - 1)
+      @TO@ clone=(TimeSeries)super.clone() '
+    - '------INS CastExpression@@(TimeSeries)super.clone() @TO@ VariableDeclarationFragment@@clone=createCopy(0,getItemCount()
+      - 1) '
+    - '---------INS SimpleType@@TimeSeries @TO@ CastExpression@@(TimeSeries)super.clone() '
+    - '---------INS SuperMethodInvocation@@super.clone() @TO@ CastExpression@@(TimeSeries)super.clone() '
+    - '------------INS SimpleName@@MethodName:clone:[] @TO@ SuperMethodInvocation@@super.clone() '
+    - '------DEL MethodInvocation@@createCopy(0,getItemCount() - 1) '
+    - '---------DEL SimpleName@@MethodName:createCopy:[0, getItemCount() - 1] '
+    - '------------DEL NumberLiteral@@0 '
+    - '------------DEL InfixExpression@@getItemCount() - 1 '
+    - '---------------DEL MethodInvocation@@MethodName:getItemCount:[] '
+    - '---------------DEL Operator@@- '
+    - '---------------DEL NumberLiteral@@1 '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/time/TimeSeries:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:clone.data=(List)ObjectUtilities.deepClone(this.data)
+      @TO@ MethodDeclaration@@public, @@Object, MethodName:clone, @@Argus:nullCloneNotSupportedException,  '
+    - '---INS Assignment@@clone.data=(List)ObjectUtilities.deepClone(this.data) @TO@
+      ExpressionStatement@@Assignment:clone.data=(List)ObjectUtilities.deepClone(this.data) '
+    - '------INS QualifiedName@@clone.data @TO@ Assignment@@clone.data=(List)ObjectUtilities.deepClone(this.data) '
+    - '---------INS SimpleName@@clone @TO@ QualifiedName@@clone.data '
+    - '---------INS SimpleName@@data @TO@ QualifiedName@@clone.data '
+    - '------INS Operator@@= @TO@ Assignment@@clone.data=(List)ObjectUtilities.deepClone(this.data) '
+    - '------INS CastExpression@@(List)ObjectUtilities.deepClone(this.data) @TO@ Assignment@@clone.data=(List)ObjectUtilities.deepClone(this.data) '
+    - '---------INS SimpleType@@List @TO@ CastExpression@@(List)ObjectUtilities.deepClone(this.data) '
+    - '---------INS MethodInvocation@@ObjectUtilities.deepClone(this.data) @TO@ CastExpression@@(List)ObjectUtilities.deepClone(this.data) '
+    - '------------INS SimpleName@@Name:ObjectUtilities @TO@ MethodInvocation@@ObjectUtilities.deepClone(this.data) '
+    - '------------INS SimpleName@@MethodName:deepClone:[this.data] @TO@ MethodInvocation@@ObjectUtilities.deepClone(this.data) '
+    - '---------------INS FieldAccess@@this.data @TO@ SimpleName@@MethodName:deepClone:[this.data] '
+    - '------------------INS ThisExpression@@this @TO@ FieldAccess@@this.data '
+    - '------------------INS SimpleName@@data @TO@ FieldAccess@@this.data '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Object clone=createCopy(0,getItemCount()
+      - 1); @TO@ TimeSeries clone=(TimeSeries)super.clone(); '
+    - '---UPD SimpleType@@Object @TO@ TimeSeries '
+    - '---UPD VariableDeclarationFragment@@clone=createCopy(0,getItemCount() - 1)
+      @TO@ clone=(TimeSeries)super.clone() '
+    - '------INS CastExpression@@(TimeSeries)super.clone() @TO@ VariableDeclarationFragment@@clone=createCopy(0,getItemCount()
+      - 1) '
+    - '---------INS SimpleType@@TimeSeries @TO@ CastExpression@@(TimeSeries)super.clone() '
+    - '---------INS SuperMethodInvocation@@super.clone() @TO@ CastExpression@@(TimeSeries)super.clone() '
+    - '------------INS SimpleName@@MethodName:clone:[] @TO@ SuperMethodInvocation@@super.clone() '
+    - '------DEL MethodInvocation@@createCopy(0,getItemCount() - 1) '
+    - '---------DEL SimpleName@@MethodName:createCopy:[0, getItemCount() - 1] '
+    - '------------DEL NumberLiteral@@0 '
+    - '------------DEL InfixExpression@@getItemCount() - 1 '
+    - '---------------DEL MethodInvocation@@MethodName:getItemCount:[] '
+    - '---------------DEL Operator@@- '
+    - '---------------DEL NumberLiteral@@1 '
+  repair_actions_cnt: 2

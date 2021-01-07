@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_20/source/org/jfree/chart/plot/ValueMarker.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_20/fixed-version/source/org/jfree/chart/plot/ValueMarker.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_20/source/org/jfree/chart/plot/ValueMarker.java	2020-03-01 00:04:45.909189841 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_20/fixed-version/source/org/jfree/chart/plot/ValueMarker.java	2020-03-01 00:04:49.465357394 -0800
+@@ -92,7 +92,7 @@
+      */
+     public ValueMarker(double value, Paint paint, Stroke stroke, 
+                        Paint outlinePaint, Stroke outlineStroke, float alpha) {
+-        super(paint, stroke, paint, stroke, alpha);
++        super(paint, stroke, outlinePaint, outlineStroke, alpha);
+         this.value = value;
+     }
+     

@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_35/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java	2020-10-21 10:49:59.022759604 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_35/purify/purified/org/apache/commons/math3/genetics/ElitisticListPopulation.java	2020-10-21 10:49:59.022759604 -0400
+@@ -49,6 +49,7 @@
+                                    final double elitismRate) {
+         super(chromosomes, populationLimit);
+         this.elitismRate = elitismRate;
++        setElitismRate(elitismRate);
+     }
+ 
+     /**
+@@ -63,6 +64,7 @@
+     public ElitisticListPopulation(final int populationLimit, final double elitismRate) {
+         super(populationLimit);
+         this.elitismRate = elitismRate;
++        setElitismRate(elitismRate);
+     }
+ 
+     /**

@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_55/src/com/google/javascript/jscomp/FunctionRewriter.java	2020-10-23 07:12:33.516215519 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_55/purify/purified/com/google/javascript/jscomp/FunctionRewriter.java	2020-10-23 07:12:33.516215519 -0400
+@@ -114,7 +114,8 @@
+   }
+ 
+   private static boolean isReduceableFunctionExpression(Node n) {
+-    return NodeUtil.isFunctionExpression(n);
++    return NodeUtil.isFunctionExpression(n)
++        && !NodeUtil.isGetOrSetKey(n.getParent());
+   }
+ 
+   /**

@@ -1,0 +1,62 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_3/src/main/java/org/joda/time/MutableDateTime.java	2020-10-20 18:54:13.025014746 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_3/purify/assertBeforeMut/org/joda/time/MutableDateTime.java	2020-10-20 18:54:13.021014630 -0400
+@@ -636,7 +636,9 @@
+         if (type == null) {
+             throw new IllegalArgumentException("Field must not be null");
+         }
++        if (amount != 0) {
+             setMillis(type.getField(getChronology()).add(getMillis(), amount));
++        }
+     }
+ 
+     //-----------------------------------------------------------------------
+@@ -657,7 +659,9 @@
+      * @throws IllegalArgumentException if the value is invalid
+      */
+     public void addYears(final int years) {
++        if (years != 0) {
+             setMillis(getChronology().years().add(getMillis(), years));
++        }
+     }
+ 
+     //-----------------------------------------------------------------------
+@@ -699,7 +703,9 @@
+      * @throws IllegalArgumentException if the value is invalid
+      */
+     public void addMonths(final int months) {
++        if (months != 0) {
+             setMillis(getChronology().months().add(getMillis(), months));
++        }
+     }
+ 
+     //-----------------------------------------------------------------------
+@@ -720,7 +726,9 @@
+      * @throws IllegalArgumentException if the value is invalid
+      */
+     public void addWeeks(final int weeks) {
++        if (weeks != 0) {
+             setMillis(getChronology().weeks().add(getMillis(), weeks));
++        }
+     }
+ 
+     //-----------------------------------------------------------------------
+@@ -761,7 +769,9 @@
+      * @throws IllegalArgumentException if the value is invalid
+      */
+     public void addDays(final int days) {
++        if (days != 0) {
+             setMillis(getChronology().days().add(getMillis(), days));
++        }
+     }
+ 
+     //-----------------------------------------------------------------------
+@@ -782,7 +792,9 @@
+      * @throws IllegalArgumentException if the value is invalid
+      */
+     public void addHours(final int hours) {
++        if (hours != 0) {
+             setMillis(getChronology().hours().add(getMillis(), hours));
++        }
+     }
+     
+     //-----------------------------------------------------------------------

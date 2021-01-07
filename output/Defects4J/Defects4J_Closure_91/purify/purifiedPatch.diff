@@ -1,0 +1,17 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_91/src/com/google/javascript/jscomp/CheckGlobalThis.java	2020-10-23 11:58:15.236463946 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_91/purify/purified/com/google/javascript/jscomp/CheckGlobalThis.java	2020-10-23 11:58:15.236463946 -0400
+@@ -112,6 +112,14 @@
+       }
+ 
+       // Don't traverse functions that are getting lent to a prototype.
++      Node gramps = parent.getParent();
++      if (NodeUtil.isObjectLitKey(parent, gramps)) {
++        JSDocInfo maybeLends = gramps.getJSDocInfo();
++        if (maybeLends != null &&
++            maybeLends.getLendsName().endsWith(".prototype")) {
++          return false;
++        }
++      }
+     }
+ 
+     if (parent != null && parent.getType() == Token.ASSIGN) {

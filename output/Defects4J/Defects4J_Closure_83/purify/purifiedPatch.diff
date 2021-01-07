@@ -1,0 +1,14 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_83/src/com/google/javascript/jscomp/CommandLineRunner.java	2020-10-23 10:31:03.901041333 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_83/purify/purified/com/google/javascript/jscomp/CommandLineRunner.java	2020-10-23 10:31:03.901041333 -0400
+@@ -331,7 +331,10 @@
+ 
+       @Override
+       public int parseArguments(Parameters params) throws CmdLineException {
+-        String param = params.getParameter(0);
++        String param = null;
++        try {
++          param = params.getParameter(0);
++        } catch (CmdLineException e) {}
+ 
+         if (param == null) {
+           setter.addValue(true);

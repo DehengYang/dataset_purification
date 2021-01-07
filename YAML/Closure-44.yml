@@ -1,0 +1,136 @@
+1 bug_id: Closure-44
+2 src folder:
+  name of src folder: src
+  number of files: 407
+  number of java files: 393
+  number of src classes: 1310
+  number of test classes: 217
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CodePrinterTest#testIssue620
+  failing tests:
+  - com.google.javascript.jscomp.CodePrinterTest
+  number of all test cases: 7197
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.002
+  purification via delta debugging: 221.963
+  repair actions extraction: 0.755
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CodePrinterTest#testIssue620: 1459
+  fixed:
+    com.google.javascript.jscomp.CodePrinterTest#testIssue620: 1461
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 0
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 0
+  ori_patch_lines: 2
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_44/src/com/google/javascript/jscomp/CodeConsumer.java\t\
+    2020-10-22 13:12:36.540052991 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_44/purify/patch/com/google/javascript/jscomp/CodeConsumer.java\t\
+    2020-10-22 13:12:36.540052991 -0400\n@@ -191,11 +191,13 @@\n       // need space\
+    \ to separate. This is not pretty printing.\n       // For example: \"return foo;\"\
+    \n       append(\" \");\n+    } else if (c == '/' && getLastChar() == '/') {\n\
+    \       // Do not allow a forward slash to appear after a DIV.\n       // For\
+    \ example,\n       // REGEXP DIV REGEXP\n       // is valid and should print like\n\
+    \       // / // / /\n+      append(\" \");\n     }\n \n     append(newcode);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_44/src/com/google/javascript/jscomp/CodeConsumer.java\t\
+    2020-10-22 13:16:47.803306864 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_44/purify/purified/com/google/javascript/jscomp/CodeConsumer.java\t\
+    2020-10-22 13:16:47.803306864 -0400\n@@ -191,11 +191,13 @@\n       // need space\
+    \ to separate. This is not pretty printing.\n       // For example: \"return foo;\"\
+    \n       append(\" \");\n+    } else if (c == '/' && getLastChar() == '/') {\n\
+    \       // Do not allow a forward slash to appear after a DIV.\n       // For\
+    \ example,\n       // REGEXP DIV REGEXP\n       // is valid and should print like\n\
+    \       // / // / /\n+      append(\" \");\n     }\n \n     append(newcode);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CodeConsumer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:c == ''/'' && getLastChar() == ''/'' @TO@
+      IfStatement@@InfixExpression:(isWordChar(c) || c == ''\\'') && isWordChar(getLastChar()) '
+    - '---INS InfixExpression@@c == ''/'' && getLastChar() == ''/'' @TO@ IfStatement@@InfixExpression:c
+      == ''/'' && getLastChar() == ''/'' '
+    - '------INS InfixExpression@@c == ''/'' @TO@ InfixExpression@@c == ''/'' && getLastChar()
+      == ''/'' '
+    - '---------INS SimpleName@@c @TO@ InfixExpression@@c == ''/'' '
+    - '---------INS Operator@@== @TO@ InfixExpression@@c == ''/'' '
+    - '---------INS CharacterLiteral@@''/'' @TO@ InfixExpression@@c == ''/'' '
+    - '------INS Operator@@&& @TO@ InfixExpression@@c == ''/'' && getLastChar() ==
+      ''/'' '
+    - '------INS InfixExpression@@getLastChar() == ''/'' @TO@ InfixExpression@@c ==
+      ''/'' && getLastChar() == ''/'' '
+    - '---------INS MethodInvocation@@MethodName:getLastChar:[] @TO@ InfixExpression@@getLastChar()
+      == ''/'' '
+    - '---------INS Operator@@== @TO@ InfixExpression@@getLastChar() == ''/'' '
+    - '---------INS CharacterLiteral@@''/'' @TO@ InfixExpression@@getLastChar() ==
+      ''/'' '
+    - '---INS ExpressionStatement@@MethodInvocation:append(" ") @TO@ IfStatement@@InfixExpression:c
+      == ''/'' && getLastChar() == ''/'' '
+    - '------INS MethodInvocation@@append(" ") @TO@ ExpressionStatement@@MethodInvocation:append("
+      ") '
+    - '---------INS SimpleName@@MethodName:append:[" "] @TO@ MethodInvocation@@append("
+      ") '
+    - '------------INS StringLiteral@@" " @TO@ SimpleName@@MethodName:append:[" "] '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CodeConsumer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:c == ''/'' && getLastChar() == ''/'' @TO@
+      IfStatement@@InfixExpression:(isWordChar(c) || c == ''\\'') && isWordChar(getLastChar()) '
+    - '---INS InfixExpression@@c == ''/'' && getLastChar() == ''/'' @TO@ IfStatement@@InfixExpression:c
+      == ''/'' && getLastChar() == ''/'' '
+    - '------INS InfixExpression@@c == ''/'' @TO@ InfixExpression@@c == ''/'' && getLastChar()
+      == ''/'' '
+    - '---------INS SimpleName@@c @TO@ InfixExpression@@c == ''/'' '
+    - '---------INS Operator@@== @TO@ InfixExpression@@c == ''/'' '
+    - '---------INS CharacterLiteral@@''/'' @TO@ InfixExpression@@c == ''/'' '
+    - '------INS Operator@@&& @TO@ InfixExpression@@c == ''/'' && getLastChar() ==
+      ''/'' '
+    - '------INS InfixExpression@@getLastChar() == ''/'' @TO@ InfixExpression@@c ==
+      ''/'' && getLastChar() == ''/'' '
+    - '---------INS MethodInvocation@@MethodName:getLastChar:[] @TO@ InfixExpression@@getLastChar()
+      == ''/'' '
+    - '---------INS Operator@@== @TO@ InfixExpression@@getLastChar() == ''/'' '
+    - '---------INS CharacterLiteral@@''/'' @TO@ InfixExpression@@getLastChar() ==
+      ''/'' '
+    - '---INS ExpressionStatement@@MethodInvocation:append(" ") @TO@ IfStatement@@InfixExpression:c
+      == ''/'' && getLastChar() == ''/'' '
+    - '------INS MethodInvocation@@append(" ") @TO@ ExpressionStatement@@MethodInvocation:append("
+      ") '
+    - '---------INS SimpleName@@MethodName:append:[" "] @TO@ MethodInvocation@@append("
+      ") '
+    - '------------INS StringLiteral@@" " @TO@ SimpleName@@MethodName:append:[" "] '
+  files_cnt: '1'
+  repair_actions_cnt: 1

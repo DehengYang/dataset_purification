@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_6/source/org/jfree/chart/util/ShapeList.java	2020-10-20 23:55:04.922766960 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_6/purify/purified/org/jfree/chart/util/ShapeList.java	2020-10-20 23:55:04.922766960 -0400
+@@ -108,7 +108,14 @@
+         if (!(obj instanceof ShapeList)) {
+             return false;
+         }
+-        return super.equals(obj);
++        ShapeList that = (ShapeList) obj;
++        int listSize = size();
++        for (int i = 0; i < listSize; i++) {
++           if (!ShapeUtilities.equal((Shape) get(i), (Shape) that.get(i))) {
++               return false;
++           }
++        }
++        return true;
+ 
+     }
+ 

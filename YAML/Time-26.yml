@@ -1,0 +1,232 @@
+1 bug_id: Time-26
+2 src folder:
+  name of src folder: java
+  number of files: 182
+  number of java files: 156
+  number of src classes: 226
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestDateTimeZoneCutover#testBug2182444_ausNSW
+  - org.joda.time.TestDateTimeZoneCutover#testWithSecondOfMinuteInDstChange
+  - org.joda.time.TestDateTimeZoneCutover#testWithHourOfDayInDstChange
+  - org.joda.time.TestDateTimeZoneCutover#testWithMinuteOfHourInDstChange
+  - org.joda.time.TestDateTimeZoneCutover#testWithMillisOfSecondInDstChange_NewYork_winter
+  - org.joda.time.TestDateTimeZoneCutover#testWithMillisOfSecondInDstChange_Paris_summer
+  - org.joda.time.TestDateTimeZoneCutover#testWithMinuteOfHourInDstChange_mockZone
+  - org.joda.time.TestDateTimeZoneCutover#testBug2182444_usCentral
+  failing tests:
+  - org.joda.time.TestDateTimeZoneCutover
+  number of all test cases: 3848
+  number of failing test cases: 8
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.53
+  purification via delta debugging: 89.146
+  repair actions extraction: 1.385
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestDateTimeZoneCutover#testBug2182444_ausNSW: 1304
+    org.joda.time.TestDateTimeZoneCutover#testBug2182444_usCentral: 1425
+    org.joda.time.TestDateTimeZoneCutover#testWithHourOfDayInDstChange: 1886
+    org.joda.time.TestDateTimeZoneCutover#testWithMillisOfSecondInDstChange_NewYork_winter: 1867
+    org.joda.time.TestDateTimeZoneCutover#testWithMillisOfSecondInDstChange_Paris_summer: 1890
+    org.joda.time.TestDateTimeZoneCutover#testWithMinuteOfHourInDstChange: 1886
+    org.joda.time.TestDateTimeZoneCutover#testWithMinuteOfHourInDstChange_mockZone: 1319
+    org.joda.time.TestDateTimeZoneCutover#testWithSecondOfMinuteInDstChange: 1886
+  fixed:
+    org.joda.time.TestDateTimeZoneCutover#testBug2182444_ausNSW: 975
+    org.joda.time.TestDateTimeZoneCutover#testBug2182444_usCentral: 1118
+    org.joda.time.TestDateTimeZoneCutover#testWithHourOfDayInDstChange: 1878
+    org.joda.time.TestDateTimeZoneCutover#testWithMillisOfSecondInDstChange_NewYork_winter: 1862
+    org.joda.time.TestDateTimeZoneCutover#testWithMillisOfSecondInDstChange_Paris_summer: 1888
+    org.joda.time.TestDateTimeZoneCutover#testWithMinuteOfHourInDstChange: 1884
+    org.joda.time.TestDateTimeZoneCutover#testWithMinuteOfHourInDstChange_mockZone: 1326
+    org.joda.time.TestDateTimeZoneCutover#testWithSecondOfMinuteInDstChange: 1884
+6 reduced lines:
+  by all: 12
+  by coverage: 12
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 7
+  oriDel: 7
+  ori_patch_lines: 14
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 6
+  by coverage: 6
+  by delta debugging: 0
+  cov: 1
+  original: 7
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions:
+- 0 1 1.0
+- 0 2 1.0
+- 0 3 0.7516447368421053
+- 0 4 1.0
+- 0 5 1.0
+- 0 6 1.0
+- 1 2 1.0
+- 1 3 0.7516447368421053
+- 1 4 1.0
+- 1 5 1.0
+- 1 6 1.0
+- 2 3 0.7516447368421053
+- 2 4 1.0
+- 2 5 1.0
+- 2 6 1.0
+- 4 5 1.0
+- 4 6 1.0
+- 5 6 1.0
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_26/src/main/java/org/joda/time/chrono/ZonedChronology.java\t\
+    2020-10-20 23:31:58.470712042 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_26/purify/patch/org/joda/time/chrono/ZonedChronology.java\t\
+    2020-10-20 23:31:58.466711925 -0400\n@@ -433,7 +433,7 @@\n             } else\
+    \ {\n                long localInstant = iZone.convertUTCToLocal(instant);\n \
+    \               localInstant = iField.add(localInstant, value);\n-           \
+    \    return iZone.convertLocalToUTC(localInstant, false);\n+               return\
+    \ iZone.convertLocalToUTC(localInstant, false, instant);\n             }\n   \
+    \      }\n \n@@ -445,7 +445,7 @@\n             } else {\n                long\
+    \ localInstant = iZone.convertUTCToLocal(instant);\n                localInstant\
+    \ = iField.add(localInstant, value);\n-               return iZone.convertLocalToUTC(localInstant,\
+    \ false);\n+               return iZone.convertLocalToUTC(localInstant, false,\
+    \ instant);\n             }\n         }\n \n@@ -457,14 +457,14 @@\n          \
+    \   } else {\n                 long localInstant = iZone.convertUTCToLocal(instant);\n\
+    \                 localInstant = iField.addWrapField(localInstant, value);\n-\
+    \                return iZone.convertLocalToUTC(localInstant, false);\n+     \
+    \           return iZone.convertLocalToUTC(localInstant, false, instant);\n  \
+    \           }\n         }\n \n         public long set(long instant, int value)\
+    \ {\n             long localInstant = iZone.convertUTCToLocal(instant);\n    \
+    \         localInstant = iField.set(localInstant, value);\n-            long result\
+    \ = iZone.convertLocalToUTC(localInstant, false);\n+            long result =\
+    \ iZone.convertLocalToUTC(localInstant, false, instant);\n             if (get(result)\
+    \ != value) {\n                 throw new IllegalFieldValueException(iField.getType(),\
+    \ new Integer(value),\n                     \"Illegal instant due to time zone\
+    \ offset transition: \" +\n@@ -478,7 +478,7 @@\n             // cannot verify\
+    \ that new value stuck because set may be lenient\n             long localInstant\
+    \ = iZone.convertUTCToLocal(instant);\n             localInstant = iField.set(localInstant,\
+    \ text, locale);\n-            return iZone.convertLocalToUTC(localInstant, false);\n\
+    +            return iZone.convertLocalToUTC(localInstant, false, instant);\n \
+    \        }\n \n         public int getDifference(long minuendInstant, long subtrahendInstant)\
+    \ {\n@@ -525,7 +525,7 @@\n             } else {\n                 long localInstant\
+    \ = iZone.convertUTCToLocal(instant);\n                 localInstant = iField.roundFloor(localInstant);\n\
+    -                return iZone.convertLocalToUTC(localInstant, false);\n+     \
+    \           return iZone.convertLocalToUTC(localInstant, false, instant);\n  \
+    \           }\n         }\n \n@@ -537,7 +537,7 @@\n             } else {\n   \
+    \              long localInstant = iZone.convertUTCToLocal(instant);\n       \
+    \          localInstant = iField.roundCeiling(localInstant);\n-              \
+    \  return iZone.convertLocalToUTC(localInstant, false);\n+                return\
+    \ iZone.convertLocalToUTC(localInstant, false, instant);\n             }\n   \
+    \      }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_26/src/main/java/org/joda/time/chrono/ZonedChronology.java\t\
+    2020-10-20 23:33:47.549864243 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_26/purify/purified/org/joda/time/chrono/ZonedChronology.java\t\
+    2020-10-20 23:33:47.545864128 -0400\n@@ -464,7 +464,7 @@\n         public long\
+    \ set(long instant, int value) {\n             long localInstant = iZone.convertUTCToLocal(instant);\n\
+    \             localInstant = iField.set(localInstant, value);\n-            long\
+    \ result = iZone.convertLocalToUTC(localInstant, false);\n+            long result\
+    \ = iZone.convertLocalToUTC(localInstant, false, instant);\n             if (get(result)\
+    \ != value) {\n                 throw new IllegalFieldValueException(iField.getType(),\
+    \ new Integer(value),\n                     \"Illegal instant due to time zone\
+    \ offset transition: \" +"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/chrono/ZonedChronology:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:iZone.convertLocalToUTC(localInstant,false)
+      @TO@ MethodInvocation:iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '---UPD MethodInvocation@@iZone.convertLocalToUTC(localInstant,false) @TO@ iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '------UPD SimpleName@@MethodName:convertLocalToUTC:[localInstant, false] @TO@
+      MethodName:convertLocalToUTC:[localInstant, false, instant] '
+    - '---------INS SimpleName@@instant @TO@ SimpleName@@MethodName:convertLocalToUTC:[localInstant,
+      false] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:iZone.convertLocalToUTC(localInstant,false)
+      @TO@ MethodInvocation:iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '---UPD MethodInvocation@@iZone.convertLocalToUTC(localInstant,false) @TO@ iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '------UPD SimpleName@@MethodName:convertLocalToUTC:[localInstant, false] @TO@
+      MethodName:convertLocalToUTC:[localInstant, false, instant] '
+    - '---------INS SimpleName@@instant @TO@ SimpleName@@MethodName:convertLocalToUTC:[localInstant,
+      false] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:iZone.convertLocalToUTC(localInstant,false)
+      @TO@ MethodInvocation:iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '---UPD MethodInvocation@@iZone.convertLocalToUTC(localInstant,false) @TO@ iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '------UPD SimpleName@@MethodName:convertLocalToUTC:[localInstant, false] @TO@
+      MethodName:convertLocalToUTC:[localInstant, false, instant] '
+    - '---------INS SimpleName@@instant @TO@ SimpleName@@MethodName:convertLocalToUTC:[localInstant,
+      false] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@long result=iZone.convertLocalToUTC(localInstant,false);
+      @TO@ long result=iZone.convertLocalToUTC(localInstant,false,instant); '
+    - '---UPD VariableDeclarationFragment@@result=iZone.convertLocalToUTC(localInstant,false)
+      @TO@ result=iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '------UPD MethodInvocation@@iZone.convertLocalToUTC(localInstant,false) @TO@
+      iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '---------UPD SimpleName@@MethodName:convertLocalToUTC:[localInstant, false]
+      @TO@ MethodName:convertLocalToUTC:[localInstant, false, instant] '
+    - '------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:convertLocalToUTC:[localInstant,
+      false] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:iZone.convertLocalToUTC(localInstant,false)
+      @TO@ MethodInvocation:iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '---UPD MethodInvocation@@iZone.convertLocalToUTC(localInstant,false) @TO@ iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '------UPD SimpleName@@MethodName:convertLocalToUTC:[localInstant, false] @TO@
+      MethodName:convertLocalToUTC:[localInstant, false, instant] '
+    - '---------INS SimpleName@@instant @TO@ SimpleName@@MethodName:convertLocalToUTC:[localInstant,
+      false] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:iZone.convertLocalToUTC(localInstant,false)
+      @TO@ MethodInvocation:iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '---UPD MethodInvocation@@iZone.convertLocalToUTC(localInstant,false) @TO@ iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '------UPD SimpleName@@MethodName:convertLocalToUTC:[localInstant, false] @TO@
+      MethodName:convertLocalToUTC:[localInstant, false, instant] '
+    - '---------INS SimpleName@@instant @TO@ SimpleName@@MethodName:convertLocalToUTC:[localInstant,
+      false] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:iZone.convertLocalToUTC(localInstant,false)
+      @TO@ MethodInvocation:iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '---UPD MethodInvocation@@iZone.convertLocalToUTC(localInstant,false) @TO@ iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '------UPD SimpleName@@MethodName:convertLocalToUTC:[localInstant, false] @TO@
+      MethodName:convertLocalToUTC:[localInstant, false, instant] '
+    - '---------INS SimpleName@@instant @TO@ SimpleName@@MethodName:convertLocalToUTC:[localInstant,
+      false] '
+  repair_actions_cnt: 7
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/chrono/ZonedChronology:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@long result=iZone.convertLocalToUTC(localInstant,false);
+      @TO@ long result=iZone.convertLocalToUTC(localInstant,false,instant); '
+    - '---UPD VariableDeclarationFragment@@result=iZone.convertLocalToUTC(localInstant,false)
+      @TO@ result=iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '------UPD MethodInvocation@@iZone.convertLocalToUTC(localInstant,false) @TO@
+      iZone.convertLocalToUTC(localInstant,false,instant) '
+    - '---------UPD SimpleName@@MethodName:convertLocalToUTC:[localInstant, false]
+      @TO@ MethodName:convertLocalToUTC:[localInstant, false, instant] '
+    - '------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:convertLocalToUTC:[localInstant,
+      false] '
+  repair_actions_cnt: 1

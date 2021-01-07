@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_25/src/main/java/org/joda/time/DateTimeZone.java	2020-10-20 23:31:08.765275649 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_25/purify/purified/org/joda/time/DateTimeZone.java	2020-10-20 23:31:08.753275302 -0400
+@@ -896,6 +896,15 @@
+                     return offsetLocal;
+                 }
+             }
++        } else if (offsetLocal > 0) {
++            long prev = previousTransition(instantAdjusted);
++            if (prev < instantAdjusted) {
++                int offsetPrev = getOffset(prev);
++                int diff = offsetPrev - offsetLocal;
++                if (instantAdjusted - prev <= diff) {
++                    return offsetPrev;
++                }
++            }
+         }
+         return offsetAdjusted;
+     }

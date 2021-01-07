@@ -1,0 +1,21 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_97/src/java/org/apache/commons/math/analysis/BrentSolver.java	2020-10-22 08:46:35.462552354 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_97/purify/purified/org/apache/commons/math/analysis/BrentSolver.java	2020-10-22 08:46:35.462552354 -0400
+@@ -137,12 +137,17 @@
+         double sign = yMin * yMax;
+         if (sign >= 0) {
+             // check if either value is close to a zero
++            if (Math.abs(yMin) <= functionValueAccuracy) {
++            } else if (Math.abs(yMax) <= functionValueAccuracy) {
++                ret = max;
++            } else {
+                 // neither value is close to zero and min and max do not bracket root.
+                 throw new IllegalArgumentException
+                 ("Function values at endpoints do not have different signs." +
+                         "  Endpoints: [" + min + "," + max + "]" + 
+                         "  Values: [" + yMin + "," + yMax + "]");
+-        } else {
++            }
++        } else if (sign < 0){
+             // solve using only the first endpoint as initial guess
+             ret = solve(min, yMin, max, yMax, min, yMin);
+             // either min or max is a root

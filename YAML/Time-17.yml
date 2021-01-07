@@ -1,0 +1,514 @@
+1 bug_id: Time-17
+2 src folder:
+  name of src folder: java
+  number of files: 183
+  number of java files: 156
+  number of src classes: 228
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestDateTimeZoneCutover#testBug3476684_adjustOffset
+  failing tests:
+  - org.joda.time.TestDateTimeZoneCutover
+  number of all test cases: 3885
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.119
+  purification via delta debugging: 375.903
+  repair actions extraction: 1.598
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestDateTimeZoneCutover#testBug3476684_adjustOffset: 1341
+  fixed:
+    org.joda.time.TestDateTimeZoneCutover#testBug3476684_adjustOffset: 1017
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 18
+  covDel: 5
+  cov_patch_lines: 23
+  delta_patch_lines: 22
+  oriAdd: 18
+  oriDel: 5
+  ori_patch_lines: 23
+  purAdd: 18
+  purDel: 4
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 5
+  original: 5
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 57
+  failFail: 2
+  passed: 1
+  total: 60
+9 sibling repair actions:
+- 0 1 0.9603638726445743
+- 2 4 0.8878822197055493
+- 8 9 0.9536266349583828
+- 8 11 0.7081174438687392
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_17/src/main/java/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 22:47:17.189219577 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_17/purify/patch/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 22:47:17.189219577 -0400\n@@ -1164,19 +1164,32 @@\n         // a bit\
+    \ messy, but will work in all non-pathological cases\n         \n         // evaluate\
+    \ 3 hours before and after to work out if anything is happening\n-        long\
+    \ instantBefore = convertUTCToLocal(instant - 3 * DateTimeConstants.MILLIS_PER_HOUR);\n\
+    -        long instantAfter = convertUTCToLocal(instant + 3 * DateTimeConstants.MILLIS_PER_HOUR);\n\
+    -        if (instantBefore == instantAfter) {\n+        long instantBefore = instant\
+    \ - 3 * DateTimeConstants.MILLIS_PER_HOUR;\n+        long instantAfter = instant\
+    \ + 3 * DateTimeConstants.MILLIS_PER_HOUR;\n+        long offsetBefore = getOffset(instantBefore);\n\
+    +        long offsetAfter = getOffset(instantAfter);\n+        if (offsetBefore\
+    \ <= offsetAfter) {\n             return instant;  // not an overlap (less than\
+    \ is a gap, equal is normal case)\n         }\n         \n         // work out\
+    \ range of instants that have duplicate local times\n-        long local = convertUTCToLocal(instant);\n\
+    -        return convertLocalToUTC(local, false, earlierOrLater ? instantAfter\
+    \ : instantBefore);\n+        long diff = offsetBefore - offsetAfter;\n+     \
+    \   long transition = nextTransition(instantBefore);\n+        long overlapStart\
+    \ = transition - diff;\n+        long overlapEnd = transition + diff;\n+     \
+    \   if (instant < overlapStart || instant >= overlapEnd) {\n+          return\
+    \ instant;  // not an overlap\n+        }\n         \n         // calculate result\n\
+    +        long afterStart = instant - overlapStart;\n+        if (afterStart >=\
+    \ diff) {\n           // currently in later offset\n+          return earlierOrLater\
+    \ ? instant : instant - diff;\n+        } else {\n           // currently in earlier\
+    \ offset\n+          return earlierOrLater ? instant + diff : instant;\n+    \
+    \    }\n     }\n //    System.out.println(new DateTime(transitionStart, DateTimeZone.UTC)\
+    \ + \" \" + new DateTime(transitionStart, this));"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_17/src/main/java/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 22:53:50.720593361 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_17/purify/purified/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 22:53:50.716593246 -0400\n@@ -1164,19 +1164,33 @@\n         // a bit\
+    \ messy, but will work in all non-pathological cases\n         \n         // evaluate\
+    \ 3 hours before and after to work out if anything is happening\n-        long\
+    \ instantBefore = convertUTCToLocal(instant - 3 * DateTimeConstants.MILLIS_PER_HOUR);\n\
+    -        long instantAfter = convertUTCToLocal(instant + 3 * DateTimeConstants.MILLIS_PER_HOUR);\n\
+    -        if (instantBefore == instantAfter) {\n+        long instantBefore = instant\
+    \ - 3 * DateTimeConstants.MILLIS_PER_HOUR;\n+        long instantAfter = instant\
+    \ + 3 * DateTimeConstants.MILLIS_PER_HOUR;\n+        long offsetBefore = getOffset(instantBefore);\n\
+    +        long offsetAfter = getOffset(instantAfter);\n+        if (offsetBefore\
+    \ <= offsetAfter) {\n             return instant;  // not an overlap (less than\
+    \ is a gap, equal is normal case)\n         }\n         \n         // work out\
+    \ range of instants that have duplicate local times\n         long local = convertUTCToLocal(instant);\n\
+    -        return convertLocalToUTC(local, false, earlierOrLater ? instantAfter\
+    \ : instantBefore);\n+        long diff = offsetBefore - offsetAfter;\n+     \
+    \   long transition = nextTransition(instantBefore);\n+        long overlapStart\
+    \ = transition - diff;\n+        long overlapEnd = transition + diff;\n+     \
+    \   if (instant < overlapStart || instant >= overlapEnd) {\n+          return\
+    \ instant;  // not an overlap\n+        }\n         \n         // calculate result\n\
+    +        long afterStart = instant - overlapStart;\n+        if (afterStart >=\
+    \ diff) {\n           // currently in later offset\n+          return earlierOrLater\
+    \ ? instant : instant - diff;\n+        } else {\n           // currently in earlier\
+    \ offset\n+          return earlierOrLater ? instant + diff : instant;\n+    \
+    \    }\n     }\n //    System.out.println(new DateTime(transitionStart, DateTimeZone.UTC)\
+    \ + \" \" + new DateTime(transitionStart, this));"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/DateTimeZone:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@long instantBefore=convertUTCToLocal(instant
+      - 3 * DateTimeConstants.MILLIS_PER_HOUR); @TO@ long instantBefore=instant -
+      3 * DateTimeConstants.MILLIS_PER_HOUR; '
+    - '---UPD VariableDeclarationFragment@@instantBefore=convertUTCToLocal(instant
+      - 3 * DateTimeConstants.MILLIS_PER_HOUR) @TO@ instantBefore=instant - 3 * DateTimeConstants.MILLIS_PER_HOUR '
+    - '------DEL MethodInvocation@@convertUTCToLocal(instant - 3 * DateTimeConstants.MILLIS_PER_HOUR) '
+    - '---------DEL SimpleName@@MethodName:convertUTCToLocal:[instant - 3 * DateTimeConstants.MILLIS_PER_HOUR] '
+    - '------MOV InfixExpression@@instant - 3 * DateTimeConstants.MILLIS_PER_HOUR
+      @TO@ VariableDeclarationFragment@@instantBefore=convertUTCToLocal(instant -
+      3 * DateTimeConstants.MILLIS_PER_HOUR) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@long instantAfter=convertUTCToLocal(instant
+      + 3 * DateTimeConstants.MILLIS_PER_HOUR); @TO@ long instantAfter=instant + 3
+      * DateTimeConstants.MILLIS_PER_HOUR; '
+    - '---UPD VariableDeclarationFragment@@instantAfter=convertUTCToLocal(instant
+      + 3 * DateTimeConstants.MILLIS_PER_HOUR) @TO@ instantAfter=instant + 3 * DateTimeConstants.MILLIS_PER_HOUR '
+    - '------DEL MethodInvocation@@convertUTCToLocal(instant + 3 * DateTimeConstants.MILLIS_PER_HOUR) '
+    - '---------DEL SimpleName@@MethodName:convertUTCToLocal:[instant + 3 * DateTimeConstants.MILLIS_PER_HOUR] '
+    - '------MOV InfixExpression@@instant + 3 * DateTimeConstants.MILLIS_PER_HOUR
+      @TO@ VariableDeclarationFragment@@instantAfter=convertUTCToLocal(instant + 3
+      * DateTimeConstants.MILLIS_PER_HOUR) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long offsetBefore=getOffset(instantBefore);
+      @TO@ MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long offsetBefore=getOffset(instantBefore); '
+    - '---INS VariableDeclarationFragment@@offsetBefore=getOffset(instantBefore) @TO@
+      VariableDeclarationStatement@@long offsetBefore=getOffset(instantBefore); '
+    - '------INS SimpleName@@offsetBefore @TO@ VariableDeclarationFragment@@offsetBefore=getOffset(instantBefore) '
+    - '------INS MethodInvocation@@getOffset(instantBefore) @TO@ VariableDeclarationFragment@@offsetBefore=getOffset(instantBefore) '
+    - '---------INS SimpleName@@MethodName:getOffset:[instantBefore] @TO@ MethodInvocation@@getOffset(instantBefore) '
+    - '------------INS SimpleName@@instantBefore @TO@ SimpleName@@MethodName:getOffset:[instantBefore] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:instantBefore == instantAfter @TO@ InfixExpression:offsetBefore
+      <= offsetAfter '
+    - '---UPD InfixExpression@@instantBefore == instantAfter @TO@ offsetBefore <=
+      offsetAfter '
+    - '------UPD SimpleName@@instantBefore @TO@ offsetBefore '
+    - '------UPD Operator@@== @TO@ <= '
+    - '------UPD SimpleName@@instantAfter @TO@ offsetAfter '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long offsetAfter=getOffset(instantAfter);
+      @TO@ MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long offsetAfter=getOffset(instantAfter); '
+    - '---INS VariableDeclarationFragment@@offsetAfter=getOffset(instantAfter) @TO@
+      VariableDeclarationStatement@@long offsetAfter=getOffset(instantAfter); '
+    - '------INS SimpleName@@offsetAfter @TO@ VariableDeclarationFragment@@offsetAfter=getOffset(instantAfter) '
+    - '------INS MethodInvocation@@getOffset(instantAfter) @TO@ VariableDeclarationFragment@@offsetAfter=getOffset(instantAfter) '
+    - '---------INS SimpleName@@MethodName:getOffset:[instantAfter] @TO@ MethodInvocation@@getOffset(instantAfter) '
+    - '------------INS SimpleName@@instantAfter @TO@ SimpleName@@MethodName:getOffset:[instantAfter] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@long local=convertUTCToLocal(instant); @TO@
+      long transition=nextTransition(instantBefore); '
+    - '---UPD VariableDeclarationFragment@@local=convertUTCToLocal(instant) @TO@ transition=nextTransition(instantBefore) '
+    - '------UPD SimpleName@@local @TO@ transition '
+    - '------UPD MethodInvocation@@convertUTCToLocal(instant) @TO@ nextTransition(instantBefore) '
+    - '---------UPD SimpleName@@MethodName:convertUTCToLocal:[instant] @TO@ MethodName:nextTransition:[instantBefore] '
+    - '------------UPD SimpleName@@instant @TO@ instantBefore '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@MethodInvocation:convertLocalToUTC(local,false,earlierOrLater
+      ? instantAfter : instantBefore) '
+    - '---DEL MethodInvocation@@convertLocalToUTC(local,false,earlierOrLater ? instantAfter
+      : instantBefore) '
+    - '------DEL SimpleName@@MethodName:convertLocalToUTC:[local, false, earlierOrLater
+      ? instantAfter : instantBefore] '
+    - '---------DEL SimpleName@@local '
+    - '---------DEL BooleanLiteral@@false '
+    - '---------DEL ConditionalExpression@@earlierOrLater ? instantAfter : instantBefore '
+    - '------------DEL SimpleName@@instantBefore '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long diff=offsetBefore - offsetAfter; @TO@
+      MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long diff=offsetBefore
+      - offsetAfter; '
+    - '---INS VariableDeclarationFragment@@diff=offsetBefore - offsetAfter @TO@ VariableDeclarationStatement@@long
+      diff=offsetBefore - offsetAfter; '
+    - '------INS SimpleName@@diff @TO@ VariableDeclarationFragment@@diff=offsetBefore
+      - offsetAfter '
+    - '------INS InfixExpression@@offsetBefore - offsetAfter @TO@ VariableDeclarationFragment@@diff=offsetBefore
+      - offsetAfter '
+    - '---------INS SimpleName@@offsetBefore @TO@ InfixExpression@@offsetBefore -
+      offsetAfter '
+    - '---------INS Operator@@- @TO@ InfixExpression@@offsetBefore - offsetAfter '
+    - '---------INS SimpleName@@offsetAfter @TO@ InfixExpression@@offsetBefore - offsetAfter '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long overlapStart=transition - diff; @TO@
+      MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long overlapStart=transition
+      - diff; '
+    - '---INS VariableDeclarationFragment@@overlapStart=transition - diff @TO@ VariableDeclarationStatement@@long
+      overlapStart=transition - diff; '
+    - '------INS SimpleName@@overlapStart @TO@ VariableDeclarationFragment@@overlapStart=transition
+      - diff '
+    - '------INS InfixExpression@@transition - diff @TO@ VariableDeclarationFragment@@overlapStart=transition
+      - diff '
+    - '---------INS SimpleName@@transition @TO@ InfixExpression@@transition - diff '
+    - '---------INS Operator@@- @TO@ InfixExpression@@transition - diff '
+    - '---------INS SimpleName@@diff @TO@ InfixExpression@@transition - diff '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long overlapEnd=transition + diff; @TO@ MethodDeclaration@@public,
+      @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long overlapEnd=transition
+      + diff; '
+    - '---INS VariableDeclarationFragment@@overlapEnd=transition + diff @TO@ VariableDeclarationStatement@@long
+      overlapEnd=transition + diff; '
+    - '------INS SimpleName@@overlapEnd @TO@ VariableDeclarationFragment@@overlapEnd=transition
+      + diff '
+    - '------INS InfixExpression@@transition + diff @TO@ VariableDeclarationFragment@@overlapEnd=transition
+      + diff '
+    - '---------INS SimpleName@@transition @TO@ InfixExpression@@transition + diff '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@transition + diff '
+    - '---------INS SimpleName@@diff @TO@ InfixExpression@@transition + diff '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:instant < overlapStart || instant >= overlapEnd
+      @TO@ MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS InfixExpression@@instant < overlapStart || instant >= overlapEnd @TO@
+      IfStatement@@InfixExpression:instant < overlapStart || instant >= overlapEnd '
+    - '------INS InfixExpression@@instant < overlapStart @TO@ InfixExpression@@instant
+      < overlapStart || instant >= overlapEnd '
+    - '---------INS SimpleName@@instant @TO@ InfixExpression@@instant < overlapStart '
+    - '---------INS Operator@@< @TO@ InfixExpression@@instant < overlapStart '
+    - '---------INS SimpleName@@overlapStart @TO@ InfixExpression@@instant < overlapStart '
+    - '------INS Operator@@|| @TO@ InfixExpression@@instant < overlapStart || instant
+      >= overlapEnd '
+    - '------INS InfixExpression@@instant >= overlapEnd @TO@ InfixExpression@@instant
+      < overlapStart || instant >= overlapEnd '
+    - '---------INS SimpleName@@instant @TO@ InfixExpression@@instant >= overlapEnd '
+    - '---------INS Operator@@>= @TO@ InfixExpression@@instant >= overlapEnd '
+    - '---------INS SimpleName@@overlapEnd @TO@ InfixExpression@@instant >= overlapEnd '
+    - '---INS ReturnStatement@@SimpleName:instant @TO@ IfStatement@@InfixExpression:instant
+      < overlapStart || instant >= overlapEnd '
+    - '------INS SimpleName@@instant @TO@ ReturnStatement@@SimpleName:instant '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long afterStart=instant - overlapStart; @TO@
+      MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long afterStart=instant
+      - overlapStart; '
+    - '---INS VariableDeclarationFragment@@afterStart=instant - overlapStart @TO@
+      VariableDeclarationStatement@@long afterStart=instant - overlapStart; '
+    - '------INS SimpleName@@afterStart @TO@ VariableDeclarationFragment@@afterStart=instant
+      - overlapStart '
+    - '------INS InfixExpression@@instant - overlapStart @TO@ VariableDeclarationFragment@@afterStart=instant
+      - overlapStart '
+    - '---------INS SimpleName@@instant @TO@ InfixExpression@@instant - overlapStart '
+    - '---------INS Operator@@- @TO@ InfixExpression@@instant - overlapStart '
+    - '---------INS SimpleName@@overlapStart @TO@ InfixExpression@@instant - overlapStart '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:afterStart >= diff @TO@ MethodDeclaration@@public,
+      @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS InfixExpression@@afterStart >= diff @TO@ IfStatement@@InfixExpression:afterStart
+      >= diff '
+    - '------INS SimpleName@@afterStart @TO@ InfixExpression@@afterStart >= diff '
+    - '------INS Operator@@>= @TO@ InfixExpression@@afterStart >= diff '
+    - '------INS SimpleName@@diff @TO@ InfixExpression@@afterStart >= diff '
+    - '---INS ReturnStatement@@ConditionalExpression:earlierOrLater ? instant : instant
+      - diff @TO@ IfStatement@@InfixExpression:afterStart >= diff '
+    - '------INS ConditionalExpression@@earlierOrLater ? instant : instant - diff
+      @TO@ ReturnStatement@@ConditionalExpression:earlierOrLater ? instant : instant
+      - diff '
+    - '---------MOV SimpleName@@earlierOrLater @TO@ ConditionalExpression@@earlierOrLater
+      ? instant : instant - diff '
+    - '---------MOV SimpleName@@instantAfter @TO@ ConditionalExpression@@earlierOrLater
+      ? instant : instant - diff '
+    - '---------INS InfixExpression@@instant - diff @TO@ ConditionalExpression@@earlierOrLater
+      ? instant : instant - diff '
+    - '------------INS SimpleName@@instant @TO@ InfixExpression@@instant - diff '
+    - '------------INS Operator@@- @TO@ InfixExpression@@instant - diff '
+    - '------------INS SimpleName@@diff @TO@ InfixExpression@@instant - diff '
+    - '---INS ReturnStatement@@ConditionalExpression:earlierOrLater ? instant + diff
+      : instant @TO@ IfStatement@@InfixExpression:afterStart >= diff '
+    - '------INS ConditionalExpression@@earlierOrLater ? instant + diff : instant
+      @TO@ ReturnStatement@@ConditionalExpression:earlierOrLater ? instant + diff
+      : instant '
+    - '---------INS SimpleName@@earlierOrLater @TO@ ConditionalExpression@@earlierOrLater
+      ? instant + diff : instant '
+    - '---------INS InfixExpression@@instant + diff @TO@ ConditionalExpression@@earlierOrLater
+      ? instant + diff : instant '
+    - '------------INS SimpleName@@instant @TO@ InfixExpression@@instant + diff '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@instant + diff '
+    - '------------INS SimpleName@@diff @TO@ InfixExpression@@instant + diff '
+    - '---------INS SimpleName@@instant @TO@ ConditionalExpression@@earlierOrLater
+      ? instant + diff : instant '
+  repair_actions_cnt: 13
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/DateTimeZone:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@long instantBefore=convertUTCToLocal(instant
+      - 3 * DateTimeConstants.MILLIS_PER_HOUR); @TO@ long instantBefore=instant -
+      3 * DateTimeConstants.MILLIS_PER_HOUR; '
+    - '---UPD VariableDeclarationFragment@@instantBefore=convertUTCToLocal(instant
+      - 3 * DateTimeConstants.MILLIS_PER_HOUR) @TO@ instantBefore=instant - 3 * DateTimeConstants.MILLIS_PER_HOUR '
+    - '------DEL MethodInvocation@@convertUTCToLocal(instant - 3 * DateTimeConstants.MILLIS_PER_HOUR) '
+    - '---------DEL SimpleName@@MethodName:convertUTCToLocal:[instant - 3 * DateTimeConstants.MILLIS_PER_HOUR] '
+    - '------MOV InfixExpression@@instant - 3 * DateTimeConstants.MILLIS_PER_HOUR
+      @TO@ VariableDeclarationFragment@@instantBefore=convertUTCToLocal(instant -
+      3 * DateTimeConstants.MILLIS_PER_HOUR) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@long instantAfter=convertUTCToLocal(instant
+      + 3 * DateTimeConstants.MILLIS_PER_HOUR); @TO@ long instantAfter=instant + 3
+      * DateTimeConstants.MILLIS_PER_HOUR; '
+    - '---UPD VariableDeclarationFragment@@instantAfter=convertUTCToLocal(instant
+      + 3 * DateTimeConstants.MILLIS_PER_HOUR) @TO@ instantAfter=instant + 3 * DateTimeConstants.MILLIS_PER_HOUR '
+    - '------DEL MethodInvocation@@convertUTCToLocal(instant + 3 * DateTimeConstants.MILLIS_PER_HOUR) '
+    - '---------DEL SimpleName@@MethodName:convertUTCToLocal:[instant + 3 * DateTimeConstants.MILLIS_PER_HOUR] '
+    - '------MOV InfixExpression@@instant + 3 * DateTimeConstants.MILLIS_PER_HOUR
+      @TO@ VariableDeclarationFragment@@instantAfter=convertUTCToLocal(instant + 3
+      * DateTimeConstants.MILLIS_PER_HOUR) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long offsetBefore=getOffset(instantBefore);
+      @TO@ MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long offsetBefore=getOffset(instantBefore); '
+    - '---INS VariableDeclarationFragment@@offsetBefore=getOffset(instantBefore) @TO@
+      VariableDeclarationStatement@@long offsetBefore=getOffset(instantBefore); '
+    - '------INS SimpleName@@offsetBefore @TO@ VariableDeclarationFragment@@offsetBefore=getOffset(instantBefore) '
+    - '------INS MethodInvocation@@getOffset(instantBefore) @TO@ VariableDeclarationFragment@@offsetBefore=getOffset(instantBefore) '
+    - '---------INS SimpleName@@MethodName:getOffset:[instantBefore] @TO@ MethodInvocation@@getOffset(instantBefore) '
+    - '------------INS SimpleName@@instantBefore @TO@ SimpleName@@MethodName:getOffset:[instantBefore] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:instantBefore == instantAfter @TO@ InfixExpression:offsetBefore
+      <= offsetAfter '
+    - '---UPD InfixExpression@@instantBefore == instantAfter @TO@ offsetBefore <=
+      offsetAfter '
+    - '------UPD SimpleName@@instantBefore @TO@ offsetBefore '
+    - '------UPD Operator@@== @TO@ <= '
+    - '------UPD SimpleName@@instantAfter @TO@ offsetAfter '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long offsetAfter=getOffset(instantAfter);
+      @TO@ MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long offsetAfter=getOffset(instantAfter); '
+    - '---INS VariableDeclarationFragment@@offsetAfter=getOffset(instantAfter) @TO@
+      VariableDeclarationStatement@@long offsetAfter=getOffset(instantAfter); '
+    - '------INS SimpleName@@offsetAfter @TO@ VariableDeclarationFragment@@offsetAfter=getOffset(instantAfter) '
+    - '------INS MethodInvocation@@getOffset(instantAfter) @TO@ VariableDeclarationFragment@@offsetAfter=getOffset(instantAfter) '
+    - '---------INS SimpleName@@MethodName:getOffset:[instantAfter] @TO@ MethodInvocation@@getOffset(instantAfter) '
+    - '------------INS SimpleName@@instantAfter @TO@ SimpleName@@MethodName:getOffset:[instantAfter] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@MethodInvocation:convertLocalToUTC(local,false,earlierOrLater
+      ? instantAfter : instantBefore) '
+    - '---DEL MethodInvocation@@convertLocalToUTC(local,false,earlierOrLater ? instantAfter
+      : instantBefore) '
+    - '------DEL SimpleName@@MethodName:convertLocalToUTC:[local, false, earlierOrLater
+      ? instantAfter : instantBefore] '
+    - '---------DEL SimpleName@@local '
+    - '---------DEL BooleanLiteral@@false '
+    - '---------DEL ConditionalExpression@@earlierOrLater ? instantAfter : instantBefore '
+    - '------------DEL SimpleName@@instantBefore '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long diff=offsetBefore - offsetAfter; @TO@
+      MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long diff=offsetBefore
+      - offsetAfter; '
+    - '---INS VariableDeclarationFragment@@diff=offsetBefore - offsetAfter @TO@ VariableDeclarationStatement@@long
+      diff=offsetBefore - offsetAfter; '
+    - '------INS SimpleName@@diff @TO@ VariableDeclarationFragment@@diff=offsetBefore
+      - offsetAfter '
+    - '------INS InfixExpression@@offsetBefore - offsetAfter @TO@ VariableDeclarationFragment@@diff=offsetBefore
+      - offsetAfter '
+    - '---------INS SimpleName@@offsetBefore @TO@ InfixExpression@@offsetBefore -
+      offsetAfter '
+    - '---------INS Operator@@- @TO@ InfixExpression@@offsetBefore - offsetAfter '
+    - '---------INS SimpleName@@offsetAfter @TO@ InfixExpression@@offsetBefore - offsetAfter '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long transition=nextTransition(instantBefore);
+      @TO@ MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long transition=nextTransition(instantBefore); '
+    - '---INS VariableDeclarationFragment@@transition=nextTransition(instantBefore)
+      @TO@ VariableDeclarationStatement@@long transition=nextTransition(instantBefore); '
+    - '------INS SimpleName@@transition @TO@ VariableDeclarationFragment@@transition=nextTransition(instantBefore) '
+    - '------INS MethodInvocation@@nextTransition(instantBefore) @TO@ VariableDeclarationFragment@@transition=nextTransition(instantBefore) '
+    - '---------INS SimpleName@@MethodName:nextTransition:[instantBefore] @TO@ MethodInvocation@@nextTransition(instantBefore) '
+    - '------------INS SimpleName@@instantBefore @TO@ SimpleName@@MethodName:nextTransition:[instantBefore] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long overlapStart=transition - diff; @TO@
+      MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long overlapStart=transition
+      - diff; '
+    - '---INS VariableDeclarationFragment@@overlapStart=transition - diff @TO@ VariableDeclarationStatement@@long
+      overlapStart=transition - diff; '
+    - '------INS SimpleName@@overlapStart @TO@ VariableDeclarationFragment@@overlapStart=transition
+      - diff '
+    - '------INS InfixExpression@@transition - diff @TO@ VariableDeclarationFragment@@overlapStart=transition
+      - diff '
+    - '---------INS SimpleName@@transition @TO@ InfixExpression@@transition - diff '
+    - '---------INS Operator@@- @TO@ InfixExpression@@transition - diff '
+    - '---------INS SimpleName@@diff @TO@ InfixExpression@@transition - diff '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long overlapEnd=transition + diff; @TO@ MethodDeclaration@@public,
+      @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long overlapEnd=transition
+      + diff; '
+    - '---INS VariableDeclarationFragment@@overlapEnd=transition + diff @TO@ VariableDeclarationStatement@@long
+      overlapEnd=transition + diff; '
+    - '------INS SimpleName@@overlapEnd @TO@ VariableDeclarationFragment@@overlapEnd=transition
+      + diff '
+    - '------INS InfixExpression@@transition + diff @TO@ VariableDeclarationFragment@@overlapEnd=transition
+      + diff '
+    - '---------INS SimpleName@@transition @TO@ InfixExpression@@transition + diff '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@transition + diff '
+    - '---------INS SimpleName@@diff @TO@ InfixExpression@@transition + diff '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:instant < overlapStart || instant >= overlapEnd
+      @TO@ MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS InfixExpression@@instant < overlapStart || instant >= overlapEnd @TO@
+      IfStatement@@InfixExpression:instant < overlapStart || instant >= overlapEnd '
+    - '------INS InfixExpression@@instant < overlapStart @TO@ InfixExpression@@instant
+      < overlapStart || instant >= overlapEnd '
+    - '---------INS SimpleName@@instant @TO@ InfixExpression@@instant < overlapStart '
+    - '---------INS Operator@@< @TO@ InfixExpression@@instant < overlapStart '
+    - '---------INS SimpleName@@overlapStart @TO@ InfixExpression@@instant < overlapStart '
+    - '------INS Operator@@|| @TO@ InfixExpression@@instant < overlapStart || instant
+      >= overlapEnd '
+    - '------INS InfixExpression@@instant >= overlapEnd @TO@ InfixExpression@@instant
+      < overlapStart || instant >= overlapEnd '
+    - '---------INS SimpleName@@instant @TO@ InfixExpression@@instant >= overlapEnd '
+    - '---------INS Operator@@>= @TO@ InfixExpression@@instant >= overlapEnd '
+    - '---------INS SimpleName@@overlapEnd @TO@ InfixExpression@@instant >= overlapEnd '
+    - '---INS ReturnStatement@@SimpleName:instant @TO@ IfStatement@@InfixExpression:instant
+      < overlapStart || instant >= overlapEnd '
+    - '------INS SimpleName@@instant @TO@ ReturnStatement@@SimpleName:instant '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long afterStart=instant - overlapStart; @TO@
+      MethodDeclaration@@public, @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long afterStart=instant
+      - overlapStart; '
+    - '---INS VariableDeclarationFragment@@afterStart=instant - overlapStart @TO@
+      VariableDeclarationStatement@@long afterStart=instant - overlapStart; '
+    - '------INS SimpleName@@afterStart @TO@ VariableDeclarationFragment@@afterStart=instant
+      - overlapStart '
+    - '------INS InfixExpression@@instant - overlapStart @TO@ VariableDeclarationFragment@@afterStart=instant
+      - overlapStart '
+    - '---------INS SimpleName@@instant @TO@ InfixExpression@@instant - overlapStart '
+    - '---------INS Operator@@- @TO@ InfixExpression@@instant - overlapStart '
+    - '---------INS SimpleName@@overlapStart @TO@ InfixExpression@@instant - overlapStart '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:afterStart >= diff @TO@ MethodDeclaration@@public,
+      @@long, MethodName:adjustOffset, @@Argus:long+instant+boolean+earlierOrLater+ '
+    - '---INS InfixExpression@@afterStart >= diff @TO@ IfStatement@@InfixExpression:afterStart
+      >= diff '
+    - '------INS SimpleName@@afterStart @TO@ InfixExpression@@afterStart >= diff '
+    - '------INS Operator@@>= @TO@ InfixExpression@@afterStart >= diff '
+    - '------INS SimpleName@@diff @TO@ InfixExpression@@afterStart >= diff '
+    - '---INS ReturnStatement@@ConditionalExpression:earlierOrLater ? instant : instant
+      - diff @TO@ IfStatement@@InfixExpression:afterStart >= diff '
+    - '------INS ConditionalExpression@@earlierOrLater ? instant : instant - diff
+      @TO@ ReturnStatement@@ConditionalExpression:earlierOrLater ? instant : instant
+      - diff '
+    - '---------MOV SimpleName@@earlierOrLater @TO@ ConditionalExpression@@earlierOrLater
+      ? instant : instant - diff '
+    - '---------MOV SimpleName@@instantAfter @TO@ ConditionalExpression@@earlierOrLater
+      ? instant : instant - diff '
+    - '---------INS InfixExpression@@instant - diff @TO@ ConditionalExpression@@earlierOrLater
+      ? instant : instant - diff '
+    - '------------INS SimpleName@@instant @TO@ InfixExpression@@instant - diff '
+    - '------------INS Operator@@- @TO@ InfixExpression@@instant - diff '
+    - '------------INS SimpleName@@diff @TO@ InfixExpression@@instant - diff '
+    - '---INS ReturnStatement@@ConditionalExpression:earlierOrLater ? instant + diff
+      : instant @TO@ IfStatement@@InfixExpression:afterStart >= diff '
+    - '------INS ConditionalExpression@@earlierOrLater ? instant + diff : instant
+      @TO@ ReturnStatement@@ConditionalExpression:earlierOrLater ? instant + diff
+      : instant '
+    - '---------INS SimpleName@@earlierOrLater @TO@ ConditionalExpression@@earlierOrLater
+      ? instant + diff : instant '
+    - '---------INS InfixExpression@@instant + diff @TO@ ConditionalExpression@@earlierOrLater
+      ? instant + diff : instant '
+    - '------------INS SimpleName@@instant @TO@ InfixExpression@@instant + diff '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@instant + diff '
+    - '------------INS SimpleName@@diff @TO@ InfixExpression@@instant + diff '
+    - '---------INS SimpleName@@instant @TO@ ConditionalExpression@@earlierOrLater
+      ? instant + diff : instant '
+  repair_actions_cnt: 13

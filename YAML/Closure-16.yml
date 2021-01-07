@@ -1,0 +1,301 @@
+1 bug_id: Closure-16
+2 src folder:
+  name of src folder: src
+  number of files: 419
+  number of java files: 403
+  number of src classes: 1360
+  number of test classes: 224
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.IntegrationTest#testIssue772
+  - com.google.javascript.jscomp.ScopedAliasesTest#testIssue772
+  failing tests:
+  - com.google.javascript.jscomp.IntegrationTest
+  - com.google.javascript.jscomp.ScopedAliasesTest
+  number of all test cases: 7595
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 4.0
+  purification via coverage: 0.734
+  purification via delta debugging: 974.141
+  repair actions extraction: 1.148
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.IntegrationTest#testIssue772: 6991
+    com.google.javascript.jscomp.ScopedAliasesTest#testIssue772: 3496
+  fixed:
+    com.google.javascript.jscomp.IntegrationTest#testIssue772: 7113
+    com.google.javascript.jscomp.ScopedAliasesTest#testIssue772: 3437
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 9
+  covDel: 3
+  cov_patch_lines: 12
+  delta_patch_lines: 11
+  oriAdd: 9
+  oriDel: 3
+  ori_patch_lines: 12
+  purAdd: 8
+  purDel: 3
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 5
+  original: 5
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 28
+  failFail: 5
+  passed: 1
+  total: 34
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_16/src/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-21 20:04:37.376718178 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_16/purify/patch/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-21 20:04:37.376718178 -0400\n@@ -167,17 +167,23 @@\n \n   private class\
+    \ AliasedTypeNode implements AliasUsage {\n     private final Node typeReference;\n\
+    +    private final Node aliasDefinition;\n     private final String aliasName;\n\
+    \ \n-    AliasedTypeNode(Node typeReference,\n+    AliasedTypeNode(Node typeReference,\
+    \ Node aliasDefinition,\n         String aliasName) {\n       this.typeReference\
+    \ = typeReference;\n+      this.aliasDefinition = aliasDefinition;\n       this.aliasName\
+    \ = aliasName;\n     }\n \n     @Override\n     public void applyAlias() {\n-\
+    \      typeReference.setString(aliasName);\n+      String typeName = typeReference.getString();\n\
+    +      String aliasExpanded =\n+          Preconditions.checkNotNull(aliasDefinition.getQualifiedName());\n\
+    +      Preconditions.checkState(typeName.startsWith(aliasName));\n+      typeReference.setString(typeName.replaceFirst(aliasName,\
+    \ aliasExpanded));\n     }\n   }\n \n@@ -465,7 +471,7 @@\n         Var aliasVar\
+    \ = aliases.get(baseName);\n         if (aliasVar != null) {\n           Node\
+    \ aliasedNode = aliasVar.getInitialValue();\n-          aliasUsages.add(new AliasedTypeNode(typeNode,\
+    \ aliasedNode.getQualifiedName() + name.substring(endIndex)));\n+          aliasUsages.add(new\
+    \ AliasedTypeNode(typeNode, aliasedNode, baseName));\n         }\n       }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_16/src/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-21 20:21:33.670064183 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_16/purify/purified/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-21 20:21:33.670064183 -0400\n@@ -167,17 +167,22 @@\n \n   private class\
+    \ AliasedTypeNode implements AliasUsage {\n     private final Node typeReference;\n\
+    +    private final Node aliasDefinition;\n     private final String aliasName;\n\
+    \ \n-    AliasedTypeNode(Node typeReference,\n+    AliasedTypeNode(Node typeReference,\
+    \ Node aliasDefinition,\n         String aliasName) {\n       this.typeReference\
+    \ = typeReference;\n+      this.aliasDefinition = aliasDefinition;\n       this.aliasName\
+    \ = aliasName;\n     }\n \n     @Override\n     public void applyAlias() {\n-\
+    \      typeReference.setString(aliasName);\n+      String typeName = typeReference.getString();\n\
+    +      String aliasExpanded =\n+          Preconditions.checkNotNull(aliasDefinition.getQualifiedName());\n\
+    +      typeReference.setString(typeName.replaceFirst(aliasName, aliasExpanded));\n\
+    \     }\n   }\n \n@@ -465,7 +470,7 @@\n         Var aliasVar = aliases.get(baseName);\n\
+    \         if (aliasVar != null) {\n           Node aliasedNode = aliasVar.getInitialValue();\n\
+    -          aliasUsages.add(new AliasedTypeNode(typeNode, aliasedNode.getQualifiedName()\
+    \ + name.substring(endIndex)));\n+          aliasUsages.add(new AliasedTypeNode(typeNode,\
+    \ aliasedNode, baseName));\n         }\n       }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ScopedAliases:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, final, Node, [aliasDefinition] @TO@ TypeDeclaration@@[private]AliasedTypeNode,
+      [AliasUsage] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, final, Node, [aliasDefinition] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, final, Node, [aliasDefinition] '
+    - '---INS SimpleType@@Node @TO@ FieldDeclaration@@private, final, Node, [aliasDefinition] '
+    - '---INS VariableDeclarationFragment@@aliasDefinition @TO@ FieldDeclaration@@private,
+      final, Node, [aliasDefinition] '
+    - '------INS SimpleName@@aliasDefinition @TO@ VariableDeclarationFragment@@aliasDefinition '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@@@=CONSTRUCTOR=, MethodName:AliasedTypeNode, @@Argus:Node+typeReference+String+aliasName+
+      @TO@ @@=CONSTRUCTOR=, MethodName:AliasedTypeNode, @@Argus:Node+typeReference+Node+aliasDefinition+String+aliasName+ '
+    - '---INS SingleVariableDeclaration@@Node aliasDefinition @TO@ MethodDeclaration@@@@=CONSTRUCTOR=,
+      MethodName:AliasedTypeNode, @@Argus:Node+typeReference+String+aliasName+ '
+    - '------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node aliasDefinition '
+    - '------INS SimpleName@@aliasDefinition @TO@ SingleVariableDeclaration@@Node
+      aliasDefinition '
+    - '---INS ExpressionStatement@@Assignment:this.aliasDefinition=aliasDefinition
+      @TO@ MethodDeclaration@@@@=CONSTRUCTOR=, MethodName:AliasedTypeNode, @@Argus:Node+typeReference+String+aliasName+ '
+    - '------INS Assignment@@this.aliasDefinition=aliasDefinition @TO@ ExpressionStatement@@Assignment:this.aliasDefinition=aliasDefinition '
+    - '---------INS FieldAccess@@this.aliasDefinition @TO@ Assignment@@this.aliasDefinition=aliasDefinition '
+    - '------------INS ThisExpression@@this @TO@ FieldAccess@@this.aliasDefinition '
+    - '------------INS SimpleName@@aliasDefinition @TO@ FieldAccess@@this.aliasDefinition '
+    - '---------INS Operator@@= @TO@ Assignment@@this.aliasDefinition=aliasDefinition '
+    - '---------INS SimpleName@@aliasDefinition @TO@ Assignment@@this.aliasDefinition=aliasDefinition '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:typeReference.setString(aliasName)
+      @TO@ MethodInvocation:typeReference.setString(typeName.replaceFirst(aliasName,aliasExpanded)) '
+    - '---UPD MethodInvocation@@typeReference.setString(aliasName) @TO@ typeReference.setString(typeName.replaceFirst(aliasName,aliasExpanded)) '
+    - '------UPD SimpleName@@MethodName:setString:[aliasName] @TO@ MethodName:setString:[typeName.replaceFirst(aliasName,aliasExpanded)] '
+    - '---------INS MethodInvocation@@typeName.replaceFirst(aliasName,aliasExpanded)
+      @TO@ SimpleName@@MethodName:setString:[aliasName] '
+    - '------------INS SimpleName@@Name:typeName @TO@ MethodInvocation@@typeName.replaceFirst(aliasName,aliasExpanded) '
+    - '------------INS SimpleName@@MethodName:replaceFirst:[aliasName, aliasExpanded]
+      @TO@ MethodInvocation@@typeName.replaceFirst(aliasName,aliasExpanded) '
+    - '---------------MOV SimpleName@@aliasName @TO@ SimpleName@@MethodName:replaceFirst:[aliasName,
+      aliasExpanded] '
+    - '---------------INS SimpleName@@aliasExpanded @TO@ SimpleName@@MethodName:replaceFirst:[aliasName,
+      aliasExpanded] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@String typeName=typeReference.getString();
+      @TO@ MethodDeclaration@@public, @@void, MethodName:applyAlias, @@Argus:null '
+    - '---INS SimpleType@@String @TO@ VariableDeclarationStatement@@String typeName=typeReference.getString(); '
+    - '---INS VariableDeclarationFragment@@typeName=typeReference.getString() @TO@
+      VariableDeclarationStatement@@String typeName=typeReference.getString(); '
+    - '------INS SimpleName@@typeName @TO@ VariableDeclarationFragment@@typeName=typeReference.getString() '
+    - '------INS MethodInvocation@@typeReference.getString() @TO@ VariableDeclarationFragment@@typeName=typeReference.getString() '
+    - '---------INS SimpleName@@Name:typeReference @TO@ MethodInvocation@@typeReference.getString() '
+    - '---------INS SimpleName@@MethodName:getString:[] @TO@ MethodInvocation@@typeReference.getString() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@String aliasExpanded=Preconditions.checkNotNull(aliasDefinition.getQualifiedName());
+      @TO@ MethodDeclaration@@public, @@void, MethodName:applyAlias, @@Argus:null '
+    - '---INS SimpleType@@String @TO@ VariableDeclarationStatement@@String aliasExpanded=Preconditions.checkNotNull(aliasDefinition.getQualifiedName()); '
+    - '---INS VariableDeclarationFragment@@aliasExpanded=Preconditions.checkNotNull(aliasDefinition.getQualifiedName())
+      @TO@ VariableDeclarationStatement@@String aliasExpanded=Preconditions.checkNotNull(aliasDefinition.getQualifiedName()); '
+    - '------INS SimpleName@@aliasExpanded @TO@ VariableDeclarationFragment@@aliasExpanded=Preconditions.checkNotNull(aliasDefinition.getQualifiedName()) '
+    - '------INS MethodInvocation@@Preconditions.checkNotNull(aliasDefinition.getQualifiedName())
+      @TO@ VariableDeclarationFragment@@aliasExpanded=Preconditions.checkNotNull(aliasDefinition.getQualifiedName()) '
+    - '---------INS SimpleName@@Name:Preconditions @TO@ MethodInvocation@@Preconditions.checkNotNull(aliasDefinition.getQualifiedName()) '
+    - '---------INS SimpleName@@MethodName:checkNotNull:[aliasDefinition.getQualifiedName()]
+      @TO@ MethodInvocation@@Preconditions.checkNotNull(aliasDefinition.getQualifiedName()) '
+    - '------------INS MethodInvocation@@aliasDefinition.getQualifiedName() @TO@ SimpleName@@MethodName:checkNotNull:[aliasDefinition.getQualifiedName()] '
+    - '---------------INS SimpleName@@Name:aliasDefinition @TO@ MethodInvocation@@aliasDefinition.getQualifiedName() '
+    - '---------------INS SimpleName@@MethodName:getQualifiedName:[] @TO@ MethodInvocation@@aliasDefinition.getQualifiedName() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:Preconditions.checkState(typeName.startsWith(aliasName))
+      @TO@ MethodDeclaration@@public, @@void, MethodName:applyAlias, @@Argus:null '
+    - '---INS MethodInvocation@@Preconditions.checkState(typeName.startsWith(aliasName))
+      @TO@ ExpressionStatement@@MethodInvocation:Preconditions.checkState(typeName.startsWith(aliasName)) '
+    - '------INS SimpleName@@Name:Preconditions @TO@ MethodInvocation@@Preconditions.checkState(typeName.startsWith(aliasName)) '
+    - '------INS SimpleName@@MethodName:checkState:[typeName.startsWith(aliasName)]
+      @TO@ MethodInvocation@@Preconditions.checkState(typeName.startsWith(aliasName)) '
+    - '---------INS MethodInvocation@@typeName.startsWith(aliasName) @TO@ SimpleName@@MethodName:checkState:[typeName.startsWith(aliasName)] '
+    - '------------INS SimpleName@@Name:typeName @TO@ MethodInvocation@@typeName.startsWith(aliasName) '
+    - '------------INS SimpleName@@MethodName:startsWith:[aliasName] @TO@ MethodInvocation@@typeName.startsWith(aliasName) '
+    - '---------------INS SimpleName@@aliasName @TO@ SimpleName@@MethodName:startsWith:[aliasName] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:aliasUsages.add(new AliasedTypeNode(typeNode,aliasedNode.getQualifiedName()
+      + name.substring(endIndex))) @TO@ MethodInvocation:aliasUsages.add(new AliasedTypeNode(typeNode,aliasedNode,baseName)) '
+    - '---UPD MethodInvocation@@aliasUsages.add(new AliasedTypeNode(typeNode,aliasedNode.getQualifiedName()
+      + name.substring(endIndex))) @TO@ aliasUsages.add(new AliasedTypeNode(typeNode,aliasedNode,baseName)) '
+    - '------UPD SimpleName@@MethodName:add:[new AliasedTypeNode(typeNode,aliasedNode.getQualifiedName()
+      + name.substring(endIndex))] @TO@ MethodName:add:[new AliasedTypeNode(typeNode,aliasedNode,baseName)] '
+    - '---------UPD ClassInstanceCreation@@AliasedTypeNode[typeNode, aliasedNode.getQualifiedName()
+      + name.substring(endIndex)] @TO@ AliasedTypeNode[typeNode, aliasedNode, baseName] '
+    - '------------DEL InfixExpression@@aliasedNode.getQualifiedName() + name.substring(endIndex) '
+    - '---------------DEL MethodInvocation@@aliasedNode.getQualifiedName() '
+    - '------------------DEL SimpleName@@Name:aliasedNode '
+    - '------------------DEL SimpleName@@MethodName:getQualifiedName:[] '
+    - '---------------DEL Operator@@+ '
+    - '---------------DEL MethodInvocation@@name.substring(endIndex) '
+    - '------------------DEL SimpleName@@Name:name '
+    - '------------------DEL SimpleName@@MethodName:substring:[endIndex] '
+    - '---------------------DEL SimpleName@@endIndex '
+    - '------------INS SimpleName@@aliasedNode @TO@ ClassInstanceCreation@@AliasedTypeNode[typeNode,
+      aliasedNode.getQualifiedName() + name.substring(endIndex)] '
+    - '------------INS SimpleName@@baseName @TO@ ClassInstanceCreation@@AliasedTypeNode[typeNode,
+      aliasedNode.getQualifiedName() + name.substring(endIndex)] '
+  files_cnt: '1'
+  repair_actions_cnt: 7
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ScopedAliases:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, final, Node, [aliasDefinition] @TO@ TypeDeclaration@@[private]AliasedTypeNode,
+      [AliasUsage] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, final, Node, [aliasDefinition] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, final, Node, [aliasDefinition] '
+    - '---INS SimpleType@@Node @TO@ FieldDeclaration@@private, final, Node, [aliasDefinition] '
+    - '---INS VariableDeclarationFragment@@aliasDefinition @TO@ FieldDeclaration@@private,
+      final, Node, [aliasDefinition] '
+    - '------INS SimpleName@@aliasDefinition @TO@ VariableDeclarationFragment@@aliasDefinition '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@@@=CONSTRUCTOR=, MethodName:AliasedTypeNode, @@Argus:Node+typeReference+String+aliasName+
+      @TO@ @@=CONSTRUCTOR=, MethodName:AliasedTypeNode, @@Argus:Node+typeReference+Node+aliasDefinition+String+aliasName+ '
+    - '---INS SingleVariableDeclaration@@Node aliasDefinition @TO@ MethodDeclaration@@@@=CONSTRUCTOR=,
+      MethodName:AliasedTypeNode, @@Argus:Node+typeReference+String+aliasName+ '
+    - '------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node aliasDefinition '
+    - '------INS SimpleName@@aliasDefinition @TO@ SingleVariableDeclaration@@Node
+      aliasDefinition '
+    - '---INS ExpressionStatement@@Assignment:this.aliasDefinition=aliasDefinition
+      @TO@ MethodDeclaration@@@@=CONSTRUCTOR=, MethodName:AliasedTypeNode, @@Argus:Node+typeReference+String+aliasName+ '
+    - '------INS Assignment@@this.aliasDefinition=aliasDefinition @TO@ ExpressionStatement@@Assignment:this.aliasDefinition=aliasDefinition '
+    - '---------INS FieldAccess@@this.aliasDefinition @TO@ Assignment@@this.aliasDefinition=aliasDefinition '
+    - '------------INS ThisExpression@@this @TO@ FieldAccess@@this.aliasDefinition '
+    - '------------INS SimpleName@@aliasDefinition @TO@ FieldAccess@@this.aliasDefinition '
+    - '---------INS Operator@@= @TO@ Assignment@@this.aliasDefinition=aliasDefinition '
+    - '---------INS SimpleName@@aliasDefinition @TO@ Assignment@@this.aliasDefinition=aliasDefinition '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:typeReference.setString(aliasName)
+      @TO@ MethodInvocation:typeReference.setString(typeName.replaceFirst(aliasName,aliasExpanded)) '
+    - '---UPD MethodInvocation@@typeReference.setString(aliasName) @TO@ typeReference.setString(typeName.replaceFirst(aliasName,aliasExpanded)) '
+    - '------UPD SimpleName@@MethodName:setString:[aliasName] @TO@ MethodName:setString:[typeName.replaceFirst(aliasName,aliasExpanded)] '
+    - '---------INS MethodInvocation@@typeName.replaceFirst(aliasName,aliasExpanded)
+      @TO@ SimpleName@@MethodName:setString:[aliasName] '
+    - '------------INS SimpleName@@Name:typeName @TO@ MethodInvocation@@typeName.replaceFirst(aliasName,aliasExpanded) '
+    - '------------INS SimpleName@@MethodName:replaceFirst:[aliasName, aliasExpanded]
+      @TO@ MethodInvocation@@typeName.replaceFirst(aliasName,aliasExpanded) '
+    - '---------------MOV SimpleName@@aliasName @TO@ SimpleName@@MethodName:replaceFirst:[aliasName,
+      aliasExpanded] '
+    - '---------------INS SimpleName@@aliasExpanded @TO@ SimpleName@@MethodName:replaceFirst:[aliasName,
+      aliasExpanded] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@String typeName=typeReference.getString();
+      @TO@ MethodDeclaration@@public, @@void, MethodName:applyAlias, @@Argus:null '
+    - '---INS SimpleType@@String @TO@ VariableDeclarationStatement@@String typeName=typeReference.getString(); '
+    - '---INS VariableDeclarationFragment@@typeName=typeReference.getString() @TO@
+      VariableDeclarationStatement@@String typeName=typeReference.getString(); '
+    - '------INS SimpleName@@typeName @TO@ VariableDeclarationFragment@@typeName=typeReference.getString() '
+    - '------INS MethodInvocation@@typeReference.getString() @TO@ VariableDeclarationFragment@@typeName=typeReference.getString() '
+    - '---------INS SimpleName@@Name:typeReference @TO@ MethodInvocation@@typeReference.getString() '
+    - '---------INS SimpleName@@MethodName:getString:[] @TO@ MethodInvocation@@typeReference.getString() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@String aliasExpanded=Preconditions.checkNotNull(aliasDefinition.getQualifiedName());
+      @TO@ MethodDeclaration@@public, @@void, MethodName:applyAlias, @@Argus:null '
+    - '---INS SimpleType@@String @TO@ VariableDeclarationStatement@@String aliasExpanded=Preconditions.checkNotNull(aliasDefinition.getQualifiedName()); '
+    - '---INS VariableDeclarationFragment@@aliasExpanded=Preconditions.checkNotNull(aliasDefinition.getQualifiedName())
+      @TO@ VariableDeclarationStatement@@String aliasExpanded=Preconditions.checkNotNull(aliasDefinition.getQualifiedName()); '
+    - '------INS SimpleName@@aliasExpanded @TO@ VariableDeclarationFragment@@aliasExpanded=Preconditions.checkNotNull(aliasDefinition.getQualifiedName()) '
+    - '------INS MethodInvocation@@Preconditions.checkNotNull(aliasDefinition.getQualifiedName())
+      @TO@ VariableDeclarationFragment@@aliasExpanded=Preconditions.checkNotNull(aliasDefinition.getQualifiedName()) '
+    - '---------INS SimpleName@@Name:Preconditions @TO@ MethodInvocation@@Preconditions.checkNotNull(aliasDefinition.getQualifiedName()) '
+    - '---------INS SimpleName@@MethodName:checkNotNull:[aliasDefinition.getQualifiedName()]
+      @TO@ MethodInvocation@@Preconditions.checkNotNull(aliasDefinition.getQualifiedName()) '
+    - '------------INS MethodInvocation@@aliasDefinition.getQualifiedName() @TO@ SimpleName@@MethodName:checkNotNull:[aliasDefinition.getQualifiedName()] '
+    - '---------------INS SimpleName@@Name:aliasDefinition @TO@ MethodInvocation@@aliasDefinition.getQualifiedName() '
+    - '---------------INS SimpleName@@MethodName:getQualifiedName:[] @TO@ MethodInvocation@@aliasDefinition.getQualifiedName() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:aliasUsages.add(new AliasedTypeNode(typeNode,aliasedNode.getQualifiedName()
+      + name.substring(endIndex))) @TO@ MethodInvocation:aliasUsages.add(new AliasedTypeNode(typeNode,aliasedNode,baseName)) '
+    - '---UPD MethodInvocation@@aliasUsages.add(new AliasedTypeNode(typeNode,aliasedNode.getQualifiedName()
+      + name.substring(endIndex))) @TO@ aliasUsages.add(new AliasedTypeNode(typeNode,aliasedNode,baseName)) '
+    - '------UPD SimpleName@@MethodName:add:[new AliasedTypeNode(typeNode,aliasedNode.getQualifiedName()
+      + name.substring(endIndex))] @TO@ MethodName:add:[new AliasedTypeNode(typeNode,aliasedNode,baseName)] '
+    - '---------UPD ClassInstanceCreation@@AliasedTypeNode[typeNode, aliasedNode.getQualifiedName()
+      + name.substring(endIndex)] @TO@ AliasedTypeNode[typeNode, aliasedNode, baseName] '
+    - '------------DEL InfixExpression@@aliasedNode.getQualifiedName() + name.substring(endIndex) '
+    - '---------------DEL MethodInvocation@@aliasedNode.getQualifiedName() '
+    - '------------------DEL SimpleName@@Name:aliasedNode '
+    - '------------------DEL SimpleName@@MethodName:getQualifiedName:[] '
+    - '---------------DEL Operator@@+ '
+    - '---------------DEL MethodInvocation@@name.substring(endIndex) '
+    - '------------------DEL SimpleName@@Name:name '
+    - '------------------DEL SimpleName@@MethodName:substring:[endIndex] '
+    - '---------------------DEL SimpleName@@endIndex '
+    - '------------INS SimpleName@@aliasedNode @TO@ ClassInstanceCreation@@AliasedTypeNode[typeNode,
+      aliasedNode.getQualifiedName() + name.substring(endIndex)] '
+    - '------------INS SimpleName@@baseName @TO@ ClassInstanceCreation@@AliasedTypeNode[typeNode,
+      aliasedNode.getQualifiedName() + name.substring(endIndex)] '
+  files_cnt: '1'
+  repair_actions_cnt: 6

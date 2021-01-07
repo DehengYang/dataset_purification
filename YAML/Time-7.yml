@@ -1,0 +1,121 @@
+1 bug_id: Time-7
+2 src folder:
+  name of src folder: java
+  number of files: 186
+  number of java files: 157
+  number of src classes: 230
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.format.TestDateTimeFormatter#testParseInto_monthDay_feb29_tokyo_endOfYear
+  - org.joda.time.format.TestDateTimeFormatter#testParseInto_monthDay_feb29_newYork_startOfYear
+  failing tests:
+  - org.joda.time.format.TestDateTimeFormatter
+  number of all test cases: 3982
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.004
+  purification via delta debugging: 52.264
+  repair actions extraction: 1.865
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthDay_feb29_newYork_startOfYear: 1989
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthDay_feb29_tokyo_endOfYear: 2016
+  fixed:
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthDay_feb29_newYork_startOfYear: 1996
+    org.joda.time.format.TestDateTimeFormatter#testParseInto_monthDay_feb29_tokyo_endOfYear: 2022
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_7/src/main/java/org/joda/time/format/DateTimeFormatter.java\t\
+    2020-10-20 20:02:04.486677167 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_7/purify/patch/org/joda/time/format/DateTimeFormatter.java\t\
+    2020-10-20 20:02:04.486677167 -0400\n@@ -705,9 +705,9 @@\n         \n        \
+    \ long instantMillis = instant.getMillis();\n         Chronology chrono = instant.getChronology();\n\
+    +        int defaultYear = DateTimeUtils.getChronology(chrono).year().get(instantMillis);\n\
+    \         long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);\n\
+    \         chrono = selectChronology(chrono);\n-        int defaultYear = chrono.year().get(instantLocal);\n\
+    \         \n         DateTimeParserBucket bucket = new DateTimeParserBucket(\n\
+    \             instantLocal, chrono, iLocale, iPivotYear, defaultYear);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_7/src/main/java/org/joda/time/format/DateTimeFormatter.java\t\
+    2020-10-20 20:03:14.900712541 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_7/purify/purified/org/joda/time/format/DateTimeFormatter.java\t\
+    2020-10-20 20:03:14.900712541 -0400\n@@ -705,9 +705,9 @@\n         \n        \
+    \ long instantMillis = instant.getMillis();\n         Chronology chrono = instant.getChronology();\n\
+    +        int defaultYear = DateTimeUtils.getChronology(chrono).year().get(instantMillis);\n\
+    \         long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);\n\
+    \         chrono = selectChronology(chrono);\n-        int defaultYear = chrono.year().get(instantLocal);\n\
+    \         \n         DateTimeParserBucket bucket = new DateTimeParserBucket(\n\
+    \             instantLocal, chrono, iLocale, iPivotYear, defaultYear);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/format/DateTimeFormatter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@int defaultYear=chrono.year().get(instantLocal);
+      @TO@ MethodDeclaration@@public, @@int, MethodName:parseInto, @@Argus:ReadWritableInstant+instant+String+text+int+position+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int defaultYear=chrono.year().get(instantLocal);
+      @TO@ int defaultYear=DateTimeUtils.getChronology(chrono).year().get(instantMillis); '
+    - '---UPD VariableDeclarationFragment@@defaultYear=chrono.year().get(instantLocal)
+      @TO@ defaultYear=DateTimeUtils.getChronology(chrono).year().get(instantMillis) '
+    - '------UPD MethodInvocation@@chrono.year().get(instantLocal) @TO@ DateTimeUtils.getChronology(chrono).year().get(instantMillis) '
+    - '---------INS SimpleName@@Name:DateTimeUtils @TO@ MethodInvocation@@chrono.year().get(instantLocal) '
+    - '---------INS MethodInvocation@@MethodName:getChronology:[chrono] @TO@ MethodInvocation@@chrono.year().get(instantLocal) '
+    - '------------MOV SimpleName@@Name:chrono @TO@ MethodInvocation@@MethodName:getChronology:[chrono] '
+    - '---------UPD SimpleName@@Name:chrono @TO@ chrono '
+    - '---------UPD SimpleName@@MethodName:get:[instantLocal] @TO@ MethodName:get:[instantMillis] '
+    - '------------UPD SimpleName@@instantLocal @TO@ instantMillis '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/format/DateTimeFormatter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@int defaultYear=chrono.year().get(instantLocal);
+      @TO@ MethodDeclaration@@public, @@int, MethodName:parseInto, @@Argus:ReadWritableInstant+instant+String+text+int+position+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int defaultYear=chrono.year().get(instantLocal);
+      @TO@ int defaultYear=DateTimeUtils.getChronology(chrono).year().get(instantMillis); '
+    - '---UPD VariableDeclarationFragment@@defaultYear=chrono.year().get(instantLocal)
+      @TO@ defaultYear=DateTimeUtils.getChronology(chrono).year().get(instantMillis) '
+    - '------UPD MethodInvocation@@chrono.year().get(instantLocal) @TO@ DateTimeUtils.getChronology(chrono).year().get(instantMillis) '
+    - '---------INS SimpleName@@Name:DateTimeUtils @TO@ MethodInvocation@@chrono.year().get(instantLocal) '
+    - '---------INS MethodInvocation@@MethodName:getChronology:[chrono] @TO@ MethodInvocation@@chrono.year().get(instantLocal) '
+    - '------------MOV SimpleName@@Name:chrono @TO@ MethodInvocation@@MethodName:getChronology:[chrono] '
+    - '---------UPD SimpleName@@Name:chrono @TO@ chrono '
+    - '---------UPD SimpleName@@MethodName:get:[instantLocal] @TO@ MethodName:get:[instantMillis] '
+    - '------------UPD SimpleName@@instantLocal @TO@ instantMillis '
+  repair_actions_cnt: 2

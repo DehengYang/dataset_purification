@@ -1,0 +1,14 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_17/src/main/java/org/apache/commons/math3/dfp/Dfp.java	2020-10-21 05:28:04.083783831 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_17/purify/assertBeforeMut/org/apache/commons/math3/dfp/Dfp.java	2020-10-21 05:28:04.079783716 -0400
+@@ -1600,7 +1600,11 @@
+      * @return product of this and x
+      */
+     public Dfp multiply(final int x) {
++        if (x >= 0 && x < RADIX) {
+             return multiplyFast(x);
++        } else {
++            return multiply(newInstance(x));
++        }
+     }
+ 
+     /** Multiply this by a single digit 0&lt;=x&lt;radix.

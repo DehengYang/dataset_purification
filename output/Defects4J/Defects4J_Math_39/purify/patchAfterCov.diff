@@ -1,0 +1,15 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_39/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java	2020-10-21 11:06:27.395333893 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_39/purify/assertBeforeMut/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java	2020-10-21 11:06:27.395333893 -0400
+@@ -247,6 +247,12 @@
+         }
+ 
+         stepSize = hNew;
++        if (forward) {
++            if (stepStart + stepSize >= t) {
++                stepSize = t - stepStart;
++            }
++        } else {
++        }
+ 
+         // next stages
+         for (int k = 1; k < stages; ++k) {

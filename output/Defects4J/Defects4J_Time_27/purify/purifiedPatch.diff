@@ -1,0 +1,14 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_27/src/main/java/org/joda/time/format/PeriodFormatterBuilder.java	2020-10-20 23:35:26.924736033 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_27/purify/purified/org/joda/time/format/PeriodFormatterBuilder.java	2020-10-20 23:35:26.924736033 -0400
+@@ -798,9 +798,11 @@
+         int size = elementPairs.size();
+         if (size >= 2 && elementPairs.get(0) instanceof Separator) {
+             Separator sep = (Separator) elementPairs.get(0);
++            if (sep.iAfterParser == null && sep.iAfterPrinter == null) {
+                 PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
+                 sep = sep.finish(f.getPrinter(), f.getParser());
+                 return new PeriodFormatter(sep, sep);
++            }
+         }
+         Object[] comp = createComposite(elementPairs);
+         if (notPrinter) {

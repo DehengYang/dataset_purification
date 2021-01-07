@@ -1,0 +1,218 @@
+1 bug_id: Time-11
+2 src folder:
+  name of src folder: java
+  number of files: 186
+  number of java files: 157
+  number of src classes: 229
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.tz.TestCompiler#testDateTimeZoneBuilder
+  failing tests:
+  - org.joda.time.tz.TestCompiler
+  number of all test cases: 3951
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.009
+  purification via delta debugging: 140.324
+  repair actions extraction: 1.438
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.tz.TestCompiler#testDateTimeZoneBuilder: 1309
+  fixed:
+    org.joda.time.tz.TestCompiler#testDateTimeZoneBuilder: 1308
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 5
+  covDel: 4
+  cov_patch_lines: 9
+  delta_patch_lines: 9
+  oriAdd: 5
+  oriDel: 4
+  ori_patch_lines: 9
+  purAdd: 5
+  purDel: 4
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 23
+  failFail: 0
+  passed: 0
+  total: 23
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_11/src/main/java/org/joda/time/tz/ZoneInfoCompiler.java\t\
+    2020-10-22 00:10:30.611311579 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_11/purify/patch/org/joda/time/tz/ZoneInfoCompiler.java\t\
+    2020-10-22 00:10:30.611311579 -0400\n@@ -65,10 +65,11 @@\n \n     static Chronology\
+    \ cLenientISO;\n \n-    static ThreadLocal<Boolean> cVerbose = new ThreadLocal<Boolean>();\n\
+    -    static {\n-        cVerbose.set(Boolean.FALSE);\n-    }\n+    static ThreadLocal<Boolean>\
+    \ cVerbose = new ThreadLocal<Boolean>() {\n+        protected Boolean initialValue()\
+    \ {\n+            return Boolean.FALSE;\n+        }\n+    };\n \n     /**\n  \
+    \    * Gets a flag indicating that verbose logging is required."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_11/src/main/java/org/joda/time/tz/ZoneInfoCompiler.java\t\
+    2020-10-22 00:13:08.687884506 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_11/purify/purified/org/joda/time/tz/ZoneInfoCompiler.java\t\
+    2020-10-22 00:13:08.687884506 -0400\n@@ -65,10 +65,11 @@\n \n     static Chronology\
+    \ cLenientISO;\n \n-    static ThreadLocal<Boolean> cVerbose = new ThreadLocal<Boolean>();\n\
+    -    static {\n-        cVerbose.set(Boolean.FALSE);\n-    }\n+    static ThreadLocal<Boolean>\
+    \ cVerbose = new ThreadLocal<Boolean>() {\n+        protected Boolean initialValue()\
+    \ {\n+            return Boolean.FALSE;\n+        }\n+    };\n \n     /**\n  \
+    \    * Gets a flag indicating that verbose logging is required."
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/tz/ZoneInfoCompiler:
+  - !yamlable/myyaml.Action
+    lines:
+    - INS FieldDeclaration@@static, ThreadLocal<Boolean>, [cVerbose=new ThreadLocal<Boolean>()
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - '] @TO@ TypeDeclaration@@[public]ZoneInfoCompiler,  '
+    - '---MOV Modifier@@static @TO@ FieldDeclaration@@static, ThreadLocal<Boolean>,
+      [cVerbose=new ThreadLocal<Boolean>()'
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - '] '
+    - '---MOV ParameterizedType@@ThreadLocal<Boolean> @TO@ FieldDeclaration@@static,
+      ThreadLocal<Boolean>, [cVerbose=new ThreadLocal<Boolean>()'
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - '] '
+    - '---INS VariableDeclarationFragment@@cVerbose=new ThreadLocal<Boolean>()'
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - ' @TO@ FieldDeclaration@@static, ThreadLocal<Boolean>, [cVerbose=new ThreadLocal<Boolean>()'
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - '] '
+    - '------MOV SimpleName@@cVerbose @TO@ VariableDeclarationFragment@@cVerbose=new
+      ThreadLocal<Boolean>()'
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - ' '
+    - '------INS ClassInstanceCreation@@ThreadLocal<Boolean>[] @TO@ VariableDeclarationFragment@@cVerbose=new
+      ThreadLocal<Boolean>()'
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - ' '
+    - '---------MOV New@@new @TO@ ClassInstanceCreation@@ThreadLocal<Boolean>[] '
+    - '---------MOV ParameterizedType@@ThreadLocal<Boolean> @TO@ ClassInstanceCreation@@ThreadLocal<Boolean>[] '
+    - '---------INS AnonymousClassDeclaration@@AnonymousClass @TO@ ClassInstanceCreation@@ThreadLocal<Boolean>[] '
+    - '------------INS MethodDeclaration@@protected, @@Boolean, MethodName:initialValue,
+      @@Argus:null @TO@ AnonymousClassDeclaration@@AnonymousClass '
+    - '---------------INS Modifier@@protected @TO@ MethodDeclaration@@protected, @@Boolean,
+      MethodName:initialValue, @@Argus:null '
+    - '---------------INS SimpleType@@Boolean @TO@ MethodDeclaration@@protected, @@Boolean,
+      MethodName:initialValue, @@Argus:null '
+    - '---------------INS SimpleName@@MethodName:initialValue @TO@ MethodDeclaration@@protected,
+      @@Boolean, MethodName:initialValue, @@Argus:null '
+    - '---------------INS ReturnStatement@@QualifiedName:Boolean.FALSE @TO@ MethodDeclaration@@protected,
+      @@Boolean, MethodName:initialValue, @@Argus:null '
+    - '------------------INS QualifiedName@@Boolean.FALSE @TO@ ReturnStatement@@QualifiedName:Boolean.FALSE '
+    - '---------------------MOV SimpleName@@Boolean @TO@ QualifiedName@@Boolean.FALSE '
+    - '---------------------MOV SimpleName@@FALSE @TO@ QualifiedName@@Boolean.FALSE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL FieldDeclaration@@static, ThreadLocal<Boolean>, [cVerbose=new ThreadLocal<Boolean>()] '
+    - '---DEL VariableDeclarationFragment@@cVerbose=new ThreadLocal<Boolean>() '
+    - '------DEL ClassInstanceCreation@@ThreadLocal<Boolean>[] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/tz/ZoneInfoCompiler:
+  - !yamlable/myyaml.Action
+    lines:
+    - INS FieldDeclaration@@static, ThreadLocal<Boolean>, [cVerbose=new ThreadLocal<Boolean>()
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - '] @TO@ TypeDeclaration@@[public]ZoneInfoCompiler,  '
+    - '---MOV Modifier@@static @TO@ FieldDeclaration@@static, ThreadLocal<Boolean>,
+      [cVerbose=new ThreadLocal<Boolean>()'
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - '] '
+    - '---MOV ParameterizedType@@ThreadLocal<Boolean> @TO@ FieldDeclaration@@static,
+      ThreadLocal<Boolean>, [cVerbose=new ThreadLocal<Boolean>()'
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - '] '
+    - '---INS VariableDeclarationFragment@@cVerbose=new ThreadLocal<Boolean>()'
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - ' @TO@ FieldDeclaration@@static, ThreadLocal<Boolean>, [cVerbose=new ThreadLocal<Boolean>()'
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - '] '
+    - '------MOV SimpleName@@cVerbose @TO@ VariableDeclarationFragment@@cVerbose=new
+      ThreadLocal<Boolean>()'
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - ' '
+    - '------INS ClassInstanceCreation@@ThreadLocal<Boolean>[] @TO@ VariableDeclarationFragment@@cVerbose=new
+      ThreadLocal<Boolean>()'
+    - '  protected Boolean initialValue()'
+    - '    return Boolean.FALSE'
+    - '  '
+    - ''
+    - ' '
+    - '---------MOV New@@new @TO@ ClassInstanceCreation@@ThreadLocal<Boolean>[] '
+    - '---------MOV ParameterizedType@@ThreadLocal<Boolean> @TO@ ClassInstanceCreation@@ThreadLocal<Boolean>[] '
+    - '---------INS AnonymousClassDeclaration@@AnonymousClass @TO@ ClassInstanceCreation@@ThreadLocal<Boolean>[] '
+    - '------------INS MethodDeclaration@@protected, @@Boolean, MethodName:initialValue,
+      @@Argus:null @TO@ AnonymousClassDeclaration@@AnonymousClass '
+    - '---------------INS Modifier@@protected @TO@ MethodDeclaration@@protected, @@Boolean,
+      MethodName:initialValue, @@Argus:null '
+    - '---------------INS SimpleType@@Boolean @TO@ MethodDeclaration@@protected, @@Boolean,
+      MethodName:initialValue, @@Argus:null '
+    - '---------------INS SimpleName@@MethodName:initialValue @TO@ MethodDeclaration@@protected,
+      @@Boolean, MethodName:initialValue, @@Argus:null '
+    - '---------------INS ReturnStatement@@QualifiedName:Boolean.FALSE @TO@ MethodDeclaration@@protected,
+      @@Boolean, MethodName:initialValue, @@Argus:null '
+    - '------------------INS QualifiedName@@Boolean.FALSE @TO@ ReturnStatement@@QualifiedName:Boolean.FALSE '
+    - '---------------------MOV SimpleName@@Boolean @TO@ QualifiedName@@Boolean.FALSE '
+    - '---------------------MOV SimpleName@@FALSE @TO@ QualifiedName@@Boolean.FALSE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL FieldDeclaration@@static, ThreadLocal<Boolean>, [cVerbose=new ThreadLocal<Boolean>()] '
+    - '---DEL VariableDeclarationFragment@@cVerbose=new ThreadLocal<Boolean>() '
+    - '------DEL ClassInstanceCreation@@ThreadLocal<Boolean>[] '
+  repair_actions_cnt: 2

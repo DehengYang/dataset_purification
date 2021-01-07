@@ -1,0 +1,136 @@
+1 bug_id: Chart-13
+2 src folder:
+  name of src folder: source
+  number of files: 651
+  number of java files: 578
+  number of src classes: 604
+  number of test classes: 326
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.block.junit.BorderArrangementTests#testSizingWithWidthConstraint
+  failing tests:
+  - org.jfree.chart.block.junit.BorderArrangementTests
+  number of all test cases: 1799
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.634
+  purification via delta debugging: 49.823
+  repair actions extraction: 1.453
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.block.junit.BorderArrangementTests#testSizingWithWidthConstraint: 306
+  fixed:
+    org.jfree.chart.block.junit.BorderArrangementTests#testSizingWithWidthConstraint: 498
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_13/source/org/jfree/chart/block/BorderArrangement.java\t\
+    2020-10-21 00:05:00.427966010 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_13/purify/patch/org/jfree/chart/block/BorderArrangement.java\t\
+    2020-10-21 00:05:00.427966010 -0400\n@@ -452,7 +452,7 @@\n         h[3] = h[2];\n\
+    \         if (this.rightBlock != null) {\n             RectangleConstraint c4\
+    \ = new RectangleConstraint(0.0,\n-                    new Range(0.0, constraint.getWidth()\
+    \ - w[2]),\n+                    new Range(0.0, Math.max(constraint.getWidth()\
+    \ - w[2], 0.0)),\n                     LengthConstraintType.RANGE, h[2], null,\n\
+    \                     LengthConstraintType.FIXED);\n             Size2D size =\
+    \ this.rightBlock.arrange(g2, c4);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_13/source/org/jfree/chart/block/BorderArrangement.java\t\
+    2020-10-21 00:06:05.757852965 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_13/purify/purified/org/jfree/chart/block/BorderArrangement.java\t\
+    2020-10-21 00:06:05.753852849 -0400\n@@ -452,7 +452,7 @@\n         h[3] = h[2];\n\
+    \         if (this.rightBlock != null) {\n             RectangleConstraint c4\
+    \ = new RectangleConstraint(0.0,\n-                    new Range(0.0, constraint.getWidth()\
+    \ - w[2]),\n+                    new Range(0.0, Math.max(constraint.getWidth()\
+    \ - w[2], 0.0)),\n                     LengthConstraintType.RANGE, h[2], null,\n\
+    \                     LengthConstraintType.FIXED);\n             Size2D size =\
+    \ this.rightBlock.arrange(g2, c4);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/block/BorderArrangement:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@RectangleConstraint c4=new RectangleConstraint(0.0,new
+      Range(0.0,constraint.getWidth() - w[2]),LengthConstraintType.RANGE,h[2],null,LengthConstraintType.FIXED);
+      @TO@ RectangleConstraint c4=new RectangleConstraint(0.0,new Range(0.0,Math.max(constraint.getWidth()
+      - w[2],0.0)),LengthConstraintType.RANGE,h[2],null,LengthConstraintType.FIXED); '
+    - '---UPD VariableDeclarationFragment@@c4=new RectangleConstraint(0.0,new Range(0.0,constraint.getWidth()
+      - w[2]),LengthConstraintType.RANGE,h[2],null,LengthConstraintType.FIXED) @TO@
+      c4=new RectangleConstraint(0.0,new Range(0.0,Math.max(constraint.getWidth()
+      - w[2],0.0)),LengthConstraintType.RANGE,h[2],null,LengthConstraintType.FIXED) '
+    - '------UPD ClassInstanceCreation@@RectangleConstraint[0.0, new Range(0.0,constraint.getWidth()
+      - w[2]), LengthConstraintType.RANGE, h[2], null, LengthConstraintType.FIXED]
+      @TO@ RectangleConstraint[0.0, new Range(0.0,Math.max(constraint.getWidth() -
+      w[2],0.0)), LengthConstraintType.RANGE, h[2], null, LengthConstraintType.FIXED] '
+    - '---------UPD ClassInstanceCreation@@Range[0.0, constraint.getWidth() - w[2]]
+      @TO@ Range[0.0, Math.max(constraint.getWidth() - w[2],0.0)] '
+    - '------------INS MethodInvocation@@Math.max(constraint.getWidth() - w[2],0.0)
+      @TO@ ClassInstanceCreation@@Range[0.0, constraint.getWidth() - w[2]] '
+    - '---------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(constraint.getWidth()
+      - w[2],0.0) '
+    - '---------------INS SimpleName@@MethodName:max:[constraint.getWidth() - w[2],
+      0.0] @TO@ MethodInvocation@@Math.max(constraint.getWidth() - w[2],0.0) '
+    - '------------------INS NumberLiteral@@0.0 @TO@ SimpleName@@MethodName:max:[constraint.getWidth()
+      - w[2], 0.0] '
+    - '------------------MOV InfixExpression@@constraint.getWidth() - w[2] @TO@ SimpleName@@MethodName:max:[constraint.getWidth()
+      - w[2], 0.0] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/block/BorderArrangement:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@RectangleConstraint c4=new RectangleConstraint(0.0,new
+      Range(0.0,constraint.getWidth() - w[2]),LengthConstraintType.RANGE,h[2],null,LengthConstraintType.FIXED);
+      @TO@ RectangleConstraint c4=new RectangleConstraint(0.0,new Range(0.0,Math.max(constraint.getWidth()
+      - w[2],0.0)),LengthConstraintType.RANGE,h[2],null,LengthConstraintType.FIXED); '
+    - '---UPD VariableDeclarationFragment@@c4=new RectangleConstraint(0.0,new Range(0.0,constraint.getWidth()
+      - w[2]),LengthConstraintType.RANGE,h[2],null,LengthConstraintType.FIXED) @TO@
+      c4=new RectangleConstraint(0.0,new Range(0.0,Math.max(constraint.getWidth()
+      - w[2],0.0)),LengthConstraintType.RANGE,h[2],null,LengthConstraintType.FIXED) '
+    - '------UPD ClassInstanceCreation@@RectangleConstraint[0.0, new Range(0.0,constraint.getWidth()
+      - w[2]), LengthConstraintType.RANGE, h[2], null, LengthConstraintType.FIXED]
+      @TO@ RectangleConstraint[0.0, new Range(0.0,Math.max(constraint.getWidth() -
+      w[2],0.0)), LengthConstraintType.RANGE, h[2], null, LengthConstraintType.FIXED] '
+    - '---------UPD ClassInstanceCreation@@Range[0.0, constraint.getWidth() - w[2]]
+      @TO@ Range[0.0, Math.max(constraint.getWidth() - w[2],0.0)] '
+    - '------------INS MethodInvocation@@Math.max(constraint.getWidth() - w[2],0.0)
+      @TO@ ClassInstanceCreation@@Range[0.0, constraint.getWidth() - w[2]] '
+    - '---------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(constraint.getWidth()
+      - w[2],0.0) '
+    - '---------------INS SimpleName@@MethodName:max:[constraint.getWidth() - w[2],
+      0.0] @TO@ MethodInvocation@@Math.max(constraint.getWidth() - w[2],0.0) '
+    - '------------------INS NumberLiteral@@0.0 @TO@ SimpleName@@MethodName:max:[constraint.getWidth()
+      - w[2], 0.0] '
+    - '------------------MOV InfixExpression@@constraint.getWidth() - w[2] @TO@ SimpleName@@MethodName:max:[constraint.getWidth()
+      - w[2], 0.0] '
+  repair_actions_cnt: 1

@@ -1,0 +1,87 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_6/src/main/java/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/PowellOptimizer.java	2020-10-22 04:39:06.341103037 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_6/purify/purified/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/PowellOptimizer.java	2020-10-22 04:39:06.341103037 -0400
+@@ -191,6 +191,7 @@
+         int iter = 0;
+         while (true) {
+             ++iter;
++            incrementIterationCount();
+ 
+             double fX = fVal;
+             double fX2 = 0;
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_6/src/main/java/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/SimplexOptimizer.java	2020-10-22 04:39:06.345103152 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_6/purify/purified/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/SimplexOptimizer.java	2020-10-22 04:39:06.345103152 -0400
+@@ -173,6 +173,7 @@
+             simplex.iterate(evalFunc, comparator);
+ 
+ 			++iteration;
++            incrementIterationCount();
+         }
+     }
+ 
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_6/src/main/java/org/apache/commons/math3/optim/nonlinear/scalar/gradient/NonLinearConjugateGradientOptimizer.java	2020-10-22 04:39:06.349103267 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_6/purify/purified/org/apache/commons/math3/optim/nonlinear/scalar/gradient/NonLinearConjugateGradientOptimizer.java	2020-10-22 04:39:06.349103267 -0400
+@@ -215,12 +215,13 @@
+         int maxEval = getMaxEvaluations();
+         while (true) {
+             ++iter;
++            incrementIterationCount();
+ 
+             final double objective = computeObjectiveValue(point);
+             PointValuePair previous = current;
+             current = new PointValuePair(point, objective);
+             if (previous != null) {
+-                if (checker.converged(iter, previous, current)) {
++                if (checker.converged(getIterations(), previous, current)) {
+                     // We have found an optimum.
+                     return current;
+                 }
+@@ -274,7 +275,7 @@
+             steepestDescent = newSteepestDescent;
+ 
+             // Compute conjugate search direction.
+-            if (iter % n == 0 ||
++            if (getIterations() % n == 0 ||
+                 beta < 0) {
+                 // Break conjugation: reset search direction.
+                 searchDirection = steepestDescent.clone();
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_6/src/main/java/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/CMAESOptimizer.java	2020-10-22 04:39:06.361103614 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_6/purify/purified/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/CMAESOptimizer.java	2020-10-22 04:39:06.361103614 -0400
+@@ -385,6 +385,7 @@
+ 
+         generationLoop:
+         for (iterations = 1; iterations <= maxIterations; iterations++) {
++            incrementIterationCount();
+ 
+             // Generate and evaluate lambda offspring
+             final RealMatrix arz = randn1(dimension, lambda);
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_6/src/main/java/org/apache/commons/math3/optim/BaseOptimizer.java	2020-10-22 04:39:06.365103730 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_6/purify/purified/org/apache/commons/math3/optim/BaseOptimizer.java	2020-10-22 04:39:06.365103730 -0400
+@@ -48,7 +48,7 @@
+         this.checker = checker;
+ 
+         evaluations = new Incrementor(0, new MaxEvalCallback());
+-        iterations = new Incrementor(0, new MaxIterCallback());
++        iterations = new Incrementor(Integer.MAX_VALUE, new MaxIterCallback());
+     }
+ 
+     /**
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_6/src/main/java/org/apache/commons/math3/optim/nonlinear/vector/jacobian/LevenbergMarquardtOptimizer.java	2020-10-22 04:39:06.369103845 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_6/purify/purified/org/apache/commons/math3/optim/nonlinear/vector/jacobian/LevenbergMarquardtOptimizer.java	2020-10-22 04:39:06.369103845 -0400
+@@ -323,6 +323,7 @@
+         final ConvergenceChecker<PointVectorValuePair> checker = getConvergenceChecker();
+         while (true) {
+             ++iter;
++            incrementIterationCount();
+             final PointVectorValuePair previous = current;
+ 
+             // QR decomposition of the jacobian matrix
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_6/src/main/java/org/apache/commons/math3/optim/nonlinear/vector/jacobian/GaussNewtonOptimizer.java	2020-10-22 04:39:06.373103961 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_6/purify/purified/org/apache/commons/math3/optim/nonlinear/vector/jacobian/GaussNewtonOptimizer.java	2020-10-22 04:39:06.373103961 -0400
+@@ -106,6 +106,7 @@
+         int iter = 0;
+         for (boolean converged = false; !converged;) {
+             ++iter;
++            incrementIterationCount();
+ 
+             // evaluate the objective function and its jacobian
+             PointVectorValuePair previous = current;

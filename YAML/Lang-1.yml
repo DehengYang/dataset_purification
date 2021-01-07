@@ -1,0 +1,342 @@
+1 bug_id: Lang-1
+2 src folder:
+  name of src folder: java
+  number of files: 121
+  number of java files: 108
+  number of src classes: 169
+  number of test classes: 112
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.math.NumberUtilsTest#TestLang747
+  failing tests:
+  - org.apache.commons.lang3.math.NumberUtilsTest
+  number of all test cases: 2295
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.526
+  purification via delta debugging: 192.071
+  repair actions extraction: 1.78
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.math.NumberUtilsTest#TestLang747: 38
+  fixed:
+    org.apache.commons.lang3.math.NumberUtilsTest#TestLang747: 57
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 11
+  covDel: 2
+  cov_patch_lines: 13
+  delta_patch_lines: 12
+  oriAdd: 11
+  oriDel: 2
+  ori_patch_lines: 13
+  purAdd: 10
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 18
+  failFail: 9
+  passed: 0
+  total: 27
+9 sibling repair actions:
+- 1 3 0.932339132836233
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_1/src/main/java/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-22 01:06:18.200123032 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_1/purify/patch/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-22 01:06:18.200123032 -0400\n@@ -464,11 +464,20 @@\n             }\n \
+    \        }\n         if (pfxLen > 0) { // we have a hex number\n+            char\
+    \ firstSigDigit = 0; // strip leading zeroes\n+            for(int i = pfxLen;\
+    \ i < str.length(); i++) {\n+                firstSigDigit = str.charAt(i);\n\
+    +                if (firstSigDigit == '0') { // count leading zeroes\n+      \
+    \              pfxLen++;\n+                } else {\n+                    break;\n\
+    +                }\n+            }\n             final int hexDigits = str.length()\
+    \ - pfxLen;\n-            if (hexDigits > 16) { // too many for Long\n+      \
+    \      if (hexDigits > 16 || (hexDigits == 16 && firstSigDigit > '7')) { // too\
+    \ many for Long\n                 return createBigInteger(str);\n            \
+    \ }\n-            if (hexDigits > 8) { // too many for an int\n+            if\
+    \ (hexDigits > 8 || (hexDigits == 8 && firstSigDigit > '7')) { // too many for\
+    \ an int\n                 return createLong(str);\n             }\n         \
+    \    return createInteger(str);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_1/src/main/java/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-22 01:09:46.494145840 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_1/purify/purified/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-22 01:09:46.490145724 -0400\n@@ -464,11 +464,19 @@\n             }\n \
+    \        }\n         if (pfxLen > 0) { // we have a hex number\n+            char\
+    \ firstSigDigit = 0; // strip leading zeroes\n+            for(int i = pfxLen;\
+    \ i < str.length(); i++) {\n+                firstSigDigit = str.charAt(i);\n\
+    +                if (firstSigDigit == '0') { // count leading zeroes\n+      \
+    \              pfxLen++;\n+                } else {\n+                }\n+   \
+    \         }\n             final int hexDigits = str.length() - pfxLen;\n-    \
+    \        if (hexDigits > 16) { // too many for Long\n+            if (hexDigits\
+    \ > 16 || (hexDigits == 16 && firstSigDigit > '7')) { // too many for Long\n \
+    \                return createBigInteger(str);\n             }\n-            if\
+    \ (hexDigits > 8) { // too many for an int\n+            if (hexDigits > 8 ||\
+    \ (hexDigits == 8 && firstSigDigit > '7')) { // too many for an int\n        \
+    \         return createLong(str);\n             }\n             return createInteger(str);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@char firstSigDigit=0; @TO@ IfStatement@@InfixExpression:pfxLen
+      > 0 '
+    - '---INS PrimitiveType@@char @TO@ VariableDeclarationStatement@@char firstSigDigit=0; '
+    - '---INS VariableDeclarationFragment@@firstSigDigit=0 @TO@ VariableDeclarationStatement@@char
+      firstSigDigit=0; '
+    - '------INS SimpleName@@firstSigDigit @TO@ VariableDeclarationFragment@@firstSigDigit=0 '
+    - '------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@firstSigDigit=0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:hexDigits > 16 @TO@ InfixExpression:hexDigits
+      > 16 || (hexDigits == 16 && firstSigDigit > ''7'') '
+    - '---DEL InfixExpression@@hexDigits > 16 '
+    - '---INS InfixExpression@@hexDigits > 16 || (hexDigits == 16 && firstSigDigit
+      > ''7'') @TO@ IfStatement@@InfixExpression:hexDigits > 16 '
+    - '------INS InfixExpression@@hexDigits > 16 @TO@ InfixExpression@@hexDigits >
+      16 || (hexDigits == 16 && firstSigDigit > ''7'') '
+    - '---------MOV SimpleName@@hexDigits @TO@ InfixExpression@@hexDigits > 16 '
+    - '---------MOV Operator@@> @TO@ InfixExpression@@hexDigits > 16 '
+    - '---------MOV NumberLiteral@@16 @TO@ InfixExpression@@hexDigits > 16 '
+    - '------INS Operator@@|| @TO@ InfixExpression@@hexDigits > 16 || (hexDigits ==
+      16 && firstSigDigit > ''7'') '
+    - '------INS ParenthesizedExpression@@(hexDigits == 16 && firstSigDigit > ''7'')
+      @TO@ InfixExpression@@hexDigits > 16 || (hexDigits == 16 && firstSigDigit >
+      ''7'') '
+    - '---------INS InfixExpression@@hexDigits == 16 && firstSigDigit > ''7'' @TO@
+      ParenthesizedExpression@@(hexDigits == 16 && firstSigDigit > ''7'') '
+    - '------------INS InfixExpression@@hexDigits == 16 @TO@ InfixExpression@@hexDigits
+      == 16 && firstSigDigit > ''7'' '
+    - '---------------INS SimpleName@@hexDigits @TO@ InfixExpression@@hexDigits ==
+      16 '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@hexDigits == 16 '
+    - '---------------INS NumberLiteral@@16 @TO@ InfixExpression@@hexDigits == 16 '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@hexDigits == 16 && firstSigDigit
+      > ''7'' '
+    - '------------INS InfixExpression@@firstSigDigit > ''7'' @TO@ InfixExpression@@hexDigits
+      == 16 && firstSigDigit > ''7'' '
+    - '---------------INS SimpleName@@firstSigDigit @TO@ InfixExpression@@firstSigDigit
+      > ''7'' '
+    - '---------------INS Operator@@> @TO@ InfixExpression@@firstSigDigit > ''7'' '
+    - '---------------INS CharacterLiteral@@''7'' @TO@ InfixExpression@@firstSigDigit
+      > ''7'' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=pfxLen];i < str.length(); [i++] @TO@ IfStatement@@InfixExpression:pfxLen
+      > 0 '
+    - '---INS VariableDeclarationExpression@@int i=pfxLen @TO@ ForStatement@@[int
+      i=pfxLen];i < str.length(); [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=pfxLen '
+    - '------INS VariableDeclarationFragment@@i=pfxLen @TO@ VariableDeclarationExpression@@int
+      i=pfxLen '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=pfxLen '
+    - '---------INS SimpleName@@pfxLen @TO@ VariableDeclarationFragment@@i=pfxLen '
+    - '---INS InfixExpression@@i < str.length() @TO@ ForStatement@@[int i=pfxLen];i
+      < str.length(); [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < str.length() '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < str.length() '
+    - '------INS MethodInvocation@@str.length() @TO@ InfixExpression@@i < str.length() '
+    - '---------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.length() '
+    - '---------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@str.length() '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=pfxLen];i < str.length();
+      [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS ExpressionStatement@@Assignment:firstSigDigit=str.charAt(i) @TO@ ForStatement@@[int
+      i=pfxLen];i < str.length(); [i++] '
+    - '------INS Assignment@@firstSigDigit=str.charAt(i) @TO@ ExpressionStatement@@Assignment:firstSigDigit=str.charAt(i) '
+    - '---------INS SimpleName@@firstSigDigit @TO@ Assignment@@firstSigDigit=str.charAt(i) '
+    - '---------INS Operator@@= @TO@ Assignment@@firstSigDigit=str.charAt(i) '
+    - '---------INS MethodInvocation@@str.charAt(i) @TO@ Assignment@@firstSigDigit=str.charAt(i) '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.charAt(i) '
+    - '------------INS SimpleName@@MethodName:charAt:[i] @TO@ MethodInvocation@@str.charAt(i) '
+    - '---------------INS SimpleName@@i @TO@ SimpleName@@MethodName:charAt:[i] '
+    - '---INS IfStatement@@InfixExpression:firstSigDigit == ''0'' @TO@ ForStatement@@[int
+      i=pfxLen];i < str.length(); [i++] '
+    - '------INS InfixExpression@@firstSigDigit == ''0'' @TO@ IfStatement@@InfixExpression:firstSigDigit
+      == ''0'' '
+    - '---------INS SimpleName@@firstSigDigit @TO@ InfixExpression@@firstSigDigit
+      == ''0'' '
+    - '---------INS Operator@@== @TO@ InfixExpression@@firstSigDigit == ''0'' '
+    - '---------INS CharacterLiteral@@''0'' @TO@ InfixExpression@@firstSigDigit ==
+      ''0'' '
+    - '------INS ExpressionStatement@@PostfixExpression:pfxLen++ @TO@ IfStatement@@InfixExpression:firstSigDigit
+      == ''0'' '
+    - '---------INS PostfixExpression@@pfxLen++ @TO@ ExpressionStatement@@PostfixExpression:pfxLen++ '
+    - '------------INS SimpleName@@pfxLen @TO@ PostfixExpression@@pfxLen++ '
+    - '------------INS Operator@@++ @TO@ PostfixExpression@@pfxLen++ '
+    - '------INS BreakStatement@@ @TO@ IfStatement@@InfixExpression:firstSigDigit
+      == ''0'' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:hexDigits > 8 @TO@ InfixExpression:hexDigits
+      > 8 || (hexDigits == 8 && firstSigDigit > ''7'') '
+    - '---DEL InfixExpression@@hexDigits > 8 '
+    - '---INS InfixExpression@@hexDigits > 8 || (hexDigits == 8 && firstSigDigit >
+      ''7'') @TO@ IfStatement@@InfixExpression:hexDigits > 8 '
+    - '------INS InfixExpression@@hexDigits > 8 @TO@ InfixExpression@@hexDigits >
+      8 || (hexDigits == 8 && firstSigDigit > ''7'') '
+    - '---------MOV SimpleName@@hexDigits @TO@ InfixExpression@@hexDigits > 8 '
+    - '---------MOV Operator@@> @TO@ InfixExpression@@hexDigits > 8 '
+    - '---------MOV NumberLiteral@@8 @TO@ InfixExpression@@hexDigits > 8 '
+    - '------INS Operator@@|| @TO@ InfixExpression@@hexDigits > 8 || (hexDigits ==
+      8 && firstSigDigit > ''7'') '
+    - '------INS ParenthesizedExpression@@(hexDigits == 8 && firstSigDigit > ''7'')
+      @TO@ InfixExpression@@hexDigits > 8 || (hexDigits == 8 && firstSigDigit > ''7'') '
+    - '---------INS InfixExpression@@hexDigits == 8 && firstSigDigit > ''7'' @TO@
+      ParenthesizedExpression@@(hexDigits == 8 && firstSigDigit > ''7'') '
+    - '------------INS InfixExpression@@hexDigits == 8 @TO@ InfixExpression@@hexDigits
+      == 8 && firstSigDigit > ''7'' '
+    - '---------------INS SimpleName@@hexDigits @TO@ InfixExpression@@hexDigits ==
+      8 '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@hexDigits == 8 '
+    - '---------------INS NumberLiteral@@8 @TO@ InfixExpression@@hexDigits == 8 '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@hexDigits == 8 && firstSigDigit
+      > ''7'' '
+    - '------------INS InfixExpression@@firstSigDigit > ''7'' @TO@ InfixExpression@@hexDigits
+      == 8 && firstSigDigit > ''7'' '
+    - '---------------INS SimpleName@@firstSigDigit @TO@ InfixExpression@@firstSigDigit
+      > ''7'' '
+    - '---------------INS Operator@@> @TO@ InfixExpression@@firstSigDigit > ''7'' '
+    - '---------------INS CharacterLiteral@@''7'' @TO@ InfixExpression@@firstSigDigit
+      > ''7'' '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@char firstSigDigit=0; @TO@ IfStatement@@InfixExpression:pfxLen
+      > 0 '
+    - '---INS PrimitiveType@@char @TO@ VariableDeclarationStatement@@char firstSigDigit=0; '
+    - '---INS VariableDeclarationFragment@@firstSigDigit=0 @TO@ VariableDeclarationStatement@@char
+      firstSigDigit=0; '
+    - '------INS SimpleName@@firstSigDigit @TO@ VariableDeclarationFragment@@firstSigDigit=0 '
+    - '------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@firstSigDigit=0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:hexDigits > 16 @TO@ InfixExpression:hexDigits
+      > 16 || (hexDigits == 16 && firstSigDigit > ''7'') '
+    - '---DEL InfixExpression@@hexDigits > 16 '
+    - '---INS InfixExpression@@hexDigits > 16 || (hexDigits == 16 && firstSigDigit
+      > ''7'') @TO@ IfStatement@@InfixExpression:hexDigits > 16 '
+    - '------INS InfixExpression@@hexDigits > 16 @TO@ InfixExpression@@hexDigits >
+      16 || (hexDigits == 16 && firstSigDigit > ''7'') '
+    - '---------MOV SimpleName@@hexDigits @TO@ InfixExpression@@hexDigits > 16 '
+    - '---------MOV Operator@@> @TO@ InfixExpression@@hexDigits > 16 '
+    - '---------MOV NumberLiteral@@16 @TO@ InfixExpression@@hexDigits > 16 '
+    - '------INS Operator@@|| @TO@ InfixExpression@@hexDigits > 16 || (hexDigits ==
+      16 && firstSigDigit > ''7'') '
+    - '------INS ParenthesizedExpression@@(hexDigits == 16 && firstSigDigit > ''7'')
+      @TO@ InfixExpression@@hexDigits > 16 || (hexDigits == 16 && firstSigDigit >
+      ''7'') '
+    - '---------INS InfixExpression@@hexDigits == 16 && firstSigDigit > ''7'' @TO@
+      ParenthesizedExpression@@(hexDigits == 16 && firstSigDigit > ''7'') '
+    - '------------INS InfixExpression@@hexDigits == 16 @TO@ InfixExpression@@hexDigits
+      == 16 && firstSigDigit > ''7'' '
+    - '---------------INS SimpleName@@hexDigits @TO@ InfixExpression@@hexDigits ==
+      16 '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@hexDigits == 16 '
+    - '---------------INS NumberLiteral@@16 @TO@ InfixExpression@@hexDigits == 16 '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@hexDigits == 16 && firstSigDigit
+      > ''7'' '
+    - '------------INS InfixExpression@@firstSigDigit > ''7'' @TO@ InfixExpression@@hexDigits
+      == 16 && firstSigDigit > ''7'' '
+    - '---------------INS SimpleName@@firstSigDigit @TO@ InfixExpression@@firstSigDigit
+      > ''7'' '
+    - '---------------INS Operator@@> @TO@ InfixExpression@@firstSigDigit > ''7'' '
+    - '---------------INS CharacterLiteral@@''7'' @TO@ InfixExpression@@firstSigDigit
+      > ''7'' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=pfxLen];i < str.length(); [i++] @TO@ IfStatement@@InfixExpression:pfxLen
+      > 0 '
+    - '---INS VariableDeclarationExpression@@int i=pfxLen @TO@ ForStatement@@[int
+      i=pfxLen];i < str.length(); [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=pfxLen '
+    - '------INS VariableDeclarationFragment@@i=pfxLen @TO@ VariableDeclarationExpression@@int
+      i=pfxLen '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=pfxLen '
+    - '---------INS SimpleName@@pfxLen @TO@ VariableDeclarationFragment@@i=pfxLen '
+    - '---INS InfixExpression@@i < str.length() @TO@ ForStatement@@[int i=pfxLen];i
+      < str.length(); [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < str.length() '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < str.length() '
+    - '------INS MethodInvocation@@str.length() @TO@ InfixExpression@@i < str.length() '
+    - '---------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.length() '
+    - '---------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@str.length() '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=pfxLen];i < str.length();
+      [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS ExpressionStatement@@Assignment:firstSigDigit=str.charAt(i) @TO@ ForStatement@@[int
+      i=pfxLen];i < str.length(); [i++] '
+    - '------INS Assignment@@firstSigDigit=str.charAt(i) @TO@ ExpressionStatement@@Assignment:firstSigDigit=str.charAt(i) '
+    - '---------INS SimpleName@@firstSigDigit @TO@ Assignment@@firstSigDigit=str.charAt(i) '
+    - '---------INS Operator@@= @TO@ Assignment@@firstSigDigit=str.charAt(i) '
+    - '---------INS MethodInvocation@@str.charAt(i) @TO@ Assignment@@firstSigDigit=str.charAt(i) '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.charAt(i) '
+    - '------------INS SimpleName@@MethodName:charAt:[i] @TO@ MethodInvocation@@str.charAt(i) '
+    - '---------------INS SimpleName@@i @TO@ SimpleName@@MethodName:charAt:[i] '
+    - '---INS IfStatement@@InfixExpression:firstSigDigit == ''0'' @TO@ ForStatement@@[int
+      i=pfxLen];i < str.length(); [i++] '
+    - '------INS InfixExpression@@firstSigDigit == ''0'' @TO@ IfStatement@@InfixExpression:firstSigDigit
+      == ''0'' '
+    - '---------INS SimpleName@@firstSigDigit @TO@ InfixExpression@@firstSigDigit
+      == ''0'' '
+    - '---------INS Operator@@== @TO@ InfixExpression@@firstSigDigit == ''0'' '
+    - '---------INS CharacterLiteral@@''0'' @TO@ InfixExpression@@firstSigDigit ==
+      ''0'' '
+    - '------INS ExpressionStatement@@PostfixExpression:pfxLen++ @TO@ IfStatement@@InfixExpression:firstSigDigit
+      == ''0'' '
+    - '---------INS PostfixExpression@@pfxLen++ @TO@ ExpressionStatement@@PostfixExpression:pfxLen++ '
+    - '------------INS SimpleName@@pfxLen @TO@ PostfixExpression@@pfxLen++ '
+    - '------------INS Operator@@++ @TO@ PostfixExpression@@pfxLen++ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:hexDigits > 8 @TO@ InfixExpression:hexDigits
+      > 8 || (hexDigits == 8 && firstSigDigit > ''7'') '
+    - '---DEL InfixExpression@@hexDigits > 8 '
+    - '---INS InfixExpression@@hexDigits > 8 || (hexDigits == 8 && firstSigDigit >
+      ''7'') @TO@ IfStatement@@InfixExpression:hexDigits > 8 '
+    - '------INS InfixExpression@@hexDigits > 8 @TO@ InfixExpression@@hexDigits >
+      8 || (hexDigits == 8 && firstSigDigit > ''7'') '
+    - '---------MOV SimpleName@@hexDigits @TO@ InfixExpression@@hexDigits > 8 '
+    - '---------MOV Operator@@> @TO@ InfixExpression@@hexDigits > 8 '
+    - '---------MOV NumberLiteral@@8 @TO@ InfixExpression@@hexDigits > 8 '
+    - '------INS Operator@@|| @TO@ InfixExpression@@hexDigits > 8 || (hexDigits ==
+      8 && firstSigDigit > ''7'') '
+    - '------INS ParenthesizedExpression@@(hexDigits == 8 && firstSigDigit > ''7'')
+      @TO@ InfixExpression@@hexDigits > 8 || (hexDigits == 8 && firstSigDigit > ''7'') '
+    - '---------INS InfixExpression@@hexDigits == 8 && firstSigDigit > ''7'' @TO@
+      ParenthesizedExpression@@(hexDigits == 8 && firstSigDigit > ''7'') '
+    - '------------INS InfixExpression@@hexDigits == 8 @TO@ InfixExpression@@hexDigits
+      == 8 && firstSigDigit > ''7'' '
+    - '---------------INS SimpleName@@hexDigits @TO@ InfixExpression@@hexDigits ==
+      8 '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@hexDigits == 8 '
+    - '---------------INS NumberLiteral@@8 @TO@ InfixExpression@@hexDigits == 8 '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@hexDigits == 8 && firstSigDigit
+      > ''7'' '
+    - '------------INS InfixExpression@@firstSigDigit > ''7'' @TO@ InfixExpression@@hexDigits
+      == 8 && firstSigDigit > ''7'' '
+    - '---------------INS SimpleName@@firstSigDigit @TO@ InfixExpression@@firstSigDigit
+      > ''7'' '
+    - '---------------INS Operator@@> @TO@ InfixExpression@@firstSigDigit > ''7'' '
+    - '---------------INS CharacterLiteral@@''7'' @TO@ InfixExpression@@firstSigDigit
+      > ''7'' '
+  repair_actions_cnt: 4

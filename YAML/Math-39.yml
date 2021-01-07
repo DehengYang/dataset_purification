@@ -1,0 +1,154 @@
+1 bug_id: Math-39
+2 src folder:
+  name of src folder: java
+  number of files: 619
+  number of java files: 618
+  number of src classes: 845
+  number of test classes: 295
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.ode.nonstiff.DormandPrince853IntegratorTest#testTooLargeFirstStep
+  failing tests:
+  - org.apache.commons.math.ode.nonstiff.DormandPrince853IntegratorTest
+  number of all test cases: 3260
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.867
+  purification via delta debugging: 359.251
+  repair actions extraction: 2.131
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.ode.nonstiff.DormandPrince853IntegratorTest#testTooLargeFirstStep: 510
+  fixed:
+    org.apache.commons.math.ode.nonstiff.DormandPrince853IntegratorTest#testTooLargeFirstStep: 637
+6 reduced lines:
+  by all: 4
+  by coverage: 3
+  by delta debugging: 1
+  covAdd: 6
+  covDel: 0
+  cov_patch_lines: 6
+  delta_patch_lines: 5
+  oriAdd: 9
+  oriDel: 0
+  ori_patch_lines: 9
+  purAdd: 5
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 13
+  failFail: 2
+  passed: 1
+  total: 16
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_39/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java\t\
+    2020-10-21 11:06:09.910828506 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_39/purify/patch/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java\t\
+    2020-10-21 11:06:09.910828506 -0400\n@@ -247,6 +247,15 @@\n         }\n \n   \
+    \      stepSize = hNew;\n+        if (forward) {\n+            if (stepStart +\
+    \ stepSize >= t) {\n+                stepSize = t - stepStart;\n+            }\n\
+    +        } else {\n+            if (stepStart + stepSize <= t) {\n+          \
+    \      stepSize = t - stepStart;\n+            }\n+        }\n \n         // next\
+    \ stages\n         for (int k = 1; k < stages; ++k) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_39/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java\t\
+    2020-10-21 11:12:28.409769239 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_39/purify/purified/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java\t\
+    2020-10-21 11:12:28.409769239 -0400\n@@ -247,6 +247,11 @@\n         }\n \n   \
+    \      stepSize = hNew;\n+        if (forward) {\n+            if (stepStart +\
+    \ stepSize >= t) {\n+                stepSize = t - stepStart;\n+            }\n\
+    +        }\n \n         // next stages\n         for (int k = 1; k < stages; ++k)\
+    \ {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:forward @TO@ WhileStatement@@InfixExpression:error
+      >= 1.0 '
+    - '---INS SimpleName@@forward @TO@ IfStatement@@SimpleName:forward '
+    - '---INS IfStatement@@InfixExpression:stepStart + stepSize >= t @TO@ IfStatement@@SimpleName:forward '
+    - '------INS InfixExpression@@stepStart + stepSize >= t @TO@ IfStatement@@InfixExpression:stepStart
+      + stepSize >= t '
+    - '---------INS InfixExpression@@stepStart + stepSize @TO@ InfixExpression@@stepStart
+      + stepSize >= t '
+    - '------------INS SimpleName@@stepStart @TO@ InfixExpression@@stepStart + stepSize '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@stepStart + stepSize '
+    - '------------INS SimpleName@@stepSize @TO@ InfixExpression@@stepStart + stepSize '
+    - '---------INS Operator@@>= @TO@ InfixExpression@@stepStart + stepSize >= t '
+    - '---------INS SimpleName@@t @TO@ InfixExpression@@stepStart + stepSize >= t '
+    - '------INS ExpressionStatement@@Assignment:stepSize=t - stepStart @TO@ IfStatement@@InfixExpression:stepStart
+      + stepSize >= t '
+    - '---------INS Assignment@@stepSize=t - stepStart @TO@ ExpressionStatement@@Assignment:stepSize=t
+      - stepStart '
+    - '------------INS SimpleName@@stepSize @TO@ Assignment@@stepSize=t - stepStart '
+    - '------------INS Operator@@= @TO@ Assignment@@stepSize=t - stepStart '
+    - '------------INS InfixExpression@@t - stepStart @TO@ Assignment@@stepSize=t
+      - stepStart '
+    - '---------------INS SimpleName@@t @TO@ InfixExpression@@t - stepStart '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@t - stepStart '
+    - '---------------INS SimpleName@@stepStart @TO@ InfixExpression@@t - stepStart '
+    - '---INS IfStatement@@InfixExpression:stepStart + stepSize <= t @TO@ IfStatement@@SimpleName:forward '
+    - '------INS InfixExpression@@stepStart + stepSize <= t @TO@ IfStatement@@InfixExpression:stepStart
+      + stepSize <= t '
+    - '---------INS InfixExpression@@stepStart + stepSize @TO@ InfixExpression@@stepStart
+      + stepSize <= t '
+    - '------------INS SimpleName@@stepStart @TO@ InfixExpression@@stepStart + stepSize '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@stepStart + stepSize '
+    - '------------INS SimpleName@@stepSize @TO@ InfixExpression@@stepStart + stepSize '
+    - '---------INS Operator@@<= @TO@ InfixExpression@@stepStart + stepSize <= t '
+    - '---------INS SimpleName@@t @TO@ InfixExpression@@stepStart + stepSize <= t '
+    - '------INS ExpressionStatement@@Assignment:stepSize=t - stepStart @TO@ IfStatement@@InfixExpression:stepStart
+      + stepSize <= t '
+    - '---------INS Assignment@@stepSize=t - stepStart @TO@ ExpressionStatement@@Assignment:stepSize=t
+      - stepStart '
+    - '------------INS SimpleName@@stepSize @TO@ Assignment@@stepSize=t - stepStart '
+    - '------------INS Operator@@= @TO@ Assignment@@stepSize=t - stepStart '
+    - '------------INS InfixExpression@@t - stepStart @TO@ Assignment@@stepSize=t
+      - stepStart '
+    - '---------------INS SimpleName@@t @TO@ InfixExpression@@t - stepStart '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@t - stepStart '
+    - '---------------INS SimpleName@@stepStart @TO@ InfixExpression@@t - stepStart '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:forward @TO@ WhileStatement@@InfixExpression:error
+      >= 1.0 '
+    - '---INS SimpleName@@forward @TO@ IfStatement@@SimpleName:forward '
+    - '---INS IfStatement@@InfixExpression:stepStart + stepSize >= t @TO@ IfStatement@@SimpleName:forward '
+    - '------INS InfixExpression@@stepStart + stepSize >= t @TO@ IfStatement@@InfixExpression:stepStart
+      + stepSize >= t '
+    - '---------INS InfixExpression@@stepStart + stepSize @TO@ InfixExpression@@stepStart
+      + stepSize >= t '
+    - '------------INS SimpleName@@stepStart @TO@ InfixExpression@@stepStart + stepSize '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@stepStart + stepSize '
+    - '------------INS SimpleName@@stepSize @TO@ InfixExpression@@stepStart + stepSize '
+    - '---------INS Operator@@>= @TO@ InfixExpression@@stepStart + stepSize >= t '
+    - '---------INS SimpleName@@t @TO@ InfixExpression@@stepStart + stepSize >= t '
+    - '------INS ExpressionStatement@@Assignment:stepSize=t - stepStart @TO@ IfStatement@@InfixExpression:stepStart
+      + stepSize >= t '
+    - '---------INS Assignment@@stepSize=t - stepStart @TO@ ExpressionStatement@@Assignment:stepSize=t
+      - stepStart '
+    - '------------INS SimpleName@@stepSize @TO@ Assignment@@stepSize=t - stepStart '
+    - '------------INS Operator@@= @TO@ Assignment@@stepSize=t - stepStart '
+    - '------------INS InfixExpression@@t - stepStart @TO@ Assignment@@stepSize=t
+      - stepStart '
+    - '---------------INS SimpleName@@t @TO@ InfixExpression@@t - stepStart '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@t - stepStart '
+    - '---------------INS SimpleName@@stepStart @TO@ InfixExpression@@t - stepStart '
+  repair_actions_cnt: 1

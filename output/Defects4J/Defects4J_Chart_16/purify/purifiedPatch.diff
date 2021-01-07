@@ -1,0 +1,20 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_16/source/org/jfree/data/category/DefaultIntervalCategoryDataset.java	2020-10-21 00:17:27.349541120 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_16/purify/purified/org/jfree/data/category/DefaultIntervalCategoryDataset.java	2020-10-21 00:17:27.349541120 -0400
+@@ -206,6 +206,8 @@
+             else {
+                 this.seriesKeys = null;
+                 this.categoryKeys = null;
++                this.seriesKeys = new Comparable[0];
++                this.categoryKeys = new Comparable[0];
+             }
+         }
+ 
+@@ -335,7 +337,7 @@
+         if (categoryKeys == null) {
+             throw new IllegalArgumentException("Null 'categoryKeys' argument.");
+         }
+-        if (categoryKeys.length != this.startData[0].length) {
++        if (categoryKeys.length != getCategoryCount()) {
+             throw new IllegalArgumentException(
+                     "The number of categories does not match the data.");
+         }

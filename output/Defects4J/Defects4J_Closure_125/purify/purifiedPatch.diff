@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_125/src/com/google/javascript/jscomp/TypeCheck.java	2020-10-23 17:16:20.765057165 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_125/purify/purified/com/google/javascript/jscomp/TypeCheck.java	2020-10-23 17:16:20.765057165 -0400
+@@ -1658,7 +1658,7 @@
+     JSType type = getJSType(constructor).restrictByNotNullOrUndefined();
+     if (type.isConstructor() || type.isEmptyType() || type.isUnknownType()) {
+       FunctionType fnType = type.toMaybeFunctionType();
+-      if (fnType != null) {
++      if (fnType != null && fnType.hasInstanceType()) {
+         visitParameterList(t, n, fnType);
+         ensureTyped(t, n, fnType.getInstanceType());
+       } else {

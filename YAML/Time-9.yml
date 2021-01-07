@@ -1,0 +1,270 @@
+1 bug_id: Time-9
+2 src folder:
+  name of src folder: java
+  number of files: 186
+  number of java files: 157
+  number of src classes: 230
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestDateTimeZone#testForOffsetHoursMinutes_int_int
+  failing tests:
+  - org.joda.time.TestDateTimeZone
+  number of all test cases: 3972
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.295
+  purification via delta debugging: 165.451
+  repair actions extraction: 1.877
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestDateTimeZone#testForOffsetHoursMinutes_int_int: 511
+  fixed:
+    org.joda.time.TestDateTimeZone#testForOffsetHoursMinutes_int_int: 511
+6 reduced lines:
+  by all: 9
+  by coverage: 1
+  by delta debugging: 8
+  covAdd: 8
+  covDel: 3
+  cov_patch_lines: 11
+  delta_patch_lines: 3
+  oriAdd: 9
+  oriDel: 3
+  ori_patch_lines: 12
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 4
+  by coverage: 0
+  by delta debugging: 4
+  cov: 5
+  original: 5
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 3
+  passed: 2
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_9/src/main/java/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 20:06:50.226936808 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_9/purify/patch/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 20:06:50.222936693 -0400\n@@ -255,16 +255,19 @@\n         if (hoursOffset\
+    \ == 0 && minutesOffset == 0) {\n             return DateTimeZone.UTC;\n     \
+    \    }\n+        if (hoursOffset < -23 || hoursOffset > 23) {\n+            throw\
+    \ new IllegalArgumentException(\"Hours out of range: \" + hoursOffset);\n+   \
+    \     }\n         if (minutesOffset < 0 || minutesOffset > 59) {\n           \
+    \  throw new IllegalArgumentException(\"Minutes out of range: \" + minutesOffset);\n\
+    \         }\n         int offset = 0;\n         try {\n-            int hoursInMinutes\
+    \ = FieldUtils.safeMultiply(hoursOffset, 60);\n+            int hoursInMinutes\
+    \ = hoursOffset * 60;\n             if (hoursInMinutes < 0) {\n-             \
+    \   minutesOffset = FieldUtils.safeAdd(hoursInMinutes, -minutesOffset);\n+   \
+    \             minutesOffset = hoursInMinutes - minutesOffset;\n             }\
+    \ else {\n-                minutesOffset = FieldUtils.safeAdd(hoursInMinutes,\
+    \ minutesOffset);\n+                minutesOffset = hoursInMinutes + minutesOffset;\n\
+    \             }\n             offset = FieldUtils.safeMultiply(minutesOffset,\
+    \ DateTimeConstants.MILLIS_PER_MINUTE);\n         } catch (ArithmeticException\
+    \ ex) {\n@@ -280,6 +283,9 @@\n      * @return the DateTimeZone object for the\
+    \ offset\n      */\n     public static DateTimeZone forOffsetMillis(int millisOffset)\
+    \ {\n+        if (millisOffset < -MAX_MILLIS || millisOffset > MAX_MILLIS) {\n\
+    +            throw new IllegalArgumentException(\"Millis out of range: \" + millisOffset);\n\
+    +        }\n         String id = printOffset(millisOffset);\n         return fixedOffsetZone(id,\
+    \ millisOffset);\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_9/src/main/java/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 20:09:53.912246501 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_9/purify/purified/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 20:09:53.908246386 -0400\n@@ -255,6 +255,9 @@\n         if (hoursOffset\
+    \ == 0 && minutesOffset == 0) {\n             return DateTimeZone.UTC;\n     \
+    \    }\n+        if (hoursOffset < -23 || hoursOffset > 23) {\n+            throw\
+    \ new IllegalArgumentException(\"Hours out of range: \" + hoursOffset);\n+   \
+    \     }\n         if (minutesOffset < 0 || minutesOffset > 59) {\n           \
+    \  throw new IllegalArgumentException(\"Minutes out of range: \" + minutesOffset);\n\
+    \         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/DateTimeZone:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:hoursOffset < -23 || hoursOffset > 23 @TO@
+      MethodDeclaration@@public, static, @@DateTimeZone, MethodName:forOffsetHoursMinutes,
+      @@Argus:int+hoursOffset+int+minutesOffset+IllegalArgumentException,  '
+    - '---INS InfixExpression@@hoursOffset < -23 || hoursOffset > 23 @TO@ IfStatement@@InfixExpression:hoursOffset
+      < -23 || hoursOffset > 23 '
+    - '------INS InfixExpression@@hoursOffset < -23 @TO@ InfixExpression@@hoursOffset
+      < -23 || hoursOffset > 23 '
+    - '---------INS SimpleName@@hoursOffset @TO@ InfixExpression@@hoursOffset < -23 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@hoursOffset < -23 '
+    - '---------INS PrefixExpression@@-23 @TO@ InfixExpression@@hoursOffset < -23 '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-23 '
+    - '------------INS NumberLiteral@@23 @TO@ PrefixExpression@@-23 '
+    - '------INS Operator@@|| @TO@ InfixExpression@@hoursOffset < -23 || hoursOffset
+      > 23 '
+    - '------INS InfixExpression@@hoursOffset > 23 @TO@ InfixExpression@@hoursOffset
+      < -23 || hoursOffset > 23 '
+    - '---------INS SimpleName@@hoursOffset @TO@ InfixExpression@@hoursOffset > 23 '
+    - '---------INS Operator@@> @TO@ InfixExpression@@hoursOffset > 23 '
+    - '---------INS NumberLiteral@@23 @TO@ InfixExpression@@hoursOffset > 23 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Hours
+      out of range: " + hoursOffset) @TO@ IfStatement@@InfixExpression:hoursOffset
+      < -23 || hoursOffset > 23 '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Hours out of range:
+      " + hoursOffset] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Hours
+      out of range: " + hoursOffset) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Hours
+      out of range: " + hoursOffset] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Hours
+      out of range: " + hoursOffset] '
+    - '---------INS InfixExpression@@"Hours out of range: " + hoursOffset @TO@ ClassInstanceCreation@@IllegalArgumentException["Hours
+      out of range: " + hoursOffset] '
+    - '------------INS StringLiteral@@"Hours out of range: " @TO@ InfixExpression@@"Hours
+      out of range: " + hoursOffset '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Hours out of range: " +
+      hoursOffset '
+    - '------------INS SimpleName@@hoursOffset @TO@ InfixExpression@@"Hours out of
+      range: " + hoursOffset '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int hoursInMinutes=FieldUtils.safeMultiply(hoursOffset,60);
+      @TO@ int hoursInMinutes=hoursOffset * 60; '
+    - '---UPD VariableDeclarationFragment@@hoursInMinutes=FieldUtils.safeMultiply(hoursOffset,60)
+      @TO@ hoursInMinutes=hoursOffset * 60 '
+    - '------DEL MethodInvocation@@FieldUtils.safeMultiply(hoursOffset,60) '
+    - '---------DEL SimpleName@@Name:FieldUtils '
+    - '---------DEL SimpleName@@MethodName:safeMultiply:[hoursOffset, 60] '
+    - '------------DEL SimpleName@@hoursOffset '
+    - '------------DEL NumberLiteral@@60 '
+    - '------INS InfixExpression@@hoursOffset * 60 @TO@ VariableDeclarationFragment@@hoursInMinutes=FieldUtils.safeMultiply(hoursOffset,60) '
+    - '---------INS SimpleName@@hoursOffset @TO@ InfixExpression@@hoursOffset * 60 '
+    - '---------INS Operator@@* @TO@ InfixExpression@@hoursOffset * 60 '
+    - '---------INS NumberLiteral@@60 @TO@ InfixExpression@@hoursOffset * 60 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:minutesOffset=FieldUtils.safeAdd(hoursInMinutes,-minutesOffset)
+      @TO@ Assignment:minutesOffset=hoursInMinutes - minutesOffset '
+    - '---UPD Assignment@@minutesOffset=FieldUtils.safeAdd(hoursInMinutes,-minutesOffset)
+      @TO@ minutesOffset=hoursInMinutes - minutesOffset '
+    - '------DEL MethodInvocation@@FieldUtils.safeAdd(hoursInMinutes,-minutesOffset) '
+    - '---------DEL SimpleName@@Name:FieldUtils '
+    - '---------DEL SimpleName@@MethodName:safeAdd:[hoursInMinutes, -minutesOffset] '
+    - '------------DEL SimpleName@@hoursInMinutes '
+    - '------------DEL PrefixExpression@@-minutesOffset '
+    - '---------------DEL Operator@@- '
+    - '---------------DEL SimpleName@@minutesOffset '
+    - '------INS InfixExpression@@hoursInMinutes - minutesOffset @TO@ Assignment@@minutesOffset=FieldUtils.safeAdd(hoursInMinutes,-minutesOffset) '
+    - '---------INS SimpleName@@hoursInMinutes @TO@ InfixExpression@@hoursInMinutes
+      - minutesOffset '
+    - '---------INS Operator@@- @TO@ InfixExpression@@hoursInMinutes - minutesOffset '
+    - '---------INS SimpleName@@minutesOffset @TO@ InfixExpression@@hoursInMinutes
+      - minutesOffset '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:minutesOffset=FieldUtils.safeAdd(hoursInMinutes,minutesOffset)
+      @TO@ Assignment:minutesOffset=hoursInMinutes + minutesOffset '
+    - '---UPD Assignment@@minutesOffset=FieldUtils.safeAdd(hoursInMinutes,minutesOffset)
+      @TO@ minutesOffset=hoursInMinutes + minutesOffset '
+    - '------DEL MethodInvocation@@FieldUtils.safeAdd(hoursInMinutes,minutesOffset) '
+    - '---------DEL SimpleName@@Name:FieldUtils '
+    - '---------DEL SimpleName@@MethodName:safeAdd:[hoursInMinutes, minutesOffset] '
+    - '------------DEL SimpleName@@hoursInMinutes '
+    - '------------DEL SimpleName@@minutesOffset '
+    - '------INS InfixExpression@@hoursInMinutes + minutesOffset @TO@ Assignment@@minutesOffset=FieldUtils.safeAdd(hoursInMinutes,minutesOffset) '
+    - '---------INS SimpleName@@hoursInMinutes @TO@ InfixExpression@@hoursInMinutes
+      + minutesOffset '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@hoursInMinutes + minutesOffset '
+    - '---------INS SimpleName@@minutesOffset @TO@ InfixExpression@@hoursInMinutes
+      + minutesOffset '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:millisOffset < -MAX_MILLIS || millisOffset
+      > MAX_MILLIS @TO@ MethodDeclaration@@public, static, @@DateTimeZone, MethodName:forOffsetMillis,
+      @@Argus:int+millisOffset+ '
+    - '---INS InfixExpression@@millisOffset < -MAX_MILLIS || millisOffset > MAX_MILLIS
+      @TO@ IfStatement@@InfixExpression:millisOffset < -MAX_MILLIS || millisOffset
+      > MAX_MILLIS '
+    - '------INS InfixExpression@@millisOffset < -MAX_MILLIS @TO@ InfixExpression@@millisOffset
+      < -MAX_MILLIS || millisOffset > MAX_MILLIS '
+    - '---------INS SimpleName@@millisOffset @TO@ InfixExpression@@millisOffset <
+      -MAX_MILLIS '
+    - '---------INS Operator@@< @TO@ InfixExpression@@millisOffset < -MAX_MILLIS '
+    - '---------INS PrefixExpression@@-MAX_MILLIS @TO@ InfixExpression@@millisOffset
+      < -MAX_MILLIS '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-MAX_MILLIS '
+    - '------------INS SimpleName@@MAX_MILLIS @TO@ PrefixExpression@@-MAX_MILLIS '
+    - '------INS Operator@@|| @TO@ InfixExpression@@millisOffset < -MAX_MILLIS ||
+      millisOffset > MAX_MILLIS '
+    - '------INS InfixExpression@@millisOffset > MAX_MILLIS @TO@ InfixExpression@@millisOffset
+      < -MAX_MILLIS || millisOffset > MAX_MILLIS '
+    - '---------INS SimpleName@@millisOffset @TO@ InfixExpression@@millisOffset >
+      MAX_MILLIS '
+    - '---------INS Operator@@> @TO@ InfixExpression@@millisOffset > MAX_MILLIS '
+    - '---------INS SimpleName@@MAX_MILLIS @TO@ InfixExpression@@millisOffset > MAX_MILLIS '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Millis
+      out of range: " + millisOffset) @TO@ IfStatement@@InfixExpression:millisOffset
+      < -MAX_MILLIS || millisOffset > MAX_MILLIS '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Millis out of range:
+      " + millisOffset] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Millis
+      out of range: " + millisOffset) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Millis
+      out of range: " + millisOffset] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Millis
+      out of range: " + millisOffset] '
+    - '---------INS InfixExpression@@"Millis out of range: " + millisOffset @TO@ ClassInstanceCreation@@IllegalArgumentException["Millis
+      out of range: " + millisOffset] '
+    - '------------INS StringLiteral@@"Millis out of range: " @TO@ InfixExpression@@"Millis
+      out of range: " + millisOffset '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Millis out of range: " +
+      millisOffset '
+    - '------------INS SimpleName@@millisOffset @TO@ InfixExpression@@"Millis out
+      of range: " + millisOffset '
+  repair_actions_cnt: 5
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/DateTimeZone:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:hoursOffset < -23 || hoursOffset > 23 @TO@
+      MethodDeclaration@@public, static, @@DateTimeZone, MethodName:forOffsetHoursMinutes,
+      @@Argus:int+hoursOffset+int+minutesOffset+IllegalArgumentException,  '
+    - '---INS InfixExpression@@hoursOffset < -23 || hoursOffset > 23 @TO@ IfStatement@@InfixExpression:hoursOffset
+      < -23 || hoursOffset > 23 '
+    - '------INS InfixExpression@@hoursOffset < -23 @TO@ InfixExpression@@hoursOffset
+      < -23 || hoursOffset > 23 '
+    - '---------INS SimpleName@@hoursOffset @TO@ InfixExpression@@hoursOffset < -23 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@hoursOffset < -23 '
+    - '---------INS PrefixExpression@@-23 @TO@ InfixExpression@@hoursOffset < -23 '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-23 '
+    - '------------INS NumberLiteral@@23 @TO@ PrefixExpression@@-23 '
+    - '------INS Operator@@|| @TO@ InfixExpression@@hoursOffset < -23 || hoursOffset
+      > 23 '
+    - '------INS InfixExpression@@hoursOffset > 23 @TO@ InfixExpression@@hoursOffset
+      < -23 || hoursOffset > 23 '
+    - '---------INS SimpleName@@hoursOffset @TO@ InfixExpression@@hoursOffset > 23 '
+    - '---------INS Operator@@> @TO@ InfixExpression@@hoursOffset > 23 '
+    - '---------INS NumberLiteral@@23 @TO@ InfixExpression@@hoursOffset > 23 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Hours
+      out of range: " + hoursOffset) @TO@ IfStatement@@InfixExpression:hoursOffset
+      < -23 || hoursOffset > 23 '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Hours out of range:
+      " + hoursOffset] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Hours
+      out of range: " + hoursOffset) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Hours
+      out of range: " + hoursOffset] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Hours
+      out of range: " + hoursOffset] '
+    - '---------INS InfixExpression@@"Hours out of range: " + hoursOffset @TO@ ClassInstanceCreation@@IllegalArgumentException["Hours
+      out of range: " + hoursOffset] '
+    - '------------INS StringLiteral@@"Hours out of range: " @TO@ InfixExpression@@"Hours
+      out of range: " + hoursOffset '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Hours out of range: " +
+      hoursOffset '
+    - '------------INS SimpleName@@hoursOffset @TO@ InfixExpression@@"Hours out of
+      range: " + hoursOffset '
+  repair_actions_cnt: 1

@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_123/src/com/google/javascript/jscomp/CodeGenerator.java	2020-10-23 17:02:43.677410202 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_123/purify/assertBeforeMut/com/google/javascript/jscomp/CodeGenerator.java	2020-10-23 17:02:43.673410086 -0400
+@@ -282,7 +282,7 @@
+       case Token.HOOK: {
+         Preconditions.checkState(childCount == 3);
+         int p = NodeUtil.precedence(type);
+-        Context rhsContext = Context.OTHER;
++        Context rhsContext = getContextForNoInOperator(context);
+         addExpr(first, p + 1, context);
+         cc.addOp("?", true);
+         addExpr(first.getNext(), 1, rhsContext);

@@ -1,0 +1,135 @@
+1 bug_id: Closure-89
+2 src folder:
+  name of src folder: src
+  number of files: 368
+  number of java files: 356
+  number of src classes: 1146
+  number of test classes: 183
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CollapsePropertiesTest#testAddPropertyToChildOfUncollapsibleFunctionInLocalScope
+  - com.google.javascript.jscomp.CollapsePropertiesTest#testAddPropertyToUncollapsibleFunctionInLocalScopeDepth1
+  - com.google.javascript.jscomp.CollapsePropertiesTest#testAddPropertyToUncollapsibleNamedCtorInLocalScopeDepth1
+  - com.google.javascript.jscomp.CollapsePropertiesTest#testAddPropertyToUncollapsibleFunctionInLocalScopeDepth2
+  - com.google.javascript.jscomp.CollapsePropertiesTest#testAliasCreatedForFunctionDepth1_1
+  - com.google.javascript.jscomp.CollapsePropertiesTest#testAliasCreatedForFunctionDepth2
+  - com.google.javascript.jscomp.CollapsePropertiesTest#testAliasCreatedForFunctionDepth1_3
+  - com.google.javascript.jscomp.CollapsePropertiesTest#testAliasCreatedForFunctionDepth1_2
+  failing tests:
+  - com.google.javascript.jscomp.CollapsePropertiesTest
+  number of all test cases: 6235
+  number of failing test cases: 8
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.666
+  purification via delta debugging: 398.186
+  repair actions extraction: 2.261
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAddPropertyToChildOfUncollapsibleFunctionInLocalScope: 3652
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAddPropertyToUncollapsibleFunctionInLocalScopeDepth1: 3432
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAddPropertyToUncollapsibleFunctionInLocalScopeDepth2: 3535
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAddPropertyToUncollapsibleNamedCtorInLocalScopeDepth1: 3434
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAliasCreatedForFunctionDepth1_1: 3393
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAliasCreatedForFunctionDepth1_2: 3424
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAliasCreatedForFunctionDepth1_3: 3431
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAliasCreatedForFunctionDepth2: 3487
+  fixed:
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAddPropertyToChildOfUncollapsibleFunctionInLocalScope: 3403
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAddPropertyToUncollapsibleFunctionInLocalScopeDepth1: 3266
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAddPropertyToUncollapsibleFunctionInLocalScopeDepth2: 3429
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAddPropertyToUncollapsibleNamedCtorInLocalScopeDepth1: 3266
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAliasCreatedForFunctionDepth1_1: 3207
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAliasCreatedForFunctionDepth1_2: 3246
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAliasCreatedForFunctionDepth1_3: 3254
+    com.google.javascript.jscomp.CollapsePropertiesTest#testAliasCreatedForFunctionDepth2: 3383
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 1
+  cov_patch_lines: 5
+  delta_patch_lines: 5
+  oriAdd: 4
+  oriDel: 1
+  ori_patch_lines: 5
+  purAdd: 4
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 2
+  failCompile: 8
+  failFail: 1
+  passed: 0
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_89/src/com/google/javascript/jscomp/GlobalNamespace.java\t\
+    2020-10-23 11:39:38.756147201 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_89/purify/patch/com/google/javascript/jscomp/GlobalNamespace.java\t\
+    2020-10-23 11:39:38.756147201 -0400\n@@ -917,7 +917,7 @@\n       }\n \n      \
+    \ // If this is aliased, then its properties can't be collapsed either.\n-   \
+    \   if (type != Type.FUNCTION && aliasingGets > 0) {\n+      if (aliasingGets\
+    \ > 0) {\n         return false;\n       }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_89/src/com/google/javascript/jscomp/GlobalNamespace.java\t\
+    2020-10-23 11:46:49.344607720 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_89/purify/purified/com/google/javascript/jscomp/GlobalNamespace.java\t\
+    2020-10-23 11:46:49.344607720 -0400\n@@ -917,7 +917,7 @@\n       }\n \n      \
+    \ // If this is aliased, then its properties can't be collapsed either.\n-   \
+    \   if (type != Type.FUNCTION && aliasingGets > 0) {\n+      if (aliasingGets\
+    \ > 0) {\n         return false;\n       }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '2'
+  com/google/javascript/jscomp/CollapseProperties, com/google/javascript/jscomp/GlobalNamespace:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:type != Type.FUNCTION && aliasingGets > 0
+      @TO@ InfixExpression:aliasingGets > 0 '
+    - '---INS InfixExpression@@aliasingGets > 0 @TO@ IfStatement@@InfixExpression:type
+      != Type.FUNCTION && aliasingGets > 0 '
+    - '------MOV SimpleName@@aliasingGets @TO@ InfixExpression@@aliasingGets > 0 '
+    - '------MOV Operator@@> @TO@ InfixExpression@@aliasingGets > 0 '
+    - '------MOV NumberLiteral@@0 @TO@ InfixExpression@@aliasingGets > 0 '
+    - '---DEL InfixExpression@@type != Type.FUNCTION && aliasingGets > 0 '
+    - '------DEL InfixExpression@@type != Type.FUNCTION '
+    - '---------DEL SimpleName@@type '
+    - '---------DEL Operator@@!= '
+    - '---------DEL QualifiedName@@Type.FUNCTION '
+    - '------------DEL SimpleName@@Type '
+    - '------------DEL SimpleName@@FUNCTION '
+    - '------DEL Operator@@&& '
+    - '------DEL InfixExpression@@aliasingGets > 0 '
+  files_cnt: '2'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '2'
+  com/google/javascript/jscomp/CollapseProperties, com/google/javascript/jscomp/GlobalNamespace:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:type != Type.FUNCTION && aliasingGets > 0
+      @TO@ InfixExpression:aliasingGets > 0 '
+    - '---INS InfixExpression@@aliasingGets > 0 @TO@ IfStatement@@InfixExpression:type
+      != Type.FUNCTION && aliasingGets > 0 '
+    - '------MOV SimpleName@@aliasingGets @TO@ InfixExpression@@aliasingGets > 0 '
+    - '------MOV Operator@@> @TO@ InfixExpression@@aliasingGets > 0 '
+    - '------MOV NumberLiteral@@0 @TO@ InfixExpression@@aliasingGets > 0 '
+    - '---DEL InfixExpression@@type != Type.FUNCTION && aliasingGets > 0 '
+    - '------DEL InfixExpression@@type != Type.FUNCTION '
+    - '---------DEL SimpleName@@type '
+    - '---------DEL Operator@@!= '
+    - '---------DEL QualifiedName@@Type.FUNCTION '
+    - '------------DEL SimpleName@@Type '
+    - '------------DEL SimpleName@@FUNCTION '
+    - '------DEL Operator@@&& '
+    - '------DEL InfixExpression@@aliasingGets > 0 '
+  files_cnt: '2'
+  repair_actions_cnt: 1

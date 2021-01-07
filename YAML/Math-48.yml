@@ -1,0 +1,110 @@
+1 bug_id: Math-48
+2 src folder:
+  name of src folder: java
+  number of files: 617
+  number of java files: 570
+  number of src classes: 749
+  number of test classes: 278
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest#testIssue631
+  failing tests:
+  - org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest
+  number of all test cases: 2996
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.416
+  purification via delta debugging: 95.43
+  repair actions extraction: 1.453
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest#testIssue631: 744
+  fixed:
+    org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest#testIssue631: 717
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_48/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java\t\
+    2020-10-21 11:59:11.470814110 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_48/purify/patch/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java\t\
+    2020-10-21 11:59:11.470814110 -0400\n@@ -186,6 +186,9 @@\n                 case\
+    \ REGULA_FALSI:\n                     // Detect early that algorithm is stuck,\
+    \ instead of waiting\n                     // for the maximum number of iterations\
+    \ to be exceeded.\n+                    if (x == x1) {\n+                    \
+    \    throw new ConvergenceException();\n+                    }\n             \
+    \        break;\n                 default:\n                     // Should never\
+    \ happen."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_48/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java\t\
+    2020-10-21 12:01:07.466168527 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_48/purify/purified/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java\t\
+    2020-10-21 12:01:07.466168527 -0400\n@@ -186,6 +186,9 @@\n                 case\
+    \ REGULA_FALSI:\n                     // Detect early that algorithm is stuck,\
+    \ instead of waiting\n                     // for the maximum number of iterations\
+    \ to be exceeded.\n+                    if (x == x1) {\n+                    \
+    \    throw new ConvergenceException();\n+                    }\n             \
+    \        break;\n                 default:\n                     // Should never\
+    \ happen."
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/solvers/BaseSecantSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x == x1 @TO@ SwitchStatement@@SimpleName:method '
+    - '---INS InfixExpression@@x == x1 @TO@ IfStatement@@InfixExpression:x == x1 '
+    - '------INS SimpleName@@x @TO@ InfixExpression@@x == x1 '
+    - '------INS Operator@@== @TO@ InfixExpression@@x == x1 '
+    - '------INS SimpleName@@x1 @TO@ InfixExpression@@x == x1 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new ConvergenceException() @TO@
+      IfStatement@@InfixExpression:x == x1 '
+    - '------INS ClassInstanceCreation@@ConvergenceException[] @TO@ ThrowStatement@@ClassInstanceCreation:new
+      ConvergenceException() '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@ConvergenceException[] '
+    - '---------INS SimpleType@@ConvergenceException @TO@ ClassInstanceCreation@@ConvergenceException[] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/solvers/BaseSecantSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:x == x1 @TO@ SwitchStatement@@SimpleName:method '
+    - '---INS InfixExpression@@x == x1 @TO@ IfStatement@@InfixExpression:x == x1 '
+    - '------INS SimpleName@@x @TO@ InfixExpression@@x == x1 '
+    - '------INS Operator@@== @TO@ InfixExpression@@x == x1 '
+    - '------INS SimpleName@@x1 @TO@ InfixExpression@@x == x1 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new ConvergenceException() @TO@
+      IfStatement@@InfixExpression:x == x1 '
+    - '------INS ClassInstanceCreation@@ConvergenceException[] @TO@ ThrowStatement@@ClassInstanceCreation:new
+      ConvergenceException() '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@ConvergenceException[] '
+    - '---------INS SimpleType@@ConvergenceException @TO@ ClassInstanceCreation@@ConvergenceException[] '
+  repair_actions_cnt: 1

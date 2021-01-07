@@ -1,0 +1,186 @@
+1 bug_id: Closure-122
+2 src folder:
+  name of src folder: src
+  number of files: 444
+  number of java files: 428
+  number of src classes: 1427
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.parsing.ParserTest#testSuspiciousBlockCommentWarning4
+  - com.google.javascript.jscomp.parsing.ParserTest#testSuspiciousBlockCommentWarning5
+  - com.google.javascript.jscomp.parsing.ParserTest#testSuspiciousBlockCommentWarning3
+  failing tests:
+  - com.google.javascript.jscomp.parsing.ParserTest
+  number of all test cases: 8269
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.004
+  purification via delta debugging: 245.977
+  repair actions extraction: 2.383
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.parsing.ParserTest#testSuspiciousBlockCommentWarning3: 1158
+    com.google.javascript.jscomp.parsing.ParserTest#testSuspiciousBlockCommentWarning4: 1158
+    com.google.javascript.jscomp.parsing.ParserTest#testSuspiciousBlockCommentWarning5: 1158
+  fixed:
+    com.google.javascript.jscomp.parsing.ParserTest#testSuspiciousBlockCommentWarning3: 1160
+    com.google.javascript.jscomp.parsing.ParserTest#testSuspiciousBlockCommentWarning4: 1160
+    com.google.javascript.jscomp.parsing.ParserTest#testSuspiciousBlockCommentWarning5: 1160
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 2
+  oriDel: 1
+  ori_patch_lines: 3
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 5
+  failFail: 0
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_122/src/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-23 16:55:55.897611212 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_122/purify/patch/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-23 16:55:55.897611212 -0400\n@@ -249,7 +249,8 @@\n    * Check to see if\
+    \ the given block comment looks like it should be JSDoc.\n    */\n   private void\
+    \ handleBlockComment(Comment comment) {\n-    if (comment.getValue().indexOf(\"\
+    /* @\") != -1 || comment.getValue().indexOf(\"\\n * @\") != -1) {\n+    Pattern\
+    \ p = Pattern.compile(\"(/|(\\n[ \\t]*))\\\\*[ \\t]*@[a-zA-Z]\");\n+    if (p.matcher(comment.getValue()).find())\
+    \ {\n       errorReporter.warning(\n           SUSPICIOUS_COMMENT_WARNING,\n \
+    \          sourceName,"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_122/src/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-23 17:00:31.349581355 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_122/purify/purified/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-23 17:00:31.341581124 -0400\n@@ -249,7 +249,8 @@\n    * Check to see if\
+    \ the given block comment looks like it should be JSDoc.\n    */\n   private void\
+    \ handleBlockComment(Comment comment) {\n-    if (comment.getValue().indexOf(\"\
+    /* @\") != -1 || comment.getValue().indexOf(\"\\n * @\") != -1) {\n+    Pattern\
+    \ p = Pattern.compile(\"(/|(\\n[ \\t]*))\\\\*[ \\t]*@[a-zA-Z]\");\n+    if (p.matcher(comment.getValue()).find())\
+    \ {\n       errorReporter.warning(\n           SUSPICIOUS_COMMENT_WARNING,\n \
+    \          sourceName,"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/IRFactory:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Pattern p=Pattern.compile("(/|(\n[ \t]*))\\*[
+      \t]*@[a-zA-Z]"); @TO@ MethodDeclaration@@private, @@void, MethodName:handleBlockComment,
+      @@Argus:Comment+comment+ '
+    - '---INS SimpleType@@Pattern @TO@ VariableDeclarationStatement@@Pattern p=Pattern.compile("(/|(\n[
+      \t]*))\\*[ \t]*@[a-zA-Z]"); '
+    - '---INS VariableDeclarationFragment@@p=Pattern.compile("(/|(\n[ \t]*))\\*[ \t]*@[a-zA-Z]")
+      @TO@ VariableDeclarationStatement@@Pattern p=Pattern.compile("(/|(\n[ \t]*))\\*[
+      \t]*@[a-zA-Z]"); '
+    - '------INS SimpleName@@p @TO@ VariableDeclarationFragment@@p=Pattern.compile("(/|(\n[
+      \t]*))\\*[ \t]*@[a-zA-Z]") '
+    - '------INS MethodInvocation@@Pattern.compile("(/|(\n[ \t]*))\\*[ \t]*@[a-zA-Z]")
+      @TO@ VariableDeclarationFragment@@p=Pattern.compile("(/|(\n[ \t]*))\\*[ \t]*@[a-zA-Z]") '
+    - '---------MOV SimpleName@@Name:comment @TO@ MethodInvocation@@Pattern.compile("(/|(\n[
+      \t]*))\\*[ \t]*@[a-zA-Z]") '
+    - '---------MOV SimpleName@@MethodName:indexOf:["/* @"] @TO@ MethodInvocation@@Pattern.compile("(/|(\n[
+      \t]*))\\*[ \t]*@[a-zA-Z]") '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:comment.getValue().indexOf("/* @") != -1 ||
+      comment.getValue().indexOf("\n * @") != -1 '
+    - '---DEL InfixExpression@@comment.getValue().indexOf("/* @") != -1 || comment.getValue().indexOf("\n
+      * @") != -1 '
+    - '------DEL InfixExpression@@comment.getValue().indexOf("/* @") != -1 '
+    - '---------DEL MethodInvocation@@comment.getValue().indexOf("/* @") '
+    - '------------DEL MethodInvocation@@MethodName:getValue:[] '
+    - '---------DEL Operator@@!= '
+    - '---------DEL PrefixExpression@@-1 '
+    - '------------DEL Operator@@- '
+    - '------------DEL NumberLiteral@@1 '
+    - '------DEL Operator@@|| '
+    - '------DEL InfixExpression@@comment.getValue().indexOf("\n * @") != -1 '
+    - '---------DEL MethodInvocation@@comment.getValue().indexOf("\n * @") '
+    - '---------DEL Operator@@!= '
+    - '---------DEL PrefixExpression@@-1 '
+    - '------------DEL Operator@@- '
+    - '------------DEL NumberLiteral@@1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:p.matcher(comment.getValue()).find() @TO@
+      MethodDeclaration@@private, @@void, MethodName:handleBlockComment, @@Argus:Comment+comment+ '
+    - '---INS MethodInvocation@@p.matcher(comment.getValue()).find() @TO@ IfStatement@@MethodInvocation:p.matcher(comment.getValue()).find() '
+    - '------MOV SimpleName@@Name:comment @TO@ MethodInvocation@@p.matcher(comment.getValue()).find() '
+    - '------MOV MethodInvocation@@MethodName:getValue:[] @TO@ MethodInvocation@@p.matcher(comment.getValue()).find() '
+    - '------MOV SimpleName@@MethodName:indexOf:["\n * @"] @TO@ MethodInvocation@@p.matcher(comment.getValue()).find() '
+    - '---MOV ExpressionStatement@@MethodInvocation:errorReporter.warning(SUSPICIOUS_COMMENT_WARNING,sourceName,comment.getLineno(),"",0)
+      @TO@ IfStatement@@MethodInvocation:p.matcher(comment.getValue()).find() '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/IRFactory:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Pattern p=Pattern.compile("(/|(\n[ \t]*))\\*[
+      \t]*@[a-zA-Z]"); @TO@ MethodDeclaration@@private, @@void, MethodName:handleBlockComment,
+      @@Argus:Comment+comment+ '
+    - '---INS SimpleType@@Pattern @TO@ VariableDeclarationStatement@@Pattern p=Pattern.compile("(/|(\n[
+      \t]*))\\*[ \t]*@[a-zA-Z]"); '
+    - '---INS VariableDeclarationFragment@@p=Pattern.compile("(/|(\n[ \t]*))\\*[ \t]*@[a-zA-Z]")
+      @TO@ VariableDeclarationStatement@@Pattern p=Pattern.compile("(/|(\n[ \t]*))\\*[
+      \t]*@[a-zA-Z]"); '
+    - '------INS SimpleName@@p @TO@ VariableDeclarationFragment@@p=Pattern.compile("(/|(\n[
+      \t]*))\\*[ \t]*@[a-zA-Z]") '
+    - '------INS MethodInvocation@@Pattern.compile("(/|(\n[ \t]*))\\*[ \t]*@[a-zA-Z]")
+      @TO@ VariableDeclarationFragment@@p=Pattern.compile("(/|(\n[ \t]*))\\*[ \t]*@[a-zA-Z]") '
+    - '---------MOV SimpleName@@Name:comment @TO@ MethodInvocation@@Pattern.compile("(/|(\n[
+      \t]*))\\*[ \t]*@[a-zA-Z]") '
+    - '---------MOV SimpleName@@MethodName:indexOf:["/* @"] @TO@ MethodInvocation@@Pattern.compile("(/|(\n[
+      \t]*))\\*[ \t]*@[a-zA-Z]") '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:comment.getValue().indexOf("/* @") != -1 ||
+      comment.getValue().indexOf("\n * @") != -1 '
+    - '---DEL InfixExpression@@comment.getValue().indexOf("/* @") != -1 || comment.getValue().indexOf("\n
+      * @") != -1 '
+    - '------DEL InfixExpression@@comment.getValue().indexOf("/* @") != -1 '
+    - '---------DEL MethodInvocation@@comment.getValue().indexOf("/* @") '
+    - '------------DEL MethodInvocation@@MethodName:getValue:[] '
+    - '---------DEL Operator@@!= '
+    - '---------DEL PrefixExpression@@-1 '
+    - '------------DEL Operator@@- '
+    - '------------DEL NumberLiteral@@1 '
+    - '------DEL Operator@@|| '
+    - '------DEL InfixExpression@@comment.getValue().indexOf("\n * @") != -1 '
+    - '---------DEL MethodInvocation@@comment.getValue().indexOf("\n * @") '
+    - '---------DEL Operator@@!= '
+    - '---------DEL PrefixExpression@@-1 '
+    - '------------DEL Operator@@- '
+    - '------------DEL NumberLiteral@@1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:p.matcher(comment.getValue()).find() @TO@
+      MethodDeclaration@@private, @@void, MethodName:handleBlockComment, @@Argus:Comment+comment+ '
+    - '---INS MethodInvocation@@p.matcher(comment.getValue()).find() @TO@ IfStatement@@MethodInvocation:p.matcher(comment.getValue()).find() '
+    - '------MOV SimpleName@@Name:comment @TO@ MethodInvocation@@p.matcher(comment.getValue()).find() '
+    - '------MOV MethodInvocation@@MethodName:getValue:[] @TO@ MethodInvocation@@p.matcher(comment.getValue()).find() '
+    - '------MOV SimpleName@@MethodName:indexOf:["\n * @"] @TO@ MethodInvocation@@p.matcher(comment.getValue()).find() '
+    - '---MOV ExpressionStatement@@MethodInvocation:errorReporter.warning(SUSPICIOUS_COMMENT_WARNING,sourceName,comment.getLineno(),"",0)
+      @TO@ IfStatement@@MethodInvocation:p.matcher(comment.getValue()).find() '
+  files_cnt: '1'
+  repair_actions_cnt: 3

@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_14/src/com/google/javascript/jscomp/ControlFlowAnalysis.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_14/fixed-version/src/com/google/javascript/jscomp/ControlFlowAnalysis.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_14/src/com/google/javascript/jscomp/ControlFlowAnalysis.java	2020-03-01 00:26:08.145605385 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_14/fixed-version/src/com/google/javascript/jscomp/ControlFlowAnalysis.java	2020-03-01 00:26:10.201702267 -0800
+@@ -764,7 +764,7 @@
+         } else if (parent.getLastChild() == node){
+           if (cfa != null) {
+             for (Node finallyNode : cfa.finallyMap.get(parent)) {
+-              cfa.createEdge(fromNode, Branch.UNCOND, finallyNode);
++              cfa.createEdge(fromNode, Branch.ON_EX, finallyNode);
+             }
+           }
+           return computeFollowNode(fromNode, parent, cfa);

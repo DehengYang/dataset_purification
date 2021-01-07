@@ -1,0 +1,253 @@
+1 bug_id: Lang-46
+2 src folder:
+  name of src folder: java
+  number of files: 90
+  number of java files: 80
+  number of src classes: 127
+  number of test classes: 93
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.StringEscapeUtilsTest#testEscapeJavaWithSlash
+  failing tests:
+  - org.apache.commons.lang.StringEscapeUtilsTest
+  number of all test cases: 1829
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 7.0
+  purification via coverage: 1.836
+  purification via delta debugging: 325.994
+  repair actions extraction: 1.272
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.StringEscapeUtilsTest#testEscapeJavaWithSlash: 22
+  fixed:
+    org.apache.commons.lang.StringEscapeUtilsTest#testEscapeJavaWithSlash: 22
+6 reduced lines:
+  by all: 6
+  by coverage: 0
+  by delta debugging: 6
+  covAdd: 10
+  covDel: 7
+  cov_patch_lines: 17
+  delta_patch_lines: 11
+  oriAdd: 10
+  oriDel: 7
+  ori_patch_lines: 17
+  purAdd: 7
+  purDel: 4
+7 reduced chunks:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  cov: 9
+  original: 9
+  purifiy: 6
+8 mutants by delta debugging:
+  failAll: 4
+  failCompile: 42
+  failFail: 1
+  passed: 0
+  total: 47
+9 sibling repair actions:
+- 0 1 0.9530761209593326
+- 0 2 0.9003285870755751
+- 0 3 0.7911392405063291
+- 1 2 0.7911392405063291
+- 1 3 0.9074262461851476
+- 2 3 0.951974386339381
+- 4 6 0.9211858279103399
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_46/src/java/org/apache/commons/lang/StringEscapeUtils.java\t\
+    2020-10-22 02:42:48.483525285 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_46/purify/patch/org/apache/commons/lang/StringEscapeUtils.java\t\
+    2020-10-22 02:42:48.483525285 -0400\n@@ -83,7 +83,7 @@\n      * @return String\
+    \ with escaped values, <code>null</code> if null string input\n      */\n    \
+    \ public static String escapeJava(String str) {\n-        return escapeJavaStyleString(str,\
+    \ false);\n+        return escapeJavaStyleString(str, false, false);\n     }\n\
+    \ \n     /**\n@@ -99,7 +99,7 @@\n      * @throws IOException if error occurs on\
+    \ underlying Writer\n      */\n     public static void escapeJava(Writer out,\
+    \ String str) throws IOException {\n-        escapeJavaStyleString(out, str, false);\n\
+    +        escapeJavaStyleString(out, str, false, false);\n     }\n \n     /**\n\
+    @@ -124,7 +124,7 @@\n      * @return String with escaped values, <code>null</code>\
+    \ if null string input\n      */\n     public static String escapeJavaScript(String\
+    \ str) {\n-        return escapeJavaStyleString(str, true);\n+        return escapeJavaStyleString(str,\
+    \ true, true);\n     }\n \n     /**\n@@ -140,7 +140,7 @@\n      * @throws IOException\
+    \ if error occurs on underlying Writer\n      **/\n     public static void escapeJavaScript(Writer\
+    \ out, String str) throws IOException {\n-        escapeJavaStyleString(out, str,\
+    \ true);\n+        escapeJavaStyleString(out, str, true, true);\n     }\n \n \
+    \    /**\n@@ -151,13 +151,13 @@\n      * @param escapeForwardSlash TODO\n    \
+    \  * @return the escaped string\n      */\n-    private static String escapeJavaStyleString(String\
+    \ str, boolean escapeSingleQuotes) {\n+    private static String escapeJavaStyleString(String\
+    \ str, boolean escapeSingleQuotes, boolean escapeForwardSlash) {\n         if\
+    \ (str == null) {\n             return null;\n         }\n         try {\n   \
+    \          StringWriter writer = new StringWriter(str.length() * 2);\n-      \
+    \      escapeJavaStyleString(writer, str, escapeSingleQuotes);\n+            escapeJavaStyleString(writer,\
+    \ str, escapeSingleQuotes, escapeForwardSlash);\n             return writer.toString();\n\
+    \         } catch (IOException ioe) {\n             // this should never ever\
+    \ happen while writing to a StringWriter\n@@ -175,7 +175,8 @@\n      * @param\
+    \ escapeForwardSlash TODO\n      * @throws IOException if an IOException occurs\n\
+    \      */\n-    private static void escapeJavaStyleString(Writer out, String str,\
+    \ boolean escapeSingleQuote) throws IOException {\n+    private static void escapeJavaStyleString(Writer\
+    \ out, String str, boolean escapeSingleQuote,\n+            boolean escapeForwardSlash)\
+    \ throws IOException {\n         if (out == null) {\n             throw new IllegalArgumentException(\"\
+    The Writer must not be null\");\n         }\n@@ -241,7 +242,9 @@\n           \
+    \              out.write('\\\\');\n                         break;\n         \
+    \            case '/' :\n+                        if (escapeForwardSlash) {\n\
+    \                             out.write('\\\\');\n+                        }\n\
+    \                         out.write('/');\n                         break;\n \
+    \                    default :"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_46/src/java/org/apache/commons/lang/StringEscapeUtils.java\t\
+    2020-10-22 02:48:25.377263316 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_46/purify/purified/org/apache/commons/lang/StringEscapeUtils.java\t\
+    2020-10-22 02:48:25.377263316 -0400\n@@ -83,7 +83,7 @@\n      * @return String\
+    \ with escaped values, <code>null</code> if null string input\n      */\n    \
+    \ public static String escapeJava(String str) {\n-        return escapeJavaStyleString(str,\
+    \ false);\n+        return escapeJavaStyleString(str, false, false);\n     }\n\
+    \ \n     /**\n@@ -151,13 +151,13 @@\n      * @param escapeForwardSlash TODO\n\
+    \      * @return the escaped string\n      */\n-    private static String escapeJavaStyleString(String\
+    \ str, boolean escapeSingleQuotes) {\n+    private static String escapeJavaStyleString(String\
+    \ str, boolean escapeSingleQuotes, boolean escapeForwardSlash) {\n         if\
+    \ (str == null) {\n             return null;\n         }\n         try {\n   \
+    \          StringWriter writer = new StringWriter(str.length() * 2);\n-      \
+    \      escapeJavaStyleString(writer, str, escapeSingleQuotes);\n+            escapeJavaStyleString(writer,\
+    \ str, escapeSingleQuotes, escapeForwardSlash);\n             return writer.toString();\n\
+    \         } catch (IOException ioe) {\n             // this should never ever\
+    \ happen while writing to a StringWriter\n@@ -175,7 +175,8 @@\n      * @param\
+    \ escapeForwardSlash TODO\n      * @throws IOException if an IOException occurs\n\
+    \      */\n-    private static void escapeJavaStyleString(Writer out, String str,\
+    \ boolean escapeSingleQuote) throws IOException {\n+    private static void escapeJavaStyleString(Writer\
+    \ out, String str, boolean escapeSingleQuote,\n+            boolean escapeForwardSlash)\
+    \ throws IOException {\n         if (out == null) {\n             throw new IllegalArgumentException(\"\
+    The Writer must not be null\");\n         }\n@@ -241,7 +242,9 @@\n           \
+    \              out.write('\\\\');\n                         break;\n         \
+    \            case '/' :\n+                        if (escapeForwardSlash) {\n\
+    \                             out.write('\\\\');\n+                        }\n\
+    \                         out.write('/');\n                         break;\n \
+    \                    default :"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/StringEscapeUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:escapeJavaStyleString(str,false) @TO@
+      MethodInvocation:escapeJavaStyleString(str,false,false) '
+    - '---UPD MethodInvocation@@escapeJavaStyleString(str,false) @TO@ escapeJavaStyleString(str,false,false) '
+    - '------UPD SimpleName@@MethodName:escapeJavaStyleString:[str, false] @TO@ MethodName:escapeJavaStyleString:[str,
+      false, false] '
+    - '---------INS BooleanLiteral@@false @TO@ SimpleName@@MethodName:escapeJavaStyleString:[str,
+      false] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:escapeJavaStyleString(out,str,false)
+      @TO@ MethodInvocation:escapeJavaStyleString(out,str,false,false) '
+    - '---UPD MethodInvocation@@escapeJavaStyleString(out,str,false) @TO@ escapeJavaStyleString(out,str,false,false) '
+    - '------UPD SimpleName@@MethodName:escapeJavaStyleString:[out, str, false] @TO@
+      MethodName:escapeJavaStyleString:[out, str, false, false] '
+    - '---------INS BooleanLiteral@@false @TO@ SimpleName@@MethodName:escapeJavaStyleString:[out,
+      str, false] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:escapeJavaStyleString(str,true) @TO@
+      MethodInvocation:escapeJavaStyleString(str,true,true) '
+    - '---UPD MethodInvocation@@escapeJavaStyleString(str,true) @TO@ escapeJavaStyleString(str,true,true) '
+    - '------UPD SimpleName@@MethodName:escapeJavaStyleString:[str, true] @TO@ MethodName:escapeJavaStyleString:[str,
+      true, true] '
+    - '---------INS BooleanLiteral@@true @TO@ SimpleName@@MethodName:escapeJavaStyleString:[str,
+      true] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:escapeJavaStyleString(out,str,true)
+      @TO@ MethodInvocation:escapeJavaStyleString(out,str,true,true) '
+    - '---UPD MethodInvocation@@escapeJavaStyleString(out,str,true) @TO@ escapeJavaStyleString(out,str,true,true) '
+    - '------UPD SimpleName@@MethodName:escapeJavaStyleString:[out, str, true] @TO@
+      MethodName:escapeJavaStyleString:[out, str, true, true] '
+    - '---------INS BooleanLiteral@@true @TO@ SimpleName@@MethodName:escapeJavaStyleString:[out,
+      str, true] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, static, @@String, MethodName:escapeJavaStyleString,
+      @@Argus:String+str+boolean+escapeSingleQuotes+ @TO@ private, static, @@String,
+      MethodName:escapeJavaStyleString, @@Argus:String+str+boolean+escapeSingleQuotes+boolean+escapeForwardSlash+ '
+    - '---INS SingleVariableDeclaration@@boolean escapeForwardSlash @TO@ MethodDeclaration@@private,
+      static, @@String, MethodName:escapeJavaStyleString, @@Argus:String+str+boolean+escapeSingleQuotes+ '
+    - '------INS PrimitiveType@@boolean @TO@ SingleVariableDeclaration@@boolean escapeForwardSlash '
+    - '------INS SimpleName@@escapeForwardSlash @TO@ SingleVariableDeclaration@@boolean
+      escapeForwardSlash '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:escapeJavaStyleString(writer,str,escapeSingleQuotes)
+      @TO@ MethodInvocation:escapeJavaStyleString(writer,str,escapeSingleQuotes,escapeForwardSlash) '
+    - '---UPD MethodInvocation@@escapeJavaStyleString(writer,str,escapeSingleQuotes)
+      @TO@ escapeJavaStyleString(writer,str,escapeSingleQuotes,escapeForwardSlash) '
+    - '------UPD SimpleName@@MethodName:escapeJavaStyleString:[writer, str, escapeSingleQuotes]
+      @TO@ MethodName:escapeJavaStyleString:[writer, str, escapeSingleQuotes, escapeForwardSlash] '
+    - '---------INS SimpleName@@escapeForwardSlash @TO@ SimpleName@@MethodName:escapeJavaStyleString:[writer,
+      str, escapeSingleQuotes] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, static, @@void, MethodName:escapeJavaStyleString,
+      @@Argus:Writer+out+String+str+boolean+escapeSingleQuote+IOException,  @TO@ private,
+      static, @@void, MethodName:escapeJavaStyleString, @@Argus:Writer+out+String+str+boolean+escapeSingleQuote+boolean+escapeForwardSlash+IOException,  '
+    - '---INS SingleVariableDeclaration@@boolean escapeForwardSlash @TO@ MethodDeclaration@@private,
+      static, @@void, MethodName:escapeJavaStyleString, @@Argus:Writer+out+String+str+boolean+escapeSingleQuote+IOException,  '
+    - '------INS PrimitiveType@@boolean @TO@ SingleVariableDeclaration@@boolean escapeForwardSlash '
+    - '------INS SimpleName@@escapeForwardSlash @TO@ SingleVariableDeclaration@@boolean
+      escapeForwardSlash '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:escapeForwardSlash @TO@ SwitchStatement@@SimpleName:ch '
+    - '---MOV ExpressionStatement@@MethodInvocation:out.write(''\\'') @TO@ IfStatement@@SimpleName:escapeForwardSlash '
+    - '---INS SimpleName@@escapeForwardSlash @TO@ IfStatement@@SimpleName:escapeForwardSlash '
+  repair_actions_cnt: 8
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/StringEscapeUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:escapeJavaStyleString(str,false) @TO@
+      MethodInvocation:escapeJavaStyleString(str,false,false) '
+    - '---UPD MethodInvocation@@escapeJavaStyleString(str,false) @TO@ escapeJavaStyleString(str,false,false) '
+    - '------UPD SimpleName@@MethodName:escapeJavaStyleString:[str, false] @TO@ MethodName:escapeJavaStyleString:[str,
+      false, false] '
+    - '---------INS BooleanLiteral@@false @TO@ SimpleName@@MethodName:escapeJavaStyleString:[str,
+      false] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, static, @@String, MethodName:escapeJavaStyleString,
+      @@Argus:String+str+boolean+escapeSingleQuotes+ @TO@ private, static, @@String,
+      MethodName:escapeJavaStyleString, @@Argus:String+str+boolean+escapeSingleQuotes+boolean+escapeForwardSlash+ '
+    - '---INS SingleVariableDeclaration@@boolean escapeForwardSlash @TO@ MethodDeclaration@@private,
+      static, @@String, MethodName:escapeJavaStyleString, @@Argus:String+str+boolean+escapeSingleQuotes+ '
+    - '------INS PrimitiveType@@boolean @TO@ SingleVariableDeclaration@@boolean escapeForwardSlash '
+    - '------INS SimpleName@@escapeForwardSlash @TO@ SingleVariableDeclaration@@boolean
+      escapeForwardSlash '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:escapeJavaStyleString(writer,str,escapeSingleQuotes)
+      @TO@ MethodInvocation:escapeJavaStyleString(writer,str,escapeSingleQuotes,escapeForwardSlash) '
+    - '---UPD MethodInvocation@@escapeJavaStyleString(writer,str,escapeSingleQuotes)
+      @TO@ escapeJavaStyleString(writer,str,escapeSingleQuotes,escapeForwardSlash) '
+    - '------UPD SimpleName@@MethodName:escapeJavaStyleString:[writer, str, escapeSingleQuotes]
+      @TO@ MethodName:escapeJavaStyleString:[writer, str, escapeSingleQuotes, escapeForwardSlash] '
+    - '---------INS SimpleName@@escapeForwardSlash @TO@ SimpleName@@MethodName:escapeJavaStyleString:[writer,
+      str, escapeSingleQuotes] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, static, @@void, MethodName:escapeJavaStyleString,
+      @@Argus:Writer+out+String+str+boolean+escapeSingleQuote+IOException,  @TO@ private,
+      static, @@void, MethodName:escapeJavaStyleString, @@Argus:Writer+out+String+str+boolean+escapeSingleQuote+boolean+escapeForwardSlash+IOException,  '
+    - '---INS SingleVariableDeclaration@@boolean escapeForwardSlash @TO@ MethodDeclaration@@private,
+      static, @@void, MethodName:escapeJavaStyleString, @@Argus:Writer+out+String+str+boolean+escapeSingleQuote+IOException,  '
+    - '------INS PrimitiveType@@boolean @TO@ SingleVariableDeclaration@@boolean escapeForwardSlash '
+    - '------INS SimpleName@@escapeForwardSlash @TO@ SingleVariableDeclaration@@boolean
+      escapeForwardSlash '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:escapeForwardSlash @TO@ SwitchStatement@@SimpleName:ch '
+    - '---MOV ExpressionStatement@@MethodInvocation:out.write(''\\'') @TO@ IfStatement@@SimpleName:escapeForwardSlash '
+    - '---INS SimpleName@@escapeForwardSlash @TO@ IfStatement@@SimpleName:escapeForwardSlash '
+  repair_actions_cnt: 5

@@ -1,0 +1,96 @@
+1 bug_id: Math-79
+2 src folder:
+  name of src folder: java
+  number of files: 430
+  number of java files: 393
+  number of src classes: 486
+  number of test classes: 216
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.stat.clustering.KMeansPlusPlusClustererTest#testPerformClusterAnalysisDegenerate
+  failing tests:
+  - org.apache.commons.math.stat.clustering.KMeansPlusPlusClustererTest
+  number of all test cases: 2104
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 78.219
+  repair actions extraction: 1.78
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.stat.clustering.KMeansPlusPlusClustererTest#testPerformClusterAnalysisDegenerate: 39
+  fixed:
+    org.apache.commons.math.stat.clustering.KMeansPlusPlusClustererTest#testPerformClusterAnalysisDegenerate: 75
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 1
+  total: 3
+9 sibling repair actions:
+- 0 1 0.7933884297520661
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_79/src/main/java/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 13:34:14.535715923 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_79/purify/patch/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 13:34:14.535715923 -0400\n@@ -1621,9 +1621,9 @@\n      * @return the\
+    \ L<sub>2</sub> distance between the two points\n      */\n     public static\
+    \ double distance(int[] p1, int[] p2) {\n-      int sum = 0;\n+      double sum\
+    \ = 0;\n       for (int i = 0; i < p1.length; i++) {\n-          final int dp\
+    \ = p1[i] - p2[i];\n+          final double dp = p1[i] - p2[i];\n           sum\
+    \ += dp * dp;\n       }\n       return Math.sqrt(sum);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_79/src/main/java/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 13:35:47.610407091 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_79/purify/purified/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 13:35:47.606406976 -0400\n@@ -1623,7 +1623,7 @@\n     public static\
+    \ double distance(int[] p1, int[] p2) {\n       int sum = 0;\n       for (int\
+    \ i = 0; i < p1.length; i++) {\n-          final int dp = p1[i] - p2[i];\n+  \
+    \        final double dp = p1[i] - p2[i];\n           sum += dp * dp;\n      \
+    \ }\n       return Math.sqrt(sum);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/MathUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int sum=0; @TO@ double sum=0; '
+    - '---UPD PrimitiveType@@int @TO@ double '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final int dp=p1[i] - p2[i]; @TO@ final double
+      dp=p1[i] - p2[i]; '
+    - '---UPD PrimitiveType@@int @TO@ double '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/MathUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final int dp=p1[i] - p2[i]; @TO@ final double
+      dp=p1[i] - p2[i]; '
+    - '---UPD PrimitiveType@@int @TO@ double '
+  repair_actions_cnt: 1

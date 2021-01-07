@@ -1,0 +1,22 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_20/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java	2020-10-20 23:02:53.276274607 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_20/purify/purified/org/joda/time/format/DateTimeFormatterBuilder.java	2020-10-20 23:02:53.268274376 -0400
+@@ -2539,12 +2539,18 @@
+ 
+         public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+             String str = text.substring(position);
++            String best = null;
+             for (String id : ALL_IDS) {
+                 if (str.startsWith(id)) {
+                     bucket.setZone(DateTimeZone.forID(id));
+-                    return position + id.length();
++                	if (best == null || id.length() > best.length()) {
++                		best = id;
++                	}
+                 }
+             }
++            if (best != null) {
++                return position + best.length();
++            }
+             return ~position;
+         }
+     }

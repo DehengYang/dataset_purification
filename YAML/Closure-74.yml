@@ -1,0 +1,257 @@
+1 bug_id: Closure-74
+2 src folder:
+  name of src folder: src
+  number of files: 390
+  number of java files: 377
+  number of src classes: 1209
+  number of test classes: 197
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.PeepholeFoldConstantsTest#testCommutativeOperators
+  - com.google.javascript.jscomp.PeepholeFoldConstantsTest#testFoldComparison3
+  - com.google.javascript.jscomp.PeepholeFoldConstantsTest#testInvertibleOperators
+  failing tests:
+  - com.google.javascript.jscomp.PeepholeFoldConstantsTest
+  number of all test cases: 6890
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.851
+  purification via delta debugging: 629.743
+  repair actions extraction: 2.83
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testCommutativeOperators: 2529
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testFoldComparison3: 2403
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testInvertibleOperators: 1704
+  fixed:
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testCommutativeOperators: 2574
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testFoldComparison3: 2338
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testInvertibleOperators: 2478
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 15
+  covDel: 2
+  cov_patch_lines: 17
+  delta_patch_lines: 17
+  oriAdd: 15
+  oriDel: 2
+  ori_patch_lines: 17
+  purAdd: 15
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 41
+  failFail: 6
+  passed: 0
+  total: 47
+9 sibling repair actions:
+- 0 1 0.9274770173646578
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_74/src/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-23 08:56:23.352579293 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_74/purify/patch/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-23 08:56:23.352579293 -0400\n@@ -904,8 +904,8 @@\n           && right.getString().equals(\"\
+    undefined\"))\n           || (Token.VOID == right.getType()\n               &&\
+    \ NodeUtil.isLiteralValue(right.getFirstChild(), false)));\n-    int lhType =\
+    \ left.getType();\n-    int rhType = right.getType();\n+    int lhType = getNormalizedNodeType(left);\n\
+    +    int rhType = getNormalizedNodeType(right);\n     switch (lhType) {\n    \
+    \   case Token.VOID:\n         if (!NodeUtil.isLiteralValue(left.getFirstChild(),\
+    \ false)) {\n@@ -1071,6 +1071,19 @@\n   /**\n    * @return Translate NOT expressions\
+    \ into TRUE or FALSE when possible.\n    */\n+  private int getNormalizedNodeType(Node\
+    \ n) {\n+    int type = n.getType();\n+    if (type == Token.NOT) {\n+      TernaryValue\
+    \ value = NodeUtil.getPureBooleanValue(n);\n+      switch (value) {\n+       \
+    \ case TRUE:\n+          return Token.TRUE;\n+        case FALSE:\n+         \
+    \ return Token.FALSE;\n+      }\n+    }\n+    return type;\n+  }\n \n   /**\n\
+    \    * The result of the comparison as a Boolean or null if the"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_74/src/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-23 09:07:28.791842917 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_74/purify/purified/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-23 09:07:28.791842917 -0400\n@@ -904,8 +904,8 @@\n           && right.getString().equals(\"\
+    undefined\"))\n           || (Token.VOID == right.getType()\n               &&\
+    \ NodeUtil.isLiteralValue(right.getFirstChild(), false)));\n-    int lhType =\
+    \ left.getType();\n-    int rhType = right.getType();\n+    int lhType = getNormalizedNodeType(left);\n\
+    +    int rhType = getNormalizedNodeType(right);\n     switch (lhType) {\n    \
+    \   case Token.VOID:\n         if (!NodeUtil.isLiteralValue(left.getFirstChild(),\
+    \ false)) {\n@@ -1071,6 +1071,19 @@\n   /**\n    * @return Translate NOT expressions\
+    \ into TRUE or FALSE when possible.\n    */\n+  private int getNormalizedNodeType(Node\
+    \ n) {\n+    int type = n.getType();\n+    if (type == Token.NOT) {\n+      TernaryValue\
+    \ value = NodeUtil.getPureBooleanValue(n);\n+      switch (value) {\n+       \
+    \ case TRUE:\n+          return Token.TRUE;\n+        case FALSE:\n+         \
+    \ return Token.FALSE;\n+      }\n+    }\n+    return type;\n+  }\n \n   /**\n\
+    \    * The result of the comparison as a Boolean or null if the"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeFoldConstants:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int lhType=left.getType(); @TO@ int lhType=getNormalizedNodeType(left); '
+    - '---UPD VariableDeclarationFragment@@lhType=left.getType() @TO@ lhType=getNormalizedNodeType(left) '
+    - '------UPD MethodInvocation@@left.getType() @TO@ getNormalizedNodeType(left) '
+    - '---------DEL SimpleName@@Name:left '
+    - '---------UPD SimpleName@@MethodName:getType:[] @TO@ MethodName:getNormalizedNodeType:[left] '
+    - '------------INS SimpleName@@left @TO@ SimpleName@@MethodName:getType:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int rhType=right.getType(); @TO@ int rhType=getNormalizedNodeType(right); '
+    - '---UPD VariableDeclarationFragment@@rhType=right.getType() @TO@ rhType=getNormalizedNodeType(right) '
+    - '------UPD MethodInvocation@@right.getType() @TO@ getNormalizedNodeType(right) '
+    - '---------DEL SimpleName@@Name:right '
+    - '---------UPD SimpleName@@MethodName:getType:[] @TO@ MethodName:getNormalizedNodeType:[right] '
+    - '------------INS SimpleName@@right @TO@ SimpleName@@MethodName:getType:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@int, MethodName:getNormalizedNodeType, @@Argus:Node+n+
+      @TO@ TypeDeclaration@@PeepholeFoldConstants, AbstractPeepholeOptimization '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@int, MethodName:getNormalizedNodeType,
+      @@Argus:Node+n+ '
+    - '---INS PrimitiveType@@int @TO@ MethodDeclaration@@private, @@int, MethodName:getNormalizedNodeType,
+      @@Argus:Node+n+ '
+    - '---INS SimpleName@@MethodName:getNormalizedNodeType @TO@ MethodDeclaration@@private,
+      @@int, MethodName:getNormalizedNodeType, @@Argus:Node+n+ '
+    - '---INS SingleVariableDeclaration@@Node n @TO@ MethodDeclaration@@private, @@int,
+      MethodName:getNormalizedNodeType, @@Argus:Node+n+ '
+    - '------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node n '
+    - '------INS SimpleName@@n @TO@ SingleVariableDeclaration@@Node n '
+    - '---INS VariableDeclarationStatement@@int type=n.getType(); @TO@ MethodDeclaration@@private,
+      @@int, MethodName:getNormalizedNodeType, @@Argus:Node+n+ '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int type=n.getType(); '
+    - '------INS VariableDeclarationFragment@@type=n.getType() @TO@ VariableDeclarationStatement@@int
+      type=n.getType(); '
+    - '---------INS SimpleName@@type @TO@ VariableDeclarationFragment@@type=n.getType() '
+    - '---------INS MethodInvocation@@n.getType() @TO@ VariableDeclarationFragment@@type=n.getType() '
+    - '------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getType() '
+    - '------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@n.getType() '
+    - '---INS IfStatement@@InfixExpression:type == Token.NOT @TO@ MethodDeclaration@@private,
+      @@int, MethodName:getNormalizedNodeType, @@Argus:Node+n+ '
+    - '------INS InfixExpression@@type == Token.NOT @TO@ IfStatement@@InfixExpression:type
+      == Token.NOT '
+    - '---------INS SimpleName@@type @TO@ InfixExpression@@type == Token.NOT '
+    - '---------INS Operator@@== @TO@ InfixExpression@@type == Token.NOT '
+    - '---------INS QualifiedName@@Token.NOT @TO@ InfixExpression@@type == Token.NOT '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.NOT '
+    - '------------INS SimpleName@@NOT @TO@ QualifiedName@@Token.NOT '
+    - '------INS VariableDeclarationStatement@@TernaryValue value=NodeUtil.getPureBooleanValue(n);
+      @TO@ IfStatement@@InfixExpression:type == Token.NOT '
+    - '---------INS SimpleType@@TernaryValue @TO@ VariableDeclarationStatement@@TernaryValue
+      value=NodeUtil.getPureBooleanValue(n); '
+    - '---------INS VariableDeclarationFragment@@value=NodeUtil.getPureBooleanValue(n)
+      @TO@ VariableDeclarationStatement@@TernaryValue value=NodeUtil.getPureBooleanValue(n); '
+    - '------------INS SimpleName@@value @TO@ VariableDeclarationFragment@@value=NodeUtil.getPureBooleanValue(n) '
+    - '------------INS MethodInvocation@@NodeUtil.getPureBooleanValue(n) @TO@ VariableDeclarationFragment@@value=NodeUtil.getPureBooleanValue(n) '
+    - '---------------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.getPureBooleanValue(n) '
+    - '---------------INS SimpleName@@MethodName:getPureBooleanValue:[n] @TO@ MethodInvocation@@NodeUtil.getPureBooleanValue(n) '
+    - '------------------INS SimpleName@@n @TO@ SimpleName@@MethodName:getPureBooleanValue:[n] '
+    - '------INS SwitchStatement@@SimpleName:value @TO@ IfStatement@@InfixExpression:type
+      == Token.NOT '
+    - '---------INS SimpleName@@value @TO@ SwitchStatement@@SimpleName:value '
+    - '---------INS SwitchCase@@SimpleName:TRUE @TO@ SwitchStatement@@SimpleName:value '
+    - '------------INS SimpleName@@TRUE @TO@ SwitchCase@@SimpleName:TRUE '
+    - '---------INS ReturnStatement@@QualifiedName:Token.TRUE @TO@ SwitchStatement@@SimpleName:value '
+    - '------------INS QualifiedName@@Token.TRUE @TO@ ReturnStatement@@QualifiedName:Token.TRUE '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.TRUE '
+    - '---------------INS SimpleName@@TRUE @TO@ QualifiedName@@Token.TRUE '
+    - '---------INS SwitchCase@@SimpleName:FALSE @TO@ SwitchStatement@@SimpleName:value '
+    - '------------INS SimpleName@@FALSE @TO@ SwitchCase@@SimpleName:FALSE '
+    - '---------INS ReturnStatement@@QualifiedName:Token.FALSE @TO@ SwitchStatement@@SimpleName:value '
+    - '------------INS QualifiedName@@Token.FALSE @TO@ ReturnStatement@@QualifiedName:Token.FALSE '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.FALSE '
+    - '---------------INS SimpleName@@FALSE @TO@ QualifiedName@@Token.FALSE '
+    - '---INS ReturnStatement@@SimpleName:type @TO@ MethodDeclaration@@private, @@int,
+      MethodName:getNormalizedNodeType, @@Argus:Node+n+ '
+    - '------INS SimpleName@@type @TO@ ReturnStatement@@SimpleName:type '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeFoldConstants:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int lhType=left.getType(); @TO@ int lhType=getNormalizedNodeType(left); '
+    - '---UPD VariableDeclarationFragment@@lhType=left.getType() @TO@ lhType=getNormalizedNodeType(left) '
+    - '------UPD MethodInvocation@@left.getType() @TO@ getNormalizedNodeType(left) '
+    - '---------DEL SimpleName@@Name:left '
+    - '---------UPD SimpleName@@MethodName:getType:[] @TO@ MethodName:getNormalizedNodeType:[left] '
+    - '------------INS SimpleName@@left @TO@ SimpleName@@MethodName:getType:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int rhType=right.getType(); @TO@ int rhType=getNormalizedNodeType(right); '
+    - '---UPD VariableDeclarationFragment@@rhType=right.getType() @TO@ rhType=getNormalizedNodeType(right) '
+    - '------UPD MethodInvocation@@right.getType() @TO@ getNormalizedNodeType(right) '
+    - '---------DEL SimpleName@@Name:right '
+    - '---------UPD SimpleName@@MethodName:getType:[] @TO@ MethodName:getNormalizedNodeType:[right] '
+    - '------------INS SimpleName@@right @TO@ SimpleName@@MethodName:getType:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@int, MethodName:getNormalizedNodeType, @@Argus:Node+n+
+      @TO@ TypeDeclaration@@PeepholeFoldConstants, AbstractPeepholeOptimization '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@int, MethodName:getNormalizedNodeType,
+      @@Argus:Node+n+ '
+    - '---INS PrimitiveType@@int @TO@ MethodDeclaration@@private, @@int, MethodName:getNormalizedNodeType,
+      @@Argus:Node+n+ '
+    - '---INS SimpleName@@MethodName:getNormalizedNodeType @TO@ MethodDeclaration@@private,
+      @@int, MethodName:getNormalizedNodeType, @@Argus:Node+n+ '
+    - '---INS SingleVariableDeclaration@@Node n @TO@ MethodDeclaration@@private, @@int,
+      MethodName:getNormalizedNodeType, @@Argus:Node+n+ '
+    - '------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node n '
+    - '------INS SimpleName@@n @TO@ SingleVariableDeclaration@@Node n '
+    - '---INS VariableDeclarationStatement@@int type=n.getType(); @TO@ MethodDeclaration@@private,
+      @@int, MethodName:getNormalizedNodeType, @@Argus:Node+n+ '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int type=n.getType(); '
+    - '------INS VariableDeclarationFragment@@type=n.getType() @TO@ VariableDeclarationStatement@@int
+      type=n.getType(); '
+    - '---------INS SimpleName@@type @TO@ VariableDeclarationFragment@@type=n.getType() '
+    - '---------INS MethodInvocation@@n.getType() @TO@ VariableDeclarationFragment@@type=n.getType() '
+    - '------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getType() '
+    - '------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@n.getType() '
+    - '---INS IfStatement@@InfixExpression:type == Token.NOT @TO@ MethodDeclaration@@private,
+      @@int, MethodName:getNormalizedNodeType, @@Argus:Node+n+ '
+    - '------INS InfixExpression@@type == Token.NOT @TO@ IfStatement@@InfixExpression:type
+      == Token.NOT '
+    - '---------INS SimpleName@@type @TO@ InfixExpression@@type == Token.NOT '
+    - '---------INS Operator@@== @TO@ InfixExpression@@type == Token.NOT '
+    - '---------INS QualifiedName@@Token.NOT @TO@ InfixExpression@@type == Token.NOT '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.NOT '
+    - '------------INS SimpleName@@NOT @TO@ QualifiedName@@Token.NOT '
+    - '------INS VariableDeclarationStatement@@TernaryValue value=NodeUtil.getPureBooleanValue(n);
+      @TO@ IfStatement@@InfixExpression:type == Token.NOT '
+    - '---------INS SimpleType@@TernaryValue @TO@ VariableDeclarationStatement@@TernaryValue
+      value=NodeUtil.getPureBooleanValue(n); '
+    - '---------INS VariableDeclarationFragment@@value=NodeUtil.getPureBooleanValue(n)
+      @TO@ VariableDeclarationStatement@@TernaryValue value=NodeUtil.getPureBooleanValue(n); '
+    - '------------INS SimpleName@@value @TO@ VariableDeclarationFragment@@value=NodeUtil.getPureBooleanValue(n) '
+    - '------------INS MethodInvocation@@NodeUtil.getPureBooleanValue(n) @TO@ VariableDeclarationFragment@@value=NodeUtil.getPureBooleanValue(n) '
+    - '---------------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.getPureBooleanValue(n) '
+    - '---------------INS SimpleName@@MethodName:getPureBooleanValue:[n] @TO@ MethodInvocation@@NodeUtil.getPureBooleanValue(n) '
+    - '------------------INS SimpleName@@n @TO@ SimpleName@@MethodName:getPureBooleanValue:[n] '
+    - '------INS SwitchStatement@@SimpleName:value @TO@ IfStatement@@InfixExpression:type
+      == Token.NOT '
+    - '---------INS SimpleName@@value @TO@ SwitchStatement@@SimpleName:value '
+    - '---------INS SwitchCase@@SimpleName:TRUE @TO@ SwitchStatement@@SimpleName:value '
+    - '------------INS SimpleName@@TRUE @TO@ SwitchCase@@SimpleName:TRUE '
+    - '---------INS ReturnStatement@@QualifiedName:Token.TRUE @TO@ SwitchStatement@@SimpleName:value '
+    - '------------INS QualifiedName@@Token.TRUE @TO@ ReturnStatement@@QualifiedName:Token.TRUE '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.TRUE '
+    - '---------------INS SimpleName@@TRUE @TO@ QualifiedName@@Token.TRUE '
+    - '---------INS SwitchCase@@SimpleName:FALSE @TO@ SwitchStatement@@SimpleName:value '
+    - '------------INS SimpleName@@FALSE @TO@ SwitchCase@@SimpleName:FALSE '
+    - '---------INS ReturnStatement@@QualifiedName:Token.FALSE @TO@ SwitchStatement@@SimpleName:value '
+    - '------------INS QualifiedName@@Token.FALSE @TO@ ReturnStatement@@QualifiedName:Token.FALSE '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.FALSE '
+    - '---------------INS SimpleName@@FALSE @TO@ QualifiedName@@Token.FALSE '
+    - '---INS ReturnStatement@@SimpleName:type @TO@ MethodDeclaration@@private, @@int,
+      MethodName:getNormalizedNodeType, @@Argus:Node+n+ '
+    - '------INS SimpleName@@type @TO@ ReturnStatement@@SimpleName:type '
+  files_cnt: '1'
+  repair_actions_cnt: 3

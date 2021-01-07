@@ -1,0 +1,266 @@
+1 bug_id: Mockito-4
+2 src folder:
+  name of src folder: src
+  number of files: 366
+  number of java files: 328
+  number of src classes: 389
+  number of test classes: 284
+3 test (cases):
+  failing test cases:
+  - org.mockito.exceptions.ReporterTest#can_use_print_mock_name_even_when_mock_bogus_default_answer_and_when_reporting_no_more_interaction_wanted_in_order
+  - org.mockito.exceptions.ReporterTest#can_use_print_mock_name_even_when_mock_bogus_default_answer_and_when_reporting_injection_failure
+  - org.mockito.exceptions.ReporterTest#can_use_mock_name_even_when_mock_bogus_default_answer_and_when_reporting_no_more_interaction_wanted
+  - org.mockitousage.bugs.ClassCastExOnVerifyZeroInteractionsTest#should_not_throw_a_ClassCastException
+  failing tests:
+  - org.mockito.exceptions.ReporterTest
+  - org.mockitousage.bugs.ClassCastExOnVerifyZeroInteractionsTest
+  number of all test cases: 1401
+  number of failing test cases: 4
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.947
+  purification via delta debugging: 1819.783
+  repair actions extraction: 2.034
+5 stmts covered by failing cases:
+  buggy:
+    ? org.mockito.exceptions.ReporterTest#can_use_mock_name_even_when_mock_bogus_default_answer_and_when_reporting_no_more_interaction_wanted
+    : 646
+    ? org.mockito.exceptions.ReporterTest#can_use_print_mock_name_even_when_mock_bogus_default_answer_and_when_reporting_injection_failure
+    : 503
+    ? org.mockito.exceptions.ReporterTest#can_use_print_mock_name_even_when_mock_bogus_default_answer_and_when_reporting_no_more_interaction_wanted_in_order
+    : 637
+    org.mockitousage.bugs.ClassCastExOnVerifyZeroInteractionsTest#should_not_throw_a_ClassCastException: 536
+  fixed:
+    ? org.mockito.exceptions.ReporterTest#can_use_mock_name_even_when_mock_bogus_default_answer_and_when_reporting_no_more_interaction_wanted
+    : 589
+    ? org.mockito.exceptions.ReporterTest#can_use_print_mock_name_even_when_mock_bogus_default_answer_and_when_reporting_injection_failure
+    : 529
+    ? org.mockito.exceptions.ReporterTest#can_use_print_mock_name_even_when_mock_bogus_default_answer_and_when_reporting_no_more_interaction_wanted_in_order
+    : 580
+    org.mockitousage.bugs.ClassCastExOnVerifyZeroInteractionsTest#should_not_throw_a_ClassCastException: 586
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 5
+  covDel: 2
+  cov_patch_lines: 7
+  delta_patch_lines: 5
+  oriAdd: 5
+  oriDel: 2
+  ori_patch_lines: 7
+  purAdd: 3
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 10
+  passed: 2
+  total: 16
+9 sibling repair actions:
+- 0 1 0.9254980079681275
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_4/src/org/mockito/exceptions/Reporter.java\t\
+    2020-10-23 18:44:30.286233729 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_4/purify/patch/org/mockito/exceptions/Reporter.java\t\
+    2020-10-23 18:44:30.286233729 -0400\n@@ -421,7 +421,7 @@\n         throw new NoInteractionsWanted(join(\n\
+    \                 \"No interactions wanted here:\",\n                 new LocationImpl(),\n\
+    -                \"But found this interaction on mock '\" + undesired.getMock()\
+    \ + \"':\",\n+                \"But found this interaction on mock '\" + safelyGetMockName(undesired.getMock())\
+    \ + \"':\",\n                 undesired.getLocation(),\n                 scenario\n\
+    \         ));\n@@ -431,7 +431,7 @@\n         throw new VerificationInOrderFailure(join(\n\
+    \                 \"No interactions wanted here:\",\n                 new LocationImpl(),\n\
+    -                \"But found this interaction on mock '\" + undesired.getMock()\
+    \ + \"':\",\n+                \"But found this interaction on mock '\" + safelyGetMockName(undesired.getMock())\
+    \ + \"':\",\n                 undesired.getLocation()\n         ));\n     }\n\
+    @@ -674,6 +674,9 @@\n     }\n \n     private String exceptionCauseMessageIfAvailable(Exception\
+    \ details) {\n+        if (details.getCause() == null) {\n+            return\
+    \ details.getMessage();\n+        }\n         return details.getCause().getMessage();\n\
+    \     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_4/src/org/mockito/exceptions/Reporter.java\t\
+    2020-10-23 19:15:27.640012223 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_4/purify/purified/org/mockito/exceptions/Reporter.java\t\
+    2020-10-23 19:15:27.640012223 -0400\n@@ -421,7 +421,6 @@\n         throw new NoInteractionsWanted(join(\n\
+    \                 \"No interactions wanted here:\",\n                 new LocationImpl(),\n\
+    -                \"But found this interaction on mock '\" + undesired.getMock()\
+    \ + \"':\",\n                 undesired.getLocation(),\n                 scenario\n\
+    \         ));\n@@ -431,7 +430,6 @@\n         throw new VerificationInOrderFailure(join(\n\
+    \                 \"No interactions wanted here:\",\n                 new LocationImpl(),\n\
+    -                \"But found this interaction on mock '\" + undesired.getMock()\
+    \ + \"':\",\n                 undesired.getLocation()\n         ));\n     }\n\
+    @@ -674,6 +672,9 @@\n     }\n \n     private String exceptionCauseMessageIfAvailable(Exception\
+    \ details) {\n+        if (details.getCause() == null) {\n+            return\
+    \ details.getMessage();\n+        }\n         return details.getCause().getMessage();\n\
+    \     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/exceptions/Reporter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ThrowStatement@@ClassInstanceCreation:new NoInteractionsWanted(join("No
+      interactions wanted here:",new LocationImpl(),"But found this interaction on
+      mock ''" + undesired.getMock() + "'':",undesired.getLocation(),scenario)) @TO@
+      ClassInstanceCreation:new NoInteractionsWanted(join("No interactions wanted
+      here:",new LocationImpl(),"But found this interaction on mock ''" + safelyGetMockName(undesired.getMock())
+      + "'':",undesired.getLocation(),scenario)) '
+    - '---UPD ClassInstanceCreation@@NoInteractionsWanted[join("No interactions wanted
+      here:",new LocationImpl(),"But found this interaction on mock ''" + undesired.getMock()
+      + "'':",undesired.getLocation(),scenario)] @TO@ NoInteractionsWanted[join("No
+      interactions wanted here:",new LocationImpl(),"But found this interaction on
+      mock ''" + safelyGetMockName(undesired.getMock()) + "'':",undesired.getLocation(),scenario)] '
+    - '------UPD MethodInvocation@@join("No interactions wanted here:",new LocationImpl(),"But
+      found this interaction on mock ''" + undesired.getMock() + "'':",undesired.getLocation(),scenario)
+      @TO@ join("No interactions wanted here:",new LocationImpl(),"But found this
+      interaction on mock ''" + safelyGetMockName(undesired.getMock()) + "'':",undesired.getLocation(),scenario) '
+    - '---------UPD SimpleName@@MethodName:join:["No interactions wanted here:", new
+      LocationImpl(), "But found this interaction on mock ''" + undesired.getMock()
+      + "'':", undesired.getLocation(), scenario] @TO@ MethodName:join:["No interactions
+      wanted here:", new LocationImpl(), "But found this interaction on mock ''" +
+      safelyGetMockName(undesired.getMock()) + "'':", undesired.getLocation(), scenario] '
+    - '------------UPD InfixExpression@@"But found this interaction on mock ''" +
+      undesired.getMock() + "'':" @TO@ "But found this interaction on mock ''" + safelyGetMockName(undesired.getMock())
+      + "'':" '
+    - '---------------INS MethodInvocation@@safelyGetMockName(undesired.getMock())
+      @TO@ InfixExpression@@"But found this interaction on mock ''" + undesired.getMock()
+      + "'':" '
+    - '------------------INS SimpleName@@MethodName:safelyGetMockName:[undesired.getMock()]
+      @TO@ MethodInvocation@@safelyGetMockName(undesired.getMock()) '
+    - '---------------------INS MethodInvocation@@undesired.getMock() @TO@ SimpleName@@MethodName:safelyGetMockName:[undesired.getMock()] '
+    - '------------------------MOV SimpleName@@Name:undesired @TO@ MethodInvocation@@undesired.getMock() '
+    - '------------------------MOV SimpleName@@MethodName:getMock:[] @TO@ MethodInvocation@@undesired.getMock() '
+    - '---------------DEL MethodInvocation@@undesired.getMock() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ThrowStatement@@ClassInstanceCreation:new VerificationInOrderFailure(join("No
+      interactions wanted here:",new LocationImpl(),"But found this interaction on
+      mock ''" + undesired.getMock() + "'':",undesired.getLocation())) @TO@ ClassInstanceCreation:new
+      VerificationInOrderFailure(join("No interactions wanted here:",new LocationImpl(),"But
+      found this interaction on mock ''" + safelyGetMockName(undesired.getMock())
+      + "'':",undesired.getLocation())) '
+    - '---UPD ClassInstanceCreation@@VerificationInOrderFailure[join("No interactions
+      wanted here:",new LocationImpl(),"But found this interaction on mock ''" + undesired.getMock()
+      + "'':",undesired.getLocation())] @TO@ VerificationInOrderFailure[join("No interactions
+      wanted here:",new LocationImpl(),"But found this interaction on mock ''" + safelyGetMockName(undesired.getMock())
+      + "'':",undesired.getLocation())] '
+    - '------UPD MethodInvocation@@join("No interactions wanted here:",new LocationImpl(),"But
+      found this interaction on mock ''" + undesired.getMock() + "'':",undesired.getLocation())
+      @TO@ join("No interactions wanted here:",new LocationImpl(),"But found this
+      interaction on mock ''" + safelyGetMockName(undesired.getMock()) + "'':",undesired.getLocation()) '
+    - '---------UPD SimpleName@@MethodName:join:["No interactions wanted here:", new
+      LocationImpl(), "But found this interaction on mock ''" + undesired.getMock()
+      + "'':", undesired.getLocation()] @TO@ MethodName:join:["No interactions wanted
+      here:", new LocationImpl(), "But found this interaction on mock ''" + safelyGetMockName(undesired.getMock())
+      + "'':", undesired.getLocation()] '
+    - '------------UPD InfixExpression@@"But found this interaction on mock ''" +
+      undesired.getMock() + "'':" @TO@ "But found this interaction on mock ''" + safelyGetMockName(undesired.getMock())
+      + "'':" '
+    - '---------------DEL MethodInvocation@@undesired.getMock() '
+    - '---------------INS MethodInvocation@@safelyGetMockName(undesired.getMock())
+      @TO@ InfixExpression@@"But found this interaction on mock ''" + undesired.getMock()
+      + "'':" '
+    - '------------------INS SimpleName@@MethodName:safelyGetMockName:[undesired.getMock()]
+      @TO@ MethodInvocation@@safelyGetMockName(undesired.getMock()) '
+    - '---------------------INS MethodInvocation@@undesired.getMock() @TO@ SimpleName@@MethodName:safelyGetMockName:[undesired.getMock()] '
+    - '------------------------MOV SimpleName@@Name:undesired @TO@ MethodInvocation@@undesired.getMock() '
+    - '------------------------MOV SimpleName@@MethodName:getMock:[] @TO@ MethodInvocation@@undesired.getMock() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:details.getCause() == null @TO@ MethodDeclaration@@private,
+      @@String, MethodName:exceptionCauseMessageIfAvailable, @@Argus:Exception+details+ '
+    - '---INS InfixExpression@@details.getCause() == null @TO@ IfStatement@@InfixExpression:details.getCause()
+      == null '
+    - '------INS MethodInvocation@@details.getCause() @TO@ InfixExpression@@details.getCause()
+      == null '
+    - '---------INS SimpleName@@Name:details @TO@ MethodInvocation@@details.getCause() '
+    - '---------INS SimpleName@@MethodName:getCause:[] @TO@ MethodInvocation@@details.getCause() '
+    - '------INS Operator@@== @TO@ InfixExpression@@details.getCause() == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@details.getCause() == null '
+    - '---INS ReturnStatement@@MethodInvocation:details.getMessage() @TO@ IfStatement@@InfixExpression:details.getCause()
+      == null '
+    - '------INS MethodInvocation@@details.getMessage() @TO@ ReturnStatement@@MethodInvocation:details.getMessage() '
+    - '---------INS SimpleName@@Name:details @TO@ MethodInvocation@@details.getMessage() '
+    - '---------INS SimpleName@@MethodName:getMessage:[] @TO@ MethodInvocation@@details.getMessage() '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/exceptions/Reporter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ThrowStatement@@ClassInstanceCreation:new NoInteractionsWanted(join("No
+      interactions wanted here:",new LocationImpl(),"But found this interaction on
+      mock ''" + undesired.getMock() + "'':",undesired.getLocation(),scenario)) @TO@
+      ClassInstanceCreation:new NoInteractionsWanted(join("No interactions wanted
+      here:",new LocationImpl(),undesired.getLocation(),scenario)) '
+    - '---UPD ClassInstanceCreation@@NoInteractionsWanted[join("No interactions wanted
+      here:",new LocationImpl(),"But found this interaction on mock ''" + undesired.getMock()
+      + "'':",undesired.getLocation(),scenario)] @TO@ NoInteractionsWanted[join("No
+      interactions wanted here:",new LocationImpl(),undesired.getLocation(),scenario)] '
+    - '------UPD MethodInvocation@@join("No interactions wanted here:",new LocationImpl(),"But
+      found this interaction on mock ''" + undesired.getMock() + "'':",undesired.getLocation(),scenario)
+      @TO@ join("No interactions wanted here:",new LocationImpl(),undesired.getLocation(),scenario) '
+    - '---------UPD SimpleName@@MethodName:join:["No interactions wanted here:", new
+      LocationImpl(), "But found this interaction on mock ''" + undesired.getMock()
+      + "'':", undesired.getLocation(), scenario] @TO@ MethodName:join:["No interactions
+      wanted here:", new LocationImpl(), undesired.getLocation(), scenario] '
+    - '------------DEL InfixExpression@@"But found this interaction on mock ''" +
+      undesired.getMock() + "'':" '
+    - '---------------DEL StringLiteral@@"But found this interaction on mock ''" '
+    - '---------------DEL Operator@@+ '
+    - '---------------DEL MethodInvocation@@undesired.getMock() '
+    - '------------------DEL SimpleName@@Name:undesired '
+    - '------------------DEL SimpleName@@MethodName:getMock:[] '
+    - '---------------DEL StringLiteral@@"'':" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ThrowStatement@@ClassInstanceCreation:new VerificationInOrderFailure(join("No
+      interactions wanted here:",new LocationImpl(),"But found this interaction on
+      mock ''" + undesired.getMock() + "'':",undesired.getLocation())) @TO@ ClassInstanceCreation:new
+      VerificationInOrderFailure(join("No interactions wanted here:",new LocationImpl(),undesired.getLocation())) '
+    - '---UPD ClassInstanceCreation@@VerificationInOrderFailure[join("No interactions
+      wanted here:",new LocationImpl(),"But found this interaction on mock ''" + undesired.getMock()
+      + "'':",undesired.getLocation())] @TO@ VerificationInOrderFailure[join("No interactions
+      wanted here:",new LocationImpl(),undesired.getLocation())] '
+    - '------UPD MethodInvocation@@join("No interactions wanted here:",new LocationImpl(),"But
+      found this interaction on mock ''" + undesired.getMock() + "'':",undesired.getLocation())
+      @TO@ join("No interactions wanted here:",new LocationImpl(),undesired.getLocation()) '
+    - '---------UPD SimpleName@@MethodName:join:["No interactions wanted here:", new
+      LocationImpl(), "But found this interaction on mock ''" + undesired.getMock()
+      + "'':", undesired.getLocation()] @TO@ MethodName:join:["No interactions wanted
+      here:", new LocationImpl(), undesired.getLocation()] '
+    - '------------DEL InfixExpression@@"But found this interaction on mock ''" +
+      undesired.getMock() + "'':" '
+    - '---------------DEL StringLiteral@@"But found this interaction on mock ''" '
+    - '---------------DEL Operator@@+ '
+    - '---------------DEL MethodInvocation@@undesired.getMock() '
+    - '------------------DEL SimpleName@@Name:undesired '
+    - '------------------DEL SimpleName@@MethodName:getMock:[] '
+    - '---------------DEL StringLiteral@@"'':" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:details.getCause() == null @TO@ MethodDeclaration@@private,
+      @@String, MethodName:exceptionCauseMessageIfAvailable, @@Argus:Exception+details+ '
+    - '---INS InfixExpression@@details.getCause() == null @TO@ IfStatement@@InfixExpression:details.getCause()
+      == null '
+    - '------INS MethodInvocation@@details.getCause() @TO@ InfixExpression@@details.getCause()
+      == null '
+    - '---------INS SimpleName@@Name:details @TO@ MethodInvocation@@details.getCause() '
+    - '---------INS SimpleName@@MethodName:getCause:[] @TO@ MethodInvocation@@details.getCause() '
+    - '------INS Operator@@== @TO@ InfixExpression@@details.getCause() == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@details.getCause() == null '
+    - '---INS ReturnStatement@@MethodInvocation:details.getMessage() @TO@ IfStatement@@InfixExpression:details.getCause()
+      == null '
+    - '------INS MethodInvocation@@details.getMessage() @TO@ ReturnStatement@@MethodInvocation:details.getMessage() '
+    - '---------INS SimpleName@@Name:details @TO@ MethodInvocation@@details.getMessage() '
+    - '---------INS SimpleName@@MethodName:getMessage:[] @TO@ MethodInvocation@@details.getMessage() '
+  repair_actions_cnt: 3

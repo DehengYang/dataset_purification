@@ -1,0 +1,138 @@
+1 bug_id: Math-42
+2 src folder:
+  name of src folder: java
+  number of files: 622
+  number of java files: 621
+  number of src classes: 848
+  number of test classes: 294
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.linear.SimplexSolverTest#testMath713NegativeVariable
+  failing tests:
+  - org.apache.commons.math.optimization.linear.SimplexSolverTest
+  number of all test cases: 3174
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.002
+  purification via delta debugging: 284.733
+  repair actions extraction: 1.169
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.linear.SimplexSolverTest#testMath713NegativeVariable: 376
+  fixed:
+    org.apache.commons.math.optimization.linear.SimplexSolverTest#testMath713NegativeVariable: 378
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 3
+  covDel: 1
+  cov_patch_lines: 4
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 1
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 2
+  failCompile: 4
+  failFail: 1
+  passed: 1
+  total: 8
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_42/src/main/java/org/apache/commons/math/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 11:28:51.794197044 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_42/purify/patch/org/apache/commons/math/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 11:28:51.790196928 -0400\n@@ -407,10 +407,12 @@\n             continue;\n\
+    \           }\n           Integer basicRow = getBasicRow(colIndex);\n+       \
+    \   if (basicRow != null && basicRow == 0) {\n               // if the basic row\
+    \ is found to be the objective function row\n               // set the coefficient\
+    \ to 0 -> this case handles unconstrained \n               // variables that are\
+    \ still part of the objective function\n-          if (basicRows.contains(basicRow))\
+    \ {\n+              coefficients[i] = 0;\n+          } else if (basicRows.contains(basicRow))\
+    \ {\n               // if multiple variables can take a given value\n        \
+    \       // then we choose the first and set the rest equal to 0\n            \
+    \   coefficients[i] = 0 - (restrictToNonNegative ? 0 : mostNegative);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_42/src/main/java/org/apache/commons/math/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 11:33:54.806957211 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_42/purify/purified/org/apache/commons/math/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 11:33:54.802957096 -0400\n@@ -407,10 +407,11 @@\n             continue;\n\
+    \           }\n           Integer basicRow = getBasicRow(colIndex);\n+       \
+    \   if (basicRow != null && basicRow == 0) {\n               // if the basic row\
+    \ is found to be the objective function row\n               // set the coefficient\
+    \ to 0 -> this case handles unconstrained \n               // variables that are\
+    \ still part of the objective function\n-          if (basicRows.contains(basicRow))\
+    \ {\n+          } else if (basicRows.contains(basicRow)) {\n               //\
+    \ if multiple variables can take a given value\n               // then we choose\
+    \ the first and set the rest equal to 0\n               coefficients[i] = 0 -\
+    \ (restrictToNonNegative ? 0 : mostNegative);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/linear/SimplexTableau:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:basicRow != null && basicRow == 0 @TO@ ForStatement@@[int
+      i=0];i < coefficients.length; [i++] '
+    - '---INS InfixExpression@@basicRow != null && basicRow == 0 @TO@ IfStatement@@InfixExpression:basicRow
+      != null && basicRow == 0 '
+    - '------INS InfixExpression@@basicRow != null @TO@ InfixExpression@@basicRow
+      != null && basicRow == 0 '
+    - '---------INS SimpleName@@basicRow @TO@ InfixExpression@@basicRow != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@basicRow != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@basicRow != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@basicRow != null && basicRow ==
+      0 '
+    - '------INS InfixExpression@@basicRow == 0 @TO@ InfixExpression@@basicRow !=
+      null && basicRow == 0 '
+    - '---------INS SimpleName@@basicRow @TO@ InfixExpression@@basicRow == 0 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@basicRow == 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@basicRow == 0 '
+    - '---MOV IfStatement@@MethodInvocation:basicRows.contains(basicRow) @TO@ IfStatement@@InfixExpression:basicRow
+      != null && basicRow == 0 '
+    - '---INS ExpressionStatement@@Assignment:coefficients[i]=0 @TO@ IfStatement@@InfixExpression:basicRow
+      != null && basicRow == 0 '
+    - '------INS Assignment@@coefficients[i]=0 @TO@ ExpressionStatement@@Assignment:coefficients[i]=0 '
+    - '---------INS ArrayAccess@@coefficients[i] @TO@ Assignment@@coefficients[i]=0 '
+    - '------------INS SimpleName@@coefficients @TO@ ArrayAccess@@coefficients[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@coefficients[i] '
+    - '---------INS Operator@@= @TO@ Assignment@@coefficients[i]=0 '
+    - '---------INS NumberLiteral@@0 @TO@ Assignment@@coefficients[i]=0 '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/linear/SimplexTableau:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:basicRow != null && basicRow == 0 @TO@ ForStatement@@[int
+      i=0];i < coefficients.length; [i++] '
+    - '---INS InfixExpression@@basicRow != null && basicRow == 0 @TO@ IfStatement@@InfixExpression:basicRow
+      != null && basicRow == 0 '
+    - '------INS InfixExpression@@basicRow != null @TO@ InfixExpression@@basicRow
+      != null && basicRow == 0 '
+    - '---------INS SimpleName@@basicRow @TO@ InfixExpression@@basicRow != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@basicRow != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@basicRow != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@basicRow != null && basicRow ==
+      0 '
+    - '------INS InfixExpression@@basicRow == 0 @TO@ InfixExpression@@basicRow !=
+      null && basicRow == 0 '
+    - '---------INS SimpleName@@basicRow @TO@ InfixExpression@@basicRow == 0 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@basicRow == 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@basicRow == 0 '
+    - '---MOV IfStatement@@MethodInvocation:basicRows.contains(basicRow) @TO@ IfStatement@@InfixExpression:basicRow
+      != null && basicRow == 0 '
+  repair_actions_cnt: 1

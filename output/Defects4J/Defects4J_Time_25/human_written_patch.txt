@@ -1,0 +1,19 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_25/src/main/java/org/joda/time/DateTimeZone.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_25/fixed-version/src/main/java/org/joda/time/DateTimeZone.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_25/src/main/java/org/joda/time/DateTimeZone.java	2020-03-01 00:02:18.650251579 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_25/fixed-version/src/main/java/org/joda/time/DateTimeZone.java	2020-03-01 00:02:20.358332057 -0800
+@@ -896,6 +896,15 @@
+                     return offsetLocal;
+                 }
+             }
++        } else if (offsetLocal > 0) {
++            long prev = previousTransition(instantAdjusted);
++            if (prev < instantAdjusted) {
++                int offsetPrev = getOffset(prev);
++                int diff = offsetPrev - offsetLocal;
++                if (instantAdjusted - prev <= diff) {
++                    return offsetPrev;
++                }
++            }
+         }
+         return offsetAdjusted;
+     }

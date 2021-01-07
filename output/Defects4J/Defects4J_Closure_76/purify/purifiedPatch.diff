@@ -1,0 +1,59 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_76/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java	2020-10-23 09:54:12.469011858 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_76/purify/purified/com/google/javascript/jscomp/DeadAssignmentsElimination.java	2020-10-23 09:54:12.469011858 -0400
+@@ -297,26 +297,37 @@
+           // If the currently node is the first child of
+           // AND/OR, be conservative only consider the READs
+           // of the second operand.
++          if (n.getNext() != null) {
++            state = isVariableReadBeforeKill(
++                n.getNext(), variable);
++            if (state == VariableLiveness.KILL) {
++              state = VariableLiveness.MAYBE_LIVE;
++            }
++          }
+ 
+         case Token.HOOK:
+           // If current node is the condition, check each following
+           // branch, otherwise it is a conditional branch and the
+           // other branch can be ignored.
++          if (n.getNext() != null && n.getNext().getNext() != null) {
++            state = checkHookBranchReadBeforeKill(
++                n.getNext(), n.getNext().getNext(), variable);
++          }
+ 
+         default:
+           for(Node sibling = n.getNext(); sibling != null;
+               sibling = sibling.getNext()) {
+             if (!ControlFlowGraph.isEnteringNewCfgNode(sibling)) {
+             state = isVariableReadBeforeKill(sibling, variable);
++            }
++          }
++      }
+ 
+       // If we see a READ or KILL there is no need to continue.
+       if (state == VariableLiveness.READ) {
+         return true;
+       } else if (state == VariableLiveness.KILL) {
+         return false;
+-            }
+-          }
+-      }
+       }
+       n = n.getParent();
+     }
+@@ -359,9 +370,15 @@
+       // Conditionals
+       case Token.OR:
+       case Token.AND:
++        VariableLiveness v1 = isVariableReadBeforeKill(
++          n.getFirstChild(), variable);
+         // With a AND/OR the first branch always runs, but the second is
+         // may not.
++        if (v1 != VariableLiveness.MAYBE_LIVE) {
++        }
+       case Token.HOOK:
++        if (first != VariableLiveness.MAYBE_LIVE) {
++        }
+         return checkHookBranchReadBeforeKill(
+             n.getFirstChild().getNext(), n.getLastChild(), variable);
+ 

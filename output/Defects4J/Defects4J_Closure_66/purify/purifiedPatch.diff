@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_66/src/com/google/javascript/jscomp/TypeCheck.java	2020-10-23 08:16:40.271591891 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_66/purify/purified/com/google/javascript/jscomp/TypeCheck.java	2020-10-23 08:16:40.267591775 -0400
+@@ -513,7 +513,9 @@
+         // Object literal keys are handled with OBJECTLIT
+         if (!NodeUtil.isObjectLitKey(n, n.getParent())) {
+           ensureTyped(t, n, STRING_TYPE);
++        } else {
+           // Object literal keys are not typeable
++          typeable = false;
+         }
+         break;
+ 

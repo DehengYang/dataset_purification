@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_10/src/com/google/javascript/jscomp/NodeUtil.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_10/fixed-version/src/com/google/javascript/jscomp/NodeUtil.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_10/src/com/google/javascript/jscomp/NodeUtil.java	2020-03-01 00:25:45.292528561 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_10/fixed-version/src/com/google/javascript/jscomp/NodeUtil.java	2020-03-01 00:25:48.232667099 -0800
+@@ -1414,7 +1414,7 @@
+ 
+   static boolean mayBeString(Node n, boolean recurse) {
+     if (recurse) {
+-      return allResultsMatch(n, MAY_BE_STRING_PREDICATE);
++      return anyResultsMatch(n, MAY_BE_STRING_PREDICATE);
+     } else {
+       return mayBeStringHelper(n);
+     }

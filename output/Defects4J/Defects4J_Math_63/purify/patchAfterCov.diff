@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_63/src/main/java/org/apache/commons/math/util/MathUtils.java	2020-10-21 12:52:31.267343268 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_63/purify/assertBeforeMut/org/apache/commons/math/util/MathUtils.java	2020-10-21 12:52:31.263343152 -0400
+@@ -414,7 +414,7 @@
+      * @return {@code true} if the values are equal.
+      */
+     public static boolean equals(double x, double y) {
+-        return (Double.isNaN(x) && Double.isNaN(y)) || x == y;
++        return equals(x, y, 1);
+     }
+ 
+     /**

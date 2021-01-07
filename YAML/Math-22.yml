@@ -1,0 +1,88 @@
+1 bug_id: Math-22
+2 src folder:
+  name of src folder: java
+  number of files: 648
+  number of java files: 647
+  number of src classes: 854
+  number of test classes: 323
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.distribution.UniformRealDistributionTest#testIsSupportUpperBoundInclusive
+  - org.apache.commons.math3.distribution.FDistributionTest#testIsSupportLowerBoundInclusive
+  failing tests:
+  - org.apache.commons.math3.distribution.UniformRealDistributionTest
+  - org.apache.commons.math3.distribution.FDistributionTest
+  number of all test cases: 4160
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 167.714
+  repair actions extraction: 0.952
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.distribution.FDistributionTest#testIsSupportLowerBoundInclusive: 275
+    org.apache.commons.math3.distribution.UniformRealDistributionTest#testIsSupportUpperBoundInclusive: 66
+  fixed:
+    org.apache.commons.math3.distribution.FDistributionTest#testIsSupportLowerBoundInclusive: 275
+    org.apache.commons.math3.distribution.UniformRealDistributionTest#testIsSupportUpperBoundInclusive: 66
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 2
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_22/src/main/java/org/apache/commons/math3/distribution/UniformRealDistribution.java\t\
+    2020-10-21 06:02:21.759324550 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_22/purify/patch/org/apache/commons/math3/distribution/UniformRealDistribution.java\t\
+    2020-10-21 06:02:21.759324550 -0400\n@@ -181,7 +181,7 @@\n \n     /** {@inheritDoc}\
+    \ */\n     public boolean isSupportUpperBoundInclusive() {\n-        return false;\n\
+    +        return true;\n     }\n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_22/src/main/java/org/apache/commons/math3/distribution/UniformRealDistribution.java\t\
+    2020-10-21 06:05:25.984656871 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_22/purify/purified/org/apache/commons/math3/distribution/UniformRealDistribution.java\t\
+    2020-10-21 06:05:25.984656871 -0400\n@@ -181,7 +181,7 @@\n \n     /** {@inheritDoc}\
+    \ */\n     public boolean isSupportUpperBoundInclusive() {\n-        return false;\n\
+    +        return true;\n     }\n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/apache/commons/math3/distribution/FDistribution, org/apache/commons/math3/distribution/UniformRealDistribution:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@BooleanLiteral:false @TO@ BooleanLiteral:true '
+    - '---UPD BooleanLiteral@@false @TO@ true '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/apache/commons/math3/distribution/FDistribution, org/apache/commons/math3/distribution/UniformRealDistribution:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@BooleanLiteral:false @TO@ BooleanLiteral:true '
+    - '---UPD BooleanLiteral@@false @TO@ true '
+  repair_actions_cnt: 1

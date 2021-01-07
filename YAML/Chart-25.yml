@@ -1,0 +1,434 @@
+1 bug_id: Chart-25
+2 src folder:
+  name of src folder: source
+  number of files: 629
+  number of java files: 557
+  number of src classes: 581
+  number of test classes: 306
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullMeanHorizontal
+  - org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullMeanVertical
+  - org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullDeviationVertical
+  - org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullDeviationHorizontal
+  failing tests:
+  - org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests
+  number of all test cases: 1625
+  number of failing test cases: 4
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.396
+  purification via delta debugging: 271.842
+  repair actions extraction: 1.225
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullDeviationHorizontal: 3206
+    org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullDeviationVertical: 3186
+    org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullMeanHorizontal: 3201
+    org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullMeanVertical: 3186
+  fixed:
+    org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullDeviationHorizontal: 3249
+    org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullDeviationVertical: 3229
+    org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullMeanHorizontal: 3245
+    org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullMeanVertical: 3230
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 14
+  covDel: 2
+  cov_patch_lines: 16
+  delta_patch_lines: 16
+  oriAdd: 14
+  oriDel: 2
+  ori_patch_lines: 16
+  purAdd: 14
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 6
+  original: 6
+  purifiy: 6
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 26
+  failFail: 4
+  passed: 0
+  total: 30
+9 sibling repair actions:
+- 0 3 0.9899425287356322
+- 1 4 0.9488896721889319
+- 2 5 1.0
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_25/source/org/jfree/chart/renderer/category/StatisticalBarRenderer.java\t\
+    2020-10-22 00:57:33.868962189 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_25/purify/patch/org/jfree/chart/renderer/category/StatisticalBarRenderer.java\t\
+    2020-10-22 00:57:33.868962189 -0400\n@@ -256,6 +256,9 @@\n \n         // BAR X\n\
+    \         Number meanValue = dataset.getMeanValue(row, column);\n+        if (meanValue\
+    \ == null) {\n+            return;\n+        }\n \n         double value = meanValue.doubleValue();\n\
+    \         double base = 0.0;\n@@ -312,7 +315,9 @@\n         }\n \n         //\
+    \ standard deviation lines\n-            double valueDelta = dataset.getStdDevValue(row,\
+    \ column).doubleValue();\n+        Number n = dataset.getStdDevValue(row, column);\n\
+    +        if (n != null) {\n+            double valueDelta = n.doubleValue();\n\
+    \             double highVal = rangeAxis.valueToJava2D(meanValue.doubleValue()\
+    \ \n                     + valueDelta, dataArea, yAxisLocation);\n           \
+    \  double lowVal = rangeAxis.valueToJava2D(meanValue.doubleValue() \n@@ -341,6\
+    \ +346,7 @@\n             line = new Line2D.Double(lowVal, rectY + rectHeight\
+    \ * 0.25, \n                                      lowVal, rectY + rectHeight *\
+    \ 0.75);\n             g2.draw(line);\n+        }\n         \n         CategoryItemLabelGenerator\
+    \ generator = getItemLabelGenerator(row, \n                 column);\n@@ -400,6\
+    \ +406,9 @@\n \n         // BAR Y\n         Number meanValue = dataset.getMeanValue(row,\
+    \ column);\n+        if (meanValue == null) {\n+            return;\n+       \
+    \ }\n \n         double value = meanValue.doubleValue();\n         double base\
+    \ = 0.0;\n@@ -456,7 +465,9 @@\n         }\n \n         // standard deviation lines\n\
+    -            double valueDelta = dataset.getStdDevValue(row, column).doubleValue();\n\
+    +        Number n = dataset.getStdDevValue(row, column);\n+        if (n != null)\
+    \ {\n+            double valueDelta = n.doubleValue();\n             double highVal\
+    \ = rangeAxis.valueToJava2D(meanValue.doubleValue() \n                     + valueDelta,\
+    \ dataArea, yAxisLocation);\n             double lowVal = rangeAxis.valueToJava2D(meanValue.doubleValue()\
+    \ \n@@ -484,6 +495,7 @@\n             line = new Line2D.Double(rectX + rectWidth\
+    \ / 2.0d - 5.0d, lowVal,\n                                      rectX + rectWidth\
+    \ / 2.0d + 5.0d, lowVal);\n             g2.draw(line);\n+        }\n         \n\
+    \         CategoryItemLabelGenerator generator = getItemLabelGenerator(row, \n\
+    \                 column);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_25/source/org/jfree/chart/renderer/category/StatisticalBarRenderer.java\t\
+    2020-10-22 01:02:26.581425870 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_25/purify/purified/org/jfree/chart/renderer/category/StatisticalBarRenderer.java\t\
+    2020-10-22 01:02:26.577425754 -0400\n@@ -256,6 +256,9 @@\n \n         // BAR X\n\
+    \         Number meanValue = dataset.getMeanValue(row, column);\n+        if (meanValue\
+    \ == null) {\n+            return;\n+        }\n \n         double value = meanValue.doubleValue();\n\
+    \         double base = 0.0;\n@@ -312,7 +315,9 @@\n         }\n \n         //\
+    \ standard deviation lines\n-            double valueDelta = dataset.getStdDevValue(row,\
+    \ column).doubleValue();\n+        Number n = dataset.getStdDevValue(row, column);\n\
+    +        if (n != null) {\n+            double valueDelta = n.doubleValue();\n\
+    \             double highVal = rangeAxis.valueToJava2D(meanValue.doubleValue()\
+    \ \n                     + valueDelta, dataArea, yAxisLocation);\n           \
+    \  double lowVal = rangeAxis.valueToJava2D(meanValue.doubleValue() \n@@ -341,6\
+    \ +346,7 @@\n             line = new Line2D.Double(lowVal, rectY + rectHeight\
+    \ * 0.25, \n                                      lowVal, rectY + rectHeight *\
+    \ 0.75);\n             g2.draw(line);\n+        }\n         \n         CategoryItemLabelGenerator\
+    \ generator = getItemLabelGenerator(row, \n                 column);\n@@ -400,6\
+    \ +406,9 @@\n \n         // BAR Y\n         Number meanValue = dataset.getMeanValue(row,\
+    \ column);\n+        if (meanValue == null) {\n+            return;\n+       \
+    \ }\n \n         double value = meanValue.doubleValue();\n         double base\
+    \ = 0.0;\n@@ -456,7 +465,9 @@\n         }\n \n         // standard deviation lines\n\
+    -            double valueDelta = dataset.getStdDevValue(row, column).doubleValue();\n\
+    +        Number n = dataset.getStdDevValue(row, column);\n+        if (n != null)\
+    \ {\n+            double valueDelta = n.doubleValue();\n             double highVal\
+    \ = rangeAxis.valueToJava2D(meanValue.doubleValue() \n                     + valueDelta,\
+    \ dataArea, yAxisLocation);\n             double lowVal = rangeAxis.valueToJava2D(meanValue.doubleValue()\
+    \ \n@@ -484,6 +495,7 @@\n             line = new Line2D.Double(rectX + rectWidth\
+    \ / 2.0d - 5.0d, lowVal,\n                                      rectX + rectWidth\
+    \ / 2.0d + 5.0d, lowVal);\n             g2.draw(line);\n+        }\n         \n\
+    \         CategoryItemLabelGenerator generator = getItemLabelGenerator(row, \n\
+    \                 column);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/renderer/category/StatisticalBarRenderer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:meanValue == null @TO@ MethodDeclaration@@protected,
+      @@void, MethodName:drawHorizontalItem, @@Argus:Graphics2D+g2+CategoryItemRendererState+state+Rectangle2D+dataArea+CategoryPlot+plot+CategoryAxis+domainAxis+ValueAxis+rangeAxis+StatisticalCategoryDataset+dataset+int+row+int+column+ '
+    - '---INS InfixExpression@@meanValue == null @TO@ IfStatement@@InfixExpression:meanValue
+      == null '
+    - '------INS SimpleName@@meanValue @TO@ InfixExpression@@meanValue == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@meanValue == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@meanValue == null '
+    - '---INS ReturnStatement@@ @TO@ IfStatement@@InfixExpression:meanValue == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n != null @TO@ MethodDeclaration@@protected,
+      @@void, MethodName:drawHorizontalItem, @@Argus:Graphics2D+g2+CategoryItemRendererState+state+Rectangle2D+dataArea+CategoryPlot+plot+CategoryAxis+domainAxis+ValueAxis+rangeAxis+StatisticalCategoryDataset+dataset+int+row+int+column+ '
+    - '---INS InfixExpression@@n != null @TO@ IfStatement@@InfixExpression:n != null '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@n != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@n != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@n != null '
+    - '---INS VariableDeclarationStatement@@double valueDelta=n.doubleValue(); @TO@
+      IfStatement@@InfixExpression:n != null '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double valueDelta=n.doubleValue(); '
+    - '------INS VariableDeclarationFragment@@valueDelta=n.doubleValue() @TO@ VariableDeclarationStatement@@double
+      valueDelta=n.doubleValue(); '
+    - '---------INS SimpleName@@valueDelta @TO@ VariableDeclarationFragment@@valueDelta=n.doubleValue() '
+    - '---------INS MethodInvocation@@n.doubleValue() @TO@ VariableDeclarationFragment@@valueDelta=n.doubleValue() '
+    - '------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.doubleValue() '
+    - '------------INS SimpleName@@MethodName:doubleValue:[] @TO@ MethodInvocation@@n.doubleValue() '
+    - '---MOV VariableDeclarationStatement@@double highVal=rangeAxis.valueToJava2D(meanValue.doubleValue()
+      + valueDelta,dataArea,yAxisLocation); @TO@ IfStatement@@InfixExpression:n !=
+      null '
+    - '---MOV VariableDeclarationStatement@@double lowVal=rangeAxis.valueToJava2D(meanValue.doubleValue()
+      - valueDelta,dataArea,yAxisLocation); @TO@ IfStatement@@InfixExpression:n !=
+      null '
+    - '---MOV IfStatement@@InfixExpression:this.errorIndicatorStroke != null @TO@
+      IfStatement@@InfixExpression:n != null '
+    - '---MOV IfStatement@@InfixExpression:this.errorIndicatorPaint != null @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV VariableDeclarationStatement@@Line2D line=null; @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@Assignment:line=new Line2D.Double(lowVal,rectY
+      + rectHeight / 2.0d,highVal,rectY + rectHeight / 2.0d) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:g2.draw(line) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@Assignment:line=new Line2D.Double(highVal,rectY
+      + rectHeight * 0.25,highVal,rectY + rectHeight * 0.75) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:g2.draw(line) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@Assignment:line=new Line2D.Double(lowVal,rectY
+      + rectHeight * 0.25,lowVal,rectY + rectHeight * 0.75) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:g2.draw(line) @TO@ IfStatement@@InfixExpression:n
+      != null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double valueDelta=dataset.getStdDevValue(row,column).doubleValue();
+      @TO@ Number n=dataset.getStdDevValue(row,column); '
+    - '---INS SimpleType@@Number @TO@ VariableDeclarationStatement@@double valueDelta=dataset.getStdDevValue(row,column).doubleValue(); '
+    - '---DEL PrimitiveType@@double '
+    - '---UPD VariableDeclarationFragment@@valueDelta=dataset.getStdDevValue(row,column).doubleValue()
+      @TO@ n=dataset.getStdDevValue(row,column) '
+    - '------UPD SimpleName@@valueDelta @TO@ n '
+    - '------UPD MethodInvocation@@dataset.getStdDevValue(row,column).doubleValue()
+      @TO@ dataset.getStdDevValue(row,column) '
+    - '---------INS SimpleName@@MethodName:getStdDevValue:[row, column] @TO@ MethodInvocation@@dataset.getStdDevValue(row,column).doubleValue() '
+    - '------------INS SimpleName@@row @TO@ SimpleName@@MethodName:getStdDevValue:[row,
+      column] '
+    - '------------INS SimpleName@@column @TO@ SimpleName@@MethodName:getStdDevValue:[row,
+      column] '
+    - '---------DEL MethodInvocation@@MethodName:getStdDevValue:[row, column] '
+    - '------------DEL SimpleName@@row '
+    - '------------DEL SimpleName@@column '
+    - '---------DEL SimpleName@@MethodName:doubleValue:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:meanValue == null @TO@ MethodDeclaration@@protected,
+      @@void, MethodName:drawVerticalItem, @@Argus:Graphics2D+g2+CategoryItemRendererState+state+Rectangle2D+dataArea+CategoryPlot+plot+CategoryAxis+domainAxis+ValueAxis+rangeAxis+StatisticalCategoryDataset+dataset+int+row+int+column+ '
+    - '---INS InfixExpression@@meanValue == null @TO@ IfStatement@@InfixExpression:meanValue
+      == null '
+    - '------INS SimpleName@@meanValue @TO@ InfixExpression@@meanValue == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@meanValue == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@meanValue == null '
+    - '---INS ReturnStatement@@ @TO@ IfStatement@@InfixExpression:meanValue == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n != null @TO@ MethodDeclaration@@protected,
+      @@void, MethodName:drawVerticalItem, @@Argus:Graphics2D+g2+CategoryItemRendererState+state+Rectangle2D+dataArea+CategoryPlot+plot+CategoryAxis+domainAxis+ValueAxis+rangeAxis+StatisticalCategoryDataset+dataset+int+row+int+column+ '
+    - '---INS InfixExpression@@n != null @TO@ IfStatement@@InfixExpression:n != null '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@n != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@n != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@n != null '
+    - '---INS VariableDeclarationStatement@@double valueDelta=n.doubleValue(); @TO@
+      IfStatement@@InfixExpression:n != null '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double valueDelta=n.doubleValue(); '
+    - '------INS VariableDeclarationFragment@@valueDelta=n.doubleValue() @TO@ VariableDeclarationStatement@@double
+      valueDelta=n.doubleValue(); '
+    - '---------INS SimpleName@@valueDelta @TO@ VariableDeclarationFragment@@valueDelta=n.doubleValue() '
+    - '---------INS MethodInvocation@@n.doubleValue() @TO@ VariableDeclarationFragment@@valueDelta=n.doubleValue() '
+    - '------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.doubleValue() '
+    - '------------INS SimpleName@@MethodName:doubleValue:[] @TO@ MethodInvocation@@n.doubleValue() '
+    - '---MOV VariableDeclarationStatement@@double highVal=rangeAxis.valueToJava2D(meanValue.doubleValue()
+      + valueDelta,dataArea,yAxisLocation); @TO@ IfStatement@@InfixExpression:n !=
+      null '
+    - '---MOV VariableDeclarationStatement@@double lowVal=rangeAxis.valueToJava2D(meanValue.doubleValue()
+      - valueDelta,dataArea,yAxisLocation); @TO@ IfStatement@@InfixExpression:n !=
+      null '
+    - '---MOV IfStatement@@InfixExpression:this.errorIndicatorStroke != null @TO@
+      IfStatement@@InfixExpression:n != null '
+    - '---MOV IfStatement@@InfixExpression:this.errorIndicatorPaint != null @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV VariableDeclarationStatement@@Line2D line=null; @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@Assignment:line=new Line2D.Double(rectX + rectWidth
+      / 2.0d,lowVal,rectX + rectWidth / 2.0d,highVal) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:g2.draw(line) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@Assignment:line=new Line2D.Double(rectX + rectWidth
+      / 2.0d - 5.0d,highVal,rectX + rectWidth / 2.0d + 5.0d,highVal) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:g2.draw(line) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@Assignment:line=new Line2D.Double(rectX + rectWidth
+      / 2.0d - 5.0d,lowVal,rectX + rectWidth / 2.0d + 5.0d,lowVal) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:g2.draw(line) @TO@ IfStatement@@InfixExpression:n
+      != null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double valueDelta=dataset.getStdDevValue(row,column).doubleValue();
+      @TO@ Number n=dataset.getStdDevValue(row,column); '
+    - '---INS SimpleType@@Number @TO@ VariableDeclarationStatement@@double valueDelta=dataset.getStdDevValue(row,column).doubleValue(); '
+    - '---DEL PrimitiveType@@double '
+    - '---UPD VariableDeclarationFragment@@valueDelta=dataset.getStdDevValue(row,column).doubleValue()
+      @TO@ n=dataset.getStdDevValue(row,column) '
+    - '------UPD SimpleName@@valueDelta @TO@ n '
+    - '------UPD MethodInvocation@@dataset.getStdDevValue(row,column).doubleValue()
+      @TO@ dataset.getStdDevValue(row,column) '
+    - '---------INS SimpleName@@MethodName:getStdDevValue:[row, column] @TO@ MethodInvocation@@dataset.getStdDevValue(row,column).doubleValue() '
+    - '------------INS SimpleName@@row @TO@ SimpleName@@MethodName:getStdDevValue:[row,
+      column] '
+    - '------------INS SimpleName@@column @TO@ SimpleName@@MethodName:getStdDevValue:[row,
+      column] '
+    - '---------DEL MethodInvocation@@MethodName:getStdDevValue:[row, column] '
+    - '------------DEL SimpleName@@row '
+    - '------------DEL SimpleName@@column '
+    - '---------DEL SimpleName@@MethodName:doubleValue:[] '
+  repair_actions_cnt: 6
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/renderer/category/StatisticalBarRenderer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:meanValue == null @TO@ MethodDeclaration@@protected,
+      @@void, MethodName:drawHorizontalItem, @@Argus:Graphics2D+g2+CategoryItemRendererState+state+Rectangle2D+dataArea+CategoryPlot+plot+CategoryAxis+domainAxis+ValueAxis+rangeAxis+StatisticalCategoryDataset+dataset+int+row+int+column+ '
+    - '---INS InfixExpression@@meanValue == null @TO@ IfStatement@@InfixExpression:meanValue
+      == null '
+    - '------INS SimpleName@@meanValue @TO@ InfixExpression@@meanValue == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@meanValue == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@meanValue == null '
+    - '---INS ReturnStatement@@ @TO@ IfStatement@@InfixExpression:meanValue == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n != null @TO@ MethodDeclaration@@protected,
+      @@void, MethodName:drawHorizontalItem, @@Argus:Graphics2D+g2+CategoryItemRendererState+state+Rectangle2D+dataArea+CategoryPlot+plot+CategoryAxis+domainAxis+ValueAxis+rangeAxis+StatisticalCategoryDataset+dataset+int+row+int+column+ '
+    - '---INS InfixExpression@@n != null @TO@ IfStatement@@InfixExpression:n != null '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@n != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@n != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@n != null '
+    - '---INS VariableDeclarationStatement@@double valueDelta=n.doubleValue(); @TO@
+      IfStatement@@InfixExpression:n != null '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double valueDelta=n.doubleValue(); '
+    - '------INS VariableDeclarationFragment@@valueDelta=n.doubleValue() @TO@ VariableDeclarationStatement@@double
+      valueDelta=n.doubleValue(); '
+    - '---------INS SimpleName@@valueDelta @TO@ VariableDeclarationFragment@@valueDelta=n.doubleValue() '
+    - '---------INS MethodInvocation@@n.doubleValue() @TO@ VariableDeclarationFragment@@valueDelta=n.doubleValue() '
+    - '------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.doubleValue() '
+    - '------------INS SimpleName@@MethodName:doubleValue:[] @TO@ MethodInvocation@@n.doubleValue() '
+    - '---MOV VariableDeclarationStatement@@double highVal=rangeAxis.valueToJava2D(meanValue.doubleValue()
+      + valueDelta,dataArea,yAxisLocation); @TO@ IfStatement@@InfixExpression:n !=
+      null '
+    - '---MOV VariableDeclarationStatement@@double lowVal=rangeAxis.valueToJava2D(meanValue.doubleValue()
+      - valueDelta,dataArea,yAxisLocation); @TO@ IfStatement@@InfixExpression:n !=
+      null '
+    - '---MOV IfStatement@@InfixExpression:this.errorIndicatorStroke != null @TO@
+      IfStatement@@InfixExpression:n != null '
+    - '---MOV IfStatement@@InfixExpression:this.errorIndicatorPaint != null @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV VariableDeclarationStatement@@Line2D line=null; @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@Assignment:line=new Line2D.Double(lowVal,rectY
+      + rectHeight / 2.0d,highVal,rectY + rectHeight / 2.0d) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:g2.draw(line) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@Assignment:line=new Line2D.Double(highVal,rectY
+      + rectHeight * 0.25,highVal,rectY + rectHeight * 0.75) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:g2.draw(line) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@Assignment:line=new Line2D.Double(lowVal,rectY
+      + rectHeight * 0.25,lowVal,rectY + rectHeight * 0.75) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:g2.draw(line) @TO@ IfStatement@@InfixExpression:n
+      != null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double valueDelta=dataset.getStdDevValue(row,column).doubleValue();
+      @TO@ Number n=dataset.getStdDevValue(row,column); '
+    - '---INS SimpleType@@Number @TO@ VariableDeclarationStatement@@double valueDelta=dataset.getStdDevValue(row,column).doubleValue(); '
+    - '---DEL PrimitiveType@@double '
+    - '---UPD VariableDeclarationFragment@@valueDelta=dataset.getStdDevValue(row,column).doubleValue()
+      @TO@ n=dataset.getStdDevValue(row,column) '
+    - '------UPD SimpleName@@valueDelta @TO@ n '
+    - '------UPD MethodInvocation@@dataset.getStdDevValue(row,column).doubleValue()
+      @TO@ dataset.getStdDevValue(row,column) '
+    - '---------INS SimpleName@@MethodName:getStdDevValue:[row, column] @TO@ MethodInvocation@@dataset.getStdDevValue(row,column).doubleValue() '
+    - '------------INS SimpleName@@row @TO@ SimpleName@@MethodName:getStdDevValue:[row,
+      column] '
+    - '------------INS SimpleName@@column @TO@ SimpleName@@MethodName:getStdDevValue:[row,
+      column] '
+    - '---------DEL MethodInvocation@@MethodName:getStdDevValue:[row, column] '
+    - '------------DEL SimpleName@@row '
+    - '------------DEL SimpleName@@column '
+    - '---------DEL SimpleName@@MethodName:doubleValue:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:meanValue == null @TO@ MethodDeclaration@@protected,
+      @@void, MethodName:drawVerticalItem, @@Argus:Graphics2D+g2+CategoryItemRendererState+state+Rectangle2D+dataArea+CategoryPlot+plot+CategoryAxis+domainAxis+ValueAxis+rangeAxis+StatisticalCategoryDataset+dataset+int+row+int+column+ '
+    - '---INS InfixExpression@@meanValue == null @TO@ IfStatement@@InfixExpression:meanValue
+      == null '
+    - '------INS SimpleName@@meanValue @TO@ InfixExpression@@meanValue == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@meanValue == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@meanValue == null '
+    - '---INS ReturnStatement@@ @TO@ IfStatement@@InfixExpression:meanValue == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n != null @TO@ MethodDeclaration@@protected,
+      @@void, MethodName:drawVerticalItem, @@Argus:Graphics2D+g2+CategoryItemRendererState+state+Rectangle2D+dataArea+CategoryPlot+plot+CategoryAxis+domainAxis+ValueAxis+rangeAxis+StatisticalCategoryDataset+dataset+int+row+int+column+ '
+    - '---INS InfixExpression@@n != null @TO@ IfStatement@@InfixExpression:n != null '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@n != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@n != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@n != null '
+    - '---INS VariableDeclarationStatement@@double valueDelta=n.doubleValue(); @TO@
+      IfStatement@@InfixExpression:n != null '
+    - '------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double valueDelta=n.doubleValue(); '
+    - '------INS VariableDeclarationFragment@@valueDelta=n.doubleValue() @TO@ VariableDeclarationStatement@@double
+      valueDelta=n.doubleValue(); '
+    - '---------INS SimpleName@@valueDelta @TO@ VariableDeclarationFragment@@valueDelta=n.doubleValue() '
+    - '---------INS MethodInvocation@@n.doubleValue() @TO@ VariableDeclarationFragment@@valueDelta=n.doubleValue() '
+    - '------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.doubleValue() '
+    - '------------INS SimpleName@@MethodName:doubleValue:[] @TO@ MethodInvocation@@n.doubleValue() '
+    - '---MOV VariableDeclarationStatement@@double highVal=rangeAxis.valueToJava2D(meanValue.doubleValue()
+      + valueDelta,dataArea,yAxisLocation); @TO@ IfStatement@@InfixExpression:n !=
+      null '
+    - '---MOV VariableDeclarationStatement@@double lowVal=rangeAxis.valueToJava2D(meanValue.doubleValue()
+      - valueDelta,dataArea,yAxisLocation); @TO@ IfStatement@@InfixExpression:n !=
+      null '
+    - '---MOV IfStatement@@InfixExpression:this.errorIndicatorStroke != null @TO@
+      IfStatement@@InfixExpression:n != null '
+    - '---MOV IfStatement@@InfixExpression:this.errorIndicatorPaint != null @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV VariableDeclarationStatement@@Line2D line=null; @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@Assignment:line=new Line2D.Double(rectX + rectWidth
+      / 2.0d,lowVal,rectX + rectWidth / 2.0d,highVal) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:g2.draw(line) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@Assignment:line=new Line2D.Double(rectX + rectWidth
+      / 2.0d - 5.0d,highVal,rectX + rectWidth / 2.0d + 5.0d,highVal) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:g2.draw(line) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@Assignment:line=new Line2D.Double(rectX + rectWidth
+      / 2.0d - 5.0d,lowVal,rectX + rectWidth / 2.0d + 5.0d,lowVal) @TO@ IfStatement@@InfixExpression:n
+      != null '
+    - '---MOV ExpressionStatement@@MethodInvocation:g2.draw(line) @TO@ IfStatement@@InfixExpression:n
+      != null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double valueDelta=dataset.getStdDevValue(row,column).doubleValue();
+      @TO@ Number n=dataset.getStdDevValue(row,column); '
+    - '---INS SimpleType@@Number @TO@ VariableDeclarationStatement@@double valueDelta=dataset.getStdDevValue(row,column).doubleValue(); '
+    - '---DEL PrimitiveType@@double '
+    - '---UPD VariableDeclarationFragment@@valueDelta=dataset.getStdDevValue(row,column).doubleValue()
+      @TO@ n=dataset.getStdDevValue(row,column) '
+    - '------UPD SimpleName@@valueDelta @TO@ n '
+    - '------UPD MethodInvocation@@dataset.getStdDevValue(row,column).doubleValue()
+      @TO@ dataset.getStdDevValue(row,column) '
+    - '---------INS SimpleName@@MethodName:getStdDevValue:[row, column] @TO@ MethodInvocation@@dataset.getStdDevValue(row,column).doubleValue() '
+    - '------------INS SimpleName@@row @TO@ SimpleName@@MethodName:getStdDevValue:[row,
+      column] '
+    - '------------INS SimpleName@@column @TO@ SimpleName@@MethodName:getStdDevValue:[row,
+      column] '
+    - '---------DEL MethodInvocation@@MethodName:getStdDevValue:[row, column] '
+    - '------------DEL SimpleName@@row '
+    - '------------DEL SimpleName@@column '
+    - '---------DEL SimpleName@@MethodName:doubleValue:[] '
+  repair_actions_cnt: 6

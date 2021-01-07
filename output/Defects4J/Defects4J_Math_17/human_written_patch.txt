@@ -1,0 +1,15 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_17/src/main/java/org/apache/commons/math3/dfp/Dfp.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_17/fixed-version/src/main/java/org/apache/commons/math3/dfp/Dfp.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_17/src/main/java/org/apache/commons/math3/dfp/Dfp.java	2020-03-01 00:15:02.586245295 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_17/fixed-version/src/main/java/org/apache/commons/math3/dfp/Dfp.java	2020-03-01 00:15:06.206415864 -0800
+@@ -1600,7 +1600,11 @@
+      * @return product of this and x
+      */
+     public Dfp multiply(final int x) {
++        if (x >= 0 && x < RADIX) {
+             return multiplyFast(x);
++        } else {
++            return multiply(newInstance(x));
++        }
+     }
+ 
+     /** Multiply this by a single digit 0&lt;=x&lt;radix.

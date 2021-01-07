@@ -1,0 +1,30 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_47/src/com/google/debugging/sourcemap/SourceMapConsumerV3.java	2020-10-23 04:41:16.389616358 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_47/purify/purified/com/google/debugging/sourcemap/SourceMapConsumerV3.java	2020-10-23 04:41:16.389616358 -0400
+@@ -487,7 +487,8 @@
+       Builder x = OriginalMapping.newBuilder()
+         .setOriginalFile(sources[entry.getSourceFileId()])
+         .setLineNumber(entry.getSourceLine())
+-        .setColumnPosition(entry.getSourceColumn());
++        .setLineNumber(entry.getSourceLine() + 1)
++        .setColumnPosition(entry.getSourceColumn() + 1);
+       if (entry.getNameId() != UNMAPPED) {
+         x.setIdentifier(names[entry.getNameId()]);
+       }
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_47/src/com/google/javascript/jscomp/SourceMap.java	2020-10-23 04:41:16.401616705 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_47/purify/purified/com/google/javascript/jscomp/SourceMap.java	2020-10-23 04:41:16.401616705 -0400
+@@ -135,10 +135,14 @@
+     // zero based.
+     // We don't change this for the v1 or v2 source maps but for
+     // v3 we make them both 0 based.
++    int lineBaseOffset = 1;
++    if (generator instanceof SourceMapGeneratorV1
++        || generator instanceof SourceMapGeneratorV2) {
++    }
+ 
+     generator.addMapping(
+         sourceFile, originalName,
+-        new FilePosition(node.getLineno(), node.getCharno()),
++        new FilePosition(node.getLineno() - lineBaseOffset, node.getCharno()),
+         outputStartPosition, outputEndPosition);
+   }
+ 

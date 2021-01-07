@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_34/src/org/mockito/internal/invocation/InvocationMatcher.java	2020-10-24 20:46:32.723784388 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_34/purify/purified/org/mockito/internal/invocation/InvocationMatcher.java	2020-10-24 20:46:32.723784388 -0400
+@@ -103,7 +103,7 @@
+     public void captureArgumentsFrom(Invocation i) {
+         int k = 0;
+         for (Matcher m : matchers) {
+-            if (m instanceof CapturesArguments) {
++            if (m instanceof CapturesArguments && i.getArguments().length > k) {
+                 ((CapturesArguments) m).captureFrom(i.getArguments()[k]);
+             }
+             k++;

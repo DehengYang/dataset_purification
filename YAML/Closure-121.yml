@@ -1,0 +1,156 @@
+1 bug_id: Closure-121
+2 src folder:
+  name of src folder: src
+  number of files: 444
+  number of java files: 428
+  number of src classes: 1427
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.InlineVariablesTest#testExternalIssue1053
+  failing tests:
+  - com.google.javascript.jscomp.InlineVariablesTest
+  number of all test cases: 8282
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.952
+  purification via delta debugging: 385.746
+  repair actions extraction: 1.381
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.InlineVariablesTest#testExternalIssue1053: 3870
+  fixed:
+    com.google.javascript.jscomp.InlineVariablesTest#testExternalIssue1053: 3731
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 1
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 3
+  oriDel: 1
+  ori_patch_lines: 4
+  purAdd: 3
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 5
+  failFail: 0
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_121/src/com/google/javascript/jscomp/InlineVariables.java\t\
+    2020-10-23 16:47:34.215080214 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_121/purify/patch/com/google/javascript/jscomp/InlineVariables.java\t\
+    2020-10-23 16:47:34.215080214 -0400\n@@ -301,10 +301,12 @@\n       if (!maybeModifiedArguments\
+    \ &&\n           !staleVars.contains(v) &&\n           referenceInfo.isWellDefined()\
+    \ &&\n-          referenceInfo.isAssignedOnceInLifetime()) {\n+          referenceInfo.isAssignedOnceInLifetime()\
+    \ &&\n           // Inlining the variable based solely on well-defined and assigned\n\
+    \           // once is *NOT* correct. We relax the correctness requirement if\n\
+    \           // the variable is declared constant.\n+          (isInlineableDeclaredConstant(v,\
+    \ referenceInfo) ||\n+           referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()))\
+    \ {\n         List<Reference> refs = referenceInfo.references;\n         for (int\
+    \ i = 1 /* start from a read */; i < refs.size(); i++) {\n           Node nameNode\
+    \ = refs.get(i).getNode();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_121/src/com/google/javascript/jscomp/InlineVariables.java\t\
+    2020-10-23 16:54:30.879151202 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_121/purify/purified/com/google/javascript/jscomp/InlineVariables.java\t\
+    2020-10-23 16:54:30.879151202 -0400\n@@ -301,10 +301,12 @@\n       if (!maybeModifiedArguments\
+    \ &&\n           !staleVars.contains(v) &&\n           referenceInfo.isWellDefined()\
+    \ &&\n-          referenceInfo.isAssignedOnceInLifetime()) {\n+          referenceInfo.isAssignedOnceInLifetime()\
+    \ &&\n           // Inlining the variable based solely on well-defined and assigned\n\
+    \           // once is *NOT* correct. We relax the correctness requirement if\n\
+    \           // the variable is declared constant.\n+          (isInlineableDeclaredConstant(v,\
+    \ referenceInfo) ||\n+           referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()))\
+    \ {\n         List<Reference> refs = referenceInfo.references;\n         for (int\
+    \ i = 1 /* start from a read */; i < refs.size(); i++) {\n           Node nameNode\
+    \ = refs.get(i).getNode();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/InlineVariables:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:!maybeModifiedArguments && !staleVars.contains(v)
+      && referenceInfo.isWellDefined()&& referenceInfo.isAssignedOnceInLifetime()
+      @TO@ InfixExpression:!maybeModifiedArguments && !staleVars.contains(v) && referenceInfo.isWellDefined()&&
+      referenceInfo.isAssignedOnceInLifetime()&& (isInlineableDeclaredConstant(v,referenceInfo)
+      || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()) '
+    - '---UPD InfixExpression@@!maybeModifiedArguments && !staleVars.contains(v) &&
+      referenceInfo.isWellDefined()&& referenceInfo.isAssignedOnceInLifetime() @TO@
+      !maybeModifiedArguments && !staleVars.contains(v) && referenceInfo.isWellDefined()&&
+      referenceInfo.isAssignedOnceInLifetime()&& (isInlineableDeclaredConstant(v,referenceInfo)
+      || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()) '
+    - '------INS ParenthesizedExpression@@(isInlineableDeclaredConstant(v,referenceInfo)
+      || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()) @TO@ InfixExpression@@!maybeModifiedArguments
+      && !staleVars.contains(v) && referenceInfo.isWellDefined()&& referenceInfo.isAssignedOnceInLifetime() '
+    - '---------INS InfixExpression@@isInlineableDeclaredConstant(v,referenceInfo)
+      || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration() @TO@ ParenthesizedExpression@@(isInlineableDeclaredConstant(v,referenceInfo)
+      || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()) '
+    - '------------INS MethodInvocation@@isInlineableDeclaredConstant(v,referenceInfo)
+      @TO@ InfixExpression@@isInlineableDeclaredConstant(v,referenceInfo) || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration() '
+    - '---------------INS SimpleName@@MethodName:isInlineableDeclaredConstant:[v,
+      referenceInfo] @TO@ MethodInvocation@@isInlineableDeclaredConstant(v,referenceInfo) '
+    - '------------------INS SimpleName@@v @TO@ SimpleName@@MethodName:isInlineableDeclaredConstant:[v,
+      referenceInfo] '
+    - '------------------INS SimpleName@@referenceInfo @TO@ SimpleName@@MethodName:isInlineableDeclaredConstant:[v,
+      referenceInfo] '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@isInlineableDeclaredConstant(v,referenceInfo)
+      || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration() '
+    - '------------INS MethodInvocation@@referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()
+      @TO@ InfixExpression@@isInlineableDeclaredConstant(v,referenceInfo) || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration() '
+    - '---------------INS SimpleName@@Name:referenceInfo @TO@ MethodInvocation@@referenceInfo.isOnlyAssignmentSameScopeAsDeclaration() '
+    - '---------------INS SimpleName@@MethodName:isOnlyAssignmentSameScopeAsDeclaration:[]
+      @TO@ MethodInvocation@@referenceInfo.isOnlyAssignmentSameScopeAsDeclaration() '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/InlineVariables:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:!maybeModifiedArguments && !staleVars.contains(v)
+      && referenceInfo.isWellDefined()&& referenceInfo.isAssignedOnceInLifetime()
+      @TO@ InfixExpression:!maybeModifiedArguments && !staleVars.contains(v) && referenceInfo.isWellDefined()&&
+      referenceInfo.isAssignedOnceInLifetime()&& (isInlineableDeclaredConstant(v,referenceInfo)
+      || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()) '
+    - '---UPD InfixExpression@@!maybeModifiedArguments && !staleVars.contains(v) &&
+      referenceInfo.isWellDefined()&& referenceInfo.isAssignedOnceInLifetime() @TO@
+      !maybeModifiedArguments && !staleVars.contains(v) && referenceInfo.isWellDefined()&&
+      referenceInfo.isAssignedOnceInLifetime()&& (isInlineableDeclaredConstant(v,referenceInfo)
+      || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()) '
+    - '------INS ParenthesizedExpression@@(isInlineableDeclaredConstant(v,referenceInfo)
+      || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()) @TO@ InfixExpression@@!maybeModifiedArguments
+      && !staleVars.contains(v) && referenceInfo.isWellDefined()&& referenceInfo.isAssignedOnceInLifetime() '
+    - '---------INS InfixExpression@@isInlineableDeclaredConstant(v,referenceInfo)
+      || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration() @TO@ ParenthesizedExpression@@(isInlineableDeclaredConstant(v,referenceInfo)
+      || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()) '
+    - '------------INS MethodInvocation@@isInlineableDeclaredConstant(v,referenceInfo)
+      @TO@ InfixExpression@@isInlineableDeclaredConstant(v,referenceInfo) || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration() '
+    - '---------------INS SimpleName@@MethodName:isInlineableDeclaredConstant:[v,
+      referenceInfo] @TO@ MethodInvocation@@isInlineableDeclaredConstant(v,referenceInfo) '
+    - '------------------INS SimpleName@@v @TO@ SimpleName@@MethodName:isInlineableDeclaredConstant:[v,
+      referenceInfo] '
+    - '------------------INS SimpleName@@referenceInfo @TO@ SimpleName@@MethodName:isInlineableDeclaredConstant:[v,
+      referenceInfo] '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@isInlineableDeclaredConstant(v,referenceInfo)
+      || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration() '
+    - '------------INS MethodInvocation@@referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()
+      @TO@ InfixExpression@@isInlineableDeclaredConstant(v,referenceInfo) || referenceInfo.isOnlyAssignmentSameScopeAsDeclaration() '
+    - '---------------INS SimpleName@@Name:referenceInfo @TO@ MethodInvocation@@referenceInfo.isOnlyAssignmentSameScopeAsDeclaration() '
+    - '---------------INS SimpleName@@MethodName:isOnlyAssignmentSameScopeAsDeclaration:[]
+      @TO@ MethodInvocation@@referenceInfo.isOnlyAssignmentSameScopeAsDeclaration() '
+  files_cnt: '1'
+  repair_actions_cnt: 1

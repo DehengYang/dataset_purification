@@ -1,0 +1,25 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_93/src/java/org/apache/commons/math/util/MathUtils.java	2020-10-21 14:06:25.219539985 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_93/purify/purified/org/apache/commons/math/util/MathUtils.java	2020-10-21 14:06:25.215539869 -0400
+@@ -342,8 +342,10 @@
+      * @throws IllegalArgumentException if n < 0
+      */
+     public static long factorial(final int n) {
+-        long result = Math.round(factorialDouble(n));
+-        if (result == Long.MAX_VALUE) {
++        if (n < 0) {
++            throw new IllegalArgumentException("must have n >= 0 for n!");
++        }
++        if (n > 20) {
+             throw new ArithmeticException(
+                     "factorial value is too large to fit in a long");
+         }
+@@ -374,6 +376,9 @@
+         if (n < 0) {
+             throw new IllegalArgumentException("must have n >= 0 for n!");
+         }
++        if (n < 21) {
++            return factorial(n);
++        }
+         return Math.floor(Math.exp(factorialLog(n)) + 0.5);
+     }
+ 

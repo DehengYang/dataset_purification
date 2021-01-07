@@ -1,0 +1,110 @@
+1 bug_id: Closure-117
+2 src folder:
+  name of src folder: src
+  number of files: 444
+  number of java files: 428
+  number of src classes: 1428
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testIssue1047
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 8301
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 4.0
+  purification via coverage: 2.017
+  purification via delta debugging: 1836.219
+  repair actions extraction: 1.446
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue1047: 5691
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue1047: 5690
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 12
+  covDel: 12
+  cov_patch_lines: 24
+  delta_patch_lines: 24
+  oriAdd: 12
+  oriDel: 12
+  ori_patch_lines: 24
+  purAdd: 12
+  purDel: 12
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 0
+  failFail: 66
+  passed: 1
+  total: 68
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_117/src/com/google/javascript/jscomp/TypeValidator.java\t\
+    2020-10-24 15:08:30.181221894 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_117/purify/patch/com/google/javascript/jscomp/TypeValidator.java\t\
+    2020-10-24 15:08:30.181221894 -0400\n@@ -722,8 +722,20 @@\n    *     to an Object\
+    \ type, if possible.\n    */\n   String getReadableJSTypeName(Node n, boolean\
+    \ dereference) {\n+    JSType type = getJSType(n);\n+    if (dereference) {\n\
+    +      ObjectType dereferenced = type.dereference();\n+      if (dereferenced\
+    \ != null) {\n+        type = dereferenced;\n+      }\n+    }\n \n     // The\
+    \ best type name is the actual type name.\n+    if (type.isFunctionPrototypeType()\
+    \ ||\n+        (type.toObjectType() != null &&\n+         type.toObjectType().getConstructor()\
+    \ != null)) {\n+      return type.toString();\n+    }\n \n     // If we're analyzing\
+    \ a GETPROP, the property may be inherited by the\n     // prototype chain. So\
+    \ climb the prototype chain and find out where\n@@ -753,18 +765,6 @@\n       }\n\
+    \     }\n \n-    JSType type = getJSType(n);\n-    if (dereference) {\n-     \
+    \ ObjectType dereferenced = type.dereference();\n-      if (dereferenced != null)\
+    \ {\n-        type = dereferenced;\n-      }\n-    }\n-    if (type.isFunctionPrototypeType()\
+    \ ||\n-        (type.toObjectType() != null &&\n-         type.toObjectType().getConstructor()\
+    \ != null)) {\n-      return type.toString();\n-    }\n     String qualifiedName\
+    \ = n.getQualifiedName();\n     if (qualifiedName != null) {\n       return qualifiedName;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_117/src/com/google/javascript/jscomp/TypeValidator.java\t\
+    2020-10-24 15:39:57.855814619 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_117/purify/purified/com/google/javascript/jscomp/TypeValidator.java\t\
+    2020-10-24 15:39:57.855814619 -0400\n@@ -722,8 +722,20 @@\n    *     to an Object\
+    \ type, if possible.\n    */\n   String getReadableJSTypeName(Node n, boolean\
+    \ dereference) {\n+    JSType type = getJSType(n);\n+    if (dereference) {\n\
+    +      ObjectType dereferenced = type.dereference();\n+      if (dereferenced\
+    \ != null) {\n+        type = dereferenced;\n+      }\n+    }\n \n     // The\
+    \ best type name is the actual type name.\n+    if (type.isFunctionPrototypeType()\
+    \ ||\n+        (type.toObjectType() != null &&\n+         type.toObjectType().getConstructor()\
+    \ != null)) {\n+      return type.toString();\n+    }\n \n     // If we're analyzing\
+    \ a GETPROP, the property may be inherited by the\n     // prototype chain. So\
+    \ climb the prototype chain and find out where\n@@ -753,18 +765,6 @@\n       }\n\
+    \     }\n \n-    JSType type = getJSType(n);\n-    if (dereference) {\n-     \
+    \ ObjectType dereferenced = type.dereference();\n-      if (dereferenced != null)\
+    \ {\n-        type = dereferenced;\n-      }\n-    }\n-    if (type.isFunctionPrototypeType()\
+    \ ||\n-        (type.toObjectType() != null &&\n-         type.toObjectType().getConstructor()\
+    \ != null)) {\n-      return type.toString();\n-    }\n     String qualifiedName\
+    \ = n.getQualifiedName();\n     if (qualifiedName != null) {\n       return qualifiedName;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 1
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeValidator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@MethodInvocation:n.isGetProp() @TO@ MethodDeclaration@@@@String,
+      MethodName:getReadableJSTypeName, @@Argus:Node+n+boolean+dereference+ '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 1
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeValidator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@MethodInvocation:n.isGetProp() @TO@ MethodDeclaration@@@@String,
+      MethodName:getReadableJSTypeName, @@Argus:Node+n+boolean+dereference+ '
+  files_cnt: '1'
+  repair_actions_cnt: 1

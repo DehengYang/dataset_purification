@@ -1,0 +1,20 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_60/src/com/google/javascript/jscomp/NodeUtil.java	2020-10-23 07:46:40.583481902 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_60/purify/purified/com/google/javascript/jscomp/NodeUtil.java	2020-10-23 07:46:40.579481786 -0400
+@@ -105,6 +105,7 @@
+         // ignoring side-effects
+         return TernaryValue.TRUE;
+ 
++      case Token.VOID:
+ 
+       default:
+         return getPureBooleanValue(n);
+@@ -133,7 +134,9 @@
+         return TernaryValue.FALSE;
+ 
+       case Token.VOID:
++        if (!mayHaveSideEffects(n.getFirstChild())) {
+           return TernaryValue.FALSE;
++        }
+ 
+       case Token.NAME:
+         String name = n.getString();

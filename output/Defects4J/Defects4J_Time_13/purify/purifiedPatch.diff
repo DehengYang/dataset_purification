@@ -1,0 +1,20 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_13/src/main/java/org/joda/time/format/PeriodFormatterBuilder.java	2020-10-20 22:38:35.698146131 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_13/purify/purified/org/joda/time/format/PeriodFormatterBuilder.java	2020-10-20 22:38:35.698146131 -0400
+@@ -1130,6 +1130,7 @@
+             if (iPrefix != null) {
+                 iPrefix.printTo(buf, value);
+             }
++            int bufLen = buf.length();
+             int minDigits = iMinPrintedDigits;
+             if (minDigits <= 1) {
+                 FormatUtils.appendUnpaddedInteger(buf, value);
+@@ -1139,6 +1140,9 @@
+             if (iFieldType >= SECONDS_MILLIS) {
+                 int dp = (int) (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND);
+                 if (iFieldType == SECONDS_MILLIS || dp > 0) {
++                    if (valueLong < 0 && valueLong > -DateTimeConstants.MILLIS_PER_SECOND) {
++                        buf.insert(bufLen, '-');
++                    }
+                     buf.append('.');
+                     FormatUtils.appendPaddedInteger(buf, dp, 3);
+                 }

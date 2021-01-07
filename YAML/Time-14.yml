@@ -1,0 +1,345 @@
+1 bug_id: Time-14
+2 src folder:
+  name of src folder: java
+  number of files: 183
+  number of java files: 156
+  number of src classes: 228
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestMonthDay_Basics#testPlusDays_int_fromLeap
+  - org.joda.time.TestMonthDay_Basics#testPlusMonths_int_negativeEndOfMonthAdjust
+  - org.joda.time.TestMonthDay_Basics#testMinusDays_int_negativeFromLeap
+  - org.joda.time.TestMonthDay_Basics#testPlusMonths_int_negativeFromLeap
+  - org.joda.time.TestMonthDay_Basics#testMinusMonths_int_fromLeap
+  - org.joda.time.TestMonthDay_Basics#testMinusMonths_int_endOfMonthAdjust
+  - org.joda.time.TestMonthDay_Basics#testPlusMonths_int_fromLeap
+  - org.joda.time.TestMonthDay_Basics#testMinusMonths_int_negativeFromLeap
+  failing tests:
+  - org.joda.time.TestMonthDay_Basics
+  number of all test cases: 3908
+  number of failing test cases: 8
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.659
+  purification via delta debugging: 131.763
+  repair actions extraction: 1.141
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestMonthDay_Basics#testMinusDays_int_negativeFromLeap: 1963
+    org.joda.time.TestMonthDay_Basics#testMinusMonths_int_endOfMonthAdjust: 2066
+    org.joda.time.TestMonthDay_Basics#testMinusMonths_int_fromLeap: 1951
+    org.joda.time.TestMonthDay_Basics#testMinusMonths_int_negativeFromLeap: 1951
+    org.joda.time.TestMonthDay_Basics#testPlusDays_int_fromLeap: 1961
+    org.joda.time.TestMonthDay_Basics#testPlusMonths_int_fromLeap: 1949
+    org.joda.time.TestMonthDay_Basics#testPlusMonths_int_negativeEndOfMonthAdjust: 2065
+    org.joda.time.TestMonthDay_Basics#testPlusMonths_int_negativeFromLeap: 1949
+  fixed:
+    org.joda.time.TestMonthDay_Basics#testMinusDays_int_negativeFromLeap: 1972
+    org.joda.time.TestMonthDay_Basics#testMinusMonths_int_endOfMonthAdjust: 1957
+    org.joda.time.TestMonthDay_Basics#testMinusMonths_int_fromLeap: 1956
+    org.joda.time.TestMonthDay_Basics#testMinusMonths_int_negativeFromLeap: 1956
+    org.joda.time.TestMonthDay_Basics#testPlusDays_int_fromLeap: 1970
+    org.joda.time.TestMonthDay_Basics#testPlusMonths_int_fromLeap: 1954
+    org.joda.time.TestMonthDay_Basics#testPlusMonths_int_negativeEndOfMonthAdjust: 1955
+    org.joda.time.TestMonthDay_Basics#testPlusMonths_int_negativeFromLeap: 1954
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 5
+  covDel: 0
+  cov_patch_lines: 5
+  delta_patch_lines: 5
+  oriAdd: 5
+  oriDel: 0
+  ori_patch_lines: 5
+  purAdd: 5
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 10
+  failFail: 1
+  passed: 0
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_14/src/main/java/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java\t\
+    2020-10-20 22:39:29.123690719 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_14/purify/patch/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java\t\
+    2020-10-20 22:39:29.123690719 -0400\n@@ -206,7 +206,12 @@\n         if (valueToAdd\
+    \ == 0) {\n             return values;\n         }\n+        if (partial.size()\
+    \ > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) && fieldIndex\
+    \ == 0) {\n             // month is largest field and being added to, such as\
+    \ month-day\n+            int curMonth0 = partial.getValue(0) - 1;\n+        \
+    \    int newMonth = ((curMonth0 + (valueToAdd % 12) + 12) % 12) + 1;\n+      \
+    \      return set(partial, 0, values, newMonth);\n+        }\n         if (DateTimeUtils.isContiguous(partial))\
+    \ {\n             long instant = 0L;\n             for (int i = 0, isize = partial.size();\
+    \ i < isize; i++) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_14/src/main/java/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java\t\
+    2020-10-20 22:42:01.728102355 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_14/purify/purified/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java\t\
+    2020-10-20 22:42:01.728102355 -0400\n@@ -206,7 +206,12 @@\n         if (valueToAdd\
+    \ == 0) {\n             return values;\n         }\n+        if (partial.size()\
+    \ > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) && fieldIndex\
+    \ == 0) {\n             // month is largest field and being added to, such as\
+    \ month-day\n+            int curMonth0 = partial.getValue(0) - 1;\n+        \
+    \    int newMonth = ((curMonth0 + (valueToAdd % 12) + 12) % 12) + 1;\n+      \
+    \      return set(partial, 0, values, newMonth);\n+        }\n         if (DateTimeUtils.isContiguous(partial))\
+    \ {\n             long instant = 0L;\n             for (int i = 0, isize = partial.size();\
+    \ i < isize; i++) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 11
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/chrono/BasicMonthOfYearDateTimeField:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 @TO@ MethodDeclaration@@public, @@int[], MethodName:add,
+      @@Argus:ReadablePartial+partial+int+fieldIndex+int[]+values+int+valueToAdd+ '
+    - '---INS InfixExpression@@partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 @TO@ IfStatement@@InfixExpression:partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 '
+    - '------INS InfixExpression@@partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      @TO@ InfixExpression@@partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 '
+    - '---------INS InfixExpression@@partial.size() > 0 @TO@ InfixExpression@@partial.size()
+      > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) '
+    - '------------INS MethodInvocation@@partial.size() @TO@ InfixExpression@@partial.size()
+      > 0 '
+    - '---------------INS SimpleName@@Name:partial @TO@ MethodInvocation@@partial.size() '
+    - '---------------INS SimpleName@@MethodName:size:[] @TO@ MethodInvocation@@partial.size() '
+    - '------------INS Operator@@> @TO@ InfixExpression@@partial.size() > 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@partial.size() > 0 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) '
+    - '---------INS MethodInvocation@@partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      @TO@ InfixExpression@@partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) '
+    - '------------INS SimpleName@@Name:partial @TO@ MethodInvocation@@partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) '
+    - '------------INS MethodInvocation@@MethodName:getFieldType:[0] @TO@ MethodInvocation@@partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) '
+    - '---------------INS NumberLiteral@@0 @TO@ MethodInvocation@@MethodName:getFieldType:[0] '
+    - '------------INS SimpleName@@MethodName:equals:[DateTimeFieldType.monthOfYear()]
+      @TO@ MethodInvocation@@partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) '
+    - '---------------INS MethodInvocation@@DateTimeFieldType.monthOfYear() @TO@ SimpleName@@MethodName:equals:[DateTimeFieldType.monthOfYear()] '
+    - '------------------INS SimpleName@@Name:DateTimeFieldType @TO@ MethodInvocation@@DateTimeFieldType.monthOfYear() '
+    - '------------------INS SimpleName@@MethodName:monthOfYear:[] @TO@ MethodInvocation@@DateTimeFieldType.monthOfYear() '
+    - '------INS Operator@@&& @TO@ InfixExpression@@partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 '
+    - '------INS InfixExpression@@fieldIndex == 0 @TO@ InfixExpression@@partial.size()
+      > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) && fieldIndex
+      == 0 '
+    - '---------INS SimpleName@@fieldIndex @TO@ InfixExpression@@fieldIndex == 0 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@fieldIndex == 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@fieldIndex == 0 '
+    - '---INS VariableDeclarationStatement@@int curMonth0=partial.getValue(0) - 1;
+      @TO@ IfStatement@@InfixExpression:partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int curMonth0=partial.getValue(0)
+      - 1; '
+    - '------INS VariableDeclarationFragment@@curMonth0=partial.getValue(0) - 1 @TO@
+      VariableDeclarationStatement@@int curMonth0=partial.getValue(0) - 1; '
+    - '---------INS SimpleName@@curMonth0 @TO@ VariableDeclarationFragment@@curMonth0=partial.getValue(0)
+      - 1 '
+    - '---------INS InfixExpression@@partial.getValue(0) - 1 @TO@ VariableDeclarationFragment@@curMonth0=partial.getValue(0)
+      - 1 '
+    - '------------INS MethodInvocation@@partial.getValue(0) @TO@ InfixExpression@@partial.getValue(0)
+      - 1 '
+    - '---------------INS SimpleName@@Name:partial @TO@ MethodInvocation@@partial.getValue(0) '
+    - '---------------INS SimpleName@@MethodName:getValue:[0] @TO@ MethodInvocation@@partial.getValue(0) '
+    - '------------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:getValue:[0] '
+    - '------------INS Operator@@- @TO@ InfixExpression@@partial.getValue(0) - 1 '
+    - '------------INS NumberLiteral@@1 @TO@ InfixExpression@@partial.getValue(0)
+      - 1 '
+    - '---INS VariableDeclarationStatement@@int newMonth=((curMonth0 + (valueToAdd
+      % 12) + 12) % 12) + 1; @TO@ IfStatement@@InfixExpression:partial.size() > 0
+      && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) && fieldIndex
+      == 0 '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int newMonth=((curMonth0
+      + (valueToAdd % 12) + 12) % 12) + 1; '
+    - '------INS VariableDeclarationFragment@@newMonth=((curMonth0 + (valueToAdd %
+      12) + 12) % 12) + 1 @TO@ VariableDeclarationStatement@@int newMonth=((curMonth0
+      + (valueToAdd % 12) + 12) % 12) + 1; '
+    - '---------INS SimpleName@@newMonth @TO@ VariableDeclarationFragment@@newMonth=((curMonth0
+      + (valueToAdd % 12) + 12) % 12) + 1 '
+    - '---------INS InfixExpression@@((curMonth0 + (valueToAdd % 12) + 12) % 12) +
+      1 @TO@ VariableDeclarationFragment@@newMonth=((curMonth0 + (valueToAdd % 12)
+      + 12) % 12) + 1 '
+    - '------------INS ParenthesizedExpression@@((curMonth0 + (valueToAdd % 12) +
+      12) % 12) @TO@ InfixExpression@@((curMonth0 + (valueToAdd % 12) + 12) % 12)
+      + 1 '
+    - '---------------INS InfixExpression@@(curMonth0 + (valueToAdd % 12) + 12) %
+      12 @TO@ ParenthesizedExpression@@((curMonth0 + (valueToAdd % 12) + 12) % 12) '
+    - '------------------INS ParenthesizedExpression@@(curMonth0 + (valueToAdd % 12)
+      + 12) @TO@ InfixExpression@@(curMonth0 + (valueToAdd % 12) + 12) % 12 '
+    - '---------------------INS InfixExpression@@curMonth0 + (valueToAdd % 12) + 12
+      @TO@ ParenthesizedExpression@@(curMonth0 + (valueToAdd % 12) + 12) '
+    - '------------------------INS SimpleName@@curMonth0 @TO@ InfixExpression@@curMonth0
+      + (valueToAdd % 12) + 12 '
+    - '------------------------INS Operator@@+ @TO@ InfixExpression@@curMonth0 + (valueToAdd
+      % 12) + 12 '
+    - '------------------------INS ParenthesizedExpression@@(valueToAdd % 12) @TO@
+      InfixExpression@@curMonth0 + (valueToAdd % 12) + 12 '
+    - '---------------------------INS InfixExpression@@valueToAdd % 12 @TO@ ParenthesizedExpression@@(valueToAdd
+      % 12) '
+    - '------------------------------INS SimpleName@@valueToAdd @TO@ InfixExpression@@valueToAdd
+      % 12 '
+    - '------------------------------INS Operator@@% @TO@ InfixExpression@@valueToAdd
+      % 12 '
+    - '------------------------------INS NumberLiteral@@12 @TO@ InfixExpression@@valueToAdd
+      % 12 '
+    - '------------------------INS NumberLiteral@@12 @TO@ InfixExpression@@curMonth0
+      + (valueToAdd % 12) + 12 '
+    - '------------------INS Operator@@% @TO@ InfixExpression@@(curMonth0 + (valueToAdd
+      % 12) + 12) % 12 '
+    - '------------------INS NumberLiteral@@12 @TO@ InfixExpression@@(curMonth0 +
+      (valueToAdd % 12) + 12) % 12 '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@((curMonth0 + (valueToAdd
+      % 12) + 12) % 12) + 1 '
+    - '------------INS NumberLiteral@@1 @TO@ InfixExpression@@((curMonth0 + (valueToAdd
+      % 12) + 12) % 12) + 1 '
+    - '---INS ReturnStatement@@MethodInvocation:set(partial,0,values,newMonth) @TO@
+      IfStatement@@InfixExpression:partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 '
+    - '------INS MethodInvocation@@set(partial,0,values,newMonth) @TO@ ReturnStatement@@MethodInvocation:set(partial,0,values,newMonth) '
+    - '---------INS SimpleName@@MethodName:set:[partial, 0, values, newMonth] @TO@
+      MethodInvocation@@set(partial,0,values,newMonth) '
+    - '------------INS SimpleName@@partial @TO@ SimpleName@@MethodName:set:[partial,
+      0, values, newMonth] '
+    - '------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:set:[partial,
+      0, values, newMonth] '
+    - '------------INS SimpleName@@values @TO@ SimpleName@@MethodName:set:[partial,
+      0, values, newMonth] '
+    - '------------INS SimpleName@@newMonth @TO@ SimpleName@@MethodName:set:[partial,
+      0, values, newMonth] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 11
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/chrono/BasicMonthOfYearDateTimeField:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 @TO@ MethodDeclaration@@public, @@int[], MethodName:add,
+      @@Argus:ReadablePartial+partial+int+fieldIndex+int[]+values+int+valueToAdd+ '
+    - '---INS InfixExpression@@partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 @TO@ IfStatement@@InfixExpression:partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 '
+    - '------INS InfixExpression@@partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      @TO@ InfixExpression@@partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 '
+    - '---------INS InfixExpression@@partial.size() > 0 @TO@ InfixExpression@@partial.size()
+      > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) '
+    - '------------INS MethodInvocation@@partial.size() @TO@ InfixExpression@@partial.size()
+      > 0 '
+    - '---------------INS SimpleName@@Name:partial @TO@ MethodInvocation@@partial.size() '
+    - '---------------INS SimpleName@@MethodName:size:[] @TO@ MethodInvocation@@partial.size() '
+    - '------------INS Operator@@> @TO@ InfixExpression@@partial.size() > 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@partial.size() > 0 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) '
+    - '---------INS MethodInvocation@@partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      @TO@ InfixExpression@@partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) '
+    - '------------INS SimpleName@@Name:partial @TO@ MethodInvocation@@partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) '
+    - '------------INS MethodInvocation@@MethodName:getFieldType:[0] @TO@ MethodInvocation@@partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) '
+    - '---------------INS NumberLiteral@@0 @TO@ MethodInvocation@@MethodName:getFieldType:[0] '
+    - '------------INS SimpleName@@MethodName:equals:[DateTimeFieldType.monthOfYear()]
+      @TO@ MethodInvocation@@partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) '
+    - '---------------INS MethodInvocation@@DateTimeFieldType.monthOfYear() @TO@ SimpleName@@MethodName:equals:[DateTimeFieldType.monthOfYear()] '
+    - '------------------INS SimpleName@@Name:DateTimeFieldType @TO@ MethodInvocation@@DateTimeFieldType.monthOfYear() '
+    - '------------------INS SimpleName@@MethodName:monthOfYear:[] @TO@ MethodInvocation@@DateTimeFieldType.monthOfYear() '
+    - '------INS Operator@@&& @TO@ InfixExpression@@partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 '
+    - '------INS InfixExpression@@fieldIndex == 0 @TO@ InfixExpression@@partial.size()
+      > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) && fieldIndex
+      == 0 '
+    - '---------INS SimpleName@@fieldIndex @TO@ InfixExpression@@fieldIndex == 0 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@fieldIndex == 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@fieldIndex == 0 '
+    - '---INS VariableDeclarationStatement@@int curMonth0=partial.getValue(0) - 1;
+      @TO@ IfStatement@@InfixExpression:partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int curMonth0=partial.getValue(0)
+      - 1; '
+    - '------INS VariableDeclarationFragment@@curMonth0=partial.getValue(0) - 1 @TO@
+      VariableDeclarationStatement@@int curMonth0=partial.getValue(0) - 1; '
+    - '---------INS SimpleName@@curMonth0 @TO@ VariableDeclarationFragment@@curMonth0=partial.getValue(0)
+      - 1 '
+    - '---------INS InfixExpression@@partial.getValue(0) - 1 @TO@ VariableDeclarationFragment@@curMonth0=partial.getValue(0)
+      - 1 '
+    - '------------INS MethodInvocation@@partial.getValue(0) @TO@ InfixExpression@@partial.getValue(0)
+      - 1 '
+    - '---------------INS SimpleName@@Name:partial @TO@ MethodInvocation@@partial.getValue(0) '
+    - '---------------INS SimpleName@@MethodName:getValue:[0] @TO@ MethodInvocation@@partial.getValue(0) '
+    - '------------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:getValue:[0] '
+    - '------------INS Operator@@- @TO@ InfixExpression@@partial.getValue(0) - 1 '
+    - '------------INS NumberLiteral@@1 @TO@ InfixExpression@@partial.getValue(0)
+      - 1 '
+    - '---INS VariableDeclarationStatement@@int newMonth=((curMonth0 + (valueToAdd
+      % 12) + 12) % 12) + 1; @TO@ IfStatement@@InfixExpression:partial.size() > 0
+      && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) && fieldIndex
+      == 0 '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int newMonth=((curMonth0
+      + (valueToAdd % 12) + 12) % 12) + 1; '
+    - '------INS VariableDeclarationFragment@@newMonth=((curMonth0 + (valueToAdd %
+      12) + 12) % 12) + 1 @TO@ VariableDeclarationStatement@@int newMonth=((curMonth0
+      + (valueToAdd % 12) + 12) % 12) + 1; '
+    - '---------INS SimpleName@@newMonth @TO@ VariableDeclarationFragment@@newMonth=((curMonth0
+      + (valueToAdd % 12) + 12) % 12) + 1 '
+    - '---------INS InfixExpression@@((curMonth0 + (valueToAdd % 12) + 12) % 12) +
+      1 @TO@ VariableDeclarationFragment@@newMonth=((curMonth0 + (valueToAdd % 12)
+      + 12) % 12) + 1 '
+    - '------------INS ParenthesizedExpression@@((curMonth0 + (valueToAdd % 12) +
+      12) % 12) @TO@ InfixExpression@@((curMonth0 + (valueToAdd % 12) + 12) % 12)
+      + 1 '
+    - '---------------INS InfixExpression@@(curMonth0 + (valueToAdd % 12) + 12) %
+      12 @TO@ ParenthesizedExpression@@((curMonth0 + (valueToAdd % 12) + 12) % 12) '
+    - '------------------INS ParenthesizedExpression@@(curMonth0 + (valueToAdd % 12)
+      + 12) @TO@ InfixExpression@@(curMonth0 + (valueToAdd % 12) + 12) % 12 '
+    - '---------------------INS InfixExpression@@curMonth0 + (valueToAdd % 12) + 12
+      @TO@ ParenthesizedExpression@@(curMonth0 + (valueToAdd % 12) + 12) '
+    - '------------------------INS SimpleName@@curMonth0 @TO@ InfixExpression@@curMonth0
+      + (valueToAdd % 12) + 12 '
+    - '------------------------INS Operator@@+ @TO@ InfixExpression@@curMonth0 + (valueToAdd
+      % 12) + 12 '
+    - '------------------------INS ParenthesizedExpression@@(valueToAdd % 12) @TO@
+      InfixExpression@@curMonth0 + (valueToAdd % 12) + 12 '
+    - '---------------------------INS InfixExpression@@valueToAdd % 12 @TO@ ParenthesizedExpression@@(valueToAdd
+      % 12) '
+    - '------------------------------INS SimpleName@@valueToAdd @TO@ InfixExpression@@valueToAdd
+      % 12 '
+    - '------------------------------INS Operator@@% @TO@ InfixExpression@@valueToAdd
+      % 12 '
+    - '------------------------------INS NumberLiteral@@12 @TO@ InfixExpression@@valueToAdd
+      % 12 '
+    - '------------------------INS NumberLiteral@@12 @TO@ InfixExpression@@curMonth0
+      + (valueToAdd % 12) + 12 '
+    - '------------------INS Operator@@% @TO@ InfixExpression@@(curMonth0 + (valueToAdd
+      % 12) + 12) % 12 '
+    - '------------------INS NumberLiteral@@12 @TO@ InfixExpression@@(curMonth0 +
+      (valueToAdd % 12) + 12) % 12 '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@((curMonth0 + (valueToAdd
+      % 12) + 12) % 12) + 1 '
+    - '------------INS NumberLiteral@@1 @TO@ InfixExpression@@((curMonth0 + (valueToAdd
+      % 12) + 12) % 12) + 1 '
+    - '---INS ReturnStatement@@MethodInvocation:set(partial,0,values,newMonth) @TO@
+      IfStatement@@InfixExpression:partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear())
+      && fieldIndex == 0 '
+    - '------INS MethodInvocation@@set(partial,0,values,newMonth) @TO@ ReturnStatement@@MethodInvocation:set(partial,0,values,newMonth) '
+    - '---------INS SimpleName@@MethodName:set:[partial, 0, values, newMonth] @TO@
+      MethodInvocation@@set(partial,0,values,newMonth) '
+    - '------------INS SimpleName@@partial @TO@ SimpleName@@MethodName:set:[partial,
+      0, values, newMonth] '
+    - '------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:set:[partial,
+      0, values, newMonth] '
+    - '------------INS SimpleName@@values @TO@ SimpleName@@MethodName:set:[partial,
+      0, values, newMonth] '
+    - '------------INS SimpleName@@newMonth @TO@ SimpleName@@MethodName:set:[partial,
+      0, values, newMonth] '
+  repair_actions_cnt: 1

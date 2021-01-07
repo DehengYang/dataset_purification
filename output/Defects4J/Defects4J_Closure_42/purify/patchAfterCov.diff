@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_42/src/com/google/javascript/jscomp/parsing/IRFactory.java	2020-10-22 12:46:19.854516102 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_42/purify/assertBeforeMut/com/google/javascript/jscomp/parsing/IRFactory.java	2020-10-22 12:46:19.854516102 -0400
+@@ -565,8 +565,15 @@
+ 
+     @Override
+     Node processForInLoop(ForInLoop loopNode) {
++      if (loopNode.isForEach()) {
++        errorReporter.error(
++            "unsupported language extension: for each",
++            sourceName,
++            loopNode.getLineno(), "", 0);
+ 
+         // Return the bare minimum to put the AST in a valid state.
++        return newNode(Token.EXPR_RESULT, Node.newNumber(0));
++      }
+       return newNode(
+           Token.FOR,
+           transform(loopNode.getIterator()),

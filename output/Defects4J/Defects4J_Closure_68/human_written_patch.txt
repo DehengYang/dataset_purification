@@ -1,0 +1,30 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_68/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_68/fixed-version/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_68/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java	2020-03-01 00:29:44.191785340 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_68/fixed-version/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java	2020-03-01 00:29:46.283883918 -0800
+@@ -865,9 +865,9 @@
+                         }
+                         break;
+                     }
++                  }
+ 
+                   token = eatTokensUntilEOL();
+-                  }
+                   continue retry;
+               }
+             }
+@@ -1706,6 +1706,7 @@
+       }
+     }
+ 
++    restoreLookAhead(token);
+     return reportGenericTypeSyntaxWarning();
+   }
+ 
+@@ -1758,6 +1759,7 @@
+     // NOTE(nicksantos): We're not implementing generics at the moment, so
+     // just throw out TypeParameters.
+     if (token != JsDocToken.LP) {
++      restoreLookAhead(token);
+       return reportTypeSyntaxWarning("msg.jsdoc.missing.lp");
+     }
+ 

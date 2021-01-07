@@ -1,0 +1,523 @@
+1 bug_id: Lang-19
+2 src folder:
+  name of src folder: java
+  number of files: 112
+  number of java files: 99
+  number of src classes: 151
+  number of test classes: 99
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest#testOutOfBounds
+  - org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest#testUnfinishedEntity
+  failing tests:
+  - org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest
+  number of all test cases: 1877
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 0.41
+  purification via delta debugging: 249.745
+  repair actions extraction: 0.834
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest#testOutOfBounds: 20
+    org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest#testUnfinishedEntity: 24
+  fixed:
+    org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest#testOutOfBounds: 25
+    org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest#testUnfinishedEntity: 38
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 9
+  covDel: 3
+  cov_patch_lines: 12
+  delta_patch_lines: 10
+  oriAdd: 9
+  oriDel: 3
+  ori_patch_lines: 12
+  purAdd: 8
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 5
+  original: 5
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 19
+  failFail: 7
+  passed: 1
+  total: 28
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_19/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java\t\
+    2020-10-22 01:57:39.181206398 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_19/purify/patch/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java\t\
+    2020-10-22 01:57:39.181206398 -0400\n@@ -37,7 +37,7 @@\n     public int translate(CharSequence\
+    \ input, int index, Writer out) throws IOException {\n         int seqEnd = input.length();\n\
+    \         // Uses -2 to ensure there is something after the &#\n-        if(input.charAt(index)\
+    \ == '&' && index < seqEnd - 1 && input.charAt(index + 1) == '#') {\n+       \
+    \ if(input.charAt(index) == '&' && index < seqEnd - 2 && input.charAt(index +\
+    \ 1) == '#') {\n             int start = index + 2;\n             boolean isHex\
+    \ = false;\n \n@@ -47,11 +47,16 @@\n                 isHex = true;\n \n      \
+    \           // Check there's more than just an x after the &#\n+             \
+    \   if(start == seqEnd) {\n+                    return 0;\n+                }\n\
+    \             }\n \n             int end = start;\n             // Note that this\
+    \ supports character codes without a ; on the end\n-            while(input.charAt(end)\
+    \ != ';') \n+            while(end < seqEnd && ( (input.charAt(end) >= '0' &&\
+    \ input.charAt(end) <= '9') ||\n+                                    (input.charAt(end)\
+    \ >= 'a' && input.charAt(end) <= 'f') ||\n+                                  \
+    \  (input.charAt(end) >= 'A' && input.charAt(end) <= 'F') ) )\n             {\n\
+    \                 end++;\n             }\n@@ -76,8 +81,9 @@\n                \
+    \ out.write(entityValue);\n             }\n \n+            boolean semiNext =\
+    \ (end != seqEnd) && (input.charAt(end) == ';');\n \n-            return 2 + (end\
+    \ - start) + (isHex ? 1 : 0) + 1;\n+            return 2 + (end - start) + (isHex\
+    \ ? 1 : 0) + (semiNext ? 1 : 0);\n         }\n         return 0;\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_19/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java\t\
+    2020-10-22 02:01:59.104721696 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_19/purify/purified/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java\t\
+    2020-10-22 02:01:59.104721696 -0400\n@@ -37,7 +37,7 @@\n     public int translate(CharSequence\
+    \ input, int index, Writer out) throws IOException {\n         int seqEnd = input.length();\n\
+    \         // Uses -2 to ensure there is something after the &#\n-        if(input.charAt(index)\
+    \ == '&' && index < seqEnd - 1 && input.charAt(index + 1) == '#') {\n+       \
+    \ if(input.charAt(index) == '&' && index < seqEnd - 2 && input.charAt(index +\
+    \ 1) == '#') {\n             int start = index + 2;\n             boolean isHex\
+    \ = false;\n \n@@ -47,11 +47,15 @@\n                 isHex = true;\n \n      \
+    \           // Check there's more than just an x after the &#\n+             \
+    \   if(start == seqEnd) {\n+                }\n             }\n \n           \
+    \  int end = start;\n             // Note that this supports character codes without\
+    \ a ; on the end\n-            while(input.charAt(end) != ';') \n+           \
+    \ while(end < seqEnd && ( (input.charAt(end) >= '0' && input.charAt(end) <= '9')\
+    \ ||\n+                                    (input.charAt(end) >= 'a' && input.charAt(end)\
+    \ <= 'f') ||\n+                                    (input.charAt(end) >= 'A' &&\
+    \ input.charAt(end) <= 'F') ) )\n             {\n                 end++;\n   \
+    \          }\n@@ -76,8 +80,10 @@\n                 out.write(entityValue);\n \
+    \            }\n \n+            boolean semiNext = (end != seqEnd) && (input.charAt(end)\
+    \ == ';');\n \n             return 2 + (end - start) + (isHex ? 1 : 0) + 1;\n\
+    +            return 2 + (end - start) + (isHex ? 1 : 0) + (semiNext ? 1 : 0);\n\
+    \         }\n         return 0;\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 11
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/translate/NumericEntityUnescaper:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:input.charAt(index) == ''&'' && index < seqEnd
+      - 1 && input.charAt(index + 1) == ''#'' @TO@ InfixExpression:input.charAt(index)
+      == ''&'' && index < seqEnd - 2 && input.charAt(index + 1) == ''#'' '
+    - '---UPD InfixExpression@@input.charAt(index) == ''&'' && index < seqEnd - 1
+      && input.charAt(index + 1) == ''#'' @TO@ input.charAt(index) == ''&'' && index
+      < seqEnd - 2 && input.charAt(index + 1) == ''#'' '
+    - '------UPD InfixExpression@@input.charAt(index) == ''&'' && index < seqEnd -
+      1 @TO@ input.charAt(index) == ''&'' && index < seqEnd - 2 '
+    - '---------UPD InfixExpression@@index < seqEnd - 1 @TO@ index < seqEnd - 2 '
+    - '------------UPD InfixExpression@@seqEnd - 1 @TO@ seqEnd - 2 '
+    - '---------------UPD NumberLiteral@@1 @TO@ 2 '
+    - '---UPD WhileStatement@@InfixExpression:input.charAt(end) != '';'' @TO@ InfixExpression:end
+      < seqEnd && ((input.charAt(end) >= ''0'' && input.charAt(end) <= ''9'') || (input.charAt(end)
+      >= ''a'' && input.charAt(end) <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end)
+      <= ''F'')) '
+    - '------UPD InfixExpression@@input.charAt(end) != '';'' @TO@ input.charAt(end)
+      >= ''0'' '
+    - '---------UPD Operator@@!= @TO@ >= '
+    - '---------UPD CharacterLiteral@@'';'' @TO@ ''0'' '
+    - '------INS InfixExpression@@end < seqEnd && ((input.charAt(end) >= ''0'' &&
+      input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'')) @TO@
+      WhileStatement@@InfixExpression:input.charAt(end) != '';'' '
+    - '---------INS InfixExpression@@end < seqEnd @TO@ InfixExpression@@end < seqEnd
+      && ((input.charAt(end) >= ''0'' && input.charAt(end) <= ''9'') || (input.charAt(end)
+      >= ''a'' && input.charAt(end) <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end)
+      <= ''F'')) '
+    - '------------INS SimpleName@@end @TO@ InfixExpression@@end < seqEnd '
+    - '------------INS Operator@@< @TO@ InfixExpression@@end < seqEnd '
+    - '------------INS SimpleName@@seqEnd @TO@ InfixExpression@@end < seqEnd '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@end < seqEnd && ((input.charAt(end)
+      >= ''0'' && input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'')) '
+    - '---------INS ParenthesizedExpression@@((input.charAt(end) >= ''0'' && input.charAt(end)
+      <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end) <= ''f'') || (input.charAt(end)
+      >= ''A'' && input.charAt(end) <= ''F'')) @TO@ InfixExpression@@end < seqEnd
+      && ((input.charAt(end) >= ''0'' && input.charAt(end) <= ''9'') || (input.charAt(end)
+      >= ''a'' && input.charAt(end) <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end)
+      <= ''F'')) '
+    - '------------INS InfixExpression@@(input.charAt(end) >= ''0'' && input.charAt(end)
+      <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end) <= ''f'') || (input.charAt(end)
+      >= ''A'' && input.charAt(end) <= ''F'') @TO@ ParenthesizedExpression@@((input.charAt(end)
+      >= ''0'' && input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'')) '
+    - '---------------INS ParenthesizedExpression@@(input.charAt(end) >= ''0'' &&
+      input.charAt(end) <= ''9'') @TO@ InfixExpression@@(input.charAt(end) >= ''0''
+      && input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'') '
+    - '------------------INS InfixExpression@@input.charAt(end) >= ''0'' && input.charAt(end)
+      <= ''9'' @TO@ ParenthesizedExpression@@(input.charAt(end) >= ''0'' && input.charAt(end)
+      <= ''9'') '
+    - '---------------------MOV InfixExpression@@input.charAt(end) != '';'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''0'' && input.charAt(end) <= ''9'' '
+    - '---------------------INS Operator@@&& @TO@ InfixExpression@@input.charAt(end)
+      >= ''0'' && input.charAt(end) <= ''9'' '
+    - '---------------------INS InfixExpression@@input.charAt(end) <= ''9'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''0'' && input.charAt(end) <= ''9'' '
+    - '------------------------INS MethodInvocation@@input.charAt(end) @TO@ InfixExpression@@input.charAt(end)
+      <= ''9'' '
+    - '---------------------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.charAt(end) '
+    - '---------------------------INS SimpleName@@MethodName:charAt:[end] @TO@ MethodInvocation@@input.charAt(end) '
+    - '------------------------------INS SimpleName@@end @TO@ SimpleName@@MethodName:charAt:[end] '
+    - '------------------------INS Operator@@<= @TO@ InfixExpression@@input.charAt(end)
+      <= ''9'' '
+    - '------------------------INS CharacterLiteral@@''9'' @TO@ InfixExpression@@input.charAt(end)
+      <= ''9'' '
+    - '---------------INS Operator@@|| @TO@ InfixExpression@@(input.charAt(end) >=
+      ''0'' && input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'') '
+    - '---------------INS ParenthesizedExpression@@(input.charAt(end) >= ''a'' &&
+      input.charAt(end) <= ''f'') @TO@ InfixExpression@@(input.charAt(end) >= ''0''
+      && input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'') '
+    - '------------------INS InfixExpression@@input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'' @TO@ ParenthesizedExpression@@(input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') '
+    - '---------------------INS InfixExpression@@input.charAt(end) >= ''a'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''a'' && input.charAt(end) <= ''f'' '
+    - '------------------------INS MethodInvocation@@input.charAt(end) @TO@ InfixExpression@@input.charAt(end)
+      >= ''a'' '
+    - '---------------------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.charAt(end) '
+    - '---------------------------INS SimpleName@@MethodName:charAt:[end] @TO@ MethodInvocation@@input.charAt(end) '
+    - '------------------------------INS SimpleName@@end @TO@ SimpleName@@MethodName:charAt:[end] '
+    - '------------------------INS Operator@@>= @TO@ InfixExpression@@input.charAt(end)
+      >= ''a'' '
+    - '------------------------INS CharacterLiteral@@''a'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''a'' '
+    - '---------------------INS Operator@@&& @TO@ InfixExpression@@input.charAt(end)
+      >= ''a'' && input.charAt(end) <= ''f'' '
+    - '---------------------INS InfixExpression@@input.charAt(end) <= ''f'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''a'' && input.charAt(end) <= ''f'' '
+    - '------------------------INS MethodInvocation@@input.charAt(end) @TO@ InfixExpression@@input.charAt(end)
+      <= ''f'' '
+    - '---------------------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.charAt(end) '
+    - '---------------------------INS SimpleName@@MethodName:charAt:[end] @TO@ MethodInvocation@@input.charAt(end) '
+    - '------------------------------INS SimpleName@@end @TO@ SimpleName@@MethodName:charAt:[end] '
+    - '------------------------INS Operator@@<= @TO@ InfixExpression@@input.charAt(end)
+      <= ''f'' '
+    - '------------------------INS CharacterLiteral@@''f'' @TO@ InfixExpression@@input.charAt(end)
+      <= ''f'' '
+    - '---------------INS ParenthesizedExpression@@(input.charAt(end) >= ''A'' &&
+      input.charAt(end) <= ''F'') @TO@ InfixExpression@@(input.charAt(end) >= ''0''
+      && input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'') '
+    - '------------------INS InfixExpression@@input.charAt(end) >= ''A'' && input.charAt(end)
+      <= ''F'' @TO@ ParenthesizedExpression@@(input.charAt(end) >= ''A'' && input.charAt(end)
+      <= ''F'') '
+    - '---------------------INS InfixExpression@@input.charAt(end) >= ''A'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''A'' && input.charAt(end) <= ''F'' '
+    - '------------------------INS MethodInvocation@@input.charAt(end) @TO@ InfixExpression@@input.charAt(end)
+      >= ''A'' '
+    - '---------------------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.charAt(end) '
+    - '---------------------------INS SimpleName@@MethodName:charAt:[end] @TO@ MethodInvocation@@input.charAt(end) '
+    - '------------------------------INS SimpleName@@end @TO@ SimpleName@@MethodName:charAt:[end] '
+    - '------------------------INS Operator@@>= @TO@ InfixExpression@@input.charAt(end)
+      >= ''A'' '
+    - '------------------------INS CharacterLiteral@@''A'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''A'' '
+    - '---------------------INS Operator@@&& @TO@ InfixExpression@@input.charAt(end)
+      >= ''A'' && input.charAt(end) <= ''F'' '
+    - '---------------------INS InfixExpression@@input.charAt(end) <= ''F'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''A'' && input.charAt(end) <= ''F'' '
+    - '------------------------INS MethodInvocation@@input.charAt(end) @TO@ InfixExpression@@input.charAt(end)
+      <= ''F'' '
+    - '---------------------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.charAt(end) '
+    - '---------------------------INS SimpleName@@MethodName:charAt:[end] @TO@ MethodInvocation@@input.charAt(end) '
+    - '------------------------------INS SimpleName@@end @TO@ SimpleName@@MethodName:charAt:[end] '
+    - '------------------------INS Operator@@<= @TO@ InfixExpression@@input.charAt(end)
+      <= ''F'' '
+    - '------------------------INS CharacterLiteral@@''F'' @TO@ InfixExpression@@input.charAt(end)
+      <= ''F'' '
+    - '---UPD ReturnStatement@@InfixExpression:2 + (end - start) + (isHex ? 1 : 0)+
+      1 @TO@ InfixExpression:2 + (end - start) + (isHex ? 1 : 0)+ (semiNext ? 1 :
+      0) '
+    - '------UPD InfixExpression@@2 + (end - start) + (isHex ? 1 : 0)+ 1 @TO@ 2 +
+      (end - start) + (isHex ? 1 : 0)+ (semiNext ? 1 : 0) '
+    - '---------DEL NumberLiteral@@1 '
+    - '---------INS ParenthesizedExpression@@(semiNext ? 1 : 0) @TO@ InfixExpression@@2
+      + (end - start) + (isHex ? 1 : 0)+ 1 '
+    - '------------INS ConditionalExpression@@semiNext ? 1 : 0 @TO@ ParenthesizedExpression@@(semiNext
+      ? 1 : 0) '
+    - '---------------INS SimpleName@@semiNext @TO@ ConditionalExpression@@semiNext
+      ? 1 : 0 '
+    - '---------------INS NumberLiteral@@1 @TO@ ConditionalExpression@@semiNext ?
+      1 : 0 '
+    - '---------------INS NumberLiteral@@0 @TO@ ConditionalExpression@@semiNext ?
+      1 : 0 '
+    - '---INS VariableDeclarationStatement@@boolean semiNext=(end != seqEnd) && (input.charAt(end)
+      == '';''); @TO@ IfStatement@@InfixExpression:input.charAt(index) == ''&'' &&
+      index < seqEnd - 1 && input.charAt(index + 1) == ''#'' '
+    - '------INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean
+      semiNext=(end != seqEnd) && (input.charAt(end) == '';''); '
+    - '------INS VariableDeclarationFragment@@semiNext=(end != seqEnd) && (input.charAt(end)
+      == '';'') @TO@ VariableDeclarationStatement@@boolean semiNext=(end != seqEnd)
+      && (input.charAt(end) == '';''); '
+    - '---------INS SimpleName@@semiNext @TO@ VariableDeclarationFragment@@semiNext=(end
+      != seqEnd) && (input.charAt(end) == '';'') '
+    - '---------INS InfixExpression@@(end != seqEnd) && (input.charAt(end) == '';'')
+      @TO@ VariableDeclarationFragment@@semiNext=(end != seqEnd) && (input.charAt(end)
+      == '';'') '
+    - '------------INS ParenthesizedExpression@@(end != seqEnd) @TO@ InfixExpression@@(end
+      != seqEnd) && (input.charAt(end) == '';'') '
+    - '---------------INS InfixExpression@@end != seqEnd @TO@ ParenthesizedExpression@@(end
+      != seqEnd) '
+    - '------------------INS SimpleName@@end @TO@ InfixExpression@@end != seqEnd '
+    - '------------------INS Operator@@!= @TO@ InfixExpression@@end != seqEnd '
+    - '------------------INS SimpleName@@seqEnd @TO@ InfixExpression@@end != seqEnd '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@(end != seqEnd) && (input.charAt(end)
+      == '';'') '
+    - '------------INS ParenthesizedExpression@@(input.charAt(end) == '';'') @TO@
+      InfixExpression@@(end != seqEnd) && (input.charAt(end) == '';'') '
+    - '---------------INS InfixExpression@@input.charAt(end) == '';'' @TO@ ParenthesizedExpression@@(input.charAt(end)
+      == '';'') '
+    - '------------------INS MethodInvocation@@input.charAt(end) @TO@ InfixExpression@@input.charAt(end)
+      == '';'' '
+    - '---------------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.charAt(end) '
+    - '---------------------INS SimpleName@@MethodName:charAt:[end] @TO@ MethodInvocation@@input.charAt(end) '
+    - '------------------------INS SimpleName@@end @TO@ SimpleName@@MethodName:charAt:[end] '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@input.charAt(end)
+      == '';'' '
+    - '------------------INS CharacterLiteral@@'';'' @TO@ InfixExpression@@input.charAt(end)
+      == '';'' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:start == seqEnd @TO@ IfStatement@@InfixExpression:firstChar
+      == ''x'' || firstChar == ''X'' '
+    - '---INS InfixExpression@@start == seqEnd @TO@ IfStatement@@InfixExpression:start
+      == seqEnd '
+    - '------INS SimpleName@@start @TO@ InfixExpression@@start == seqEnd '
+    - '------INS Operator@@== @TO@ InfixExpression@@start == seqEnd '
+    - '------INS SimpleName@@seqEnd @TO@ InfixExpression@@start == seqEnd '
+    - '---INS ReturnStatement@@NumberLiteral:0 @TO@ IfStatement@@InfixExpression:start
+      == seqEnd '
+    - '------INS NumberLiteral@@0 @TO@ ReturnStatement@@NumberLiteral:0 '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 11
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/translate/NumericEntityUnescaper:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:input.charAt(index) == ''&'' && index < seqEnd
+      - 1 && input.charAt(index + 1) == ''#'' @TO@ InfixExpression:input.charAt(index)
+      == ''&'' && index < seqEnd - 2 && input.charAt(index + 1) == ''#'' '
+    - '---UPD InfixExpression@@input.charAt(index) == ''&'' && index < seqEnd - 1
+      && input.charAt(index + 1) == ''#'' @TO@ input.charAt(index) == ''&'' && index
+      < seqEnd - 2 && input.charAt(index + 1) == ''#'' '
+    - '------UPD InfixExpression@@input.charAt(index) == ''&'' && index < seqEnd -
+      1 @TO@ input.charAt(index) == ''&'' && index < seqEnd - 2 '
+    - '---------UPD InfixExpression@@index < seqEnd - 1 @TO@ index < seqEnd - 2 '
+    - '------------UPD InfixExpression@@seqEnd - 1 @TO@ seqEnd - 2 '
+    - '---------------UPD NumberLiteral@@1 @TO@ 2 '
+    - '---UPD WhileStatement@@InfixExpression:input.charAt(end) != '';'' @TO@ InfixExpression:end
+      < seqEnd && ((input.charAt(end) >= ''0'' && input.charAt(end) <= ''9'') || (input.charAt(end)
+      >= ''a'' && input.charAt(end) <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end)
+      <= ''F'')) '
+    - '------UPD InfixExpression@@input.charAt(end) != '';'' @TO@ input.charAt(end)
+      >= ''0'' '
+    - '---------UPD Operator@@!= @TO@ >= '
+    - '---------UPD CharacterLiteral@@'';'' @TO@ ''0'' '
+    - '------INS InfixExpression@@end < seqEnd && ((input.charAt(end) >= ''0'' &&
+      input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'')) @TO@
+      WhileStatement@@InfixExpression:input.charAt(end) != '';'' '
+    - '---------INS InfixExpression@@end < seqEnd @TO@ InfixExpression@@end < seqEnd
+      && ((input.charAt(end) >= ''0'' && input.charAt(end) <= ''9'') || (input.charAt(end)
+      >= ''a'' && input.charAt(end) <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end)
+      <= ''F'')) '
+    - '------------INS SimpleName@@end @TO@ InfixExpression@@end < seqEnd '
+    - '------------INS Operator@@< @TO@ InfixExpression@@end < seqEnd '
+    - '------------INS SimpleName@@seqEnd @TO@ InfixExpression@@end < seqEnd '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@end < seqEnd && ((input.charAt(end)
+      >= ''0'' && input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'')) '
+    - '---------INS ParenthesizedExpression@@((input.charAt(end) >= ''0'' && input.charAt(end)
+      <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end) <= ''f'') || (input.charAt(end)
+      >= ''A'' && input.charAt(end) <= ''F'')) @TO@ InfixExpression@@end < seqEnd
+      && ((input.charAt(end) >= ''0'' && input.charAt(end) <= ''9'') || (input.charAt(end)
+      >= ''a'' && input.charAt(end) <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end)
+      <= ''F'')) '
+    - '------------INS InfixExpression@@(input.charAt(end) >= ''0'' && input.charAt(end)
+      <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end) <= ''f'') || (input.charAt(end)
+      >= ''A'' && input.charAt(end) <= ''F'') @TO@ ParenthesizedExpression@@((input.charAt(end)
+      >= ''0'' && input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'')) '
+    - '---------------INS ParenthesizedExpression@@(input.charAt(end) >= ''0'' &&
+      input.charAt(end) <= ''9'') @TO@ InfixExpression@@(input.charAt(end) >= ''0''
+      && input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'') '
+    - '------------------INS InfixExpression@@input.charAt(end) >= ''0'' && input.charAt(end)
+      <= ''9'' @TO@ ParenthesizedExpression@@(input.charAt(end) >= ''0'' && input.charAt(end)
+      <= ''9'') '
+    - '---------------------MOV InfixExpression@@input.charAt(end) != '';'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''0'' && input.charAt(end) <= ''9'' '
+    - '---------------------INS Operator@@&& @TO@ InfixExpression@@input.charAt(end)
+      >= ''0'' && input.charAt(end) <= ''9'' '
+    - '---------------------INS InfixExpression@@input.charAt(end) <= ''9'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''0'' && input.charAt(end) <= ''9'' '
+    - '------------------------INS MethodInvocation@@input.charAt(end) @TO@ InfixExpression@@input.charAt(end)
+      <= ''9'' '
+    - '---------------------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.charAt(end) '
+    - '---------------------------INS SimpleName@@MethodName:charAt:[end] @TO@ MethodInvocation@@input.charAt(end) '
+    - '------------------------------INS SimpleName@@end @TO@ SimpleName@@MethodName:charAt:[end] '
+    - '------------------------INS Operator@@<= @TO@ InfixExpression@@input.charAt(end)
+      <= ''9'' '
+    - '------------------------INS CharacterLiteral@@''9'' @TO@ InfixExpression@@input.charAt(end)
+      <= ''9'' '
+    - '---------------INS Operator@@|| @TO@ InfixExpression@@(input.charAt(end) >=
+      ''0'' && input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'') '
+    - '---------------INS ParenthesizedExpression@@(input.charAt(end) >= ''a'' &&
+      input.charAt(end) <= ''f'') @TO@ InfixExpression@@(input.charAt(end) >= ''0''
+      && input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'') '
+    - '------------------INS InfixExpression@@input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'' @TO@ ParenthesizedExpression@@(input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') '
+    - '---------------------INS InfixExpression@@input.charAt(end) >= ''a'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''a'' && input.charAt(end) <= ''f'' '
+    - '------------------------INS MethodInvocation@@input.charAt(end) @TO@ InfixExpression@@input.charAt(end)
+      >= ''a'' '
+    - '---------------------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.charAt(end) '
+    - '---------------------------INS SimpleName@@MethodName:charAt:[end] @TO@ MethodInvocation@@input.charAt(end) '
+    - '------------------------------INS SimpleName@@end @TO@ SimpleName@@MethodName:charAt:[end] '
+    - '------------------------INS Operator@@>= @TO@ InfixExpression@@input.charAt(end)
+      >= ''a'' '
+    - '------------------------INS CharacterLiteral@@''a'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''a'' '
+    - '---------------------INS Operator@@&& @TO@ InfixExpression@@input.charAt(end)
+      >= ''a'' && input.charAt(end) <= ''f'' '
+    - '---------------------INS InfixExpression@@input.charAt(end) <= ''f'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''a'' && input.charAt(end) <= ''f'' '
+    - '------------------------INS MethodInvocation@@input.charAt(end) @TO@ InfixExpression@@input.charAt(end)
+      <= ''f'' '
+    - '---------------------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.charAt(end) '
+    - '---------------------------INS SimpleName@@MethodName:charAt:[end] @TO@ MethodInvocation@@input.charAt(end) '
+    - '------------------------------INS SimpleName@@end @TO@ SimpleName@@MethodName:charAt:[end] '
+    - '------------------------INS Operator@@<= @TO@ InfixExpression@@input.charAt(end)
+      <= ''f'' '
+    - '------------------------INS CharacterLiteral@@''f'' @TO@ InfixExpression@@input.charAt(end)
+      <= ''f'' '
+    - '---------------INS ParenthesizedExpression@@(input.charAt(end) >= ''A'' &&
+      input.charAt(end) <= ''F'') @TO@ InfixExpression@@(input.charAt(end) >= ''0''
+      && input.charAt(end) <= ''9'') || (input.charAt(end) >= ''a'' && input.charAt(end)
+      <= ''f'') || (input.charAt(end) >= ''A'' && input.charAt(end) <= ''F'') '
+    - '------------------INS InfixExpression@@input.charAt(end) >= ''A'' && input.charAt(end)
+      <= ''F'' @TO@ ParenthesizedExpression@@(input.charAt(end) >= ''A'' && input.charAt(end)
+      <= ''F'') '
+    - '---------------------INS InfixExpression@@input.charAt(end) >= ''A'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''A'' && input.charAt(end) <= ''F'' '
+    - '------------------------INS MethodInvocation@@input.charAt(end) @TO@ InfixExpression@@input.charAt(end)
+      >= ''A'' '
+    - '---------------------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.charAt(end) '
+    - '---------------------------INS SimpleName@@MethodName:charAt:[end] @TO@ MethodInvocation@@input.charAt(end) '
+    - '------------------------------INS SimpleName@@end @TO@ SimpleName@@MethodName:charAt:[end] '
+    - '------------------------INS Operator@@>= @TO@ InfixExpression@@input.charAt(end)
+      >= ''A'' '
+    - '------------------------INS CharacterLiteral@@''A'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''A'' '
+    - '---------------------INS Operator@@&& @TO@ InfixExpression@@input.charAt(end)
+      >= ''A'' && input.charAt(end) <= ''F'' '
+    - '---------------------INS InfixExpression@@input.charAt(end) <= ''F'' @TO@ InfixExpression@@input.charAt(end)
+      >= ''A'' && input.charAt(end) <= ''F'' '
+    - '------------------------INS MethodInvocation@@input.charAt(end) @TO@ InfixExpression@@input.charAt(end)
+      <= ''F'' '
+    - '---------------------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.charAt(end) '
+    - '---------------------------INS SimpleName@@MethodName:charAt:[end] @TO@ MethodInvocation@@input.charAt(end) '
+    - '------------------------------INS SimpleName@@end @TO@ SimpleName@@MethodName:charAt:[end] '
+    - '------------------------INS Operator@@<= @TO@ InfixExpression@@input.charAt(end)
+      <= ''F'' '
+    - '------------------------INS CharacterLiteral@@''F'' @TO@ InfixExpression@@input.charAt(end)
+      <= ''F'' '
+    - '---INS VariableDeclarationStatement@@boolean semiNext=(end != seqEnd) && (input.charAt(end)
+      == '';''); @TO@ IfStatement@@InfixExpression:input.charAt(index) == ''&'' &&
+      index < seqEnd - 1 && input.charAt(index + 1) == ''#'' '
+    - '------INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean
+      semiNext=(end != seqEnd) && (input.charAt(end) == '';''); '
+    - '------INS VariableDeclarationFragment@@semiNext=(end != seqEnd) && (input.charAt(end)
+      == '';'') @TO@ VariableDeclarationStatement@@boolean semiNext=(end != seqEnd)
+      && (input.charAt(end) == '';''); '
+    - '---------INS SimpleName@@semiNext @TO@ VariableDeclarationFragment@@semiNext=(end
+      != seqEnd) && (input.charAt(end) == '';'') '
+    - '---------INS InfixExpression@@(end != seqEnd) && (input.charAt(end) == '';'')
+      @TO@ VariableDeclarationFragment@@semiNext=(end != seqEnd) && (input.charAt(end)
+      == '';'') '
+    - '------------INS ParenthesizedExpression@@(end != seqEnd) @TO@ InfixExpression@@(end
+      != seqEnd) && (input.charAt(end) == '';'') '
+    - '---------------INS InfixExpression@@end != seqEnd @TO@ ParenthesizedExpression@@(end
+      != seqEnd) '
+    - '------------------INS SimpleName@@end @TO@ InfixExpression@@end != seqEnd '
+    - '------------------INS Operator@@!= @TO@ InfixExpression@@end != seqEnd '
+    - '------------------INS SimpleName@@seqEnd @TO@ InfixExpression@@end != seqEnd '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@(end != seqEnd) && (input.charAt(end)
+      == '';'') '
+    - '------------INS ParenthesizedExpression@@(input.charAt(end) == '';'') @TO@
+      InfixExpression@@(end != seqEnd) && (input.charAt(end) == '';'') '
+    - '---------------INS InfixExpression@@input.charAt(end) == '';'' @TO@ ParenthesizedExpression@@(input.charAt(end)
+      == '';'') '
+    - '------------------INS MethodInvocation@@input.charAt(end) @TO@ InfixExpression@@input.charAt(end)
+      == '';'' '
+    - '---------------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.charAt(end) '
+    - '---------------------INS SimpleName@@MethodName:charAt:[end] @TO@ MethodInvocation@@input.charAt(end) '
+    - '------------------------INS SimpleName@@end @TO@ SimpleName@@MethodName:charAt:[end] '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@input.charAt(end)
+      == '';'' '
+    - '------------------INS CharacterLiteral@@'';'' @TO@ InfixExpression@@input.charAt(end)
+      == '';'' '
+    - '---INS ReturnStatement@@InfixExpression:2 + (end - start) + (isHex ? 1 : 0)+
+      (semiNext ? 1 : 0) @TO@ IfStatement@@InfixExpression:input.charAt(index) ==
+      ''&'' && index < seqEnd - 1 && input.charAt(index + 1) == ''#'' '
+    - '------INS InfixExpression@@2 + (end - start) + (isHex ? 1 : 0)+ (semiNext ?
+      1 : 0) @TO@ ReturnStatement@@InfixExpression:2 + (end - start) + (isHex ? 1
+      : 0)+ (semiNext ? 1 : 0) '
+    - '---------INS NumberLiteral@@2 @TO@ InfixExpression@@2 + (end - start) + (isHex
+      ? 1 : 0)+ (semiNext ? 1 : 0) '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@2 + (end - start) + (isHex ?
+      1 : 0)+ (semiNext ? 1 : 0) '
+    - '---------INS ParenthesizedExpression@@(end - start) @TO@ InfixExpression@@2
+      + (end - start) + (isHex ? 1 : 0)+ (semiNext ? 1 : 0) '
+    - '------------INS InfixExpression@@end - start @TO@ ParenthesizedExpression@@(end
+      - start) '
+    - '---------------INS SimpleName@@end @TO@ InfixExpression@@end - start '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@end - start '
+    - '---------------INS SimpleName@@start @TO@ InfixExpression@@end - start '
+    - '---------INS ParenthesizedExpression@@(isHex ? 1 : 0) @TO@ InfixExpression@@2
+      + (end - start) + (isHex ? 1 : 0)+ (semiNext ? 1 : 0) '
+    - '------------INS ConditionalExpression@@isHex ? 1 : 0 @TO@ ParenthesizedExpression@@(isHex
+      ? 1 : 0) '
+    - '---------------INS SimpleName@@isHex @TO@ ConditionalExpression@@isHex ? 1
+      : 0 '
+    - '---------------INS NumberLiteral@@1 @TO@ ConditionalExpression@@isHex ? 1 :
+      0 '
+    - '---------------INS NumberLiteral@@0 @TO@ ConditionalExpression@@isHex ? 1 :
+      0 '
+    - '---------INS ParenthesizedExpression@@(semiNext ? 1 : 0) @TO@ InfixExpression@@2
+      + (end - start) + (isHex ? 1 : 0)+ (semiNext ? 1 : 0) '
+    - '------------INS ConditionalExpression@@semiNext ? 1 : 0 @TO@ ParenthesizedExpression@@(semiNext
+      ? 1 : 0) '
+    - '---------------INS SimpleName@@semiNext @TO@ ConditionalExpression@@semiNext
+      ? 1 : 0 '
+    - '---------------INS NumberLiteral@@1 @TO@ ConditionalExpression@@semiNext ?
+      1 : 0 '
+    - '---------------INS NumberLiteral@@0 @TO@ ConditionalExpression@@semiNext ?
+      1 : 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:start == seqEnd @TO@ IfStatement@@InfixExpression:firstChar
+      == ''x'' || firstChar == ''X'' '
+    - '---INS InfixExpression@@start == seqEnd @TO@ IfStatement@@InfixExpression:start
+      == seqEnd '
+    - '------INS SimpleName@@start @TO@ InfixExpression@@start == seqEnd '
+    - '------INS Operator@@== @TO@ InfixExpression@@start == seqEnd '
+    - '------INS SimpleName@@seqEnd @TO@ InfixExpression@@start == seqEnd '
+  repair_actions_cnt: 2

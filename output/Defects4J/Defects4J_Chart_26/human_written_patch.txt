@@ -1,0 +1,17 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_26/source/org/jfree/chart/axis/Axis.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_26/fixed-version/source/org/jfree/chart/axis/Axis.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_26/source/org/jfree/chart/axis/Axis.java	2020-03-01 00:05:28.363190108 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_26/fixed-version/source/org/jfree/chart/axis/Axis.java	2020-03-01 00:05:31.747349557 -0800
+@@ -1189,11 +1189,13 @@
+         }
+         if (plotState != null && hotspot != null) {
+             ChartRenderingInfo owner = plotState.getOwner();
++            if (owner != null) {
+                 EntityCollection entities = owner.getEntityCollection();
+                 if (entities != null) {
+                     entities.add(new AxisLabelEntity(this, hotspot, 
+                             this.labelToolTip, this.labelURL));
+                 }
++            }
+         }
+         return state;
+ 

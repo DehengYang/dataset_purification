@@ -1,0 +1,19 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_42/src/com/google/javascript/jscomp/parsing/IRFactory.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_42/fixed-version/src/com/google/javascript/jscomp/parsing/IRFactory.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_42/src/com/google/javascript/jscomp/parsing/IRFactory.java	2020-03-01 00:28:00.186884700 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_42/fixed-version/src/com/google/javascript/jscomp/parsing/IRFactory.java	2020-03-01 00:28:02.246981770 -0800
+@@ -565,8 +565,15 @@
+ 
+     @Override
+     Node processForInLoop(ForInLoop loopNode) {
++      if (loopNode.isForEach()) {
++        errorReporter.error(
++            "unsupported language extension: for each",
++            sourceName,
++            loopNode.getLineno(), "", 0);
+ 
+         // Return the bare minimum to put the AST in a valid state.
++        return newNode(Token.EXPR_RESULT, Node.newNumber(0));
++      }
+       return newNode(
+           Token.FOR,
+           transform(loopNode.getIterator()),

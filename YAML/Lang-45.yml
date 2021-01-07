@@ -1,0 +1,120 @@
+1 bug_id: Lang-45
+2 src folder:
+  name of src folder: java
+  number of files: 95
+  number of java files: 84
+  number of src classes: 131
+  number of test classes: 96
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.WordUtilsTest#testAbbreviate
+  failing tests:
+  - org.apache.commons.lang.WordUtilsTest
+  number of all test cases: 1877
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 8.0
+  purification via coverage: 0.523
+  purification via delta debugging: 38.188
+  repair actions extraction: 1.739
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.WordUtilsTest#testAbbreviate: 24
+  fixed:
+    org.apache.commons.lang.WordUtilsTest#testAbbreviate: 26
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_45/src/java/org/apache/commons/lang/WordUtils.java\t\
+    2020-10-21 03:43:37.518692179 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_45/purify/patch/org/apache/commons/lang/WordUtils.java\t\
+    2020-10-21 03:43:37.514692063 -0400\n@@ -613,6 +613,9 @@\n \n         // if the\
+    \ lower value is greater than the length of the string,\n         // set to the\
+    \ length of the string\n+        if (lower > str.length()) {\n+            lower\
+    \ = str.length();    \n+        }\n         // if the upper value is -1 (i.e.\
+    \ no limit) or is greater\n         // than the length of the string, set to the\
+    \ length of the string\n         if (upper == -1 || upper > str.length()) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_45/src/java/org/apache/commons/lang/WordUtils.java\t\
+    2020-10-21 03:44:26.544108097 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_45/purify/purified/org/apache/commons/lang/WordUtils.java\t\
+    2020-10-21 03:44:26.544108097 -0400\n@@ -613,6 +613,9 @@\n \n         // if the\
+    \ lower value is greater than the length of the string,\n         // set to the\
+    \ length of the string\n+        if (lower > str.length()) {\n+            lower\
+    \ = str.length();    \n+        }\n         // if the upper value is -1 (i.e.\
+    \ no limit) or is greater\n         // than the length of the string, set to the\
+    \ length of the string\n         if (upper == -1 || upper > str.length()) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/WordUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:lower > str.length() @TO@ MethodDeclaration@@public,
+      static, @@String, MethodName:abbreviate, @@Argus:String+str+int+lower+int+upper+String+appendToEnd+ '
+    - '---INS InfixExpression@@lower > str.length() @TO@ IfStatement@@InfixExpression:lower
+      > str.length() '
+    - '------INS SimpleName@@lower @TO@ InfixExpression@@lower > str.length() '
+    - '------INS Operator@@> @TO@ InfixExpression@@lower > str.length() '
+    - '------INS MethodInvocation@@str.length() @TO@ InfixExpression@@lower > str.length() '
+    - '---------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.length() '
+    - '---------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@str.length() '
+    - '---INS ExpressionStatement@@Assignment:lower=str.length() @TO@ IfStatement@@InfixExpression:lower
+      > str.length() '
+    - '------INS Assignment@@lower=str.length() @TO@ ExpressionStatement@@Assignment:lower=str.length() '
+    - '---------INS SimpleName@@lower @TO@ Assignment@@lower=str.length() '
+    - '---------INS Operator@@= @TO@ Assignment@@lower=str.length() '
+    - '---------INS MethodInvocation@@str.length() @TO@ Assignment@@lower=str.length() '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.length() '
+    - '------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@str.length() '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/WordUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:lower > str.length() @TO@ MethodDeclaration@@public,
+      static, @@String, MethodName:abbreviate, @@Argus:String+str+int+lower+int+upper+String+appendToEnd+ '
+    - '---INS InfixExpression@@lower > str.length() @TO@ IfStatement@@InfixExpression:lower
+      > str.length() '
+    - '------INS SimpleName@@lower @TO@ InfixExpression@@lower > str.length() '
+    - '------INS Operator@@> @TO@ InfixExpression@@lower > str.length() '
+    - '------INS MethodInvocation@@str.length() @TO@ InfixExpression@@lower > str.length() '
+    - '---------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.length() '
+    - '---------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@str.length() '
+    - '---INS ExpressionStatement@@Assignment:lower=str.length() @TO@ IfStatement@@InfixExpression:lower
+      > str.length() '
+    - '------INS Assignment@@lower=str.length() @TO@ ExpressionStatement@@Assignment:lower=str.length() '
+    - '---------INS SimpleName@@lower @TO@ Assignment@@lower=str.length() '
+    - '---------INS Operator@@= @TO@ Assignment@@lower=str.length() '
+    - '---------INS MethodInvocation@@str.length() @TO@ Assignment@@lower=str.length() '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.length() '
+    - '------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@str.length() '
+  repair_actions_cnt: 1

@@ -1,0 +1,566 @@
+1 bug_id: Time-6
+2 src folder:
+  name of src folder: java
+  number of files: 186
+  number of java files: 157
+  number of src classes: 232
+  number of test classes: 124
+3 test (cases):
+  failing test cases:
+  - org.joda.time.chrono.TestGJDate#test_plusYears_positiveToNegative_crossCutover
+  - org.joda.time.chrono.TestGJDate#test_plusYears_positiveToZero_crossCutover
+  - org.joda.time.chrono.TestGJDate#test_plusWeekyears_positiveToNegative_crossCutover
+  - org.joda.time.chrono.TestGJDate#test_plusWeekyears_positiveToZero_crossCutover
+  - org.joda.time.chrono.TestGJDate#test_cutoverPreZero
+  failing tests:
+  - org.joda.time.chrono.TestGJDate
+  number of all test cases: 4000
+  number of failing test cases: 5
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 3.231
+  purification via delta debugging: 1354.066
+  repair actions extraction: 1.831
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.chrono.TestGJDate#test_cutoverPreZero: 1137
+    org.joda.time.chrono.TestGJDate#test_plusWeekyears_positiveToNegative_crossCutover: 1662
+    org.joda.time.chrono.TestGJDate#test_plusWeekyears_positiveToZero_crossCutover: 1159
+    org.joda.time.chrono.TestGJDate#test_plusYears_positiveToNegative_crossCutover: 1632
+    org.joda.time.chrono.TestGJDate#test_plusYears_positiveToZero_crossCutover: 1124
+  fixed:
+    org.joda.time.chrono.TestGJDate#test_cutoverPreZero: 1136
+    org.joda.time.chrono.TestGJDate#test_plusWeekyears_positiveToNegative_crossCutover: 1170
+    org.joda.time.chrono.TestGJDate#test_plusWeekyears_positiveToZero_crossCutover: 1175
+    org.joda.time.chrono.TestGJDate#test_plusYears_positiveToNegative_crossCutover: 1137
+    org.joda.time.chrono.TestGJDate#test_plusYears_positiveToZero_crossCutover: 1142
+6 reduced lines:
+  by all: 5
+  by coverage: 0
+  by delta debugging: 5
+  covAdd: 26
+  covDel: 0
+  cov_patch_lines: 26
+  delta_patch_lines: 21
+  oriAdd: 26
+  oriDel: 0
+  ori_patch_lines: 26
+  purAdd: 21
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 93
+  failFail: 18
+  passed: 3
+  total: 114
+9 sibling repair actions:
+- 2 3 0.8413284132841329
+- 2 6 1.0
+- 2 7 0.8413284132841329
+- 3 4 0.7280334728033473
+- 3 6 0.8413284132841329
+- 3 7 1.0
+- 3 8 0.7280334728033473
+- 4 7 0.7447698744769874
+- 4 8 1.0
+- 5 9 1.0
+- 6 7 0.8413284132841329
+- 7 8 0.7280334728033473
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_6/src/main/java/org/joda/time/chrono/GJChronology.java\t\
+    2020-10-21 23:43:45.256858873 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_6/purify/patch/org/joda/time/chrono/GJChronology.java\t\
+    2020-10-21 23:43:45.256858873 -0400\n@@ -193,6 +193,10 @@\n             cutoverInstant\
+    \ = DEFAULT_CUTOVER;\n         } else {\n             cutoverInstant = gregorianCutover.toInstant();\n\
+    +            LocalDate cutoverDate = new LocalDate(cutoverInstant.getMillis(),\
+    \ GregorianChronology.getInstance(zone));\n+            if (cutoverDate.getYear()\
+    \ <= 0) {\n+                throw new IllegalArgumentException(\"Cutover too early.\
+    \ Must be on or after 0001-01-01.\");\n+            }\n         }\n \n       \
+    \  GJChronology chrono;\n@@ -976,6 +980,17 @@\n                 if (instant <\
+    \ iCutover) {\n                     // Only adjust if gap fully crossed.\n   \
+    \                  if (instant + iGapDuration < iCutover) {\n+               \
+    \         if (iConvertByWeekyear) {\n+                            int wyear =\
+    \ iGregorianChronology.weekyear().get(instant);\n+                           \
+    \ if (wyear <= 0) {\n+                                instant = iGregorianChronology.weekyear().add(instant,\
+    \ -1);\n+                            }\n+                        } else {\n+ \
+    \                           int year = iGregorianChronology.year().get(instant);\n\
+    +                            if (year <= 0) {\n+                             \
+    \   instant = iGregorianChronology.year().add(instant, -1);\n+               \
+    \             }\n+                        }\n                         instant\
+    \ = gregorianToJulian(instant);\n                     }\n                 }\n\
+    @@ -998,6 +1013,17 @@\n                 if (instant < iCutover) {\n          \
+    \           // Only adjust if gap fully crossed.\n                     if (instant\
+    \ + iGapDuration < iCutover) {\n+                        if (iConvertByWeekyear)\
+    \ {\n+                            int wyear = iGregorianChronology.weekyear().get(instant);\n\
+    +                            if (wyear <= 0) {\n+                            \
+    \    instant = iGregorianChronology.weekyear().add(instant, -1);\n+          \
+    \                  }\n+                        } else {\n+                   \
+    \         int year = iGregorianChronology.year().get(instant);\n+            \
+    \                if (year <= 0) {\n+                                instant =\
+    \ iGregorianChronology.year().add(instant, -1);\n+                           \
+    \ }\n+                        }\n                         instant = gregorianToJulian(instant);\n\
+    \                     }\n                 }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_6/src/main/java/org/joda/time/chrono/GJChronology.java\t\
+    2020-10-22 00:06:47.996871284 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_6/purify/purified/org/joda/time/chrono/GJChronology.java\t\
+    2020-10-22 00:06:47.996871284 -0400\n@@ -193,6 +193,10 @@\n             cutoverInstant\
+    \ = DEFAULT_CUTOVER;\n         } else {\n             cutoverInstant = gregorianCutover.toInstant();\n\
+    +            LocalDate cutoverDate = new LocalDate(cutoverInstant.getMillis(),\
+    \ GregorianChronology.getInstance(zone));\n+            if (cutoverDate.getYear()\
+    \ <= 0) {\n+                throw new IllegalArgumentException(\"Cutover too early.\
+    \ Must be on or after 0001-01-01.\");\n+            }\n         }\n \n       \
+    \  GJChronology chrono;\n@@ -976,6 +980,17 @@\n                 if (instant <\
+    \ iCutover) {\n                     // Only adjust if gap fully crossed.\n   \
+    \                  if (instant + iGapDuration < iCutover) {\n+               \
+    \         if (iConvertByWeekyear) {\n+                            int wyear =\
+    \ iGregorianChronology.weekyear().get(instant);\n+                           \
+    \ if (wyear <= 0) {\n+                                instant = iGregorianChronology.weekyear().add(instant,\
+    \ -1);\n+                            }\n+                        } else {\n+ \
+    \                           int year = iGregorianChronology.year().get(instant);\n\
+    +                            if (year <= 0) {\n+                             \
+    \   instant = iGregorianChronology.year().add(instant, -1);\n+               \
+    \             }\n+                        }\n                         instant\
+    \ = gregorianToJulian(instant);\n                     }\n                 }\n\
+    @@ -998,6 +1013,12 @@\n                 if (instant < iCutover) {\n          \
+    \           // Only adjust if gap fully crossed.\n                     if (instant\
+    \ + iGapDuration < iCutover) {\n+                        if (iConvertByWeekyear)\
+    \ {\n+                            if (wyear <= 0) {\n+                       \
+    \     }\n+                            if (year <= 0) {\n+                    \
+    \        }\n+                        }\n                         instant = gregorianToJulian(instant);\n\
+    \                     }\n                 }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/chrono/GJChronology:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@LocalDate cutoverDate=new LocalDate(cutoverInstant.getMillis(),GregorianChronology.getInstance(zone));
+      @TO@ IfStatement@@InfixExpression:gregorianCutover == null '
+    - '---INS SimpleType@@LocalDate @TO@ VariableDeclarationStatement@@LocalDate cutoverDate=new
+      LocalDate(cutoverInstant.getMillis(),GregorianChronology.getInstance(zone)); '
+    - '---INS VariableDeclarationFragment@@cutoverDate=new LocalDate(cutoverInstant.getMillis(),GregorianChronology.getInstance(zone))
+      @TO@ VariableDeclarationStatement@@LocalDate cutoverDate=new LocalDate(cutoverInstant.getMillis(),GregorianChronology.getInstance(zone)); '
+    - '------INS SimpleName@@cutoverDate @TO@ VariableDeclarationFragment@@cutoverDate=new
+      LocalDate(cutoverInstant.getMillis(),GregorianChronology.getInstance(zone)) '
+    - '------INS ClassInstanceCreation@@LocalDate[cutoverInstant.getMillis(), GregorianChronology.getInstance(zone)]
+      @TO@ VariableDeclarationFragment@@cutoverDate=new LocalDate(cutoverInstant.getMillis(),GregorianChronology.getInstance(zone)) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@LocalDate[cutoverInstant.getMillis(),
+      GregorianChronology.getInstance(zone)] '
+    - '---------INS SimpleType@@LocalDate @TO@ ClassInstanceCreation@@LocalDate[cutoverInstant.getMillis(),
+      GregorianChronology.getInstance(zone)] '
+    - '---------INS MethodInvocation@@cutoverInstant.getMillis() @TO@ ClassInstanceCreation@@LocalDate[cutoverInstant.getMillis(),
+      GregorianChronology.getInstance(zone)] '
+    - '------------INS SimpleName@@Name:cutoverInstant @TO@ MethodInvocation@@cutoverInstant.getMillis() '
+    - '------------INS SimpleName@@MethodName:getMillis:[] @TO@ MethodInvocation@@cutoverInstant.getMillis() '
+    - '---------INS MethodInvocation@@GregorianChronology.getInstance(zone) @TO@ ClassInstanceCreation@@LocalDate[cutoverInstant.getMillis(),
+      GregorianChronology.getInstance(zone)] '
+    - '------------INS SimpleName@@Name:GregorianChronology @TO@ MethodInvocation@@GregorianChronology.getInstance(zone) '
+    - '------------INS SimpleName@@MethodName:getInstance:[zone] @TO@ MethodInvocation@@GregorianChronology.getInstance(zone) '
+    - '---------------INS SimpleName@@zone @TO@ SimpleName@@MethodName:getInstance:[zone] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:cutoverDate.getYear() <= 0 @TO@ IfStatement@@InfixExpression:gregorianCutover
+      == null '
+    - '---INS InfixExpression@@cutoverDate.getYear() <= 0 @TO@ IfStatement@@InfixExpression:cutoverDate.getYear()
+      <= 0 '
+    - '------INS MethodInvocation@@cutoverDate.getYear() @TO@ InfixExpression@@cutoverDate.getYear()
+      <= 0 '
+    - '---------INS SimpleName@@Name:cutoverDate @TO@ MethodInvocation@@cutoverDate.getYear() '
+    - '---------INS SimpleName@@MethodName:getYear:[] @TO@ MethodInvocation@@cutoverDate.getYear() '
+    - '------INS Operator@@<= @TO@ InfixExpression@@cutoverDate.getYear() <= 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@cutoverDate.getYear() <= 0 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Cutover
+      too early. Must be on or after 0001-01-01.") @TO@ IfStatement@@InfixExpression:cutoverDate.getYear()
+      <= 0 '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Cutover too early.
+      Must be on or after 0001-01-01."] @TO@ ThrowStatement@@ClassInstanceCreation:new
+      IllegalArgumentException("Cutover too early. Must be on or after 0001-01-01.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Cutover
+      too early. Must be on or after 0001-01-01."] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Cutover
+      too early. Must be on or after 0001-01-01."] '
+    - '---------INS StringLiteral@@"Cutover too early. Must be on or after 0001-01-01."
+      @TO@ ClassInstanceCreation@@IllegalArgumentException["Cutover too early. Must
+      be on or after 0001-01-01."] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:instant=gregorianToJulian(instant) @TO@
+      IfStatement@@InfixExpression:instant + iGapDuration < iCutover '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:instant=iJulianField.add(instant,value)
+      @TO@ IfStatement@@InfixExpression:instant >= iCutover '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:instant >= iCutover @TO@ IfStatement@@InfixExpression:instant
+      >= iCutover '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:iConvertByWeekyear @TO@ IfStatement@@InfixExpression:instant
+      + iGapDuration < iCutover '
+    - '---INS SimpleName@@iConvertByWeekyear @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '---INS VariableDeclarationStatement@@int wyear=iGregorianChronology.weekyear().get(instant);
+      @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int wyear=iGregorianChronology.weekyear().get(instant); '
+    - '------INS VariableDeclarationFragment@@wyear=iGregorianChronology.weekyear().get(instant)
+      @TO@ VariableDeclarationStatement@@int wyear=iGregorianChronology.weekyear().get(instant); '
+    - '---------INS SimpleName@@wyear @TO@ VariableDeclarationFragment@@wyear=iGregorianChronology.weekyear().get(instant) '
+    - '---------INS MethodInvocation@@iGregorianChronology.weekyear().get(instant)
+      @TO@ VariableDeclarationFragment@@wyear=iGregorianChronology.weekyear().get(instant) '
+    - '------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.weekyear().get(instant) '
+    - '------------INS MethodInvocation@@MethodName:weekyear:[] @TO@ MethodInvocation@@iGregorianChronology.weekyear().get(instant) '
+    - '------------INS SimpleName@@MethodName:get:[instant] @TO@ MethodInvocation@@iGregorianChronology.weekyear().get(instant) '
+    - '---------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:get:[instant] '
+    - '---INS IfStatement@@InfixExpression:wyear <= 0 @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------INS InfixExpression@@wyear <= 0 @TO@ IfStatement@@InfixExpression:wyear
+      <= 0 '
+    - '---------INS SimpleName@@wyear @TO@ InfixExpression@@wyear <= 0 '
+    - '---------INS Operator@@<= @TO@ InfixExpression@@wyear <= 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@wyear <= 0 '
+    - '------INS ExpressionStatement@@Assignment:instant=iGregorianChronology.weekyear().add(instant,-1)
+      @TO@ IfStatement@@InfixExpression:wyear <= 0 '
+    - '---------INS Assignment@@instant=iGregorianChronology.weekyear().add(instant,-1)
+      @TO@ ExpressionStatement@@Assignment:instant=iGregorianChronology.weekyear().add(instant,-1) '
+    - '------------INS SimpleName@@instant @TO@ Assignment@@instant=iGregorianChronology.weekyear().add(instant,-1) '
+    - '------------INS Operator@@= @TO@ Assignment@@instant=iGregorianChronology.weekyear().add(instant,-1) '
+    - '------------INS MethodInvocation@@iGregorianChronology.weekyear().add(instant,-1)
+      @TO@ Assignment@@instant=iGregorianChronology.weekyear().add(instant,-1) '
+    - '---------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.weekyear().add(instant,-1) '
+    - '---------------INS MethodInvocation@@MethodName:weekyear:[] @TO@ MethodInvocation@@iGregorianChronology.weekyear().add(instant,-1) '
+    - '---------------INS SimpleName@@MethodName:add:[instant, -1] @TO@ MethodInvocation@@iGregorianChronology.weekyear().add(instant,-1) '
+    - '------------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:add:[instant,
+      -1] '
+    - '------------------INS PrefixExpression@@-1 @TO@ SimpleName@@MethodName:add:[instant,
+      -1] '
+    - '---------------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+    - '---INS VariableDeclarationStatement@@int year=iGregorianChronology.year().get(instant);
+      @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int year=iGregorianChronology.year().get(instant); '
+    - '------INS VariableDeclarationFragment@@year=iGregorianChronology.year().get(instant)
+      @TO@ VariableDeclarationStatement@@int year=iGregorianChronology.year().get(instant); '
+    - '---------INS SimpleName@@year @TO@ VariableDeclarationFragment@@year=iGregorianChronology.year().get(instant) '
+    - '---------INS MethodInvocation@@iGregorianChronology.year().get(instant) @TO@
+      VariableDeclarationFragment@@year=iGregorianChronology.year().get(instant) '
+    - '------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.year().get(instant) '
+    - '------------INS MethodInvocation@@MethodName:year:[] @TO@ MethodInvocation@@iGregorianChronology.year().get(instant) '
+    - '------------INS SimpleName@@MethodName:get:[instant] @TO@ MethodInvocation@@iGregorianChronology.year().get(instant) '
+    - '---------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:get:[instant] '
+    - '---INS IfStatement@@InfixExpression:year <= 0 @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------INS InfixExpression@@year <= 0 @TO@ IfStatement@@InfixExpression:year
+      <= 0 '
+    - '---------INS SimpleName@@year @TO@ InfixExpression@@year <= 0 '
+    - '---------INS Operator@@<= @TO@ InfixExpression@@year <= 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@year <= 0 '
+    - '------INS ExpressionStatement@@Assignment:instant=iGregorianChronology.year().add(instant,-1)
+      @TO@ IfStatement@@InfixExpression:year <= 0 '
+    - '---------INS Assignment@@instant=iGregorianChronology.year().add(instant,-1)
+      @TO@ ExpressionStatement@@Assignment:instant=iGregorianChronology.year().add(instant,-1) '
+    - '------------INS SimpleName@@instant @TO@ Assignment@@instant=iGregorianChronology.year().add(instant,-1) '
+    - '------------INS Operator@@= @TO@ Assignment@@instant=iGregorianChronology.year().add(instant,-1) '
+    - '------------INS MethodInvocation@@iGregorianChronology.year().add(instant,-1)
+      @TO@ Assignment@@instant=iGregorianChronology.year().add(instant,-1) '
+    - '---------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.year().add(instant,-1) '
+    - '---------------INS MethodInvocation@@MethodName:year:[] @TO@ MethodInvocation@@iGregorianChronology.year().add(instant,-1) '
+    - '---------------INS SimpleName@@MethodName:add:[instant, -1] @TO@ MethodInvocation@@iGregorianChronology.year().add(instant,-1) '
+    - '------------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:add:[instant,
+      -1] '
+    - '------------------INS PrefixExpression@@-1 @TO@ SimpleName@@MethodName:add:[instant,
+      -1] '
+    - '---------------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:instant=gregorianToJulian(instant) @TO@
+      IfStatement@@InfixExpression:instant + iGapDuration < iCutover '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:instant=iJulianField.add(instant,value)
+      @TO@ IfStatement@@InfixExpression:instant >= iCutover '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:instant >= iCutover @TO@ IfStatement@@InfixExpression:instant
+      >= iCutover '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:iConvertByWeekyear @TO@ IfStatement@@InfixExpression:instant
+      + iGapDuration < iCutover '
+    - '---INS SimpleName@@iConvertByWeekyear @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '---INS VariableDeclarationStatement@@int wyear=iGregorianChronology.weekyear().get(instant);
+      @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int wyear=iGregorianChronology.weekyear().get(instant); '
+    - '------INS VariableDeclarationFragment@@wyear=iGregorianChronology.weekyear().get(instant)
+      @TO@ VariableDeclarationStatement@@int wyear=iGregorianChronology.weekyear().get(instant); '
+    - '---------INS SimpleName@@wyear @TO@ VariableDeclarationFragment@@wyear=iGregorianChronology.weekyear().get(instant) '
+    - '---------INS MethodInvocation@@iGregorianChronology.weekyear().get(instant)
+      @TO@ VariableDeclarationFragment@@wyear=iGregorianChronology.weekyear().get(instant) '
+    - '------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.weekyear().get(instant) '
+    - '------------INS MethodInvocation@@MethodName:weekyear:[] @TO@ MethodInvocation@@iGregorianChronology.weekyear().get(instant) '
+    - '------------INS SimpleName@@MethodName:get:[instant] @TO@ MethodInvocation@@iGregorianChronology.weekyear().get(instant) '
+    - '---------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:get:[instant] '
+    - '---INS IfStatement@@InfixExpression:wyear <= 0 @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------INS InfixExpression@@wyear <= 0 @TO@ IfStatement@@InfixExpression:wyear
+      <= 0 '
+    - '---------INS SimpleName@@wyear @TO@ InfixExpression@@wyear <= 0 '
+    - '---------INS Operator@@<= @TO@ InfixExpression@@wyear <= 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@wyear <= 0 '
+    - '------INS ExpressionStatement@@Assignment:instant=iGregorianChronology.weekyear().add(instant,-1)
+      @TO@ IfStatement@@InfixExpression:wyear <= 0 '
+    - '---------INS Assignment@@instant=iGregorianChronology.weekyear().add(instant,-1)
+      @TO@ ExpressionStatement@@Assignment:instant=iGregorianChronology.weekyear().add(instant,-1) '
+    - '------------INS SimpleName@@instant @TO@ Assignment@@instant=iGregorianChronology.weekyear().add(instant,-1) '
+    - '------------INS Operator@@= @TO@ Assignment@@instant=iGregorianChronology.weekyear().add(instant,-1) '
+    - '------------INS MethodInvocation@@iGregorianChronology.weekyear().add(instant,-1)
+      @TO@ Assignment@@instant=iGregorianChronology.weekyear().add(instant,-1) '
+    - '---------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.weekyear().add(instant,-1) '
+    - '---------------INS MethodInvocation@@MethodName:weekyear:[] @TO@ MethodInvocation@@iGregorianChronology.weekyear().add(instant,-1) '
+    - '---------------INS SimpleName@@MethodName:add:[instant, -1] @TO@ MethodInvocation@@iGregorianChronology.weekyear().add(instant,-1) '
+    - '------------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:add:[instant,
+      -1] '
+    - '------------------INS PrefixExpression@@-1 @TO@ SimpleName@@MethodName:add:[instant,
+      -1] '
+    - '---------------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+    - '---INS VariableDeclarationStatement@@int year=iGregorianChronology.year().get(instant);
+      @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int year=iGregorianChronology.year().get(instant); '
+    - '------INS VariableDeclarationFragment@@year=iGregorianChronology.year().get(instant)
+      @TO@ VariableDeclarationStatement@@int year=iGregorianChronology.year().get(instant); '
+    - '---------INS SimpleName@@year @TO@ VariableDeclarationFragment@@year=iGregorianChronology.year().get(instant) '
+    - '---------INS MethodInvocation@@iGregorianChronology.year().get(instant) @TO@
+      VariableDeclarationFragment@@year=iGregorianChronology.year().get(instant) '
+    - '------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.year().get(instant) '
+    - '------------INS MethodInvocation@@MethodName:year:[] @TO@ MethodInvocation@@iGregorianChronology.year().get(instant) '
+    - '------------INS SimpleName@@MethodName:get:[instant] @TO@ MethodInvocation@@iGregorianChronology.year().get(instant) '
+    - '---------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:get:[instant] '
+    - '---INS IfStatement@@InfixExpression:year <= 0 @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------INS InfixExpression@@year <= 0 @TO@ IfStatement@@InfixExpression:year
+      <= 0 '
+    - '---------INS SimpleName@@year @TO@ InfixExpression@@year <= 0 '
+    - '---------INS Operator@@<= @TO@ InfixExpression@@year <= 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@year <= 0 '
+    - '------INS ExpressionStatement@@Assignment:instant=iGregorianChronology.year().add(instant,-1)
+      @TO@ IfStatement@@InfixExpression:year <= 0 '
+    - '---------INS Assignment@@instant=iGregorianChronology.year().add(instant,-1)
+      @TO@ ExpressionStatement@@Assignment:instant=iGregorianChronology.year().add(instant,-1) '
+    - '------------INS SimpleName@@instant @TO@ Assignment@@instant=iGregorianChronology.year().add(instant,-1) '
+    - '------------INS Operator@@= @TO@ Assignment@@instant=iGregorianChronology.year().add(instant,-1) '
+    - '------------INS MethodInvocation@@iGregorianChronology.year().add(instant,-1)
+      @TO@ Assignment@@instant=iGregorianChronology.year().add(instant,-1) '
+    - '---------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.year().add(instant,-1) '
+    - '---------------INS MethodInvocation@@MethodName:year:[] @TO@ MethodInvocation@@iGregorianChronology.year().add(instant,-1) '
+    - '---------------INS SimpleName@@MethodName:add:[instant, -1] @TO@ MethodInvocation@@iGregorianChronology.year().add(instant,-1) '
+    - '------------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:add:[instant,
+      -1] '
+    - '------------------INS PrefixExpression@@-1 @TO@ SimpleName@@MethodName:add:[instant,
+      -1] '
+    - '---------------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  repair_actions_cnt: 10
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/chrono/GJChronology:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@LocalDate cutoverDate=new LocalDate(cutoverInstant.getMillis(),GregorianChronology.getInstance(zone));
+      @TO@ IfStatement@@InfixExpression:gregorianCutover == null '
+    - '---INS SimpleType@@LocalDate @TO@ VariableDeclarationStatement@@LocalDate cutoverDate=new
+      LocalDate(cutoverInstant.getMillis(),GregorianChronology.getInstance(zone)); '
+    - '---INS VariableDeclarationFragment@@cutoverDate=new LocalDate(cutoverInstant.getMillis(),GregorianChronology.getInstance(zone))
+      @TO@ VariableDeclarationStatement@@LocalDate cutoverDate=new LocalDate(cutoverInstant.getMillis(),GregorianChronology.getInstance(zone)); '
+    - '------INS SimpleName@@cutoverDate @TO@ VariableDeclarationFragment@@cutoverDate=new
+      LocalDate(cutoverInstant.getMillis(),GregorianChronology.getInstance(zone)) '
+    - '------INS ClassInstanceCreation@@LocalDate[cutoverInstant.getMillis(), GregorianChronology.getInstance(zone)]
+      @TO@ VariableDeclarationFragment@@cutoverDate=new LocalDate(cutoverInstant.getMillis(),GregorianChronology.getInstance(zone)) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@LocalDate[cutoverInstant.getMillis(),
+      GregorianChronology.getInstance(zone)] '
+    - '---------INS SimpleType@@LocalDate @TO@ ClassInstanceCreation@@LocalDate[cutoverInstant.getMillis(),
+      GregorianChronology.getInstance(zone)] '
+    - '---------INS MethodInvocation@@cutoverInstant.getMillis() @TO@ ClassInstanceCreation@@LocalDate[cutoverInstant.getMillis(),
+      GregorianChronology.getInstance(zone)] '
+    - '------------INS SimpleName@@Name:cutoverInstant @TO@ MethodInvocation@@cutoverInstant.getMillis() '
+    - '------------INS SimpleName@@MethodName:getMillis:[] @TO@ MethodInvocation@@cutoverInstant.getMillis() '
+    - '---------INS MethodInvocation@@GregorianChronology.getInstance(zone) @TO@ ClassInstanceCreation@@LocalDate[cutoverInstant.getMillis(),
+      GregorianChronology.getInstance(zone)] '
+    - '------------INS SimpleName@@Name:GregorianChronology @TO@ MethodInvocation@@GregorianChronology.getInstance(zone) '
+    - '------------INS SimpleName@@MethodName:getInstance:[zone] @TO@ MethodInvocation@@GregorianChronology.getInstance(zone) '
+    - '---------------INS SimpleName@@zone @TO@ SimpleName@@MethodName:getInstance:[zone] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:cutoverDate.getYear() <= 0 @TO@ IfStatement@@InfixExpression:gregorianCutover
+      == null '
+    - '---INS InfixExpression@@cutoverDate.getYear() <= 0 @TO@ IfStatement@@InfixExpression:cutoverDate.getYear()
+      <= 0 '
+    - '------INS MethodInvocation@@cutoverDate.getYear() @TO@ InfixExpression@@cutoverDate.getYear()
+      <= 0 '
+    - '---------INS SimpleName@@Name:cutoverDate @TO@ MethodInvocation@@cutoverDate.getYear() '
+    - '---------INS SimpleName@@MethodName:getYear:[] @TO@ MethodInvocation@@cutoverDate.getYear() '
+    - '------INS Operator@@<= @TO@ InfixExpression@@cutoverDate.getYear() <= 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@cutoverDate.getYear() <= 0 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Cutover
+      too early. Must be on or after 0001-01-01.") @TO@ IfStatement@@InfixExpression:cutoverDate.getYear()
+      <= 0 '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Cutover too early.
+      Must be on or after 0001-01-01."] @TO@ ThrowStatement@@ClassInstanceCreation:new
+      IllegalArgumentException("Cutover too early. Must be on or after 0001-01-01.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Cutover
+      too early. Must be on or after 0001-01-01."] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Cutover
+      too early. Must be on or after 0001-01-01."] '
+    - '---------INS StringLiteral@@"Cutover too early. Must be on or after 0001-01-01."
+      @TO@ ClassInstanceCreation@@IllegalArgumentException["Cutover too early. Must
+      be on or after 0001-01-01."] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV MethodDeclaration@@public, @@long, MethodName:add, @@Argus:long+instant+int+value+
+      @TO@ TypeDeclaration@@[private, final]ImpreciseCutoverField, CutoverField '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, @@long, MethodName:add, @@Argus:long+instant+int+value+
+      @TO@ public, @@long, MethodName:add, @@Argus:long+instant+long+value+ '
+    - '---UPD SingleVariableDeclaration@@int value @TO@ long value '
+    - '------UPD PrimitiveType@@int @TO@ long '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:instant=iGregorianField.add(instant,value)
+      @TO@ IfStatement@@InfixExpression:instant >= iCutover '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:instant < iCutover @TO@ IfStatement@@InfixExpression:instant
+      >= iCutover '
+    - '---INS InfixExpression@@instant < iCutover @TO@ IfStatement@@InfixExpression:instant
+      < iCutover '
+    - '------INS SimpleName@@instant @TO@ InfixExpression@@instant < iCutover '
+    - '------INS Operator@@< @TO@ InfixExpression@@instant < iCutover '
+    - '------INS SimpleName@@iCutover @TO@ InfixExpression@@instant < iCutover '
+    - '---INS IfStatement@@InfixExpression:instant + iGapDuration < iCutover @TO@
+      IfStatement@@InfixExpression:instant < iCutover '
+    - '------MOV InfixExpression@@instant + iGapDuration < iCutover @TO@ IfStatement@@InfixExpression:instant
+      + iGapDuration < iCutover '
+    - '------INS IfStatement@@SimpleName:iConvertByWeekyear @TO@ IfStatement@@InfixExpression:instant
+      + iGapDuration < iCutover '
+    - '---------INS SimpleName@@iConvertByWeekyear @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '---------INS VariableDeclarationStatement@@int wyear=iGregorianChronology.weekyear().get(instant);
+      @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int wyear=iGregorianChronology.weekyear().get(instant); '
+    - '------------INS VariableDeclarationFragment@@wyear=iGregorianChronology.weekyear().get(instant)
+      @TO@ VariableDeclarationStatement@@int wyear=iGregorianChronology.weekyear().get(instant); '
+    - '---------------INS SimpleName@@wyear @TO@ VariableDeclarationFragment@@wyear=iGregorianChronology.weekyear().get(instant) '
+    - '---------------INS MethodInvocation@@iGregorianChronology.weekyear().get(instant)
+      @TO@ VariableDeclarationFragment@@wyear=iGregorianChronology.weekyear().get(instant) '
+    - '------------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.weekyear().get(instant) '
+    - '------------------INS MethodInvocation@@MethodName:weekyear:[] @TO@ MethodInvocation@@iGregorianChronology.weekyear().get(instant) '
+    - '------------------INS SimpleName@@MethodName:get:[instant] @TO@ MethodInvocation@@iGregorianChronology.weekyear().get(instant) '
+    - '---------------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:get:[instant] '
+    - '---------INS IfStatement@@InfixExpression:wyear <= 0 @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------------INS InfixExpression@@wyear <= 0 @TO@ IfStatement@@InfixExpression:wyear
+      <= 0 '
+    - '---------------INS SimpleName@@wyear @TO@ InfixExpression@@wyear <= 0 '
+    - '---------------INS Operator@@<= @TO@ InfixExpression@@wyear <= 0 '
+    - '---------------INS NumberLiteral@@0 @TO@ InfixExpression@@wyear <= 0 '
+    - '------------MOV ExpressionStatement@@Assignment:instant=iGregorianField.add(instant,value)
+      @TO@ IfStatement@@InfixExpression:wyear <= 0 '
+    - '---------INS VariableDeclarationStatement@@int year=iGregorianChronology.year().get(instant);
+      @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int year=iGregorianChronology.year().get(instant); '
+    - '------------INS VariableDeclarationFragment@@year=iGregorianChronology.year().get(instant)
+      @TO@ VariableDeclarationStatement@@int year=iGregorianChronology.year().get(instant); '
+    - '---------------INS SimpleName@@year @TO@ VariableDeclarationFragment@@year=iGregorianChronology.year().get(instant) '
+    - '---------------INS MethodInvocation@@iGregorianChronology.year().get(instant)
+      @TO@ VariableDeclarationFragment@@year=iGregorianChronology.year().get(instant) '
+    - '------------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.year().get(instant) '
+    - '------------------INS MethodInvocation@@MethodName:year:[] @TO@ MethodInvocation@@iGregorianChronology.year().get(instant) '
+    - '------------------INS SimpleName@@MethodName:get:[instant] @TO@ MethodInvocation@@iGregorianChronology.year().get(instant) '
+    - '---------------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:get:[instant] '
+    - '---------MOV IfStatement@@InfixExpression:instant < iCutover @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------MOV ExpressionStatement@@Assignment:instant=gregorianToJulian(instant)
+      @TO@ IfStatement@@InfixExpression:instant + iGapDuration < iCutover '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, @@long, MethodName:add, @@Argus:long+instant+long+value+
+      @TO@ public, @@long, MethodName:add, @@Argus:long+instant+int+value+ '
+    - '---UPD SingleVariableDeclaration@@long value @TO@ int value '
+    - '------UPD PrimitiveType@@long @TO@ int '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:instant=iGregorianField.add(instant,value)
+      @TO@ Assignment:instant=iGregorianChronology.weekyear().add(instant,-1) '
+    - '---UPD Assignment@@instant=iGregorianField.add(instant,value) @TO@ instant=iGregorianChronology.weekyear().add(instant,-1) '
+    - '------UPD MethodInvocation@@iGregorianField.add(instant,value) @TO@ iGregorianChronology.weekyear().add(instant,-1) '
+    - '---------INS MethodInvocation@@MethodName:weekyear:[] @TO@ MethodInvocation@@iGregorianField.add(instant,value) '
+    - '---------UPD SimpleName@@Name:iGregorianField @TO@ Name:iGregorianChronology '
+    - '---------UPD SimpleName@@MethodName:add:[instant, value] @TO@ MethodName:add:[instant,
+      -1] '
+    - '------------INS PrefixExpression@@-1 @TO@ SimpleName@@MethodName:add:[instant,
+      value] '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:instant < iCutover @TO@ InfixExpression:year
+      <= 0 '
+    - '---UPD InfixExpression@@instant < iCutover @TO@ year <= 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@instant < iCutover '
+    - '------UPD SimpleName@@instant @TO@ year '
+    - '------UPD Operator@@< @TO@ <= '
+    - '------DEL SimpleName@@iCutover '
+    - '---INS ExpressionStatement@@Assignment:instant=iGregorianChronology.year().add(instant,-1)
+      @TO@ IfStatement@@InfixExpression:instant < iCutover '
+    - '------INS Assignment@@instant=iGregorianChronology.year().add(instant,-1) @TO@
+      ExpressionStatement@@Assignment:instant=iGregorianChronology.year().add(instant,-1) '
+    - '---------INS SimpleName@@instant @TO@ Assignment@@instant=iGregorianChronology.year().add(instant,-1) '
+    - '---------INS Operator@@= @TO@ Assignment@@instant=iGregorianChronology.year().add(instant,-1) '
+    - '---------INS MethodInvocation@@iGregorianChronology.year().add(instant,-1)
+      @TO@ Assignment@@instant=iGregorianChronology.year().add(instant,-1) '
+    - '------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.year().add(instant,-1) '
+    - '------------INS MethodInvocation@@MethodName:year:[] @TO@ MethodInvocation@@iGregorianChronology.year().add(instant,-1) '
+    - '------------INS SimpleName@@MethodName:add:[instant, -1] @TO@ MethodInvocation@@iGregorianChronology.year().add(instant,-1) '
+    - '---------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:add:[instant,
+      -1] '
+    - '---------------INS PrefixExpression@@-1 @TO@ SimpleName@@MethodName:add:[instant,
+      -1] '
+    - '------------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '------------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+    - '---DEL IfStatement@@InfixExpression:instant + iGapDuration < iCutover '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:instant=iGregorianField.add(instant,value)
+      @TO@ IfStatement@@InfixExpression:instant >= iCutover '
+    - '---INS Assignment@@instant=iGregorianField.add(instant,value) @TO@ ExpressionStatement@@Assignment:instant=iGregorianField.add(instant,value) '
+    - '------INS SimpleName@@instant @TO@ Assignment@@instant=iGregorianField.add(instant,value) '
+    - '------INS Operator@@= @TO@ Assignment@@instant=iGregorianField.add(instant,value) '
+    - '------INS MethodInvocation@@iGregorianField.add(instant,value) @TO@ Assignment@@instant=iGregorianField.add(instant,value) '
+    - '---------INS SimpleName@@Name:iGregorianField @TO@ MethodInvocation@@iGregorianField.add(instant,value) '
+    - '---------INS SimpleName@@MethodName:add:[instant, value] @TO@ MethodInvocation@@iGregorianField.add(instant,value) '
+    - '------------MOV SimpleName@@value @TO@ SimpleName@@MethodName:add:[instant,
+      value] '
+    - '------------INS SimpleName@@instant @TO@ SimpleName@@MethodName:add:[instant,
+      value] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:iConvertByWeekyear @TO@ IfStatement@@InfixExpression:instant
+      + iGapDuration < iCutover '
+    - '---INS SimpleName@@iConvertByWeekyear @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '---INS IfStatement@@InfixExpression:wyear <= 0 @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------INS InfixExpression@@wyear <= 0 @TO@ IfStatement@@InfixExpression:wyear
+      <= 0 '
+    - '---------INS SimpleName@@wyear @TO@ InfixExpression@@wyear <= 0 '
+    - '---------INS Operator@@<= @TO@ InfixExpression@@wyear <= 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@wyear <= 0 '
+    - '---INS IfStatement@@InfixExpression:year <= 0 @TO@ IfStatement@@SimpleName:iConvertByWeekyear '
+    - '------INS InfixExpression@@year <= 0 @TO@ IfStatement@@InfixExpression:year
+      <= 0 '
+    - '---------INS SimpleName@@year @TO@ InfixExpression@@year <= 0 '
+    - '---------INS Operator@@<= @TO@ InfixExpression@@year <= 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@year <= 0 '
+  repair_actions_cnt: 11

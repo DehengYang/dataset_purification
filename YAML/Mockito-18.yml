@@ -1,0 +1,122 @@
+1 bug_id: Mockito-18
+2 src folder:
+  name of src folder: src
+  number of files: 356
+  number of java files: 319
+  number of src classes: 393
+  number of test classes: 283
+3 test (cases):
+  failing test cases:
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsEmptyValuesTest#should_return_empty_iterable
+  failing tests:
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsEmptyValuesTest
+  number of all test cases: 974
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.985
+  purification via delta debugging: 518.001
+  repair actions extraction: 1.015
+5 stmts covered by failing cases:
+  buggy:
+    org.mockito.internal.stubbing.defaultanswers.ReturnsEmptyValuesTest#should_return_empty_iterable: 37
+  fixed:
+    org.mockito.internal.stubbing.defaultanswers.ReturnsEmptyValuesTest#should_return_empty_iterable: 37
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 0
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 0
+  ori_patch_lines: 2
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_18/src/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java\t\
+    2020-10-27 03:00:40.753654212 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_18/purify/patch/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java\t\
+    2020-10-27 03:00:40.749654097 -0400\n@@ -84,6 +84,8 @@\n             return Primitives.defaultValueForPrimitiveOrWrapper(type);\n\
+    \             //new instances are used instead of Collections.emptyList(), etc.\n\
+    \             //to avoid UnsupportedOperationException if code under test modifies\
+    \ returned collection\n+        } else if (type == Iterable.class) {\n+      \
+    \      return new ArrayList<Object>(0);\n         } else if (type == Collection.class)\
+    \ {\n             return new LinkedList<Object>();\n         } else if (type ==\
+    \ Set.class) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_18/src/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java\t\
+    2020-10-27 03:11:10.203893398 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_18/purify/purified/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java\t\
+    2020-10-27 03:11:10.203893398 -0400\n@@ -84,6 +84,8 @@\n             return Primitives.defaultValueForPrimitiveOrWrapper(type);\n\
+    \             //new instances are used instead of Collections.emptyList(), etc.\n\
+    \             //to avoid UnsupportedOperationException if code under test modifies\
+    \ returned collection\n+        } else if (type == Iterable.class) {\n+      \
+    \      return new ArrayList<Object>(0);\n         } else if (type == Collection.class)\
+    \ {\n             return new LinkedList<Object>();\n         } else if (type ==\
+    \ Set.class) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:type == Iterable.class @TO@ IfStatement@@MethodInvocation:Primitives.isPrimitiveOrWrapper(type) '
+    - '---MOV IfStatement@@InfixExpression:type == Collection.class @TO@ IfStatement@@InfixExpression:type
+      == Iterable.class '
+    - '---INS InfixExpression@@type == Iterable.class @TO@ IfStatement@@InfixExpression:type
+      == Iterable.class '
+    - '------INS SimpleName@@type @TO@ InfixExpression@@type == Iterable.class '
+    - '------INS Operator@@== @TO@ InfixExpression@@type == Iterable.class '
+    - '------INS TypeLiteral@@Iterable.class @TO@ InfixExpression@@type == Iterable.class '
+    - '---INS ReturnStatement@@ClassInstanceCreation:new ArrayList<Object>(0) @TO@
+      IfStatement@@InfixExpression:type == Iterable.class '
+    - '------INS ClassInstanceCreation@@ArrayList<Object>[0] @TO@ ReturnStatement@@ClassInstanceCreation:new
+      ArrayList<Object>(0) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@ArrayList<Object>[0] '
+    - '---------INS ParameterizedType@@ArrayList<Object> @TO@ ClassInstanceCreation@@ArrayList<Object>[0] '
+    - '------------INS SimpleType@@ArrayList @TO@ ParameterizedType@@ArrayList<Object> '
+    - '------------INS SimpleType@@Object @TO@ ParameterizedType@@ArrayList<Object> '
+    - '---------INS NumberLiteral@@0 @TO@ ClassInstanceCreation@@ArrayList<Object>[0] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:type == Iterable.class @TO@ IfStatement@@MethodInvocation:Primitives.isPrimitiveOrWrapper(type) '
+    - '---MOV IfStatement@@InfixExpression:type == Collection.class @TO@ IfStatement@@InfixExpression:type
+      == Iterable.class '
+    - '---INS InfixExpression@@type == Iterable.class @TO@ IfStatement@@InfixExpression:type
+      == Iterable.class '
+    - '------INS SimpleName@@type @TO@ InfixExpression@@type == Iterable.class '
+    - '------INS Operator@@== @TO@ InfixExpression@@type == Iterable.class '
+    - '------INS TypeLiteral@@Iterable.class @TO@ InfixExpression@@type == Iterable.class '
+    - '---INS ReturnStatement@@ClassInstanceCreation:new ArrayList<Object>(0) @TO@
+      IfStatement@@InfixExpression:type == Iterable.class '
+    - '------INS ClassInstanceCreation@@ArrayList<Object>[0] @TO@ ReturnStatement@@ClassInstanceCreation:new
+      ArrayList<Object>(0) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@ArrayList<Object>[0] '
+    - '---------INS ParameterizedType@@ArrayList<Object> @TO@ ClassInstanceCreation@@ArrayList<Object>[0] '
+    - '------------INS SimpleType@@ArrayList @TO@ ParameterizedType@@ArrayList<Object> '
+    - '------------INS SimpleType@@Object @TO@ ParameterizedType@@ArrayList<Object> '
+    - '---------INS NumberLiteral@@0 @TO@ ClassInstanceCreation@@ArrayList<Object>[0] '
+  repair_actions_cnt: 1

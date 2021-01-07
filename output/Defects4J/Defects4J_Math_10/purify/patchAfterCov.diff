@@ -1,0 +1,10 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_10/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java	2020-10-21 04:56:00.788144701 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_10/purify/assertBeforeMut/org/apache/commons/math3/analysis/differentiation/DSCompiler.java	2020-10-21 04:56:00.788144701 -0400
+@@ -1416,6 +1416,7 @@
+         }
+ 
+         // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly
++        result[resultOffset] = FastMath.atan2(y[yOffset], x[xOffset]);
+ 
+     }
+ 

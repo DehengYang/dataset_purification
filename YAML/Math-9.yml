@@ -1,0 +1,132 @@
+1 bug_id: Math-9
+2 src folder:
+  name of src folder: java
+  number of files: 757
+  number of java files: 756
+  number of src classes: 1018
+  number of test classes: 378
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.geometry.euclidean.threed.LineTest#testRevert
+  failing tests:
+  - org.apache.commons.math3.geometry.euclidean.threed.LineTest
+  number of all test cases: 4869
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.001
+  purification via delta debugging: 227.224
+  repair actions extraction: 0.96
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.geometry.euclidean.threed.LineTest#testRevert: 113
+  fixed:
+    org.apache.commons.math3.geometry.euclidean.threed.LineTest#testRevert: 118
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 2
+  oriDel: 1
+  ori_patch_lines: 3
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_9/src/main/java/org/apache/commons/math3/geometry/euclidean/threed/Line.java\t\
+    2020-10-21 04:50:28.878555389 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_9/purify/patch/org/apache/commons/math3/geometry/euclidean/threed/Line.java\t\
+    2020-10-21 04:50:28.878555389 -0400\n@@ -84,7 +84,8 @@\n      * @return a new\
+    \ instance, with reversed direction\n      */\n     public Line revert() {\n-\
+    \        final Line reverted = new Line(zero, zero.subtract(direction));\n+  \
+    \      final Line reverted = new Line(this);\n+        reverted.direction = reverted.direction.negate();\n\
+    \         return reverted;\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_9/src/main/java/org/apache/commons/math3/geometry/euclidean/threed/Line.java\t\
+    2020-10-21 04:54:42.921895022 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_9/purify/purified/org/apache/commons/math3/geometry/euclidean/threed/Line.java\t\
+    2020-10-21 04:54:42.921895022 -0400\n@@ -84,7 +84,8 @@\n      * @return a new\
+    \ instance, with reversed direction\n      */\n     public Line revert() {\n-\
+    \        final Line reverted = new Line(zero, zero.subtract(direction));\n+  \
+    \      final Line reverted = new Line(this);\n+        reverted.direction = reverted.direction.negate();\n\
+    \         return reverted;\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/geometry/euclidean/threed/Line:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final Line reverted=new Line(zero,zero.subtract(direction));
+      @TO@ final Line reverted=new Line(this); '
+    - '---UPD VariableDeclarationFragment@@reverted=new Line(zero,zero.subtract(direction))
+      @TO@ reverted=new Line(this) '
+    - '------UPD ClassInstanceCreation@@Line[zero, zero.subtract(direction)] @TO@
+      Line[this] '
+    - '---------INS ThisExpression@@this @TO@ ClassInstanceCreation@@Line[zero, zero.subtract(direction)] '
+    - '---------DEL SimpleName@@zero '
+    - '---------DEL MethodInvocation@@zero.subtract(direction) '
+    - '------------DEL SimpleName@@Name:zero '
+    - '------------DEL SimpleName@@MethodName:subtract:[direction] '
+    - '---------------DEL SimpleName@@direction '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:reverted.direction=reverted.direction.negate()
+      @TO@ MethodDeclaration@@public, @@Line, MethodName:revert, @@Argus:null '
+    - '---INS Assignment@@reverted.direction=reverted.direction.negate() @TO@ ExpressionStatement@@Assignment:reverted.direction=reverted.direction.negate() '
+    - '------INS QualifiedName@@reverted.direction @TO@ Assignment@@reverted.direction=reverted.direction.negate() '
+    - '---------INS SimpleName@@reverted @TO@ QualifiedName@@reverted.direction '
+    - '---------INS SimpleName@@direction @TO@ QualifiedName@@reverted.direction '
+    - '------INS Operator@@= @TO@ Assignment@@reverted.direction=reverted.direction.negate() '
+    - '------INS MethodInvocation@@reverted.direction.negate() @TO@ Assignment@@reverted.direction=reverted.direction.negate() '
+    - '---------INS QualifiedName@@Name:reverted.direction @TO@ MethodInvocation@@reverted.direction.negate() '
+    - '---------INS SimpleName@@MethodName:negate:[] @TO@ MethodInvocation@@reverted.direction.negate() '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/geometry/euclidean/threed/Line:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final Line reverted=new Line(zero,zero.subtract(direction));
+      @TO@ final Line reverted=new Line(this); '
+    - '---UPD VariableDeclarationFragment@@reverted=new Line(zero,zero.subtract(direction))
+      @TO@ reverted=new Line(this) '
+    - '------UPD ClassInstanceCreation@@Line[zero, zero.subtract(direction)] @TO@
+      Line[this] '
+    - '---------INS ThisExpression@@this @TO@ ClassInstanceCreation@@Line[zero, zero.subtract(direction)] '
+    - '---------DEL SimpleName@@zero '
+    - '---------DEL MethodInvocation@@zero.subtract(direction) '
+    - '------------DEL SimpleName@@Name:zero '
+    - '------------DEL SimpleName@@MethodName:subtract:[direction] '
+    - '---------------DEL SimpleName@@direction '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:reverted.direction=reverted.direction.negate()
+      @TO@ MethodDeclaration@@public, @@Line, MethodName:revert, @@Argus:null '
+    - '---INS Assignment@@reverted.direction=reverted.direction.negate() @TO@ ExpressionStatement@@Assignment:reverted.direction=reverted.direction.negate() '
+    - '------INS QualifiedName@@reverted.direction @TO@ Assignment@@reverted.direction=reverted.direction.negate() '
+    - '---------INS SimpleName@@reverted @TO@ QualifiedName@@reverted.direction '
+    - '---------INS SimpleName@@direction @TO@ QualifiedName@@reverted.direction '
+    - '------INS Operator@@= @TO@ Assignment@@reverted.direction=reverted.direction.negate() '
+    - '------INS MethodInvocation@@reverted.direction.negate() @TO@ Assignment@@reverted.direction=reverted.direction.negate() '
+    - '---------INS QualifiedName@@Name:reverted.direction @TO@ MethodInvocation@@reverted.direction.negate() '
+    - '---------INS SimpleName@@MethodName:negate:[] @TO@ MethodInvocation@@reverted.direction.negate() '
+  repair_actions_cnt: 2

@@ -1,0 +1,110 @@
+1 bug_id: Math-41
+2 src folder:
+  name of src folder: java
+  number of files: 622
+  number of java files: 621
+  number of src classes: 848
+  number of test classes: 294
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.stat.descriptive.moment.VarianceTest#testEvaluateArraySegmentWeighted
+  failing tests:
+  - org.apache.commons.math.stat.descriptive.moment.VarianceTest
+  number of all test cases: 3195
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.0
+  purification via delta debugging: 70.776
+  repair actions extraction: 0.898
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.stat.descriptive.moment.VarianceTest#testEvaluateArraySegmentWeighted: 116
+  fixed:
+    org.apache.commons.math.stat.descriptive.moment.VarianceTest#testEvaluateArraySegmentWeighted: 116
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_41/src/main/java/org/apache/commons/math/stat/descriptive/moment/Variance.java\t\
+    2020-10-21 11:26:33.598201858 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_41/purify/patch/org/apache/commons/math/stat/descriptive/moment/Variance.java\t\
+    2020-10-21 11:26:33.598201858 -0400\n@@ -517,7 +517,7 @@\n                 }\n\
+    \ \n                 double sumWts = 0;\n-                for (int i = 0; i <\
+    \ weights.length; i++) {\n+                for (int i = begin; i < begin + length;\
+    \ i++) {\n                     sumWts += weights[i];\n                 }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_41/src/main/java/org/apache/commons/math/stat/descriptive/moment/Variance.java\t\
+    2020-10-21 11:28:02.584774414 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_41/purify/purified/org/apache/commons/math/stat/descriptive/moment/Variance.java\t\
+    2020-10-21 11:28:02.580774298 -0400\n@@ -517,7 +517,7 @@\n                 }\n\
+    \ \n                 double sumWts = 0;\n-                for (int i = 0; i <\
+    \ weights.length; i++) {\n+                for (int i = begin; i < begin + length;\
+    \ i++) {\n                     sumWts += weights[i];\n                 }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/descriptive/moment/Variance:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ForStatement@@[int i=0];i < weights.length; [i++] @TO@ [int i=begin];i
+      < begin + length; [i++] '
+    - '---UPD VariableDeclarationExpression@@int i=0 @TO@ int i=begin '
+    - '------UPD VariableDeclarationFragment@@i=0 @TO@ i=begin '
+    - '---------INS SimpleName@@begin @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------DEL NumberLiteral@@0 '
+    - '---UPD InfixExpression@@i < weights.length @TO@ i < begin + length '
+    - '------DEL QualifiedName@@weights.length '
+    - '---------DEL SimpleName@@weights '
+    - '---------DEL SimpleName@@length '
+    - '------INS InfixExpression@@begin + length @TO@ InfixExpression@@i < weights.length '
+    - '---------INS SimpleName@@begin @TO@ InfixExpression@@begin + length '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@begin + length '
+    - '---------INS SimpleName@@length @TO@ InfixExpression@@begin + length '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/descriptive/moment/Variance:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ForStatement@@[int i=0];i < weights.length; [i++] @TO@ [int i=begin];i
+      < begin + length; [i++] '
+    - '---UPD VariableDeclarationExpression@@int i=0 @TO@ int i=begin '
+    - '------UPD VariableDeclarationFragment@@i=0 @TO@ i=begin '
+    - '---------INS SimpleName@@begin @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------DEL NumberLiteral@@0 '
+    - '---UPD InfixExpression@@i < weights.length @TO@ i < begin + length '
+    - '------DEL QualifiedName@@weights.length '
+    - '---------DEL SimpleName@@weights '
+    - '---------DEL SimpleName@@length '
+    - '------INS InfixExpression@@begin + length @TO@ InfixExpression@@i < weights.length '
+    - '---------INS SimpleName@@begin @TO@ InfixExpression@@begin + length '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@begin + length '
+    - '---------INS SimpleName@@length @TO@ InfixExpression@@begin + length '
+  repair_actions_cnt: 1

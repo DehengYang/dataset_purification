@@ -1,0 +1,119 @@
+1 bug_id: Mockito-8
+2 src folder:
+  name of src folder: src
+  number of files: 365
+  number of java files: 327
+  number of src classes: 388
+  number of test classes: 281
+3 test (cases):
+  failing test cases:
+  - org.mockito.internal.util.reflection.GenericMetadataSupportTest#typeVariable_of_self_type
+  - org.mockito.internal.util.reflection.GenericMetadataSupportTest#typeVariable_of_self_type
+  - org.mockito.internal.util.reflection.GenericMetadataSupportTest#typeVariable_of_self_type
+  - org.mockitousage.verification.VerificationAfterDelayTest#shouldVerifyNormallyWithSpecificTimes
+  - org.mockito.internal.util.reflection.GenericMetadataSupportTest#typeVariable_of_self_type
+  - org.mockito.internal.util.reflection.GenericMetadataSupportTest#typeVariable_of_self_type
+  - org.mockitousage.verification.VerificationAfterDelayTest#shouldVerifyNormallyWithSpecificTimes
+  failing tests:
+  - org.mockito.internal.util.reflection.GenericMetadataSupportTest
+  - org.mockitousage.verification.VerificationAfterDelayTest
+  number of all test cases: 1379
+  number of failing test cases: 7
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.421
+  purification via delta debugging: 525.468
+  repair actions extraction: 1.371
+5 stmts covered by failing cases:
+  buggy:
+    org.mockito.internal.util.reflection.GenericMetadataSupportTest#typeVariable_of_self_type: 64
+  fixed:
+    org.mockito.internal.util.reflection.GenericMetadataSupportTest#typeVariable_of_self_type: 76
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 1
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_8/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java\t\
+    2020-10-23 21:39:31.358175154 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_8/purify/patch/org/mockito/internal/util/reflection/GenericMetadataSupport.java\t\
+    2020-10-23 21:39:31.358175154 -0400\n@@ -76,7 +76,7 @@\n \n             if (actualTypeArgument\
+    \ instanceof WildcardType) {\n                 contextualActualTypeParameters.put(typeParameter,\
+    \ boundsOf((WildcardType) actualTypeArgument));\n-            } else {\n+    \
+    \        } else if (typeParameter != actualTypeArgument) {\n                 contextualActualTypeParameters.put(typeParameter,\
+    \ actualTypeArgument);\n             }\n             // logger.log(\"For '\" +\
+    \ parameterizedType + \"' found type variable : { '\" + typeParameter + \"(\"\
+    \ + System.identityHashCode(typeParameter) + \")\" + \"' : '\" + actualTypeArgument\
+    \ + \"(\" + System.identityHashCode(typeParameter) + \")\" + \"' }\");"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_8/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java\t\
+    2020-10-23 21:48:52.934433498 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_8/purify/purified/org/mockito/internal/util/reflection/GenericMetadataSupport.java\t\
+    2020-10-23 21:48:52.934433498 -0400\n@@ -76,7 +76,7 @@\n \n             if (actualTypeArgument\
+    \ instanceof WildcardType) {\n                 contextualActualTypeParameters.put(typeParameter,\
+    \ boundsOf((WildcardType) actualTypeArgument));\n-            } else {\n+    \
+    \        } else if (typeParameter != actualTypeArgument) {\n                 contextualActualTypeParameters.put(typeParameter,\
+    \ actualTypeArgument);\n             }\n             // logger.log(\"For '\" +\
+    \ parameterizedType + \"' found type variable : { '\" + typeParameter + \"(\"\
+    \ + System.identityHashCode(typeParameter) + \")\" + \"' : '\" + actualTypeArgument\
+    \ + \"(\" + System.identityHashCode(typeParameter) + \")\" + \"' }\");"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/util/reflection/GenericMetadataSupport:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:typeParameter != actualTypeArgument @TO@ IfStatement@@InstanceofExpression:actualTypeArgument
+      instanceof WildcardType '
+    - '---INS InfixExpression@@typeParameter != actualTypeArgument @TO@ IfStatement@@InfixExpression:typeParameter
+      != actualTypeArgument '
+    - '------INS SimpleName@@typeParameter @TO@ InfixExpression@@typeParameter !=
+      actualTypeArgument '
+    - '------INS Operator@@!= @TO@ InfixExpression@@typeParameter != actualTypeArgument '
+    - '------INS SimpleName@@actualTypeArgument @TO@ InfixExpression@@typeParameter
+      != actualTypeArgument '
+    - '---MOV ExpressionStatement@@MethodInvocation:contextualActualTypeParameters.put(typeParameter,actualTypeArgument)
+      @TO@ IfStatement@@InfixExpression:typeParameter != actualTypeArgument '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/util/reflection/GenericMetadataSupport:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:typeParameter != actualTypeArgument @TO@ IfStatement@@InstanceofExpression:actualTypeArgument
+      instanceof WildcardType '
+    - '---INS InfixExpression@@typeParameter != actualTypeArgument @TO@ IfStatement@@InfixExpression:typeParameter
+      != actualTypeArgument '
+    - '------INS SimpleName@@typeParameter @TO@ InfixExpression@@typeParameter !=
+      actualTypeArgument '
+    - '------INS Operator@@!= @TO@ InfixExpression@@typeParameter != actualTypeArgument '
+    - '------INS SimpleName@@actualTypeArgument @TO@ InfixExpression@@typeParameter
+      != actualTypeArgument '
+    - '---MOV ExpressionStatement@@MethodInvocation:contextualActualTypeParameters.put(typeParameter,actualTypeArgument)
+      @TO@ IfStatement@@InfixExpression:typeParameter != actualTypeArgument '
+  repair_actions_cnt: 1

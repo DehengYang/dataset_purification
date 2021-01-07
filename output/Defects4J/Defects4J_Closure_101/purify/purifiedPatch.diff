@@ -1,0 +1,14 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_101/src/com/google/javascript/jscomp/CommandLineRunner.java	2020-10-23 13:02:51.644692230 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_101/purify/purified/com/google/javascript/jscomp/CommandLineRunner.java	2020-10-23 13:02:51.644692230 -0400
+@@ -430,10 +430,9 @@
+     for (FormattingOption formattingOption : flags.formatting) {
+       formattingOption.applyToOptions(options);
+     }
+-    if (flags.process_closure_primitives) {
+       options.closurePass = true;
+-    }
+ 
++    options.closurePass = flags.process_closure_primitives;
+     initOptionsFromFlags(options);
+     return options;
+   }

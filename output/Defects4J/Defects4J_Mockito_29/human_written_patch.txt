@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_29/src/org/mockito/internal/matchers/Same.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_29/fixed-version/src/org/mockito/internal/matchers/Same.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_29/src/org/mockito/internal/matchers/Same.java	2020-03-01 00:38:32.160662786 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_29/fixed-version/src/org/mockito/internal/matchers/Same.java	2020-03-01 00:38:34.664780777 -0800
+@@ -26,7 +26,7 @@
+     public void describeTo(Description description) {
+         description.appendText("same(");
+         appendQuoting(description);
+-        description.appendText(wanted.toString());
++        description.appendText(wanted == null ? "null" : wanted.toString());
+         appendQuoting(description);
+         description.appendText(")");
+     }

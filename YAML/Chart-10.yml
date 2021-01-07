@@ -1,0 +1,106 @@
+1 bug_id: Chart-10
+2 src folder:
+  name of src folder: source
+  number of files: 651
+  number of java files: 578
+  number of src classes: 604
+  number of test classes: 330
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.imagemap.junit.StandardToolTipTagFragmentGeneratorTests#testGenerateURLFragment
+  failing tests:
+  - org.jfree.chart.imagemap.junit.StandardToolTipTagFragmentGeneratorTests
+  number of all test cases: 1813
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 36.751
+  repair actions extraction: 0.376
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.imagemap.junit.StandardToolTipTagFragmentGeneratorTests#testGenerateURLFragment: 9
+  fixed:
+    org.jfree.chart.imagemap.junit.StandardToolTipTagFragmentGeneratorTests#testGenerateURLFragment: 24
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_10/source/org/jfree/chart/imagemap/StandardToolTipTagFragmentGenerator.java\t\
+    2020-10-21 00:01:04.685157149 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_10/purify/patch/org/jfree/chart/imagemap/StandardToolTipTagFragmentGenerator.java\t\
+    2020-10-21 00:01:04.685157149 -0400\n@@ -62,7 +62,7 @@\n      * @return The formatted\
+    \ HTML area tag attribute(s).\n      */\n     public String generateToolTipFragment(String\
+    \ toolTipText) {\n-        return \" title=\\\"\" + toolTipText\n+        return\
+    \ \" title=\\\"\" + ImageMapUtilities.htmlEscape(toolTipText) \n             +\
+    \ \"\\\" alt=\\\"\\\"\";\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_10/source/org/jfree/chart/imagemap/StandardToolTipTagFragmentGenerator.java\t\
+    2020-10-21 00:01:55.470623936 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_10/purify/purified/org/jfree/chart/imagemap/StandardToolTipTagFragmentGenerator.java\t\
+    2020-10-21 00:01:55.470623936 -0400\n@@ -62,7 +62,7 @@\n      * @return The formatted\
+    \ HTML area tag attribute(s).\n      */\n     public String generateToolTipFragment(String\
+    \ toolTipText) {\n-        return \" title=\\\"\" + toolTipText\n+        return\
+    \ \" title=\\\"\" + ImageMapUtilities.htmlEscape(toolTipText) \n             +\
+    \ \"\\\" alt=\\\"\\\"\";\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/imagemap/StandardToolTipTagFragmentGenerator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@InfixExpression:" title=\"" + toolTipText + "\" alt=\"\""
+      @TO@ InfixExpression:" title=\"" + ImageMapUtilities.htmlEscape(toolTipText)
+      + "\" alt=\"\"" '
+    - '---UPD InfixExpression@@" title=\"" + toolTipText + "\" alt=\"\"" @TO@ " title=\""
+      + ImageMapUtilities.htmlEscape(toolTipText) + "\" alt=\"\"" '
+    - '------INS MethodInvocation@@ImageMapUtilities.htmlEscape(toolTipText) @TO@
+      InfixExpression@@" title=\"" + toolTipText + "\" alt=\"\"" '
+    - '---------INS SimpleName@@Name:ImageMapUtilities @TO@ MethodInvocation@@ImageMapUtilities.htmlEscape(toolTipText) '
+    - '---------INS SimpleName@@MethodName:htmlEscape:[toolTipText] @TO@ MethodInvocation@@ImageMapUtilities.htmlEscape(toolTipText) '
+    - '------------INS SimpleName@@toolTipText @TO@ SimpleName@@MethodName:htmlEscape:[toolTipText] '
+    - '------DEL SimpleName@@toolTipText '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/imagemap/StandardToolTipTagFragmentGenerator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@InfixExpression:" title=\"" + toolTipText + "\" alt=\"\""
+      @TO@ InfixExpression:" title=\"" + ImageMapUtilities.htmlEscape(toolTipText)
+      + "\" alt=\"\"" '
+    - '---UPD InfixExpression@@" title=\"" + toolTipText + "\" alt=\"\"" @TO@ " title=\""
+      + ImageMapUtilities.htmlEscape(toolTipText) + "\" alt=\"\"" '
+    - '------INS MethodInvocation@@ImageMapUtilities.htmlEscape(toolTipText) @TO@
+      InfixExpression@@" title=\"" + toolTipText + "\" alt=\"\"" '
+    - '---------INS SimpleName@@Name:ImageMapUtilities @TO@ MethodInvocation@@ImageMapUtilities.htmlEscape(toolTipText) '
+    - '---------INS SimpleName@@MethodName:htmlEscape:[toolTipText] @TO@ MethodInvocation@@ImageMapUtilities.htmlEscape(toolTipText) '
+    - '------------INS SimpleName@@toolTipText @TO@ SimpleName@@MethodName:htmlEscape:[toolTipText] '
+    - '------DEL SimpleName@@toolTipText '
+  repair_actions_cnt: 1

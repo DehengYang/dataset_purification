@@ -1,0 +1,20 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_5/source/org/jfree/data/xy/XYSeries.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_5/fixed-version/source/org/jfree/data/xy/XYSeries.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_5/source/org/jfree/data/xy/XYSeries.java	2020-03-01 00:03:00.944244305 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_5/fixed-version/source/org/jfree/data/xy/XYSeries.java	2020-03-01 00:03:04.304402623 -0800
+@@ -541,11 +541,15 @@
+         if (x == null) {
+             throw new IllegalArgumentException("Null 'x' argument.");
+         }
++        if (this.allowDuplicateXValues) {
++            add(x, y);
++            return null;
++        }
+ 
+         // if we get to here, we know that duplicate X values are not permitted
+         XYDataItem overwritten = null;
+         int index = indexOf(x);
+-        if (index >= 0 && !this.allowDuplicateXValues) {
++        if (index >= 0) {
+             XYDataItem existing = (XYDataItem) this.data.get(index);
+             try {
+                 overwritten = (XYDataItem) existing.clone();

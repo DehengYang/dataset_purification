@@ -1,0 +1,45 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_54/src/com/google/javascript/rhino/jstype/FunctionType.java	2020-10-23 07:06:58.286512858 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_54/purify/purified/com/google/javascript/rhino/jstype/FunctionType.java	2020-10-23 07:06:58.286512858 -0400
+@@ -338,7 +338,6 @@
+     //
+     // In the second case, we just use the anonymous object as the prototype.
+     if (baseType.hasReferenceName() ||
+-        baseType.isUnknownType() ||
+         isNativeObjectType() ||
+         baseType.isFunctionPrototypeType() ||
+         !(baseType instanceof PrototypeObjectType)) {
+@@ -363,14 +362,17 @@
+       return false;
+     }
+ 
+-    boolean replacedPrototype = prototype != null;
++    PrototypeObjectType oldPrototype = this.prototype;
++    boolean replacedPrototype = oldPrototype != null;
+ 
+     this.prototype = prototype;
+     this.prototypeSlot = new SimpleSlot("prototype", prototype, true);
+     this.prototype.setOwnerFunction(this);
+ 
++    if (oldPrototype != null) {
+       // Disassociating the old prototype makes this easier to debug--
+       // we don't have to worry about two prototypes running around.
++    }
+ 
+     if (isConstructor() || isInterface()) {
+       FunctionType superClass = getSuperClassConstructor();
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_54/src/com/google/javascript/jscomp/TypedScopeCreator.java	2020-10-23 07:06:58.294513090 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_54/purify/purified/com/google/javascript/jscomp/TypedScopeCreator.java	2020-10-23 07:06:58.294513090 -0400
+@@ -1410,7 +1410,12 @@
+           // then they are responsible for making sure that the object literal's
+           // implicit prototype is set up appropriately. We just obey
+           // the @extends tag.
+-          if (!qVar.isTypeInferred()) {
++          ObjectType qVarType = ObjectType.cast(qVar.getType());
++          if (qVarType != null &&
++              rhsValue.getType() == Token.OBJECTLIT) {
++            typeRegistry.resetImplicitPrototype(
++                rhsValue.getJSType(), qVarType.getImplicitPrototype());
++          } else if (!qVar.isTypeInferred()) {
+             // If the programmer has declared that F inherits from Super,
+             // and they assign F.prototype to some arbitrary expression,
+             // there's not much we can do. We just ignore the expression,

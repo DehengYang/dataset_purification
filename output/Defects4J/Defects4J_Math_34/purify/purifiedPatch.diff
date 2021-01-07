@@ -1,0 +1,10 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_34/src/main/java/org/apache/commons/math3/genetics/ListPopulation.java	2020-10-21 10:43:15.363086558 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_34/purify/purified/org/apache/commons/math3/genetics/ListPopulation.java	2020-10-21 10:43:15.363086558 -0400
+@@ -206,6 +206,6 @@
+      * @return chromosome iterator
+      */
+     public Iterator<Chromosome> iterator() {
+-        return chromosomes.iterator();
++        return getChromosomes().iterator();
+     }
+ }

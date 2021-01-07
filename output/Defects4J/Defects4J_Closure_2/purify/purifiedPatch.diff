@@ -1,0 +1,16 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_2/src/com/google/javascript/jscomp/TypeCheck.java	2020-10-21 16:35:54.800052178 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_2/purify/purified/com/google/javascript/jscomp/TypeCheck.java	2020-10-21 16:35:54.800052178 -0400
+@@ -1569,9 +1569,13 @@
+       ObjectType interfaceType) {
+     ObjectType implicitProto = interfaceType.getImplicitPrototype();
+     Set<String> currentPropertyNames;
++    if (implicitProto == null) {
+       // This can be the case if interfaceType is proxy to a non-existent
+       // object (which is a bad type annotation, but shouldn't crash).
++      currentPropertyNames = ImmutableSet.of();
++    } else {
+       currentPropertyNames = implicitProto.getOwnPropertyNames();
++    }
+     for (String name : currentPropertyNames) {
+       ObjectType oType = properties.get(name);
+       if (oType != null) {

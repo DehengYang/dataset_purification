@@ -1,0 +1,21 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_46/src/main/java/org/apache/commons/math/complex/Complex.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_46/fixed-version/src/main/java/org/apache/commons/math/complex/Complex.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_46/src/main/java/org/apache/commons/math/complex/Complex.java	2020-03-01 00:18:34.888248169 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_46/fixed-version/src/main/java/org/apache/commons/math/complex/Complex.java	2020-03-01 00:18:38.516419115 -0800
+@@ -257,7 +257,7 @@
+ 
+         if (divisor.isZero) {
+             // return isZero ? NaN : INF; // See MATH-657
+-            return isZero ? NaN : INF;
++            return NaN;
+         }
+ 
+         if (divisor.isInfinite() && !isInfinite()) {
+@@ -294,7 +294,7 @@
+         }
+         if (divisor == 0d) {
+             // return isZero ? NaN : INF; // See MATH-657
+-            return isZero ? NaN : INF;
++            return NaN;
+         }
+         if (Double.isInfinite(divisor)) {
+             return !isInfinite() ? ZERO : NaN;

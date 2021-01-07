@@ -1,0 +1,128 @@
+1 bug_id: Closure-130
+2 src folder:
+  name of src folder: src
+  number of files: 430
+  number of java files: 414
+  number of src classes: 1379
+  number of test classes: 226
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CollapsePropertiesTest#testIssue931
+  failing tests:
+  - com.google.javascript.jscomp.CollapsePropertiesTest
+  number of all test cases: 7967
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.003
+  purification via delta debugging: 193.193
+  repair actions extraction: 1.345
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CollapsePropertiesTest#testIssue931: 4109
+  fixed:
+    com.google.javascript.jscomp.CollapsePropertiesTest#testIssue931: 3806
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_130/src/com/google/javascript/jscomp/CollapseProperties.java\t\
+    2020-10-23 17:57:29.552523014 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_130/purify/patch/com/google/javascript/jscomp/CollapseProperties.java\t\
+    2020-10-23 17:57:29.552523014 -0400\n@@ -169,7 +169,7 @@\n         continue;\n\
+    \       }\n \n-      if (name.globalSets == 1 && name.localSets == 0 &&\n+   \
+    \   if (!name.inExterns && name.globalSets == 1 && name.localSets == 0 &&\n  \
+    \         name.aliasingGets > 0) {\n         // {@code name} meets condition (b).\
+    \ Find all of its local aliases\n         // and try to inline them."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_130/src/com/google/javascript/jscomp/CollapseProperties.java\t\
+    2020-10-23 18:01:16.983108680 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_130/purify/purified/com/google/javascript/jscomp/CollapseProperties.java\t\
+    2020-10-23 18:01:16.979108564 -0400\n@@ -169,7 +169,7 @@\n         continue;\n\
+    \       }\n \n-      if (name.globalSets == 1 && name.localSets == 0 &&\n+   \
+    \   if (!name.inExterns && name.globalSets == 1 && name.localSets == 0 &&\n  \
+    \         name.aliasingGets > 0) {\n         // {@code name} meets condition (b).\
+    \ Find all of its local aliases\n         // and try to inline them."
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CollapseProperties:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:name.globalSets == 1 && name.localSets ==
+      0 && name.aliasingGets > 0 @TO@ InfixExpression:!name.inExterns && name.globalSets
+      == 1 && name.localSets == 0 && name.aliasingGets > 0 '
+    - '---UPD InfixExpression@@name.globalSets == 1 && name.localSets == 0 && name.aliasingGets
+      > 0 @TO@ !name.inExterns && name.globalSets == 1 && name.localSets == 0 && name.aliasingGets
+      > 0 '
+    - '------UPD InfixExpression@@name.globalSets == 1 && name.localSets == 0 @TO@
+      !name.inExterns && name.globalSets == 1 && name.localSets == 0 '
+    - '---------INS InfixExpression@@!name.inExterns && name.globalSets == 1 @TO@
+      InfixExpression@@name.globalSets == 1 && name.localSets == 0 '
+    - '------------INS PrefixExpression@@!name.inExterns @TO@ InfixExpression@@!name.inExterns
+      && name.globalSets == 1 '
+    - '---------------INS Operator@@! @TO@ PrefixExpression@@!name.inExterns '
+    - '---------------INS QualifiedName@@name.inExterns @TO@ PrefixExpression@@!name.inExterns '
+    - '------------------INS SimpleName@@name @TO@ QualifiedName@@name.inExterns '
+    - '------------------INS SimpleName@@inExterns @TO@ QualifiedName@@name.inExterns '
+    - '------------MOV InfixExpression@@name.globalSets == 1 @TO@ InfixExpression@@!name.inExterns
+      && name.globalSets == 1 '
+    - '------------MOV Operator@@&& @TO@ InfixExpression@@!name.inExterns && name.globalSets
+      == 1 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@name.globalSets == 1 && name.localSets
+      == 0 '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CollapseProperties:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:name.globalSets == 1 && name.localSets ==
+      0 && name.aliasingGets > 0 @TO@ InfixExpression:!name.inExterns && name.globalSets
+      == 1 && name.localSets == 0 && name.aliasingGets > 0 '
+    - '---UPD InfixExpression@@name.globalSets == 1 && name.localSets == 0 && name.aliasingGets
+      > 0 @TO@ !name.inExterns && name.globalSets == 1 && name.localSets == 0 && name.aliasingGets
+      > 0 '
+    - '------UPD InfixExpression@@name.globalSets == 1 && name.localSets == 0 @TO@
+      !name.inExterns && name.globalSets == 1 && name.localSets == 0 '
+    - '---------INS InfixExpression@@!name.inExterns && name.globalSets == 1 @TO@
+      InfixExpression@@name.globalSets == 1 && name.localSets == 0 '
+    - '------------INS PrefixExpression@@!name.inExterns @TO@ InfixExpression@@!name.inExterns
+      && name.globalSets == 1 '
+    - '---------------INS Operator@@! @TO@ PrefixExpression@@!name.inExterns '
+    - '---------------INS QualifiedName@@name.inExterns @TO@ PrefixExpression@@!name.inExterns '
+    - '------------------INS SimpleName@@name @TO@ QualifiedName@@name.inExterns '
+    - '------------------INS SimpleName@@inExterns @TO@ QualifiedName@@name.inExterns '
+    - '------------MOV InfixExpression@@name.globalSets == 1 @TO@ InfixExpression@@!name.inExterns
+      && name.globalSets == 1 '
+    - '------------MOV Operator@@&& @TO@ InfixExpression@@!name.inExterns && name.globalSets
+      == 1 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@name.globalSets == 1 && name.localSets
+      == 0 '
+  files_cnt: '1'
+  repair_actions_cnt: 1

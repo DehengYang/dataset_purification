@@ -1,0 +1,28 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_25/src/com/google/javascript/jscomp/TypeInference.java	2020-10-21 20:52:48.384216831 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_25/purify/assertBeforeMut/com/google/javascript/jscomp/TypeInference.java	2020-10-21 20:52:48.384216831 -0400
+@@ -1033,9 +1033,9 @@
+   }
+ 
+   private FlowScope traverseNew(Node n, FlowScope scope) {
++    scope = traverseChildren(n, scope);
+ 
+     Node constructor = n.getFirstChild();
+-    scope = traverse(constructor, scope);
+     JSType constructorType = constructor.getJSType();
+     JSType type = null;
+     if (constructorType != null) {
+@@ -1052,13 +1052,11 @@
+         }
+         if (ct != null && ct.isConstructor()) {
+           type = ct.getInstanceType();
++          backwardsInferenceFromCallSite(n, ct);
+         }
+       }
+     }
+     n.setJSType(type);
+-    for (Node arg = constructor.getNext(); arg != null; arg = arg.getNext()) {
+-      scope = traverse(arg, scope);
+-    }
+     return scope;
+   }
+ 

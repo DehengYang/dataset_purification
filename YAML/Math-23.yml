@@ -1,0 +1,202 @@
+1 bug_id: Math-23
+2 src folder:
+  name of src folder: java
+  number of files: 648
+  number of java files: 647
+  number of src classes: 854
+  number of test classes: 323
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.optimization.univariate.BrentOptimizerTest#testKeepInitIfBest
+  failing tests:
+  - org.apache.commons.math3.optimization.univariate.BrentOptimizerTest
+  number of all test cases: 4138
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.926
+  purification via delta debugging: 635.647
+  repair actions extraction: 0.947
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.optimization.univariate.BrentOptimizerTest#testKeepInitIfBest: 305
+  fixed:
+    org.apache.commons.math3.optimization.univariate.BrentOptimizerTest#testKeepInitIfBest: 307
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 9
+  covDel: 2
+  cov_patch_lines: 11
+  delta_patch_lines: 9
+  oriAdd: 9
+  oriDel: 2
+  ori_patch_lines: 11
+  purAdd: 8
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 5
+  original: 5
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 22
+  failFail: 2
+  passed: 0
+  total: 25
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_23/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java\t\
+    2020-10-22 05:35:47.479338323 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_23/purify/patch/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java\t\
+    2020-10-22 05:35:47.479338323 -0400\n@@ -148,6 +148,7 @@\n         UnivariatePointValuePair\
+    \ current\n             = new UnivariatePointValuePair(x, isMinim ? fx : -fx);\n\
+    \         // Best point encountered so far (which is the initial guess).\n+  \
+    \      UnivariatePointValuePair best = current;\n \n         int iter = 0;\n \
+    \        while (true) {\n@@ -231,10 +232,15 @@\n                 // User-defined\
+    \ convergence checker.\n                 previous = current;\n               \
+    \  current = new UnivariatePointValuePair(u, isMinim ? fu : -fu);\n+         \
+    \       best = best(best,\n+                            best(current,\n+     \
+    \                            previous,\n+                                 isMinim),\n\
+    +                            isMinim);\n \n                 if (checker != null)\
+    \ {\n                     if (checker.converged(iter, previous, current)) {\n\
+    -                        return best(current, previous, isMinim);\n+         \
+    \               return best;\n                     }\n                 }\n \n\
+    @@ -271,9 +277,10 @@\n                     }\n                 }\n           \
+    \  } else { // Default termination (Brent's criterion).\n-                return\n\
+    +                return best(best,\n                             best(current,\n\
+    \                                  previous,\n+                              \
+    \   isMinim),\n                             isMinim);\n             }\n      \
+    \       ++iter;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_23/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java\t\
+    2020-10-22 05:46:48.734414381 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_23/purify/purified/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java\t\
+    2020-10-22 05:46:48.734414381 -0400\n@@ -148,6 +148,7 @@\n         UnivariatePointValuePair\
+    \ current\n             = new UnivariatePointValuePair(x, isMinim ? fx : -fx);\n\
+    \         // Best point encountered so far (which is the initial guess).\n+  \
+    \      UnivariatePointValuePair best = current;\n \n         int iter = 0;\n \
+    \        while (true) {\n@@ -231,6 +232,11 @@\n                 // User-defined\
+    \ convergence checker.\n                 previous = current;\n               \
+    \  current = new UnivariatePointValuePair(u, isMinim ? fu : -fu);\n+         \
+    \       best = best(best,\n+                            best(current,\n+     \
+    \                            previous,\n+                                 isMinim),\n\
+    +                            isMinim);\n \n                 if (checker != null)\
+    \ {\n                     if (checker.converged(iter, previous, current)) {\n\
+    @@ -271,9 +277,10 @@\n                     }\n                 }\n           \
+    \  } else { // Default termination (Brent's criterion).\n-                return\n\
+    +                return best(best,\n                             best(current,\n\
+    \                                  previous,\n+                              \
+    \   isMinim),\n                             isMinim);\n             }\n      \
+    \       ++iter;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/univariate/BrentOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@UnivariatePointValuePair best=current; @TO@
+      MethodDeclaration@@protected, @@UnivariatePointValuePair, MethodName:doOptimize,
+      @@Argus:null '
+    - '---INS SimpleType@@UnivariatePointValuePair @TO@ VariableDeclarationStatement@@UnivariatePointValuePair
+      best=current; '
+    - '---INS VariableDeclarationFragment@@best=current @TO@ VariableDeclarationStatement@@UnivariatePointValuePair
+      best=current; '
+    - '------INS SimpleName@@best @TO@ VariableDeclarationFragment@@best=current '
+    - '------INS SimpleName@@current @TO@ VariableDeclarationFragment@@best=current '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:best=best(best,best(current,previous,isMinim),isMinim)
+      @TO@ IfStatement@@PrefixExpression:!stop '
+    - '---INS Assignment@@best=best(best,best(current,previous,isMinim),isMinim) @TO@
+      ExpressionStatement@@Assignment:best=best(best,best(current,previous,isMinim),isMinim) '
+    - '------INS SimpleName@@best @TO@ Assignment@@best=best(best,best(current,previous,isMinim),isMinim) '
+    - '------INS Operator@@= @TO@ Assignment@@best=best(best,best(current,previous,isMinim),isMinim) '
+    - '------INS MethodInvocation@@best(best,best(current,previous,isMinim),isMinim)
+      @TO@ Assignment@@best=best(best,best(current,previous,isMinim),isMinim) '
+    - '---------INS SimpleName@@MethodName:best:[best, best(current,previous,isMinim),
+      isMinim] @TO@ MethodInvocation@@best(best,best(current,previous,isMinim),isMinim) '
+    - '------------INS SimpleName@@best @TO@ SimpleName@@MethodName:best:[best, best(current,previous,isMinim),
+      isMinim] '
+    - '------------MOV MethodInvocation@@best(current,previous,isMinim) @TO@ SimpleName@@MethodName:best:[best,
+      best(current,previous,isMinim), isMinim] '
+    - '------------INS SimpleName@@isMinim @TO@ SimpleName@@MethodName:best:[best,
+      best(current,previous,isMinim), isMinim] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:best(current,previous,isMinim) @TO@ SimpleName:best '
+    - '---INS SimpleName@@best @TO@ ReturnStatement@@MethodInvocation:best(current,previous,isMinim) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:best(current,previous,isMinim) @TO@ MethodInvocation:best(best,best(current,previous,isMinim),isMinim) '
+    - '---INS MethodInvocation@@best(best,best(current,previous,isMinim),isMinim)
+      @TO@ ReturnStatement@@MethodInvocation:best(current,previous,isMinim) '
+    - '------INS SimpleName@@MethodName:best:[best, best(current,previous,isMinim),
+      isMinim] @TO@ MethodInvocation@@best(best,best(current,previous,isMinim),isMinim) '
+    - '---------MOV MethodInvocation@@best(current,previous,isMinim) @TO@ SimpleName@@MethodName:best:[best,
+      best(current,previous,isMinim), isMinim] '
+    - '---------INS SimpleName@@best @TO@ SimpleName@@MethodName:best:[best, best(current,previous,isMinim),
+      isMinim] '
+    - '---------INS SimpleName@@isMinim @TO@ SimpleName@@MethodName:best:[best, best(current,previous,isMinim),
+      isMinim] '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/univariate/BrentOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@UnivariatePointValuePair best=current; @TO@
+      MethodDeclaration@@protected, @@UnivariatePointValuePair, MethodName:doOptimize,
+      @@Argus:null '
+    - '---INS SimpleType@@UnivariatePointValuePair @TO@ VariableDeclarationStatement@@UnivariatePointValuePair
+      best=current; '
+    - '---INS VariableDeclarationFragment@@best=current @TO@ VariableDeclarationStatement@@UnivariatePointValuePair
+      best=current; '
+    - '------INS SimpleName@@best @TO@ VariableDeclarationFragment@@best=current '
+    - '------INS SimpleName@@current @TO@ VariableDeclarationFragment@@best=current '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:best=best(best,best(current,previous,isMinim),isMinim)
+      @TO@ IfStatement@@PrefixExpression:!stop '
+    - '---INS Assignment@@best=best(best,best(current,previous,isMinim),isMinim) @TO@
+      ExpressionStatement@@Assignment:best=best(best,best(current,previous,isMinim),isMinim) '
+    - '------INS SimpleName@@best @TO@ Assignment@@best=best(best,best(current,previous,isMinim),isMinim) '
+    - '------INS Operator@@= @TO@ Assignment@@best=best(best,best(current,previous,isMinim),isMinim) '
+    - '------INS MethodInvocation@@best(best,best(current,previous,isMinim),isMinim)
+      @TO@ Assignment@@best=best(best,best(current,previous,isMinim),isMinim) '
+    - '---------INS SimpleName@@MethodName:best:[best, best(current,previous,isMinim),
+      isMinim] @TO@ MethodInvocation@@best(best,best(current,previous,isMinim),isMinim) '
+    - '------------INS SimpleName@@best @TO@ SimpleName@@MethodName:best:[best, best(current,previous,isMinim),
+      isMinim] '
+    - '------------INS MethodInvocation@@best(current,previous,isMinim) @TO@ SimpleName@@MethodName:best:[best,
+      best(current,previous,isMinim), isMinim] '
+    - '---------------INS SimpleName@@MethodName:best:[current, previous, isMinim]
+      @TO@ MethodInvocation@@best(current,previous,isMinim) '
+    - '------------------INS SimpleName@@current @TO@ SimpleName@@MethodName:best:[current,
+      previous, isMinim] '
+    - '------------------INS SimpleName@@previous @TO@ SimpleName@@MethodName:best:[current,
+      previous, isMinim] '
+    - '------------------INS SimpleName@@isMinim @TO@ SimpleName@@MethodName:best:[current,
+      previous, isMinim] '
+    - '------------INS SimpleName@@isMinim @TO@ SimpleName@@MethodName:best:[best,
+      best(current,previous,isMinim), isMinim] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:best(current,previous,isMinim) @TO@ MethodInvocation:best(best,best(current,previous,isMinim),isMinim) '
+    - '---INS MethodInvocation@@best(best,best(current,previous,isMinim),isMinim)
+      @TO@ ReturnStatement@@MethodInvocation:best(current,previous,isMinim) '
+    - '------INS SimpleName@@MethodName:best:[best, best(current,previous,isMinim),
+      isMinim] @TO@ MethodInvocation@@best(best,best(current,previous,isMinim),isMinim) '
+    - '---------MOV MethodInvocation@@best(current,previous,isMinim) @TO@ SimpleName@@MethodName:best:[best,
+      best(current,previous,isMinim), isMinim] '
+    - '---------INS SimpleName@@best @TO@ SimpleName@@MethodName:best:[best, best(current,previous,isMinim),
+      isMinim] '
+    - '---------INS SimpleName@@isMinim @TO@ SimpleName@@MethodName:best:[best, best(current,previous,isMinim),
+      isMinim] '
+  repair_actions_cnt: 3

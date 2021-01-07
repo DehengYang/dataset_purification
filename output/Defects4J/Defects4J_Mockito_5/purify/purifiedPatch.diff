@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_5/src/org/mockito/internal/verification/VerificationOverTimeImpl.java	2020-10-23 19:23:31.998031362 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_5/purify/purified/org/mockito/internal/verification/VerificationOverTimeImpl.java	2020-10-23 19:23:31.998031362 -0400
+@@ -88,7 +88,7 @@
+             } catch (MockitoAssertionError e) {
+                 error = handleVerifyException(e);
+             }
+-            catch (org.mockito.exceptions.verification.junit.ArgumentsAreDifferent e) {
++            catch (AssertionError e) {
+                 error = handleVerifyException(e);
+             }
+         }

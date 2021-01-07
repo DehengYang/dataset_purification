@@ -1,0 +1,88 @@
+1 bug_id: Lang-51
+2 src folder:
+  name of src folder: java
+  number of files: 87
+  number of java files: 77
+  number of src classes: 124
+  number of test classes: 90
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.BooleanUtilsTest#test_toBoolean_String
+  failing tests:
+  - org.apache.commons.lang.BooleanUtilsTest
+  number of all test cases: 1725
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 7.0
+  purification via coverage: 0.0
+  purification via delta debugging: 20.436
+  repair actions extraction: 1.15
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.BooleanUtilsTest#test_toBoolean_String: 19
+  fixed:
+    org.apache.commons.lang.BooleanUtilsTest#test_toBoolean_String: 20
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 0
+  cov_patch_lines: 1
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 0
+  ori_patch_lines: 1
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 0
+  total: 0
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_51/src/java/org/apache/commons/lang/BooleanUtils.java\t\
+    2020-10-21 03:55:11.618738400 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_51/purify/patch/org/apache/commons/lang/BooleanUtils.java\t\
+    2020-10-21 03:55:11.614738285 -0400\n@@ -679,6 +679,7 @@\n                   \
+    \      (str.charAt(1) == 'E' || str.charAt(1) == 'e') &&\n                   \
+    \      (str.charAt(2) == 'S' || str.charAt(2) == 's');\n                 }\n+\
+    \                return false;\n             }\n             case 4: {\n     \
+    \            char ch = str.charAt(0);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_51/src/java/org/apache/commons/lang/BooleanUtils.java\t\
+    2020-10-21 03:55:41.279594988 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_51/purify/purified/org/apache/commons/lang/BooleanUtils.java\t\
+    2020-10-21 03:55:41.279594988 -0400\n@@ -679,6 +679,7 @@\n                   \
+    \      (str.charAt(1) == 'E' || str.charAt(1) == 'e') &&\n                   \
+    \      (str.charAt(2) == 'S' || str.charAt(2) == 's');\n                 }\n+\
+    \                return false;\n             }\n             case 4: {\n     \
+    \            char ch = str.charAt(0);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/BooleanUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@BooleanLiteral:false @TO@ Block@@Block '
+    - '---INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/BooleanUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@BooleanLiteral:false @TO@ Block@@Block '
+    - '---INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  repair_actions_cnt: 1

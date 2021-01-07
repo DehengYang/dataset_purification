@@ -1,0 +1,29 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_99/src/com/google/javascript/jscomp/CheckGlobalThis.java	2020-10-23 12:51:48.509485030 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_99/purify/purified/com/google/javascript/jscomp/CheckGlobalThis.java	2020-10-23 12:51:48.509485030 -0400
+@@ -89,6 +89,7 @@
+       JSDocInfo jsDoc = getFunctionJsDocInfo(n);
+       if (jsDoc != null &&
+           (jsDoc.isConstructor() ||
++           jsDoc.isInterface() ||
+            jsDoc.hasThisType() ||
+            jsDoc.isOverride())) {
+         return false;
+@@ -122,13 +123,17 @@
+       } else {
+         // Only traverse the right side if it's not an assignment to a prototype
+         // property or subproperty.
++        if (NodeUtil.isGet(lhs)) {
+           if (lhs.getType() == Token.GETPROP &&
+               lhs.getLastChild().getString().equals("prototype")) {
+             return false;
+           }
+-          if (lhs.getQualifiedName() != null && lhs.getQualifiedName().contains(".prototype.")) {
++          Node llhs = lhs.getFirstChild();
++          if (llhs.getType() == Token.GETPROP &&
++              llhs.getLastChild().getString().equals("prototype")) {
+             return false;
+           }
++        }
+       }
+     }
+ 

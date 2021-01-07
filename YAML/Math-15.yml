@@ -1,0 +1,154 @@
+1 bug_id: Math-15
+2 src folder:
+  name of src folder: java
+  number of files: 675
+  number of java files: 674
+  number of src classes: 899
+  number of test classes: 339
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.util.FastMathTest#testMath904
+  failing tests:
+  - org.apache.commons.math3.util.FastMathTest
+  number of all test cases: 4306
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.926
+  purification via delta debugging: 147.801
+  repair actions extraction: 3.37
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.util.FastMathTest#testMath904: 794
+  fixed:
+    org.apache.commons.math3.util.FastMathTest#testMath904: 795
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 2
+  oriDel: 1
+  ori_patch_lines: 3
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_15/src/main/java/org/apache/commons/math3/util/FastMath.java\t\
+    2020-10-21 05:22:54.994842696 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_15/purify/patch/org/apache/commons/math3/util/FastMath.java\t\
+    2020-10-21 05:22:54.994842696 -0400\n@@ -310,6 +310,7 @@\n     /** 2^52 - double\
+    \ numbers this large must be integral (no fraction) or NaN or Infinite */\n  \
+    \   private static final double TWO_POWER_52 = 4503599627370496.0;\n     /** 2^53\
+    \ - double numbers this large must be even. */\n+    private static final double\
+    \ TWO_POWER_53 = 2 * TWO_POWER_52;\n \n     /** Constant: {@value}. */\n     private\
+    \ static final double F_1_3 = 1d / 3d;\n@@ -1538,7 +1539,7 @@\n         /* Handle\
+    \ special case x<0 */\n         if (x < 0) {\n             // y is an even integer\
+    \ in this case\n-            if (y >= TWO_POWER_52 || y <= -TWO_POWER_52) {\n\
+    +            if (y >= TWO_POWER_53 || y <= -TWO_POWER_53) {\n                \
+    \ return pow(-x, y);\n             }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_15/src/main/java/org/apache/commons/math3/util/FastMath.java\t\
+    2020-10-21 05:25:43.999731640 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_15/purify/purified/org/apache/commons/math3/util/FastMath.java\t\
+    2020-10-21 05:25:43.995731524 -0400\n@@ -310,6 +310,7 @@\n     /** 2^52 - double\
+    \ numbers this large must be integral (no fraction) or NaN or Infinite */\n  \
+    \   private static final double TWO_POWER_52 = 4503599627370496.0;\n     /** 2^53\
+    \ - double numbers this large must be even. */\n+    private static final double\
+    \ TWO_POWER_53 = 2 * TWO_POWER_52;\n \n     /** Constant: {@value}. */\n     private\
+    \ static final double F_1_3 = 1d / 3d;\n@@ -1538,7 +1539,7 @@\n         /* Handle\
+    \ special case x<0 */\n         if (x < 0) {\n             // y is an even integer\
+    \ in this case\n-            if (y >= TWO_POWER_52 || y <= -TWO_POWER_52) {\n\
+    +            if (y >= TWO_POWER_53 || y <= -TWO_POWER_53) {\n                \
+    \ return pow(-x, y);\n             }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/util/FastMath:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, static, final, double, [TWO_POWER_53=2 * TWO_POWER_52]
+      @TO@ TypeDeclaration@@[public]FastMath,  '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, static, final, double,
+      [TWO_POWER_53=2 * TWO_POWER_52] '
+    - '---INS Modifier@@static @TO@ FieldDeclaration@@private, static, final, double,
+      [TWO_POWER_53=2 * TWO_POWER_52] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, static, final, double,
+      [TWO_POWER_53=2 * TWO_POWER_52] '
+    - '---INS PrimitiveType@@double @TO@ FieldDeclaration@@private, static, final,
+      double, [TWO_POWER_53=2 * TWO_POWER_52] '
+    - '---INS VariableDeclarationFragment@@TWO_POWER_53=2 * TWO_POWER_52 @TO@ FieldDeclaration@@private,
+      static, final, double, [TWO_POWER_53=2 * TWO_POWER_52] '
+    - '------INS SimpleName@@TWO_POWER_53 @TO@ VariableDeclarationFragment@@TWO_POWER_53=2
+      * TWO_POWER_52 '
+    - '------INS InfixExpression@@2 * TWO_POWER_52 @TO@ VariableDeclarationFragment@@TWO_POWER_53=2
+      * TWO_POWER_52 '
+    - '---------INS NumberLiteral@@2 @TO@ InfixExpression@@2 * TWO_POWER_52 '
+    - '---------INS Operator@@* @TO@ InfixExpression@@2 * TWO_POWER_52 '
+    - '---------INS SimpleName@@TWO_POWER_52 @TO@ InfixExpression@@2 * TWO_POWER_52 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:y >= TWO_POWER_52 || y <= -TWO_POWER_52 @TO@
+      InfixExpression:y >= TWO_POWER_53 || y <= -TWO_POWER_53 '
+    - '---UPD InfixExpression@@y >= TWO_POWER_52 || y <= -TWO_POWER_52 @TO@ y >= TWO_POWER_53
+      || y <= -TWO_POWER_53 '
+    - '------UPD InfixExpression@@y >= TWO_POWER_52 @TO@ y >= TWO_POWER_53 '
+    - '---------UPD SimpleName@@TWO_POWER_52 @TO@ TWO_POWER_53 '
+    - '------UPD InfixExpression@@y <= -TWO_POWER_52 @TO@ y <= -TWO_POWER_53 '
+    - '---------UPD PrefixExpression@@-TWO_POWER_52 @TO@ -TWO_POWER_53 '
+    - '------------UPD SimpleName@@TWO_POWER_52 @TO@ TWO_POWER_53 '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/util/FastMath:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, static, final, double, [TWO_POWER_53=2 * TWO_POWER_52]
+      @TO@ TypeDeclaration@@[public]FastMath,  '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, static, final, double,
+      [TWO_POWER_53=2 * TWO_POWER_52] '
+    - '---INS Modifier@@static @TO@ FieldDeclaration@@private, static, final, double,
+      [TWO_POWER_53=2 * TWO_POWER_52] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, static, final, double,
+      [TWO_POWER_53=2 * TWO_POWER_52] '
+    - '---INS PrimitiveType@@double @TO@ FieldDeclaration@@private, static, final,
+      double, [TWO_POWER_53=2 * TWO_POWER_52] '
+    - '---INS VariableDeclarationFragment@@TWO_POWER_53=2 * TWO_POWER_52 @TO@ FieldDeclaration@@private,
+      static, final, double, [TWO_POWER_53=2 * TWO_POWER_52] '
+    - '------INS SimpleName@@TWO_POWER_53 @TO@ VariableDeclarationFragment@@TWO_POWER_53=2
+      * TWO_POWER_52 '
+    - '------INS InfixExpression@@2 * TWO_POWER_52 @TO@ VariableDeclarationFragment@@TWO_POWER_53=2
+      * TWO_POWER_52 '
+    - '---------INS NumberLiteral@@2 @TO@ InfixExpression@@2 * TWO_POWER_52 '
+    - '---------INS Operator@@* @TO@ InfixExpression@@2 * TWO_POWER_52 '
+    - '---------INS SimpleName@@TWO_POWER_52 @TO@ InfixExpression@@2 * TWO_POWER_52 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:y >= TWO_POWER_52 || y <= -TWO_POWER_52 @TO@
+      InfixExpression:y >= TWO_POWER_53 || y <= -TWO_POWER_53 '
+    - '---UPD InfixExpression@@y >= TWO_POWER_52 || y <= -TWO_POWER_52 @TO@ y >= TWO_POWER_53
+      || y <= -TWO_POWER_53 '
+    - '------UPD InfixExpression@@y >= TWO_POWER_52 @TO@ y >= TWO_POWER_53 '
+    - '---------UPD SimpleName@@TWO_POWER_52 @TO@ TWO_POWER_53 '
+    - '------UPD InfixExpression@@y <= -TWO_POWER_52 @TO@ y <= -TWO_POWER_53 '
+    - '---------UPD PrefixExpression@@-TWO_POWER_52 @TO@ -TWO_POWER_53 '
+    - '------------UPD SimpleName@@TWO_POWER_52 @TO@ TWO_POWER_53 '
+  repair_actions_cnt: 2

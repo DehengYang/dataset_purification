@@ -1,0 +1,122 @@
+1 bug_id: Closure-126
+2 src folder:
+  name of src folder: src
+  number of files: 432
+  number of java files: 416
+  number of src classes: 1387
+  number of test classes: 228
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.MinimizeExitPointsTest#testFunctionReturnOptimization
+  - com.google.javascript.jscomp.MinimizeExitPointsTest#testDontRemoveBreakInTryFinally
+  failing tests:
+  - com.google.javascript.jscomp.MinimizeExitPointsTest
+  number of all test cases: 8014
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.504
+  purification via delta debugging: 401.795
+  repair actions extraction: 0.697
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.MinimizeExitPointsTest#testDontRemoveBreakInTryFinally: 3006
+    com.google.javascript.jscomp.MinimizeExitPointsTest#testFunctionReturnOptimization: 3317
+  fixed:
+    com.google.javascript.jscomp.MinimizeExitPointsTest#testDontRemoveBreakInTryFinally: 2889
+    com.google.javascript.jscomp.MinimizeExitPointsTest#testFunctionReturnOptimization: 3280
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 0
+  covDel: 4
+  cov_patch_lines: 4
+  delta_patch_lines: 3
+  oriAdd: 0
+  oriDel: 4
+  ori_patch_lines: 4
+  purAdd: 0
+  purDel: 3
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 1
+  original: 1
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 5
+  failFail: 1
+  passed: 1
+  total: 7
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_126/src/com/google/javascript/jscomp/MinimizeExitPoints.java\t\
+    2020-10-23 17:17:44.643484716 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_126/purify/patch/com/google/javascript/jscomp/MinimizeExitPoints.java\t\
+    2020-10-23 17:17:44.643484716 -0400\n@@ -138,10 +138,6 @@\n        * can cause\
+    \ problems if it changes the completion type of the finally\n        * block.\
+    \ See ECMA 262 Sections 8.9 & 12.14\n        */\n-      if (NodeUtil.hasFinally(n))\
+    \ {\n-        Node finallyBlock = n.getLastChild();\n-        tryMinimizeExits(finallyBlock,\
+    \ exitType, labelName);\n-      }\n     }\n \n     // Just a 'label'."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_126/src/com/google/javascript/jscomp/MinimizeExitPoints.java\t\
+    2020-10-23 17:24:56.479982400 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_126/purify/purified/com/google/javascript/jscomp/MinimizeExitPoints.java\t\
+    2020-10-23 17:24:56.479982400 -0400\n@@ -138,10 +138,7 @@\n        * can cause\
+    \ problems if it changes the completion type of the finally\n        * block.\
+    \ See ECMA 262 Sections 8.9 & 12.14\n        */\n-      if (NodeUtil.hasFinally(n))\
+    \ {\n         Node finallyBlock = n.getLastChild();\n-        tryMinimizeExits(finallyBlock,\
+    \ exitType, labelName);\n-      }\n     }\n \n     // Just a 'label'."
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/MinimizeExitPoints:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:NodeUtil.hasFinally(n) '
+    - '---DEL MethodInvocation@@NodeUtil.hasFinally(n) '
+    - '------DEL SimpleName@@Name:NodeUtil '
+    - '------DEL SimpleName@@MethodName:hasFinally:[n] '
+    - '---------DEL SimpleName@@n '
+    - '---DEL VariableDeclarationStatement@@Node finallyBlock=n.getLastChild(); '
+    - '------DEL SimpleType@@Node '
+    - '------DEL VariableDeclarationFragment@@finallyBlock=n.getLastChild() '
+    - '---------DEL SimpleName@@finallyBlock '
+    - '---------DEL MethodInvocation@@n.getLastChild() '
+    - '------------DEL SimpleName@@Name:n '
+    - '------------DEL SimpleName@@MethodName:getLastChild:[] '
+    - '---DEL ExpressionStatement@@MethodInvocation:tryMinimizeExits(finallyBlock,exitType,labelName) '
+    - '------DEL MethodInvocation@@tryMinimizeExits(finallyBlock,exitType,labelName) '
+    - '---------DEL SimpleName@@MethodName:tryMinimizeExits:[finallyBlock, exitType,
+      labelName] '
+    - '------------DEL SimpleName@@finallyBlock '
+    - '------------DEL SimpleName@@exitType '
+    - '------------DEL SimpleName@@labelName '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/MinimizeExitPoints:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:NodeUtil.hasFinally(n) '
+    - '---DEL MethodInvocation@@NodeUtil.hasFinally(n) '
+    - '------DEL SimpleName@@Name:NodeUtil '
+    - '------DEL SimpleName@@MethodName:hasFinally:[n] '
+    - '---------DEL SimpleName@@n '
+    - '---DEL ExpressionStatement@@MethodInvocation:tryMinimizeExits(finallyBlock,exitType,labelName) '
+    - '------DEL MethodInvocation@@tryMinimizeExits(finallyBlock,exitType,labelName) '
+    - '---------DEL SimpleName@@MethodName:tryMinimizeExits:[finallyBlock, exitType,
+      labelName] '
+    - '------------DEL SimpleName@@finallyBlock '
+    - '------------DEL SimpleName@@exitType '
+    - '------------DEL SimpleName@@labelName '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@Node finallyBlock=n.getLastChild(); @TO@
+      IfStatement@@MethodInvocation:n.isTry() '
+  files_cnt: '1'
+  repair_actions_cnt: 2

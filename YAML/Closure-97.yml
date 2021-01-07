@@ -1,0 +1,132 @@
+1 bug_id: Closure-97
+2 src folder:
+  name of src folder: src
+  number of files: 344
+  number of java files: 333
+  number of src classes: 1062
+  number of test classes: 175
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.PeepholeFoldConstantsTest#testFoldBitShifts
+  failing tests:
+  - com.google.javascript.jscomp.PeepholeFoldConstantsTest
+  number of all test cases: 5836
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.006
+  purification via delta debugging: 191.691
+  repair actions extraction: 1.772
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testFoldBitShifts: 2220
+  fixed:
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testFoldBitShifts: 2270
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 1
+  ori_patch_lines: 3
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 1
+  failFail: 1
+  passed: 1
+  total: 3
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_97/src/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-23 12:28:49.317561013 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_97/purify/patch/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-23 12:28:49.317561013 -0400\n@@ -695,7 +695,8 @@\n           // JavaScript\
+    \ handles zero shifts on signed numbers differently than\n           // Java as\
+    \ an Java int can not represent the unsigned 32-bit number\n           // where\
+    \ JavaScript can so use a long here.\n-          result = lvalInt >>> rvalInt;\n\
+    +          long lvalLong = lvalInt & 0xffffffffL;\n+          result = lvalLong\
+    \ >>> rvalInt;\n           break;\n         default:\n           throw new AssertionError(\"\
+    Unknown shift operator: \" +"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_97/src/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-23 12:32:25.751826034 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_97/purify/purified/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-23 12:32:25.751826034 -0400\n@@ -696,6 +696,8 @@\n           // Java as\
+    \ an Java int can not represent the unsigned 32-bit number\n           // where\
+    \ JavaScript can so use a long here.\n           result = lvalInt >>> rvalInt;\n\
+    +          long lvalLong = lvalInt & 0xffffffffL;\n+          result = lvalLong\
+    \ >>> rvalInt;\n           break;\n         default:\n           throw new AssertionError(\"\
+    Unknown shift operator: \" +"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeFoldConstants:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long lvalLong=lvalInt & 0xffffffffL; @TO@
+      SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long lvalLong=lvalInt
+      & 0xffffffffL; '
+    - '---INS VariableDeclarationFragment@@lvalLong=lvalInt & 0xffffffffL @TO@ VariableDeclarationStatement@@long
+      lvalLong=lvalInt & 0xffffffffL; '
+    - '------INS SimpleName@@lvalLong @TO@ VariableDeclarationFragment@@lvalLong=lvalInt
+      & 0xffffffffL '
+    - '------INS InfixExpression@@lvalInt & 0xffffffffL @TO@ VariableDeclarationFragment@@lvalLong=lvalInt
+      & 0xffffffffL '
+    - '---------INS SimpleName@@lvalInt @TO@ InfixExpression@@lvalInt & 0xffffffffL '
+    - '---------INS Operator@@& @TO@ InfixExpression@@lvalInt & 0xffffffffL '
+    - '---------INS NumberLiteral@@0xffffffffL @TO@ InfixExpression@@lvalInt & 0xffffffffL '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:result=lvalInt >>> rvalInt @TO@ Assignment:result=lvalLong
+      >>> rvalInt '
+    - '---UPD Assignment@@result=lvalInt >>> rvalInt @TO@ result=lvalLong >>> rvalInt '
+    - '------UPD InfixExpression@@lvalInt >>> rvalInt @TO@ lvalLong >>> rvalInt '
+    - '---------UPD SimpleName@@lvalInt @TO@ lvalLong '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeFoldConstants:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long lvalLong=lvalInt & 0xffffffffL; @TO@
+      SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long lvalLong=lvalInt
+      & 0xffffffffL; '
+    - '---INS VariableDeclarationFragment@@lvalLong=lvalInt & 0xffffffffL @TO@ VariableDeclarationStatement@@long
+      lvalLong=lvalInt & 0xffffffffL; '
+    - '------INS SimpleName@@lvalLong @TO@ VariableDeclarationFragment@@lvalLong=lvalInt
+      & 0xffffffffL '
+    - '------INS InfixExpression@@lvalInt & 0xffffffffL @TO@ VariableDeclarationFragment@@lvalLong=lvalInt
+      & 0xffffffffL '
+    - '---------INS SimpleName@@lvalInt @TO@ InfixExpression@@lvalInt & 0xffffffffL '
+    - '---------INS Operator@@& @TO@ InfixExpression@@lvalInt & 0xffffffffL '
+    - '---------INS NumberLiteral@@0xffffffffL @TO@ InfixExpression@@lvalInt & 0xffffffffL '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:result=lvalLong >>> rvalInt @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS Assignment@@result=lvalLong >>> rvalInt @TO@ ExpressionStatement@@Assignment:result=lvalLong
+      >>> rvalInt '
+    - '------INS SimpleName@@result @TO@ Assignment@@result=lvalLong >>> rvalInt '
+    - '------INS Operator@@= @TO@ Assignment@@result=lvalLong >>> rvalInt '
+    - '------INS InfixExpression@@lvalLong >>> rvalInt @TO@ Assignment@@result=lvalLong
+      >>> rvalInt '
+    - '---------INS SimpleName@@lvalLong @TO@ InfixExpression@@lvalLong >>> rvalInt '
+    - '---------INS Operator@@>>> @TO@ InfixExpression@@lvalLong >>> rvalInt '
+    - '---------INS SimpleName@@rvalInt @TO@ InfixExpression@@lvalLong >>> rvalInt '
+  files_cnt: '1'
+  repair_actions_cnt: 2

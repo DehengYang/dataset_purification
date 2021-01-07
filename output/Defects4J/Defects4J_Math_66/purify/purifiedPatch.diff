@@ -1,0 +1,81 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_66/src/main/java/org/apache/commons/math/optimization/univariate/BrentOptimizer.java	2020-10-23 03:37:22.774706840 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_66/purify/purified/org/apache/commons/math/optimization/univariate/BrentOptimizer.java	2020-10-23 03:37:22.770706724 -0400
+@@ -45,6 +45,8 @@
+         setMaximalIterationCount(100);
+         setAbsoluteAccuracy(1E-10);
+         setRelativeAccuracy(1.0e-14);
++        setAbsoluteAccuracy(1e-11);
++        setRelativeAccuracy(1e-9);
+     }
+ 
+     /**
+@@ -55,16 +57,11 @@
+     protected double doOptimize()
+         throws MaxIterationsExceededException, FunctionEvaluationException {
+         throw new UnsupportedOperationException();
+-    }
+-    public double optimize(final UnivariateRealFunction f, final GoalType goalType, final double min, final double max, final double startValue) throws MaxIterationsExceededException, FunctionEvaluationException {
+         clearResult();
+         return localMin(getGoalType() == GoalType.MINIMIZE,
+-                        f, goalType, min, startValue, max,
++                        getMin(), getStartValue(), getMax(),
+                         getRelativeAccuracy(), getAbsoluteAccuracy());
+     }
+-    public double optimize(final UnivariateRealFunction f, final GoalType goalType, final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException {
+-        return optimize(f, goalType, min, max, min + GOLDEN_SECTION * (max - min));
+-    }
+ 
+     /**
+      * Find the minimum of the function within the interval {@code (lo, hi)}.
+@@ -91,8 +88,6 @@
+      * the function.
+      */
+     private double localMin(boolean isMinim,
+-                            UnivariateRealFunction f,
+-                            GoalType goalType,
+                             double lo, double mid, double hi,
+                             double eps, double t)
+         throws MaxIterationsExceededException, FunctionEvaluationException {
+@@ -116,15 +111,15 @@
+         double w = x;
+         double d = 0;
+         double e = 0;
+-        double fx = computeObjectiveValue(f, x);
+-        if (goalType == GoalType.MAXIMIZE) {
++        double fx = computeObjectiveValue(x);
++        if (!isMinim) {
+             fx = -fx;
+         }
+         double fv = fx;
+         double fw = fx;
+ 
+         int count = 0;
+-        while (count < maximalIterationCount) {
++        while (true) {
+             double m = 0.5 * (a + b);
+             final double tol1 = eps * Math.abs(x) + t;
+             final double tol2 = 2 * tol1;
+@@ -197,8 +192,8 @@
+                     u = x + d;
+                 }
+ 
+-                double fu = computeObjectiveValue(f, u);
+-                if (goalType == GoalType.MAXIMIZE) {
++                double fu = computeObjectiveValue(u);
++                if (!isMinim) {
+                     fu = -fu;
+                 }
+ 
+@@ -235,10 +230,11 @@
+                     }
+                 }
+             } else { // termination
+-                setResult(x, (goalType == GoalType.MAXIMIZE) ? -fx : fx, count);
++                setFunctionValue(isMinim ? fx : -fx);
+                 return x;
+             }
+             ++count;
++            incrementIterationsCounter();
+         }
+         throw new MaxIterationsExceededException(maximalIterationCount);
+     }

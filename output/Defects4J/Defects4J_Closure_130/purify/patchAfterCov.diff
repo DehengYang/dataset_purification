@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_130/src/com/google/javascript/jscomp/CollapseProperties.java	2020-10-23 17:58:28.474229085 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_130/purify/assertBeforeMut/com/google/javascript/jscomp/CollapseProperties.java	2020-10-23 17:58:28.474229085 -0400
+@@ -169,7 +169,7 @@
+         continue;
+       }
+ 
+-      if (name.globalSets == 1 && name.localSets == 0 &&
++      if (!name.inExterns && name.globalSets == 1 && name.localSets == 0 &&
+           name.aliasingGets > 0) {
+         // {@code name} meets condition (b). Find all of its local aliases
+         // and try to inline them.

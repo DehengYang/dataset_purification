@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_9/src/main/java/org/apache/commons/math3/geometry/euclidean/threed/Line.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_9/fixed-version/src/main/java/org/apache/commons/math3/geometry/euclidean/threed/Line.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_9/src/main/java/org/apache/commons/math3/geometry/euclidean/threed/Line.java	2020-03-01 00:14:03.923481328 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_9/fixed-version/src/main/java/org/apache/commons/math3/geometry/euclidean/threed/Line.java	2020-03-01 00:14:07.571653216 -0800
+@@ -84,7 +84,8 @@
+      * @return a new instance, with reversed direction
+      */
+     public Line revert() {
+-        final Line reverted = new Line(zero, zero.subtract(direction));
++        final Line reverted = new Line(this);
++        reverted.direction = reverted.direction.negate();
+         return reverted;
+     }
+ 

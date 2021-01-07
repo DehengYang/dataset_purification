@@ -1,0 +1,31 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_77/src/main/java/org/apache/commons/math/linear/ArrayRealVector.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_77/fixed-version/src/main/java/org/apache/commons/math/linear/ArrayRealVector.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_77/src/main/java/org/apache/commons/math/linear/ArrayRealVector.java	2020-03-01 00:21:35.956779988 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_77/fixed-version/src/main/java/org/apache/commons/math/linear/ArrayRealVector.java	2020-03-01 00:21:38.556902504 -0800
+@@ -718,7 +718,7 @@
+     public double getLInfNorm() {
+         double max = 0;
+         for (double a : data) {
+-            max += Math.max(max, Math.abs(a));
++            max = Math.max(max, Math.abs(a));
+         }
+         return max;
+     }
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_77/src/main/java/org/apache/commons/math/linear/OpenMapRealVector.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_77/fixed-version/src/main/java/org/apache/commons/math/linear/OpenMapRealVector.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_77/src/main/java/org/apache/commons/math/linear/OpenMapRealVector.java	2020-03-01 00:21:35.956779988 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_77/fixed-version/src/main/java/org/apache/commons/math/linear/OpenMapRealVector.java	2020-03-01 00:21:38.556902504 -0800
+@@ -495,15 +495,6 @@
+         return max;
+     }
+ 
+-    public double getLInfNorm() {
+-        double max = 0;
+-        Iterator iter = entries.iterator();
+-        while (iter.hasNext()) {
+-            iter.advance();
+-            max += iter.value();
+-        }
+-        return max;
+-    }
+     /**
+      * Optimized method to compute LInfDistance.
+      * @param v The vector to compute from

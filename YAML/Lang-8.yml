@@ -1,0 +1,154 @@
+1 bug_id: Lang-8
+2 src folder:
+  name of src folder: java
+  number of files: 119
+  number of java files: 106
+  number of src classes: 167
+  number of test classes: 109
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.time.FastDatePrinterTest#testCalendarTimezoneRespected
+  - org.apache.commons.lang3.time.FastDateFormat_PrinterTest#testCalendarTimezoneRespected
+  failing tests:
+  - org.apache.commons.lang3.time.FastDatePrinterTest
+  - org.apache.commons.lang3.time.FastDateFormat_PrinterTest
+  number of all test cases: 2209
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.623
+  purification via delta debugging: 88.382
+  repair actions extraction: 2.079
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.time.FastDateFormat_PrinterTest#testCalendarTimezoneRespected: 308
+    org.apache.commons.lang3.time.FastDatePrinterTest#testCalendarTimezoneRespected: 308
+  fixed:
+    org.apache.commons.lang3.time.FastDateFormat_PrinterTest#testCalendarTimezoneRespected: 304
+    org.apache.commons.lang3.time.FastDatePrinterTest#testCalendarTimezoneRespected: 304
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 2
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 1
+  oriDel: 2
+  ori_patch_lines: 3
+  purAdd: 1
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 5
+  failFail: 0
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_8/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java\t\
+    2020-10-22 01:31:22.459617801 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_8/purify/patch/org/apache/commons/lang3/time/FastDatePrinter.java\t\
+    2020-10-22 01:31:22.455617685 -0400\n@@ -1095,7 +1095,6 @@\n     private static\
+    \ class TimeZoneNameRule implements Rule {\n         private final Locale mLocale;\n\
+    \         private final int mStyle;\n-        private final TimeZone zone;\n \
+    \        private final String mStandard;\n         private final String mDaylight;\n\
+    \ \n@@ -1109,7 +1108,6 @@\n         TimeZoneNameRule(TimeZone timeZone, Locale\
+    \ locale, int style) {\n             mLocale = locale;\n             mStyle =\
+    \ style;\n-            zone = timeZone;\n             \n             mStandard\
+    \ = getTimeZoneDisplay(timeZone, false, style, locale);\n             mDaylight\
+    \ = getTimeZoneDisplay(timeZone, true, style, locale);\n@@ -1131,6 +1129,7 @@\n\
+    \          */\n         @Override\n         public void appendTo(StringBuffer\
+    \ buffer, Calendar calendar) {\n+            TimeZone zone = calendar.getTimeZone();\n\
+    \             if (zone.useDaylightTime()\n                     && calendar.get(Calendar.DST_OFFSET)\
+    \ != 0) {\n                 buffer.append(getTimeZoneDisplay(zone, true, mStyle,\
+    \ mLocale));"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_8/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java\t\
+    2020-10-22 01:33:07.202646388 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_8/purify/purified/org/apache/commons/lang3/time/FastDatePrinter.java\t\
+    2020-10-22 01:33:07.202646388 -0400\n@@ -1095,7 +1095,6 @@\n     private static\
+    \ class TimeZoneNameRule implements Rule {\n         private final Locale mLocale;\n\
+    \         private final int mStyle;\n-        private final TimeZone zone;\n \
+    \        private final String mStandard;\n         private final String mDaylight;\n\
+    \ \n@@ -1109,7 +1108,6 @@\n         TimeZoneNameRule(TimeZone timeZone, Locale\
+    \ locale, int style) {\n             mLocale = locale;\n             mStyle =\
+    \ style;\n-            zone = timeZone;\n             \n             mStandard\
+    \ = getTimeZoneDisplay(timeZone, false, style, locale);\n             mDaylight\
+    \ = getTimeZoneDisplay(timeZone, true, style, locale);\n@@ -1131,6 +1129,7 @@\n\
+    \          */\n         @Override\n         public void appendTo(StringBuffer\
+    \ buffer, Calendar calendar) {\n+            TimeZone zone = calendar.getTimeZone();\n\
+    \             if (zone.useDaylightTime()\n                     && calendar.get(Calendar.DST_OFFSET)\
+    \ != 0) {\n                 buffer.append(getTimeZoneDisplay(zone, true, mStyle,\
+    \ mLocale));"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/time/FastDatePrinter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL FieldDeclaration@@private, final, TimeZone, [zone] '
+    - '---DEL Modifier@@private '
+    - '---DEL Modifier@@final '
+    - '---DEL SimpleType@@TimeZone '
+    - '---DEL VariableDeclarationFragment@@zone '
+    - '------DEL SimpleName@@zone '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:zone=timeZone '
+    - '---DEL Assignment@@zone=timeZone '
+    - '------DEL SimpleName@@zone '
+    - '------DEL Operator@@= '
+    - '------DEL SimpleName@@timeZone '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@TimeZone zone=calendar.getTimeZone(); @TO@
+      MethodDeclaration@@public, @@void, MethodName:appendTo, @@Argus:StringBuffer+buffer+Calendar+calendar+ '
+    - '---INS SimpleType@@TimeZone @TO@ VariableDeclarationStatement@@TimeZone zone=calendar.getTimeZone(); '
+    - '---INS VariableDeclarationFragment@@zone=calendar.getTimeZone() @TO@ VariableDeclarationStatement@@TimeZone
+      zone=calendar.getTimeZone(); '
+    - '------INS SimpleName@@zone @TO@ VariableDeclarationFragment@@zone=calendar.getTimeZone() '
+    - '------INS MethodInvocation@@calendar.getTimeZone() @TO@ VariableDeclarationFragment@@zone=calendar.getTimeZone() '
+    - '---------INS SimpleName@@Name:calendar @TO@ MethodInvocation@@calendar.getTimeZone() '
+    - '---------INS SimpleName@@MethodName:getTimeZone:[] @TO@ MethodInvocation@@calendar.getTimeZone() '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/time/FastDatePrinter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL FieldDeclaration@@private, final, TimeZone, [zone] '
+    - '---DEL Modifier@@private '
+    - '---DEL Modifier@@final '
+    - '---DEL SimpleType@@TimeZone '
+    - '---DEL VariableDeclarationFragment@@zone '
+    - '------DEL SimpleName@@zone '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:zone=timeZone '
+    - '---DEL Assignment@@zone=timeZone '
+    - '------DEL SimpleName@@zone '
+    - '------DEL Operator@@= '
+    - '------DEL SimpleName@@timeZone '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@TimeZone zone=calendar.getTimeZone(); @TO@
+      MethodDeclaration@@public, @@void, MethodName:appendTo, @@Argus:StringBuffer+buffer+Calendar+calendar+ '
+    - '---INS SimpleType@@TimeZone @TO@ VariableDeclarationStatement@@TimeZone zone=calendar.getTimeZone(); '
+    - '---INS VariableDeclarationFragment@@zone=calendar.getTimeZone() @TO@ VariableDeclarationStatement@@TimeZone
+      zone=calendar.getTimeZone(); '
+    - '------INS SimpleName@@zone @TO@ VariableDeclarationFragment@@zone=calendar.getTimeZone() '
+    - '------INS MethodInvocation@@calendar.getTimeZone() @TO@ VariableDeclarationFragment@@zone=calendar.getTimeZone() '
+    - '---------INS SimpleName@@Name:calendar @TO@ MethodInvocation@@calendar.getTimeZone() '
+    - '---------INS SimpleName@@MethodName:getTimeZone:[] @TO@ MethodInvocation@@calendar.getTimeZone() '
+  repair_actions_cnt: 3

@@ -1,0 +1,164 @@
+1 bug_id: Closure-8
+2 src folder:
+  name of src folder: src
+  number of files: 423
+  number of java files: 407
+  number of src classes: 1367
+  number of test classes: 225
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CollapseVariableDeclarationsTest#testIssue820
+  failing tests:
+  - com.google.javascript.jscomp.CollapseVariableDeclarationsTest
+  number of all test cases: 7658
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.749
+  purification via delta debugging: 231.428
+  repair actions extraction: 0.95
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CollapseVariableDeclarationsTest#testIssue820: 3017
+  fixed:
+    com.google.javascript.jscomp.CollapseVariableDeclarationsTest#testIssue820: 2819
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 5
+  failFail: 1
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_8/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java\t\
+    2020-10-21 17:19:03.498711680 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_8/purify/patch/com/google/javascript/jscomp/CollapseVariableDeclarations.java\t\
+    2020-10-21 17:19:03.498711680 -0400\n@@ -201,10 +201,14 @@\n       Var var = s.getVar(lhs.getString());\n\
+    \       return var != null\n           && var.getScope() == s\n+          && !isNamedParameter(var)\n\
+    \           && !blacklistedVars.contains(var);\n     }\n   }\n \n+  private boolean\
+    \ isNamedParameter(Var v) {\n+    return v.getParentNode().isParamList();\n+ \
+    \ }\n \n   private void applyCollapses() {\n     for (Collapse collapse : collapses)\
+    \ {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_8/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java\t\
+    2020-10-21 17:23:27.058282002 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_8/purify/purified/com/google/javascript/jscomp/CollapseVariableDeclarations.java\t\
+    2020-10-21 17:23:27.058282002 -0400\n@@ -201,10 +201,14 @@\n       Var var = s.getVar(lhs.getString());\n\
+    \       return var != null\n           && var.getScope() == s\n+          && !isNamedParameter(var)\n\
+    \           && !blacklistedVars.contains(var);\n     }\n   }\n \n+  private boolean\
+    \ isNamedParameter(Var v) {\n+    return v.getParentNode().isParamList();\n+ \
+    \ }\n \n   private void applyCollapses() {\n     for (Collapse collapse : collapses)\
+    \ {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CollapseVariableDeclarations:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@InfixExpression:var != null && var.getScope() == s &&
+      !blacklistedVars.contains(var) @TO@ InfixExpression:var != null && var.getScope()
+      == s && !isNamedParameter(var) && !blacklistedVars.contains(var) '
+    - '---UPD InfixExpression@@var != null && var.getScope() == s && !blacklistedVars.contains(var)
+      @TO@ var != null && var.getScope() == s && !isNamedParameter(var) && !blacklistedVars.contains(var) '
+    - '------INS InfixExpression@@var != null && var.getScope() == s && !isNamedParameter(var)
+      @TO@ InfixExpression@@var != null && var.getScope() == s && !blacklistedVars.contains(var) '
+    - '---------MOV InfixExpression@@var != null && var.getScope() == s @TO@ InfixExpression@@var
+      != null && var.getScope() == s && !isNamedParameter(var) '
+    - '---------MOV Operator@@&& @TO@ InfixExpression@@var != null && var.getScope()
+      == s && !isNamedParameter(var) '
+    - '---------INS PrefixExpression@@!isNamedParameter(var) @TO@ InfixExpression@@var
+      != null && var.getScope() == s && !isNamedParameter(var) '
+    - '------------INS Operator@@! @TO@ PrefixExpression@@!isNamedParameter(var) '
+    - '------------INS MethodInvocation@@isNamedParameter(var) @TO@ PrefixExpression@@!isNamedParameter(var) '
+    - '---------------INS SimpleName@@MethodName:isNamedParameter:[var] @TO@ MethodInvocation@@isNamedParameter(var) '
+    - '------------------INS SimpleName@@var @TO@ SimpleName@@MethodName:isNamedParameter:[var] '
+    - '------INS Operator@@&& @TO@ InfixExpression@@var != null && var.getScope()
+      == s && !blacklistedVars.contains(var) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@boolean, MethodName:isNamedParameter, @@Argus:Var+v+
+      @TO@ TypeDeclaration@@CollapseVariableDeclarations, [CompilerPass] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@boolean, MethodName:isNamedParameter,
+      @@Argus:Var+v+ '
+    - '---INS PrimitiveType@@boolean @TO@ MethodDeclaration@@private, @@boolean, MethodName:isNamedParameter,
+      @@Argus:Var+v+ '
+    - '---INS SimpleName@@MethodName:isNamedParameter @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:isNamedParameter, @@Argus:Var+v+ '
+    - '---INS SingleVariableDeclaration@@Var v @TO@ MethodDeclaration@@private, @@boolean,
+      MethodName:isNamedParameter, @@Argus:Var+v+ '
+    - '------INS SimpleType@@Var @TO@ SingleVariableDeclaration@@Var v '
+    - '------INS SimpleName@@v @TO@ SingleVariableDeclaration@@Var v '
+    - '---INS ReturnStatement@@MethodInvocation:v.getParentNode().isParamList() @TO@
+      MethodDeclaration@@private, @@boolean, MethodName:isNamedParameter, @@Argus:Var+v+ '
+    - '------INS MethodInvocation@@v.getParentNode().isParamList() @TO@ ReturnStatement@@MethodInvocation:v.getParentNode().isParamList() '
+    - '---------INS SimpleName@@Name:v @TO@ MethodInvocation@@v.getParentNode().isParamList() '
+    - '---------INS MethodInvocation@@MethodName:getParentNode:[] @TO@ MethodInvocation@@v.getParentNode().isParamList() '
+    - '---------INS SimpleName@@MethodName:isParamList:[] @TO@ MethodInvocation@@v.getParentNode().isParamList() '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CollapseVariableDeclarations:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@InfixExpression:var != null && var.getScope() == s &&
+      !blacklistedVars.contains(var) @TO@ InfixExpression:var != null && var.getScope()
+      == s && !isNamedParameter(var) && !blacklistedVars.contains(var) '
+    - '---UPD InfixExpression@@var != null && var.getScope() == s && !blacklistedVars.contains(var)
+      @TO@ var != null && var.getScope() == s && !isNamedParameter(var) && !blacklistedVars.contains(var) '
+    - '------INS InfixExpression@@var != null && var.getScope() == s && !isNamedParameter(var)
+      @TO@ InfixExpression@@var != null && var.getScope() == s && !blacklistedVars.contains(var) '
+    - '---------MOV InfixExpression@@var != null && var.getScope() == s @TO@ InfixExpression@@var
+      != null && var.getScope() == s && !isNamedParameter(var) '
+    - '---------MOV Operator@@&& @TO@ InfixExpression@@var != null && var.getScope()
+      == s && !isNamedParameter(var) '
+    - '---------INS PrefixExpression@@!isNamedParameter(var) @TO@ InfixExpression@@var
+      != null && var.getScope() == s && !isNamedParameter(var) '
+    - '------------INS Operator@@! @TO@ PrefixExpression@@!isNamedParameter(var) '
+    - '------------INS MethodInvocation@@isNamedParameter(var) @TO@ PrefixExpression@@!isNamedParameter(var) '
+    - '---------------INS SimpleName@@MethodName:isNamedParameter:[var] @TO@ MethodInvocation@@isNamedParameter(var) '
+    - '------------------INS SimpleName@@var @TO@ SimpleName@@MethodName:isNamedParameter:[var] '
+    - '------INS Operator@@&& @TO@ InfixExpression@@var != null && var.getScope()
+      == s && !blacklistedVars.contains(var) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@boolean, MethodName:isNamedParameter, @@Argus:Var+v+
+      @TO@ TypeDeclaration@@CollapseVariableDeclarations, [CompilerPass] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@boolean, MethodName:isNamedParameter,
+      @@Argus:Var+v+ '
+    - '---INS PrimitiveType@@boolean @TO@ MethodDeclaration@@private, @@boolean, MethodName:isNamedParameter,
+      @@Argus:Var+v+ '
+    - '---INS SimpleName@@MethodName:isNamedParameter @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:isNamedParameter, @@Argus:Var+v+ '
+    - '---INS SingleVariableDeclaration@@Var v @TO@ MethodDeclaration@@private, @@boolean,
+      MethodName:isNamedParameter, @@Argus:Var+v+ '
+    - '------INS SimpleType@@Var @TO@ SingleVariableDeclaration@@Var v '
+    - '------INS SimpleName@@v @TO@ SingleVariableDeclaration@@Var v '
+    - '---INS ReturnStatement@@MethodInvocation:v.getParentNode().isParamList() @TO@
+      MethodDeclaration@@private, @@boolean, MethodName:isNamedParameter, @@Argus:Var+v+ '
+    - '------INS MethodInvocation@@v.getParentNode().isParamList() @TO@ ReturnStatement@@MethodInvocation:v.getParentNode().isParamList() '
+    - '---------INS SimpleName@@Name:v @TO@ MethodInvocation@@v.getParentNode().isParamList() '
+    - '---------INS MethodInvocation@@MethodName:getParentNode:[] @TO@ MethodInvocation@@v.getParentNode().isParamList() '
+    - '---------INS SimpleName@@MethodName:isParamList:[] @TO@ MethodInvocation@@v.getParentNode().isParamList() '
+  files_cnt: '1'
+  repair_actions_cnt: 2

@@ -1,0 +1,102 @@
+1 bug_id: Closure-4
+2 src folder:
+  name of src folder: src
+  number of files: 429
+  number of java files: 413
+  number of src classes: 1382
+  number of test classes: 226
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testConversionFromInterfaceToRecursiveConstructor
+  - com.google.javascript.jscomp.TypeCheckTest#testImplementsExtendsLoop
+  - com.google.javascript.jscomp.TypeCheckTest#testImplementsLoop
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 7859
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.523
+  purification via delta debugging: 194.808
+  repair actions extraction: 0.993
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testConversionFromInterfaceToRecursiveConstructor: 4978
+    com.google.javascript.jscomp.TypeCheckTest#testImplementsExtendsLoop: 5010
+    com.google.javascript.jscomp.TypeCheckTest#testImplementsLoop: 4970
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testConversionFromInterfaceToRecursiveConstructor: 5036
+    com.google.javascript.jscomp.TypeCheckTest#testImplementsExtendsLoop: 4991
+    com.google.javascript.jscomp.TypeCheckTest#testImplementsLoop: 4952
+6 reduced lines:
+  by all: 2
+  by coverage: 2
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 1
+  by delta debugging: 0
+  cov: 1
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions:
+- 0 1 1.0
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_4/src/com/google/javascript/rhino/jstype/NamedType.java\t\
+    2020-10-21 16:39:39.546544414 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_4/purify/patch/com/google/javascript/rhino/jstype/NamedType.java\t\
+    2020-10-21 16:39:39.546544414 -0400\n@@ -187,7 +187,7 @@\n     // makes more sense.\
+    \ Now, resolution via registry is first in order to\n     // avoid triggering\
+    \ the warnings built into the resolution via properties.\n     boolean resolved\
+    \ = resolveViaRegistry(t, enclosing);\n-    if (detectImplicitPrototypeCycle())\
+    \ {\n+    if (detectInheritanceCycle()) {\n       handleTypeCycle(t);\n     }\n\
+    \ \n@@ -199,7 +199,7 @@\n     }\n \n     resolveViaProperties(t, enclosing);\n\
+    -    if (detectImplicitPrototypeCycle()) {\n+    if (detectInheritanceCycle())\
+    \ {\n       handleTypeCycle(t);\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_4/src/com/google/javascript/rhino/jstype/NamedType.java\t\
+    2020-10-21 16:43:30.245209204 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_4/purify/purified/com/google/javascript/rhino/jstype/NamedType.java\t\
+    2020-10-21 16:43:30.241209089 -0400\n@@ -187,7 +187,7 @@\n     // makes more sense.\
+    \ Now, resolution via registry is first in order to\n     // avoid triggering\
+    \ the warnings built into the resolution via properties.\n     boolean resolved\
+    \ = resolveViaRegistry(t, enclosing);\n-    if (detectImplicitPrototypeCycle())\
+    \ {\n+    if (detectInheritanceCycle()) {\n       handleTypeCycle(t);\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  com/google/javascript/rhino/jstype/NamedType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@MethodInvocation:detectImplicitPrototypeCycle() @TO@ MethodInvocation:detectInheritanceCycle() '
+    - '---UPD MethodInvocation@@MethodName:detectImplicitPrototypeCycle:[] @TO@ MethodName:detectInheritanceCycle:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@MethodInvocation:detectImplicitPrototypeCycle() @TO@ MethodInvocation:detectInheritanceCycle() '
+    - '---UPD MethodInvocation@@MethodName:detectImplicitPrototypeCycle:[] @TO@ MethodName:detectInheritanceCycle:[] '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  com/google/javascript/rhino/jstype/NamedType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@MethodInvocation:detectImplicitPrototypeCycle() @TO@ MethodInvocation:detectInheritanceCycle() '
+    - '---UPD MethodInvocation@@MethodName:detectImplicitPrototypeCycle:[] @TO@ MethodName:detectInheritanceCycle:[] '
+  files_cnt: '1'
+  repair_actions_cnt: 1

@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_40/src/java/org/apache/commons/lang/StringUtils.java	2020-10-21 01:35:12.060265887 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_40/purify/assertBeforeMut/org/apache/commons/lang/StringUtils.java	2020-10-21 01:35:12.052265657 -0400
+@@ -1045,7 +1045,14 @@
+         if (str == null || searchStr == null) {
+             return false;
+         }
+-        return contains(str.toUpperCase(), searchStr.toUpperCase());
++        int len = searchStr.length();
++        int max = str.length() - len;
++        for (int i = 0; i <= max; i++) {
++            if (str.regionMatches(true, i, searchStr, 0, len)) {
++                return true;
++            }
++        }
++        return false;
+     }
+ 
+     // IndexOfAny chars

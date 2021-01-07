@@ -1,0 +1,21 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_20/src/main/java/org/apache/commons/lang3/StringUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_20/fixed-version/src/main/java/org/apache/commons/lang3/StringUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_20/src/main/java/org/apache/commons/lang3/StringUtils.java	2020-03-01 00:07:46.669706574 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_20/fixed-version/src/main/java/org/apache/commons/lang3/StringUtils.java	2020-03-01 00:07:50.109868661 -0800
+@@ -3295,7 +3295,7 @@
+             return EMPTY;
+         }
+         
+-        StringBuilder buf = new StringBuilder((array[startIndex] == null ? 16 : array[startIndex].toString().length()) + 1);
++        StringBuilder buf = new StringBuilder(noOfItems * 16);
+ 
+         for (int i = startIndex; i < endIndex; i++) {
+             if (i > startIndex) {
+@@ -3380,7 +3380,7 @@
+             return EMPTY;
+         }
+ 
+-        StringBuilder buf = new StringBuilder((array[startIndex] == null ? 16 : array[startIndex].toString().length()) + separator.length());
++        StringBuilder buf = new StringBuilder(noOfItems * 16);
+ 
+         for (int i = startIndex; i < endIndex; i++) {
+             if (i > startIndex) {

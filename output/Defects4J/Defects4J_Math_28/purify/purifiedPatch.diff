@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_28/src/main/java/org/apache/commons/math3/optimization/linear/SimplexSolver.java	2020-10-21 10:19:26.397705357 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_28/purify/purified/org/apache/commons/math3/optimization/linear/SimplexSolver.java	2020-10-21 10:19:26.397705357 -0400
+@@ -135,6 +135,7 @@
+             // Additional heuristic: if we did not get a solution after half of maxIterations
+             //                       revert to the simple case of just returning the top-most row
+             // This heuristic is based on empirical data gathered while investigating MATH-828.
++            if (getIterations() < getMaxIterations() / 2) {
+                 Integer minRow = null;
+                 int minIndex = tableau.getWidth();
+                 for (Integer row : minRatioPositions) {
+@@ -149,6 +150,7 @@
+                     }
+                 }
+                 return minRow;
++            }
+         }
+         return minRatioPositions.get(0);
+     }

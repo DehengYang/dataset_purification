@@ -1,0 +1,148 @@
+1 bug_id: Mockito-13
+2 src folder:
+  name of src folder: src
+  number of files: 266
+  number of java files: 230
+  number of src classes: 255
+  number of test classes: 198
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.bugs.VerifyingWithAnExtraCallToADifferentMockTest#shouldAllowVerifyingWhenOtherMockCallIsInTheSameLine
+  failing tests:
+  - org.mockitousage.bugs.VerifyingWithAnExtraCallToADifferentMockTest
+  number of all test cases: 0
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.622
+  purification via delta debugging: 262.653
+  repair actions extraction: 0.983
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 1
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 3
+  oriDel: 1
+  ori_patch_lines: 4
+  purAdd: 3
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 1
+  total: 3
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_13/src/org/mockito/internal/MockHandler.java\t\
+    2020-10-24 17:30:27.949160156 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_13/purify/patch/org/mockito/internal/MockHandler.java\t\
+    2020-10-24 17:30:27.949160156 -0400\n@@ -74,12 +74,14 @@\n         if (verificationMode\
+    \ != null) {\n             //We need to check if verification was started on the\
+    \ correct mock \n             // - see VerifyingWithAnExtraCallToADifferentMockTest\
+    \ (bug 138)\n-            if (verificationMode instanceof MockAwareVerificationMode\
+    \ && ((MockAwareVerificationMode) verificationMode).getMock() == invocation.getMock())\
+    \ {                \n+            if (((MockAwareVerificationMode) verificationMode).getMock()\
+    \ == invocation.getMock()) {                \n                 VerificationDataImpl\
+    \ data = new VerificationDataImpl(invocationContainerImpl, invocationMatcher);\
+    \            \n                 verificationMode.verify(data);\n             \
+    \    return null;\n+            } else {\n                 // this means there\
+    \ is an invocation on a different mock. Re-adding verification mode \n       \
+    \          // - see VerifyingWithAnExtraCallToADifferentMockTest (bug 138)\n+\
+    \                mockingProgress.verificationStarted(verificationMode);\n    \
+    \         }\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_13/src/org/mockito/internal/MockHandler.java\t\
+    2020-10-24 17:35:07.961338501 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_13/purify/purified/org/mockito/internal/MockHandler.java\t\
+    2020-10-24 17:35:07.961338501 -0400\n@@ -74,12 +74,14 @@\n         if (verificationMode\
+    \ != null) {\n             //We need to check if verification was started on the\
+    \ correct mock \n             // - see VerifyingWithAnExtraCallToADifferentMockTest\
+    \ (bug 138)\n-            if (verificationMode instanceof MockAwareVerificationMode\
+    \ && ((MockAwareVerificationMode) verificationMode).getMock() == invocation.getMock())\
+    \ {                \n+            if (((MockAwareVerificationMode) verificationMode).getMock()\
+    \ == invocation.getMock()) {                \n                 VerificationDataImpl\
+    \ data = new VerificationDataImpl(invocationContainerImpl, invocationMatcher);\
+    \            \n                 verificationMode.verify(data);\n             \
+    \    return null;\n+            } else {\n                 // this means there\
+    \ is an invocation on a different mock. Re-adding verification mode \n       \
+    \          // - see VerifyingWithAnExtraCallToADifferentMockTest (bug 138)\n+\
+    \                mockingProgress.verificationStarted(verificationMode);\n    \
+    \         }\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/MockHandler:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:verificationMode instanceof MockAwareVerificationMode
+      && ((MockAwareVerificationMode)verificationMode).getMock() == invocation.getMock()
+      @TO@ InfixExpression:((MockAwareVerificationMode)verificationMode).getMock()
+      == invocation.getMock() '
+    - '---DEL InfixExpression@@verificationMode instanceof MockAwareVerificationMode
+      && ((MockAwareVerificationMode)verificationMode).getMock() == invocation.getMock() '
+    - '------DEL InstanceofExpression@@verificationMode instanceof MockAwareVerificationMode '
+    - '---------DEL SimpleName@@verificationMode '
+    - '---------DEL Instanceof@@instanceof '
+    - '---------DEL SimpleType@@MockAwareVerificationMode '
+    - '------DEL Operator@@&& '
+    - '---MOV InfixExpression@@((MockAwareVerificationMode)verificationMode).getMock()
+      == invocation.getMock() @TO@ IfStatement@@InfixExpression:verificationMode instanceof
+      MockAwareVerificationMode && ((MockAwareVerificationMode)verificationMode).getMock()
+      == invocation.getMock() '
+    - '---INS ExpressionStatement@@MethodInvocation:mockingProgress.verificationStarted(verificationMode)
+      @TO@ IfStatement@@InfixExpression:verificationMode instanceof MockAwareVerificationMode
+      && ((MockAwareVerificationMode)verificationMode).getMock() == invocation.getMock() '
+    - '------INS MethodInvocation@@mockingProgress.verificationStarted(verificationMode)
+      @TO@ ExpressionStatement@@MethodInvocation:mockingProgress.verificationStarted(verificationMode) '
+    - '---------INS SimpleName@@Name:mockingProgress @TO@ MethodInvocation@@mockingProgress.verificationStarted(verificationMode) '
+    - '---------INS SimpleName@@MethodName:verificationStarted:[verificationMode]
+      @TO@ MethodInvocation@@mockingProgress.verificationStarted(verificationMode) '
+    - '------------INS SimpleName@@verificationMode @TO@ SimpleName@@MethodName:verificationStarted:[verificationMode] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/MockHandler:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:verificationMode instanceof MockAwareVerificationMode
+      && ((MockAwareVerificationMode)verificationMode).getMock() == invocation.getMock()
+      @TO@ InfixExpression:((MockAwareVerificationMode)verificationMode).getMock()
+      == invocation.getMock() '
+    - '---DEL InfixExpression@@verificationMode instanceof MockAwareVerificationMode
+      && ((MockAwareVerificationMode)verificationMode).getMock() == invocation.getMock() '
+    - '------DEL InstanceofExpression@@verificationMode instanceof MockAwareVerificationMode '
+    - '---------DEL SimpleName@@verificationMode '
+    - '---------DEL Instanceof@@instanceof '
+    - '---------DEL SimpleType@@MockAwareVerificationMode '
+    - '------DEL Operator@@&& '
+    - '---MOV InfixExpression@@((MockAwareVerificationMode)verificationMode).getMock()
+      == invocation.getMock() @TO@ IfStatement@@InfixExpression:verificationMode instanceof
+      MockAwareVerificationMode && ((MockAwareVerificationMode)verificationMode).getMock()
+      == invocation.getMock() '
+    - '---INS ExpressionStatement@@MethodInvocation:mockingProgress.verificationStarted(verificationMode)
+      @TO@ IfStatement@@InfixExpression:verificationMode instanceof MockAwareVerificationMode
+      && ((MockAwareVerificationMode)verificationMode).getMock() == invocation.getMock() '
+    - '------INS MethodInvocation@@mockingProgress.verificationStarted(verificationMode)
+      @TO@ ExpressionStatement@@MethodInvocation:mockingProgress.verificationStarted(verificationMode) '
+    - '---------INS SimpleName@@Name:mockingProgress @TO@ MethodInvocation@@mockingProgress.verificationStarted(verificationMode) '
+    - '---------INS SimpleName@@MethodName:verificationStarted:[verificationMode]
+      @TO@ MethodInvocation@@mockingProgress.verificationStarted(verificationMode) '
+    - '------------INS SimpleName@@verificationMode @TO@ SimpleName@@MethodName:verificationStarted:[verificationMode] '
+  repair_actions_cnt: 1

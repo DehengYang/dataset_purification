@@ -1,0 +1,418 @@
+1 bug_id: Closure-21
+2 src folder:
+  name of src folder: src
+  number of files: 419
+  number of java files: 403
+  number of src classes: 1359
+  number of test classes: 224
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CheckSideEffectsTest#testUselessCode
+  failing tests:
+  - com.google.javascript.jscomp.CheckSideEffectsTest
+  number of all test cases: 7583
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 4.0
+  purification via coverage: 0.775
+  purification via delta debugging: 1241.025
+  repair actions extraction: 0.748
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CheckSideEffectsTest#testUselessCode: 3233
+  fixed:
+    com.google.javascript.jscomp.CheckSideEffectsTest#testUselessCode: 3213
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 19
+  cov_patch_lines: 21
+  delta_patch_lines: 21
+  oriAdd: 2
+  oriDel: 19
+  ori_patch_lines: 21
+  purAdd: 2
+  purDel: 19
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 0
+  failFail: 50
+  passed: 0
+  total: 51
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_21/src/com/google/javascript/jscomp/CheckSideEffects.java\t\
+    2020-10-24 06:03:53.090963125 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_21/purify/patch/com/google/javascript/jscomp/CheckSideEffects.java\t\
+    2020-10-24 06:03:53.090963125 -0400\n@@ -98,7 +98,7 @@\n     // Do not try to\
+    \ remove a block or an expr result. We already handle\n     // these cases when\
+    \ we visit the child, and the peephole passes will\n     // fix up the tree in\
+    \ more clever ways when these are removed.\n-    if (n.isExprResult()) {\n+  \
+    \  if (n.isExprResult() || n.isBlock()) {\n       return;\n     }\n \n@@ -110,24\
+    \ +110,7 @@\n \n     boolean isResultUsed = NodeUtil.isExpressionResultUsed(n);\n\
+    \     boolean isSimpleOp = NodeUtil.isSimpleOperatorType(n.getType());\n-    if\
+    \ (parent.getType() == Token.COMMA) {\n-      if (isResultUsed) {\n-        return;\n\
+    -      }\n-      if (n == parent.getLastChild()) {\n-        for (Node an : parent.getAncestors())\
+    \ {\n-          int ancestorType = an.getType();\n-          if (ancestorType\
+    \ == Token.COMMA) continue;\n-          if (ancestorType != Token.EXPR_RESULT\
+    \ && ancestorType != Token.BLOCK) return;\n-          else break;\n-        }\n\
+    -      }\n-    } else if (parent.getType() != Token.EXPR_RESULT && parent.getType()\
+    \ != Token.BLOCK) {\n-      if (! (parent.getType() == Token.FOR && parent.getChildCount()\
+    \ == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext())))\
+    \ {\n-        return;\n-      }\n-    }\n-    if (\n+    if (!isResultUsed &&\n\
+    \         (isSimpleOp || !NodeUtil.mayHaveSideEffects(n, t.getCompiler()))) {\n\
+    \       String msg = \"This code lacks side-effects. Is there a bug?\";\n    \
+    \   if (n.isString()) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_21/src/com/google/javascript/jscomp/CheckSideEffects.java\t\
+    2020-10-24 06:25:24.139756481 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_21/purify/purified/com/google/javascript/jscomp/CheckSideEffects.java\t\
+    2020-10-24 06:25:24.139756481 -0400\n@@ -98,7 +98,7 @@\n     // Do not try to\
+    \ remove a block or an expr result. We already handle\n     // these cases when\
+    \ we visit the child, and the peephole passes will\n     // fix up the tree in\
+    \ more clever ways when these are removed.\n-    if (n.isExprResult()) {\n+  \
+    \  if (n.isExprResult() || n.isBlock()) {\n       return;\n     }\n \n@@ -110,24\
+    \ +110,7 @@\n \n     boolean isResultUsed = NodeUtil.isExpressionResultUsed(n);\n\
+    \     boolean isSimpleOp = NodeUtil.isSimpleOperatorType(n.getType());\n-    if\
+    \ (parent.getType() == Token.COMMA) {\n-      if (isResultUsed) {\n-        return;\n\
+    -      }\n-      if (n == parent.getLastChild()) {\n-        for (Node an : parent.getAncestors())\
+    \ {\n-          int ancestorType = an.getType();\n-          if (ancestorType\
+    \ == Token.COMMA) continue;\n-          if (ancestorType != Token.EXPR_RESULT\
+    \ && ancestorType != Token.BLOCK) return;\n-          else break;\n-        }\n\
+    -      }\n-    } else if (parent.getType() != Token.EXPR_RESULT && parent.getType()\
+    \ != Token.BLOCK) {\n-      if (! (parent.getType() == Token.FOR && parent.getChildCount()\
+    \ == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext())))\
+    \ {\n-        return;\n-      }\n-    }\n-    if (\n+    if (!isResultUsed &&\n\
+    \         (isSimpleOp || !NodeUtil.mayHaveSideEffects(n, t.getCompiler()))) {\n\
+    \       String msg = \"This code lacks side-effects. Is there a bug?\";\n    \
+    \   if (n.isString()) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 11
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CheckSideEffects:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:n.isExprResult() '
+    - '---DEL MethodInvocation@@n.isExprResult() '
+    - '------DEL SimpleName@@Name:n '
+    - '------DEL SimpleName@@MethodName:isExprResult:[] '
+    - '---DEL ReturnStatement@@ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:parent.getType() == Token.COMMA @TO@ MethodDeclaration@@public,
+      @@void, MethodName:visit, @@Argus:NodeTraversal+t+Node+n+Node+parent+ '
+    - '---MOV ReturnStatement@@ @TO@ IfStatement@@InfixExpression:parent.getType()
+      == Token.COMMA '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:parent.getType() == Token.COMMA @TO@ InfixExpression:n.isExprResult()
+      || n.isBlock() '
+    - '---INS InfixExpression@@n.isExprResult() || n.isBlock() @TO@ IfStatement@@InfixExpression:parent.getType()
+      == Token.COMMA '
+    - '------MOV MethodInvocation@@parent.getChildCount() @TO@ InfixExpression@@n.isExprResult()
+      || n.isBlock() '
+    - '------MOV Operator@@|| @TO@ InfixExpression@@n.isExprResult() || n.isBlock() '
+    - '------MOV MethodInvocation@@parent.getFirstChild().getNext().getNext() @TO@
+      InfixExpression@@n.isExprResult() || n.isBlock() '
+    - '---DEL InfixExpression@@parent.getType() == Token.COMMA '
+    - '------DEL MethodInvocation@@parent.getType() '
+    - '---------DEL SimpleName@@Name:parent '
+    - '---------DEL SimpleName@@MethodName:getType:[] '
+    - '------DEL Operator@@== '
+    - '------DEL QualifiedName@@Token.COMMA '
+    - '---------DEL SimpleName@@Token '
+    - '---------DEL SimpleName@@COMMA '
+    - '---DEL IfStatement@@SimpleName:isResultUsed '
+    - '------DEL SimpleName@@isResultUsed '
+    - '------DEL ReturnStatement@@ '
+    - '---DEL IfStatement@@InfixExpression:n == parent.getLastChild() '
+    - '------DEL InfixExpression@@n == parent.getLastChild() '
+    - '---------DEL SimpleName@@n '
+    - '---------DEL Operator@@== '
+    - '---------DEL MethodInvocation@@parent.getLastChild() '
+    - '------------DEL SimpleName@@Name:parent '
+    - '------------DEL SimpleName@@MethodName:getLastChild:[] '
+    - '------DEL EnhancedForStatement@@Node an, MethodInvocation:parent.getAncestors() '
+    - '---------DEL SingleVariableDeclaration@@Node an '
+    - '------------DEL SimpleType@@Node '
+    - '------------DEL SimpleName@@an '
+    - '---------DEL MethodInvocation@@parent.getAncestors() '
+    - '------------DEL SimpleName@@Name:parent '
+    - '------------DEL SimpleName@@MethodName:getAncestors:[] '
+    - '---------DEL VariableDeclarationStatement@@int ancestorType=an.getType(); '
+    - '------------DEL PrimitiveType@@int '
+    - '------------DEL VariableDeclarationFragment@@ancestorType=an.getType() '
+    - '---------------DEL SimpleName@@ancestorType '
+    - '---------------DEL MethodInvocation@@an.getType() '
+    - '------------------DEL SimpleName@@Name:an '
+    - '------------------DEL SimpleName@@MethodName:getType:[] '
+    - '---------DEL IfStatement@@InfixExpression:ancestorType == Token.COMMA '
+    - '------------DEL InfixExpression@@ancestorType == Token.COMMA '
+    - '---------------DEL SimpleName@@ancestorType '
+    - '---------------DEL Operator@@== '
+    - '---------------DEL QualifiedName@@Token.COMMA '
+    - '------------------DEL SimpleName@@Token '
+    - '------------------DEL SimpleName@@COMMA '
+    - '------------DEL ContinueStatement@@ '
+    - '---------DEL IfStatement@@InfixExpression:ancestorType != Token.EXPR_RESULT
+      && ancestorType != Token.BLOCK '
+    - '------------DEL InfixExpression@@ancestorType != Token.EXPR_RESULT && ancestorType
+      != Token.BLOCK '
+    - '---------------DEL InfixExpression@@ancestorType != Token.EXPR_RESULT '
+    - '------------------DEL SimpleName@@ancestorType '
+    - '------------------DEL Operator@@!= '
+    - '------------------DEL QualifiedName@@Token.EXPR_RESULT '
+    - '---------------------DEL SimpleName@@Token '
+    - '---------------------DEL SimpleName@@EXPR_RESULT '
+    - '---------------DEL Operator@@&& '
+    - '---------------DEL InfixExpression@@ancestorType != Token.BLOCK '
+    - '------------------DEL SimpleName@@ancestorType '
+    - '------------------DEL Operator@@!= '
+    - '------------------DEL QualifiedName@@Token.BLOCK '
+    - '---------------------DEL SimpleName@@Token '
+    - '---------------------DEL SimpleName@@BLOCK '
+    - '------------DEL ReturnStatement@@ '
+    - '------------DEL BreakStatement@@ '
+    - '---DEL IfStatement@@InfixExpression:parent.getType() != Token.EXPR_RESULT &&
+      parent.getType() != Token.BLOCK '
+    - '------DEL InfixExpression@@parent.getType() != Token.EXPR_RESULT && parent.getType()
+      != Token.BLOCK '
+    - '---------DEL InfixExpression@@parent.getType() != Token.EXPR_RESULT '
+    - '------------DEL MethodInvocation@@parent.getType() '
+    - '---------------DEL SimpleName@@Name:parent '
+    - '---------------DEL SimpleName@@MethodName:getType:[] '
+    - '------------DEL Operator@@!= '
+    - '------------DEL QualifiedName@@Token.EXPR_RESULT '
+    - '---------------DEL SimpleName@@Token '
+    - '---------------DEL SimpleName@@EXPR_RESULT '
+    - '---------DEL Operator@@&& '
+    - '---------DEL InfixExpression@@parent.getType() != Token.BLOCK '
+    - '------------DEL MethodInvocation@@parent.getType() '
+    - '---------------DEL SimpleName@@Name:parent '
+    - '---------------DEL SimpleName@@MethodName:getType:[] '
+    - '------------DEL Operator@@!= '
+    - '------------DEL QualifiedName@@Token.BLOCK '
+    - '---------------DEL SimpleName@@Token '
+    - '---------------DEL SimpleName@@BLOCK '
+    - '------DEL IfStatement@@PrefixExpression:!(parent.getType() == Token.FOR &&
+      parent.getChildCount() == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext())) '
+    - '---------DEL PrefixExpression@@!(parent.getType() == Token.FOR && parent.getChildCount()
+      == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext())) '
+    - '------------DEL Operator@@! '
+    - '------------DEL ParenthesizedExpression@@(parent.getType() == Token.FOR &&
+      parent.getChildCount() == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext())) '
+    - '---------------DEL InfixExpression@@parent.getType() == Token.FOR && parent.getChildCount()
+      == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext()) '
+    - '------------------DEL InfixExpression@@parent.getType() == Token.FOR && parent.getChildCount()
+      == 4 '
+    - '---------------------DEL InfixExpression@@parent.getType() == Token.FOR '
+    - '------------------------DEL MethodInvocation@@parent.getType() '
+    - '---------------------------DEL SimpleName@@Name:parent '
+    - '---------------------------DEL SimpleName@@MethodName:getType:[] '
+    - '------------------------DEL Operator@@== '
+    - '------------------------DEL QualifiedName@@Token.FOR '
+    - '---------------------------DEL SimpleName@@Token '
+    - '---------------------------DEL SimpleName@@FOR '
+    - '---------------------DEL Operator@@&& '
+    - '---------------------DEL InfixExpression@@parent.getChildCount() == 4 '
+    - '------------------------DEL Operator@@== '
+    - '------------------------DEL NumberLiteral@@4 '
+    - '------------------DEL Operator@@&& '
+    - '------------------DEL ParenthesizedExpression@@(n == parent.getFirstChild()
+      || n == parent.getFirstChild().getNext().getNext()) '
+    - '---------------------DEL InfixExpression@@n == parent.getFirstChild() || n
+      == parent.getFirstChild().getNext().getNext() '
+    - '------------------------DEL InfixExpression@@n == parent.getFirstChild() '
+    - '---------------------------DEL SimpleName@@n '
+    - '---------------------------DEL Operator@@== '
+    - '---------------------------DEL MethodInvocation@@parent.getFirstChild() '
+    - '------------------------------DEL SimpleName@@Name:parent '
+    - '------------------------------DEL SimpleName@@MethodName:getFirstChild:[] '
+    - '------------------------DEL InfixExpression@@n == parent.getFirstChild().getNext().getNext() '
+    - '---------------------------DEL SimpleName@@n '
+    - '---------------------------DEL Operator@@== '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@ParenthesizedExpression:(isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler()))
+      @TO@ InfixExpression:!isResultUsed && (isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler())) '
+    - '---INS InfixExpression@@!isResultUsed && (isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler()))
+      @TO@ IfStatement@@ParenthesizedExpression:(isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler())) '
+    - '------INS PrefixExpression@@!isResultUsed @TO@ InfixExpression@@!isResultUsed
+      && (isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler())) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!isResultUsed '
+    - '---------INS SimpleName@@isResultUsed @TO@ PrefixExpression@@!isResultUsed '
+    - '------INS Operator@@&& @TO@ InfixExpression@@!isResultUsed && (isSimpleOp ||
+      !NodeUtil.mayHaveSideEffects(n,t.getCompiler())) '
+    - '------MOV ParenthesizedExpression@@(isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler()))
+      @TO@ InfixExpression@@!isResultUsed && (isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler())) '
+  files_cnt: '1'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 11
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CheckSideEffects:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:n.isExprResult() '
+    - '---DEL MethodInvocation@@n.isExprResult() '
+    - '------DEL SimpleName@@Name:n '
+    - '------DEL SimpleName@@MethodName:isExprResult:[] '
+    - '---DEL ReturnStatement@@ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:parent.getType() == Token.COMMA @TO@ MethodDeclaration@@public,
+      @@void, MethodName:visit, @@Argus:NodeTraversal+t+Node+n+Node+parent+ '
+    - '---MOV ReturnStatement@@ @TO@ IfStatement@@InfixExpression:parent.getType()
+      == Token.COMMA '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:parent.getType() == Token.COMMA @TO@ InfixExpression:n.isExprResult()
+      || n.isBlock() '
+    - '---INS InfixExpression@@n.isExprResult() || n.isBlock() @TO@ IfStatement@@InfixExpression:parent.getType()
+      == Token.COMMA '
+    - '------MOV MethodInvocation@@parent.getChildCount() @TO@ InfixExpression@@n.isExprResult()
+      || n.isBlock() '
+    - '------MOV Operator@@|| @TO@ InfixExpression@@n.isExprResult() || n.isBlock() '
+    - '------MOV MethodInvocation@@parent.getFirstChild().getNext().getNext() @TO@
+      InfixExpression@@n.isExprResult() || n.isBlock() '
+    - '---DEL InfixExpression@@parent.getType() == Token.COMMA '
+    - '------DEL MethodInvocation@@parent.getType() '
+    - '---------DEL SimpleName@@Name:parent '
+    - '---------DEL SimpleName@@MethodName:getType:[] '
+    - '------DEL Operator@@== '
+    - '------DEL QualifiedName@@Token.COMMA '
+    - '---------DEL SimpleName@@Token '
+    - '---------DEL SimpleName@@COMMA '
+    - '---DEL IfStatement@@SimpleName:isResultUsed '
+    - '------DEL SimpleName@@isResultUsed '
+    - '------DEL ReturnStatement@@ '
+    - '---DEL IfStatement@@InfixExpression:n == parent.getLastChild() '
+    - '------DEL InfixExpression@@n == parent.getLastChild() '
+    - '---------DEL SimpleName@@n '
+    - '---------DEL Operator@@== '
+    - '---------DEL MethodInvocation@@parent.getLastChild() '
+    - '------------DEL SimpleName@@Name:parent '
+    - '------------DEL SimpleName@@MethodName:getLastChild:[] '
+    - '------DEL EnhancedForStatement@@Node an, MethodInvocation:parent.getAncestors() '
+    - '---------DEL SingleVariableDeclaration@@Node an '
+    - '------------DEL SimpleType@@Node '
+    - '------------DEL SimpleName@@an '
+    - '---------DEL MethodInvocation@@parent.getAncestors() '
+    - '------------DEL SimpleName@@Name:parent '
+    - '------------DEL SimpleName@@MethodName:getAncestors:[] '
+    - '---------DEL VariableDeclarationStatement@@int ancestorType=an.getType(); '
+    - '------------DEL PrimitiveType@@int '
+    - '------------DEL VariableDeclarationFragment@@ancestorType=an.getType() '
+    - '---------------DEL SimpleName@@ancestorType '
+    - '---------------DEL MethodInvocation@@an.getType() '
+    - '------------------DEL SimpleName@@Name:an '
+    - '------------------DEL SimpleName@@MethodName:getType:[] '
+    - '---------DEL IfStatement@@InfixExpression:ancestorType == Token.COMMA '
+    - '------------DEL InfixExpression@@ancestorType == Token.COMMA '
+    - '---------------DEL SimpleName@@ancestorType '
+    - '---------------DEL Operator@@== '
+    - '---------------DEL QualifiedName@@Token.COMMA '
+    - '------------------DEL SimpleName@@Token '
+    - '------------------DEL SimpleName@@COMMA '
+    - '------------DEL ContinueStatement@@ '
+    - '---------DEL IfStatement@@InfixExpression:ancestorType != Token.EXPR_RESULT
+      && ancestorType != Token.BLOCK '
+    - '------------DEL InfixExpression@@ancestorType != Token.EXPR_RESULT && ancestorType
+      != Token.BLOCK '
+    - '---------------DEL InfixExpression@@ancestorType != Token.EXPR_RESULT '
+    - '------------------DEL SimpleName@@ancestorType '
+    - '------------------DEL Operator@@!= '
+    - '------------------DEL QualifiedName@@Token.EXPR_RESULT '
+    - '---------------------DEL SimpleName@@Token '
+    - '---------------------DEL SimpleName@@EXPR_RESULT '
+    - '---------------DEL Operator@@&& '
+    - '---------------DEL InfixExpression@@ancestorType != Token.BLOCK '
+    - '------------------DEL SimpleName@@ancestorType '
+    - '------------------DEL Operator@@!= '
+    - '------------------DEL QualifiedName@@Token.BLOCK '
+    - '---------------------DEL SimpleName@@Token '
+    - '---------------------DEL SimpleName@@BLOCK '
+    - '------------DEL ReturnStatement@@ '
+    - '------------DEL BreakStatement@@ '
+    - '---DEL IfStatement@@InfixExpression:parent.getType() != Token.EXPR_RESULT &&
+      parent.getType() != Token.BLOCK '
+    - '------DEL InfixExpression@@parent.getType() != Token.EXPR_RESULT && parent.getType()
+      != Token.BLOCK '
+    - '---------DEL InfixExpression@@parent.getType() != Token.EXPR_RESULT '
+    - '------------DEL MethodInvocation@@parent.getType() '
+    - '---------------DEL SimpleName@@Name:parent '
+    - '---------------DEL SimpleName@@MethodName:getType:[] '
+    - '------------DEL Operator@@!= '
+    - '------------DEL QualifiedName@@Token.EXPR_RESULT '
+    - '---------------DEL SimpleName@@Token '
+    - '---------------DEL SimpleName@@EXPR_RESULT '
+    - '---------DEL Operator@@&& '
+    - '---------DEL InfixExpression@@parent.getType() != Token.BLOCK '
+    - '------------DEL MethodInvocation@@parent.getType() '
+    - '---------------DEL SimpleName@@Name:parent '
+    - '---------------DEL SimpleName@@MethodName:getType:[] '
+    - '------------DEL Operator@@!= '
+    - '------------DEL QualifiedName@@Token.BLOCK '
+    - '---------------DEL SimpleName@@Token '
+    - '---------------DEL SimpleName@@BLOCK '
+    - '------DEL IfStatement@@PrefixExpression:!(parent.getType() == Token.FOR &&
+      parent.getChildCount() == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext())) '
+    - '---------DEL PrefixExpression@@!(parent.getType() == Token.FOR && parent.getChildCount()
+      == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext())) '
+    - '------------DEL Operator@@! '
+    - '------------DEL ParenthesizedExpression@@(parent.getType() == Token.FOR &&
+      parent.getChildCount() == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext())) '
+    - '---------------DEL InfixExpression@@parent.getType() == Token.FOR && parent.getChildCount()
+      == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext()) '
+    - '------------------DEL InfixExpression@@parent.getType() == Token.FOR && parent.getChildCount()
+      == 4 '
+    - '---------------------DEL InfixExpression@@parent.getType() == Token.FOR '
+    - '------------------------DEL MethodInvocation@@parent.getType() '
+    - '---------------------------DEL SimpleName@@Name:parent '
+    - '---------------------------DEL SimpleName@@MethodName:getType:[] '
+    - '------------------------DEL Operator@@== '
+    - '------------------------DEL QualifiedName@@Token.FOR '
+    - '---------------------------DEL SimpleName@@Token '
+    - '---------------------------DEL SimpleName@@FOR '
+    - '---------------------DEL Operator@@&& '
+    - '---------------------DEL InfixExpression@@parent.getChildCount() == 4 '
+    - '------------------------DEL Operator@@== '
+    - '------------------------DEL NumberLiteral@@4 '
+    - '------------------DEL Operator@@&& '
+    - '------------------DEL ParenthesizedExpression@@(n == parent.getFirstChild()
+      || n == parent.getFirstChild().getNext().getNext()) '
+    - '---------------------DEL InfixExpression@@n == parent.getFirstChild() || n
+      == parent.getFirstChild().getNext().getNext() '
+    - '------------------------DEL InfixExpression@@n == parent.getFirstChild() '
+    - '---------------------------DEL SimpleName@@n '
+    - '---------------------------DEL Operator@@== '
+    - '---------------------------DEL MethodInvocation@@parent.getFirstChild() '
+    - '------------------------------DEL SimpleName@@Name:parent '
+    - '------------------------------DEL SimpleName@@MethodName:getFirstChild:[] '
+    - '------------------------DEL InfixExpression@@n == parent.getFirstChild().getNext().getNext() '
+    - '---------------------------DEL SimpleName@@n '
+    - '---------------------------DEL Operator@@== '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@ParenthesizedExpression:(isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler()))
+      @TO@ InfixExpression:!isResultUsed && (isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler())) '
+    - '---INS InfixExpression@@!isResultUsed && (isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler()))
+      @TO@ IfStatement@@ParenthesizedExpression:(isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler())) '
+    - '------INS PrefixExpression@@!isResultUsed @TO@ InfixExpression@@!isResultUsed
+      && (isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler())) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!isResultUsed '
+    - '---------INS SimpleName@@isResultUsed @TO@ PrefixExpression@@!isResultUsed '
+    - '------INS Operator@@&& @TO@ InfixExpression@@!isResultUsed && (isSimpleOp ||
+      !NodeUtil.mayHaveSideEffects(n,t.getCompiler())) '
+    - '------MOV ParenthesizedExpression@@(isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler()))
+      @TO@ InfixExpression@@!isResultUsed && (isSimpleOp || !NodeUtil.mayHaveSideEffects(n,t.getCompiler())) '
+  files_cnt: '1'
+  repair_actions_cnt: 4

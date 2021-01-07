@@ -1,0 +1,246 @@
+1 bug_id: Math-13
+2 src folder:
+  name of src folder: java
+  number of files: 752
+  number of java files: 751
+  number of src classes: 1012
+  number of test classes: 370
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.optimization.fitting.PolynomialFitterTest#testLargeSample
+  failing tests:
+  - org.apache.commons.math3.optimization.fitting.PolynomialFitterTest
+  number of all test cases: 4577
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.206
+  purification via delta debugging: 296.512
+  repair actions extraction: 1.171
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.optimization.fitting.PolynomialFitterTest#testLargeSample: 213
+  fixed:
+    org.apache.commons.math3.optimization.fitting.PolynomialFitterTest#testLargeSample: 930
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 9
+  covDel: 0
+  cov_patch_lines: 9
+  delta_patch_lines: 9
+  oriAdd: 9
+  oriDel: 0
+  ori_patch_lines: 9
+  purAdd: 9
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 21
+  failFail: 2
+  passed: 0
+  total: 23
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_13/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java\t\
+    2020-10-21 05:09:52.544204896 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_13/purify/patch/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java\t\
+    2020-10-21 05:09:52.540204781 -0400\n@@ -559,7 +559,16 @@\n      * @return the\
+    \ square-root of the weight matrix.\n      */\n     private RealMatrix squareRoot(RealMatrix\
+    \ m) {\n+        if (m instanceof DiagonalMatrix) {\n+            final int dim\
+    \ = m.getRowDimension();\n+            final RealMatrix sqrtM = new DiagonalMatrix(dim);\n\
+    +            for (int i = 0; i < dim; i++) {\n+               sqrtM.setEntry(i,\
+    \ i, FastMath.sqrt(m.getEntry(i, i)));\n+            }\n+            return sqrtM;\n\
+    +        } else {\n             final EigenDecomposition dec = new EigenDecomposition(m);\n\
+    \             return dec.getSquareRoot();\n+        }\n     }\n }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_13/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java\t\
+    2020-10-21 05:15:15.149539403 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_13/purify/purified/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java\t\
+    2020-10-21 05:15:15.149539403 -0400\n@@ -559,7 +559,16 @@\n      * @return the\
+    \ square-root of the weight matrix.\n      */\n     private RealMatrix squareRoot(RealMatrix\
+    \ m) {\n+        if (m instanceof DiagonalMatrix) {\n+            final int dim\
+    \ = m.getRowDimension();\n+            final RealMatrix sqrtM = new DiagonalMatrix(dim);\n\
+    +            for (int i = 0; i < dim; i++) {\n+               sqrtM.setEntry(i,\
+    \ i, FastMath.sqrt(m.getEntry(i, i)));\n+            }\n+            return sqrtM;\n\
+    +        } else {\n             final EigenDecomposition dec = new EigenDecomposition(m);\n\
+    \             return dec.getSquareRoot();\n+        }\n     }\n }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 10
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InstanceofExpression:m instanceof DiagonalMatrix @TO@ MethodDeclaration@@private,
+      @@RealMatrix, MethodName:squareRoot, @@Argus:RealMatrix+m+ '
+    - '---INS InstanceofExpression@@m instanceof DiagonalMatrix @TO@ IfStatement@@InstanceofExpression:m
+      instanceof DiagonalMatrix '
+    - '------INS SimpleName@@m @TO@ InstanceofExpression@@m instanceof DiagonalMatrix '
+    - '------INS Instanceof@@instanceof @TO@ InstanceofExpression@@m instanceof DiagonalMatrix '
+    - '------INS SimpleType@@DiagonalMatrix @TO@ InstanceofExpression@@m instanceof
+      DiagonalMatrix '
+    - '---MOV VariableDeclarationStatement@@final EigenDecomposition dec=new EigenDecomposition(m);
+      @TO@ IfStatement@@InstanceofExpression:m instanceof DiagonalMatrix '
+    - '---INS VariableDeclarationStatement@@final int dim=m.getRowDimension(); @TO@
+      IfStatement@@InstanceofExpression:m instanceof DiagonalMatrix '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final int dim=m.getRowDimension(); '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@final int dim=m.getRowDimension(); '
+    - '------INS VariableDeclarationFragment@@dim=m.getRowDimension() @TO@ VariableDeclarationStatement@@final
+      int dim=m.getRowDimension(); '
+    - '---------INS SimpleName@@dim @TO@ VariableDeclarationFragment@@dim=m.getRowDimension() '
+    - '---------INS MethodInvocation@@m.getRowDimension() @TO@ VariableDeclarationFragment@@dim=m.getRowDimension() '
+    - '------------INS SimpleName@@Name:m @TO@ MethodInvocation@@m.getRowDimension() '
+    - '------------INS SimpleName@@MethodName:getRowDimension:[] @TO@ MethodInvocation@@m.getRowDimension() '
+    - '---MOV ReturnStatement@@MethodInvocation:dec.getSquareRoot() @TO@ IfStatement@@InstanceofExpression:m
+      instanceof DiagonalMatrix '
+    - '---INS VariableDeclarationStatement@@final RealMatrix sqrtM=new DiagonalMatrix(dim);
+      @TO@ IfStatement@@InstanceofExpression:m instanceof DiagonalMatrix '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final RealMatrix
+      sqrtM=new DiagonalMatrix(dim); '
+    - '------INS SimpleType@@RealMatrix @TO@ VariableDeclarationStatement@@final RealMatrix
+      sqrtM=new DiagonalMatrix(dim); '
+    - '------INS VariableDeclarationFragment@@sqrtM=new DiagonalMatrix(dim) @TO@ VariableDeclarationStatement@@final
+      RealMatrix sqrtM=new DiagonalMatrix(dim); '
+    - '---------INS SimpleName@@sqrtM @TO@ VariableDeclarationFragment@@sqrtM=new
+      DiagonalMatrix(dim) '
+    - '---------INS ClassInstanceCreation@@DiagonalMatrix[dim] @TO@ VariableDeclarationFragment@@sqrtM=new
+      DiagonalMatrix(dim) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@DiagonalMatrix[dim] '
+    - '------------INS SimpleType@@DiagonalMatrix @TO@ ClassInstanceCreation@@DiagonalMatrix[dim] '
+    - '------------INS SimpleName@@dim @TO@ ClassInstanceCreation@@DiagonalMatrix[dim] '
+    - '---INS ForStatement@@[int i=0];i < dim; [i++] @TO@ IfStatement@@InstanceofExpression:m
+      instanceof DiagonalMatrix '
+    - '------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < dim; [i++] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '---------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '------INS InfixExpression@@i < dim @TO@ ForStatement@@[int i=0];i < dim; [i++] '
+    - '---------INS SimpleName@@i @TO@ InfixExpression@@i < dim '
+    - '---------INS Operator@@< @TO@ InfixExpression@@i < dim '
+    - '---------INS SimpleName@@dim @TO@ InfixExpression@@i < dim '
+    - '------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < dim; [i++] '
+    - '---------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '------INS ExpressionStatement@@MethodInvocation:sqrtM.setEntry(i,i,FastMath.sqrt(m.getEntry(i,i)))
+      @TO@ ForStatement@@[int i=0];i < dim; [i++] '
+    - '---------INS MethodInvocation@@sqrtM.setEntry(i,i,FastMath.sqrt(m.getEntry(i,i)))
+      @TO@ ExpressionStatement@@MethodInvocation:sqrtM.setEntry(i,i,FastMath.sqrt(m.getEntry(i,i))) '
+    - '------------INS SimpleName@@Name:sqrtM @TO@ MethodInvocation@@sqrtM.setEntry(i,i,FastMath.sqrt(m.getEntry(i,i))) '
+    - '------------INS SimpleName@@MethodName:setEntry:[i, i, FastMath.sqrt(m.getEntry(i,i))]
+      @TO@ MethodInvocation@@sqrtM.setEntry(i,i,FastMath.sqrt(m.getEntry(i,i))) '
+    - '---------------INS SimpleName@@i @TO@ SimpleName@@MethodName:setEntry:[i, i,
+      FastMath.sqrt(m.getEntry(i,i))] '
+    - '---------------INS SimpleName@@i @TO@ SimpleName@@MethodName:setEntry:[i, i,
+      FastMath.sqrt(m.getEntry(i,i))] '
+    - '---------------INS MethodInvocation@@FastMath.sqrt(m.getEntry(i,i)) @TO@ SimpleName@@MethodName:setEntry:[i,
+      i, FastMath.sqrt(m.getEntry(i,i))] '
+    - '------------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.sqrt(m.getEntry(i,i)) '
+    - '------------------INS SimpleName@@MethodName:sqrt:[m.getEntry(i,i)] @TO@ MethodInvocation@@FastMath.sqrt(m.getEntry(i,i)) '
+    - '---------------------INS MethodInvocation@@m.getEntry(i,i) @TO@ SimpleName@@MethodName:sqrt:[m.getEntry(i,i)] '
+    - '------------------------INS SimpleName@@Name:m @TO@ MethodInvocation@@m.getEntry(i,i) '
+    - '------------------------INS SimpleName@@MethodName:getEntry:[i, i] @TO@ MethodInvocation@@m.getEntry(i,i) '
+    - '---------------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:getEntry:[i,
+      i] '
+    - '---------------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:getEntry:[i,
+      i] '
+    - '---INS ReturnStatement@@SimpleName:sqrtM @TO@ IfStatement@@InstanceofExpression:m
+      instanceof DiagonalMatrix '
+    - '------INS SimpleName@@sqrtM @TO@ ReturnStatement@@SimpleName:sqrtM '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 10
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InstanceofExpression:m instanceof DiagonalMatrix @TO@ MethodDeclaration@@private,
+      @@RealMatrix, MethodName:squareRoot, @@Argus:RealMatrix+m+ '
+    - '---INS InstanceofExpression@@m instanceof DiagonalMatrix @TO@ IfStatement@@InstanceofExpression:m
+      instanceof DiagonalMatrix '
+    - '------INS SimpleName@@m @TO@ InstanceofExpression@@m instanceof DiagonalMatrix '
+    - '------INS Instanceof@@instanceof @TO@ InstanceofExpression@@m instanceof DiagonalMatrix '
+    - '------INS SimpleType@@DiagonalMatrix @TO@ InstanceofExpression@@m instanceof
+      DiagonalMatrix '
+    - '---MOV VariableDeclarationStatement@@final EigenDecomposition dec=new EigenDecomposition(m);
+      @TO@ IfStatement@@InstanceofExpression:m instanceof DiagonalMatrix '
+    - '---INS VariableDeclarationStatement@@final int dim=m.getRowDimension(); @TO@
+      IfStatement@@InstanceofExpression:m instanceof DiagonalMatrix '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final int dim=m.getRowDimension(); '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@final int dim=m.getRowDimension(); '
+    - '------INS VariableDeclarationFragment@@dim=m.getRowDimension() @TO@ VariableDeclarationStatement@@final
+      int dim=m.getRowDimension(); '
+    - '---------INS SimpleName@@dim @TO@ VariableDeclarationFragment@@dim=m.getRowDimension() '
+    - '---------INS MethodInvocation@@m.getRowDimension() @TO@ VariableDeclarationFragment@@dim=m.getRowDimension() '
+    - '------------INS SimpleName@@Name:m @TO@ MethodInvocation@@m.getRowDimension() '
+    - '------------INS SimpleName@@MethodName:getRowDimension:[] @TO@ MethodInvocation@@m.getRowDimension() '
+    - '---MOV ReturnStatement@@MethodInvocation:dec.getSquareRoot() @TO@ IfStatement@@InstanceofExpression:m
+      instanceof DiagonalMatrix '
+    - '---INS VariableDeclarationStatement@@final RealMatrix sqrtM=new DiagonalMatrix(dim);
+      @TO@ IfStatement@@InstanceofExpression:m instanceof DiagonalMatrix '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final RealMatrix
+      sqrtM=new DiagonalMatrix(dim); '
+    - '------INS SimpleType@@RealMatrix @TO@ VariableDeclarationStatement@@final RealMatrix
+      sqrtM=new DiagonalMatrix(dim); '
+    - '------INS VariableDeclarationFragment@@sqrtM=new DiagonalMatrix(dim) @TO@ VariableDeclarationStatement@@final
+      RealMatrix sqrtM=new DiagonalMatrix(dim); '
+    - '---------INS SimpleName@@sqrtM @TO@ VariableDeclarationFragment@@sqrtM=new
+      DiagonalMatrix(dim) '
+    - '---------INS ClassInstanceCreation@@DiagonalMatrix[dim] @TO@ VariableDeclarationFragment@@sqrtM=new
+      DiagonalMatrix(dim) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@DiagonalMatrix[dim] '
+    - '------------INS SimpleType@@DiagonalMatrix @TO@ ClassInstanceCreation@@DiagonalMatrix[dim] '
+    - '------------INS SimpleName@@dim @TO@ ClassInstanceCreation@@DiagonalMatrix[dim] '
+    - '---INS ForStatement@@[int i=0];i < dim; [i++] @TO@ IfStatement@@InstanceofExpression:m
+      instanceof DiagonalMatrix '
+    - '------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < dim; [i++] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '---------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '------INS InfixExpression@@i < dim @TO@ ForStatement@@[int i=0];i < dim; [i++] '
+    - '---------INS SimpleName@@i @TO@ InfixExpression@@i < dim '
+    - '---------INS Operator@@< @TO@ InfixExpression@@i < dim '
+    - '---------INS SimpleName@@dim @TO@ InfixExpression@@i < dim '
+    - '------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < dim; [i++] '
+    - '---------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '------INS ExpressionStatement@@MethodInvocation:sqrtM.setEntry(i,i,FastMath.sqrt(m.getEntry(i,i)))
+      @TO@ ForStatement@@[int i=0];i < dim; [i++] '
+    - '---------INS MethodInvocation@@sqrtM.setEntry(i,i,FastMath.sqrt(m.getEntry(i,i)))
+      @TO@ ExpressionStatement@@MethodInvocation:sqrtM.setEntry(i,i,FastMath.sqrt(m.getEntry(i,i))) '
+    - '------------INS SimpleName@@Name:sqrtM @TO@ MethodInvocation@@sqrtM.setEntry(i,i,FastMath.sqrt(m.getEntry(i,i))) '
+    - '------------INS SimpleName@@MethodName:setEntry:[i, i, FastMath.sqrt(m.getEntry(i,i))]
+      @TO@ MethodInvocation@@sqrtM.setEntry(i,i,FastMath.sqrt(m.getEntry(i,i))) '
+    - '---------------INS SimpleName@@i @TO@ SimpleName@@MethodName:setEntry:[i, i,
+      FastMath.sqrt(m.getEntry(i,i))] '
+    - '---------------INS SimpleName@@i @TO@ SimpleName@@MethodName:setEntry:[i, i,
+      FastMath.sqrt(m.getEntry(i,i))] '
+    - '---------------INS MethodInvocation@@FastMath.sqrt(m.getEntry(i,i)) @TO@ SimpleName@@MethodName:setEntry:[i,
+      i, FastMath.sqrt(m.getEntry(i,i))] '
+    - '------------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.sqrt(m.getEntry(i,i)) '
+    - '------------------INS SimpleName@@MethodName:sqrt:[m.getEntry(i,i)] @TO@ MethodInvocation@@FastMath.sqrt(m.getEntry(i,i)) '
+    - '---------------------INS MethodInvocation@@m.getEntry(i,i) @TO@ SimpleName@@MethodName:sqrt:[m.getEntry(i,i)] '
+    - '------------------------INS SimpleName@@Name:m @TO@ MethodInvocation@@m.getEntry(i,i) '
+    - '------------------------INS SimpleName@@MethodName:getEntry:[i, i] @TO@ MethodInvocation@@m.getEntry(i,i) '
+    - '---------------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:getEntry:[i,
+      i] '
+    - '---------------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:getEntry:[i,
+      i] '
+    - '---INS ReturnStatement@@SimpleName:sqrtM @TO@ IfStatement@@InstanceofExpression:m
+      instanceof DiagonalMatrix '
+    - '------INS SimpleName@@sqrtM @TO@ ReturnStatement@@SimpleName:sqrtM '
+  repair_actions_cnt: 1

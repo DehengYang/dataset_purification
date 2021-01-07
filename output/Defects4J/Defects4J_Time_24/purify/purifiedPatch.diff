@@ -1,0 +1,14 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_24/src/main/java/org/joda/time/format/DateTimeParserBucket.java	2020-10-20 23:27:04.882227983 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_24/purify/purified/org/joda/time/format/DateTimeParserBucket.java	2020-10-20 23:27:04.878227867 -0400
+@@ -352,6 +352,11 @@
+             for (int i = 0; i < count; i++) {
+                 millis = savedFields[i].set(millis, resetFields);
+             }
++            if (resetFields) {
++                for (int i = 0; i < count; i++) {
++                    millis = savedFields[i].set(millis, i == (count - 1));
++                }
++            }
+         } catch (IllegalFieldValueException e) {
+             if (text != null) {
+                 e.prependMessage("Cannot parse \"" + text + '"');

@@ -1,0 +1,398 @@
+1 bug_id: Closure-94
+2 src folder:
+  name of src folder: src
+  number of files: 367
+  number of java files: 355
+  number of src classes: 1143
+  number of test classes: 183
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.ProcessDefinesTest#testOverridingString3
+  - com.google.javascript.jscomp.NodeUtilTest#testValidDefine
+  - com.google.javascript.jscomp.ProcessDefinesTest#testOverridingString1
+  failing tests:
+  - com.google.javascript.jscomp.ProcessDefinesTest
+  - com.google.javascript.jscomp.NodeUtilTest
+  number of all test cases: 6153
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 3.416
+  purification via delta debugging: 832.08
+  repair actions extraction: 2.66
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.NodeUtilTest#testValidDefine: 1016
+    com.google.javascript.jscomp.ProcessDefinesTest#testOverridingString1: 2623
+    com.google.javascript.jscomp.ProcessDefinesTest#testOverridingString3: 2628
+  fixed:
+    com.google.javascript.jscomp.NodeUtilTest#testValidDefine: 1018
+    com.google.javascript.jscomp.ProcessDefinesTest#testOverridingString1: 2836
+    com.google.javascript.jscomp.ProcessDefinesTest#testOverridingString3: 2860
+6 reduced lines:
+  by all: 16
+  by coverage: 0
+  by delta debugging: 16
+  covAdd: 19
+  covDel: 0
+  cov_patch_lines: 19
+  delta_patch_lines: 3
+  oriAdd: 19
+  oriDel: 0
+  ori_patch_lines: 19
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 3
+  original: 3
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 14
+  passed: 6
+  total: 26
+9 sibling repair actions:
+- 0 1 0.8345070422535211
+- 0 2 0.8434163701067615
+- 0 3 0.8434163701067615
+- 0 4 0.8434163701067615
+- 0 5 0.8434163701067615
+- 0 6 0.8345070422535211
+- 0 7 0.8434163701067615
+- 0 8 0.8485915492957746
+- 0 9 0.8345070422535211
+- 0 10 0.8434163701067615
+- 0 11 0.8345070422535211
+- 0 12 0.8257839721254355
+- 0 13 0.8257839721254355
+- 0 14 0.8345070422535211
+- 0 15 0.8257839721254355
+- 0 17 0.8345070422535211
+- 1 2 0.8434163701067615
+- 1 3 0.8434163701067615
+- 1 4 0.8434163701067615
+- 1 5 0.8434163701067615
+- 1 6 0.8345070422535211
+- 1 7 0.8434163701067615
+- 1 8 0.8345070422535211
+- 1 9 0.8345070422535211
+- 1 10 0.8434163701067615
+- 1 11 0.8345070422535211
+- 1 12 0.8257839721254355
+- 1 13 0.8257839721254355
+- 1 14 0.8345070422535211
+- 1 15 0.8257839721254355
+- 1 17 0.8345070422535211
+- 2 3 0.8525179856115108
+- 2 4 0.8525179856115108
+- 2 5 0.8525179856115108
+- 2 6 0.8434163701067615
+- 2 7 0.8525179856115108
+- 2 8 0.8434163701067615
+- 2 9 0.8434163701067615
+- 2 10 0.8525179856115108
+- 2 11 0.8434163701067615
+- 2 12 0.8626760563380281
+- 2 13 0.8345070422535211
+- 2 14 0.8434163701067615
+- 2 15 0.8345070422535211
+- 2 17 0.8434163701067615
+- 3 4 0.8705035971223022
+- 3 5 0.8669064748201439
+- 3 6 0.8434163701067615
+- 3 7 0.8525179856115108
+- 3 8 0.8434163701067615
+- 3 9 0.8434163701067615
+- 3 10 0.8669064748201439
+- 3 11 0.8434163701067615
+- 3 12 0.8345070422535211
+- 3 13 0.8485915492957746
+- 3 14 0.8434163701067615
+- 3 15 0.8345070422535211
+- 3 17 0.8434163701067615
+- 4 5 0.8525179856115108
+- 4 6 0.8434163701067615
+- 4 7 0.8669064748201439
+- 4 8 0.8434163701067615
+- 4 9 0.8434163701067615
+- 4 10 0.8525179856115108
+- 4 11 0.8434163701067615
+- 4 12 0.8345070422535211
+- 4 13 0.8345070422535211
+- 4 14 0.8434163701067615
+- 4 15 0.8345070422535211
+- 4 17 0.8434163701067615
+- 5 6 0.8612099644128114
+- 5 7 0.8705035971223022
+- 5 8 0.8434163701067615
+- 5 9 0.8434163701067615
+- 5 10 0.8669064748201439
+- 5 11 0.8434163701067615
+- 5 12 0.8345070422535211
+- 5 13 0.8485915492957746
+- 5 14 0.8434163701067615
+- 5 15 0.8345070422535211
+- 5 17 0.8434163701067615
+- 6 7 0.8612099644128114
+- 6 8 0.8345070422535211
+- 6 9 0.8345070422535211
+- 6 10 0.8434163701067615
+- 6 11 0.8626760563380281
+- 6 12 0.8257839721254355
+- 6 13 0.8257839721254355
+- 6 14 0.8345070422535211
+- 6 15 0.8536585365853658
+- 6 17 0.8345070422535211
+- 7 8 0.8434163701067615
+- 7 9 0.8434163701067615
+- 7 10 0.8525179856115108
+- 7 11 0.8434163701067615
+- 7 12 0.8345070422535211
+- 7 13 0.8345070422535211
+- 7 14 0.8434163701067615
+- 7 15 0.8345070422535211
+- 7 17 0.8434163701067615
+- 8 9 0.852112676056338
+- 8 10 0.8434163701067615
+- 8 11 0.8345070422535211
+- 8 12 0.8257839721254355
+- 8 13 0.8257839721254355
+- 8 14 0.8345070422535211
+- 8 15 0.8257839721254355
+- 8 17 0.8345070422535211
+- 9 10 0.8434163701067615
+- 9 11 0.8345070422535211
+- 9 12 0.8257839721254355
+- 9 13 0.8257839721254355
+- 9 14 0.8345070422535211
+- 9 15 0.8257839721254355
+- 9 17 0.8345070422535211
+- 10 11 0.8434163701067615
+- 10 12 0.8345070422535211
+- 10 13 0.8626760563380281
+- 10 14 0.8434163701067615
+- 10 15 0.8345070422535211
+- 10 17 0.8434163701067615
+- 11 12 0.8257839721254355
+- 11 13 0.8257839721254355
+- 11 14 0.8345070422535211
+- 11 15 0.867595818815331
+- 11 17 0.8345070422535211
+- 12 13 0.8517241379310345
+- 12 14 0.8432055749128919
+- 12 15 0.8172413793103448
+- 12 17 0.8257839721254355
+- 13 14 0.8432055749128919
+- 13 15 0.8172413793103448
+- 13 17 0.8257839721254355
+- 14 15 0.8257839721254355
+- 14 17 0.8345070422535211
+- 15 17 0.8257839721254355
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_94/src/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 12:05:30.301058470 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_94/purify/patch/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 12:05:30.297058355 -0400\n@@ -326,14 +326,33 @@\n         return true;\n\
+    \ \n       // Binary operators are only valid if both children are valid.\n+ \
+    \     case Token.ADD:\n       case Token.BITAND:\n       case Token.BITNOT:\n\
+    \       case Token.BITOR:\n       case Token.BITXOR:\n+      case Token.DIV:\n\
+    +      case Token.EQ:\n+      case Token.GE:\n+      case Token.GT:\n+      case\
+    \ Token.LE:\n+      case Token.LSH:\n+      case Token.LT:\n+      case Token.MOD:\n\
+    +      case Token.MUL:\n+      case Token.NE:\n+      case Token.RSH:\n+     \
+    \ case Token.SHEQ:\n+      case Token.SHNE:\n+      case Token.SUB:\n+      case\
+    \ Token.URSH:\n+        return isValidDefineValue(val.getFirstChild(), defines)\n\
+    +            && isValidDefineValue(val.getLastChild(), defines);\n \n       //\
+    \ Uniary operators are valid if the child is valid.\n       case Token.NOT:\n\
+    \       case Token.NEG:\n+      case Token.POS:\n         return isValidDefineValue(val.getFirstChild(),\
+    \ defines);\n \n       // Names are valid if and only if they are defines themselves."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_94/src/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 12:19:51.469990774 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_94/purify/purified/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 12:19:51.469990774 -0400\n@@ -326,10 +326,13 @@\n         return true;\n\
+    \ \n       // Binary operators are only valid if both children are valid.\n+ \
+    \     case Token.ADD:\n       case Token.BITAND:\n       case Token.BITNOT:\n\
+    \       case Token.BITOR:\n       case Token.BITXOR:\n+        return isValidDefineValue(val.getFirstChild(),\
+    \ defines)\n+            && isValidDefineValue(val.getLastChild(), defines);\n\
+    \ \n       // Uniary operators are valid if the child is valid.\n       case Token.NOT:"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NodeUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.ADD @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.ADD @TO@ SwitchCase@@QualifiedName:Token.ADD '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.ADD '
+    - '------INS SimpleName@@ADD @TO@ QualifiedName@@Token.ADD '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.DIV @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.DIV @TO@ SwitchCase@@QualifiedName:Token.DIV '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.DIV '
+    - '------INS SimpleName@@DIV @TO@ QualifiedName@@Token.DIV '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.EQ @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.EQ @TO@ SwitchCase@@QualifiedName:Token.EQ '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.EQ '
+    - '------INS SimpleName@@EQ @TO@ QualifiedName@@Token.EQ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.GE @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.GE @TO@ SwitchCase@@QualifiedName:Token.GE '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.GE '
+    - '------INS SimpleName@@GE @TO@ QualifiedName@@Token.GE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.GT @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.GT @TO@ SwitchCase@@QualifiedName:Token.GT '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.GT '
+    - '------INS SimpleName@@GT @TO@ QualifiedName@@Token.GT '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.LE @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.LE @TO@ SwitchCase@@QualifiedName:Token.LE '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.LE '
+    - '------INS SimpleName@@LE @TO@ QualifiedName@@Token.LE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.LSH @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.LSH @TO@ SwitchCase@@QualifiedName:Token.LSH '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.LSH '
+    - '------INS SimpleName@@LSH @TO@ QualifiedName@@Token.LSH '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.LT @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.LT @TO@ SwitchCase@@QualifiedName:Token.LT '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.LT '
+    - '------INS SimpleName@@LT @TO@ QualifiedName@@Token.LT '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.MOD @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.MOD @TO@ SwitchCase@@QualifiedName:Token.MOD '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.MOD '
+    - '------INS SimpleName@@MOD @TO@ QualifiedName@@Token.MOD '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.MUL @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.MUL @TO@ SwitchCase@@QualifiedName:Token.MUL '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.MUL '
+    - '------INS SimpleName@@MUL @TO@ QualifiedName@@Token.MUL '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.NE @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.NE @TO@ SwitchCase@@QualifiedName:Token.NE '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.NE '
+    - '------INS SimpleName@@NE @TO@ QualifiedName@@Token.NE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.RSH @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.RSH @TO@ SwitchCase@@QualifiedName:Token.RSH '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.RSH '
+    - '------INS SimpleName@@RSH @TO@ QualifiedName@@Token.RSH '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.SHEQ @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.SHEQ @TO@ SwitchCase@@QualifiedName:Token.SHEQ '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.SHEQ '
+    - '------INS SimpleName@@SHEQ @TO@ QualifiedName@@Token.SHEQ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.SHNE @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.SHNE @TO@ SwitchCase@@QualifiedName:Token.SHNE '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.SHNE '
+    - '------INS SimpleName@@SHNE @TO@ QualifiedName@@Token.SHNE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.SUB @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.SUB @TO@ SwitchCase@@QualifiedName:Token.SUB '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.SUB '
+    - '------INS SimpleName@@SUB @TO@ QualifiedName@@Token.SUB '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.URSH @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.URSH @TO@ SwitchCase@@QualifiedName:Token.URSH '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.URSH '
+    - '------INS SimpleName@@URSH @TO@ QualifiedName@@Token.URSH '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@InfixExpression:isValidDefineValue(val.getFirstChild(),defines)
+      && isValidDefineValue(val.getLastChild(),defines) @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS InfixExpression@@isValidDefineValue(val.getFirstChild(),defines) &&
+      isValidDefineValue(val.getLastChild(),defines) @TO@ ReturnStatement@@InfixExpression:isValidDefineValue(val.getFirstChild(),defines)
+      && isValidDefineValue(val.getLastChild(),defines) '
+    - '------INS MethodInvocation@@isValidDefineValue(val.getFirstChild(),defines)
+      @TO@ InfixExpression@@isValidDefineValue(val.getFirstChild(),defines) && isValidDefineValue(val.getLastChild(),defines) '
+    - '---------INS SimpleName@@MethodName:isValidDefineValue:[val.getFirstChild(),
+      defines] @TO@ MethodInvocation@@isValidDefineValue(val.getFirstChild(),defines) '
+    - '------------INS MethodInvocation@@val.getFirstChild() @TO@ SimpleName@@MethodName:isValidDefineValue:[val.getFirstChild(),
+      defines] '
+    - '---------------INS SimpleName@@Name:val @TO@ MethodInvocation@@val.getFirstChild() '
+    - '---------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@val.getFirstChild() '
+    - '------------INS SimpleName@@defines @TO@ SimpleName@@MethodName:isValidDefineValue:[val.getFirstChild(),
+      defines] '
+    - '------INS Operator@@&& @TO@ InfixExpression@@isValidDefineValue(val.getFirstChild(),defines)
+      && isValidDefineValue(val.getLastChild(),defines) '
+    - '------INS MethodInvocation@@isValidDefineValue(val.getLastChild(),defines)
+      @TO@ InfixExpression@@isValidDefineValue(val.getFirstChild(),defines) && isValidDefineValue(val.getLastChild(),defines) '
+    - '---------INS SimpleName@@MethodName:isValidDefineValue:[val.getLastChild(),
+      defines] @TO@ MethodInvocation@@isValidDefineValue(val.getLastChild(),defines) '
+    - '------------INS MethodInvocation@@val.getLastChild() @TO@ SimpleName@@MethodName:isValidDefineValue:[val.getLastChild(),
+      defines] '
+    - '---------------INS SimpleName@@Name:val @TO@ MethodInvocation@@val.getLastChild() '
+    - '---------------INS SimpleName@@MethodName:getLastChild:[] @TO@ MethodInvocation@@val.getLastChild() '
+    - '------------INS SimpleName@@defines @TO@ SimpleName@@MethodName:isValidDefineValue:[val.getLastChild(),
+      defines] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.POS @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.POS @TO@ SwitchCase@@QualifiedName:Token.POS '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.POS '
+    - '------INS SimpleName@@POS @TO@ QualifiedName@@Token.POS '
+  files_cnt: '1'
+  repair_actions_cnt: 18
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NodeUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.ADD @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS QualifiedName@@Token.ADD @TO@ SwitchCase@@QualifiedName:Token.ADD '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.ADD '
+    - '------INS SimpleName@@ADD @TO@ QualifiedName@@Token.ADD '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@InfixExpression:isValidDefineValue(val.getFirstChild(),defines)
+      && isValidDefineValue(val.getLastChild(),defines) @TO@ SwitchStatement@@MethodInvocation:val.getType() '
+    - '---INS InfixExpression@@isValidDefineValue(val.getFirstChild(),defines) &&
+      isValidDefineValue(val.getLastChild(),defines) @TO@ ReturnStatement@@InfixExpression:isValidDefineValue(val.getFirstChild(),defines)
+      && isValidDefineValue(val.getLastChild(),defines) '
+    - '------INS MethodInvocation@@isValidDefineValue(val.getFirstChild(),defines)
+      @TO@ InfixExpression@@isValidDefineValue(val.getFirstChild(),defines) && isValidDefineValue(val.getLastChild(),defines) '
+    - '---------INS SimpleName@@MethodName:isValidDefineValue:[val.getFirstChild(),
+      defines] @TO@ MethodInvocation@@isValidDefineValue(val.getFirstChild(),defines) '
+    - '------------INS MethodInvocation@@val.getFirstChild() @TO@ SimpleName@@MethodName:isValidDefineValue:[val.getFirstChild(),
+      defines] '
+    - '---------------INS SimpleName@@Name:val @TO@ MethodInvocation@@val.getFirstChild() '
+    - '---------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@val.getFirstChild() '
+    - '------------INS SimpleName@@defines @TO@ SimpleName@@MethodName:isValidDefineValue:[val.getFirstChild(),
+      defines] '
+    - '------INS Operator@@&& @TO@ InfixExpression@@isValidDefineValue(val.getFirstChild(),defines)
+      && isValidDefineValue(val.getLastChild(),defines) '
+    - '------INS MethodInvocation@@isValidDefineValue(val.getLastChild(),defines)
+      @TO@ InfixExpression@@isValidDefineValue(val.getFirstChild(),defines) && isValidDefineValue(val.getLastChild(),defines) '
+    - '---------INS SimpleName@@MethodName:isValidDefineValue:[val.getLastChild(),
+      defines] @TO@ MethodInvocation@@isValidDefineValue(val.getLastChild(),defines) '
+    - '------------INS MethodInvocation@@val.getLastChild() @TO@ SimpleName@@MethodName:isValidDefineValue:[val.getLastChild(),
+      defines] '
+    - '---------------INS SimpleName@@Name:val @TO@ MethodInvocation@@val.getLastChild() '
+    - '---------------INS SimpleName@@MethodName:getLastChild:[] @TO@ MethodInvocation@@val.getLastChild() '
+    - '------------INS SimpleName@@defines @TO@ SimpleName@@MethodName:isValidDefineValue:[val.getLastChild(),
+      defines] '
+  files_cnt: '1'
+  repair_actions_cnt: 2

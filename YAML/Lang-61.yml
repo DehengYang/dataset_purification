@@ -1,0 +1,121 @@
+1 bug_id: Lang-61
+2 src folder:
+  name of src folder: java
+  number of files: 87
+  number of java files: 77
+  number of src classes: 124
+  number of test classes: 89
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.text.StrBuilderTest#testIndexOfLang294
+  - org.apache.commons.lang.text.StrBuilderTest#testLang294
+  failing tests:
+  - org.apache.commons.lang.text.StrBuilderTest
+  number of all test cases: 1683
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 7.0
+  purification via coverage: 0.001
+  purification via delta debugging: 31.869
+  repair actions extraction: 2.567
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.text.StrBuilderTest#testIndexOfLang294: 61
+    org.apache.commons.lang.text.StrBuilderTest#testLang294: 60
+  fixed:
+    org.apache.commons.lang.text.StrBuilderTest#testIndexOfLang294: 62
+    org.apache.commons.lang.text.StrBuilderTest#testLang294: 63
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_61/src/java/org/apache/commons/lang/text/StrBuilder.java\t\
+    2020-10-21 04:07:07.503411203 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_61/purify/patch/org/apache/commons/lang/text/StrBuilder.java\t\
+    2020-10-21 04:07:07.503411203 -0400\n@@ -1773,7 +1773,7 @@\n             return\
+    \ -1;\n         }\n         char[] thisBuf = buffer;\n-        int len = thisBuf.length\
+    \ - strLen;\n+        int len = size - strLen + 1;\n         outer:\n        \
+    \ for (int i = startIndex; i < len; i++) {\n             for (int j = 0; j < strLen;\
+    \ j++) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_61/src/java/org/apache/commons/lang/text/StrBuilder.java\t\
+    2020-10-21 04:07:49.500624044 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_61/purify/purified/org/apache/commons/lang/text/StrBuilder.java\t\
+    2020-10-21 04:07:49.500624044 -0400\n@@ -1773,7 +1773,7 @@\n             return\
+    \ -1;\n         }\n         char[] thisBuf = buffer;\n-        int len = thisBuf.length\
+    \ - strLen;\n+        int len = size - strLen + 1;\n         outer:\n        \
+    \ for (int i = startIndex; i < len; i++) {\n             for (int j = 0; j < strLen;\
+    \ j++) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/text/StrBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int len=thisBuf.length - strLen; @TO@ int
+      len=size - strLen + 1; '
+    - '---UPD VariableDeclarationFragment@@len=thisBuf.length - strLen @TO@ len=size
+      - strLen + 1 '
+    - '------INS InfixExpression@@size - strLen + 1 @TO@ VariableDeclarationFragment@@len=thisBuf.length
+      - strLen '
+    - '---------INS InfixExpression@@size - strLen @TO@ InfixExpression@@size - strLen
+      + 1 '
+    - '------------INS SimpleName@@size @TO@ InfixExpression@@size - strLen '
+    - '------------MOV Operator@@- @TO@ InfixExpression@@size - strLen '
+    - '------------MOV SimpleName@@strLen @TO@ InfixExpression@@size - strLen '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@size - strLen + 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@size - strLen + 1 '
+    - '------DEL InfixExpression@@thisBuf.length - strLen '
+    - '---------DEL QualifiedName@@thisBuf.length '
+    - '------------DEL SimpleName@@thisBuf '
+    - '------------DEL SimpleName@@length '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/text/StrBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int len=thisBuf.length - strLen; @TO@ int
+      len=size - strLen + 1; '
+    - '---UPD VariableDeclarationFragment@@len=thisBuf.length - strLen @TO@ len=size
+      - strLen + 1 '
+    - '------INS InfixExpression@@size - strLen + 1 @TO@ VariableDeclarationFragment@@len=thisBuf.length
+      - strLen '
+    - '---------INS InfixExpression@@size - strLen @TO@ InfixExpression@@size - strLen
+      + 1 '
+    - '------------INS SimpleName@@size @TO@ InfixExpression@@size - strLen '
+    - '------------MOV Operator@@- @TO@ InfixExpression@@size - strLen '
+    - '------------MOV SimpleName@@strLen @TO@ InfixExpression@@size - strLen '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@size - strLen + 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@size - strLen + 1 '
+    - '------DEL InfixExpression@@thisBuf.length - strLen '
+    - '---------DEL QualifiedName@@thisBuf.length '
+    - '------------DEL SimpleName@@thisBuf '
+    - '------------DEL SimpleName@@length '
+  repair_actions_cnt: 1

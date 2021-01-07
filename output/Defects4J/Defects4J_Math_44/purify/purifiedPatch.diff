@@ -1,0 +1,21 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_44/src/main/java/org/apache/commons/math/ode/AbstractIntegrator.java	2020-10-22 07:17:32.687921347 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_44/purify/purified/org/apache/commons/math/ode/AbstractIntegrator.java	2020-10-22 07:17:32.683921231 -0400
+@@ -331,6 +331,8 @@
+                 if (isLastStep) {
+                     // the event asked to stop integration
+                     System.arraycopy(eventY, 0, y, 0, y.length);
++                    for (final EventState remaining : occuringEvents) {
++                    }
+                     return eventT;
+                 }
+ 
+@@ -340,6 +342,9 @@
+                     System.arraycopy(eventY, 0, y, 0, y.length);
+                     computeDerivatives(eventT, y, yDot);
+                     resetOccurred = true;
++                    for (final EventState remaining : occuringEvents) {
++                        remaining.stepAccepted(eventT, eventY);
++                    }
+                     return eventT;
+                 }
+ 

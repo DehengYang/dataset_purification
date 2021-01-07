@@ -1,0 +1,354 @@
+1 bug_id: Mockito-10
+2 src folder:
+  name of src folder: src
+  number of files: 351
+  number of java files: 312
+  number of src classes: 372
+  number of test classes: 273
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.bugs.DeepStubsWronglyReportsSerializationProblemsTest#should_not_raise_a_mockito_exception_about_serialization_when_accessing_deep_stub
+  failing tests:
+  - org.mockitousage.bugs.DeepStubsWronglyReportsSerializationProblemsTest
+  number of all test cases: 1355
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.68
+  purification via delta debugging: 669.967
+  repair actions extraction: 0.919
+5 stmts covered by failing cases:
+  buggy:
+    ? org.mockitousage.bugs.DeepStubsWronglyReportsSerializationProblemsTest#should_not_raise_a_mockito_exception_about_serialization_when_accessing_deep_stub
+    : 538
+  fixed:
+    ? org.mockitousage.bugs.DeepStubsWronglyReportsSerializationProblemsTest#should_not_raise_a_mockito_exception_about_serialization_when_accessing_deep_stub
+    : 557
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 10
+  covDel: 5
+  cov_patch_lines: 15
+  delta_patch_lines: 15
+  oriAdd: 10
+  oriDel: 5
+  ori_patch_lines: 15
+  purAdd: 10
+  purDel: 5
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 7
+  original: 7
+  purifiy: 7
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 29
+  failFail: 0
+  passed: 0
+  total: 29
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_10/src/org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs.java\t\
+    2020-10-23 22:06:35.953214432 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_10/purify/patch/org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs.java\t\
+    2020-10-23 22:06:35.953214432 -0400\n@@ -14,6 +14,7 @@\n import org.mockito.internal.util.MockUtil;\n\
+    \ import org.mockito.internal.util.reflection.GenericMetadataSupport;\n import\
+    \ org.mockito.invocation.InvocationOnMock;\n+import org.mockito.mock.MockCreationSettings;\n\
+    \ import org.mockito.stubbing.Answer;\n \n import java.io.IOException;\n@@ -68,7\
+    \ +69,7 @@\n \n         // record deep stub answer\n         return recordDeepStubAnswer(\n\
+    -                newDeepStubMock(returnTypeGenericMetadata),\n+              \
+    \  newDeepStubMock(returnTypeGenericMetadata, invocation.getMock()),\n       \
+    \          container\n         );\n     }\n@@ -84,22 +85,26 @@\n      * @param\
+    \ parentMock The parent of the current deep stub mock.\n      * @return The mock\n\
+    \      */\n-    private Object newDeepStubMock(GenericMetadataSupport returnTypeGenericMetadata)\
+    \ {\n+    private Object newDeepStubMock(GenericMetadataSupport returnTypeGenericMetadata,\
+    \ Object parentMock) {\n+        MockCreationSettings parentMockSettings = new\
+    \ MockUtil().getMockSettings(parentMock);\n         return mockitoCore().mock(\n\
+    \                 returnTypeGenericMetadata.rawType(),\n-                withSettingsUsing(returnTypeGenericMetadata)\n\
+    +                withSettingsUsing(returnTypeGenericMetadata, parentMockSettings)\n\
+    \         );\n     }\n \n-    private MockSettings withSettingsUsing(GenericMetadataSupport\
+    \ returnTypeGenericMetadata) {\n+    private MockSettings withSettingsUsing(GenericMetadataSupport\
+    \ returnTypeGenericMetadata, MockCreationSettings parentMockSettings) {\n    \
+    \     MockSettings mockSettings = returnTypeGenericMetadata.hasRawExtraInterfaces()\
+    \ ?\n                 withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())\n\
+    \                 : withSettings();\n \n-        return mockSettings.serializable()\n\
+    +        return propagateSerializationSettings(mockSettings, parentMockSettings)\n\
+    \                 .defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata));\n\
+    \     }\n \n+    private MockSettings propagateSerializationSettings(MockSettings\
+    \ mockSettings, MockCreationSettings parentMockSettings) {\n+        return mockSettings.serializable(parentMockSettings.getSerializableMode());\n\
+    +    }\n \n     private ReturnsDeepStubs returnsDeepStubsAnswerUsing(final GenericMetadataSupport\
+    \ returnTypeGenericMetadata) {\n         return new ReturnsDeepStubsSerializationFallback(returnTypeGenericMetadata);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_10/src/org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs.java\t\
+    2020-10-23 22:18:26.113777381 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_10/purify/purified/org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs.java\t\
+    2020-10-23 22:18:26.113777381 -0400\n@@ -14,6 +14,7 @@\n import org.mockito.internal.util.MockUtil;\n\
+    \ import org.mockito.internal.util.reflection.GenericMetadataSupport;\n import\
+    \ org.mockito.invocation.InvocationOnMock;\n+import org.mockito.mock.MockCreationSettings;\n\
+    \ import org.mockito.stubbing.Answer;\n \n import java.io.IOException;\n@@ -68,7\
+    \ +69,7 @@\n \n         // record deep stub answer\n         return recordDeepStubAnswer(\n\
+    -                newDeepStubMock(returnTypeGenericMetadata),\n+              \
+    \  newDeepStubMock(returnTypeGenericMetadata, invocation.getMock()),\n       \
+    \          container\n         );\n     }\n@@ -84,22 +85,26 @@\n      * @param\
+    \ parentMock The parent of the current deep stub mock.\n      * @return The mock\n\
+    \      */\n-    private Object newDeepStubMock(GenericMetadataSupport returnTypeGenericMetadata)\
+    \ {\n+    private Object newDeepStubMock(GenericMetadataSupport returnTypeGenericMetadata,\
+    \ Object parentMock) {\n+        MockCreationSettings parentMockSettings = new\
+    \ MockUtil().getMockSettings(parentMock);\n         return mockitoCore().mock(\n\
+    \                 returnTypeGenericMetadata.rawType(),\n-                withSettingsUsing(returnTypeGenericMetadata)\n\
+    +                withSettingsUsing(returnTypeGenericMetadata, parentMockSettings)\n\
+    \         );\n     }\n \n-    private MockSettings withSettingsUsing(GenericMetadataSupport\
+    \ returnTypeGenericMetadata) {\n+    private MockSettings withSettingsUsing(GenericMetadataSupport\
+    \ returnTypeGenericMetadata, MockCreationSettings parentMockSettings) {\n    \
+    \     MockSettings mockSettings = returnTypeGenericMetadata.hasRawExtraInterfaces()\
+    \ ?\n                 withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())\n\
+    \                 : withSettings();\n \n-        return mockSettings.serializable()\n\
+    +        return propagateSerializationSettings(mockSettings, parentMockSettings)\n\
+    \                 .defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata));\n\
+    \     }\n \n+    private MockSettings propagateSerializationSettings(MockSettings\
+    \ mockSettings, MockCreationSettings parentMockSettings) {\n+        return mockSettings.serializable(parentMockSettings.getSerializableMode());\n\
+    +    }\n \n     private ReturnsDeepStubs returnsDeepStubsAnswerUsing(final GenericMetadataSupport\
+    \ returnTypeGenericMetadata) {\n         return new ReturnsDeepStubsSerializationFallback(returnTypeGenericMetadata);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:recordDeepStubAnswer(newDeepStubMock(returnTypeGenericMetadata),container)
+      @TO@ MethodInvocation:recordDeepStubAnswer(newDeepStubMock(returnTypeGenericMetadata,invocation.getMock()),container) '
+    - '---UPD MethodInvocation@@recordDeepStubAnswer(newDeepStubMock(returnTypeGenericMetadata),container)
+      @TO@ recordDeepStubAnswer(newDeepStubMock(returnTypeGenericMetadata,invocation.getMock()),container) '
+    - '------UPD SimpleName@@MethodName:recordDeepStubAnswer:[newDeepStubMock(returnTypeGenericMetadata),
+      container] @TO@ MethodName:recordDeepStubAnswer:[newDeepStubMock(returnTypeGenericMetadata,invocation.getMock()),
+      container] '
+    - '---------UPD MethodInvocation@@newDeepStubMock(returnTypeGenericMetadata) @TO@
+      newDeepStubMock(returnTypeGenericMetadata,invocation.getMock()) '
+    - '------------UPD SimpleName@@MethodName:newDeepStubMock:[returnTypeGenericMetadata]
+      @TO@ MethodName:newDeepStubMock:[returnTypeGenericMetadata, invocation.getMock()] '
+    - '---------------INS MethodInvocation@@invocation.getMock() @TO@ SimpleName@@MethodName:newDeepStubMock:[returnTypeGenericMetadata] '
+    - '------------------INS SimpleName@@Name:invocation @TO@ MethodInvocation@@invocation.getMock() '
+    - '------------------INS SimpleName@@MethodName:getMock:[] @TO@ MethodInvocation@@invocation.getMock() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@Object, MethodName:newDeepStubMock, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+
+      @TO@ private, @@Object, MethodName:newDeepStubMock, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+Object+parentMock+ '
+    - '---INS SingleVariableDeclaration@@Object parentMock @TO@ MethodDeclaration@@private,
+      @@Object, MethodName:newDeepStubMock, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object parentMock '
+    - '------INS SimpleName@@parentMock @TO@ SingleVariableDeclaration@@Object parentMock '
+    - '---INS VariableDeclarationStatement@@MockCreationSettings parentMockSettings=new
+      MockUtil().getMockSettings(parentMock); @TO@ MethodDeclaration@@private, @@Object,
+      MethodName:newDeepStubMock, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS SimpleType@@MockCreationSettings @TO@ VariableDeclarationStatement@@MockCreationSettings
+      parentMockSettings=new MockUtil().getMockSettings(parentMock); '
+    - '------INS VariableDeclarationFragment@@parentMockSettings=new MockUtil().getMockSettings(parentMock)
+      @TO@ VariableDeclarationStatement@@MockCreationSettings parentMockSettings=new
+      MockUtil().getMockSettings(parentMock); '
+    - '---------INS SimpleName@@parentMockSettings @TO@ VariableDeclarationFragment@@parentMockSettings=new
+      MockUtil().getMockSettings(parentMock) '
+    - '---------INS MethodInvocation@@new MockUtil().getMockSettings(parentMock) @TO@
+      VariableDeclarationFragment@@parentMockSettings=new MockUtil().getMockSettings(parentMock) '
+    - '------------INS ClassInstanceCreation@@MockUtil[] @TO@ MethodInvocation@@new
+      MockUtil().getMockSettings(parentMock) '
+    - '---------------INS New@@new @TO@ ClassInstanceCreation@@MockUtil[] '
+    - '---------------INS SimpleType@@MockUtil @TO@ ClassInstanceCreation@@MockUtil[] '
+    - '------------INS SimpleName@@MethodName:getMockSettings:[parentMock] @TO@ MethodInvocation@@new
+      MockUtil().getMockSettings(parentMock) '
+    - '---------------INS SimpleName@@parentMock @TO@ SimpleName@@MethodName:getMockSettings:[parentMock] '
+    - '---UPD ReturnStatement@@MethodInvocation:mockitoCore().mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata))
+      @TO@ MethodInvocation:mockitoCore().mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata,parentMockSettings)) '
+    - '------UPD MethodInvocation@@mockitoCore().mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata))
+      @TO@ mockitoCore().mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata,parentMockSettings)) '
+    - '---------UPD SimpleName@@MethodName:mock:[returnTypeGenericMetadata.rawType(),
+      withSettingsUsing(returnTypeGenericMetadata)] @TO@ MethodName:mock:[returnTypeGenericMetadata.rawType(),
+      withSettingsUsing(returnTypeGenericMetadata,parentMockSettings)] '
+    - '------------UPD MethodInvocation@@withSettingsUsing(returnTypeGenericMetadata)
+      @TO@ withSettingsUsing(returnTypeGenericMetadata,parentMockSettings) '
+    - '---------------UPD SimpleName@@MethodName:withSettingsUsing:[returnTypeGenericMetadata]
+      @TO@ MethodName:withSettingsUsing:[returnTypeGenericMetadata, parentMockSettings] '
+    - '------------------INS SimpleName@@parentMockSettings @TO@ SimpleName@@MethodName:withSettingsUsing:[returnTypeGenericMetadata] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ @TO@ private, @@MockSettings,
+      MethodName:withSettingsUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+MockCreationSettings+parentMockSettings+ '
+    - '---INS SingleVariableDeclaration@@MockCreationSettings parentMockSettings @TO@
+      MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS SimpleType@@MockCreationSettings @TO@ SingleVariableDeclaration@@MockCreationSettings
+      parentMockSettings '
+    - '------INS SimpleName@@parentMockSettings @TO@ SingleVariableDeclaration@@MockCreationSettings
+      parentMockSettings '
+    - '---UPD ReturnStatement@@MethodInvocation:mockSettings.serializable().defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata))
+      @TO@ MethodInvocation:propagateSerializationSettings(mockSettings,parentMockSettings).defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '------UPD MethodInvocation@@mockSettings.serializable().defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata))
+      @TO@ propagateSerializationSettings(mockSettings,parentMockSettings).defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '---------UPD SimpleName@@Name:mockSettings @TO@ mockSettings '
+    - '---------DEL MethodInvocation@@MethodName:serializable:[] '
+    - '---------INS MethodInvocation@@MethodName:propagateSerializationSettings:[mockSettings,
+      parentMockSettings] @TO@ MethodInvocation@@mockSettings.serializable().defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '------------MOV SimpleName@@Name:mockSettings @TO@ MethodInvocation@@MethodName:propagateSerializationSettings:[mockSettings,
+      parentMockSettings] '
+    - '------------INS SimpleName@@parentMockSettings @TO@ MethodInvocation@@MethodName:propagateSerializationSettings:[mockSettings,
+      parentMockSettings] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@MockSettings, MethodName:propagateSerializationSettings,
+      @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ @TO@
+      TypeDeclaration@@[public]ReturnsDeepStubs, [Answer<Object>, Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@MockSettings, MethodName:propagateSerializationSettings,
+      @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ '
+    - '---INS SimpleType@@MockSettings @TO@ MethodDeclaration@@private, @@MockSettings,
+      MethodName:propagateSerializationSettings, @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ '
+    - '---INS SimpleName@@MethodName:propagateSerializationSettings @TO@ MethodDeclaration@@private,
+      @@MockSettings, MethodName:propagateSerializationSettings, @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ '
+    - '---INS SingleVariableDeclaration@@MockSettings mockSettings @TO@ MethodDeclaration@@private,
+      @@MockSettings, MethodName:propagateSerializationSettings, @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ '
+    - '------INS SimpleType@@MockSettings @TO@ SingleVariableDeclaration@@MockSettings
+      mockSettings '
+    - '------INS SimpleName@@mockSettings @TO@ SingleVariableDeclaration@@MockSettings
+      mockSettings '
+    - '---INS SingleVariableDeclaration@@MockCreationSettings parentMockSettings @TO@
+      MethodDeclaration@@private, @@MockSettings, MethodName:propagateSerializationSettings,
+      @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ '
+    - '------INS SimpleType@@MockCreationSettings @TO@ SingleVariableDeclaration@@MockCreationSettings
+      parentMockSettings '
+    - '------INS SimpleName@@parentMockSettings @TO@ SingleVariableDeclaration@@MockCreationSettings
+      parentMockSettings '
+    - '---INS ReturnStatement@@MethodInvocation:mockSettings.serializable(parentMockSettings.getSerializableMode())
+      @TO@ MethodDeclaration@@private, @@MockSettings, MethodName:propagateSerializationSettings,
+      @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ '
+    - '------INS MethodInvocation@@mockSettings.serializable(parentMockSettings.getSerializableMode())
+      @TO@ ReturnStatement@@MethodInvocation:mockSettings.serializable(parentMockSettings.getSerializableMode()) '
+    - '---------INS SimpleName@@Name:mockSettings @TO@ MethodInvocation@@mockSettings.serializable(parentMockSettings.getSerializableMode()) '
+    - '---------INS SimpleName@@MethodName:serializable:[parentMockSettings.getSerializableMode()]
+      @TO@ MethodInvocation@@mockSettings.serializable(parentMockSettings.getSerializableMode()) '
+    - '------------INS MethodInvocation@@parentMockSettings.getSerializableMode()
+      @TO@ SimpleName@@MethodName:serializable:[parentMockSettings.getSerializableMode()] '
+    - '---------------INS SimpleName@@Name:parentMockSettings @TO@ MethodInvocation@@parentMockSettings.getSerializableMode() '
+    - '---------------INS SimpleName@@MethodName:getSerializableMode:[] @TO@ MethodInvocation@@parentMockSettings.getSerializableMode() '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:recordDeepStubAnswer(newDeepStubMock(returnTypeGenericMetadata),container)
+      @TO@ MethodInvocation:recordDeepStubAnswer(newDeepStubMock(returnTypeGenericMetadata,invocation.getMock()),container) '
+    - '---UPD MethodInvocation@@recordDeepStubAnswer(newDeepStubMock(returnTypeGenericMetadata),container)
+      @TO@ recordDeepStubAnswer(newDeepStubMock(returnTypeGenericMetadata,invocation.getMock()),container) '
+    - '------UPD SimpleName@@MethodName:recordDeepStubAnswer:[newDeepStubMock(returnTypeGenericMetadata),
+      container] @TO@ MethodName:recordDeepStubAnswer:[newDeepStubMock(returnTypeGenericMetadata,invocation.getMock()),
+      container] '
+    - '---------UPD MethodInvocation@@newDeepStubMock(returnTypeGenericMetadata) @TO@
+      newDeepStubMock(returnTypeGenericMetadata,invocation.getMock()) '
+    - '------------UPD SimpleName@@MethodName:newDeepStubMock:[returnTypeGenericMetadata]
+      @TO@ MethodName:newDeepStubMock:[returnTypeGenericMetadata, invocation.getMock()] '
+    - '---------------INS MethodInvocation@@invocation.getMock() @TO@ SimpleName@@MethodName:newDeepStubMock:[returnTypeGenericMetadata] '
+    - '------------------INS SimpleName@@Name:invocation @TO@ MethodInvocation@@invocation.getMock() '
+    - '------------------INS SimpleName@@MethodName:getMock:[] @TO@ MethodInvocation@@invocation.getMock() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@Object, MethodName:newDeepStubMock, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+
+      @TO@ private, @@Object, MethodName:newDeepStubMock, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+Object+parentMock+ '
+    - '---INS SingleVariableDeclaration@@Object parentMock @TO@ MethodDeclaration@@private,
+      @@Object, MethodName:newDeepStubMock, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object parentMock '
+    - '------INS SimpleName@@parentMock @TO@ SingleVariableDeclaration@@Object parentMock '
+    - '---INS VariableDeclarationStatement@@MockCreationSettings parentMockSettings=new
+      MockUtil().getMockSettings(parentMock); @TO@ MethodDeclaration@@private, @@Object,
+      MethodName:newDeepStubMock, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS SimpleType@@MockCreationSettings @TO@ VariableDeclarationStatement@@MockCreationSettings
+      parentMockSettings=new MockUtil().getMockSettings(parentMock); '
+    - '------INS VariableDeclarationFragment@@parentMockSettings=new MockUtil().getMockSettings(parentMock)
+      @TO@ VariableDeclarationStatement@@MockCreationSettings parentMockSettings=new
+      MockUtil().getMockSettings(parentMock); '
+    - '---------INS SimpleName@@parentMockSettings @TO@ VariableDeclarationFragment@@parentMockSettings=new
+      MockUtil().getMockSettings(parentMock) '
+    - '---------INS MethodInvocation@@new MockUtil().getMockSettings(parentMock) @TO@
+      VariableDeclarationFragment@@parentMockSettings=new MockUtil().getMockSettings(parentMock) '
+    - '------------INS ClassInstanceCreation@@MockUtil[] @TO@ MethodInvocation@@new
+      MockUtil().getMockSettings(parentMock) '
+    - '---------------INS New@@new @TO@ ClassInstanceCreation@@MockUtil[] '
+    - '---------------INS SimpleType@@MockUtil @TO@ ClassInstanceCreation@@MockUtil[] '
+    - '------------INS SimpleName@@MethodName:getMockSettings:[parentMock] @TO@ MethodInvocation@@new
+      MockUtil().getMockSettings(parentMock) '
+    - '---------------INS SimpleName@@parentMock @TO@ SimpleName@@MethodName:getMockSettings:[parentMock] '
+    - '---UPD ReturnStatement@@MethodInvocation:mockitoCore().mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata))
+      @TO@ MethodInvocation:mockitoCore().mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata,parentMockSettings)) '
+    - '------UPD MethodInvocation@@mockitoCore().mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata))
+      @TO@ mockitoCore().mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata,parentMockSettings)) '
+    - '---------UPD SimpleName@@MethodName:mock:[returnTypeGenericMetadata.rawType(),
+      withSettingsUsing(returnTypeGenericMetadata)] @TO@ MethodName:mock:[returnTypeGenericMetadata.rawType(),
+      withSettingsUsing(returnTypeGenericMetadata,parentMockSettings)] '
+    - '------------UPD MethodInvocation@@withSettingsUsing(returnTypeGenericMetadata)
+      @TO@ withSettingsUsing(returnTypeGenericMetadata,parentMockSettings) '
+    - '---------------UPD SimpleName@@MethodName:withSettingsUsing:[returnTypeGenericMetadata]
+      @TO@ MethodName:withSettingsUsing:[returnTypeGenericMetadata, parentMockSettings] '
+    - '------------------INS SimpleName@@parentMockSettings @TO@ SimpleName@@MethodName:withSettingsUsing:[returnTypeGenericMetadata] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ @TO@ private, @@MockSettings,
+      MethodName:withSettingsUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+MockCreationSettings+parentMockSettings+ '
+    - '---INS SingleVariableDeclaration@@MockCreationSettings parentMockSettings @TO@
+      MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS SimpleType@@MockCreationSettings @TO@ SingleVariableDeclaration@@MockCreationSettings
+      parentMockSettings '
+    - '------INS SimpleName@@parentMockSettings @TO@ SingleVariableDeclaration@@MockCreationSettings
+      parentMockSettings '
+    - '---UPD ReturnStatement@@MethodInvocation:mockSettings.serializable().defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata))
+      @TO@ MethodInvocation:propagateSerializationSettings(mockSettings,parentMockSettings).defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '------UPD MethodInvocation@@mockSettings.serializable().defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata))
+      @TO@ propagateSerializationSettings(mockSettings,parentMockSettings).defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '---------UPD SimpleName@@Name:mockSettings @TO@ mockSettings '
+    - '---------DEL MethodInvocation@@MethodName:serializable:[] '
+    - '---------INS MethodInvocation@@MethodName:propagateSerializationSettings:[mockSettings,
+      parentMockSettings] @TO@ MethodInvocation@@mockSettings.serializable().defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '------------MOV SimpleName@@Name:mockSettings @TO@ MethodInvocation@@MethodName:propagateSerializationSettings:[mockSettings,
+      parentMockSettings] '
+    - '------------INS SimpleName@@parentMockSettings @TO@ MethodInvocation@@MethodName:propagateSerializationSettings:[mockSettings,
+      parentMockSettings] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@MockSettings, MethodName:propagateSerializationSettings,
+      @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ @TO@
+      TypeDeclaration@@[public]ReturnsDeepStubs, [Answer<Object>, Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@MockSettings, MethodName:propagateSerializationSettings,
+      @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ '
+    - '---INS SimpleType@@MockSettings @TO@ MethodDeclaration@@private, @@MockSettings,
+      MethodName:propagateSerializationSettings, @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ '
+    - '---INS SimpleName@@MethodName:propagateSerializationSettings @TO@ MethodDeclaration@@private,
+      @@MockSettings, MethodName:propagateSerializationSettings, @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ '
+    - '---INS SingleVariableDeclaration@@MockSettings mockSettings @TO@ MethodDeclaration@@private,
+      @@MockSettings, MethodName:propagateSerializationSettings, @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ '
+    - '------INS SimpleType@@MockSettings @TO@ SingleVariableDeclaration@@MockSettings
+      mockSettings '
+    - '------INS SimpleName@@mockSettings @TO@ SingleVariableDeclaration@@MockSettings
+      mockSettings '
+    - '---INS SingleVariableDeclaration@@MockCreationSettings parentMockSettings @TO@
+      MethodDeclaration@@private, @@MockSettings, MethodName:propagateSerializationSettings,
+      @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ '
+    - '------INS SimpleType@@MockCreationSettings @TO@ SingleVariableDeclaration@@MockCreationSettings
+      parentMockSettings '
+    - '------INS SimpleName@@parentMockSettings @TO@ SingleVariableDeclaration@@MockCreationSettings
+      parentMockSettings '
+    - '---INS ReturnStatement@@MethodInvocation:mockSettings.serializable(parentMockSettings.getSerializableMode())
+      @TO@ MethodDeclaration@@private, @@MockSettings, MethodName:propagateSerializationSettings,
+      @@Argus:MockSettings+mockSettings+MockCreationSettings+parentMockSettings+ '
+    - '------INS MethodInvocation@@mockSettings.serializable(parentMockSettings.getSerializableMode())
+      @TO@ ReturnStatement@@MethodInvocation:mockSettings.serializable(parentMockSettings.getSerializableMode()) '
+    - '---------INS SimpleName@@Name:mockSettings @TO@ MethodInvocation@@mockSettings.serializable(parentMockSettings.getSerializableMode()) '
+    - '---------INS SimpleName@@MethodName:serializable:[parentMockSettings.getSerializableMode()]
+      @TO@ MethodInvocation@@mockSettings.serializable(parentMockSettings.getSerializableMode()) '
+    - '------------INS MethodInvocation@@parentMockSettings.getSerializableMode()
+      @TO@ SimpleName@@MethodName:serializable:[parentMockSettings.getSerializableMode()] '
+    - '---------------INS SimpleName@@Name:parentMockSettings @TO@ MethodInvocation@@parentMockSettings.getSerializableMode() '
+    - '---------------INS SimpleName@@MethodName:getSerializableMode:[] @TO@ MethodInvocation@@parentMockSettings.getSerializableMode() '
+  repair_actions_cnt: 4

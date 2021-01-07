@@ -1,0 +1,188 @@
+1 bug_id: Mockito-17
+2 src folder:
+  name of src folder: src
+  number of files: 235
+  number of java files: 199
+  number of src classes: 224
+  number of test classes: 172
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.basicapi.MocksSerializationTest#shouldBeSerializeAndHaveExtraInterfaces
+  failing tests:
+  - org.mockitousage.basicapi.MocksSerializationTest
+  number of all test cases: 0
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.606
+  purification via delta debugging: 311.009
+  repair actions extraction: 0.803
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 9
+  covDel: 2
+  cov_patch_lines: 11
+  delta_patch_lines: 11
+  oriAdd: 9
+  oriDel: 2
+  ori_patch_lines: 11
+  purAdd: 9
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 6
+  original: 6
+  purifiy: 6
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 25
+  passed: 0
+  total: 25
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_17/src/org/mockito/internal/creation/MockSettingsImpl.java\t\
+    2020-10-24 11:56:45.055357532 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_17/purify/patch/org/mockito/internal/creation/MockSettingsImpl.java\t\
+    2020-10-24 11:56:45.055357532 -0400\n@@ -17,9 +17,11 @@\n     private Object spiedInstance;\n\
+    \     private Answer<Object> defaultAnswer;\n     private MockName mockName;\n\
+    +    private boolean serializable;\n \n     public MockSettings serializable()\
+    \ {\n-        return this.extraInterfaces(java.io.Serializable.class);\n+    \
+    \    this.serializable = true;\n+        return this;\n     }\n \n     public\
+    \ MockSettings extraInterfaces(Class<?>... extraInterfaces) {\n@@ -71,7 +73,7\
+    \ @@\n     }\n \n     public boolean isSerializable() {\n-        return extraInterfaces\
+    \ != null && java.util.Arrays.asList(extraInterfaces).contains(java.io.Serializable.class);\n\
+    +        return serializable;\n     }\n \n     public void initiateMockName(Class\
+    \ classToMock) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_17/src/org/mockito/internal/creation/MockSettingsImpl.java\t\
+    2020-10-24 12:02:12.500510338 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_17/purify/purified/org/mockito/internal/creation/MockSettingsImpl.java\t\
+    2020-10-24 12:02:12.500510338 -0400\n@@ -17,9 +17,11 @@\n     private Object spiedInstance;\n\
+    \     private Answer<Object> defaultAnswer;\n     private MockName mockName;\n\
+    +    private boolean serializable;\n \n     public MockSettings serializable()\
+    \ {\n-        return this.extraInterfaces(java.io.Serializable.class);\n+    \
+    \    this.serializable = true;\n+        return this;\n     }\n \n     public\
+    \ MockSettings extraInterfaces(Class<?>... extraInterfaces) {\n@@ -71,7 +73,7\
+    \ @@\n     }\n \n     public boolean isSerializable() {\n-        return extraInterfaces\
+    \ != null && java.util.Arrays.asList(extraInterfaces).contains(java.io.Serializable.class);\n\
+    +        return serializable;\n     }\n \n     public void initiateMockName(Class\
+    \ classToMock) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/mockito/internal/creation/MockSettingsImpl, org/mockito/internal/util/MockUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:settings.isSerializable() @TO@ MethodDeclaration@@public,
+      @@T, T, MethodName:createMock, @@Argus:Class<T>+classToMock+MockSettingsImpl+settings+ '
+    - '---INS MethodInvocation@@settings.isSerializable() @TO@ IfStatement@@MethodInvocation:settings.isSerializable() '
+    - '------INS SimpleName@@Name:settings @TO@ MethodInvocation@@settings.isSerializable() '
+    - '------INS SimpleName@@MethodName:isSerializable:[] @TO@ MethodInvocation@@settings.isSerializable() '
+    - '---MOV ExpressionStatement@@Assignment:ancillaryTypes=interfaces == null ?
+      new Class<?>[0] : interfaces @TO@ IfStatement@@MethodInvocation:settings.isSerializable() '
+    - '---INS ExpressionStatement@@Assignment:ancillaryTypes=interfaces == null ?
+      new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class)
+      @TO@ IfStatement@@MethodInvocation:settings.isSerializable() '
+    - '------INS Assignment@@ancillaryTypes=interfaces == null ? new Class<?>[]{Serializable.class}
+      : new ArrayUtils().concat(interfaces,Serializable.class) @TO@ ExpressionStatement@@Assignment:ancillaryTypes=interfaces
+      == null ? new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '---------INS SimpleName@@ancillaryTypes @TO@ Assignment@@ancillaryTypes=interfaces
+      == null ? new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '---------INS Operator@@= @TO@ Assignment@@ancillaryTypes=interfaces == null
+      ? new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '---------INS ConditionalExpression@@interfaces == null ? new Class<?>[]{Serializable.class}
+      : new ArrayUtils().concat(interfaces,Serializable.class) @TO@ Assignment@@ancillaryTypes=interfaces
+      == null ? new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '------------INS InfixExpression@@interfaces == null @TO@ ConditionalExpression@@interfaces
+      == null ? new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '---------------INS SimpleName@@interfaces @TO@ InfixExpression@@interfaces
+      == null '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@interfaces == null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@interfaces == null '
+    - '------------INS ArrayCreation@@new Class<?>[]{Serializable.class} @TO@ ConditionalExpression@@interfaces
+      == null ? new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '---------------INS ArrayType@@Class<?>[] @TO@ ArrayCreation@@new Class<?>[]{Serializable.class} '
+    - '------------------INS ParameterizedType@@Class<?> @TO@ ArrayType@@Class<?>[] '
+    - '---------------------INS SimpleType@@Class @TO@ ParameterizedType@@Class<?> '
+    - '---------------------INS WildcardType@@? @TO@ ParameterizedType@@Class<?> '
+    - '---------------INS ArrayInitializer@@{Serializable.class} @TO@ ArrayCreation@@new
+      Class<?>[]{Serializable.class} '
+    - '------------------INS TypeLiteral@@Serializable.class @TO@ ArrayInitializer@@{Serializable.class} '
+    - '------------INS MethodInvocation@@new ArrayUtils().concat(interfaces,Serializable.class)
+      @TO@ ConditionalExpression@@interfaces == null ? new Class<?>[]{Serializable.class}
+      : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '---------------INS ClassInstanceCreation@@ArrayUtils[] @TO@ MethodInvocation@@new
+      ArrayUtils().concat(interfaces,Serializable.class) '
+    - '------------------INS New@@new @TO@ ClassInstanceCreation@@ArrayUtils[] '
+    - '------------------INS SimpleType@@ArrayUtils @TO@ ClassInstanceCreation@@ArrayUtils[] '
+    - '---------------INS SimpleName@@MethodName:concat:[interfaces, Serializable.class]
+      @TO@ MethodInvocation@@new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '------------------INS SimpleName@@interfaces @TO@ SimpleName@@MethodName:concat:[interfaces,
+      Serializable.class] '
+    - '------------------INS TypeLiteral@@Serializable.class @TO@ SimpleName@@MethodName:concat:[interfaces,
+      Serializable.class] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/mockito/internal/creation/MockSettingsImpl, org/mockito/internal/util/MockUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:settings.isSerializable() @TO@ MethodDeclaration@@public,
+      @@T, T, MethodName:createMock, @@Argus:Class<T>+classToMock+MockSettingsImpl+settings+ '
+    - '---INS MethodInvocation@@settings.isSerializable() @TO@ IfStatement@@MethodInvocation:settings.isSerializable() '
+    - '------INS SimpleName@@Name:settings @TO@ MethodInvocation@@settings.isSerializable() '
+    - '------INS SimpleName@@MethodName:isSerializable:[] @TO@ MethodInvocation@@settings.isSerializable() '
+    - '---MOV ExpressionStatement@@Assignment:ancillaryTypes=interfaces == null ?
+      new Class<?>[0] : interfaces @TO@ IfStatement@@MethodInvocation:settings.isSerializable() '
+    - '---INS ExpressionStatement@@Assignment:ancillaryTypes=interfaces == null ?
+      new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class)
+      @TO@ IfStatement@@MethodInvocation:settings.isSerializable() '
+    - '------INS Assignment@@ancillaryTypes=interfaces == null ? new Class<?>[]{Serializable.class}
+      : new ArrayUtils().concat(interfaces,Serializable.class) @TO@ ExpressionStatement@@Assignment:ancillaryTypes=interfaces
+      == null ? new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '---------INS SimpleName@@ancillaryTypes @TO@ Assignment@@ancillaryTypes=interfaces
+      == null ? new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '---------INS Operator@@= @TO@ Assignment@@ancillaryTypes=interfaces == null
+      ? new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '---------INS ConditionalExpression@@interfaces == null ? new Class<?>[]{Serializable.class}
+      : new ArrayUtils().concat(interfaces,Serializable.class) @TO@ Assignment@@ancillaryTypes=interfaces
+      == null ? new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '------------INS InfixExpression@@interfaces == null @TO@ ConditionalExpression@@interfaces
+      == null ? new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '---------------INS SimpleName@@interfaces @TO@ InfixExpression@@interfaces
+      == null '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@interfaces == null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@interfaces == null '
+    - '------------INS ArrayCreation@@new Class<?>[]{Serializable.class} @TO@ ConditionalExpression@@interfaces
+      == null ? new Class<?>[]{Serializable.class} : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '---------------INS ArrayType@@Class<?>[] @TO@ ArrayCreation@@new Class<?>[]{Serializable.class} '
+    - '------------------INS ParameterizedType@@Class<?> @TO@ ArrayType@@Class<?>[] '
+    - '---------------------INS SimpleType@@Class @TO@ ParameterizedType@@Class<?> '
+    - '---------------------INS WildcardType@@? @TO@ ParameterizedType@@Class<?> '
+    - '---------------INS ArrayInitializer@@{Serializable.class} @TO@ ArrayCreation@@new
+      Class<?>[]{Serializable.class} '
+    - '------------------INS TypeLiteral@@Serializable.class @TO@ ArrayInitializer@@{Serializable.class} '
+    - '------------INS MethodInvocation@@new ArrayUtils().concat(interfaces,Serializable.class)
+      @TO@ ConditionalExpression@@interfaces == null ? new Class<?>[]{Serializable.class}
+      : new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '---------------INS ClassInstanceCreation@@ArrayUtils[] @TO@ MethodInvocation@@new
+      ArrayUtils().concat(interfaces,Serializable.class) '
+    - '------------------INS New@@new @TO@ ClassInstanceCreation@@ArrayUtils[] '
+    - '------------------INS SimpleType@@ArrayUtils @TO@ ClassInstanceCreation@@ArrayUtils[] '
+    - '---------------INS SimpleName@@MethodName:concat:[interfaces, Serializable.class]
+      @TO@ MethodInvocation@@new ArrayUtils().concat(interfaces,Serializable.class) '
+    - '------------------INS SimpleName@@interfaces @TO@ SimpleName@@MethodName:concat:[interfaces,
+      Serializable.class] '
+    - '------------------INS TypeLiteral@@Serializable.class @TO@ SimpleName@@MethodName:concat:[interfaces,
+      Serializable.class] '
+  repair_actions_cnt: 1

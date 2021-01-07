@@ -1,0 +1,224 @@
+1 bug_id: Lang-34
+2 src folder:
+  name of src folder: java
+  number of files: 91
+  number of java files: 80
+  number of src classes: 126
+  number of test classes: 85
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionIntArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionhortArrayArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionObjectCycle
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testSelfInstanceTwoVarsReflectionObjectCycle
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionDoubleArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionArrayCycleLevel2
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionLongArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionCharArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionBooleanArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionLongArrayArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionBooleanArrayArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionIntArrayArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionDoubleArrayArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionArrayArrayCycle
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testObjectCycle
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionArrayCycle
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testSimpleReflectionObjectCycle
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionFloatArrayArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionyteArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionArrayAndObjectCycle
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionCharArrayArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionHierarchy
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionFloatArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testSelfInstanceVarReflectionObjectCycle
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionByteArrayArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionObjectArray
+  - org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionShortArray
+  failing tests:
+  - org.apache.commons.lang3.builder.ToStringBuilderTest
+  number of all test cases: 1670
+  number of failing test cases: 27
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.003
+  purification via delta debugging: 167.318
+  repair actions extraction: 2.281
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testObjectCycle: 283
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionArrayAndObjectCycle: 351
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionArrayArrayCycle: 320
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionArrayCycle: 293
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionArrayCycleLevel2: 318
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionBooleanArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionBooleanArrayArray: 312
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionByteArrayArray: 308
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionCharArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionCharArrayArray: 309
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionDoubleArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionDoubleArrayArray: 310
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionFloatArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionFloatArrayArray: 311
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionHierarchy: 323
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionIntArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionIntArrayArray: 306
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionLongArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionLongArrayArray: 305
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionObjectArray: 317
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionObjectCycle: 325
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionShortArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionhortArrayArray: 307
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionyteArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testSelfInstanceTwoVarsReflectionObjectCycle: 325
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testSelfInstanceVarReflectionObjectCycle: 306
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testSimpleReflectionObjectCycle: 306
+  fixed:
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testObjectCycle: 283
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionArrayAndObjectCycle: 351
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionArrayArrayCycle: 320
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionArrayCycle: 293
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionArrayCycleLevel2: 318
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionBooleanArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionBooleanArrayArray: 312
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionByteArrayArray: 308
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionCharArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionCharArrayArray: 309
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionDoubleArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionDoubleArrayArray: 310
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionFloatArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionFloatArrayArray: 311
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionHierarchy: 323
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionIntArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionIntArrayArray: 306
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionLongArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionLongArrayArray: 305
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionObjectArray: 317
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionObjectCycle: 325
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionShortArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionhortArrayArray: 307
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testReflectionyteArray: 303
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testSelfInstanceTwoVarsReflectionObjectCycle: 325
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testSelfInstanceVarReflectionObjectCycle: 306
+    org.apache.commons.lang3.builder.ToStringBuilderTest#testSimpleReflectionObjectCycle: 306
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_34/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java\t\
+    2020-10-21 01:24:33.237820161 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_34/purify/patch/org/apache/commons/lang3/builder/ToStringStyle.java\t\
+    2020-10-21 01:24:33.233820045 -0400\n@@ -145,7 +145,7 @@\n      * @return Set\
+    \ the registry of objects being traversed\n      */\n     static Map<Object, Object>\
+    \ getRegistry() {\n-        return REGISTRY.get() != null ? REGISTRY.get() : Collections.<Object,\
+    \ Object>emptyMap();\n+        return REGISTRY.get();\n     }\n \n     /**\n@@\
+    \ -161,7 +161,7 @@\n      */\n     static boolean isRegistered(Object value) {\n\
+    \         Map<Object, Object> m = getRegistry();\n-        return m.containsKey(value);\n\
+    +        return m != null && m.containsKey(value);\n     }\n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_34/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java\t\
+    2020-10-21 01:27:34.359051914 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_34/purify/purified/org/apache/commons/lang3/builder/ToStringStyle.java\t\
+    2020-10-21 01:27:34.359051914 -0400\n@@ -145,7 +145,7 @@\n      * @return Set\
+    \ the registry of objects being traversed\n      */\n     static Map<Object, Object>\
+    \ getRegistry() {\n-        return REGISTRY.get() != null ? REGISTRY.get() : Collections.<Object,\
+    \ Object>emptyMap();\n+        return REGISTRY.get();\n     }\n \n     /**\n@@\
+    \ -161,7 +161,7 @@\n      */\n     static boolean isRegistered(Object value) {\n\
+    \         Map<Object, Object> m = getRegistry();\n-        return m.containsKey(value);\n\
+    +        return m != null && m.containsKey(value);\n     }\n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/builder/ToStringStyle:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@ConditionalExpression:REGISTRY.get() != null ? REGISTRY.get()
+      : Collections.<Object,Object>emptyMap() @TO@ MethodInvocation:REGISTRY.get() '
+    - '---INS MethodInvocation@@REGISTRY.get() @TO@ ReturnStatement@@ConditionalExpression:REGISTRY.get()
+      != null ? REGISTRY.get() : Collections.<Object,Object>emptyMap() '
+    - '------MOV SimpleName@@Name:REGISTRY @TO@ MethodInvocation@@REGISTRY.get() '
+    - '------MOV SimpleName@@MethodName:get:[] @TO@ MethodInvocation@@REGISTRY.get() '
+    - '---DEL ConditionalExpression@@REGISTRY.get() != null ? REGISTRY.get() : Collections.<Object,Object>emptyMap() '
+    - '------DEL InfixExpression@@REGISTRY.get() != null '
+    - '---------DEL MethodInvocation@@REGISTRY.get() '
+    - '---------DEL Operator@@!= '
+    - '---------DEL NullLiteral@@null '
+    - '------DEL MethodInvocation@@REGISTRY.get() '
+    - '---------DEL SimpleName@@Name:REGISTRY '
+    - '---------DEL SimpleName@@MethodName:get:[] '
+    - '------DEL MethodInvocation@@Collections.<Object,Object>emptyMap() '
+    - '---------DEL SimpleName@@Name:Collections '
+    - '---------DEL SimpleName@@MethodName:emptyMap:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:m.containsKey(value) @TO@ InfixExpression:m
+      != null && m.containsKey(value) '
+    - '---INS InfixExpression@@m != null && m.containsKey(value) @TO@ ReturnStatement@@MethodInvocation:m.containsKey(value) '
+    - '------INS InfixExpression@@m != null @TO@ InfixExpression@@m != null && m.containsKey(value) '
+    - '---------INS SimpleName@@m @TO@ InfixExpression@@m != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@m != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@m != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@m != null && m.containsKey(value) '
+    - '------MOV MethodInvocation@@m.containsKey(value) @TO@ InfixExpression@@m !=
+      null && m.containsKey(value) '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/builder/ToStringStyle:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@ConditionalExpression:REGISTRY.get() != null ? REGISTRY.get()
+      : Collections.<Object,Object>emptyMap() @TO@ MethodInvocation:REGISTRY.get() '
+    - '---INS MethodInvocation@@REGISTRY.get() @TO@ ReturnStatement@@ConditionalExpression:REGISTRY.get()
+      != null ? REGISTRY.get() : Collections.<Object,Object>emptyMap() '
+    - '------MOV SimpleName@@Name:REGISTRY @TO@ MethodInvocation@@REGISTRY.get() '
+    - '------MOV SimpleName@@MethodName:get:[] @TO@ MethodInvocation@@REGISTRY.get() '
+    - '---DEL ConditionalExpression@@REGISTRY.get() != null ? REGISTRY.get() : Collections.<Object,Object>emptyMap() '
+    - '------DEL InfixExpression@@REGISTRY.get() != null '
+    - '---------DEL MethodInvocation@@REGISTRY.get() '
+    - '---------DEL Operator@@!= '
+    - '---------DEL NullLiteral@@null '
+    - '------DEL MethodInvocation@@REGISTRY.get() '
+    - '---------DEL SimpleName@@Name:REGISTRY '
+    - '---------DEL SimpleName@@MethodName:get:[] '
+    - '------DEL MethodInvocation@@Collections.<Object,Object>emptyMap() '
+    - '---------DEL SimpleName@@Name:Collections '
+    - '---------DEL SimpleName@@MethodName:emptyMap:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:m.containsKey(value) @TO@ InfixExpression:m
+      != null && m.containsKey(value) '
+    - '---INS InfixExpression@@m != null && m.containsKey(value) @TO@ ReturnStatement@@MethodInvocation:m.containsKey(value) '
+    - '------INS InfixExpression@@m != null @TO@ InfixExpression@@m != null && m.containsKey(value) '
+    - '---------INS SimpleName@@m @TO@ InfixExpression@@m != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@m != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@m != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@m != null && m.containsKey(value) '
+    - '------MOV MethodInvocation@@m.containsKey(value) @TO@ InfixExpression@@m !=
+      null && m.containsKey(value) '
+  repair_actions_cnt: 2

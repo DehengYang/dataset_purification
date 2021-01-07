@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_3/source/org/jfree/data/time/TimeSeries.java	2020-10-20 23:46:44.712317803 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_3/purify/assertBeforeMut/org/jfree/data/time/TimeSeries.java	2020-10-20 23:46:44.712317803 -0400
+@@ -1054,6 +1054,8 @@
+             throw new IllegalArgumentException("Requires start <= end.");
+         }
+         TimeSeries copy = (TimeSeries) super.clone();
++        copy.minY = Double.NaN;
++        copy.maxY = Double.NaN;
+         copy.data = new java.util.ArrayList();
+         if (this.data.size() > 0) {
+             for (int index = start; index <= end; index++) {

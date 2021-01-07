@@ -1,0 +1,16 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_94/src/com/google/javascript/jscomp/NodeUtil.java	2020-10-23 12:19:51.469990774 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_94/purify/purified/com/google/javascript/jscomp/NodeUtil.java	2020-10-23 12:19:51.469990774 -0400
+@@ -326,10 +326,13 @@
+         return true;
+ 
+       // Binary operators are only valid if both children are valid.
++      case Token.ADD:
+       case Token.BITAND:
+       case Token.BITNOT:
+       case Token.BITOR:
+       case Token.BITXOR:
++        return isValidDefineValue(val.getFirstChild(), defines)
++            && isValidDefineValue(val.getLastChild(), defines);
+ 
+       // Uniary operators are valid if the child is valid.
+       case Token.NOT:

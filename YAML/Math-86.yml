@@ -1,0 +1,131 @@
+1 bug_id: Math-86
+2 src folder:
+  name of src folder: java
+  number of files: 398
+  number of java files: 362
+  number of src classes: 444
+  number of test classes: 186
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.linear.CholeskyDecompositionImplTest#testNotPositiveDefinite
+  - org.apache.commons.math.linear.CholeskyDecompositionImplTest#testMath274
+  failing tests:
+  - org.apache.commons.math.linear.CholeskyDecompositionImplTest
+  number of all test cases: 1894
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.652
+  purification via delta debugging: 86.11
+  repair actions extraction: 1.414
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.linear.CholeskyDecompositionImplTest#testMath274: 92
+    org.apache.commons.math.linear.CholeskyDecompositionImplTest#testNotPositiveDefinite: 193
+  fixed:
+    org.apache.commons.math.linear.CholeskyDecompositionImplTest#testMath274: 101
+    org.apache.commons.math.linear.CholeskyDecompositionImplTest#testNotPositiveDefinite: 101
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 3
+  covDel: 3
+  cov_patch_lines: 6
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 3
+  ori_patch_lines: 6
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 1
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_86/src/java/org/apache/commons/math/linear/CholeskyDecompositionImpl.java\t\
+    2020-10-21 13:47:40.107009158 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_86/purify/patch/org/apache/commons/math/linear/CholeskyDecompositionImpl.java\t\
+    2020-10-21 13:47:40.107009158 -0400\n@@ -111,9 +111,6 @@\n \n             final\
+    \ double[] lI = lTData[i];\n \n-            if (lTData[i][i] < absolutePositivityThreshold)\
+    \ {\n-                throw new NotPositiveDefiniteMatrixException();\n-     \
+    \       }\n             // check off-diagonal elements (and reset them to 0)\n\
+    \             for (int j = i + 1; j < order; ++j) {\n                 final double[]\
+    \ lJ = lTData[j];\n@@ -134,6 +131,9 @@\n             final double[] ltI = lTData[i];\n\
+    \ \n             // check diagonal element\n+            if (ltI[i] < absolutePositivityThreshold)\
+    \ {\n+                throw new NotPositiveDefiniteMatrixException();\n+     \
+    \       }\n \n             ltI[i] = Math.sqrt(ltI[i]);\n             final double\
+    \ inverse = 1.0 / ltI[i];"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_86/src/java/org/apache/commons/math/linear/CholeskyDecompositionImpl.java\t\
+    2020-10-21 13:49:20.421909923 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_86/purify/purified/org/apache/commons/math/linear/CholeskyDecompositionImpl.java\t\
+    2020-10-21 13:49:20.421909923 -0400\n@@ -134,6 +134,9 @@\n             final double[]\
+    \ ltI = lTData[i];\n \n             // check diagonal element\n+            if\
+    \ (ltI[i] < absolutePositivityThreshold) {\n+                throw new NotPositiveDefiniteMatrixException();\n\
+    +            }\n \n             ltI[i] = Math.sqrt(ltI[i]);\n             final\
+    \ double inverse = 1.0 / ltI[i];"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/linear/CholeskyDecompositionImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:lTData[i][i] < absolutePositivityThreshold '
+    - '---DEL InfixExpression@@lTData[i][i] < absolutePositivityThreshold '
+    - '------DEL ArrayAccess@@lTData[i][i] '
+    - '---------DEL ArrayAccess@@lTData[i] '
+    - '------------DEL SimpleName@@lTData '
+    - '------------DEL SimpleName@@i '
+    - '---------DEL SimpleName@@i '
+    - '------DEL Operator@@< '
+    - '------DEL SimpleName@@absolutePositivityThreshold '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:ltI[i] < absolutePositivityThreshold @TO@
+      ForStatement@@[int i=0];i < order; [++i] '
+    - '---MOV ThrowStatement@@ClassInstanceCreation:new NotPositiveDefiniteMatrixException()
+      @TO@ IfStatement@@InfixExpression:ltI[i] < absolutePositivityThreshold '
+    - '---INS InfixExpression@@ltI[i] < absolutePositivityThreshold @TO@ IfStatement@@InfixExpression:ltI[i]
+      < absolutePositivityThreshold '
+    - '------INS ArrayAccess@@ltI[i] @TO@ InfixExpression@@ltI[i] < absolutePositivityThreshold '
+    - '---------INS SimpleName@@ltI @TO@ ArrayAccess@@ltI[i] '
+    - '---------INS SimpleName@@i @TO@ ArrayAccess@@ltI[i] '
+    - '------INS Operator@@< @TO@ InfixExpression@@ltI[i] < absolutePositivityThreshold '
+    - '------INS SimpleName@@absolutePositivityThreshold @TO@ InfixExpression@@ltI[i]
+      < absolutePositivityThreshold '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/linear/CholeskyDecompositionImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:ltI[i] < absolutePositivityThreshold @TO@
+      ForStatement@@[int i=0];i < order; [++i] '
+    - '---INS InfixExpression@@ltI[i] < absolutePositivityThreshold @TO@ IfStatement@@InfixExpression:ltI[i]
+      < absolutePositivityThreshold '
+    - '------INS ArrayAccess@@ltI[i] @TO@ InfixExpression@@ltI[i] < absolutePositivityThreshold '
+    - '---------INS SimpleName@@ltI @TO@ ArrayAccess@@ltI[i] '
+    - '---------INS SimpleName@@i @TO@ ArrayAccess@@ltI[i] '
+    - '------INS Operator@@< @TO@ InfixExpression@@ltI[i] < absolutePositivityThreshold '
+    - '------INS SimpleName@@absolutePositivityThreshold @TO@ InfixExpression@@ltI[i]
+      < absolutePositivityThreshold '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new NotPositiveDefiniteMatrixException()
+      @TO@ IfStatement@@InfixExpression:ltI[i] < absolutePositivityThreshold '
+    - '------INS ClassInstanceCreation@@NotPositiveDefiniteMatrixException[] @TO@
+      ThrowStatement@@ClassInstanceCreation:new NotPositiveDefiniteMatrixException() '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@NotPositiveDefiniteMatrixException[] '
+    - '---------INS SimpleType@@NotPositiveDefiniteMatrixException @TO@ ClassInstanceCreation@@NotPositiveDefiniteMatrixException[] '
+  repair_actions_cnt: 1

@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_20/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java	2020-10-22 09:31:57.993312384 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_20/purify/purified/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java	2020-10-22 09:31:57.993312384 -0400
+@@ -217,7 +217,8 @@
+       // slightly different semantics than '' + (a). See
+       // http://code.google.com/p/closure-compiler/issues/detail?id=759
+       Node value = callTarget.getNext();
+-      if (value != null) {
++      if (value != null && value.getNext() == null &&
++          NodeUtil.isImmutableValue(value)) {
+         Node addition = IR.add(
+             IR.string("").srcref(callTarget),
+             value.detachFromParent());

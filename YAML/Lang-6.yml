@@ -1,0 +1,110 @@
+1 bug_id: Lang-6
+2 src folder:
+  name of src folder: java
+  number of files: 120
+  number of java files: 107
+  number of src classes: 168
+  number of test classes: 112
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.StringUtilsTest#testEscapeSurrogatePairs
+  failing tests:
+  - org.apache.commons.lang3.StringUtilsTest
+  number of all test cases: 2267
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.0
+  purification via delta debugging: 88.812
+  repair actions extraction: 0.645
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.StringUtilsTest#testEscapeSurrogatePairs: 131
+  fixed:
+    org.apache.commons.lang3.StringUtilsTest#testEscapeSurrogatePairs: 134
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_6/src/main/java/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java\t\
+    2020-10-22 01:26:11.614629767 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_6/purify/patch/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java\t\
+    2020-10-22 01:26:11.614629767 -0400\n@@ -92,7 +92,7 @@\n //          // contract\
+    \ with translators is that they have to understand codepoints \n //          //\
+    \ and they just took care of a surrogate pair\n             for (int pt = 0; pt\
+    \ < consumed; pt++) {\n-                pos += Character.charCount(Character.codePointAt(input,\
+    \ pos));\n+                pos += Character.charCount(Character.codePointAt(input,\
+    \ pt));\n             }\n         }\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_6/src/main/java/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java\t\
+    2020-10-22 01:27:58.641724459 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_6/purify/purified/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java\t\
+    2020-10-22 01:27:58.637724343 -0400\n@@ -92,7 +92,7 @@\n //          // contract\
+    \ with translators is that they have to understand codepoints \n //          //\
+    \ and they just took care of a surrogate pair\n             for (int pt = 0; pt\
+    \ < consumed; pt++) {\n-                pos += Character.charCount(Character.codePointAt(input,\
+    \ pos));\n+                pos += Character.charCount(Character.codePointAt(input,\
+    \ pt));\n             }\n         }\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/translate/CharSequenceTranslator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:pos+=Character.charCount(Character.codePointAt(input,pos))
+      @TO@ Assignment:pos+=Character.charCount(Character.codePointAt(input,pt)) '
+    - '---UPD Assignment@@pos+=Character.charCount(Character.codePointAt(input,pos))
+      @TO@ pos+=Character.charCount(Character.codePointAt(input,pt)) '
+    - '------UPD MethodInvocation@@Character.charCount(Character.codePointAt(input,pos))
+      @TO@ Character.charCount(Character.codePointAt(input,pt)) '
+    - '---------UPD SimpleName@@MethodName:charCount:[Character.codePointAt(input,pos)]
+      @TO@ MethodName:charCount:[Character.codePointAt(input,pt)] '
+    - '------------UPD MethodInvocation@@Character.codePointAt(input,pos) @TO@ Character.codePointAt(input,pt) '
+    - '---------------UPD SimpleName@@MethodName:codePointAt:[input, pos] @TO@ MethodName:codePointAt:[input,
+      pt] '
+    - '------------------UPD SimpleName@@pos @TO@ pt '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/translate/CharSequenceTranslator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:pos+=Character.charCount(Character.codePointAt(input,pos))
+      @TO@ Assignment:pos+=Character.charCount(Character.codePointAt(input,pt)) '
+    - '---UPD Assignment@@pos+=Character.charCount(Character.codePointAt(input,pos))
+      @TO@ pos+=Character.charCount(Character.codePointAt(input,pt)) '
+    - '------UPD MethodInvocation@@Character.charCount(Character.codePointAt(input,pos))
+      @TO@ Character.charCount(Character.codePointAt(input,pt)) '
+    - '---------UPD SimpleName@@MethodName:charCount:[Character.codePointAt(input,pos)]
+      @TO@ MethodName:charCount:[Character.codePointAt(input,pt)] '
+    - '------------UPD MethodInvocation@@Character.codePointAt(input,pos) @TO@ Character.codePointAt(input,pt) '
+    - '---------------UPD SimpleName@@MethodName:codePointAt:[input, pos] @TO@ MethodName:codePointAt:[input,
+      pt] '
+    - '------------------UPD SimpleName@@pos @TO@ pt '
+  repair_actions_cnt: 1

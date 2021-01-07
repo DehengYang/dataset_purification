@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_49/src/java/org/apache/commons/lang/math/Fraction.java	2020-10-21 03:50:01.489782049 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_49/purify/purified/org/apache/commons/lang/math/Fraction.java	2020-10-21 03:50:01.485781933 -0400
+@@ -463,6 +463,9 @@
+      * @return a new reduced fraction instance, or this if no simplification possible
+      */
+     public Fraction reduce() {
++        if (numerator == 0) {
++            return equals(ZERO) ? this : ZERO;
++        }
+         int gcd = greatestCommonDivisor(Math.abs(numerator), denominator);
+         if (gcd == 1) {
+             return this;

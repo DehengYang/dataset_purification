@@ -1,0 +1,92 @@
+1 bug_id: Closure-33
+2 src folder:
+  name of src folder: src
+  number of files: 415
+  number of java files: 400
+  number of src classes: 1341
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testIssue700
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 7457
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.919
+  purification via delta debugging: 209.213
+  repair actions extraction: 1.691
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue700: 5417
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue700: 5328
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_33/src/com/google/javascript/rhino/jstype/PrototypeObjectType.java\t\
+    2020-10-22 11:18:40.442495394 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_33/purify/patch/com/google/javascript/rhino/jstype/PrototypeObjectType.java\t\
+    2020-10-22 11:18:40.438495278 -0400\n@@ -554,6 +554,9 @@\n   @Override\n   public\
+    \ void matchConstraint(ObjectType constraintObj) {\n     // We only want to match\
+    \ contraints on anonymous types.\n+    if (hasReferenceName()) {\n+      return;\n\
+    +    }\n \n     // Handle the case where the constraint object is a record type.\n\
+    \     //"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_33/src/com/google/javascript/rhino/jstype/PrototypeObjectType.java\t\
+    2020-10-22 11:22:39.821420257 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_33/purify/purified/com/google/javascript/rhino/jstype/PrototypeObjectType.java\t\
+    2020-10-22 11:22:39.821420257 -0400\n@@ -554,6 +554,9 @@\n   @Override\n   public\
+    \ void matchConstraint(ObjectType constraintObj) {\n     // We only want to match\
+    \ contraints on anonymous types.\n+    if (hasReferenceName()) {\n+      return;\n\
+    +    }\n \n     // Handle the case where the constraint object is a record type.\n\
+    \     //"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  com/google/javascript/rhino/jstype/PrototypeObjectType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:hasReferenceName() @TO@ MethodDeclaration@@public,
+      @@void, MethodName:matchConstraint, @@Argus:ObjectType+constraintObj+ '
+    - '---INS MethodInvocation@@MethodName:hasReferenceName:[] @TO@ IfStatement@@MethodInvocation:hasReferenceName() '
+    - '---INS ReturnStatement@@ @TO@ IfStatement@@MethodInvocation:hasReferenceName() '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  com/google/javascript/rhino/jstype/PrototypeObjectType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:hasReferenceName() @TO@ MethodDeclaration@@public,
+      @@void, MethodName:matchConstraint, @@Argus:ObjectType+constraintObj+ '
+    - '---INS MethodInvocation@@MethodName:hasReferenceName:[] @TO@ IfStatement@@MethodInvocation:hasReferenceName() '
+    - '---INS ReturnStatement@@ @TO@ IfStatement@@MethodInvocation:hasReferenceName() '
+  files_cnt: '1'
+  repair_actions_cnt: 1

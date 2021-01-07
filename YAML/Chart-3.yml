@@ -1,0 +1,131 @@
+1 bug_id: Chart-3
+2 src folder:
+  name of src folder: source
+  number of files: 728
+  number of java files: 654
+  number of src classes: 681
+  number of test classes: 357
+3 test (cases):
+  failing test cases:
+  - org.jfree.data.time.junit.TimeSeriesTests#testCreateCopy3
+  failing tests:
+  - org.jfree.data.time.junit.TimeSeriesTests
+  number of all test cases: 2195
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.0
+  purification via delta debugging: 61.198
+  repair actions extraction: 1.613
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.data.time.junit.TimeSeriesTests#testCreateCopy3: 175
+  fixed:
+    org.jfree.data.time.junit.TimeSeriesTests#testCreateCopy3: 181
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 0
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 0
+  ori_patch_lines: 2
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 0
+  total: 2
+9 sibling repair actions:
+- 0 1 0.9336043360433605
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_3/source/org/jfree/data/time/TimeSeries.java\t\
+    2020-10-20 23:46:30.139896793 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_3/purify/patch/org/jfree/data/time/TimeSeries.java\t\
+    2020-10-20 23:46:30.135896678 -0400\n@@ -1054,6 +1054,8 @@\n             throw\
+    \ new IllegalArgumentException(\"Requires start <= end.\");\n         }\n    \
+    \     TimeSeries copy = (TimeSeries) super.clone();\n+        copy.minY = Double.NaN;\n\
+    +        copy.maxY = Double.NaN;\n         copy.data = new java.util.ArrayList();\n\
+    \         if (this.data.size() > 0) {\n             for (int index = start; index\
+    \ <= end; index++) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_3/source/org/jfree/data/time/TimeSeries.java\t\
+    2020-10-20 23:47:47.818140992 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_3/purify/purified/org/jfree/data/time/TimeSeries.java\t\
+    2020-10-20 23:47:47.818140992 -0400\n@@ -1054,6 +1054,8 @@\n             throw\
+    \ new IllegalArgumentException(\"Requires start <= end.\");\n         }\n    \
+    \     TimeSeries copy = (TimeSeries) super.clone();\n+        copy.minY = Double.NaN;\n\
+    +        copy.maxY = Double.NaN;\n         copy.data = new java.util.ArrayList();\n\
+    \         if (this.data.size() > 0) {\n             for (int index = start; index\
+    \ <= end; index++) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/time/TimeSeries:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:copy.minY=Double.NaN @TO@ MethodDeclaration@@public,
+      @@TimeSeries, MethodName:createCopy, @@Argus:int+start+int+end+CloneNotSupportedException,  '
+    - '---INS Assignment@@copy.minY=Double.NaN @TO@ ExpressionStatement@@Assignment:copy.minY=Double.NaN '
+    - '------INS QualifiedName@@copy.minY @TO@ Assignment@@copy.minY=Double.NaN '
+    - '---------INS SimpleName@@copy @TO@ QualifiedName@@copy.minY '
+    - '---------INS SimpleName@@minY @TO@ QualifiedName@@copy.minY '
+    - '------INS Operator@@= @TO@ Assignment@@copy.minY=Double.NaN '
+    - '------INS QualifiedName@@Double.NaN @TO@ Assignment@@copy.minY=Double.NaN '
+    - '---------INS SimpleName@@Double @TO@ QualifiedName@@Double.NaN '
+    - '---------INS SimpleName@@NaN @TO@ QualifiedName@@Double.NaN '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:copy.maxY=Double.NaN @TO@ MethodDeclaration@@public,
+      @@TimeSeries, MethodName:createCopy, @@Argus:int+start+int+end+CloneNotSupportedException,  '
+    - '---INS Assignment@@copy.maxY=Double.NaN @TO@ ExpressionStatement@@Assignment:copy.maxY=Double.NaN '
+    - '------INS QualifiedName@@copy.maxY @TO@ Assignment@@copy.maxY=Double.NaN '
+    - '---------INS SimpleName@@copy @TO@ QualifiedName@@copy.maxY '
+    - '---------INS SimpleName@@maxY @TO@ QualifiedName@@copy.maxY '
+    - '------INS Operator@@= @TO@ Assignment@@copy.maxY=Double.NaN '
+    - '------INS QualifiedName@@Double.NaN @TO@ Assignment@@copy.maxY=Double.NaN '
+    - '---------INS SimpleName@@Double @TO@ QualifiedName@@Double.NaN '
+    - '---------INS SimpleName@@NaN @TO@ QualifiedName@@Double.NaN '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/time/TimeSeries:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:copy.minY=Double.NaN @TO@ MethodDeclaration@@public,
+      @@TimeSeries, MethodName:createCopy, @@Argus:int+start+int+end+CloneNotSupportedException,  '
+    - '---INS Assignment@@copy.minY=Double.NaN @TO@ ExpressionStatement@@Assignment:copy.minY=Double.NaN '
+    - '------INS QualifiedName@@copy.minY @TO@ Assignment@@copy.minY=Double.NaN '
+    - '---------INS SimpleName@@copy @TO@ QualifiedName@@copy.minY '
+    - '---------INS SimpleName@@minY @TO@ QualifiedName@@copy.minY '
+    - '------INS Operator@@= @TO@ Assignment@@copy.minY=Double.NaN '
+    - '------INS QualifiedName@@Double.NaN @TO@ Assignment@@copy.minY=Double.NaN '
+    - '---------INS SimpleName@@Double @TO@ QualifiedName@@Double.NaN '
+    - '---------INS SimpleName@@NaN @TO@ QualifiedName@@Double.NaN '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:copy.maxY=Double.NaN @TO@ MethodDeclaration@@public,
+      @@TimeSeries, MethodName:createCopy, @@Argus:int+start+int+end+CloneNotSupportedException,  '
+    - '---INS Assignment@@copy.maxY=Double.NaN @TO@ ExpressionStatement@@Assignment:copy.maxY=Double.NaN '
+    - '------INS QualifiedName@@copy.maxY @TO@ Assignment@@copy.maxY=Double.NaN '
+    - '---------INS SimpleName@@copy @TO@ QualifiedName@@copy.maxY '
+    - '---------INS SimpleName@@maxY @TO@ QualifiedName@@copy.maxY '
+    - '------INS Operator@@= @TO@ Assignment@@copy.maxY=Double.NaN '
+    - '------INS QualifiedName@@Double.NaN @TO@ Assignment@@copy.maxY=Double.NaN '
+    - '---------INS SimpleName@@Double @TO@ QualifiedName@@Double.NaN '
+    - '---------INS SimpleName@@NaN @TO@ QualifiedName@@Double.NaN '
+  repair_actions_cnt: 2

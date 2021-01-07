@@ -1,0 +1,164 @@
+1 bug_id: Math-28
+2 src folder:
+  name of src folder: java
+  number of files: 633
+  number of java files: 632
+  number of src classes: 854
+  number of test classes: 317
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.optimization.linear.SimplexSolverTest#testMath828Cycle
+  failing tests:
+  - org.apache.commons.math3.optimization.linear.SimplexSolverTest
+  number of all test cases: 4021
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.862
+  purification via delta debugging: 193.459
+  repair actions extraction: 0.785
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.optimization.linear.SimplexSolverTest#testMath828Cycle: 758
+  fixed:
+    org.apache.commons.math3.optimization.linear.SimplexSolverTest#testMath828Cycle: 436
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 2
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  cov: 4
+  original: 4
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 1
+  total: 3
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_28/src/main/java/org/apache/commons/math3/optimization/linear/SimplexSolver.java\t\
+    2020-10-21 10:15:54.375564680 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_28/purify/patch/org/apache/commons/math3/optimization/linear/SimplexSolver.java\t\
+    2020-10-21 10:15:54.375564680 -0400\n@@ -116,6 +116,7 @@\n             // there's\
+    \ a degeneracy as indicated by a tie in the minimum ratio test\n \n          \
+    \   // 1. check if there's an artificial variable that can be forced out of the\
+    \ basis\n+            if (tableau.getNumArtificialVariables() > 0) {\n       \
+    \          for (Integer row : minRatioPositions) {\n                     for (int\
+    \ i = 0; i < tableau.getNumArtificialVariables(); i++) {\n                   \
+    \      int column = i + tableau.getArtificialVariableOffset();\n@@ -125,6 +126,7\
+    \ @@\n                         }\n                     }\n                 }\n\
+    +            }\n \n             // 2. apply Bland's rule to prevent cycling:\n\
+    \             //    take the row for which the corresponding basic variable has\
+    \ the smallest index\n@@ -135,6 +137,7 @@\n             // Additional heuristic:\
+    \ if we did not get a solution after half of maxIterations\n             //  \
+    \                     revert to the simple case of just returning the top-most\
+    \ row\n             // This heuristic is based on empirical data gathered while\
+    \ investigating MATH-828.\n+            if (getIterations() < getMaxIterations()\
+    \ / 2) {\n                 Integer minRow = null;\n                 int minIndex\
+    \ = tableau.getWidth();\n                 for (Integer row : minRatioPositions)\
+    \ {\n@@ -149,6 +152,7 @@\n                     }\n                 }\n       \
+    \          return minRow;\n+            }\n         }\n         return minRatioPositions.get(0);\n\
+    \     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_28/src/main/java/org/apache/commons/math3/optimization/linear/SimplexSolver.java\t\
+    2020-10-21 10:19:26.397705357 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_28/purify/purified/org/apache/commons/math3/optimization/linear/SimplexSolver.java\t\
+    2020-10-21 10:19:26.397705357 -0400\n@@ -135,6 +135,7 @@\n             // Additional\
+    \ heuristic: if we did not get a solution after half of maxIterations\n      \
+    \       //                       revert to the simple case of just returning the\
+    \ top-most row\n             // This heuristic is based on empirical data gathered\
+    \ while investigating MATH-828.\n+            if (getIterations() < getMaxIterations()\
+    \ / 2) {\n                 Integer minRow = null;\n                 int minIndex\
+    \ = tableau.getWidth();\n                 for (Integer row : minRatioPositions)\
+    \ {\n@@ -149,6 +150,7 @@\n                     }\n                 }\n       \
+    \          return minRow;\n+            }\n         }\n         return minRatioPositions.get(0);\n\
+    \     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/linear/SimplexSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:tableau.getNumArtificialVariables() > 0 @TO@
+      IfStatement@@InfixExpression:minRatioPositions.size() > 1 '
+    - '---INS InfixExpression@@tableau.getNumArtificialVariables() > 0 @TO@ IfStatement@@InfixExpression:tableau.getNumArtificialVariables()
+      > 0 '
+    - '------INS MethodInvocation@@tableau.getNumArtificialVariables() @TO@ InfixExpression@@tableau.getNumArtificialVariables()
+      > 0 '
+    - '---------INS SimpleName@@Name:tableau @TO@ MethodInvocation@@tableau.getNumArtificialVariables() '
+    - '---------INS SimpleName@@MethodName:getNumArtificialVariables:[] @TO@ MethodInvocation@@tableau.getNumArtificialVariables() '
+    - '------INS Operator@@> @TO@ InfixExpression@@tableau.getNumArtificialVariables()
+      > 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@tableau.getNumArtificialVariables()
+      > 0 '
+    - '---MOV EnhancedForStatement@@Integer row, SimpleName:minRatioPositions @TO@
+      IfStatement@@InfixExpression:tableau.getNumArtificialVariables() > 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:getIterations() < getMaxIterations() / 2 @TO@
+      IfStatement@@InfixExpression:minRatioPositions.size() > 1 '
+    - '---MOV VariableDeclarationStatement@@Integer minRow=null; @TO@ IfStatement@@InfixExpression:getIterations()
+      < getMaxIterations() / 2 '
+    - '---MOV VariableDeclarationStatement@@int minIndex=tableau.getWidth(); @TO@
+      IfStatement@@InfixExpression:getIterations() < getMaxIterations() / 2 '
+    - '---INS InfixExpression@@getIterations() < getMaxIterations() / 2 @TO@ IfStatement@@InfixExpression:getIterations()
+      < getMaxIterations() / 2 '
+    - '------INS MethodInvocation@@MethodName:getIterations:[] @TO@ InfixExpression@@getIterations()
+      < getMaxIterations() / 2 '
+    - '------INS Operator@@< @TO@ InfixExpression@@getIterations() < getMaxIterations()
+      / 2 '
+    - '------INS InfixExpression@@getMaxIterations() / 2 @TO@ InfixExpression@@getIterations()
+      < getMaxIterations() / 2 '
+    - '---------INS MethodInvocation@@MethodName:getMaxIterations:[] @TO@ InfixExpression@@getMaxIterations()
+      / 2 '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@getMaxIterations() / 2 '
+    - '---------INS NumberLiteral@@2 @TO@ InfixExpression@@getMaxIterations() / 2 '
+    - '---MOV EnhancedForStatement@@Integer row, SimpleName:minRatioPositions @TO@
+      IfStatement@@InfixExpression:getIterations() < getMaxIterations() / 2 '
+    - '---MOV ReturnStatement@@SimpleName:minRow @TO@ IfStatement@@InfixExpression:getIterations()
+      < getMaxIterations() / 2 '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/linear/SimplexSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:getIterations() < getMaxIterations() / 2 @TO@
+      IfStatement@@InfixExpression:minRatioPositions.size() > 1 '
+    - '---INS InfixExpression@@getIterations() < getMaxIterations() / 2 @TO@ IfStatement@@InfixExpression:getIterations()
+      < getMaxIterations() / 2 '
+    - '------INS MethodInvocation@@MethodName:getIterations:[] @TO@ InfixExpression@@getIterations()
+      < getMaxIterations() / 2 '
+    - '------INS Operator@@< @TO@ InfixExpression@@getIterations() < getMaxIterations()
+      / 2 '
+    - '------INS InfixExpression@@getMaxIterations() / 2 @TO@ InfixExpression@@getIterations()
+      < getMaxIterations() / 2 '
+    - '---------INS MethodInvocation@@MethodName:getMaxIterations:[] @TO@ InfixExpression@@getMaxIterations()
+      / 2 '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@getMaxIterations() / 2 '
+    - '---------INS NumberLiteral@@2 @TO@ InfixExpression@@getMaxIterations() / 2 '
+    - '---MOV VariableDeclarationStatement@@Integer minRow=null; @TO@ IfStatement@@InfixExpression:getIterations()
+      < getMaxIterations() / 2 '
+    - '---MOV VariableDeclarationStatement@@int minIndex=tableau.getWidth(); @TO@
+      IfStatement@@InfixExpression:getIterations() < getMaxIterations() / 2 '
+    - '---MOV EnhancedForStatement@@Integer row, SimpleName:minRatioPositions @TO@
+      IfStatement@@InfixExpression:getIterations() < getMaxIterations() / 2 '
+    - '---MOV ReturnStatement@@SimpleName:minRow @TO@ IfStatement@@InfixExpression:getIterations()
+      < getMaxIterations() / 2 '
+  repair_actions_cnt: 1

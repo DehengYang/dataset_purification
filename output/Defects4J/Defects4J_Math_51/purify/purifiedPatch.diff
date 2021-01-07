@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_51/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java	2020-10-22 07:28:39.163208724 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_51/purify/purified/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java	2020-10-22 07:28:39.163208724 -0400
+@@ -182,8 +182,15 @@
+                 case PEGASUS:
+                     f0 *= f1 / (f1 + fx);
+                     break;
++                case REGULA_FALSI:
++                    if (x == x1) {
++                        final double delta = FastMath.max(rtol * FastMath.abs(x1),
++                                                          atol);
+                         // Update formula cannot make any progress: Update the
+                         // search interval.
++                        x0 = 0.5 * (x0 + x1 - delta);
++                        f0 = computeObjectiveValue(x0);
++                    }
+                 default:
+                     // Should never happen.
+                 }

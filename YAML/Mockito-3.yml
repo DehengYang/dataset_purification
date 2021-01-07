@@ -1,0 +1,469 @@
+1 bug_id: Mockito-3
+2 src folder:
+  name of src folder: src
+  number of files: 356
+  number of java files: 319
+  number of src classes: 393
+  number of test classes: 283
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.matchers.CapturingArgumentsTest#should_capture_all_vararg
+  - org.mockitousage.matchers.CapturingArgumentsTest#should_capture_byte_vararg_by_creating_captor_with_primitive
+  - org.mockito.internal.invocation.InvocationMatcherTest#should_capture_varargs_as_vararg
+  - org.mockitousage.matchers.CapturingArgumentsTest#should_capture_byte_vararg_by_creating_captor_with_primitive_wrapper
+  - org.mockitousage.matchers.CapturingArgumentsTest#should_capture_vararg
+  - org.mockitousage.matchers.CapturingArgumentsTest#captures_correctly_when_captor_used_on_pure_vararg_method
+  - org.mockitousage.matchers.CapturingArgumentsTest#captures_correctly_when_captor_used_multiple_times
+  - org.mockitousage.bugs.varargs.VarargsAndAnyObjectPicksUpExtraInvocationsTest#shouldVerifyCorrectlyNumberOfInvocationsWithVarargs
+  - org.mockitousage.bugs.varargs.VarargsNotPlayingWithAnyObjectTest#shouldMatchAnyVararg
+  failing tests:
+  - org.mockitousage.matchers.CapturingArgumentsTest
+  - org.mockito.internal.invocation.InvocationMatcherTest
+  - org.mockitousage.bugs.varargs.VarargsAndAnyObjectPicksUpExtraInvocationsTest
+  - org.mockitousage.bugs.varargs.VarargsNotPlayingWithAnyObjectTest
+  number of all test cases: 993
+  number of failing test cases: 9
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 7.0
+  purification via coverage: 1.229
+  purification via delta debugging: 2931.197
+  repair actions extraction: 1.199
+5 stmts covered by failing cases:
+  buggy:
+    org.mockitousage.matchers.CapturingArgumentsTest#captures_correctly_when_captor_used_multiple_times: 41
+    org.mockitousage.matchers.CapturingArgumentsTest#captures_correctly_when_captor_used_on_pure_vararg_method: 41
+    org.mockitousage.matchers.CapturingArgumentsTest#should_capture_all_vararg: 41
+    org.mockitousage.matchers.CapturingArgumentsTest#should_capture_byte_vararg_by_creating_captor_with_primitive: 41
+    org.mockitousage.matchers.CapturingArgumentsTest#should_capture_byte_vararg_by_creating_captor_with_primitive_wrapper: 41
+    org.mockitousage.matchers.CapturingArgumentsTest#should_capture_vararg: 41
+  fixed:
+    org.mockitousage.matchers.CapturingArgumentsTest#captures_correctly_when_captor_used_multiple_times: 41
+    org.mockitousage.matchers.CapturingArgumentsTest#captures_correctly_when_captor_used_on_pure_vararg_method: 41
+    org.mockitousage.matchers.CapturingArgumentsTest#should_capture_all_vararg: 41
+    org.mockitousage.matchers.CapturingArgumentsTest#should_capture_byte_vararg_by_creating_captor_with_primitive: 41
+    org.mockitousage.matchers.CapturingArgumentsTest#should_capture_byte_vararg_by_creating_captor_with_primitive_wrapper: 41
+    org.mockitousage.matchers.CapturingArgumentsTest#should_capture_vararg: 41
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 17
+  covDel: 3
+  cov_patch_lines: 20
+  delta_patch_lines: 20
+  oriAdd: 17
+  oriDel: 3
+  ori_patch_lines: 20
+  purAdd: 17
+  purDel: 3
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 60
+  passed: 1
+  total: 61
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_3/src/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-27 02:05:46.974229184 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_3/purify/patch/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-27 02:05:46.974229184 -0400\n@@ -124,10 +124,12 @@\n                 \
+    \    ((CapturesArguments) m).captureFrom(invocation.getArgumentAt(position, Object.class));\n\
+    \                 }\n             }\n-            for (int position = indexOfVararg;\
+    \ position < matchers.size(); position++) {\n-                Matcher m = matchers.get(position);\n\
+    +            for (Matcher m : uniqueMatcherSet(indexOfVararg)) {\n           \
+    \      if (m instanceof CapturesArguments) {\n-                    ((CapturesArguments)\
+    \ m).captureFrom(invocation.getRawArguments()[position - indexOfVararg]);\n+ \
+    \                   Object rawArgument = invocation.getRawArguments()[indexOfVararg];\n\
+    +                    for (int i = 0; i < Array.getLength(rawArgument); i++) {\n\
+    +                        ((CapturesArguments) m).captureFrom(Array.get(rawArgument,\
+    \ i));\n+                    }\n                 }\n             }\n         }\
+    \ else {\n@@ -140,6 +142,18 @@\n         }\n     }\n \n+    private Set<Matcher>\
+    \ uniqueMatcherSet(int indexOfVararg) {\n+        HashSet<Matcher> set = new HashSet<Matcher>();\n\
+    +        for (int position = indexOfVararg; position < matchers.size(); position++)\
+    \ {\n+            Matcher matcher = matchers.get(position);\n+            if(matcher\
+    \ instanceof MatcherDecorator) {\n+                set.add(((MatcherDecorator)\
+    \ matcher).getActualMatcher());\n+            } else {\n+                set.add(matcher);\n\
+    +            }\n+        }\n+        return set;\n+    }\n \n     public static\
+    \ List<InvocationMatcher> createFrom(List<Invocation> invocations) {\n       \
+    \  LinkedList<InvocationMatcher> out = new LinkedList<InvocationMatcher>();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_3/src/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-27 02:55:50.901255082 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_3/purify/purified/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-27 02:55:50.901255082 -0400\n@@ -124,10 +124,12 @@\n                 \
+    \    ((CapturesArguments) m).captureFrom(invocation.getArgumentAt(position, Object.class));\n\
+    \                 }\n             }\n-            for (int position = indexOfVararg;\
+    \ position < matchers.size(); position++) {\n-                Matcher m = matchers.get(position);\n\
+    +            for (Matcher m : uniqueMatcherSet(indexOfVararg)) {\n           \
+    \      if (m instanceof CapturesArguments) {\n-                    ((CapturesArguments)\
+    \ m).captureFrom(invocation.getRawArguments()[position - indexOfVararg]);\n+ \
+    \                   Object rawArgument = invocation.getRawArguments()[indexOfVararg];\n\
+    +                    for (int i = 0; i < Array.getLength(rawArgument); i++) {\n\
+    +                        ((CapturesArguments) m).captureFrom(Array.get(rawArgument,\
+    \ i));\n+                    }\n                 }\n             }\n         }\
+    \ else {\n@@ -140,6 +142,18 @@\n         }\n     }\n \n+    private Set<Matcher>\
+    \ uniqueMatcherSet(int indexOfVararg) {\n+        HashSet<Matcher> set = new HashSet<Matcher>();\n\
+    +        for (int position = indexOfVararg; position < matchers.size(); position++)\
+    \ {\n+            Matcher matcher = matchers.get(position);\n+            if(matcher\
+    \ instanceof MatcherDecorator) {\n+                set.add(((MatcherDecorator)\
+    \ matcher).getActualMatcher());\n+            } else {\n+                set.add(matcher);\n\
+    +            }\n+        }\n+        return set;\n+    }\n \n     public static\
+    \ List<InvocationMatcher> createFrom(List<Invocation> invocations) {\n       \
+    \  LinkedList<InvocationMatcher> out = new LinkedList<InvocationMatcher>();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 10
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/invocation/InvocationMatcher:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS EnhancedForStatement@@Matcher m, MethodInvocation:uniqueMatcherSet(indexOfVararg)
+      @TO@ IfStatement@@MethodInvocation:invocation.getMethod().isVarArgs() '
+    - '---INS SingleVariableDeclaration@@Matcher m @TO@ EnhancedForStatement@@Matcher
+      m, MethodInvocation:uniqueMatcherSet(indexOfVararg) '
+    - '------INS SimpleType@@Matcher @TO@ SingleVariableDeclaration@@Matcher m '
+    - '------INS SimpleName@@m @TO@ SingleVariableDeclaration@@Matcher m '
+    - '---INS MethodInvocation@@uniqueMatcherSet(indexOfVararg) @TO@ EnhancedForStatement@@Matcher
+      m, MethodInvocation:uniqueMatcherSet(indexOfVararg) '
+    - '------INS SimpleName@@MethodName:uniqueMatcherSet:[indexOfVararg] @TO@ MethodInvocation@@uniqueMatcherSet(indexOfVararg) '
+    - '---------INS SimpleName@@indexOfVararg @TO@ SimpleName@@MethodName:uniqueMatcherSet:[indexOfVararg] '
+    - '---INS IfStatement@@InstanceofExpression:m instanceof CapturesArguments @TO@
+      EnhancedForStatement@@Matcher m, MethodInvocation:uniqueMatcherSet(indexOfVararg) '
+    - '------INS VariableDeclarationStatement@@Object rawArgument=invocation.getRawArguments()[indexOfVararg];
+      @TO@ IfStatement@@InstanceofExpression:m instanceof CapturesArguments '
+    - '---------INS SimpleType@@Object @TO@ VariableDeclarationStatement@@Object rawArgument=invocation.getRawArguments()[indexOfVararg]; '
+    - '---------INS VariableDeclarationFragment@@rawArgument=invocation.getRawArguments()[indexOfVararg]
+      @TO@ VariableDeclarationStatement@@Object rawArgument=invocation.getRawArguments()[indexOfVararg]; '
+    - '------------INS SimpleName@@rawArgument @TO@ VariableDeclarationFragment@@rawArgument=invocation.getRawArguments()[indexOfVararg] '
+    - '------------INS ArrayAccess@@invocation.getRawArguments()[indexOfVararg] @TO@
+      VariableDeclarationFragment@@rawArgument=invocation.getRawArguments()[indexOfVararg] '
+    - '---------------INS SimpleName@@indexOfVararg @TO@ ArrayAccess@@invocation.getRawArguments()[indexOfVararg] '
+    - '---------------MOV MethodInvocation@@invocation.getRawArguments() @TO@ ArrayAccess@@invocation.getRawArguments()[indexOfVararg] '
+    - '------MOV InstanceofExpression@@m instanceof CapturesArguments @TO@ IfStatement@@InstanceofExpression:m
+      instanceof CapturesArguments '
+    - '------INS ForStatement@@[int i=0];i < Array.getLength(rawArgument); [i++] @TO@
+      IfStatement@@InstanceofExpression:m instanceof CapturesArguments '
+    - '---------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int
+      i=0];i < Array.getLength(rawArgument); [i++] '
+    - '------------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS InfixExpression@@i < Array.getLength(rawArgument) @TO@ ForStatement@@[int
+      i=0];i < Array.getLength(rawArgument); [i++] '
+    - '------------INS MethodInvocation@@Array.getLength(rawArgument) @TO@ InfixExpression@@i
+      < Array.getLength(rawArgument) '
+    - '---------------INS SimpleName@@Name:Array @TO@ MethodInvocation@@Array.getLength(rawArgument) '
+    - '---------------INS SimpleName@@MethodName:getLength:[rawArgument] @TO@ MethodInvocation@@Array.getLength(rawArgument) '
+    - '------------------INS SimpleName@@rawArgument @TO@ SimpleName@@MethodName:getLength:[rawArgument] '
+    - '------------MOV SimpleName@@position @TO@ InfixExpression@@i < Array.getLength(rawArgument) '
+    - '------------MOV Operator@@- @TO@ InfixExpression@@i < Array.getLength(rawArgument) '
+    - '---------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < Array.getLength(rawArgument);
+      [i++] '
+    - '------------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---------INS ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(Array.get(rawArgument,i))
+      @TO@ ForStatement@@[int i=0];i < Array.getLength(rawArgument); [i++] '
+    - '------------INS MethodInvocation@@((CapturesArguments)m).captureFrom(Array.get(rawArgument,i))
+      @TO@ ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(Array.get(rawArgument,i)) '
+    - '---------------MOV ParenthesizedExpression@@((CapturesArguments)m) @TO@ MethodInvocation@@((CapturesArguments)m).captureFrom(Array.get(rawArgument,i)) '
+    - '---------------INS SimpleName@@MethodName:captureFrom:[Array.get(rawArgument,i)]
+      @TO@ MethodInvocation@@((CapturesArguments)m).captureFrom(Array.get(rawArgument,i)) '
+    - '------------------INS MethodInvocation@@Array.get(rawArgument,i) @TO@ SimpleName@@MethodName:captureFrom:[Array.get(rawArgument,i)] '
+    - '---------------------INS SimpleName@@Name:Array @TO@ MethodInvocation@@Array.get(rawArgument,i) '
+    - '---------------------INS SimpleName@@MethodName:get:[rawArgument, i] @TO@ MethodInvocation@@Array.get(rawArgument,i) '
+    - '------------------------INS SimpleName@@rawArgument @TO@ SimpleName@@MethodName:get:[rawArgument,
+      i] '
+    - '------------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:get:[rawArgument,
+      i] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ForStatement@@[int position=indexOfVararg];position < matchers.size();
+      [position++] '
+    - '---DEL PostfixExpression@@position++ '
+    - '------DEL SimpleName@@position '
+    - '------DEL Operator@@++ '
+    - '---DEL IfStatement@@InstanceofExpression:m instanceof CapturesArguments '
+    - '------DEL ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) '
+    - '---------DEL MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) '
+    - '------------DEL SimpleName@@MethodName:captureFrom:[invocation.getRawArguments()[position
+      - indexOfVararg]] '
+    - '---------------DEL ArrayAccess@@invocation.getRawArguments()[position - indexOfVararg] '
+    - '------------------DEL InfixExpression@@position - indexOfVararg '
+    - '---------------------DEL SimpleName@@indexOfVararg '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Matcher m=matchers.get(position); @TO@ Matcher
+      matcher=matchers.get(position); '
+    - '---UPD VariableDeclarationFragment@@m=matchers.get(position) @TO@ matcher=matchers.get(position) '
+    - '------UPD SimpleName@@m @TO@ matcher '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@Set<Matcher>, MethodName:uniqueMatcherSet,
+      @@Argus:int+indexOfVararg+ @TO@ TypeDeclaration@@[@SuppressWarnings("unchecked"),
+      public]InvocationMatcher, [DescribedInvocation, CapturesArgumensFromInvocation,
+      Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@Set<Matcher>, MethodName:uniqueMatcherSet,
+      @@Argus:int+indexOfVararg+ '
+    - '---INS ParameterizedType@@Set<Matcher> @TO@ MethodDeclaration@@private, @@Set<Matcher>,
+      MethodName:uniqueMatcherSet, @@Argus:int+indexOfVararg+ '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<Matcher> '
+    - '------INS SimpleType@@Matcher @TO@ ParameterizedType@@Set<Matcher> '
+    - '---INS SimpleName@@MethodName:uniqueMatcherSet @TO@ MethodDeclaration@@private,
+      @@Set<Matcher>, MethodName:uniqueMatcherSet, @@Argus:int+indexOfVararg+ '
+    - '---INS SingleVariableDeclaration@@int indexOfVararg @TO@ MethodDeclaration@@private,
+      @@Set<Matcher>, MethodName:uniqueMatcherSet, @@Argus:int+indexOfVararg+ '
+    - '------INS PrimitiveType@@int @TO@ SingleVariableDeclaration@@int indexOfVararg '
+    - '------INS SimpleName@@indexOfVararg @TO@ SingleVariableDeclaration@@int indexOfVararg '
+    - '---INS VariableDeclarationStatement@@HashSet<Matcher> set=new HashSet<Matcher>();
+      @TO@ MethodDeclaration@@private, @@Set<Matcher>, MethodName:uniqueMatcherSet,
+      @@Argus:int+indexOfVararg+ '
+    - '------INS ParameterizedType@@HashSet<Matcher> @TO@ VariableDeclarationStatement@@HashSet<Matcher>
+      set=new HashSet<Matcher>(); '
+    - '---------INS SimpleType@@HashSet @TO@ ParameterizedType@@HashSet<Matcher> '
+    - '---------INS SimpleType@@Matcher @TO@ ParameterizedType@@HashSet<Matcher> '
+    - '------INS VariableDeclarationFragment@@set=new HashSet<Matcher>() @TO@ VariableDeclarationStatement@@HashSet<Matcher>
+      set=new HashSet<Matcher>(); '
+    - '---------INS SimpleName@@set @TO@ VariableDeclarationFragment@@set=new HashSet<Matcher>() '
+    - '---------INS ClassInstanceCreation@@HashSet<Matcher>[] @TO@ VariableDeclarationFragment@@set=new
+      HashSet<Matcher>() '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@HashSet<Matcher>[] '
+    - '------------INS ParameterizedType@@HashSet<Matcher> @TO@ ClassInstanceCreation@@HashSet<Matcher>[] '
+    - '---------------INS SimpleType@@HashSet @TO@ ParameterizedType@@HashSet<Matcher> '
+    - '---------------INS SimpleType@@Matcher @TO@ ParameterizedType@@HashSet<Matcher> '
+    - '---INS ForStatement@@[int position=indexOfVararg];position < matchers.size();
+      [position++] @TO@ MethodDeclaration@@private, @@Set<Matcher>, MethodName:uniqueMatcherSet,
+      @@Argus:int+indexOfVararg+ '
+    - '------MOV VariableDeclarationExpression@@int position=indexOfVararg @TO@ ForStatement@@[int
+      position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------MOV InfixExpression@@position < matchers.size() @TO@ ForStatement@@[int
+      position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------MOV VariableDeclarationStatement@@Matcher m=matchers.get(position); @TO@
+      ForStatement@@[int position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------INS PostfixExpression@@position++ @TO@ ForStatement@@[int position=indexOfVararg];position
+      < matchers.size(); [position++] '
+    - '---------INS SimpleName@@position @TO@ PostfixExpression@@position++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@position++ '
+    - '------INS IfStatement@@InstanceofExpression:matcher instanceof MatcherDecorator
+      @TO@ ForStatement@@[int position=indexOfVararg];position < matchers.size();
+      [position++] '
+    - '---------INS InstanceofExpression@@matcher instanceof MatcherDecorator @TO@
+      IfStatement@@InstanceofExpression:matcher instanceof MatcherDecorator '
+    - '------------INS SimpleName@@matcher @TO@ InstanceofExpression@@matcher instanceof
+      MatcherDecorator '
+    - '------------INS Instanceof@@instanceof @TO@ InstanceofExpression@@matcher instanceof
+      MatcherDecorator '
+    - '------------INS SimpleType@@MatcherDecorator @TO@ InstanceofExpression@@matcher
+      instanceof MatcherDecorator '
+    - '---------INS ExpressionStatement@@MethodInvocation:set.add(((MatcherDecorator)matcher).getActualMatcher())
+      @TO@ IfStatement@@InstanceofExpression:matcher instanceof MatcherDecorator '
+    - '------------INS MethodInvocation@@set.add(((MatcherDecorator)matcher).getActualMatcher())
+      @TO@ ExpressionStatement@@MethodInvocation:set.add(((MatcherDecorator)matcher).getActualMatcher()) '
+    - '---------------INS SimpleName@@Name:set @TO@ MethodInvocation@@set.add(((MatcherDecorator)matcher).getActualMatcher()) '
+    - '---------------INS SimpleName@@MethodName:add:[((MatcherDecorator)matcher).getActualMatcher()]
+      @TO@ MethodInvocation@@set.add(((MatcherDecorator)matcher).getActualMatcher()) '
+    - '------------------INS MethodInvocation@@((MatcherDecorator)matcher).getActualMatcher()
+      @TO@ SimpleName@@MethodName:add:[((MatcherDecorator)matcher).getActualMatcher()] '
+    - '---------------------INS ParenthesizedExpression@@((MatcherDecorator)matcher)
+      @TO@ MethodInvocation@@((MatcherDecorator)matcher).getActualMatcher() '
+    - '------------------------INS CastExpression@@(MatcherDecorator)matcher @TO@
+      ParenthesizedExpression@@((MatcherDecorator)matcher) '
+    - '---------------------------INS SimpleType@@MatcherDecorator @TO@ CastExpression@@(MatcherDecorator)matcher '
+    - '---------------------------INS SimpleName@@matcher @TO@ CastExpression@@(MatcherDecorator)matcher '
+    - '---------------------INS SimpleName@@MethodName:getActualMatcher:[] @TO@ MethodInvocation@@((MatcherDecorator)matcher).getActualMatcher() '
+    - '---------INS ExpressionStatement@@MethodInvocation:set.add(matcher) @TO@ IfStatement@@InstanceofExpression:matcher
+      instanceof MatcherDecorator '
+    - '------------INS MethodInvocation@@set.add(matcher) @TO@ ExpressionStatement@@MethodInvocation:set.add(matcher) '
+    - '---------------INS SimpleName@@Name:set @TO@ MethodInvocation@@set.add(matcher) '
+    - '---------------INS SimpleName@@MethodName:add:[matcher] @TO@ MethodInvocation@@set.add(matcher) '
+    - '------------------INS SimpleName@@matcher @TO@ SimpleName@@MethodName:add:[matcher] '
+    - '---INS ReturnStatement@@SimpleName:set @TO@ MethodDeclaration@@private, @@Set<Matcher>,
+      MethodName:uniqueMatcherSet, @@Argus:int+indexOfVararg+ '
+    - '------INS SimpleName@@set @TO@ ReturnStatement@@SimpleName:set '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 10
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/invocation/InvocationMatcher:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS EnhancedForStatement@@Matcher m, MethodInvocation:uniqueMatcherSet(indexOfVararg)
+      @TO@ IfStatement@@MethodInvocation:invocation.getMethod().isVarArgs() '
+    - '---INS SingleVariableDeclaration@@Matcher m @TO@ EnhancedForStatement@@Matcher
+      m, MethodInvocation:uniqueMatcherSet(indexOfVararg) '
+    - '------INS SimpleType@@Matcher @TO@ SingleVariableDeclaration@@Matcher m '
+    - '------INS SimpleName@@m @TO@ SingleVariableDeclaration@@Matcher m '
+    - '---INS MethodInvocation@@uniqueMatcherSet(indexOfVararg) @TO@ EnhancedForStatement@@Matcher
+      m, MethodInvocation:uniqueMatcherSet(indexOfVararg) '
+    - '------INS SimpleName@@MethodName:uniqueMatcherSet:[indexOfVararg] @TO@ MethodInvocation@@uniqueMatcherSet(indexOfVararg) '
+    - '---------INS SimpleName@@indexOfVararg @TO@ SimpleName@@MethodName:uniqueMatcherSet:[indexOfVararg] '
+    - '---INS IfStatement@@InstanceofExpression:m instanceof CapturesArguments @TO@
+      EnhancedForStatement@@Matcher m, MethodInvocation:uniqueMatcherSet(indexOfVararg) '
+    - '------INS VariableDeclarationStatement@@Object rawArgument=invocation.getRawArguments()[indexOfVararg];
+      @TO@ IfStatement@@InstanceofExpression:m instanceof CapturesArguments '
+    - '---------INS SimpleType@@Object @TO@ VariableDeclarationStatement@@Object rawArgument=invocation.getRawArguments()[indexOfVararg]; '
+    - '---------INS VariableDeclarationFragment@@rawArgument=invocation.getRawArguments()[indexOfVararg]
+      @TO@ VariableDeclarationStatement@@Object rawArgument=invocation.getRawArguments()[indexOfVararg]; '
+    - '------------INS SimpleName@@rawArgument @TO@ VariableDeclarationFragment@@rawArgument=invocation.getRawArguments()[indexOfVararg] '
+    - '------------INS ArrayAccess@@invocation.getRawArguments()[indexOfVararg] @TO@
+      VariableDeclarationFragment@@rawArgument=invocation.getRawArguments()[indexOfVararg] '
+    - '---------------INS SimpleName@@indexOfVararg @TO@ ArrayAccess@@invocation.getRawArguments()[indexOfVararg] '
+    - '---------------MOV MethodInvocation@@invocation.getRawArguments() @TO@ ArrayAccess@@invocation.getRawArguments()[indexOfVararg] '
+    - '------MOV InstanceofExpression@@m instanceof CapturesArguments @TO@ IfStatement@@InstanceofExpression:m
+      instanceof CapturesArguments '
+    - '------INS ForStatement@@[int i=0];i < Array.getLength(rawArgument); [i++] @TO@
+      IfStatement@@InstanceofExpression:m instanceof CapturesArguments '
+    - '---------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int
+      i=0];i < Array.getLength(rawArgument); [i++] '
+    - '------------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS InfixExpression@@i < Array.getLength(rawArgument) @TO@ ForStatement@@[int
+      i=0];i < Array.getLength(rawArgument); [i++] '
+    - '------------INS MethodInvocation@@Array.getLength(rawArgument) @TO@ InfixExpression@@i
+      < Array.getLength(rawArgument) '
+    - '---------------INS SimpleName@@Name:Array @TO@ MethodInvocation@@Array.getLength(rawArgument) '
+    - '---------------INS SimpleName@@MethodName:getLength:[rawArgument] @TO@ MethodInvocation@@Array.getLength(rawArgument) '
+    - '------------------INS SimpleName@@rawArgument @TO@ SimpleName@@MethodName:getLength:[rawArgument] '
+    - '------------MOV SimpleName@@position @TO@ InfixExpression@@i < Array.getLength(rawArgument) '
+    - '------------MOV Operator@@- @TO@ InfixExpression@@i < Array.getLength(rawArgument) '
+    - '---------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < Array.getLength(rawArgument);
+      [i++] '
+    - '------------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---------INS ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(Array.get(rawArgument,i))
+      @TO@ ForStatement@@[int i=0];i < Array.getLength(rawArgument); [i++] '
+    - '------------INS MethodInvocation@@((CapturesArguments)m).captureFrom(Array.get(rawArgument,i))
+      @TO@ ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(Array.get(rawArgument,i)) '
+    - '---------------MOV ParenthesizedExpression@@((CapturesArguments)m) @TO@ MethodInvocation@@((CapturesArguments)m).captureFrom(Array.get(rawArgument,i)) '
+    - '---------------INS SimpleName@@MethodName:captureFrom:[Array.get(rawArgument,i)]
+      @TO@ MethodInvocation@@((CapturesArguments)m).captureFrom(Array.get(rawArgument,i)) '
+    - '------------------INS MethodInvocation@@Array.get(rawArgument,i) @TO@ SimpleName@@MethodName:captureFrom:[Array.get(rawArgument,i)] '
+    - '---------------------INS SimpleName@@Name:Array @TO@ MethodInvocation@@Array.get(rawArgument,i) '
+    - '---------------------INS SimpleName@@MethodName:get:[rawArgument, i] @TO@ MethodInvocation@@Array.get(rawArgument,i) '
+    - '------------------------INS SimpleName@@rawArgument @TO@ SimpleName@@MethodName:get:[rawArgument,
+      i] '
+    - '------------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:get:[rawArgument,
+      i] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ForStatement@@[int position=indexOfVararg];position < matchers.size();
+      [position++] '
+    - '---DEL PostfixExpression@@position++ '
+    - '------DEL SimpleName@@position '
+    - '------DEL Operator@@++ '
+    - '---DEL IfStatement@@InstanceofExpression:m instanceof CapturesArguments '
+    - '------DEL ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) '
+    - '---------DEL MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) '
+    - '------------DEL SimpleName@@MethodName:captureFrom:[invocation.getRawArguments()[position
+      - indexOfVararg]] '
+    - '---------------DEL ArrayAccess@@invocation.getRawArguments()[position - indexOfVararg] '
+    - '------------------DEL InfixExpression@@position - indexOfVararg '
+    - '---------------------DEL SimpleName@@indexOfVararg '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Matcher m=matchers.get(position); @TO@ Matcher
+      matcher=matchers.get(position); '
+    - '---UPD VariableDeclarationFragment@@m=matchers.get(position) @TO@ matcher=matchers.get(position) '
+    - '------UPD SimpleName@@m @TO@ matcher '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@Set<Matcher>, MethodName:uniqueMatcherSet,
+      @@Argus:int+indexOfVararg+ @TO@ TypeDeclaration@@[@SuppressWarnings("unchecked"),
+      public]InvocationMatcher, [DescribedInvocation, CapturesArgumensFromInvocation,
+      Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@Set<Matcher>, MethodName:uniqueMatcherSet,
+      @@Argus:int+indexOfVararg+ '
+    - '---INS ParameterizedType@@Set<Matcher> @TO@ MethodDeclaration@@private, @@Set<Matcher>,
+      MethodName:uniqueMatcherSet, @@Argus:int+indexOfVararg+ '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<Matcher> '
+    - '------INS SimpleType@@Matcher @TO@ ParameterizedType@@Set<Matcher> '
+    - '---INS SimpleName@@MethodName:uniqueMatcherSet @TO@ MethodDeclaration@@private,
+      @@Set<Matcher>, MethodName:uniqueMatcherSet, @@Argus:int+indexOfVararg+ '
+    - '---INS SingleVariableDeclaration@@int indexOfVararg @TO@ MethodDeclaration@@private,
+      @@Set<Matcher>, MethodName:uniqueMatcherSet, @@Argus:int+indexOfVararg+ '
+    - '------INS PrimitiveType@@int @TO@ SingleVariableDeclaration@@int indexOfVararg '
+    - '------INS SimpleName@@indexOfVararg @TO@ SingleVariableDeclaration@@int indexOfVararg '
+    - '---INS VariableDeclarationStatement@@HashSet<Matcher> set=new HashSet<Matcher>();
+      @TO@ MethodDeclaration@@private, @@Set<Matcher>, MethodName:uniqueMatcherSet,
+      @@Argus:int+indexOfVararg+ '
+    - '------INS ParameterizedType@@HashSet<Matcher> @TO@ VariableDeclarationStatement@@HashSet<Matcher>
+      set=new HashSet<Matcher>(); '
+    - '---------INS SimpleType@@HashSet @TO@ ParameterizedType@@HashSet<Matcher> '
+    - '---------INS SimpleType@@Matcher @TO@ ParameterizedType@@HashSet<Matcher> '
+    - '------INS VariableDeclarationFragment@@set=new HashSet<Matcher>() @TO@ VariableDeclarationStatement@@HashSet<Matcher>
+      set=new HashSet<Matcher>(); '
+    - '---------INS SimpleName@@set @TO@ VariableDeclarationFragment@@set=new HashSet<Matcher>() '
+    - '---------INS ClassInstanceCreation@@HashSet<Matcher>[] @TO@ VariableDeclarationFragment@@set=new
+      HashSet<Matcher>() '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@HashSet<Matcher>[] '
+    - '------------INS ParameterizedType@@HashSet<Matcher> @TO@ ClassInstanceCreation@@HashSet<Matcher>[] '
+    - '---------------INS SimpleType@@HashSet @TO@ ParameterizedType@@HashSet<Matcher> '
+    - '---------------INS SimpleType@@Matcher @TO@ ParameterizedType@@HashSet<Matcher> '
+    - '---INS ForStatement@@[int position=indexOfVararg];position < matchers.size();
+      [position++] @TO@ MethodDeclaration@@private, @@Set<Matcher>, MethodName:uniqueMatcherSet,
+      @@Argus:int+indexOfVararg+ '
+    - '------MOV VariableDeclarationExpression@@int position=indexOfVararg @TO@ ForStatement@@[int
+      position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------MOV InfixExpression@@position < matchers.size() @TO@ ForStatement@@[int
+      position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------MOV VariableDeclarationStatement@@Matcher m=matchers.get(position); @TO@
+      ForStatement@@[int position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------INS PostfixExpression@@position++ @TO@ ForStatement@@[int position=indexOfVararg];position
+      < matchers.size(); [position++] '
+    - '---------INS SimpleName@@position @TO@ PostfixExpression@@position++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@position++ '
+    - '------INS IfStatement@@InstanceofExpression:matcher instanceof MatcherDecorator
+      @TO@ ForStatement@@[int position=indexOfVararg];position < matchers.size();
+      [position++] '
+    - '---------INS InstanceofExpression@@matcher instanceof MatcherDecorator @TO@
+      IfStatement@@InstanceofExpression:matcher instanceof MatcherDecorator '
+    - '------------INS SimpleName@@matcher @TO@ InstanceofExpression@@matcher instanceof
+      MatcherDecorator '
+    - '------------INS Instanceof@@instanceof @TO@ InstanceofExpression@@matcher instanceof
+      MatcherDecorator '
+    - '------------INS SimpleType@@MatcherDecorator @TO@ InstanceofExpression@@matcher
+      instanceof MatcherDecorator '
+    - '---------INS ExpressionStatement@@MethodInvocation:set.add(((MatcherDecorator)matcher).getActualMatcher())
+      @TO@ IfStatement@@InstanceofExpression:matcher instanceof MatcherDecorator '
+    - '------------INS MethodInvocation@@set.add(((MatcherDecorator)matcher).getActualMatcher())
+      @TO@ ExpressionStatement@@MethodInvocation:set.add(((MatcherDecorator)matcher).getActualMatcher()) '
+    - '---------------INS SimpleName@@Name:set @TO@ MethodInvocation@@set.add(((MatcherDecorator)matcher).getActualMatcher()) '
+    - '---------------INS SimpleName@@MethodName:add:[((MatcherDecorator)matcher).getActualMatcher()]
+      @TO@ MethodInvocation@@set.add(((MatcherDecorator)matcher).getActualMatcher()) '
+    - '------------------INS MethodInvocation@@((MatcherDecorator)matcher).getActualMatcher()
+      @TO@ SimpleName@@MethodName:add:[((MatcherDecorator)matcher).getActualMatcher()] '
+    - '---------------------INS ParenthesizedExpression@@((MatcherDecorator)matcher)
+      @TO@ MethodInvocation@@((MatcherDecorator)matcher).getActualMatcher() '
+    - '------------------------INS CastExpression@@(MatcherDecorator)matcher @TO@
+      ParenthesizedExpression@@((MatcherDecorator)matcher) '
+    - '---------------------------INS SimpleType@@MatcherDecorator @TO@ CastExpression@@(MatcherDecorator)matcher '
+    - '---------------------------INS SimpleName@@matcher @TO@ CastExpression@@(MatcherDecorator)matcher '
+    - '---------------------INS SimpleName@@MethodName:getActualMatcher:[] @TO@ MethodInvocation@@((MatcherDecorator)matcher).getActualMatcher() '
+    - '---------INS ExpressionStatement@@MethodInvocation:set.add(matcher) @TO@ IfStatement@@InstanceofExpression:matcher
+      instanceof MatcherDecorator '
+    - '------------INS MethodInvocation@@set.add(matcher) @TO@ ExpressionStatement@@MethodInvocation:set.add(matcher) '
+    - '---------------INS SimpleName@@Name:set @TO@ MethodInvocation@@set.add(matcher) '
+    - '---------------INS SimpleName@@MethodName:add:[matcher] @TO@ MethodInvocation@@set.add(matcher) '
+    - '------------------INS SimpleName@@matcher @TO@ SimpleName@@MethodName:add:[matcher] '
+    - '---INS ReturnStatement@@SimpleName:set @TO@ MethodDeclaration@@private, @@Set<Matcher>,
+      MethodName:uniqueMatcherSet, @@Argus:int+indexOfVararg+ '
+    - '------INS SimpleName@@set @TO@ ReturnStatement@@SimpleName:set '
+  repair_actions_cnt: 4

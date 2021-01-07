@@ -1,0 +1,11 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_31/src/com/google/javascript/jscomp/Compiler.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_31/fixed-version/src/com/google/javascript/jscomp/Compiler.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_31/src/com/google/javascript/jscomp/Compiler.java	2020-03-01 00:27:16.212812670 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_31/fixed-version/src/com/google/javascript/jscomp/Compiler.java	2020-03-01 00:27:18.248908609 -0800
+@@ -1282,7 +1282,6 @@
+ 
+       // Check if the sources need to be re-ordered.
+       if (options.dependencyOptions.needsManagement() &&
+-          !options.skipAllPasses &&
+           options.closurePass) {
+         for (CompilerInput input : inputs) {
+           // Forward-declare all the provided types, so that they

@@ -1,0 +1,208 @@
+1 bug_id: Mockito-37
+2 src folder:
+  name of src folder: src
+  number of files: 228
+  number of java files: 190
+  number of src classes: 215
+  number of test classes: 163
+3 test (cases):
+  failing test cases:
+  - org.mockito.internal.stubbing.answers.AnswersValidatorTest#shouldFailWhenCallingRealMethodOnIterface
+  - org.mockitousage.spies.SpyingOnInterfacesTest#shouldFailFastWhenCallingRealMethodOnInterface
+  failing tests:
+  - org.mockito.internal.stubbing.answers.AnswersValidatorTest
+  - org.mockitousage.spies.SpyingOnInterfacesTest
+  number of all test cases: 0
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.496
+  purification via delta debugging: 256.936
+  repair actions extraction: 0.81
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 8
+  covDel: 0
+  cov_patch_lines: 8
+  delta_patch_lines: 8
+  oriAdd: 8
+  oriDel: 0
+  ori_patch_lines: 8
+  purAdd: 8
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 14
+  passed: 0
+  total: 14
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_37/src/org/mockito/internal/stubbing/answers/AnswersValidator.java\t\
+    2020-10-24 20:58:43.264921058 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_37/purify/patch/org/mockito/internal/stubbing/answers/AnswersValidator.java\t\
+    2020-10-24 20:58:43.264921058 -0400\n@@ -25,8 +25,16 @@\n             validateDoNothing((DoesNothing)\
+    \ answer, invocation);\n         }\n         \n+        if (answer instanceof\
+    \ CallsRealMethods) {\n+            validateMockingConcreteClass((CallsRealMethods)\
+    \ answer, invocation);\n+        }\n     }\n \n+    private void validateMockingConcreteClass(CallsRealMethods\
+    \ answer, Invocation invocation) {\n+        if (invocation.getMethod().getDeclaringClass().isInterface())\
+    \ {\n+            reporter.cannotCallRealMethodOnInterface();\n+        }\n+ \
+    \   }\n \n     private void validateDoNothing(DoesNothing answer, Invocation invocation)\
+    \ {\n         if (!invocation.isVoid()) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_37/src/org/mockito/internal/stubbing/answers/AnswersValidator.java\t\
+    2020-10-24 21:03:15.936822767 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_37/purify/purified/org/mockito/internal/stubbing/answers/AnswersValidator.java\t\
+    2020-10-24 21:03:15.936822767 -0400\n@@ -25,8 +25,16 @@\n             validateDoNothing((DoesNothing)\
+    \ answer, invocation);\n         }\n         \n+        if (answer instanceof\
+    \ CallsRealMethods) {\n+            validateMockingConcreteClass((CallsRealMethods)\
+    \ answer, invocation);\n+        }\n     }\n \n+    private void validateMockingConcreteClass(CallsRealMethods\
+    \ answer, Invocation invocation) {\n+        if (invocation.getMethod().getDeclaringClass().isInterface())\
+    \ {\n+            reporter.cannotCallRealMethodOnInterface();\n+        }\n+ \
+    \   }\n \n     private void validateDoNothing(DoesNothing answer, Invocation invocation)\
+    \ {\n         if (!invocation.isVoid()) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/answers/AnswersValidator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InstanceofExpression:answer instanceof CallsRealMethods @TO@
+      MethodDeclaration@@public, @@void, MethodName:validate, @@Argus:Answer<?>+answer+Invocation+invocation+ '
+    - '---INS InstanceofExpression@@answer instanceof CallsRealMethods @TO@ IfStatement@@InstanceofExpression:answer
+      instanceof CallsRealMethods '
+    - '------INS SimpleName@@answer @TO@ InstanceofExpression@@answer instanceof CallsRealMethods '
+    - '------INS Instanceof@@instanceof @TO@ InstanceofExpression@@answer instanceof
+      CallsRealMethods '
+    - '------INS SimpleType@@CallsRealMethods @TO@ InstanceofExpression@@answer instanceof
+      CallsRealMethods '
+    - '---INS ExpressionStatement@@MethodInvocation:validateMockingConcreteClass((CallsRealMethods)answer,invocation)
+      @TO@ IfStatement@@InstanceofExpression:answer instanceof CallsRealMethods '
+    - '------INS MethodInvocation@@validateMockingConcreteClass((CallsRealMethods)answer,invocation)
+      @TO@ ExpressionStatement@@MethodInvocation:validateMockingConcreteClass((CallsRealMethods)answer,invocation) '
+    - '---------INS SimpleName@@MethodName:validateMockingConcreteClass:[(CallsRealMethods)answer,
+      invocation] @TO@ MethodInvocation@@validateMockingConcreteClass((CallsRealMethods)answer,invocation) '
+    - '------------INS CastExpression@@(CallsRealMethods)answer @TO@ SimpleName@@MethodName:validateMockingConcreteClass:[(CallsRealMethods)answer,
+      invocation] '
+    - '---------------INS SimpleType@@CallsRealMethods @TO@ CastExpression@@(CallsRealMethods)answer '
+    - '---------------INS SimpleName@@answer @TO@ CastExpression@@(CallsRealMethods)answer '
+    - '------------INS SimpleName@@invocation @TO@ SimpleName@@MethodName:validateMockingConcreteClass:[(CallsRealMethods)answer,
+      invocation] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@void, MethodName:validateMockingConcreteClass,
+      @@Argus:CallsRealMethods+answer+Invocation+invocation+ @TO@ TypeDeclaration@@[public]AnswersValidator,  '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@void, MethodName:validateMockingConcreteClass,
+      @@Argus:CallsRealMethods+answer+Invocation+invocation+ '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@private, @@void, MethodName:validateMockingConcreteClass,
+      @@Argus:CallsRealMethods+answer+Invocation+invocation+ '
+    - '---INS SimpleName@@MethodName:validateMockingConcreteClass @TO@ MethodDeclaration@@private,
+      @@void, MethodName:validateMockingConcreteClass, @@Argus:CallsRealMethods+answer+Invocation+invocation+ '
+    - '---INS SingleVariableDeclaration@@CallsRealMethods answer @TO@ MethodDeclaration@@private,
+      @@void, MethodName:validateMockingConcreteClass, @@Argus:CallsRealMethods+answer+Invocation+invocation+ '
+    - '------INS SimpleType@@CallsRealMethods @TO@ SingleVariableDeclaration@@CallsRealMethods
+      answer '
+    - '------INS SimpleName@@answer @TO@ SingleVariableDeclaration@@CallsRealMethods
+      answer '
+    - '---INS SingleVariableDeclaration@@Invocation invocation @TO@ MethodDeclaration@@private,
+      @@void, MethodName:validateMockingConcreteClass, @@Argus:CallsRealMethods+answer+Invocation+invocation+ '
+    - '------INS SimpleType@@Invocation @TO@ SingleVariableDeclaration@@Invocation
+      invocation '
+    - '------INS SimpleName@@invocation @TO@ SingleVariableDeclaration@@Invocation
+      invocation '
+    - '---INS IfStatement@@MethodInvocation:invocation.getMethod().getDeclaringClass().isInterface()
+      @TO@ MethodDeclaration@@private, @@void, MethodName:validateMockingConcreteClass,
+      @@Argus:CallsRealMethods+answer+Invocation+invocation+ '
+    - '------INS MethodInvocation@@invocation.getMethod().getDeclaringClass().isInterface()
+      @TO@ IfStatement@@MethodInvocation:invocation.getMethod().getDeclaringClass().isInterface() '
+    - '---------INS SimpleName@@Name:invocation @TO@ MethodInvocation@@invocation.getMethod().getDeclaringClass().isInterface() '
+    - '---------INS MethodInvocation@@MethodName:getMethod:[] @TO@ MethodInvocation@@invocation.getMethod().getDeclaringClass().isInterface() '
+    - '---------INS MethodInvocation@@MethodName:getDeclaringClass:[] @TO@ MethodInvocation@@invocation.getMethod().getDeclaringClass().isInterface() '
+    - '---------INS SimpleName@@MethodName:isInterface:[] @TO@ MethodInvocation@@invocation.getMethod().getDeclaringClass().isInterface() '
+    - '------INS ExpressionStatement@@MethodInvocation:reporter.cannotCallRealMethodOnInterface()
+      @TO@ IfStatement@@MethodInvocation:invocation.getMethod().getDeclaringClass().isInterface() '
+    - '---------INS MethodInvocation@@reporter.cannotCallRealMethodOnInterface() @TO@
+      ExpressionStatement@@MethodInvocation:reporter.cannotCallRealMethodOnInterface() '
+    - '------------INS SimpleName@@Name:reporter @TO@ MethodInvocation@@reporter.cannotCallRealMethodOnInterface() '
+    - '------------INS SimpleName@@MethodName:cannotCallRealMethodOnInterface:[] @TO@
+      MethodInvocation@@reporter.cannotCallRealMethodOnInterface() '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/answers/AnswersValidator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InstanceofExpression:answer instanceof CallsRealMethods @TO@
+      MethodDeclaration@@public, @@void, MethodName:validate, @@Argus:Answer<?>+answer+Invocation+invocation+ '
+    - '---INS InstanceofExpression@@answer instanceof CallsRealMethods @TO@ IfStatement@@InstanceofExpression:answer
+      instanceof CallsRealMethods '
+    - '------INS SimpleName@@answer @TO@ InstanceofExpression@@answer instanceof CallsRealMethods '
+    - '------INS Instanceof@@instanceof @TO@ InstanceofExpression@@answer instanceof
+      CallsRealMethods '
+    - '------INS SimpleType@@CallsRealMethods @TO@ InstanceofExpression@@answer instanceof
+      CallsRealMethods '
+    - '---INS ExpressionStatement@@MethodInvocation:validateMockingConcreteClass((CallsRealMethods)answer,invocation)
+      @TO@ IfStatement@@InstanceofExpression:answer instanceof CallsRealMethods '
+    - '------INS MethodInvocation@@validateMockingConcreteClass((CallsRealMethods)answer,invocation)
+      @TO@ ExpressionStatement@@MethodInvocation:validateMockingConcreteClass((CallsRealMethods)answer,invocation) '
+    - '---------INS SimpleName@@MethodName:validateMockingConcreteClass:[(CallsRealMethods)answer,
+      invocation] @TO@ MethodInvocation@@validateMockingConcreteClass((CallsRealMethods)answer,invocation) '
+    - '------------INS CastExpression@@(CallsRealMethods)answer @TO@ SimpleName@@MethodName:validateMockingConcreteClass:[(CallsRealMethods)answer,
+      invocation] '
+    - '---------------INS SimpleType@@CallsRealMethods @TO@ CastExpression@@(CallsRealMethods)answer '
+    - '---------------INS SimpleName@@answer @TO@ CastExpression@@(CallsRealMethods)answer '
+    - '------------INS SimpleName@@invocation @TO@ SimpleName@@MethodName:validateMockingConcreteClass:[(CallsRealMethods)answer,
+      invocation] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@void, MethodName:validateMockingConcreteClass,
+      @@Argus:CallsRealMethods+answer+Invocation+invocation+ @TO@ TypeDeclaration@@[public]AnswersValidator,  '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@void, MethodName:validateMockingConcreteClass,
+      @@Argus:CallsRealMethods+answer+Invocation+invocation+ '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@private, @@void, MethodName:validateMockingConcreteClass,
+      @@Argus:CallsRealMethods+answer+Invocation+invocation+ '
+    - '---INS SimpleName@@MethodName:validateMockingConcreteClass @TO@ MethodDeclaration@@private,
+      @@void, MethodName:validateMockingConcreteClass, @@Argus:CallsRealMethods+answer+Invocation+invocation+ '
+    - '---INS SingleVariableDeclaration@@CallsRealMethods answer @TO@ MethodDeclaration@@private,
+      @@void, MethodName:validateMockingConcreteClass, @@Argus:CallsRealMethods+answer+Invocation+invocation+ '
+    - '------INS SimpleType@@CallsRealMethods @TO@ SingleVariableDeclaration@@CallsRealMethods
+      answer '
+    - '------INS SimpleName@@answer @TO@ SingleVariableDeclaration@@CallsRealMethods
+      answer '
+    - '---INS SingleVariableDeclaration@@Invocation invocation @TO@ MethodDeclaration@@private,
+      @@void, MethodName:validateMockingConcreteClass, @@Argus:CallsRealMethods+answer+Invocation+invocation+ '
+    - '------INS SimpleType@@Invocation @TO@ SingleVariableDeclaration@@Invocation
+      invocation '
+    - '------INS SimpleName@@invocation @TO@ SingleVariableDeclaration@@Invocation
+      invocation '
+    - '---INS IfStatement@@MethodInvocation:invocation.getMethod().getDeclaringClass().isInterface()
+      @TO@ MethodDeclaration@@private, @@void, MethodName:validateMockingConcreteClass,
+      @@Argus:CallsRealMethods+answer+Invocation+invocation+ '
+    - '------INS MethodInvocation@@invocation.getMethod().getDeclaringClass().isInterface()
+      @TO@ IfStatement@@MethodInvocation:invocation.getMethod().getDeclaringClass().isInterface() '
+    - '---------INS SimpleName@@Name:invocation @TO@ MethodInvocation@@invocation.getMethod().getDeclaringClass().isInterface() '
+    - '---------INS MethodInvocation@@MethodName:getMethod:[] @TO@ MethodInvocation@@invocation.getMethod().getDeclaringClass().isInterface() '
+    - '---------INS MethodInvocation@@MethodName:getDeclaringClass:[] @TO@ MethodInvocation@@invocation.getMethod().getDeclaringClass().isInterface() '
+    - '---------INS SimpleName@@MethodName:isInterface:[] @TO@ MethodInvocation@@invocation.getMethod().getDeclaringClass().isInterface() '
+    - '------INS ExpressionStatement@@MethodInvocation:reporter.cannotCallRealMethodOnInterface()
+      @TO@ IfStatement@@MethodInvocation:invocation.getMethod().getDeclaringClass().isInterface() '
+    - '---------INS MethodInvocation@@reporter.cannotCallRealMethodOnInterface() @TO@
+      ExpressionStatement@@MethodInvocation:reporter.cannotCallRealMethodOnInterface() '
+    - '------------INS SimpleName@@Name:reporter @TO@ MethodInvocation@@reporter.cannotCallRealMethodOnInterface() '
+    - '------------INS SimpleName@@MethodName:cannotCallRealMethodOnInterface:[] @TO@
+      MethodInvocation@@reporter.cannotCallRealMethodOnInterface() '
+  repair_actions_cnt: 2

@@ -1,0 +1,11 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_34/src/main/java/org/apache/commons/math3/genetics/ListPopulation.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_34/fixed-version/src/main/java/org/apache/commons/math3/genetics/ListPopulation.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_34/src/main/java/org/apache/commons/math3/genetics/ListPopulation.java	2020-03-01 00:17:06.900102497 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_34/fixed-version/src/main/java/org/apache/commons/math3/genetics/ListPopulation.java	2020-03-01 00:17:10.508272500 -0800
+@@ -206,6 +206,6 @@
+      * @return chromosome iterator
+      */
+     public Iterator<Chromosome> iterator() {
+-        return chromosomes.iterator();
++        return getChromosomes().iterator();
+     }
+ }

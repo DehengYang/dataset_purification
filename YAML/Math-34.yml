@@ -1,0 +1,90 @@
+1 bug_id: Math-34
+2 src folder:
+  name of src folder: java
+  number of files: 618
+  number of java files: 617
+  number of src classes: 831
+  number of test classes: 300
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.genetics.ListPopulationTest#testIterator
+  failing tests:
+  - org.apache.commons.math3.genetics.ListPopulationTest
+  number of all test cases: 3560
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 101.369
+  repair actions extraction: 1.325
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.genetics.ListPopulationTest#testIterator: 33
+  fixed:
+    org.apache.commons.math3.genetics.ListPopulationTest#testIterator: 34
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_34/src/main/java/org/apache/commons/math3/genetics/ListPopulation.java\t\
+    2020-10-21 10:41:17.951686777 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_34/purify/patch/org/apache/commons/math3/genetics/ListPopulation.java\t\
+    2020-10-21 10:41:17.951686777 -0400\n@@ -206,6 +206,6 @@\n      * @return chromosome\
+    \ iterator\n      */\n     public Iterator<Chromosome> iterator() {\n-       \
+    \ return chromosomes.iterator();\n+        return getChromosomes().iterator();\n\
+    \     }\n }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_34/src/main/java/org/apache/commons/math3/genetics/ListPopulation.java\t\
+    2020-10-21 10:43:15.363086558 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_34/purify/purified/org/apache/commons/math3/genetics/ListPopulation.java\t\
+    2020-10-21 10:43:15.363086558 -0400\n@@ -206,6 +206,6 @@\n      * @return chromosome\
+    \ iterator\n      */\n     public Iterator<Chromosome> iterator() {\n-       \
+    \ return chromosomes.iterator();\n+        return getChromosomes().iterator();\n\
+    \     }\n }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/genetics/ListPopulation:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:chromosomes.iterator() @TO@ MethodInvocation:getChromosomes().iterator() '
+    - '---UPD MethodInvocation@@chromosomes.iterator() @TO@ getChromosomes().iterator() '
+    - '------INS MethodInvocation@@MethodName:getChromosomes:[] @TO@ MethodInvocation@@chromosomes.iterator() '
+    - '------DEL SimpleName@@Name:chromosomes '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/genetics/ListPopulation:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:chromosomes.iterator() @TO@ MethodInvocation:getChromosomes().iterator() '
+    - '---UPD MethodInvocation@@chromosomes.iterator() @TO@ getChromosomes().iterator() '
+    - '------INS MethodInvocation@@MethodName:getChromosomes:[] @TO@ MethodInvocation@@chromosomes.iterator() '
+    - '------DEL SimpleName@@Name:chromosomes '
+  repair_actions_cnt: 1

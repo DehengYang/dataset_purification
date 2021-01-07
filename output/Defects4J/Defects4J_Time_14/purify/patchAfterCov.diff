@@ -1,0 +1,15 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_14/src/main/java/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java	2020-10-20 22:39:48.888262133 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_14/purify/assertBeforeMut/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java	2020-10-20 22:39:48.884262017 -0400
+@@ -206,7 +206,12 @@
+         if (valueToAdd == 0) {
+             return values;
+         }
++        if (partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) && fieldIndex == 0) {
+             // month is largest field and being added to, such as month-day
++            int curMonth0 = partial.getValue(0) - 1;
++            int newMonth = ((curMonth0 + (valueToAdd % 12) + 12) % 12) + 1;
++            return set(partial, 0, values, newMonth);
++        }
+         if (DateTimeUtils.isContiguous(partial)) {
+             long instant = 0L;
+             for (int i = 0, isize = partial.size(); i < isize; i++) {

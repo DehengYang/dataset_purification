@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_48/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java	2020-10-21 11:59:30.603367394 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_48/purify/assertBeforeMut/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java	2020-10-21 11:59:30.603367394 -0400
+@@ -186,6 +186,9 @@
+                 case REGULA_FALSI:
+                     // Detect early that algorithm is stuck, instead of waiting
+                     // for the maximum number of iterations to be exceeded.
++                    if (x == x1) {
++                        throw new ConvergenceException();
++                    }
+                     break;
+                 default:
+                     // Should never happen.

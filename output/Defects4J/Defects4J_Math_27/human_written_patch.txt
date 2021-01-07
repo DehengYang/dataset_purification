@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_27/src/main/java/org/apache/commons/math3/fraction/Fraction.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_27/fixed-version/src/main/java/org/apache/commons/math3/fraction/Fraction.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_27/src/main/java/org/apache/commons/math3/fraction/Fraction.java	2020-03-01 00:16:15.821695874 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_27/fixed-version/src/main/java/org/apache/commons/math3/fraction/Fraction.java	2020-03-01 00:16:19.461867385 -0800
+@@ -594,7 +594,7 @@
+      * @return the fraction percentage as a <tt>double</tt>.
+      */
+     public double percentageValue() {
+-        return multiply(100).doubleValue();
++        return 100 * doubleValue();
+     }
+ 
+     /**

@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_104/src/java/org/apache/commons/math/special/Gamma.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_104/fixed-version/src/java/org/apache/commons/math/special/Gamma.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_104/src/java/org/apache/commons/math/special/Gamma.java	2020-03-01 00:24:35.585243993 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_104/fixed-version/src/java/org/apache/commons/math/special/Gamma.java	2020-03-01 00:24:38.133364059 -0800
+@@ -34,7 +34,7 @@
+     private static final long serialVersionUID = -6587513359895466954L;
+ 
+     /** Maximum allowed numerical error. */
+-    private static final double DEFAULT_EPSILON = 10e-9;
++    private static final double DEFAULT_EPSILON = 10e-15;
+ 
+     /** Lanczos coefficients */
+     private static double[] lanczos =

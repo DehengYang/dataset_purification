@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_5/src/org/mockito/internal/verification/VerificationOverTimeImpl.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_5/fixed-version/src/org/mockito/internal/verification/VerificationOverTimeImpl.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_5/src/org/mockito/internal/verification/VerificationOverTimeImpl.java	2020-03-01 00:35:53.261175591 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_5/fixed-version/src/org/mockito/internal/verification/VerificationOverTimeImpl.java	2020-03-01 00:35:56.977350694 -0800
+@@ -88,7 +88,7 @@
+             } catch (MockitoAssertionError e) {
+                 error = handleVerifyException(e);
+             }
+-            catch (org.mockito.exceptions.verification.junit.ArgumentsAreDifferent e) {
++            catch (AssertionError e) {
+                 error = handleVerifyException(e);
+             }
+         }

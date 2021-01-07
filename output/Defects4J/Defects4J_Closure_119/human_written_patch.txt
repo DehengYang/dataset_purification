@@ -1,0 +1,11 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_119/src/com/google/javascript/jscomp/GlobalNamespace.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_119/fixed-version/src/com/google/javascript/jscomp/GlobalNamespace.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_119/src/com/google/javascript/jscomp/GlobalNamespace.java	2020-03-01 00:33:52.179470327 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_119/fixed-version/src/com/google/javascript/jscomp/GlobalNamespace.java	2020-03-01 00:33:55.187612068 -0800
+@@ -363,6 +363,7 @@
+                 isSet = true;
+                 type = Name.Type.FUNCTION;
+                 break;
++              case Token.CATCH:
+               case Token.INC:
+               case Token.DEC:
+                 isSet = true;

@@ -1,0 +1,470 @@
+1 bug_id: Mockito-23
+2 src folder:
+  name of src folder: src
+  number of files: 343
+  number of java files: 305
+  number of src classes: 361
+  number of test classes: 266
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.stubbing.DeepStubsSerializableTest#should_serialize_and_deserialize_mock_created_by_deep_stubs
+  failing tests:
+  - org.mockitousage.stubbing.DeepStubsSerializableTest
+  number of all test cases: 1323
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.464
+  purification via delta debugging: 1014.029
+  repair actions extraction: 0.698
+5 stmts covered by failing cases:
+  buggy:
+    org.mockitousage.stubbing.DeepStubsSerializableTest#should_serialize_and_deserialize_mock_created_by_deep_stubs: 693
+  fixed:
+    org.mockitousage.stubbing.DeepStubsSerializableTest#should_serialize_and_deserialize_mock_created_by_deep_stubs: 689
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 18
+  covDel: 3
+  cov_patch_lines: 21
+  delta_patch_lines: 21
+  oriAdd: 18
+  oriDel: 3
+  ori_patch_lines: 21
+  purAdd: 18
+  purDel: 3
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 8
+  original: 8
+  purifiy: 8
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 51
+  passed: 0
+  total: 51
+9 sibling repair actions:
+- 4 5 0.9221374045801527
+- 6 7 0.7828542094455853
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_23/src/org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs.java\t\
+    2020-10-24 18:55:14.354808738 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_23/purify/patch/org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs.java\t\
+    2020-10-24 18:55:14.354808738 -0400\n@@ -41,14 +41,16 @@\n     \n     private\
+    \ static final long serialVersionUID = -7105341425736035847L;\n \n-    private\
+    \ MockitoCore mockitoCore = new MockitoCore();\n-    private ReturnsEmptyValues\
+    \ delegate = new ReturnsEmptyValues();\n+    private transient MockitoCore mockitoCore;\n\
+    +    private transient ReturnsEmptyValues delegate;\n \n     public Object answer(InvocationOnMock\
+    \ invocation) throws Throwable {\n         GenericMetadataSupport returnTypeGenericMetadata\
+    \ =\n                 actualParameterizedType(invocation.getMock()).resolveGenericReturnType(invocation.getMethod());\n\
+    \ \n         Class<?> rawType = returnTypeGenericMetadata.rawType();\n+      \
+    \  instantiateMockitoCoreIfNeeded();\n+        instantiateDelegateIfNeeded();\n\
+    \         if (!mockitoCore.isTypeMockable(rawType)) {\n             return delegate.returnValueFor(rawType);\n\
+    \         }\n@@ -56,7 +58,17 @@\n         return getMock(invocation, returnTypeGenericMetadata);\n\
+    \     }\n \n+    private synchronized void instantiateMockitoCoreIfNeeded() {\n\
+    +        if (mockitoCore == null) {\n+            mockitoCore = new MockitoCore();\n\
+    +        }\n+    }\n \n+    private synchronized void instantiateDelegateIfNeeded()\
+    \ {\n+        if (delegate == null) {\n+            delegate = new ReturnsEmptyValues();\n\
+    +        }\n+    }\n \n     private Object getMock(InvocationOnMock invocation,\
+    \ GenericMetadataSupport returnTypeGenericMetadata) throws Throwable {\n     \t\
+    InternalMockHandler<Object> handler = new MockUtil().getMockHandler(invocation.getMock());\n\
+    @@ -97,6 +109,7 @@\n                 : withSettings();\n \n         return mockSettings\n\
+    +\t\t        .serializable()\n                 .defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata));\n\
+    \     }\n \n@@ -111,7 +124,7 @@\n \n     private Object recordDeepStubMock(final\
+    \ Object mock, InvocationContainerImpl container) throws Throwable {\n \n-   \
+    \     container.addAnswer(new Answer<Object>() {\n+        container.addAnswer(new\
+    \ SerializableAnswer() {\n             public Object answer(InvocationOnMock invocation)\
+    \ throws Throwable {\n                 return mock;\n             }\n@@ -120,7\
+    \ +133,9 @@\n         return mock;\n     }\n \t\n+\tabstract class SerializableAnswer\
+    \ implements Answer<Object>, Serializable {\n \t\t\n+\t}\n \t\n \n     protected\
+    \ GenericMetadataSupport actualParameterizedType(Object mock) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_23/src/org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs.java\t\
+    2020-10-24 19:12:35.804736703 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_23/purify/purified/org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs.java\t\
+    2020-10-24 19:12:35.804736703 -0400\n@@ -41,14 +41,16 @@\n     \n     private\
+    \ static final long serialVersionUID = -7105341425736035847L;\n \n-    private\
+    \ MockitoCore mockitoCore = new MockitoCore();\n-    private ReturnsEmptyValues\
+    \ delegate = new ReturnsEmptyValues();\n+    private transient MockitoCore mockitoCore;\n\
+    +    private transient ReturnsEmptyValues delegate;\n \n     public Object answer(InvocationOnMock\
+    \ invocation) throws Throwable {\n         GenericMetadataSupport returnTypeGenericMetadata\
+    \ =\n                 actualParameterizedType(invocation.getMock()).resolveGenericReturnType(invocation.getMethod());\n\
+    \ \n         Class<?> rawType = returnTypeGenericMetadata.rawType();\n+      \
+    \  instantiateMockitoCoreIfNeeded();\n+        instantiateDelegateIfNeeded();\n\
+    \         if (!mockitoCore.isTypeMockable(rawType)) {\n             return delegate.returnValueFor(rawType);\n\
+    \         }\n@@ -56,7 +58,17 @@\n         return getMock(invocation, returnTypeGenericMetadata);\n\
+    \     }\n \n+    private synchronized void instantiateMockitoCoreIfNeeded() {\n\
+    +        if (mockitoCore == null) {\n+            mockitoCore = new MockitoCore();\n\
+    +        }\n+    }\n \n+    private synchronized void instantiateDelegateIfNeeded()\
+    \ {\n+        if (delegate == null) {\n+            delegate = new ReturnsEmptyValues();\n\
+    +        }\n+    }\n \n     private Object getMock(InvocationOnMock invocation,\
+    \ GenericMetadataSupport returnTypeGenericMetadata) throws Throwable {\n     \t\
+    InternalMockHandler<Object> handler = new MockUtil().getMockHandler(invocation.getMock());\n\
+    @@ -97,6 +109,7 @@\n                 : withSettings();\n \n         return mockSettings\n\
+    +\t\t        .serializable()\n                 .defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata));\n\
+    \     }\n \n@@ -111,7 +124,7 @@\n \n     private Object recordDeepStubMock(final\
+    \ Object mock, InvocationContainerImpl container) throws Throwable {\n \n-   \
+    \     container.addAnswer(new Answer<Object>() {\n+        container.addAnswer(new\
+    \ SerializableAnswer() {\n             public Object answer(InvocationOnMock invocation)\
+    \ throws Throwable {\n                 return mock;\n             }\n@@ -120,7\
+    \ +133,9 @@\n         return mock;\n     }\n \t\n+\tabstract class SerializableAnswer\
+    \ implements Answer<Object>, Serializable {\n \t\t\n+\t}\n \t\n \n     protected\
+    \ GenericMetadataSupport actualParameterizedType(Object mock) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, transient, MockitoCore, [mockitoCore] @TO@ TypeDeclaration@@[public]ReturnsDeepStubs,
+      [Answer<Object>, Serializable] '
+    - '---INS Modifier@@transient @TO@ FieldDeclaration@@private, transient, MockitoCore,
+      [mockitoCore] '
+    - '---INS VariableDeclarationFragment@@mockitoCore @TO@ FieldDeclaration@@private,
+      transient, MockitoCore, [mockitoCore] '
+    - '------MOV SimpleName@@mockitoCore @TO@ VariableDeclarationFragment@@mockitoCore '
+    - '---MOV Modifier@@private @TO@ FieldDeclaration@@private, transient, MockitoCore,
+      [mockitoCore] '
+    - '---MOV SimpleType@@MockitoCore @TO@ FieldDeclaration@@private, transient, MockitoCore,
+      [mockitoCore] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL FieldDeclaration@@private, MockitoCore, [mockitoCore=new MockitoCore()] '
+    - '---DEL VariableDeclarationFragment@@mockitoCore=new MockitoCore() '
+    - '------DEL ClassInstanceCreation@@MockitoCore[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, transient, ReturnsEmptyValues, [delegate] @TO@
+      TypeDeclaration@@[public]ReturnsDeepStubs, [Answer<Object>, Serializable] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, transient, ReturnsEmptyValues,
+      [delegate] '
+    - '---INS Modifier@@transient @TO@ FieldDeclaration@@private, transient, ReturnsEmptyValues,
+      [delegate] '
+    - '---INS SimpleType@@ReturnsEmptyValues @TO@ FieldDeclaration@@private, transient,
+      ReturnsEmptyValues, [delegate] '
+    - '---INS VariableDeclarationFragment@@delegate @TO@ FieldDeclaration@@private,
+      transient, ReturnsEmptyValues, [delegate] '
+    - '------INS SimpleName@@delegate @TO@ VariableDeclarationFragment@@delegate '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL FieldDeclaration@@private, ReturnsEmptyValues, [delegate=new ReturnsEmptyValues()] '
+    - '---DEL Modifier@@private '
+    - '---DEL SimpleType@@ReturnsEmptyValues '
+    - '---DEL VariableDeclarationFragment@@delegate=new ReturnsEmptyValues() '
+    - '------DEL SimpleName@@delegate '
+    - '------DEL ClassInstanceCreation@@ReturnsEmptyValues[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:instantiateMockitoCoreIfNeeded()
+      @TO@ MethodDeclaration@@public, @@Object, MethodName:answer, @@Argus:InvocationOnMock+invocation+Throwable,  '
+    - '---INS MethodInvocation@@MethodName:instantiateMockitoCoreIfNeeded:[] @TO@
+      ExpressionStatement@@MethodInvocation:instantiateMockitoCoreIfNeeded() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:instantiateDelegateIfNeeded() @TO@
+      MethodDeclaration@@public, @@Object, MethodName:answer, @@Argus:InvocationOnMock+invocation+Throwable,  '
+    - '---INS MethodInvocation@@MethodName:instantiateDelegateIfNeeded:[] @TO@ ExpressionStatement@@MethodInvocation:instantiateDelegateIfNeeded() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, synchronized, @@void, MethodName:instantiateMockitoCoreIfNeeded,
+      @@Argus:null @TO@ TypeDeclaration@@[public]ReturnsDeepStubs, [Answer<Object>,
+      Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, synchronized, @@void,
+      MethodName:instantiateMockitoCoreIfNeeded, @@Argus:null '
+    - '---INS Modifier@@synchronized @TO@ MethodDeclaration@@private, synchronized,
+      @@void, MethodName:instantiateMockitoCoreIfNeeded, @@Argus:null '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@private, synchronized, @@void,
+      MethodName:instantiateMockitoCoreIfNeeded, @@Argus:null '
+    - '---INS SimpleName@@MethodName:instantiateMockitoCoreIfNeeded @TO@ MethodDeclaration@@private,
+      synchronized, @@void, MethodName:instantiateMockitoCoreIfNeeded, @@Argus:null '
+    - '---INS IfStatement@@InfixExpression:mockitoCore == null @TO@ MethodDeclaration@@private,
+      synchronized, @@void, MethodName:instantiateMockitoCoreIfNeeded, @@Argus:null '
+    - '------INS InfixExpression@@mockitoCore == null @TO@ IfStatement@@InfixExpression:mockitoCore
+      == null '
+    - '---------INS SimpleName@@mockitoCore @TO@ InfixExpression@@mockitoCore == null '
+    - '---------INS Operator@@== @TO@ InfixExpression@@mockitoCore == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@mockitoCore == null '
+    - '------INS ExpressionStatement@@Assignment:mockitoCore=new MockitoCore() @TO@
+      IfStatement@@InfixExpression:mockitoCore == null '
+    - '---------INS Assignment@@mockitoCore=new MockitoCore() @TO@ ExpressionStatement@@Assignment:mockitoCore=new
+      MockitoCore() '
+    - '------------INS SimpleName@@mockitoCore @TO@ Assignment@@mockitoCore=new MockitoCore() '
+    - '------------INS Operator@@= @TO@ Assignment@@mockitoCore=new MockitoCore() '
+    - '------------INS ClassInstanceCreation@@MockitoCore[] @TO@ Assignment@@mockitoCore=new
+      MockitoCore() '
+    - '---------------MOV New@@new @TO@ ClassInstanceCreation@@MockitoCore[] '
+    - '---------------MOV SimpleType@@MockitoCore @TO@ ClassInstanceCreation@@MockitoCore[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, synchronized, @@void, MethodName:instantiateDelegateIfNeeded,
+      @@Argus:null @TO@ TypeDeclaration@@[public]ReturnsDeepStubs, [Answer<Object>,
+      Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, synchronized, @@void,
+      MethodName:instantiateDelegateIfNeeded, @@Argus:null '
+    - '---INS Modifier@@synchronized @TO@ MethodDeclaration@@private, synchronized,
+      @@void, MethodName:instantiateDelegateIfNeeded, @@Argus:null '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@private, synchronized, @@void,
+      MethodName:instantiateDelegateIfNeeded, @@Argus:null '
+    - '---INS SimpleName@@MethodName:instantiateDelegateIfNeeded @TO@ MethodDeclaration@@private,
+      synchronized, @@void, MethodName:instantiateDelegateIfNeeded, @@Argus:null '
+    - '---INS IfStatement@@InfixExpression:delegate == null @TO@ MethodDeclaration@@private,
+      synchronized, @@void, MethodName:instantiateDelegateIfNeeded, @@Argus:null '
+    - '------INS InfixExpression@@delegate == null @TO@ IfStatement@@InfixExpression:delegate
+      == null '
+    - '---------INS SimpleName@@delegate @TO@ InfixExpression@@delegate == null '
+    - '---------INS Operator@@== @TO@ InfixExpression@@delegate == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@delegate == null '
+    - '------INS ExpressionStatement@@Assignment:delegate=new ReturnsEmptyValues()
+      @TO@ IfStatement@@InfixExpression:delegate == null '
+    - '---------INS Assignment@@delegate=new ReturnsEmptyValues() @TO@ ExpressionStatement@@Assignment:delegate=new
+      ReturnsEmptyValues() '
+    - '------------INS SimpleName@@delegate @TO@ Assignment@@delegate=new ReturnsEmptyValues() '
+    - '------------INS Operator@@= @TO@ Assignment@@delegate=new ReturnsEmptyValues() '
+    - '------------INS ClassInstanceCreation@@ReturnsEmptyValues[] @TO@ Assignment@@delegate=new
+      ReturnsEmptyValues() '
+    - '---------------MOV New@@new @TO@ ClassInstanceCreation@@ReturnsEmptyValues[] '
+    - '---------------MOV SimpleType@@ReturnsEmptyValues @TO@ ClassInstanceCreation@@ReturnsEmptyValues[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata))
+      @TO@ MethodInvocation:mockSettings.serializable().defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '---UPD MethodInvocation@@mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata))
+      @TO@ mockSettings.serializable().defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '------INS MethodInvocation@@MethodName:serializable:[] @TO@ MethodInvocation@@mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD ExpressionStatement@@MethodInvocation:container.addAnswer(new Answer<Object>()
+    - '  public Object answer(  InvocationOnMock invocation) throws Throwable '
+    - '    return mock'
+    - '  '
+    - ''
+    - ',false) @TO@ MethodInvocation:container.addAnswer(new SerializableAnswer()'
+    - '  public Object answer(  InvocationOnMock invocation) throws Throwable '
+    - '    return mock'
+    - '  '
+    - ''
+    - ',false) '
+    - '---UPD MethodInvocation@@container.addAnswer(new Answer<Object>()'
+    - '  public Object answer(  InvocationOnMock invocation) throws Throwable '
+    - '    return mock'
+    - '  '
+    - ''
+    - ',false) @TO@ container.addAnswer(new SerializableAnswer()'
+    - '  public Object answer(  InvocationOnMock invocation) throws Throwable '
+    - '    return mock'
+    - '  '
+    - ''
+    - ',false) '
+    - '------UPD SimpleName@@MethodName:addAnswer:[new Answer<Object>()'
+    - '  public Object answer(  InvocationOnMock invocation) throws Throwable '
+    - '    return mock'
+    - '  '
+    - ''
+    - ', false] @TO@ MethodName:addAnswer:[new SerializableAnswer()'
+    - '  public Object answer(  InvocationOnMock invocation) throws Throwable '
+    - '    return mock'
+    - '  '
+    - ''
+    - ', false] '
+    - '---------UPD ClassInstanceCreation@@Answer<Object>[] @TO@ SerializableAnswer[] '
+    - '------------DEL ParameterizedType@@Answer<Object> '
+    - '---------------DEL SimpleType@@Answer '
+    - '---------------DEL SimpleType@@Object '
+    - '------------INS SimpleType@@SerializableAnswer @TO@ ClassInstanceCreation@@Answer<Object>[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS TypeDeclaration@@[abstract]SerializableAnswer, [Answer<Object>, Serializable]
+      @TO@ TypeDeclaration@@[public]ReturnsDeepStubs, [Answer<Object>, Serializable] '
+    - '---INS Modifier@@abstract @TO@ TypeDeclaration@@[abstract]SerializableAnswer,
+      [Answer<Object>, Serializable] '
+    - '---INS SimpleName@@ClassName:SerializableAnswer @TO@ TypeDeclaration@@[abstract]SerializableAnswer,
+      [Answer<Object>, Serializable] '
+    - '---INS ParameterizedType@@Answer<Object> @TO@ TypeDeclaration@@[abstract]SerializableAnswer,
+      [Answer<Object>, Serializable] '
+    - '------INS SimpleType@@Answer @TO@ ParameterizedType@@Answer<Object> '
+    - '------INS SimpleType@@Object @TO@ ParameterizedType@@Answer<Object> '
+    - '---INS SimpleType@@Serializable @TO@ TypeDeclaration@@[abstract]SerializableAnswer,
+      [Answer<Object>, Serializable] '
+  repair_actions_cnt: 11
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, transient, MockitoCore, [mockitoCore] @TO@ TypeDeclaration@@[public]ReturnsDeepStubs,
+      [Answer<Object>, Serializable] '
+    - '---INS Modifier@@transient @TO@ FieldDeclaration@@private, transient, MockitoCore,
+      [mockitoCore] '
+    - '---INS VariableDeclarationFragment@@mockitoCore @TO@ FieldDeclaration@@private,
+      transient, MockitoCore, [mockitoCore] '
+    - '------MOV SimpleName@@mockitoCore @TO@ VariableDeclarationFragment@@mockitoCore '
+    - '---MOV Modifier@@private @TO@ FieldDeclaration@@private, transient, MockitoCore,
+      [mockitoCore] '
+    - '---MOV SimpleType@@MockitoCore @TO@ FieldDeclaration@@private, transient, MockitoCore,
+      [mockitoCore] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL FieldDeclaration@@private, MockitoCore, [mockitoCore=new MockitoCore()] '
+    - '---DEL VariableDeclarationFragment@@mockitoCore=new MockitoCore() '
+    - '------DEL ClassInstanceCreation@@MockitoCore[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, transient, ReturnsEmptyValues, [delegate] @TO@
+      TypeDeclaration@@[public]ReturnsDeepStubs, [Answer<Object>, Serializable] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, transient, ReturnsEmptyValues,
+      [delegate] '
+    - '---INS Modifier@@transient @TO@ FieldDeclaration@@private, transient, ReturnsEmptyValues,
+      [delegate] '
+    - '---INS SimpleType@@ReturnsEmptyValues @TO@ FieldDeclaration@@private, transient,
+      ReturnsEmptyValues, [delegate] '
+    - '---INS VariableDeclarationFragment@@delegate @TO@ FieldDeclaration@@private,
+      transient, ReturnsEmptyValues, [delegate] '
+    - '------INS SimpleName@@delegate @TO@ VariableDeclarationFragment@@delegate '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL FieldDeclaration@@private, ReturnsEmptyValues, [delegate=new ReturnsEmptyValues()] '
+    - '---DEL Modifier@@private '
+    - '---DEL SimpleType@@ReturnsEmptyValues '
+    - '---DEL VariableDeclarationFragment@@delegate=new ReturnsEmptyValues() '
+    - '------DEL SimpleName@@delegate '
+    - '------DEL ClassInstanceCreation@@ReturnsEmptyValues[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:instantiateMockitoCoreIfNeeded()
+      @TO@ MethodDeclaration@@public, @@Object, MethodName:answer, @@Argus:InvocationOnMock+invocation+Throwable,  '
+    - '---INS MethodInvocation@@MethodName:instantiateMockitoCoreIfNeeded:[] @TO@
+      ExpressionStatement@@MethodInvocation:instantiateMockitoCoreIfNeeded() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:instantiateDelegateIfNeeded() @TO@
+      MethodDeclaration@@public, @@Object, MethodName:answer, @@Argus:InvocationOnMock+invocation+Throwable,  '
+    - '---INS MethodInvocation@@MethodName:instantiateDelegateIfNeeded:[] @TO@ ExpressionStatement@@MethodInvocation:instantiateDelegateIfNeeded() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, synchronized, @@void, MethodName:instantiateMockitoCoreIfNeeded,
+      @@Argus:null @TO@ TypeDeclaration@@[public]ReturnsDeepStubs, [Answer<Object>,
+      Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, synchronized, @@void,
+      MethodName:instantiateMockitoCoreIfNeeded, @@Argus:null '
+    - '---INS Modifier@@synchronized @TO@ MethodDeclaration@@private, synchronized,
+      @@void, MethodName:instantiateMockitoCoreIfNeeded, @@Argus:null '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@private, synchronized, @@void,
+      MethodName:instantiateMockitoCoreIfNeeded, @@Argus:null '
+    - '---INS SimpleName@@MethodName:instantiateMockitoCoreIfNeeded @TO@ MethodDeclaration@@private,
+      synchronized, @@void, MethodName:instantiateMockitoCoreIfNeeded, @@Argus:null '
+    - '---INS IfStatement@@InfixExpression:mockitoCore == null @TO@ MethodDeclaration@@private,
+      synchronized, @@void, MethodName:instantiateMockitoCoreIfNeeded, @@Argus:null '
+    - '------INS InfixExpression@@mockitoCore == null @TO@ IfStatement@@InfixExpression:mockitoCore
+      == null '
+    - '---------INS SimpleName@@mockitoCore @TO@ InfixExpression@@mockitoCore == null '
+    - '---------INS Operator@@== @TO@ InfixExpression@@mockitoCore == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@mockitoCore == null '
+    - '------INS ExpressionStatement@@Assignment:mockitoCore=new MockitoCore() @TO@
+      IfStatement@@InfixExpression:mockitoCore == null '
+    - '---------INS Assignment@@mockitoCore=new MockitoCore() @TO@ ExpressionStatement@@Assignment:mockitoCore=new
+      MockitoCore() '
+    - '------------INS SimpleName@@mockitoCore @TO@ Assignment@@mockitoCore=new MockitoCore() '
+    - '------------INS Operator@@= @TO@ Assignment@@mockitoCore=new MockitoCore() '
+    - '------------INS ClassInstanceCreation@@MockitoCore[] @TO@ Assignment@@mockitoCore=new
+      MockitoCore() '
+    - '---------------MOV New@@new @TO@ ClassInstanceCreation@@MockitoCore[] '
+    - '---------------MOV SimpleType@@MockitoCore @TO@ ClassInstanceCreation@@MockitoCore[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, synchronized, @@void, MethodName:instantiateDelegateIfNeeded,
+      @@Argus:null @TO@ TypeDeclaration@@[public]ReturnsDeepStubs, [Answer<Object>,
+      Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, synchronized, @@void,
+      MethodName:instantiateDelegateIfNeeded, @@Argus:null '
+    - '---INS Modifier@@synchronized @TO@ MethodDeclaration@@private, synchronized,
+      @@void, MethodName:instantiateDelegateIfNeeded, @@Argus:null '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@private, synchronized, @@void,
+      MethodName:instantiateDelegateIfNeeded, @@Argus:null '
+    - '---INS SimpleName@@MethodName:instantiateDelegateIfNeeded @TO@ MethodDeclaration@@private,
+      synchronized, @@void, MethodName:instantiateDelegateIfNeeded, @@Argus:null '
+    - '---INS IfStatement@@InfixExpression:delegate == null @TO@ MethodDeclaration@@private,
+      synchronized, @@void, MethodName:instantiateDelegateIfNeeded, @@Argus:null '
+    - '------INS InfixExpression@@delegate == null @TO@ IfStatement@@InfixExpression:delegate
+      == null '
+    - '---------INS SimpleName@@delegate @TO@ InfixExpression@@delegate == null '
+    - '---------INS Operator@@== @TO@ InfixExpression@@delegate == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@delegate == null '
+    - '------INS ExpressionStatement@@Assignment:delegate=new ReturnsEmptyValues()
+      @TO@ IfStatement@@InfixExpression:delegate == null '
+    - '---------INS Assignment@@delegate=new ReturnsEmptyValues() @TO@ ExpressionStatement@@Assignment:delegate=new
+      ReturnsEmptyValues() '
+    - '------------INS SimpleName@@delegate @TO@ Assignment@@delegate=new ReturnsEmptyValues() '
+    - '------------INS Operator@@= @TO@ Assignment@@delegate=new ReturnsEmptyValues() '
+    - '------------INS ClassInstanceCreation@@ReturnsEmptyValues[] @TO@ Assignment@@delegate=new
+      ReturnsEmptyValues() '
+    - '---------------MOV New@@new @TO@ ClassInstanceCreation@@ReturnsEmptyValues[] '
+    - '---------------MOV SimpleType@@ReturnsEmptyValues @TO@ ClassInstanceCreation@@ReturnsEmptyValues[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata))
+      @TO@ MethodInvocation:mockSettings.serializable().defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '---UPD MethodInvocation@@mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata))
+      @TO@ mockSettings.serializable().defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '------INS MethodInvocation@@MethodName:serializable:[] @TO@ MethodInvocation@@mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD ExpressionStatement@@MethodInvocation:container.addAnswer(new Answer<Object>()
+    - '  public Object answer(  InvocationOnMock invocation) throws Throwable '
+    - '    return mock'
+    - '  '
+    - ''
+    - ',false) @TO@ MethodInvocation:container.addAnswer(new SerializableAnswer()'
+    - '  public Object answer(  InvocationOnMock invocation) throws Throwable '
+    - '    return mock'
+    - '  '
+    - ''
+    - ',false) '
+    - '---UPD MethodInvocation@@container.addAnswer(new Answer<Object>()'
+    - '  public Object answer(  InvocationOnMock invocation) throws Throwable '
+    - '    return mock'
+    - '  '
+    - ''
+    - ',false) @TO@ container.addAnswer(new SerializableAnswer()'
+    - '  public Object answer(  InvocationOnMock invocation) throws Throwable '
+    - '    return mock'
+    - '  '
+    - ''
+    - ',false) '
+    - '------UPD SimpleName@@MethodName:addAnswer:[new Answer<Object>()'
+    - '  public Object answer(  InvocationOnMock invocation) throws Throwable '
+    - '    return mock'
+    - '  '
+    - ''
+    - ', false] @TO@ MethodName:addAnswer:[new SerializableAnswer()'
+    - '  public Object answer(  InvocationOnMock invocation) throws Throwable '
+    - '    return mock'
+    - '  '
+    - ''
+    - ', false] '
+    - '---------UPD ClassInstanceCreation@@Answer<Object>[] @TO@ SerializableAnswer[] '
+    - '------------DEL ParameterizedType@@Answer<Object> '
+    - '---------------DEL SimpleType@@Answer '
+    - '---------------DEL SimpleType@@Object '
+    - '------------INS SimpleType@@SerializableAnswer @TO@ ClassInstanceCreation@@Answer<Object>[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS TypeDeclaration@@[abstract]SerializableAnswer, [Answer<Object>, Serializable]
+      @TO@ TypeDeclaration@@[public]ReturnsDeepStubs, [Answer<Object>, Serializable] '
+    - '---INS Modifier@@abstract @TO@ TypeDeclaration@@[abstract]SerializableAnswer,
+      [Answer<Object>, Serializable] '
+    - '---INS SimpleName@@ClassName:SerializableAnswer @TO@ TypeDeclaration@@[abstract]SerializableAnswer,
+      [Answer<Object>, Serializable] '
+    - '---INS ParameterizedType@@Answer<Object> @TO@ TypeDeclaration@@[abstract]SerializableAnswer,
+      [Answer<Object>, Serializable] '
+    - '------INS SimpleType@@Answer @TO@ ParameterizedType@@Answer<Object> '
+    - '------INS SimpleType@@Object @TO@ ParameterizedType@@Answer<Object> '
+    - '---INS SimpleType@@Serializable @TO@ TypeDeclaration@@[abstract]SerializableAnswer,
+      [Answer<Object>, Serializable] '
+  repair_actions_cnt: 11

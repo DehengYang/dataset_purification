@@ -1,0 +1,20 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_24/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java	2020-10-22 05:48:12.684836553 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_24/purify/assertBeforeMut/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java	2020-10-22 05:48:12.680836438 -0400
+@@ -227,7 +227,7 @@
+ 
+                 if (checker != null) {
+                     if (checker.converged(iter, previous, current)) {
+-                        return current;
++                        return best(current, previous, isMinim);
+                     }
+                 }
+ 
+@@ -264,7 +264,7 @@
+                     }
+                 }
+             } else { // Default termination (Brent's criterion).
+-                return current;
++                return best(current, previous, isMinim);
+             }
+             ++iter;
+         }

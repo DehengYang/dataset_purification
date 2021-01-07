@@ -1,0 +1,127 @@
+1 bug_id: Lang-58
+2 src folder:
+  name of src folder: java
+  number of files: 87
+  number of java files: 77
+  number of src classes: 124
+  number of test classes: 89
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.math.NumberUtilsTest#testLang300
+  failing tests:
+  - org.apache.commons.lang.math.NumberUtilsTest
+  number of all test cases: 1689
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 7.0
+  purification via coverage: 1.594
+  purification via delta debugging: 19.875
+  repair actions extraction: 1.748
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.math.NumberUtilsTest#testLang300: 54
+  fixed:
+    org.apache.commons.lang.math.NumberUtilsTest#testLang300: 52
+6 reduced lines:
+  by all: 2
+  by coverage: 2
+  by delta debugging: 0
+  covAdd: 0
+  covDel: 1
+  cov_patch_lines: 1
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 2
+  ori_patch_lines: 3
+  purAdd: 0
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 0
+  total: 0
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_58/src/java/org/apache/commons/lang/math/NumberUtils.java\t\
+    2020-10-21 04:04:06.042170871 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_58/purify/patch/org/apache/commons/lang/math/NumberUtils.java\t\
+    2020-10-21 04:04:06.038170755 -0400\n@@ -451,8 +451,7 @@\n                 case\
+    \ 'L' :\n                     if (dec == null\n                         && exp\
+    \ == null\n-                        && isDigits(numeric.substring(1))\n-     \
+    \                   && (numeric.charAt(0) == '-' || Character.isDigit(numeric.charAt(0))))\
+    \ {\n+                        && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1))\
+    \ || isDigits(numeric))) {\n                         try {\n                 \
+    \            return createLong(numeric);\n                         } catch (NumberFormatException\
+    \ nfe) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_58/src/java/org/apache/commons/lang/math/NumberUtils.java\t\
+    2020-10-21 04:04:37.083067274 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_58/purify/purified/org/apache/commons/lang/math/NumberUtils.java\t\
+    2020-10-21 04:04:37.083067274 -0400\n@@ -451,7 +451,6 @@\n                 case\
+    \ 'L' :\n                     if (dec == null\n                         && exp\
+    \ == null\n-                        && isDigits(numeric.substring(1))\n      \
+    \                   && (numeric.charAt(0) == '-' || Character.isDigit(numeric.charAt(0))))\
+    \ {\n                         try {\n                             return createLong(numeric);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:dec == null && exp == null && isDigits(numeric.substring(1))
+      && (numeric.charAt(0) == ''-'' || Character.isDigit(numeric.charAt(0))) @TO@
+      InfixExpression:dec == null && exp == null && (numeric.charAt(0) == ''-'' &&
+      isDigits(numeric.substring(1)) || isDigits(numeric)) '
+    - '---MOV InfixExpression@@dec == null && exp == null && isDigits(numeric.substring(1))
+      @TO@ IfStatement@@InfixExpression:dec == null && exp == null && isDigits(numeric.substring(1))
+      && (numeric.charAt(0) == ''-'' || Character.isDigit(numeric.charAt(0))) '
+    - '---DEL InfixExpression@@dec == null && exp == null && isDigits(numeric.substring(1))
+      && (numeric.charAt(0) == ''-'' || Character.isDigit(numeric.charAt(0))) '
+    - '------DEL Operator@@&& '
+    - '------DEL ParenthesizedExpression@@(numeric.charAt(0) == ''-'' || Character.isDigit(numeric.charAt(0))) '
+    - '---------DEL InfixExpression@@numeric.charAt(0) == ''-'' || Character.isDigit(numeric.charAt(0)) '
+    - '------------DEL Operator@@|| '
+    - '------------DEL MethodInvocation@@Character.isDigit(numeric.charAt(0)) '
+    - '---------------DEL SimpleName@@Name:Character '
+    - '---------------DEL SimpleName@@MethodName:isDigit:[numeric.charAt(0)] '
+    - '------------------DEL MethodInvocation@@numeric.charAt(0) '
+    - '---------------------DEL SimpleName@@Name:numeric '
+    - '---------------------DEL SimpleName@@MethodName:charAt:[0] '
+    - '------------------------DEL NumberLiteral@@0 '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:dec == null && exp == null && isDigits(numeric.substring(1))
+      && (numeric.charAt(0) == ''-'' || Character.isDigit(numeric.charAt(0))) @TO@
+      InfixExpression:dec == null && exp == null && (numeric.charAt(0) == ''-'' ||
+      Character.isDigit(numeric.charAt(0))) '
+    - '---UPD InfixExpression@@dec == null && exp == null && isDigits(numeric.substring(1))
+      && (numeric.charAt(0) == ''-'' || Character.isDigit(numeric.charAt(0))) @TO@
+      dec == null && exp == null && (numeric.charAt(0) == ''-'' || Character.isDigit(numeric.charAt(0))) '
+    - '------MOV InfixExpression@@dec == null && exp == null @TO@ InfixExpression@@dec
+      == null && exp == null && isDigits(numeric.substring(1)) && (numeric.charAt(0)
+      == ''-'' || Character.isDigit(numeric.charAt(0))) '
+    - '------DEL InfixExpression@@dec == null && exp == null && isDigits(numeric.substring(1)) '
+    - '---------DEL MethodInvocation@@isDigits(numeric.substring(1)) '
+    - '------------DEL SimpleName@@MethodName:isDigits:[numeric.substring(1)] '
+    - '---------------DEL MethodInvocation@@numeric.substring(1) '
+    - '------------------DEL SimpleName@@Name:numeric '
+    - '------------------DEL SimpleName@@MethodName:substring:[1] '
+    - '---------------------DEL NumberLiteral@@1 '
+    - '------MOV Operator@@&& @TO@ InfixExpression@@dec == null && exp == null &&
+      isDigits(numeric.substring(1)) && (numeric.charAt(0) == ''-'' || Character.isDigit(numeric.charAt(0))) '
+    - '------DEL Operator@@&& '
+  repair_actions_cnt: 1

@@ -1,0 +1,16 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_56/src/main/java/org/apache/commons/math/util/MultidimensionalCounter.java	2020-10-21 12:35:57.842618198 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_56/purify/purified/org/apache/commons/math/util/MultidimensionalCounter.java	2020-10-21 12:35:57.842618198 -0400
+@@ -235,12 +235,10 @@
+         }
+ 
+         int idx = 1;
+-        while (count < index) {
+-            count += idx;
+             ++idx;
+-        }
+         --idx;
+         indices[last] = idx;
++        indices[last] = index - count;
+ 
+         return indices;
+     }

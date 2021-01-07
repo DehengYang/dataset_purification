@@ -1,0 +1,24 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_65/src/main/java/org/apache/commons/math/optimization/general/AbstractLeastSquaresOptimizer.java	2020-10-27 04:23:44.286142310 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_65/purify/purified/org/apache/commons/math/optimization/general/AbstractLeastSquaresOptimizer.java	2020-10-27 04:23:44.282142194 -0400
+@@ -238,11 +238,7 @@
+      */
+     public double getRMS() {
+         double criterion = 0;
+-        for (int i = 0; i < rows; ++i) {
+-            final double residual = residuals[i];
+-            criterion += residual * residual * residualsWeights[i];
+-        }
+-        return Math.sqrt(criterion / rows);
++        return Math.sqrt(getChiSquare() / rows);
+     }
+ 
+     /**
+@@ -255,7 +251,7 @@
+         double chiSquare = 0;
+         for (int i = 0; i < rows; ++i) {
+             final double residual = residuals[i];
+-            chiSquare += residual * residual / residualsWeights[i];
++            chiSquare += residual * residual * residualsWeights[i];
+         }
+         return chiSquare;
+     }

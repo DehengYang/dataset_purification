@@ -1,0 +1,360 @@
+1 bug_id: Closure-84
+2 src folder:
+  name of src folder: src
+  number of files: 370
+  number of java files: 358
+  number of src classes: 1167
+  number of test classes: 188
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.parsing.ParserTest#testDestructuringAssignForbidden4
+  failing tests:
+  - com.google.javascript.jscomp.parsing.ParserTest
+  number of all test cases: 6483
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 5.0
+  purification via coverage: 3.472
+  purification via delta debugging: 1000.194
+  repair actions extraction: 2.801
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.parsing.ParserTest#testDestructuringAssignForbidden4: 1153
+  fixed:
+    com.google.javascript.jscomp.parsing.ParserTest#testDestructuringAssignForbidden4: 1159
+6 reduced lines:
+  by all: 8
+  by coverage: 0
+  by delta debugging: 8
+  covAdd: 27
+  covDel: 0
+  cov_patch_lines: 27
+  delta_patch_lines: 19
+  oriAdd: 27
+  oriDel: 0
+  ori_patch_lines: 27
+  purAdd: 19
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 5
+  failCompile: 52
+  failFail: 0
+  passed: 0
+  total: 57
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_84/src/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-23 10:33:31.781323116 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_84/purify/patch/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-23 10:33:31.777323000 -0400\n@@ -338,6 +338,13 @@\n     @Override\n  \
+    \   Node processAssignment(Assignment assignmentNode) {\n       Node assign =\
+    \ processInfixExpression(assignmentNode);\n+      Node target = assign.getFirstChild();\n\
+    +      if (!validAssignmentTarget(target)) {\n+        errorReporter.error(\n\
+    +          \"invalid assignment target\",\n+          sourceName,\n+         \
+    \ target.getLineno(), \"\", 0);\n+      }\n       return assign;\n     }\n \n\
+    @@ -794,6 +801,17 @@\n         operand.setDouble(-operand.getDouble());\n    \
+    \     return operand;\n       } else {\n+        if (type == Token.INC || type\
+    \ == Token.DEC) {\n+          if (!validAssignmentTarget(operand)) {\n+      \
+    \      String msg = (type == Token.INC)\n+                ? \"invalid increment\
+    \ target\"\n+                : \"invalid decrement target\";\n+            errorReporter.error(\n\
+    +              msg,\n+              sourceName,\n+              operand.getLineno(),\
+    \ \"\", 0);\n+          }\n+        }\n \n         Node node = newNode(type, operand);\n\
+    \         if (exprNode.isPostfix()) {\n@@ -803,6 +821,15 @@\n       }\n     }\n\
+    \ \n+    private boolean validAssignmentTarget(Node target) {\n+      switch (target.getType())\
+    \ {\n+        case Token.NAME:\n+        case Token.GETPROP:\n+        case Token.GETELEM:\n\
+    +          return true;\n+      }\n+      return false;\n+    }\n \n     @Override\n\
+    \     Node processVariableDeclaration(VariableDeclaration declarationNode) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_84/src/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-23 10:51:10.867984307 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_84/purify/purified/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-23 10:51:10.867984307 -0400\n@@ -338,6 +338,13 @@\n     @Override\n  \
+    \   Node processAssignment(Assignment assignmentNode) {\n       Node assign =\
+    \ processInfixExpression(assignmentNode);\n+      Node target = assign.getFirstChild();\n\
+    +      if (!validAssignmentTarget(target)) {\n+        errorReporter.error(\n\
+    +          \"invalid assignment target\",\n+          sourceName,\n+         \
+    \ target.getLineno(), \"\", 0);\n+      }\n       return assign;\n     }\n \n\
+    @@ -794,6 +801,10 @@\n         operand.setDouble(-operand.getDouble());\n    \
+    \     return operand;\n       } else {\n+        if (type == Token.INC || type\
+    \ == Token.DEC) {\n+          if (!validAssignmentTarget(operand)) {\n+      \
+    \    }\n+        }\n \n         Node node = newNode(type, operand);\n        \
+    \ if (exprNode.isPostfix()) {\n@@ -803,6 +814,14 @@\n       }\n     }\n \n+  \
+    \  private boolean validAssignmentTarget(Node target) {\n+      switch (target.getType())\
+    \ {\n+        case Token.NAME:\n+        case Token.GETPROP:\n+        case Token.GETELEM:\n\
+    +      }\n+      return false;\n+    }\n \n     @Override\n     Node processVariableDeclaration(VariableDeclaration\
+    \ declarationNode) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/IRFactory:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Node target=assign.getFirstChild(); @TO@
+      MethodDeclaration@@@@Node, MethodName:processAssignment, @@Argus:Assignment+assignmentNode+ '
+    - '---INS SimpleType@@Node @TO@ VariableDeclarationStatement@@Node target=assign.getFirstChild(); '
+    - '---INS VariableDeclarationFragment@@target=assign.getFirstChild() @TO@ VariableDeclarationStatement@@Node
+      target=assign.getFirstChild(); '
+    - '------INS SimpleName@@target @TO@ VariableDeclarationFragment@@target=assign.getFirstChild() '
+    - '------INS MethodInvocation@@assign.getFirstChild() @TO@ VariableDeclarationFragment@@target=assign.getFirstChild() '
+    - '---------INS SimpleName@@Name:assign @TO@ MethodInvocation@@assign.getFirstChild() '
+    - '---------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@assign.getFirstChild() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!validAssignmentTarget(target) @TO@ MethodDeclaration@@@@Node,
+      MethodName:processAssignment, @@Argus:Assignment+assignmentNode+ '
+    - '---INS PrefixExpression@@!validAssignmentTarget(target) @TO@ IfStatement@@PrefixExpression:!validAssignmentTarget(target) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!validAssignmentTarget(target) '
+    - '------INS MethodInvocation@@validAssignmentTarget(target) @TO@ PrefixExpression@@!validAssignmentTarget(target) '
+    - '---------INS SimpleName@@MethodName:validAssignmentTarget:[target] @TO@ MethodInvocation@@validAssignmentTarget(target) '
+    - '------------INS SimpleName@@target @TO@ SimpleName@@MethodName:validAssignmentTarget:[target] '
+    - '---INS ExpressionStatement@@MethodInvocation:errorReporter.error("invalid assignment
+      target",sourceName,target.getLineno(),"",0) @TO@ IfStatement@@PrefixExpression:!validAssignmentTarget(target) '
+    - '------INS MethodInvocation@@errorReporter.error("invalid assignment target",sourceName,target.getLineno(),"",0)
+      @TO@ ExpressionStatement@@MethodInvocation:errorReporter.error("invalid assignment
+      target",sourceName,target.getLineno(),"",0) '
+    - '---------INS SimpleName@@Name:errorReporter @TO@ MethodInvocation@@errorReporter.error("invalid
+      assignment target",sourceName,target.getLineno(),"",0) '
+    - '---------INS SimpleName@@MethodName:error:["invalid assignment target", sourceName,
+      target.getLineno(), "", 0] @TO@ MethodInvocation@@errorReporter.error("invalid
+      assignment target",sourceName,target.getLineno(),"",0) '
+    - '------------INS StringLiteral@@"invalid assignment target" @TO@ SimpleName@@MethodName:error:["invalid
+      assignment target", sourceName, target.getLineno(), "", 0] '
+    - '------------INS SimpleName@@sourceName @TO@ SimpleName@@MethodName:error:["invalid
+      assignment target", sourceName, target.getLineno(), "", 0] '
+    - '------------INS MethodInvocation@@target.getLineno() @TO@ SimpleName@@MethodName:error:["invalid
+      assignment target", sourceName, target.getLineno(), "", 0] '
+    - '---------------INS SimpleName@@Name:target @TO@ MethodInvocation@@target.getLineno() '
+    - '---------------INS SimpleName@@MethodName:getLineno:[] @TO@ MethodInvocation@@target.getLineno() '
+    - '------------INS StringLiteral@@"" @TO@ SimpleName@@MethodName:error:["invalid
+      assignment target", sourceName, target.getLineno(), "", 0] '
+    - '------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:error:["invalid
+      assignment target", sourceName, target.getLineno(), "", 0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:type == Token.INC || type == Token.DEC @TO@
+      IfStatement@@InfixExpression:type == Token.NEG && operand.getType() == Token.NUMBER '
+    - '---INS InfixExpression@@type == Token.INC || type == Token.DEC @TO@ IfStatement@@InfixExpression:type
+      == Token.INC || type == Token.DEC '
+    - '------INS InfixExpression@@type == Token.INC @TO@ InfixExpression@@type ==
+      Token.INC || type == Token.DEC '
+    - '---------INS SimpleName@@type @TO@ InfixExpression@@type == Token.INC '
+    - '---------INS Operator@@== @TO@ InfixExpression@@type == Token.INC '
+    - '---------INS QualifiedName@@Token.INC @TO@ InfixExpression@@type == Token.INC '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.INC '
+    - '------------INS SimpleName@@INC @TO@ QualifiedName@@Token.INC '
+    - '------INS Operator@@|| @TO@ InfixExpression@@type == Token.INC || type == Token.DEC '
+    - '------INS InfixExpression@@type == Token.DEC @TO@ InfixExpression@@type ==
+      Token.INC || type == Token.DEC '
+    - '---------INS SimpleName@@type @TO@ InfixExpression@@type == Token.DEC '
+    - '---------INS Operator@@== @TO@ InfixExpression@@type == Token.DEC '
+    - '---------INS QualifiedName@@Token.DEC @TO@ InfixExpression@@type == Token.DEC '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.DEC '
+    - '------------INS SimpleName@@DEC @TO@ QualifiedName@@Token.DEC '
+    - '---INS IfStatement@@PrefixExpression:!validAssignmentTarget(operand) @TO@ IfStatement@@InfixExpression:type
+      == Token.INC || type == Token.DEC '
+    - '------INS PrefixExpression@@!validAssignmentTarget(operand) @TO@ IfStatement@@PrefixExpression:!validAssignmentTarget(operand) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!validAssignmentTarget(operand) '
+    - '---------INS MethodInvocation@@validAssignmentTarget(operand) @TO@ PrefixExpression@@!validAssignmentTarget(operand) '
+    - '------------INS SimpleName@@MethodName:validAssignmentTarget:[operand] @TO@
+      MethodInvocation@@validAssignmentTarget(operand) '
+    - '---------------INS SimpleName@@operand @TO@ SimpleName@@MethodName:validAssignmentTarget:[operand] '
+    - '------INS VariableDeclarationStatement@@String msg=(type == Token.INC) ? "invalid
+      increment target" : "invalid decrement target"; @TO@ IfStatement@@PrefixExpression:!validAssignmentTarget(operand) '
+    - '---------INS SimpleType@@String @TO@ VariableDeclarationStatement@@String msg=(type
+      == Token.INC) ? "invalid increment target" : "invalid decrement target"; '
+    - '---------INS VariableDeclarationFragment@@msg=(type == Token.INC) ? "invalid
+      increment target" : "invalid decrement target" @TO@ VariableDeclarationStatement@@String
+      msg=(type == Token.INC) ? "invalid increment target" : "invalid decrement target"; '
+    - '------------INS SimpleName@@msg @TO@ VariableDeclarationFragment@@msg=(type
+      == Token.INC) ? "invalid increment target" : "invalid decrement target" '
+    - '------------INS ConditionalExpression@@(type == Token.INC) ? "invalid increment
+      target" : "invalid decrement target" @TO@ VariableDeclarationFragment@@msg=(type
+      == Token.INC) ? "invalid increment target" : "invalid decrement target" '
+    - '---------------INS ParenthesizedExpression@@(type == Token.INC) @TO@ ConditionalExpression@@(type
+      == Token.INC) ? "invalid increment target" : "invalid decrement target" '
+    - '------------------INS InfixExpression@@type == Token.INC @TO@ ParenthesizedExpression@@(type
+      == Token.INC) '
+    - '---------------------INS SimpleName@@type @TO@ InfixExpression@@type == Token.INC '
+    - '---------------------INS Operator@@== @TO@ InfixExpression@@type == Token.INC '
+    - '---------------------INS QualifiedName@@Token.INC @TO@ InfixExpression@@type
+      == Token.INC '
+    - '------------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.INC '
+    - '------------------------INS SimpleName@@INC @TO@ QualifiedName@@Token.INC '
+    - '---------------INS StringLiteral@@"invalid increment target" @TO@ ConditionalExpression@@(type
+      == Token.INC) ? "invalid increment target" : "invalid decrement target" '
+    - '---------------INS StringLiteral@@"invalid decrement target" @TO@ ConditionalExpression@@(type
+      == Token.INC) ? "invalid increment target" : "invalid decrement target" '
+    - '------INS ExpressionStatement@@MethodInvocation:errorReporter.error(msg,sourceName,operand.getLineno(),"",0)
+      @TO@ IfStatement@@PrefixExpression:!validAssignmentTarget(operand) '
+    - '---------INS MethodInvocation@@errorReporter.error(msg,sourceName,operand.getLineno(),"",0)
+      @TO@ ExpressionStatement@@MethodInvocation:errorReporter.error(msg,sourceName,operand.getLineno(),"",0) '
+    - '------------INS SimpleName@@Name:errorReporter @TO@ MethodInvocation@@errorReporter.error(msg,sourceName,operand.getLineno(),"",0) '
+    - '------------INS SimpleName@@MethodName:error:[msg, sourceName, operand.getLineno(),
+      "", 0] @TO@ MethodInvocation@@errorReporter.error(msg,sourceName,operand.getLineno(),"",0) '
+    - '---------------INS SimpleName@@msg @TO@ SimpleName@@MethodName:error:[msg,
+      sourceName, operand.getLineno(), "", 0] '
+    - '---------------INS SimpleName@@sourceName @TO@ SimpleName@@MethodName:error:[msg,
+      sourceName, operand.getLineno(), "", 0] '
+    - '---------------INS MethodInvocation@@operand.getLineno() @TO@ SimpleName@@MethodName:error:[msg,
+      sourceName, operand.getLineno(), "", 0] '
+    - '------------------INS SimpleName@@Name:operand @TO@ MethodInvocation@@operand.getLineno() '
+    - '------------------INS SimpleName@@MethodName:getLineno:[] @TO@ MethodInvocation@@operand.getLineno() '
+    - '---------------INS StringLiteral@@"" @TO@ SimpleName@@MethodName:error:[msg,
+      sourceName, operand.getLineno(), "", 0] '
+    - '---------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:error:[msg,
+      sourceName, operand.getLineno(), "", 0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@boolean, MethodName:validAssignmentTarget,
+      @@Argus:Node+target+ @TO@ TypeDeclaration@@[private]TransformDispatcher, TypeSafeDispatcher<Node> '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@boolean, MethodName:validAssignmentTarget,
+      @@Argus:Node+target+ '
+    - '---INS PrimitiveType@@boolean @TO@ MethodDeclaration@@private, @@boolean, MethodName:validAssignmentTarget,
+      @@Argus:Node+target+ '
+    - '---INS SimpleName@@MethodName:validAssignmentTarget @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:validAssignmentTarget, @@Argus:Node+target+ '
+    - '---INS SingleVariableDeclaration@@Node target @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:validAssignmentTarget, @@Argus:Node+target+ '
+    - '------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node target '
+    - '------INS SimpleName@@target @TO@ SingleVariableDeclaration@@Node target '
+    - '---INS SwitchStatement@@MethodInvocation:target.getType() @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:validAssignmentTarget, @@Argus:Node+target+ '
+    - '------INS MethodInvocation@@target.getType() @TO@ SwitchStatement@@MethodInvocation:target.getType() '
+    - '---------INS SimpleName@@Name:target @TO@ MethodInvocation@@target.getType() '
+    - '---------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@target.getType() '
+    - '------INS SwitchCase@@QualifiedName:Token.NAME @TO@ SwitchStatement@@MethodInvocation:target.getType() '
+    - '---------INS QualifiedName@@Token.NAME @TO@ SwitchCase@@QualifiedName:Token.NAME '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.NAME '
+    - '------------INS SimpleName@@NAME @TO@ QualifiedName@@Token.NAME '
+    - '------INS SwitchCase@@QualifiedName:Token.GETPROP @TO@ SwitchStatement@@MethodInvocation:target.getType() '
+    - '---------INS QualifiedName@@Token.GETPROP @TO@ SwitchCase@@QualifiedName:Token.GETPROP '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETPROP '
+    - '------------INS SimpleName@@GETPROP @TO@ QualifiedName@@Token.GETPROP '
+    - '------INS SwitchCase@@QualifiedName:Token.GETELEM @TO@ SwitchStatement@@MethodInvocation:target.getType() '
+    - '---------INS QualifiedName@@Token.GETELEM @TO@ SwitchCase@@QualifiedName:Token.GETELEM '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETELEM '
+    - '------------INS SimpleName@@GETELEM @TO@ QualifiedName@@Token.GETELEM '
+    - '------INS ReturnStatement@@BooleanLiteral:true @TO@ SwitchStatement@@MethodInvocation:target.getType() '
+    - '---------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:validAssignmentTarget, @@Argus:Node+target+ '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  files_cnt: '1'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/IRFactory:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Node target=assign.getFirstChild(); @TO@
+      MethodDeclaration@@@@Node, MethodName:processAssignment, @@Argus:Assignment+assignmentNode+ '
+    - '---INS SimpleType@@Node @TO@ VariableDeclarationStatement@@Node target=assign.getFirstChild(); '
+    - '---INS VariableDeclarationFragment@@target=assign.getFirstChild() @TO@ VariableDeclarationStatement@@Node
+      target=assign.getFirstChild(); '
+    - '------INS SimpleName@@target @TO@ VariableDeclarationFragment@@target=assign.getFirstChild() '
+    - '------INS MethodInvocation@@assign.getFirstChild() @TO@ VariableDeclarationFragment@@target=assign.getFirstChild() '
+    - '---------INS SimpleName@@Name:assign @TO@ MethodInvocation@@assign.getFirstChild() '
+    - '---------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@assign.getFirstChild() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!validAssignmentTarget(target) @TO@ MethodDeclaration@@@@Node,
+      MethodName:processAssignment, @@Argus:Assignment+assignmentNode+ '
+    - '---INS PrefixExpression@@!validAssignmentTarget(target) @TO@ IfStatement@@PrefixExpression:!validAssignmentTarget(target) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!validAssignmentTarget(target) '
+    - '------INS MethodInvocation@@validAssignmentTarget(target) @TO@ PrefixExpression@@!validAssignmentTarget(target) '
+    - '---------INS SimpleName@@MethodName:validAssignmentTarget:[target] @TO@ MethodInvocation@@validAssignmentTarget(target) '
+    - '------------INS SimpleName@@target @TO@ SimpleName@@MethodName:validAssignmentTarget:[target] '
+    - '---INS ExpressionStatement@@MethodInvocation:errorReporter.error("invalid assignment
+      target",sourceName,target.getLineno(),"",0) @TO@ IfStatement@@PrefixExpression:!validAssignmentTarget(target) '
+    - '------INS MethodInvocation@@errorReporter.error("invalid assignment target",sourceName,target.getLineno(),"",0)
+      @TO@ ExpressionStatement@@MethodInvocation:errorReporter.error("invalid assignment
+      target",sourceName,target.getLineno(),"",0) '
+    - '---------INS SimpleName@@Name:errorReporter @TO@ MethodInvocation@@errorReporter.error("invalid
+      assignment target",sourceName,target.getLineno(),"",0) '
+    - '---------INS SimpleName@@MethodName:error:["invalid assignment target", sourceName,
+      target.getLineno(), "", 0] @TO@ MethodInvocation@@errorReporter.error("invalid
+      assignment target",sourceName,target.getLineno(),"",0) '
+    - '------------INS StringLiteral@@"invalid assignment target" @TO@ SimpleName@@MethodName:error:["invalid
+      assignment target", sourceName, target.getLineno(), "", 0] '
+    - '------------INS SimpleName@@sourceName @TO@ SimpleName@@MethodName:error:["invalid
+      assignment target", sourceName, target.getLineno(), "", 0] '
+    - '------------INS MethodInvocation@@target.getLineno() @TO@ SimpleName@@MethodName:error:["invalid
+      assignment target", sourceName, target.getLineno(), "", 0] '
+    - '---------------INS SimpleName@@Name:target @TO@ MethodInvocation@@target.getLineno() '
+    - '---------------INS SimpleName@@MethodName:getLineno:[] @TO@ MethodInvocation@@target.getLineno() '
+    - '------------INS StringLiteral@@"" @TO@ SimpleName@@MethodName:error:["invalid
+      assignment target", sourceName, target.getLineno(), "", 0] '
+    - '------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:error:["invalid
+      assignment target", sourceName, target.getLineno(), "", 0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:type == Token.INC || type == Token.DEC @TO@
+      IfStatement@@InfixExpression:type == Token.NEG && operand.getType() == Token.NUMBER '
+    - '---INS InfixExpression@@type == Token.INC || type == Token.DEC @TO@ IfStatement@@InfixExpression:type
+      == Token.INC || type == Token.DEC '
+    - '------INS InfixExpression@@type == Token.INC @TO@ InfixExpression@@type ==
+      Token.INC || type == Token.DEC '
+    - '---------INS SimpleName@@type @TO@ InfixExpression@@type == Token.INC '
+    - '---------INS Operator@@== @TO@ InfixExpression@@type == Token.INC '
+    - '---------INS QualifiedName@@Token.INC @TO@ InfixExpression@@type == Token.INC '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.INC '
+    - '------------INS SimpleName@@INC @TO@ QualifiedName@@Token.INC '
+    - '------INS Operator@@|| @TO@ InfixExpression@@type == Token.INC || type == Token.DEC '
+    - '------INS InfixExpression@@type == Token.DEC @TO@ InfixExpression@@type ==
+      Token.INC || type == Token.DEC '
+    - '---------INS SimpleName@@type @TO@ InfixExpression@@type == Token.DEC '
+    - '---------INS Operator@@== @TO@ InfixExpression@@type == Token.DEC '
+    - '---------INS QualifiedName@@Token.DEC @TO@ InfixExpression@@type == Token.DEC '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.DEC '
+    - '------------INS SimpleName@@DEC @TO@ QualifiedName@@Token.DEC '
+    - '---INS IfStatement@@PrefixExpression:!validAssignmentTarget(operand) @TO@ IfStatement@@InfixExpression:type
+      == Token.INC || type == Token.DEC '
+    - '------INS PrefixExpression@@!validAssignmentTarget(operand) @TO@ IfStatement@@PrefixExpression:!validAssignmentTarget(operand) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!validAssignmentTarget(operand) '
+    - '---------INS MethodInvocation@@validAssignmentTarget(operand) @TO@ PrefixExpression@@!validAssignmentTarget(operand) '
+    - '------------INS SimpleName@@MethodName:validAssignmentTarget:[operand] @TO@
+      MethodInvocation@@validAssignmentTarget(operand) '
+    - '---------------INS SimpleName@@operand @TO@ SimpleName@@MethodName:validAssignmentTarget:[operand] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@boolean, MethodName:validAssignmentTarget,
+      @@Argus:Node+target+ @TO@ TypeDeclaration@@[private]TransformDispatcher, TypeSafeDispatcher<Node> '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@boolean, MethodName:validAssignmentTarget,
+      @@Argus:Node+target+ '
+    - '---INS PrimitiveType@@boolean @TO@ MethodDeclaration@@private, @@boolean, MethodName:validAssignmentTarget,
+      @@Argus:Node+target+ '
+    - '---INS SimpleName@@MethodName:validAssignmentTarget @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:validAssignmentTarget, @@Argus:Node+target+ '
+    - '---INS SingleVariableDeclaration@@Node target @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:validAssignmentTarget, @@Argus:Node+target+ '
+    - '------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node target '
+    - '------INS SimpleName@@target @TO@ SingleVariableDeclaration@@Node target '
+    - '---INS SwitchStatement@@MethodInvocation:target.getType() @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:validAssignmentTarget, @@Argus:Node+target+ '
+    - '------INS MethodInvocation@@target.getType() @TO@ SwitchStatement@@MethodInvocation:target.getType() '
+    - '---------INS SimpleName@@Name:target @TO@ MethodInvocation@@target.getType() '
+    - '---------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@target.getType() '
+    - '------INS SwitchCase@@QualifiedName:Token.NAME @TO@ SwitchStatement@@MethodInvocation:target.getType() '
+    - '---------INS QualifiedName@@Token.NAME @TO@ SwitchCase@@QualifiedName:Token.NAME '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.NAME '
+    - '------------INS SimpleName@@NAME @TO@ QualifiedName@@Token.NAME '
+    - '------INS SwitchCase@@QualifiedName:Token.GETPROP @TO@ SwitchStatement@@MethodInvocation:target.getType() '
+    - '---------INS QualifiedName@@Token.GETPROP @TO@ SwitchCase@@QualifiedName:Token.GETPROP '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETPROP '
+    - '------------INS SimpleName@@GETPROP @TO@ QualifiedName@@Token.GETPROP '
+    - '------INS SwitchCase@@QualifiedName:Token.GETELEM @TO@ SwitchStatement@@MethodInvocation:target.getType() '
+    - '---------INS QualifiedName@@Token.GETELEM @TO@ SwitchCase@@QualifiedName:Token.GETELEM '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETELEM '
+    - '------------INS SimpleName@@GETELEM @TO@ QualifiedName@@Token.GETELEM '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:validAssignmentTarget, @@Argus:Node+target+ '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  files_cnt: '1'
+  repair_actions_cnt: 4

@@ -1,0 +1,112 @@
+1 bug_id: Closure-80
+2 src folder:
+  name of src folder: src
+  number of files: 378
+  number of java files: 365
+  number of src classes: 1162
+  number of test classes: 191
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.NodeUtilTest#testLocalValue1
+  - com.google.javascript.jscomp.NodeUtilTest#testIsBooleanResult
+  failing tests:
+  - com.google.javascript.jscomp.NodeUtilTest
+  number of all test cases: 6696
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 2.134
+  purification via delta debugging: 182.922
+  repair actions extraction: 2.795
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.NodeUtilTest#testIsBooleanResult: 1142
+    com.google.javascript.jscomp.NodeUtilTest#testLocalValue1: 1310
+  fixed:
+    com.google.javascript.jscomp.NodeUtilTest#testIsBooleanResult: 1225
+    com.google.javascript.jscomp.NodeUtilTest#testLocalValue1: 1260
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 0
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 0
+  ori_patch_lines: 2
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 0
+  total: 2
+9 sibling repair actions:
+- 0 1 0.9902597402597403
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_80/src/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 10:07:23.239908161 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_80/purify/patch/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 10:07:23.239908161 -0400\n@@ -1259,6 +1259,7 @@\n       // Inversion\n\
+    \       case Token.NOT:\n       // delete operator returns a boolean.\n+     \
+    \ case Token.DELPROP:\n         return true;\n       default:\n         return\
+    \ false;\n@@ -2907,6 +2908,7 @@\n       case Token.OBJECTLIT:\n         // Literals\
+    \ objects with non-literal children are allowed.\n         return true;\n+   \
+    \   case Token.DELPROP:\n       case Token.IN:\n         // TODO(johnlenz): should\
+    \ IN operator be included in #isSimpleOperator?\n         return true;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_80/src/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 10:10:54.854035528 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_80/purify/purified/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 10:10:54.850035412 -0400\n@@ -1259,6 +1259,7 @@\n       // Inversion\n\
+    \       case Token.NOT:\n       // delete operator returns a boolean.\n+     \
+    \ case Token.DELPROP:\n         return true;\n       default:\n         return\
+    \ false;\n@@ -2907,6 +2908,7 @@\n       case Token.OBJECTLIT:\n         // Literals\
+    \ objects with non-literal children are allowed.\n         return true;\n+   \
+    \   case Token.DELPROP:\n       case Token.IN:\n         // TODO(johnlenz): should\
+    \ IN operator be included in #isSimpleOperator?\n         return true;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NodeUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.DELPROP @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS QualifiedName@@Token.DELPROP @TO@ SwitchCase@@QualifiedName:Token.DELPROP '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.DELPROP '
+    - '------INS SimpleName@@DELPROP @TO@ QualifiedName@@Token.DELPROP '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.DELPROP @TO@ SwitchStatement@@MethodInvocation:value.getType() '
+    - '---INS QualifiedName@@Token.DELPROP @TO@ SwitchCase@@QualifiedName:Token.DELPROP '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.DELPROP '
+    - '------INS SimpleName@@DELPROP @TO@ QualifiedName@@Token.DELPROP '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NodeUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.DELPROP @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS QualifiedName@@Token.DELPROP @TO@ SwitchCase@@QualifiedName:Token.DELPROP '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.DELPROP '
+    - '------INS SimpleName@@DELPROP @TO@ QualifiedName@@Token.DELPROP '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.DELPROP @TO@ SwitchStatement@@MethodInvocation:value.getType() '
+    - '---INS QualifiedName@@Token.DELPROP @TO@ SwitchCase@@QualifiedName:Token.DELPROP '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.DELPROP '
+    - '------INS SimpleName@@DELPROP @TO@ QualifiedName@@Token.DELPROP '
+  files_cnt: '1'
+  repair_actions_cnt: 2

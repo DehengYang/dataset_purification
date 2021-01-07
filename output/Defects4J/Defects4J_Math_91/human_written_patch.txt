@@ -1,0 +1,14 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_91/src/java/org/apache/commons/math/fraction/Fraction.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_91/fixed-version/src/java/org/apache/commons/math/fraction/Fraction.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_91/src/java/org/apache/commons/math/fraction/Fraction.java	2020-03-01 00:23:15.993493671 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_91/fixed-version/src/java/org/apache/commons/math/fraction/Fraction.java	2020-03-01 00:23:19.593663309 -0800
+@@ -256,8 +256,8 @@
+      *         than <tt>object</tt>, 0 if they are equal.
+      */
+     public int compareTo(Fraction object) {
+-        double nOd = doubleValue();
+-        double dOn = object.doubleValue();
++        long nOd = ((long) numerator) * object.denominator;
++        long dOn = ((long) denominator) * object.numerator;
+         return (nOd < dOn) ? -1 : ((nOd > dOn) ? +1 : 0);
+     }
+     

@@ -1,0 +1,207 @@
+1 bug_id: Closure-91
+2 src folder:
+  name of src folder: src
+  number of files: 367
+  number of java files: 355
+  number of src classes: 1148
+  number of test classes: 183
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testLendsAnnotation3
+  failing tests:
+  - com.google.javascript.jscomp.CheckGlobalThisTest
+  number of all test cases: 6184
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.565
+  purification via delta debugging: 348.454
+  repair actions extraction: 0.793
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CheckGlobalThisTest#testLendsAnnotation3: 2454
+  fixed:
+    com.google.javascript.jscomp.CheckGlobalThisTest#testLendsAnnotation3: 2770
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 9
+  covDel: 0
+  cov_patch_lines: 9
+  delta_patch_lines: 8
+  oriAdd: 9
+  oriDel: 0
+  ori_patch_lines: 9
+  purAdd: 8
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 23
+  failFail: 2
+  passed: 1
+  total: 26
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_91/src/com/google/javascript/jscomp/CheckGlobalThis.java\t\
+    2020-10-23 11:52:03.201692745 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_91/purify/patch/com/google/javascript/jscomp/CheckGlobalThis.java\t\
+    2020-10-23 11:52:03.201692745 -0400\n@@ -112,6 +112,15 @@\n       }\n \n     \
+    \  // Don't traverse functions that are getting lent to a prototype.\n+      Node\
+    \ gramps = parent.getParent();\n+      if (NodeUtil.isObjectLitKey(parent, gramps))\
+    \ {\n+        JSDocInfo maybeLends = gramps.getJSDocInfo();\n+        if (maybeLends\
+    \ != null &&\n+            maybeLends.getLendsName() != null &&\n+           \
+    \ maybeLends.getLendsName().endsWith(\".prototype\")) {\n+          return false;\n\
+    +        }\n+      }\n     }\n \n     if (parent != null && parent.getType() ==\
+    \ Token.ASSIGN) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_91/src/com/google/javascript/jscomp/CheckGlobalThis.java\t\
+    2020-10-23 11:58:15.236463946 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_91/purify/purified/com/google/javascript/jscomp/CheckGlobalThis.java\t\
+    2020-10-23 11:58:15.236463946 -0400\n@@ -112,6 +112,14 @@\n       }\n \n     \
+    \  // Don't traverse functions that are getting lent to a prototype.\n+      Node\
+    \ gramps = parent.getParent();\n+      if (NodeUtil.isObjectLitKey(parent, gramps))\
+    \ {\n+        JSDocInfo maybeLends = gramps.getJSDocInfo();\n+        if (maybeLends\
+    \ != null &&\n+            maybeLends.getLendsName().endsWith(\".prototype\"))\
+    \ {\n+          return false;\n+        }\n+      }\n     }\n \n     if (parent\
+    \ != null && parent.getType() == Token.ASSIGN) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CheckGlobalThis:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Node gramps=parent.getParent(); @TO@ IfStatement@@InfixExpression:n.getType()
+      == Token.FUNCTION '
+    - '---INS SimpleType@@Node @TO@ VariableDeclarationStatement@@Node gramps=parent.getParent(); '
+    - '---INS VariableDeclarationFragment@@gramps=parent.getParent() @TO@ VariableDeclarationStatement@@Node
+      gramps=parent.getParent(); '
+    - '------INS SimpleName@@gramps @TO@ VariableDeclarationFragment@@gramps=parent.getParent() '
+    - '------INS MethodInvocation@@parent.getParent() @TO@ VariableDeclarationFragment@@gramps=parent.getParent() '
+    - '---------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.getParent() '
+    - '---------INS SimpleName@@MethodName:getParent:[] @TO@ MethodInvocation@@parent.getParent() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:NodeUtil.isObjectLitKey(parent,gramps) @TO@
+      IfStatement@@InfixExpression:n.getType() == Token.FUNCTION '
+    - '---INS MethodInvocation@@NodeUtil.isObjectLitKey(parent,gramps) @TO@ IfStatement@@MethodInvocation:NodeUtil.isObjectLitKey(parent,gramps) '
+    - '------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isObjectLitKey(parent,gramps) '
+    - '------INS SimpleName@@MethodName:isObjectLitKey:[parent, gramps] @TO@ MethodInvocation@@NodeUtil.isObjectLitKey(parent,gramps) '
+    - '---------INS SimpleName@@parent @TO@ SimpleName@@MethodName:isObjectLitKey:[parent,
+      gramps] '
+    - '---------INS SimpleName@@gramps @TO@ SimpleName@@MethodName:isObjectLitKey:[parent,
+      gramps] '
+    - '---INS VariableDeclarationStatement@@JSDocInfo maybeLends=gramps.getJSDocInfo();
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isObjectLitKey(parent,gramps) '
+    - '------INS SimpleType@@JSDocInfo @TO@ VariableDeclarationStatement@@JSDocInfo
+      maybeLends=gramps.getJSDocInfo(); '
+    - '------INS VariableDeclarationFragment@@maybeLends=gramps.getJSDocInfo() @TO@
+      VariableDeclarationStatement@@JSDocInfo maybeLends=gramps.getJSDocInfo(); '
+    - '---------INS SimpleName@@maybeLends @TO@ VariableDeclarationFragment@@maybeLends=gramps.getJSDocInfo() '
+    - '---------INS MethodInvocation@@gramps.getJSDocInfo() @TO@ VariableDeclarationFragment@@maybeLends=gramps.getJSDocInfo() '
+    - '------------INS SimpleName@@Name:gramps @TO@ MethodInvocation@@gramps.getJSDocInfo() '
+    - '------------INS SimpleName@@MethodName:getJSDocInfo:[] @TO@ MethodInvocation@@gramps.getJSDocInfo() '
+    - '---INS IfStatement@@InfixExpression:maybeLends != null && maybeLends.getLendsName()
+      != null && maybeLends.getLendsName().endsWith(".prototype") @TO@ IfStatement@@MethodInvocation:NodeUtil.isObjectLitKey(parent,gramps) '
+    - '------INS InfixExpression@@maybeLends != null && maybeLends.getLendsName()
+      != null && maybeLends.getLendsName().endsWith(".prototype") @TO@ IfStatement@@InfixExpression:maybeLends
+      != null && maybeLends.getLendsName() != null && maybeLends.getLendsName().endsWith(".prototype") '
+    - '---------INS InfixExpression@@maybeLends != null && maybeLends.getLendsName()
+      != null @TO@ InfixExpression@@maybeLends != null && maybeLends.getLendsName()
+      != null && maybeLends.getLendsName().endsWith(".prototype") '
+    - '------------INS InfixExpression@@maybeLends != null @TO@ InfixExpression@@maybeLends
+      != null && maybeLends.getLendsName() != null '
+    - '---------------INS SimpleName@@maybeLends @TO@ InfixExpression@@maybeLends
+      != null '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@maybeLends != null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@maybeLends != null '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@maybeLends != null && maybeLends.getLendsName()
+      != null '
+    - '------------INS InfixExpression@@maybeLends.getLendsName() != null @TO@ InfixExpression@@maybeLends
+      != null && maybeLends.getLendsName() != null '
+    - '---------------INS MethodInvocation@@maybeLends.getLendsName() @TO@ InfixExpression@@maybeLends.getLendsName()
+      != null '
+    - '------------------INS SimpleName@@Name:maybeLends @TO@ MethodInvocation@@maybeLends.getLendsName() '
+    - '------------------INS SimpleName@@MethodName:getLendsName:[] @TO@ MethodInvocation@@maybeLends.getLendsName() '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@maybeLends.getLendsName()
+      != null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@maybeLends.getLendsName()
+      != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@maybeLends != null && maybeLends.getLendsName()
+      != null && maybeLends.getLendsName().endsWith(".prototype") '
+    - '---------INS MethodInvocation@@maybeLends.getLendsName().endsWith(".prototype")
+      @TO@ InfixExpression@@maybeLends != null && maybeLends.getLendsName() != null
+      && maybeLends.getLendsName().endsWith(".prototype") '
+    - '------------INS SimpleName@@Name:maybeLends @TO@ MethodInvocation@@maybeLends.getLendsName().endsWith(".prototype") '
+    - '------------INS MethodInvocation@@MethodName:getLendsName:[] @TO@ MethodInvocation@@maybeLends.getLendsName().endsWith(".prototype") '
+    - '------------INS SimpleName@@MethodName:endsWith:[".prototype"] @TO@ MethodInvocation@@maybeLends.getLendsName().endsWith(".prototype") '
+    - '---------------INS StringLiteral@@".prototype" @TO@ SimpleName@@MethodName:endsWith:[".prototype"] '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:maybeLends
+      != null && maybeLends.getLendsName() != null && maybeLends.getLendsName().endsWith(".prototype") '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CheckGlobalThis:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Node gramps=parent.getParent(); @TO@ IfStatement@@InfixExpression:n.getType()
+      == Token.FUNCTION '
+    - '---INS SimpleType@@Node @TO@ VariableDeclarationStatement@@Node gramps=parent.getParent(); '
+    - '---INS VariableDeclarationFragment@@gramps=parent.getParent() @TO@ VariableDeclarationStatement@@Node
+      gramps=parent.getParent(); '
+    - '------INS SimpleName@@gramps @TO@ VariableDeclarationFragment@@gramps=parent.getParent() '
+    - '------INS MethodInvocation@@parent.getParent() @TO@ VariableDeclarationFragment@@gramps=parent.getParent() '
+    - '---------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.getParent() '
+    - '---------INS SimpleName@@MethodName:getParent:[] @TO@ MethodInvocation@@parent.getParent() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:NodeUtil.isObjectLitKey(parent,gramps) @TO@
+      IfStatement@@InfixExpression:n.getType() == Token.FUNCTION '
+    - '---INS MethodInvocation@@NodeUtil.isObjectLitKey(parent,gramps) @TO@ IfStatement@@MethodInvocation:NodeUtil.isObjectLitKey(parent,gramps) '
+    - '------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isObjectLitKey(parent,gramps) '
+    - '------INS SimpleName@@MethodName:isObjectLitKey:[parent, gramps] @TO@ MethodInvocation@@NodeUtil.isObjectLitKey(parent,gramps) '
+    - '---------INS SimpleName@@parent @TO@ SimpleName@@MethodName:isObjectLitKey:[parent,
+      gramps] '
+    - '---------INS SimpleName@@gramps @TO@ SimpleName@@MethodName:isObjectLitKey:[parent,
+      gramps] '
+    - '---INS VariableDeclarationStatement@@JSDocInfo maybeLends=gramps.getJSDocInfo();
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isObjectLitKey(parent,gramps) '
+    - '------INS SimpleType@@JSDocInfo @TO@ VariableDeclarationStatement@@JSDocInfo
+      maybeLends=gramps.getJSDocInfo(); '
+    - '------INS VariableDeclarationFragment@@maybeLends=gramps.getJSDocInfo() @TO@
+      VariableDeclarationStatement@@JSDocInfo maybeLends=gramps.getJSDocInfo(); '
+    - '---------INS SimpleName@@maybeLends @TO@ VariableDeclarationFragment@@maybeLends=gramps.getJSDocInfo() '
+    - '---------INS MethodInvocation@@gramps.getJSDocInfo() @TO@ VariableDeclarationFragment@@maybeLends=gramps.getJSDocInfo() '
+    - '------------INS SimpleName@@Name:gramps @TO@ MethodInvocation@@gramps.getJSDocInfo() '
+    - '------------INS SimpleName@@MethodName:getJSDocInfo:[] @TO@ MethodInvocation@@gramps.getJSDocInfo() '
+    - '---INS IfStatement@@InfixExpression:maybeLends != null && maybeLends.getLendsName().endsWith(".prototype")
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isObjectLitKey(parent,gramps) '
+    - '------INS InfixExpression@@maybeLends != null && maybeLends.getLendsName().endsWith(".prototype")
+      @TO@ IfStatement@@InfixExpression:maybeLends != null && maybeLends.getLendsName().endsWith(".prototype") '
+    - '---------INS InfixExpression@@maybeLends != null @TO@ InfixExpression@@maybeLends
+      != null && maybeLends.getLendsName().endsWith(".prototype") '
+    - '------------INS SimpleName@@maybeLends @TO@ InfixExpression@@maybeLends !=
+      null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@maybeLends != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@maybeLends != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@maybeLends != null && maybeLends.getLendsName().endsWith(".prototype") '
+    - '---------INS MethodInvocation@@maybeLends.getLendsName().endsWith(".prototype")
+      @TO@ InfixExpression@@maybeLends != null && maybeLends.getLendsName().endsWith(".prototype") '
+    - '------------INS SimpleName@@Name:maybeLends @TO@ MethodInvocation@@maybeLends.getLendsName().endsWith(".prototype") '
+    - '------------INS MethodInvocation@@MethodName:getLendsName:[] @TO@ MethodInvocation@@maybeLends.getLendsName().endsWith(".prototype") '
+    - '------------INS SimpleName@@MethodName:endsWith:[".prototype"] @TO@ MethodInvocation@@maybeLends.getLendsName().endsWith(".prototype") '
+    - '---------------INS StringLiteral@@".prototype" @TO@ SimpleName@@MethodName:endsWith:[".prototype"] '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:maybeLends
+      != null && maybeLends.getLendsName().endsWith(".prototype") '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  files_cnt: '1'
+  repair_actions_cnt: 2

@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_9/src/main/java/org/apache/commons/lang3/time/FastDateParser.java	2020-10-22 01:35:32.950860586 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_9/purify/purified/org/apache/commons/lang3/time/FastDateParser.java	2020-10-22 01:35:32.946860470 -0400
+@@ -141,6 +141,9 @@
+             currentFormatField= nextFormatField;
+             currentStrategy= nextStrategy;
+         }
++        if (patternMatcher.regionStart() != patternMatcher.regionEnd()) {
++            throw new IllegalArgumentException("Failed to parse \""+pattern+"\" ; gave up at index "+patternMatcher.regionStart());
++        }
+         if(currentStrategy.addRegex(this, regex)) {
+             collector.add(currentStrategy);
+         }

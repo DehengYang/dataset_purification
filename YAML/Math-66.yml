@@ -1,0 +1,590 @@
+1 bug_id: Math-66
+2 src folder:
+  name of src folder: java
+  number of files: 473
+  number of java files: 435
+  number of src classes: 599
+  number of test classes: 240
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.univariate.BrentOptimizerTest#testQuinticMinStatistics
+  - org.apache.commons.math.optimization.MultiStartUnivariateRealOptimizerTest#testQuinticMin
+  - org.apache.commons.math.optimization.univariate.BrentOptimizerTest#testSinMin
+  - org.apache.commons.math.optimization.MultiStartUnivariateRealOptimizerTest#testSinMin
+  failing tests:
+  - org.apache.commons.math.optimization.univariate.BrentOptimizerTest
+  - org.apache.commons.math.optimization.MultiStartUnivariateRealOptimizerTest
+  number of all test cases: 2261
+  number of failing test cases: 4
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.863
+  purification via delta debugging: 1071.228
+  repair actions extraction: 0.853
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.MultiStartUnivariateRealOptimizerTest#testQuinticMin: 439
+    org.apache.commons.math.optimization.MultiStartUnivariateRealOptimizerTest#testSinMin: 165
+    org.apache.commons.math.optimization.univariate.BrentOptimizerTest#testQuinticMinStatistics: 281
+    org.apache.commons.math.optimization.univariate.BrentOptimizerTest#testSinMin: 369
+  fixed:
+    org.apache.commons.math.optimization.MultiStartUnivariateRealOptimizerTest#testQuinticMin: 455
+    org.apache.commons.math.optimization.MultiStartUnivariateRealOptimizerTest#testSinMin: 177
+    org.apache.commons.math.optimization.univariate.BrentOptimizerTest#testQuinticMinStatistics: 291
+    org.apache.commons.math.optimization.univariate.BrentOptimizerTest#testSinMin: 422
+6 reduced lines:
+  by all: 9
+  by coverage: 0
+  by delta debugging: 9
+  covAdd: 11
+  covDel: 22
+  cov_patch_lines: 33
+  delta_patch_lines: 24
+  oriAdd: 11
+  oriDel: 22
+  ori_patch_lines: 33
+  purAdd: 10
+  purDel: 14
+7 reduced chunks:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  cov: 12
+  original: 12
+  purifiy: 10
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 108
+  failFail: 15
+  passed: 4
+  total: 127
+9 sibling repair actions:
+- 1 2 0.8212290502793296
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_66/src/main/java/org/apache/commons/math/optimization/univariate/BrentOptimizer.java\t\
+    2020-10-23 03:19:15.347243152 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_66/purify/patch/org/apache/commons/math/optimization/univariate/BrentOptimizer.java\t\
+    2020-10-23 03:19:15.347243152 -0400\n@@ -41,10 +41,10 @@\n      * Construct a\
+    \ solver.\n      */\n     public BrentOptimizer() {\n-        setMaxEvaluations(Integer.MAX_VALUE);\n\
+    +        setMaxEvaluations(1000);\n         setMaximalIterationCount(100);\n-\
+    \        setAbsoluteAccuracy(1E-10);\n-        setRelativeAccuracy(1.0e-14);\n\
+    +        setAbsoluteAccuracy(1e-11);\n+        setRelativeAccuracy(1e-9);\n  \
+    \   }\n \n     /**\n@@ -54,17 +54,10 @@\n      */\n     protected double doOptimize()\n\
+    \         throws MaxIterationsExceededException, FunctionEvaluationException {\n\
+    -        throw new UnsupportedOperationException();\n-    }\n-    public double\
+    \ optimize(final UnivariateRealFunction f, final GoalType goalType, final double\
+    \ min, final double max, final double startValue) throws MaxIterationsExceededException,\
+    \ FunctionEvaluationException {\n-        clearResult();\n         return localMin(getGoalType()\
+    \ == GoalType.MINIMIZE,\n-                        f, goalType, min, startValue,\
+    \ max,\n+                        getMin(), getStartValue(), getMax(),\n      \
+    \                   getRelativeAccuracy(), getAbsoluteAccuracy());\n     }\n-\
+    \    public double optimize(final UnivariateRealFunction f, final GoalType goalType,\
+    \ final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException\
+    \ {\n-        return optimize(f, goalType, min, max, min + GOLDEN_SECTION * (max\
+    \ - min));\n-    }\n \n     /**\n      * Find the minimum of the function within\
+    \ the interval {@code (lo, hi)}.\n@@ -91,8 +84,6 @@\n      * the function.\n \
+    \     */\n     private double localMin(boolean isMinim,\n-                   \
+    \         UnivariateRealFunction f,\n-                            GoalType goalType,\n\
+    \                             double lo, double mid, double hi,\n            \
+    \                 double eps, double t)\n         throws MaxIterationsExceededException,\
+    \ FunctionEvaluationException {\n@@ -116,15 +107,14 @@\n         double w = x;\n\
+    \         double d = 0;\n         double e = 0;\n-        double fx = computeObjectiveValue(f,\
+    \ x);\n-        if (goalType == GoalType.MAXIMIZE) {\n+        double fx = computeObjectiveValue(x);\n\
+    +        if (!isMinim) {\n             fx = -fx;\n         }\n         double\
+    \ fv = fx;\n         double fw = fx;\n \n-        int count = 0;\n-        while\
+    \ (count < maximalIterationCount) {\n+        while (true) {\n             double\
+    \ m = 0.5 * (a + b);\n             final double tol1 = eps * Math.abs(x) + t;\n\
+    \             final double tol2 = 2 * tol1;\n@@ -197,8 +187,8 @@\n           \
+    \          u = x + d;\n                 }\n \n-                double fu = computeObjectiveValue(f,\
+    \ u);\n-                if (goalType == GoalType.MAXIMIZE) {\n+              \
+    \  double fu = computeObjectiveValue(u);\n+                if (!isMinim) {\n \
+    \                    fu = -fu;\n                 }\n \n@@ -235,11 +225,10 @@\n\
+    \                     }\n                 }\n             } else { // termination\n\
+    -                setResult(x, (goalType == GoalType.MAXIMIZE) ? -fx : fx, count);\n\
+    +                setFunctionValue(isMinim ? fx : -fx);\n                 return\
+    \ x;\n             }\n-            ++count;\n+            incrementIterationsCounter();\n\
+    \         }\n-        throw new MaxIterationsExceededException(maximalIterationCount);\n\
+    \     }\n }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_66/src/main/java/org/apache/commons/math/optimization/univariate/BrentOptimizer.java\t\
+    2020-10-23 03:37:22.774706840 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_66/purify/purified/org/apache/commons/math/optimization/univariate/BrentOptimizer.java\t\
+    2020-10-23 03:37:22.770706724 -0400\n@@ -45,6 +45,8 @@\n         setMaximalIterationCount(100);\n\
+    \         setAbsoluteAccuracy(1E-10);\n         setRelativeAccuracy(1.0e-14);\n\
+    +        setAbsoluteAccuracy(1e-11);\n+        setRelativeAccuracy(1e-9);\n  \
+    \   }\n \n     /**\n@@ -55,16 +57,11 @@\n     protected double doOptimize()\n\
+    \         throws MaxIterationsExceededException, FunctionEvaluationException {\n\
+    \         throw new UnsupportedOperationException();\n-    }\n-    public double\
+    \ optimize(final UnivariateRealFunction f, final GoalType goalType, final double\
+    \ min, final double max, final double startValue) throws MaxIterationsExceededException,\
+    \ FunctionEvaluationException {\n         clearResult();\n         return localMin(getGoalType()\
+    \ == GoalType.MINIMIZE,\n-                        f, goalType, min, startValue,\
+    \ max,\n+                        getMin(), getStartValue(), getMax(),\n      \
+    \                   getRelativeAccuracy(), getAbsoluteAccuracy());\n     }\n-\
+    \    public double optimize(final UnivariateRealFunction f, final GoalType goalType,\
+    \ final double min, final double max) throws MaxIterationsExceededException, FunctionEvaluationException\
+    \ {\n-        return optimize(f, goalType, min, max, min + GOLDEN_SECTION * (max\
+    \ - min));\n-    }\n \n     /**\n      * Find the minimum of the function within\
+    \ the interval {@code (lo, hi)}.\n@@ -91,8 +88,6 @@\n      * the function.\n \
+    \     */\n     private double localMin(boolean isMinim,\n-                   \
+    \         UnivariateRealFunction f,\n-                            GoalType goalType,\n\
+    \                             double lo, double mid, double hi,\n            \
+    \                 double eps, double t)\n         throws MaxIterationsExceededException,\
+    \ FunctionEvaluationException {\n@@ -116,15 +111,15 @@\n         double w = x;\n\
+    \         double d = 0;\n         double e = 0;\n-        double fx = computeObjectiveValue(f,\
+    \ x);\n-        if (goalType == GoalType.MAXIMIZE) {\n+        double fx = computeObjectiveValue(x);\n\
+    +        if (!isMinim) {\n             fx = -fx;\n         }\n         double\
+    \ fv = fx;\n         double fw = fx;\n \n         int count = 0;\n-        while\
+    \ (count < maximalIterationCount) {\n+        while (true) {\n             double\
+    \ m = 0.5 * (a + b);\n             final double tol1 = eps * Math.abs(x) + t;\n\
+    \             final double tol2 = 2 * tol1;\n@@ -197,8 +192,8 @@\n           \
+    \          u = x + d;\n                 }\n \n-                double fu = computeObjectiveValue(f,\
+    \ u);\n-                if (goalType == GoalType.MAXIMIZE) {\n+              \
+    \  double fu = computeObjectiveValue(u);\n+                if (!isMinim) {\n \
+    \                    fu = -fu;\n                 }\n \n@@ -235,10 +230,11 @@\n\
+    \                     }\n                 }\n             } else { // termination\n\
+    -                setResult(x, (goalType == GoalType.MAXIMIZE) ? -fx : fx, count);\n\
+    +                setFunctionValue(isMinim ? fx : -fx);\n                 return\
+    \ x;\n             }\n             ++count;\n+            incrementIterationsCounter();\n\
+    \         }\n         throw new MaxIterationsExceededException(maximalIterationCount);\n\
+    \     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/univariate/BrentOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:setMaxEvaluations(Integer.MAX_VALUE)
+      @TO@ MethodInvocation:setMaxEvaluations(1000) '
+    - '---UPD MethodInvocation@@setMaxEvaluations(Integer.MAX_VALUE) @TO@ setMaxEvaluations(1000) '
+    - '------UPD SimpleName@@MethodName:setMaxEvaluations:[Integer.MAX_VALUE] @TO@
+      MethodName:setMaxEvaluations:[1000] '
+    - '---------INS NumberLiteral@@1000 @TO@ SimpleName@@MethodName:setMaxEvaluations:[Integer.MAX_VALUE] '
+    - '---------DEL QualifiedName@@Integer.MAX_VALUE '
+    - '------------DEL SimpleName@@Integer '
+    - '------------DEL SimpleName@@MAX_VALUE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:setAbsoluteAccuracy(1E-10) @TO@ MethodInvocation:setAbsoluteAccuracy(1e-11) '
+    - '---UPD MethodInvocation@@setAbsoluteAccuracy(1E-10) @TO@ setAbsoluteAccuracy(1e-11) '
+    - '------UPD SimpleName@@MethodName:setAbsoluteAccuracy:[1E-10] @TO@ MethodName:setAbsoluteAccuracy:[1e-11] '
+    - '---------UPD NumberLiteral@@1E-10 @TO@ 1e-11 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:setRelativeAccuracy(1.0e-14) @TO@
+      MethodInvocation:setRelativeAccuracy(1e-9) '
+    - '---UPD MethodInvocation@@setRelativeAccuracy(1.0e-14) @TO@ setRelativeAccuracy(1e-9) '
+    - '------UPD SimpleName@@MethodName:setRelativeAccuracy:[1.0e-14] @TO@ MethodName:setRelativeAccuracy:[1e-9] '
+    - '---------UPD NumberLiteral@@1.0e-14 @TO@ 1e-9 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ThrowStatement@@ClassInstanceCreation:new UnsupportedOperationException() '
+    - '---DEL ClassInstanceCreation@@UnsupportedOperationException[] '
+    - '------DEL New@@new '
+    - '------DEL SimpleType@@UnsupportedOperationException '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL MethodDeclaration@@public, @@double, MethodName:optimize, @@Argus:UnivariateRealFunction+f+GoalType+goalType+double+min+double+max+double+startValue+MaxIterationsExceededException,
+      FunctionEvaluationException,  '
+    - '---DEL Modifier@@public '
+    - '---DEL PrimitiveType@@double '
+    - '---DEL SimpleName@@MethodName:optimize '
+    - '---DEL SingleVariableDeclaration@@final UnivariateRealFunction f '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@UnivariateRealFunction '
+    - '------DEL SimpleName@@f '
+    - '---DEL SingleVariableDeclaration@@final GoalType goalType '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@GoalType '
+    - '------DEL SimpleName@@goalType '
+    - '---DEL SingleVariableDeclaration@@final double min '
+    - '------DEL Modifier@@final '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL SimpleName@@min '
+    - '---DEL SingleVariableDeclaration@@final double max '
+    - '------DEL Modifier@@final '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL SimpleName@@max '
+    - '---DEL SingleVariableDeclaration@@final double startValue '
+    - '------DEL Modifier@@final '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL SimpleName@@startValue '
+    - '---DEL ExpressionStatement@@MethodInvocation:clearResult() '
+    - '------DEL MethodInvocation@@MethodName:clearResult:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:localMin(getGoalType() == GoalType.MINIMIZE,f,goalType,min,startValue,max,getRelativeAccuracy(),getAbsoluteAccuracy())
+      @TO@ MethodInvocation:localMin(getGoalType() == GoalType.MINIMIZE,getMin(),getStartValue(),getMax(),getRelativeAccuracy(),getAbsoluteAccuracy()) '
+    - '---UPD MethodInvocation@@localMin(getGoalType() == GoalType.MINIMIZE,f,goalType,min,startValue,max,getRelativeAccuracy(),getAbsoluteAccuracy())
+      @TO@ localMin(getGoalType() == GoalType.MINIMIZE,getMin(),getStartValue(),getMax(),getRelativeAccuracy(),getAbsoluteAccuracy()) '
+    - '------UPD SimpleName@@MethodName:localMin:[getGoalType() == GoalType.MINIMIZE,
+      f, goalType, min, startValue, max, getRelativeAccuracy(), getAbsoluteAccuracy()]
+      @TO@ MethodName:localMin:[getGoalType() == GoalType.MINIMIZE, getMin(), getStartValue(),
+      getMax(), getRelativeAccuracy(), getAbsoluteAccuracy()] '
+    - '---------INS MethodInvocation@@MethodName:getMin:[] @TO@ SimpleName@@MethodName:localMin:[getGoalType()
+      == GoalType.MINIMIZE, f, goalType, min, startValue, max, getRelativeAccuracy(),
+      getAbsoluteAccuracy()] '
+    - '---------INS MethodInvocation@@MethodName:getStartValue:[] @TO@ SimpleName@@MethodName:localMin:[getGoalType()
+      == GoalType.MINIMIZE, f, goalType, min, startValue, max, getRelativeAccuracy(),
+      getAbsoluteAccuracy()] '
+    - '---------INS MethodInvocation@@MethodName:getMax:[] @TO@ SimpleName@@MethodName:localMin:[getGoalType()
+      == GoalType.MINIMIZE, f, goalType, min, startValue, max, getRelativeAccuracy(),
+      getAbsoluteAccuracy()] '
+    - '---------DEL SimpleName@@f '
+    - '---------DEL SimpleName@@goalType '
+    - '---------DEL SimpleName@@min '
+    - '---------DEL SimpleName@@startValue '
+    - '---------DEL SimpleName@@max '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ReturnStatement@@MethodInvocation:localMin(getGoalType() == GoalType.MINIMIZE,f,goalType,min,startValue,max,getRelativeAccuracy(),getAbsoluteAccuracy())
+      @TO@ MethodDeclaration@@protected, @@double, MethodName:doOptimize, @@Argus:nullMaxIterationsExceededException,
+      FunctionEvaluationException,  '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL MethodDeclaration@@public, @@double, MethodName:optimize, @@Argus:UnivariateRealFunction+f+GoalType+goalType+double+min+double+max+MaxIterationsExceededException,
+      FunctionEvaluationException,  '
+    - '---DEL Modifier@@public '
+    - '---DEL PrimitiveType@@double '
+    - '---DEL SimpleName@@MethodName:optimize '
+    - '---DEL SingleVariableDeclaration@@final UnivariateRealFunction f '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@UnivariateRealFunction '
+    - '------DEL SimpleName@@f '
+    - '---DEL SingleVariableDeclaration@@final GoalType goalType '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@GoalType '
+    - '------DEL SimpleName@@goalType '
+    - '---DEL SingleVariableDeclaration@@final double min '
+    - '------DEL Modifier@@final '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL SimpleName@@min '
+    - '---DEL SingleVariableDeclaration@@final double max '
+    - '------DEL Modifier@@final '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL SimpleName@@max '
+    - '---DEL ReturnStatement@@MethodInvocation:optimize(f,goalType,min,max,min +
+      GOLDEN_SECTION * (max - min)) '
+    - '------DEL MethodInvocation@@optimize(f,goalType,min,max,min + GOLDEN_SECTION
+      * (max - min)) '
+    - '---------DEL SimpleName@@MethodName:optimize:[f, goalType, min, max, min +
+      GOLDEN_SECTION * (max - min)] '
+    - '------------DEL SimpleName@@f '
+    - '------------DEL SimpleName@@goalType '
+    - '------------DEL SimpleName@@min '
+    - '------------DEL SimpleName@@max '
+    - '------------DEL InfixExpression@@min + GOLDEN_SECTION * (max - min) '
+    - '---------------DEL SimpleName@@min '
+    - '---------------DEL Operator@@+ '
+    - '---------------DEL InfixExpression@@GOLDEN_SECTION * (max - min) '
+    - '------------------DEL SimpleName@@GOLDEN_SECTION '
+    - '------------------DEL Operator@@* '
+    - '------------------DEL ParenthesizedExpression@@(max - min) '
+    - '---------------------DEL InfixExpression@@max - min '
+    - '------------------------DEL SimpleName@@max '
+    - '------------------------DEL Operator@@- '
+    - '------------------------DEL SimpleName@@min '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@double, MethodName:localMin, @@Argus:boolean+isMinim+UnivariateRealFunction+f+GoalType+goalType+double+lo+double+mid+double+hi+double+eps+double+t+MaxIterationsExceededException,
+      FunctionEvaluationException,  @TO@ private, @@double, MethodName:localMin, @@Argus:boolean+isMinim+double+lo+double+mid+double+hi+double+eps+double+t+MaxIterationsExceededException,
+      FunctionEvaluationException,  '
+    - '---DEL SingleVariableDeclaration@@UnivariateRealFunction f '
+    - '------DEL SimpleType@@UnivariateRealFunction '
+    - '------DEL SimpleName@@f '
+    - '---DEL SingleVariableDeclaration@@GoalType goalType '
+    - '------DEL SimpleType@@GoalType '
+    - '------DEL SimpleName@@goalType '
+    - '---UPD VariableDeclarationStatement@@double fx=computeObjectiveValue(f,x);
+      @TO@ double fx=computeObjectiveValue(x); '
+    - '------UPD VariableDeclarationFragment@@fx=computeObjectiveValue(f,x) @TO@ fx=computeObjectiveValue(x) '
+    - '---------UPD MethodInvocation@@computeObjectiveValue(f,x) @TO@ computeObjectiveValue(x) '
+    - '------------UPD SimpleName@@MethodName:computeObjectiveValue:[f, x] @TO@ MethodName:computeObjectiveValue:[x] '
+    - '---------------DEL SimpleName@@f '
+    - '---UPD IfStatement@@InfixExpression:goalType == GoalType.MAXIMIZE @TO@ PrefixExpression:!isMinim '
+    - '------INS PrefixExpression@@!isMinim @TO@ IfStatement@@InfixExpression:goalType
+      == GoalType.MAXIMIZE '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!isMinim '
+    - '---------INS SimpleName@@isMinim @TO@ PrefixExpression@@!isMinim '
+    - '------DEL InfixExpression@@goalType == GoalType.MAXIMIZE '
+    - '---------DEL SimpleName@@goalType '
+    - '---------DEL Operator@@== '
+    - '---------DEL QualifiedName@@GoalType.MAXIMIZE '
+    - '------------DEL SimpleName@@GoalType '
+    - '------------DEL SimpleName@@MAXIMIZE '
+    - '---DEL VariableDeclarationStatement@@int count=0; '
+    - '------DEL PrimitiveType@@int '
+    - '------DEL VariableDeclarationFragment@@count=0 '
+    - '---------DEL SimpleName@@count '
+    - '---------DEL NumberLiteral@@0 '
+    - '---UPD WhileStatement@@InfixExpression:count < maximalIterationCount @TO@ BooleanLiteral:true '
+    - '------INS BooleanLiteral@@true @TO@ WhileStatement@@InfixExpression:count <
+      maximalIterationCount '
+    - '------DEL InfixExpression@@count < maximalIterationCount '
+    - '---------DEL SimpleName@@count '
+    - '---------DEL Operator@@< '
+    - '---------DEL SimpleName@@maximalIterationCount '
+    - '------UPD ExpressionStatement@@PrefixExpression:++count @TO@ MethodInvocation:incrementIterationsCounter() '
+    - '---------INS MethodInvocation@@MethodName:incrementIterationsCounter:[] @TO@
+      ExpressionStatement@@PrefixExpression:++count '
+    - '---------DEL PrefixExpression@@++count '
+    - '------------DEL Operator@@++ '
+    - '------------DEL SimpleName@@count '
+    - '---DEL ThrowStatement@@ClassInstanceCreation:new MaxIterationsExceededException(maximalIterationCount) '
+    - '------DEL ClassInstanceCreation@@MaxIterationsExceededException[maximalIterationCount] '
+    - '---------DEL New@@new '
+    - '---------DEL SimpleType@@MaxIterationsExceededException '
+    - '---------DEL SimpleName@@maximalIterationCount '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double fu=computeObjectiveValue(f,u); @TO@
+      double fu=computeObjectiveValue(u); '
+    - '---UPD VariableDeclarationFragment@@fu=computeObjectiveValue(f,u) @TO@ fu=computeObjectiveValue(u) '
+    - '------UPD MethodInvocation@@computeObjectiveValue(f,u) @TO@ computeObjectiveValue(u) '
+    - '---------UPD SimpleName@@MethodName:computeObjectiveValue:[f, u] @TO@ MethodName:computeObjectiveValue:[u] '
+    - '------------DEL SimpleName@@f '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:goalType == GoalType.MAXIMIZE @TO@ PrefixExpression:!isMinim '
+    - '---INS PrefixExpression@@!isMinim @TO@ IfStatement@@InfixExpression:goalType
+      == GoalType.MAXIMIZE '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!isMinim '
+    - '------INS SimpleName@@isMinim @TO@ PrefixExpression@@!isMinim '
+    - '---DEL InfixExpression@@goalType == GoalType.MAXIMIZE '
+    - '------DEL SimpleName@@goalType '
+    - '------DEL Operator@@== '
+    - '------DEL QualifiedName@@GoalType.MAXIMIZE '
+    - '---------DEL SimpleName@@GoalType '
+    - '---------DEL SimpleName@@MAXIMIZE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:setResult(x,(goalType == GoalType.MAXIMIZE)
+      ? -fx : fx,count) @TO@ MethodInvocation:setFunctionValue(isMinim ? fx : -fx) '
+    - '---UPD MethodInvocation@@setResult(x,(goalType == GoalType.MAXIMIZE) ? -fx
+      : fx,count) @TO@ setFunctionValue(isMinim ? fx : -fx) '
+    - '------UPD SimpleName@@MethodName:setResult:[x, (goalType == GoalType.MAXIMIZE)
+      ? -fx : fx, count] @TO@ MethodName:setFunctionValue:[isMinim ? fx : -fx] '
+    - '---------DEL SimpleName@@x '
+    - '---------UPD ConditionalExpression@@(goalType == GoalType.MAXIMIZE) ? -fx :
+      fx @TO@ isMinim ? fx : -fx '
+    - '------------INS SimpleName@@isMinim @TO@ ConditionalExpression@@(goalType ==
+      GoalType.MAXIMIZE) ? -fx : fx '
+    - '------------INS SimpleName@@fx @TO@ ConditionalExpression@@(goalType == GoalType.MAXIMIZE)
+      ? -fx : fx '
+    - '------------DEL ParenthesizedExpression@@(goalType == GoalType.MAXIMIZE) '
+    - '---------------DEL InfixExpression@@goalType == GoalType.MAXIMIZE '
+    - '------------------DEL SimpleName@@goalType '
+    - '------------------DEL Operator@@== '
+    - '------------------DEL QualifiedName@@GoalType.MAXIMIZE '
+    - '---------------------DEL SimpleName@@GoalType '
+    - '---------------------DEL SimpleName@@MAXIMIZE '
+    - '------------DEL SimpleName@@fx '
+    - '---------DEL SimpleName@@count '
+  repair_actions_cnt: 12
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/univariate/BrentOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:setAbsoluteAccuracy(1e-11) @TO@ MethodDeclaration@@public,
+      @@=CONSTRUCTOR=, MethodName:BrentOptimizer, @@Argus:null '
+    - '---INS MethodInvocation@@setAbsoluteAccuracy(1e-11) @TO@ ExpressionStatement@@MethodInvocation:setAbsoluteAccuracy(1e-11) '
+    - '------INS SimpleName@@MethodName:setAbsoluteAccuracy:[1e-11] @TO@ MethodInvocation@@setAbsoluteAccuracy(1e-11) '
+    - '---------INS NumberLiteral@@1e-11 @TO@ SimpleName@@MethodName:setAbsoluteAccuracy:[1e-11] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL MethodDeclaration@@protected, @@double, MethodName:doOptimize, @@Argus:nullMaxIterationsExceededException,
+      FunctionEvaluationException,  '
+    - '---DEL Modifier@@protected '
+    - '---DEL PrimitiveType@@double '
+    - '---DEL SimpleName@@MethodName:doOptimize '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:setRelativeAccuracy(1e-9) @TO@ MethodDeclaration@@public,
+      @@=CONSTRUCTOR=, MethodName:BrentOptimizer, @@Argus:null '
+    - '---INS MethodInvocation@@setRelativeAccuracy(1e-9) @TO@ ExpressionStatement@@MethodInvocation:setRelativeAccuracy(1e-9) '
+    - '------INS SimpleName@@MethodName:setRelativeAccuracy:[1e-9] @TO@ MethodInvocation@@setRelativeAccuracy(1e-9) '
+    - '---------INS NumberLiteral@@1e-9 @TO@ SimpleName@@MethodName:setRelativeAccuracy:[1e-9] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, @@double, MethodName:optimize, @@Argus:UnivariateRealFunction+f+GoalType+goalType+double+min+double+max+double+startValue+MaxIterationsExceededException,
+      FunctionEvaluationException,  @TO@ protected, @@double, MethodName:doOptimize,
+      @@Argus:nullMaxIterationsExceededException, FunctionEvaluationException,  '
+    - '---MOV ThrowStatement@@ClassInstanceCreation:new UnsupportedOperationException()
+      @TO@ MethodDeclaration@@public, @@double, MethodName:optimize, @@Argus:UnivariateRealFunction+f+GoalType+goalType+double+min+double+max+double+startValue+MaxIterationsExceededException,
+      FunctionEvaluationException,  '
+    - '---UPD Modifier@@public @TO@ protected '
+    - '---UPD SimpleName@@MethodName:optimize @TO@ MethodName:doOptimize '
+    - '---DEL SingleVariableDeclaration@@final UnivariateRealFunction f '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@UnivariateRealFunction '
+    - '------DEL SimpleName@@f '
+    - '---DEL SingleVariableDeclaration@@final GoalType goalType '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@GoalType '
+    - '------DEL SimpleName@@goalType '
+    - '---DEL SingleVariableDeclaration@@final double min '
+    - '------DEL Modifier@@final '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL SimpleName@@min '
+    - '---DEL SingleVariableDeclaration@@final double max '
+    - '------DEL Modifier@@final '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL SimpleName@@max '
+    - '---DEL SingleVariableDeclaration@@final double startValue '
+    - '------DEL Modifier@@final '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL SimpleName@@startValue '
+    - '---UPD ReturnStatement@@MethodInvocation:localMin(getGoalType() == GoalType.MINIMIZE,f,goalType,min,startValue,max,getRelativeAccuracy(),getAbsoluteAccuracy())
+      @TO@ MethodInvocation:localMin(getGoalType() == GoalType.MINIMIZE,getMin(),getStartValue(),getMax(),getRelativeAccuracy(),getAbsoluteAccuracy()) '
+    - '------UPD MethodInvocation@@localMin(getGoalType() == GoalType.MINIMIZE,f,goalType,min,startValue,max,getRelativeAccuracy(),getAbsoluteAccuracy())
+      @TO@ localMin(getGoalType() == GoalType.MINIMIZE,getMin(),getStartValue(),getMax(),getRelativeAccuracy(),getAbsoluteAccuracy()) '
+    - '---------UPD SimpleName@@MethodName:localMin:[getGoalType() == GoalType.MINIMIZE,
+      f, goalType, min, startValue, max, getRelativeAccuracy(), getAbsoluteAccuracy()]
+      @TO@ MethodName:localMin:[getGoalType() == GoalType.MINIMIZE, getMin(), getStartValue(),
+      getMax(), getRelativeAccuracy(), getAbsoluteAccuracy()] '
+    - '------------INS MethodInvocation@@MethodName:getMin:[] @TO@ SimpleName@@MethodName:localMin:[getGoalType()
+      == GoalType.MINIMIZE, f, goalType, min, startValue, max, getRelativeAccuracy(),
+      getAbsoluteAccuracy()] '
+    - '------------INS MethodInvocation@@MethodName:getStartValue:[] @TO@ SimpleName@@MethodName:localMin:[getGoalType()
+      == GoalType.MINIMIZE, f, goalType, min, startValue, max, getRelativeAccuracy(),
+      getAbsoluteAccuracy()] '
+    - '------------INS MethodInvocation@@MethodName:getMax:[] @TO@ SimpleName@@MethodName:localMin:[getGoalType()
+      == GoalType.MINIMIZE, f, goalType, min, startValue, max, getRelativeAccuracy(),
+      getAbsoluteAccuracy()] '
+    - '------------DEL SimpleName@@f '
+    - '------------DEL SimpleName@@goalType '
+    - '------------DEL SimpleName@@min '
+    - '------------DEL SimpleName@@startValue '
+    - '------------DEL SimpleName@@max '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL MethodDeclaration@@public, @@double, MethodName:optimize, @@Argus:UnivariateRealFunction+f+GoalType+goalType+double+min+double+max+MaxIterationsExceededException,
+      FunctionEvaluationException,  '
+    - '---DEL Modifier@@public '
+    - '---DEL PrimitiveType@@double '
+    - '---DEL SimpleName@@MethodName:optimize '
+    - '---DEL SingleVariableDeclaration@@final UnivariateRealFunction f '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@UnivariateRealFunction '
+    - '------DEL SimpleName@@f '
+    - '---DEL SingleVariableDeclaration@@final GoalType goalType '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@GoalType '
+    - '------DEL SimpleName@@goalType '
+    - '---DEL SingleVariableDeclaration@@final double min '
+    - '------DEL Modifier@@final '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL SimpleName@@min '
+    - '---DEL SingleVariableDeclaration@@final double max '
+    - '------DEL Modifier@@final '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL SimpleName@@max '
+    - '---DEL ReturnStatement@@MethodInvocation:optimize(f,goalType,min,max,min +
+      GOLDEN_SECTION * (max - min)) '
+    - '------DEL MethodInvocation@@optimize(f,goalType,min,max,min + GOLDEN_SECTION
+      * (max - min)) '
+    - '---------DEL SimpleName@@MethodName:optimize:[f, goalType, min, max, min +
+      GOLDEN_SECTION * (max - min)] '
+    - '------------DEL SimpleName@@f '
+    - '------------DEL SimpleName@@goalType '
+    - '------------DEL SimpleName@@min '
+    - '------------DEL SimpleName@@max '
+    - '------------DEL InfixExpression@@min + GOLDEN_SECTION * (max - min) '
+    - '---------------DEL SimpleName@@min '
+    - '---------------DEL Operator@@+ '
+    - '---------------DEL InfixExpression@@GOLDEN_SECTION * (max - min) '
+    - '------------------DEL SimpleName@@GOLDEN_SECTION '
+    - '------------------DEL Operator@@* '
+    - '------------------DEL ParenthesizedExpression@@(max - min) '
+    - '---------------------DEL InfixExpression@@max - min '
+    - '------------------------DEL SimpleName@@max '
+    - '------------------------DEL Operator@@- '
+    - '------------------------DEL SimpleName@@min '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@double, MethodName:localMin, @@Argus:boolean+isMinim+UnivariateRealFunction+f+GoalType+goalType+double+lo+double+mid+double+hi+double+eps+double+t+MaxIterationsExceededException,
+      FunctionEvaluationException,  @TO@ private, @@double, MethodName:localMin, @@Argus:boolean+isMinim+double+lo+double+mid+double+hi+double+eps+double+t+MaxIterationsExceededException,
+      FunctionEvaluationException,  '
+    - '---DEL SingleVariableDeclaration@@UnivariateRealFunction f '
+    - '------DEL SimpleType@@UnivariateRealFunction '
+    - '------DEL SimpleName@@f '
+    - '---DEL SingleVariableDeclaration@@GoalType goalType '
+    - '------DEL SimpleType@@GoalType '
+    - '------DEL SimpleName@@goalType '
+    - '---UPD VariableDeclarationStatement@@double fx=computeObjectiveValue(f,x);
+      @TO@ double fx=computeObjectiveValue(x); '
+    - '------UPD VariableDeclarationFragment@@fx=computeObjectiveValue(f,x) @TO@ fx=computeObjectiveValue(x) '
+    - '---------UPD MethodInvocation@@computeObjectiveValue(f,x) @TO@ computeObjectiveValue(x) '
+    - '------------UPD SimpleName@@MethodName:computeObjectiveValue:[f, x] @TO@ MethodName:computeObjectiveValue:[x] '
+    - '---------------DEL SimpleName@@f '
+    - '---UPD IfStatement@@InfixExpression:goalType == GoalType.MAXIMIZE @TO@ PrefixExpression:!isMinim '
+    - '------INS PrefixExpression@@!isMinim @TO@ IfStatement@@InfixExpression:goalType
+      == GoalType.MAXIMIZE '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!isMinim '
+    - '---------INS SimpleName@@isMinim @TO@ PrefixExpression@@!isMinim '
+    - '------DEL InfixExpression@@goalType == GoalType.MAXIMIZE '
+    - '---------DEL SimpleName@@goalType '
+    - '---------DEL Operator@@== '
+    - '---------DEL QualifiedName@@GoalType.MAXIMIZE '
+    - '------------DEL SimpleName@@GoalType '
+    - '------------DEL SimpleName@@MAXIMIZE '
+    - '---UPD WhileStatement@@InfixExpression:count < maximalIterationCount @TO@ BooleanLiteral:true '
+    - '------INS BooleanLiteral@@true @TO@ WhileStatement@@InfixExpression:count <
+      maximalIterationCount '
+    - '------DEL InfixExpression@@count < maximalIterationCount '
+    - '---------DEL SimpleName@@count '
+    - '---------DEL Operator@@< '
+    - '---------DEL SimpleName@@maximalIterationCount '
+    - '------INS ExpressionStatement@@MethodInvocation:incrementIterationsCounter()
+      @TO@ WhileStatement@@InfixExpression:count < maximalIterationCount '
+    - '---------INS MethodInvocation@@MethodName:incrementIterationsCounter:[] @TO@
+      ExpressionStatement@@MethodInvocation:incrementIterationsCounter() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double fu=computeObjectiveValue(f,u); @TO@
+      double fu=computeObjectiveValue(u); '
+    - '---UPD VariableDeclarationFragment@@fu=computeObjectiveValue(f,u) @TO@ fu=computeObjectiveValue(u) '
+    - '------UPD MethodInvocation@@computeObjectiveValue(f,u) @TO@ computeObjectiveValue(u) '
+    - '---------UPD SimpleName@@MethodName:computeObjectiveValue:[f, u] @TO@ MethodName:computeObjectiveValue:[u] '
+    - '------------DEL SimpleName@@f '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:goalType == GoalType.MAXIMIZE @TO@ PrefixExpression:!isMinim '
+    - '---INS PrefixExpression@@!isMinim @TO@ IfStatement@@InfixExpression:goalType
+      == GoalType.MAXIMIZE '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!isMinim '
+    - '------INS SimpleName@@isMinim @TO@ PrefixExpression@@!isMinim '
+    - '---DEL InfixExpression@@goalType == GoalType.MAXIMIZE '
+    - '------DEL SimpleName@@goalType '
+    - '------DEL Operator@@== '
+    - '------DEL QualifiedName@@GoalType.MAXIMIZE '
+    - '---------DEL SimpleName@@GoalType '
+    - '---------DEL SimpleName@@MAXIMIZE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:setResult(x,(goalType == GoalType.MAXIMIZE)
+      ? -fx : fx,count) @TO@ MethodInvocation:setFunctionValue(isMinim ? fx : -fx) '
+    - '---UPD MethodInvocation@@setResult(x,(goalType == GoalType.MAXIMIZE) ? -fx
+      : fx,count) @TO@ setFunctionValue(isMinim ? fx : -fx) '
+    - '------UPD SimpleName@@MethodName:setResult:[x, (goalType == GoalType.MAXIMIZE)
+      ? -fx : fx, count] @TO@ MethodName:setFunctionValue:[isMinim ? fx : -fx] '
+    - '---------DEL SimpleName@@x '
+    - '---------UPD ConditionalExpression@@(goalType == GoalType.MAXIMIZE) ? -fx :
+      fx @TO@ isMinim ? fx : -fx '
+    - '------------INS SimpleName@@isMinim @TO@ ConditionalExpression@@(goalType ==
+      GoalType.MAXIMIZE) ? -fx : fx '
+    - '------------INS SimpleName@@fx @TO@ ConditionalExpression@@(goalType == GoalType.MAXIMIZE)
+      ? -fx : fx '
+    - '------------DEL ParenthesizedExpression@@(goalType == GoalType.MAXIMIZE) '
+    - '---------------DEL InfixExpression@@goalType == GoalType.MAXIMIZE '
+    - '------------------DEL SimpleName@@goalType '
+    - '------------------DEL Operator@@== '
+    - '------------------DEL QualifiedName@@GoalType.MAXIMIZE '
+    - '---------------------DEL SimpleName@@GoalType '
+    - '---------------------DEL SimpleName@@MAXIMIZE '
+    - '------------DEL SimpleName@@fx '
+    - '---------DEL SimpleName@@count '
+  repair_actions_cnt: 9

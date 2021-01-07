@@ -1,0 +1,45 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_23/src/main/java/org/apache/commons/lang3/text/ExtendedMessageFormat.java	2020-10-22 02:17:58.352452262 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_23/purify/purified/org/apache/commons/lang3/text/ExtendedMessageFormat.java	2020-10-22 02:17:58.344452030 -0400
+@@ -70,6 +70,7 @@
+  */
+ public class ExtendedMessageFormat extends MessageFormat {
+     private static final long serialVersionUID = -2362048321261811743L;
++    private static final int HASH_SEED = 31;
+ 
+     private static final String DUMMY_PATTERN = "";
+     private static final String ESCAPED_QUOTE = "''";
+@@ -260,12 +261,34 @@
+      * @param obj the object to compare to
+      * @return true if this object equals the other, otherwise false
+      */
++    public boolean equals(Object obj) {
++        if (obj == this) {
++        }
++        if (obj == null) {
++        }
++        if (!super.equals(obj)) {
++            return false;
++        }
++        if (ObjectUtils.notEqual(getClass(), obj.getClass())) {
++        }
++        ExtendedMessageFormat rhs = (ExtendedMessageFormat)obj;
++        if (ObjectUtils.notEqual(toPattern, rhs.toPattern)) {
++        }
++        if (ObjectUtils.notEqual(registry, rhs.registry)) {
++        }
++        return true;
++    }
+ 
+     /**
+      * Return the hashcode.
+      *
+      * @return the hashcode
+      */
++    public int hashCode() {
++        int result = super.hashCode();
++        result = HASH_SEED * result + ObjectUtils.hashCode(registry);
++        return result;
++    }
+ 
+     /**
+      * Get a custom format from a format description.

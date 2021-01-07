@@ -1,0 +1,144 @@
+1 bug_id: Closure-131
+2 src folder:
+  name of src folder: src
+  number of files: 430
+  number of java files: 414
+  number of src classes: 1379
+  number of test classes: 226
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.ConvertToDottedPropertiesTest#testDoNotConvert
+  - com.google.javascript.jscomp.ConvertToDottedPropertiesTest#testQuotedProps
+  failing tests:
+  - com.google.javascript.jscomp.ConvertToDottedPropertiesTest
+  number of all test cases: 7966
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.474
+  purification via delta debugging: 390.427
+  repair actions extraction: 0.805
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.ConvertToDottedPropertiesTest#testDoNotConvert: 2853
+    com.google.javascript.jscomp.ConvertToDottedPropertiesTest#testQuotedProps: 2744
+  fixed:
+    com.google.javascript.jscomp.ConvertToDottedPropertiesTest#testDoNotConvert: 2721
+    com.google.javascript.jscomp.ConvertToDottedPropertiesTest#testQuotedProps: 2646
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 1
+  ori_patch_lines: 3
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 1
+  total: 3
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_131/src/com/google/javascript/rhino/TokenStream.java\t\
+    2020-10-23 18:02:43.829623729 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_131/purify/patch/com/google/javascript/rhino/TokenStream.java\t\
+    2020-10-23 18:02:43.829623729 -0400\n@@ -191,12 +191,13 @@\n       int length\
+    \ = s.length();\n \n       if (length == 0 ||\n+          Character.isIdentifierIgnorable(s.charAt(0))\
+    \ ||\n           !Character.isJavaIdentifierStart(s.charAt(0))) {\n         return\
+    \ false;\n       }\n \n       for (int i = 1; i < length; i++) {\n-        if\
+    \ (\n+        if (Character.isIdentifierIgnorable(s.charAt(i)) ||\n          \
+    \   !Character.isJavaIdentifierPart(s.charAt(i))) {\n           return false;\n\
+    \         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_131/src/com/google/javascript/rhino/TokenStream.java\t\
+    2020-10-23 18:09:44.093793741 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_131/purify/purified/com/google/javascript/rhino/TokenStream.java\t\
+    2020-10-23 18:09:44.093793741 -0400\n@@ -196,7 +196,7 @@\n       }\n \n      \
+    \ for (int i = 1; i < length; i++) {\n-        if (\n+        if (Character.isIdentifierIgnorable(s.charAt(i))\
+    \ ||\n             !Character.isJavaIdentifierPart(s.charAt(i))) {\n         \
+    \  return false;\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/rhino/TokenStream:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:length == 0 || !Character.isJavaIdentifierStart(s.charAt(0))
+      @TO@ InfixExpression:length == 0 || Character.isIdentifierIgnorable(s.charAt(0))
+      || !Character.isJavaIdentifierStart(s.charAt(0)) '
+    - '---UPD InfixExpression@@length == 0 || !Character.isJavaIdentifierStart(s.charAt(0))
+      @TO@ length == 0 || Character.isIdentifierIgnorable(s.charAt(0)) || !Character.isJavaIdentifierStart(s.charAt(0)) '
+    - '------INS InfixExpression@@length == 0 || Character.isIdentifierIgnorable(s.charAt(0))
+      @TO@ InfixExpression@@length == 0 || !Character.isJavaIdentifierStart(s.charAt(0)) '
+    - '---------MOV InfixExpression@@length == 0 @TO@ InfixExpression@@length == 0
+      || Character.isIdentifierIgnorable(s.charAt(0)) '
+    - '---------MOV Operator@@|| @TO@ InfixExpression@@length == 0 || Character.isIdentifierIgnorable(s.charAt(0)) '
+    - '---------INS MethodInvocation@@Character.isIdentifierIgnorable(s.charAt(0))
+      @TO@ InfixExpression@@length == 0 || Character.isIdentifierIgnorable(s.charAt(0)) '
+    - '------------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isIdentifierIgnorable(s.charAt(0)) '
+    - '------------INS SimpleName@@MethodName:isIdentifierIgnorable:[s.charAt(0)]
+      @TO@ MethodInvocation@@Character.isIdentifierIgnorable(s.charAt(0)) '
+    - '---------------INS MethodInvocation@@s.charAt(0) @TO@ SimpleName@@MethodName:isIdentifierIgnorable:[s.charAt(0)] '
+    - '------------------INS SimpleName@@Name:s @TO@ MethodInvocation@@s.charAt(0) '
+    - '------------------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@s.charAt(0) '
+    - '---------------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '------INS Operator@@|| @TO@ InfixExpression@@length == 0 || !Character.isJavaIdentifierStart(s.charAt(0)) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!Character.isJavaIdentifierPart(s.charAt(i))
+      @TO@ InfixExpression:Character.isIdentifierIgnorable(s.charAt(i)) || !Character.isJavaIdentifierPart(s.charAt(i)) '
+    - '---INS InfixExpression@@Character.isIdentifierIgnorable(s.charAt(i)) || !Character.isJavaIdentifierPart(s.charAt(i))
+      @TO@ IfStatement@@PrefixExpression:!Character.isJavaIdentifierPart(s.charAt(i)) '
+    - '------MOV PrefixExpression@@!Character.isJavaIdentifierPart(s.charAt(i)) @TO@
+      InfixExpression@@Character.isIdentifierIgnorable(s.charAt(i)) || !Character.isJavaIdentifierPart(s.charAt(i)) '
+    - '------INS MethodInvocation@@Character.isIdentifierIgnorable(s.charAt(i)) @TO@
+      InfixExpression@@Character.isIdentifierIgnorable(s.charAt(i)) || !Character.isJavaIdentifierPart(s.charAt(i)) '
+    - '---------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isIdentifierIgnorable(s.charAt(i)) '
+    - '---------INS SimpleName@@MethodName:isIdentifierIgnorable:[s.charAt(i)] @TO@
+      MethodInvocation@@Character.isIdentifierIgnorable(s.charAt(i)) '
+    - '------------INS MethodInvocation@@s.charAt(i) @TO@ SimpleName@@MethodName:isIdentifierIgnorable:[s.charAt(i)] '
+    - '---------------INS SimpleName@@Name:s @TO@ MethodInvocation@@s.charAt(i) '
+    - '---------------INS SimpleName@@MethodName:charAt:[i] @TO@ MethodInvocation@@s.charAt(i) '
+    - '------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:charAt:[i] '
+    - '------INS Operator@@|| @TO@ InfixExpression@@Character.isIdentifierIgnorable(s.charAt(i))
+      || !Character.isJavaIdentifierPart(s.charAt(i)) '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/rhino/TokenStream:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!Character.isJavaIdentifierPart(s.charAt(i))
+      @TO@ InfixExpression:Character.isIdentifierIgnorable(s.charAt(i)) || !Character.isJavaIdentifierPart(s.charAt(i)) '
+    - '---INS InfixExpression@@Character.isIdentifierIgnorable(s.charAt(i)) || !Character.isJavaIdentifierPart(s.charAt(i))
+      @TO@ IfStatement@@PrefixExpression:!Character.isJavaIdentifierPart(s.charAt(i)) '
+    - '------INS MethodInvocation@@Character.isIdentifierIgnorable(s.charAt(i)) @TO@
+      InfixExpression@@Character.isIdentifierIgnorable(s.charAt(i)) || !Character.isJavaIdentifierPart(s.charAt(i)) '
+    - '---------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isIdentifierIgnorable(s.charAt(i)) '
+    - '---------INS SimpleName@@MethodName:isIdentifierIgnorable:[s.charAt(i)] @TO@
+      MethodInvocation@@Character.isIdentifierIgnorable(s.charAt(i)) '
+    - '------------INS MethodInvocation@@s.charAt(i) @TO@ SimpleName@@MethodName:isIdentifierIgnorable:[s.charAt(i)] '
+    - '---------------INS SimpleName@@Name:s @TO@ MethodInvocation@@s.charAt(i) '
+    - '---------------INS SimpleName@@MethodName:charAt:[i] @TO@ MethodInvocation@@s.charAt(i) '
+    - '------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:charAt:[i] '
+    - '------MOV PrefixExpression@@!Character.isJavaIdentifierPart(s.charAt(i)) @TO@
+      InfixExpression@@Character.isIdentifierIgnorable(s.charAt(i)) || !Character.isJavaIdentifierPart(s.charAt(i)) '
+    - '------INS Operator@@|| @TO@ InfixExpression@@Character.isIdentifierIgnorable(s.charAt(i))
+      || !Character.isJavaIdentifierPart(s.charAt(i)) '
+  files_cnt: '1'
+  repair_actions_cnt: 1

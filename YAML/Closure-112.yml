@@ -1,0 +1,271 @@
+1 bug_id: Closure-112
+2 src folder:
+  name of src folder: src
+  number of files: 444
+  number of java files: 428
+  number of src classes: 1428
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testTemplatized11
+  - com.google.javascript.jscomp.TypeCheckTest#testIssue1058
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 8324
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.864
+  purification via delta debugging: 839.02
+  repair actions extraction: 2.212
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue1058: 6065
+    com.google.javascript.jscomp.TypeCheckTest#testTemplatized11: 5874
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue1058: 5900
+    com.google.javascript.jscomp.TypeCheckTest#testTemplatized11: 5785
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 8
+  covDel: 2
+  cov_patch_lines: 10
+  delta_patch_lines: 8
+  oriAdd: 8
+  oriDel: 2
+  ori_patch_lines: 10
+  purAdd: 7
+  purDel: 1
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 2
+  original: 2
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 25
+  failFail: 0
+  passed: 2
+  total: 27
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_112/src/com/google/javascript/jscomp/TypeInference.java\t\
+    2020-10-23 14:50:52.756375993 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_112/purify/patch/com/google/javascript/jscomp/TypeInference.java\t\
+    2020-10-23 14:50:52.756375993 -0400\n@@ -1189,9 +1189,15 @@\n     }\n \n     //\
+    \ Try to infer the template types\n-    Map<TemplateType, JSType> inferred = \n\
+    -        inferTemplateTypesFromParameters(fnType, n);\n+    Map<TemplateType,\
+    \ JSType> inferred = Maps.filterKeys(\n+        inferTemplateTypesFromParameters(fnType,\
+    \ n),\n+        new Predicate<TemplateType>() {\n \n+          @Override\n+  \
+    \        public boolean apply(TemplateType key) {\n+            return keys.contains(key);\n\
+    +          }}\n+        );\n \n     // Replace all template types. If we couldn't\
+    \ find a replacement, we\n     // replace it with UNKNOWN."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_112/src/com/google/javascript/jscomp/TypeInference.java\t\
+    2020-10-23 15:05:29.757756430 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_112/purify/purified/com/google/javascript/jscomp/TypeInference.java\t\
+    2020-10-23 15:05:29.757756430 -0400\n@@ -1189,9 +1189,15 @@\n     }\n \n     //\
+    \ Try to infer the template types\n-    Map<TemplateType, JSType> inferred = \n\
+    \         inferTemplateTypesFromParameters(fnType, n);\n+    Map<TemplateType,\
+    \ JSType> inferred = Maps.filterKeys(\n+        inferTemplateTypesFromParameters(fnType,\
+    \ n),\n+        new Predicate<TemplateType>() {\n \n+          public boolean\
+    \ apply(TemplateType key) {\n+            return keys.contains(key);\n+      \
+    \    }}\n+        );\n \n     // Replace all template types. If we couldn't find\
+    \ a replacement, we\n     // replace it with UNKNOWN."
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 11
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeInference:
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD VariableDeclarationStatement@@Map<TemplateType,JSType> inferred=inferTemplateTypesFromParameters(fnType,n);
+      @TO@ Map<TemplateType,JSType> inferred=Maps.filterKeys(inferTemplateTypesFromParameters(fnType,n),new
+      Predicate<TemplateType>()
+    - '  @Override public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - '); '
+    - '---UPD VariableDeclarationFragment@@inferred=inferTemplateTypesFromParameters(fnType,n)
+      @TO@ inferred=Maps.filterKeys(inferTemplateTypesFromParameters(fnType,n),new
+      Predicate<TemplateType>()'
+    - '  @Override public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - ') '
+    - '------INS MethodInvocation@@Maps.filterKeys(inferTemplateTypesFromParameters(fnType,n),new
+      Predicate<TemplateType>()'
+    - '  @Override public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - ') @TO@ VariableDeclarationFragment@@inferred=inferTemplateTypesFromParameters(fnType,n) '
+    - '---------INS SimpleName@@Name:Maps @TO@ MethodInvocation@@Maps.filterKeys(inferTemplateTypesFromParameters(fnType,n),new
+      Predicate<TemplateType>()'
+    - '  @Override public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - ') '
+    - '---------INS SimpleName@@MethodName:filterKeys:[inferTemplateTypesFromParameters(fnType,n),
+      new Predicate<TemplateType>()'
+    - '  @Override public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - '] @TO@ MethodInvocation@@Maps.filterKeys(inferTemplateTypesFromParameters(fnType,n),new
+      Predicate<TemplateType>()'
+    - '  @Override public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - ') '
+    - '------------MOV MethodInvocation@@inferTemplateTypesFromParameters(fnType,n)
+      @TO@ SimpleName@@MethodName:filterKeys:[inferTemplateTypesFromParameters(fnType,n),
+      new Predicate<TemplateType>()'
+    - '  @Override public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - '] '
+    - '------------INS ClassInstanceCreation@@Predicate<TemplateType>[] @TO@ SimpleName@@MethodName:filterKeys:[inferTemplateTypesFromParameters(fnType,n),
+      new Predicate<TemplateType>()'
+    - '  @Override public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - '] '
+    - '---------------INS New@@new @TO@ ClassInstanceCreation@@Predicate<TemplateType>[] '
+    - '---------------INS ParameterizedType@@Predicate<TemplateType> @TO@ ClassInstanceCreation@@Predicate<TemplateType>[] '
+    - '------------------INS SimpleType@@Predicate @TO@ ParameterizedType@@Predicate<TemplateType> '
+    - '------------------INS SimpleType@@TemplateType @TO@ ParameterizedType@@Predicate<TemplateType> '
+    - '---------------INS AnonymousClassDeclaration@@AnonymousClass @TO@ ClassInstanceCreation@@Predicate<TemplateType>[] '
+    - '------------------INS MethodDeclaration@@public, @@boolean, MethodName:apply,
+      @@Argus:TemplateType+key+ @TO@ AnonymousClassDeclaration@@AnonymousClass '
+    - '---------------------INS Modifier@@public @TO@ MethodDeclaration@@public, @@boolean,
+      MethodName:apply, @@Argus:TemplateType+key+ '
+    - '---------------------INS PrimitiveType@@boolean @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:apply, @@Argus:TemplateType+key+ '
+    - '---------------------INS SimpleName@@MethodName:apply @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:apply, @@Argus:TemplateType+key+ '
+    - '---------------------INS SingleVariableDeclaration@@TemplateType key @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:apply, @@Argus:TemplateType+key+ '
+    - '------------------------INS SimpleType@@TemplateType @TO@ SingleVariableDeclaration@@TemplateType
+      key '
+    - '------------------------INS SimpleName@@key @TO@ SingleVariableDeclaration@@TemplateType
+      key '
+    - '---------------------INS ReturnStatement@@MethodInvocation:keys.contains(key)
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:apply, @@Argus:TemplateType+key+ '
+    - '------------------------INS MethodInvocation@@keys.contains(key) @TO@ ReturnStatement@@MethodInvocation:keys.contains(key) '
+    - '---------------------------INS SimpleName@@Name:keys @TO@ MethodInvocation@@keys.contains(key) '
+    - '---------------------------INS SimpleName@@MethodName:contains:[key] @TO@ MethodInvocation@@keys.contains(key) '
+    - '------------------------------INS SimpleName@@key @TO@ SimpleName@@MethodName:contains:[key] '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 11
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeInference:
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD VariableDeclarationStatement@@Map<TemplateType,JSType> inferred=inferTemplateTypesFromParameters(fnType,n);
+      @TO@ Map<TemplateType,JSType> inferred=Maps.filterKeys(inferTemplateTypesFromParameters(fnType,n),new
+      Predicate<TemplateType>()
+    - '  public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - '); '
+    - '---UPD VariableDeclarationFragment@@inferred=inferTemplateTypesFromParameters(fnType,n)
+      @TO@ inferred=Maps.filterKeys(inferTemplateTypesFromParameters(fnType,n),new
+      Predicate<TemplateType>()'
+    - '  public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - ') '
+    - '------INS MethodInvocation@@Maps.filterKeys(inferTemplateTypesFromParameters(fnType,n),new
+      Predicate<TemplateType>()'
+    - '  public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - ') @TO@ VariableDeclarationFragment@@inferred=inferTemplateTypesFromParameters(fnType,n) '
+    - '---------INS SimpleName@@Name:Maps @TO@ MethodInvocation@@Maps.filterKeys(inferTemplateTypesFromParameters(fnType,n),new
+      Predicate<TemplateType>()'
+    - '  public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - ') '
+    - '---------INS SimpleName@@MethodName:filterKeys:[inferTemplateTypesFromParameters(fnType,n),
+      new Predicate<TemplateType>()'
+    - '  public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - '] @TO@ MethodInvocation@@Maps.filterKeys(inferTemplateTypesFromParameters(fnType,n),new
+      Predicate<TemplateType>()'
+    - '  public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - ') '
+    - '------------INS MethodInvocation@@inferTemplateTypesFromParameters(fnType,n)
+      @TO@ SimpleName@@MethodName:filterKeys:[inferTemplateTypesFromParameters(fnType,n),
+      new Predicate<TemplateType>()'
+    - '  public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - '] '
+    - '---------------INS SimpleName@@MethodName:inferTemplateTypesFromParameters:[fnType,
+      n] @TO@ MethodInvocation@@inferTemplateTypesFromParameters(fnType,n) '
+    - '------------------INS SimpleName@@fnType @TO@ SimpleName@@MethodName:inferTemplateTypesFromParameters:[fnType,
+      n] '
+    - '------------------INS SimpleName@@n @TO@ SimpleName@@MethodName:inferTemplateTypesFromParameters:[fnType,
+      n] '
+    - '------------INS ClassInstanceCreation@@Predicate<TemplateType>[] @TO@ SimpleName@@MethodName:filterKeys:[inferTemplateTypesFromParameters(fnType,n),
+      new Predicate<TemplateType>()'
+    - '  public boolean apply(  TemplateType key)'
+    - '    return keys.contains(key)'
+    - '  '
+    - ''
+    - '] '
+    - '---------------INS New@@new @TO@ ClassInstanceCreation@@Predicate<TemplateType>[] '
+    - '---------------INS ParameterizedType@@Predicate<TemplateType> @TO@ ClassInstanceCreation@@Predicate<TemplateType>[] '
+    - '------------------INS SimpleType@@Predicate @TO@ ParameterizedType@@Predicate<TemplateType> '
+    - '------------------INS SimpleType@@TemplateType @TO@ ParameterizedType@@Predicate<TemplateType> '
+    - '---------------INS AnonymousClassDeclaration@@AnonymousClass @TO@ ClassInstanceCreation@@Predicate<TemplateType>[] '
+    - '------------------INS MethodDeclaration@@public, @@boolean, MethodName:apply,
+      @@Argus:TemplateType+key+ @TO@ AnonymousClassDeclaration@@AnonymousClass '
+    - '---------------------INS Modifier@@public @TO@ MethodDeclaration@@public, @@boolean,
+      MethodName:apply, @@Argus:TemplateType+key+ '
+    - '---------------------INS PrimitiveType@@boolean @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:apply, @@Argus:TemplateType+key+ '
+    - '---------------------INS SimpleName@@MethodName:apply @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:apply, @@Argus:TemplateType+key+ '
+    - '---------------------INS SingleVariableDeclaration@@TemplateType key @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:apply, @@Argus:TemplateType+key+ '
+    - '------------------------INS SimpleType@@TemplateType @TO@ SingleVariableDeclaration@@TemplateType
+      key '
+    - '------------------------INS SimpleName@@key @TO@ SingleVariableDeclaration@@TemplateType
+      key '
+    - '---------------------INS ReturnStatement@@MethodInvocation:keys.contains(key)
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:apply, @@Argus:TemplateType+key+ '
+    - '------------------------INS MethodInvocation@@keys.contains(key) @TO@ ReturnStatement@@MethodInvocation:keys.contains(key) '
+    - '---------------------------INS SimpleName@@Name:keys @TO@ MethodInvocation@@keys.contains(key) '
+    - '---------------------------INS SimpleName@@MethodName:contains:[key] @TO@ MethodInvocation@@keys.contains(key) '
+    - '------------------------------INS SimpleName@@key @TO@ SimpleName@@MethodName:contains:[key] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:inferTemplateTypesFromParameters(fnType,n)
+      @TO@ MethodDeclaration@@private, @@boolean, MethodName:inferTemplatedTypesForCall,
+      @@Argus:Node+n+FunctionType+fnType+ '
+    - '---MOV MethodInvocation@@inferTemplateTypesFromParameters(fnType,n) @TO@ ExpressionStatement@@MethodInvocation:inferTemplateTypesFromParameters(fnType,n) '
+  files_cnt: '1'
+  repair_actions_cnt: 2

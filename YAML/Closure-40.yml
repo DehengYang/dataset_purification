@@ -1,0 +1,214 @@
+1 bug_id: Closure-40
+2 src folder:
+  name of src folder: src
+  number of files: 409
+  number of java files: 395
+  number of src classes: 1322
+  number of test classes: 220
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.NameAnalyzerTest#testIssue284
+  - com.google.javascript.jscomp.IntegrationTest#testIssue284
+  failing tests:
+  - com.google.javascript.jscomp.NameAnalyzerTest
+  - com.google.javascript.jscomp.IntegrationTest
+  number of all test cases: 7389
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.975
+  purification via delta debugging: 232.562
+  repair actions extraction: 3.091
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.IntegrationTest#testIssue284: 4773
+    com.google.javascript.jscomp.NameAnalyzerTest#testIssue284: 4133
+  fixed:
+    com.google.javascript.jscomp.IntegrationTest#testIssue284: 4904
+    com.google.javascript.jscomp.NameAnalyzerTest#testIssue284: 3991
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 3
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 1
+  oriDel: 3
+  ori_patch_lines: 4
+  purAdd: 1
+  purDel: 3
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 0
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_40/src/com/google/javascript/jscomp/NameAnalyzer.java\t\
+    2020-10-22 12:16:14.986405724 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_40/purify/patch/com/google/javascript/jscomp/NameAnalyzer.java\t\
+    2020-10-22 12:16:14.986405724 -0400\n@@ -632,11 +632,9 @@\n         Node nameNode\
+    \ = n.getFirstChild();\n         NameInformation ns = createNameInformation(t,\
+    \ nameNode, n);\n         if (ns != null && ns.onlyAffectsClassDef) {\n-     \
+    \     JsName name = getName(ns.name, false);\n-          if (name != null) {\n\
+    +          JsName name = getName(ns.name, true);\n           refNodes.add(new\
+    \ ClassDefiningFunctionNode(\n               name, n, parent, parent.getParent()));\n\
+    -          }\n         }\n       }\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_40/src/com/google/javascript/jscomp/NameAnalyzer.java\t\
+    2020-10-22 12:20:42.346106812 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_40/purify/purified/com/google/javascript/jscomp/NameAnalyzer.java\t\
+    2020-10-22 12:20:42.346106812 -0400\n@@ -632,11 +632,9 @@\n         Node nameNode\
+    \ = n.getFirstChild();\n         NameInformation ns = createNameInformation(t,\
+    \ nameNode, n);\n         if (ns != null && ns.onlyAffectsClassDef) {\n-     \
+    \     JsName name = getName(ns.name, false);\n-          if (name != null) {\n\
+    +          JsName name = getName(ns.name, true);\n           refNodes.add(new\
+    \ ClassDefiningFunctionNode(\n               name, n, parent, parent.getParent()));\n\
+    -          }\n         }\n       }\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NameAnalyzer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:n.isAssign() '
+    - '---DEL MethodInvocation@@n.isAssign() '
+    - '------DEL SimpleName@@Name:n '
+    - '------DEL SimpleName@@MethodName:isAssign:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@MethodInvocation:n.isCall() @TO@ MethodInvocation:n.isAssign() '
+    - '---MOV VariableDeclarationStatement@@Node nameNode=n.getFirstChild(); @TO@
+      IfStatement@@MethodInvocation:n.isCall() '
+    - '---MOV VariableDeclarationStatement@@NameInformation ns=createNameInformation(t,nameNode,n);
+      @TO@ IfStatement@@MethodInvocation:n.isCall() '
+    - '---MOV IfStatement@@InfixExpression:ns != null @TO@ IfStatement@@MethodInvocation:n.isCall() '
+    - '---UPD MethodInvocation@@n.isCall() @TO@ n.isAssign() '
+    - '------UPD SimpleName@@MethodName:isCall:[] @TO@ MethodName:isAssign:[] '
+    - '---UPD IfStatement@@InfixExpression:ns != null && ns.onlyAffectsClassDef @TO@
+      MethodInvocation:n.isCall() '
+    - '------INS MethodInvocation@@n.isCall() @TO@ IfStatement@@InfixExpression:ns
+      != null && ns.onlyAffectsClassDef '
+    - '---------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.isCall() '
+    - '---------INS SimpleName@@MethodName:isCall:[] @TO@ MethodInvocation@@n.isCall() '
+    - '------MOV VariableDeclarationStatement@@Node nameNode=n.getFirstChild(); @TO@
+      IfStatement@@InfixExpression:ns != null && ns.onlyAffectsClassDef '
+    - '------MOV VariableDeclarationStatement@@NameInformation ns=createNameInformation(t,nameNode,n);
+      @TO@ IfStatement@@InfixExpression:ns != null && ns.onlyAffectsClassDef '
+    - '------DEL VariableDeclarationStatement@@JsName name=getName(ns.name,false); '
+    - '---------DEL SimpleType@@JsName '
+    - '---------DEL VariableDeclarationFragment@@name=getName(ns.name,false) '
+    - '------------DEL SimpleName@@name '
+    - '------------DEL MethodInvocation@@getName(ns.name,false) '
+    - '---------------DEL SimpleName@@MethodName:getName:[ns.name, false] '
+    - '------------------DEL QualifiedName@@ns.name '
+    - '---------------------DEL SimpleName@@ns '
+    - '---------------------DEL SimpleName@@name '
+    - '------------------DEL BooleanLiteral@@false '
+    - '------UPD IfStatement@@InfixExpression:name != null @TO@ InfixExpression:ns
+      != null && ns.onlyAffectsClassDef '
+    - '---------MOV InfixExpression@@ns != null && ns.onlyAffectsClassDef @TO@ IfStatement@@InfixExpression:name
+      != null '
+    - '---------INS VariableDeclarationStatement@@JsName name=getName(ns.name,true);
+      @TO@ IfStatement@@InfixExpression:name != null '
+    - '------------INS SimpleType@@JsName @TO@ VariableDeclarationStatement@@JsName
+      name=getName(ns.name,true); '
+    - '------------INS VariableDeclarationFragment@@name=getName(ns.name,true) @TO@
+      VariableDeclarationStatement@@JsName name=getName(ns.name,true); '
+    - '---------------INS SimpleName@@name @TO@ VariableDeclarationFragment@@name=getName(ns.name,true) '
+    - '---------------INS MethodInvocation@@getName(ns.name,true) @TO@ VariableDeclarationFragment@@name=getName(ns.name,true) '
+    - '------------------INS SimpleName@@MethodName:getName:[ns.name, true] @TO@ MethodInvocation@@getName(ns.name,true) '
+    - '---------------------INS QualifiedName@@ns.name @TO@ SimpleName@@MethodName:getName:[ns.name,
+      true] '
+    - '------------------------INS SimpleName@@ns @TO@ QualifiedName@@ns.name '
+    - '------------------------INS SimpleName@@name @TO@ QualifiedName@@ns.name '
+    - '---------------------INS BooleanLiteral@@true @TO@ SimpleName@@MethodName:getName:[ns.name,
+      true] '
+    - '---------DEL InfixExpression@@name != null '
+    - '------------DEL SimpleName@@name '
+    - '------------DEL Operator@@!= '
+    - '------------DEL NullLiteral@@null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@MethodInvocation:n.isCall() @TO@ MethodDeclaration@@public,
+      @@void, MethodName:visit, @@Argus:NodeTraversal+t+Node+n+Node+parent+ '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NameAnalyzer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:n.isAssign() '
+    - '---DEL MethodInvocation@@n.isAssign() '
+    - '------DEL SimpleName@@Name:n '
+    - '------DEL SimpleName@@MethodName:isAssign:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@MethodInvocation:n.isCall() @TO@ MethodInvocation:n.isAssign() '
+    - '---MOV VariableDeclarationStatement@@Node nameNode=n.getFirstChild(); @TO@
+      IfStatement@@MethodInvocation:n.isCall() '
+    - '---MOV VariableDeclarationStatement@@NameInformation ns=createNameInformation(t,nameNode,n);
+      @TO@ IfStatement@@MethodInvocation:n.isCall() '
+    - '---MOV IfStatement@@InfixExpression:ns != null @TO@ IfStatement@@MethodInvocation:n.isCall() '
+    - '---UPD MethodInvocation@@n.isCall() @TO@ n.isAssign() '
+    - '------UPD SimpleName@@MethodName:isCall:[] @TO@ MethodName:isAssign:[] '
+    - '---UPD IfStatement@@InfixExpression:ns != null && ns.onlyAffectsClassDef @TO@
+      MethodInvocation:n.isCall() '
+    - '------INS MethodInvocation@@n.isCall() @TO@ IfStatement@@InfixExpression:ns
+      != null && ns.onlyAffectsClassDef '
+    - '---------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.isCall() '
+    - '---------INS SimpleName@@MethodName:isCall:[] @TO@ MethodInvocation@@n.isCall() '
+    - '------MOV VariableDeclarationStatement@@Node nameNode=n.getFirstChild(); @TO@
+      IfStatement@@InfixExpression:ns != null && ns.onlyAffectsClassDef '
+    - '------MOV VariableDeclarationStatement@@NameInformation ns=createNameInformation(t,nameNode,n);
+      @TO@ IfStatement@@InfixExpression:ns != null && ns.onlyAffectsClassDef '
+    - '------DEL VariableDeclarationStatement@@JsName name=getName(ns.name,false); '
+    - '---------DEL SimpleType@@JsName '
+    - '---------DEL VariableDeclarationFragment@@name=getName(ns.name,false) '
+    - '------------DEL SimpleName@@name '
+    - '------------DEL MethodInvocation@@getName(ns.name,false) '
+    - '---------------DEL SimpleName@@MethodName:getName:[ns.name, false] '
+    - '------------------DEL QualifiedName@@ns.name '
+    - '---------------------DEL SimpleName@@ns '
+    - '---------------------DEL SimpleName@@name '
+    - '------------------DEL BooleanLiteral@@false '
+    - '------UPD IfStatement@@InfixExpression:name != null @TO@ InfixExpression:ns
+      != null && ns.onlyAffectsClassDef '
+    - '---------MOV InfixExpression@@ns != null && ns.onlyAffectsClassDef @TO@ IfStatement@@InfixExpression:name
+      != null '
+    - '---------INS VariableDeclarationStatement@@JsName name=getName(ns.name,true);
+      @TO@ IfStatement@@InfixExpression:name != null '
+    - '------------INS SimpleType@@JsName @TO@ VariableDeclarationStatement@@JsName
+      name=getName(ns.name,true); '
+    - '------------INS VariableDeclarationFragment@@name=getName(ns.name,true) @TO@
+      VariableDeclarationStatement@@JsName name=getName(ns.name,true); '
+    - '---------------INS SimpleName@@name @TO@ VariableDeclarationFragment@@name=getName(ns.name,true) '
+    - '---------------INS MethodInvocation@@getName(ns.name,true) @TO@ VariableDeclarationFragment@@name=getName(ns.name,true) '
+    - '------------------INS SimpleName@@MethodName:getName:[ns.name, true] @TO@ MethodInvocation@@getName(ns.name,true) '
+    - '---------------------INS QualifiedName@@ns.name @TO@ SimpleName@@MethodName:getName:[ns.name,
+      true] '
+    - '------------------------INS SimpleName@@ns @TO@ QualifiedName@@ns.name '
+    - '------------------------INS SimpleName@@name @TO@ QualifiedName@@ns.name '
+    - '---------------------INS BooleanLiteral@@true @TO@ SimpleName@@MethodName:getName:[ns.name,
+      true] '
+    - '---------DEL InfixExpression@@name != null '
+    - '------------DEL SimpleName@@name '
+    - '------------DEL Operator@@!= '
+    - '------------DEL NullLiteral@@null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@MethodInvocation:n.isCall() @TO@ MethodDeclaration@@public,
+      @@void, MethodName:visit, @@Argus:NodeTraversal+t+Node+n+Node+parent+ '
+  files_cnt: '1'
+  repair_actions_cnt: 3

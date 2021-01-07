@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_27/src/org/mockito/internal/util/MockUtil.java	2020-10-24 20:03:48.173913539 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_27/purify/purified/org/mockito/internal/util/MockUtil.java	2020-10-24 20:03:48.173913539 -0400
+@@ -61,8 +61,7 @@
+ 
+     public <T> void resetMock(T mock) {
+         MockHandlerInterface<T> oldMockHandler = getMockHandler(mock);
+-        MockHandler<T> newMockHandler = new MockHandler<T>(oldMockHandler);
+-        MethodInterceptorFilter newFilter = new MethodInterceptorFilter(newMockHandler, (MockSettingsImpl) org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS));
++        MethodInterceptorFilter newFilter = newMethodInterceptorFilter(oldMockHandler.getMockSettings());
+         ((Factory) mock).setCallback(0, newFilter);
+     }
+ 

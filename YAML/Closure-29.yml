@@ -1,0 +1,243 @@
+1 bug_id: Closure-29
+2 src folder:
+  name of src folder: src
+  number of files: 417
+  number of java files: 401
+  number of src classes: 1346
+  number of test classes: 222
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.InlineObjectLiteralsTest#testIssue724
+  - com.google.javascript.jscomp.InlineObjectLiteralsTest#testObject12
+  - com.google.javascript.jscomp.InlineObjectLiteralsTest#testObject22
+  - com.google.javascript.jscomp.InlineObjectLiteralsTest#testObject10
+  - com.google.javascript.jscomp.IntegrationTest#testIssue724
+  failing tests:
+  - com.google.javascript.jscomp.InlineObjectLiteralsTest
+  - com.google.javascript.jscomp.IntegrationTest
+  number of all test cases: 7514
+  number of failing test cases: 5
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.97
+  purification via delta debugging: 598.523
+  repair actions extraction: 0.931
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.InlineObjectLiteralsTest#testIssue724: 3688
+    com.google.javascript.jscomp.InlineObjectLiteralsTest#testObject10: 3839
+    com.google.javascript.jscomp.InlineObjectLiteralsTest#testObject12: 3735
+    com.google.javascript.jscomp.InlineObjectLiteralsTest#testObject22: 3917
+    com.google.javascript.jscomp.IntegrationTest#testIssue724: 9341
+  fixed:
+    com.google.javascript.jscomp.InlineObjectLiteralsTest#testIssue724: 3349
+    com.google.javascript.jscomp.InlineObjectLiteralsTest#testObject10: 3788
+    com.google.javascript.jscomp.InlineObjectLiteralsTest#testObject12: 3392
+    com.google.javascript.jscomp.InlineObjectLiteralsTest#testObject22: 3765
+    com.google.javascript.jscomp.IntegrationTest#testIssue724: 9224
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 10
+  covDel: 0
+  cov_patch_lines: 10
+  delta_patch_lines: 10
+  oriAdd: 10
+  oriDel: 0
+  ori_patch_lines: 10
+  purAdd: 10
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 17
+  failFail: 7
+  passed: 0
+  total: 24
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_29/src/com/google/javascript/jscomp/InlineObjectLiterals.java\t\
+    2020-10-21 21:19:22.294283522 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_29/purify/patch/com/google/javascript/jscomp/InlineObjectLiterals.java\t\
+    2020-10-21 21:19:22.294283522 -0400\n@@ -154,6 +154,7 @@\n      */\n     private\
+    \ boolean isInlinableObject(List<Reference> refs) {\n       boolean ret = false;\n\
+    +      Set<String> validProperties = Sets.newHashSet();\n       for (Reference\
+    \ ref : refs) {\n         Node name = ref.getNode();\n         Node parent = ref.getParent();\n\
+    @@ -178,6 +179,14 @@\n           // We short-circuit this problem by bailing out\
+    \ if we see a reference\n           // to a property that isn't defined on the\
+    \ object literal. This\n           // isn't a perfect algorithm, but it should\
+    \ catch most cases.\n+          String propName = parent.getLastChild().getString();\n\
+    +          if (!validProperties.contains(propName)) {\n+            if (NodeUtil.isVarOrSimpleAssignLhs(parent,\
+    \ gramps)) {\n+              validProperties.add(propName);\n+            } else\
+    \ {\n+              return false;\n+            }\n+          }\n           continue;\n\
+    \         }\n \n@@ -213,6 +222,7 @@\n             return false;\n           }\n\
+    \ \n+          validProperties.add(child.getString());\n \n           Node childVal\
+    \ = child.getFirstChild();\n           // Check if childVal is the parent of any\
+    \ of the passed in"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_29/src/com/google/javascript/jscomp/InlineObjectLiterals.java\t\
+    2020-10-21 21:30:00.312726095 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_29/purify/purified/com/google/javascript/jscomp/InlineObjectLiterals.java\t\
+    2020-10-21 21:30:00.308725979 -0400\n@@ -154,6 +154,7 @@\n      */\n     private\
+    \ boolean isInlinableObject(List<Reference> refs) {\n       boolean ret = false;\n\
+    +      Set<String> validProperties = Sets.newHashSet();\n       for (Reference\
+    \ ref : refs) {\n         Node name = ref.getNode();\n         Node parent = ref.getParent();\n\
+    @@ -178,6 +179,14 @@\n           // We short-circuit this problem by bailing out\
+    \ if we see a reference\n           // to a property that isn't defined on the\
+    \ object literal. This\n           // isn't a perfect algorithm, but it should\
+    \ catch most cases.\n+          String propName = parent.getLastChild().getString();\n\
+    +          if (!validProperties.contains(propName)) {\n+            if (NodeUtil.isVarOrSimpleAssignLhs(parent,\
+    \ gramps)) {\n+              validProperties.add(propName);\n+            } else\
+    \ {\n+              return false;\n+            }\n+          }\n           continue;\n\
+    \         }\n \n@@ -213,6 +222,7 @@\n             return false;\n           }\n\
+    \ \n+          validProperties.add(child.getString());\n \n           Node childVal\
+    \ = child.getFirstChild();\n           // Check if childVal is the parent of any\
+    \ of the passed in"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/InlineObjectLiterals:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Set<String> validProperties=Sets.newHashSet();
+      @TO@ MethodDeclaration@@private, @@boolean, MethodName:isInlinableObject, @@Argus:List<Reference>+refs+ '
+    - '---INS ParameterizedType@@Set<String> @TO@ VariableDeclarationStatement@@Set<String>
+      validProperties=Sets.newHashSet(); '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<String> '
+    - '------INS SimpleType@@String @TO@ ParameterizedType@@Set<String> '
+    - '---INS VariableDeclarationFragment@@validProperties=Sets.newHashSet() @TO@
+      VariableDeclarationStatement@@Set<String> validProperties=Sets.newHashSet(); '
+    - '------INS SimpleName@@validProperties @TO@ VariableDeclarationFragment@@validProperties=Sets.newHashSet() '
+    - '------INS MethodInvocation@@Sets.newHashSet() @TO@ VariableDeclarationFragment@@validProperties=Sets.newHashSet() '
+    - '---------INS SimpleName@@Name:Sets @TO@ MethodInvocation@@Sets.newHashSet() '
+    - '---------INS SimpleName@@MethodName:newHashSet:[] @TO@ MethodInvocation@@Sets.newHashSet() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@String propName=parent.getLastChild().getString();
+      @TO@ IfStatement@@MethodInvocation:parent.isGetProp() '
+    - '---INS SimpleType@@String @TO@ VariableDeclarationStatement@@String propName=parent.getLastChild().getString(); '
+    - '---INS VariableDeclarationFragment@@propName=parent.getLastChild().getString()
+      @TO@ VariableDeclarationStatement@@String propName=parent.getLastChild().getString(); '
+    - '------INS SimpleName@@propName @TO@ VariableDeclarationFragment@@propName=parent.getLastChild().getString() '
+    - '------INS MethodInvocation@@parent.getLastChild().getString() @TO@ VariableDeclarationFragment@@propName=parent.getLastChild().getString() '
+    - '---------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.getLastChild().getString() '
+    - '---------INS MethodInvocation@@MethodName:getLastChild:[] @TO@ MethodInvocation@@parent.getLastChild().getString() '
+    - '---------INS SimpleName@@MethodName:getString:[] @TO@ MethodInvocation@@parent.getLastChild().getString() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!validProperties.contains(propName) @TO@
+      IfStatement@@MethodInvocation:parent.isGetProp() '
+    - '---INS PrefixExpression@@!validProperties.contains(propName) @TO@ IfStatement@@PrefixExpression:!validProperties.contains(propName) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!validProperties.contains(propName) '
+    - '------INS MethodInvocation@@validProperties.contains(propName) @TO@ PrefixExpression@@!validProperties.contains(propName) '
+    - '---------INS SimpleName@@Name:validProperties @TO@ MethodInvocation@@validProperties.contains(propName) '
+    - '---------INS SimpleName@@MethodName:contains:[propName] @TO@ MethodInvocation@@validProperties.contains(propName) '
+    - '------------INS SimpleName@@propName @TO@ SimpleName@@MethodName:contains:[propName] '
+    - '---INS IfStatement@@MethodInvocation:NodeUtil.isVarOrSimpleAssignLhs(parent,gramps)
+      @TO@ IfStatement@@PrefixExpression:!validProperties.contains(propName) '
+    - '------INS MethodInvocation@@NodeUtil.isVarOrSimpleAssignLhs(parent,gramps)
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isVarOrSimpleAssignLhs(parent,gramps) '
+    - '---------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isVarOrSimpleAssignLhs(parent,gramps) '
+    - '---------INS SimpleName@@MethodName:isVarOrSimpleAssignLhs:[parent, gramps]
+      @TO@ MethodInvocation@@NodeUtil.isVarOrSimpleAssignLhs(parent,gramps) '
+    - '------------INS SimpleName@@parent @TO@ SimpleName@@MethodName:isVarOrSimpleAssignLhs:[parent,
+      gramps] '
+    - '------------INS SimpleName@@gramps @TO@ SimpleName@@MethodName:isVarOrSimpleAssignLhs:[parent,
+      gramps] '
+    - '------INS ExpressionStatement@@MethodInvocation:validProperties.add(propName)
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isVarOrSimpleAssignLhs(parent,gramps) '
+    - '---------INS MethodInvocation@@validProperties.add(propName) @TO@ ExpressionStatement@@MethodInvocation:validProperties.add(propName) '
+    - '------------INS SimpleName@@Name:validProperties @TO@ MethodInvocation@@validProperties.add(propName) '
+    - '------------INS SimpleName@@MethodName:add:[propName] @TO@ MethodInvocation@@validProperties.add(propName) '
+    - '---------------INS SimpleName@@propName @TO@ SimpleName@@MethodName:add:[propName] '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@MethodInvocation:NodeUtil.isVarOrSimpleAssignLhs(parent,gramps) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:validProperties.add(child.getString())
+      @TO@ ForStatement@@[Node child=val.getFirstChild()];child != null; [child=child.getNext()] '
+    - '---INS MethodInvocation@@validProperties.add(child.getString()) @TO@ ExpressionStatement@@MethodInvocation:validProperties.add(child.getString()) '
+    - '------INS SimpleName@@Name:validProperties @TO@ MethodInvocation@@validProperties.add(child.getString()) '
+    - '------INS SimpleName@@MethodName:add:[child.getString()] @TO@ MethodInvocation@@validProperties.add(child.getString()) '
+    - '---------INS MethodInvocation@@child.getString() @TO@ SimpleName@@MethodName:add:[child.getString()] '
+    - '------------INS SimpleName@@Name:child @TO@ MethodInvocation@@child.getString() '
+    - '------------INS SimpleName@@MethodName:getString:[] @TO@ MethodInvocation@@child.getString() '
+  files_cnt: '1'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/InlineObjectLiterals:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Set<String> validProperties=Sets.newHashSet();
+      @TO@ MethodDeclaration@@private, @@boolean, MethodName:isInlinableObject, @@Argus:List<Reference>+refs+ '
+    - '---INS ParameterizedType@@Set<String> @TO@ VariableDeclarationStatement@@Set<String>
+      validProperties=Sets.newHashSet(); '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<String> '
+    - '------INS SimpleType@@String @TO@ ParameterizedType@@Set<String> '
+    - '---INS VariableDeclarationFragment@@validProperties=Sets.newHashSet() @TO@
+      VariableDeclarationStatement@@Set<String> validProperties=Sets.newHashSet(); '
+    - '------INS SimpleName@@validProperties @TO@ VariableDeclarationFragment@@validProperties=Sets.newHashSet() '
+    - '------INS MethodInvocation@@Sets.newHashSet() @TO@ VariableDeclarationFragment@@validProperties=Sets.newHashSet() '
+    - '---------INS SimpleName@@Name:Sets @TO@ MethodInvocation@@Sets.newHashSet() '
+    - '---------INS SimpleName@@MethodName:newHashSet:[] @TO@ MethodInvocation@@Sets.newHashSet() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@String propName=parent.getLastChild().getString();
+      @TO@ IfStatement@@MethodInvocation:parent.isGetProp() '
+    - '---INS SimpleType@@String @TO@ VariableDeclarationStatement@@String propName=parent.getLastChild().getString(); '
+    - '---INS VariableDeclarationFragment@@propName=parent.getLastChild().getString()
+      @TO@ VariableDeclarationStatement@@String propName=parent.getLastChild().getString(); '
+    - '------INS SimpleName@@propName @TO@ VariableDeclarationFragment@@propName=parent.getLastChild().getString() '
+    - '------INS MethodInvocation@@parent.getLastChild().getString() @TO@ VariableDeclarationFragment@@propName=parent.getLastChild().getString() '
+    - '---------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.getLastChild().getString() '
+    - '---------INS MethodInvocation@@MethodName:getLastChild:[] @TO@ MethodInvocation@@parent.getLastChild().getString() '
+    - '---------INS SimpleName@@MethodName:getString:[] @TO@ MethodInvocation@@parent.getLastChild().getString() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!validProperties.contains(propName) @TO@
+      IfStatement@@MethodInvocation:parent.isGetProp() '
+    - '---INS PrefixExpression@@!validProperties.contains(propName) @TO@ IfStatement@@PrefixExpression:!validProperties.contains(propName) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!validProperties.contains(propName) '
+    - '------INS MethodInvocation@@validProperties.contains(propName) @TO@ PrefixExpression@@!validProperties.contains(propName) '
+    - '---------INS SimpleName@@Name:validProperties @TO@ MethodInvocation@@validProperties.contains(propName) '
+    - '---------INS SimpleName@@MethodName:contains:[propName] @TO@ MethodInvocation@@validProperties.contains(propName) '
+    - '------------INS SimpleName@@propName @TO@ SimpleName@@MethodName:contains:[propName] '
+    - '---INS IfStatement@@MethodInvocation:NodeUtil.isVarOrSimpleAssignLhs(parent,gramps)
+      @TO@ IfStatement@@PrefixExpression:!validProperties.contains(propName) '
+    - '------INS MethodInvocation@@NodeUtil.isVarOrSimpleAssignLhs(parent,gramps)
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isVarOrSimpleAssignLhs(parent,gramps) '
+    - '---------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isVarOrSimpleAssignLhs(parent,gramps) '
+    - '---------INS SimpleName@@MethodName:isVarOrSimpleAssignLhs:[parent, gramps]
+      @TO@ MethodInvocation@@NodeUtil.isVarOrSimpleAssignLhs(parent,gramps) '
+    - '------------INS SimpleName@@parent @TO@ SimpleName@@MethodName:isVarOrSimpleAssignLhs:[parent,
+      gramps] '
+    - '------------INS SimpleName@@gramps @TO@ SimpleName@@MethodName:isVarOrSimpleAssignLhs:[parent,
+      gramps] '
+    - '------INS ExpressionStatement@@MethodInvocation:validProperties.add(propName)
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isVarOrSimpleAssignLhs(parent,gramps) '
+    - '---------INS MethodInvocation@@validProperties.add(propName) @TO@ ExpressionStatement@@MethodInvocation:validProperties.add(propName) '
+    - '------------INS SimpleName@@Name:validProperties @TO@ MethodInvocation@@validProperties.add(propName) '
+    - '------------INS SimpleName@@MethodName:add:[propName] @TO@ MethodInvocation@@validProperties.add(propName) '
+    - '---------------INS SimpleName@@propName @TO@ SimpleName@@MethodName:add:[propName] '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@MethodInvocation:NodeUtil.isVarOrSimpleAssignLhs(parent,gramps) '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:validProperties.add(child.getString())
+      @TO@ ForStatement@@[Node child=val.getFirstChild()];child != null; [child=child.getNext()] '
+    - '---INS MethodInvocation@@validProperties.add(child.getString()) @TO@ ExpressionStatement@@MethodInvocation:validProperties.add(child.getString()) '
+    - '------INS SimpleName@@Name:validProperties @TO@ MethodInvocation@@validProperties.add(child.getString()) '
+    - '------INS SimpleName@@MethodName:add:[child.getString()] @TO@ MethodInvocation@@validProperties.add(child.getString()) '
+    - '---------INS MethodInvocation@@child.getString() @TO@ SimpleName@@MethodName:add:[child.getString()] '
+    - '------------INS SimpleName@@Name:child @TO@ MethodInvocation@@child.getString() '
+    - '------------INS SimpleName@@MethodName:getString:[] @TO@ MethodInvocation@@child.getString() '
+  files_cnt: '1'
+  repair_actions_cnt: 4

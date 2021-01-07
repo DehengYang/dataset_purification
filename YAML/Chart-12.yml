@@ -1,0 +1,97 @@
+1 bug_id: Chart-12
+2 src folder:
+  name of src folder: source
+  number of files: 651
+  number of java files: 578
+  number of src classes: 604
+  number of test classes: 327
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.plot.junit.MultiplePiePlotTests#testConstructor
+  failing tests:
+  - org.jfree.chart.plot.junit.MultiplePiePlotTests
+  number of all test cases: 1807
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 86.337
+  repair actions extraction: 1.861
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.plot.junit.MultiplePiePlotTests#testConstructor: 555
+  fixed:
+    org.jfree.chart.plot.junit.MultiplePiePlotTests#testConstructor: 587
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 1
+  total: 1
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_12/source/org/jfree/chart/plot/MultiplePiePlot.java\t\
+    2020-10-22 00:34:28.104889388 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_12/purify/patch/org/jfree/chart/plot/MultiplePiePlot.java\t\
+    2020-10-22 00:34:28.100889273 -0400\n@@ -142,7 +142,7 @@\n      */\n     public\
+    \ MultiplePiePlot(CategoryDataset dataset) {\n         super();\n-        this.dataset\
+    \ = dataset;\n+        setDataset(dataset);\n         PiePlot piePlot = new PiePlot(null);\n\
+    \         this.pieChart = new JFreeChart(piePlot);\n         this.pieChart.removeLegend();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_12/source/org/jfree/chart/plot/MultiplePiePlot.java\t\
+    2020-10-22 00:36:12.655912996 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_12/purify/purified/org/jfree/chart/plot/MultiplePiePlot.java\t\
+    2020-10-22 00:36:12.655912996 -0400\n@@ -143,6 +143,7 @@\n     public MultiplePiePlot(CategoryDataset\
+    \ dataset) {\n         super();\n         this.dataset = dataset;\n+        setDataset(dataset);\n\
+    \         PiePlot piePlot = new PiePlot(null);\n         this.pieChart = new JFreeChart(piePlot);\n\
+    \         this.pieChart.removeLegend();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/plot/MultiplePiePlot:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:this.dataset=dataset @TO@ MethodInvocation:setDataset(dataset) '
+    - '---INS MethodInvocation@@setDataset(dataset) @TO@ ExpressionStatement@@Assignment:this.dataset=dataset '
+    - '------INS SimpleName@@MethodName:setDataset:[dataset] @TO@ MethodInvocation@@setDataset(dataset) '
+    - '---------INS SimpleName@@dataset @TO@ SimpleName@@MethodName:setDataset:[dataset] '
+    - '---DEL Assignment@@this.dataset=dataset '
+    - '------DEL FieldAccess@@this.dataset '
+    - '---------DEL ThisExpression@@this '
+    - '---------DEL SimpleName@@dataset '
+    - '------DEL Operator@@= '
+    - '------DEL SimpleName@@dataset '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/plot/MultiplePiePlot:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:setDataset(dataset) @TO@ MethodDeclaration@@public,
+      @@=CONSTRUCTOR=, MethodName:MultiplePiePlot, @@Argus:CategoryDataset+dataset+ '
+    - '---INS MethodInvocation@@setDataset(dataset) @TO@ ExpressionStatement@@MethodInvocation:setDataset(dataset) '
+    - '------INS SimpleName@@MethodName:setDataset:[dataset] @TO@ MethodInvocation@@setDataset(dataset) '
+    - '---------INS SimpleName@@dataset @TO@ SimpleName@@MethodName:setDataset:[dataset] '
+  repair_actions_cnt: 1

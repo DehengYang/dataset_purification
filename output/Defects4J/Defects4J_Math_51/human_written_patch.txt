@@ -1,0 +1,23 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_51/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_51/fixed-version/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_51/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java	2020-03-01 00:19:11.513973898 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_51/fixed-version/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java	2020-03-01 00:19:15.150145234 -0800
+@@ -182,10 +182,19 @@
+                 case PEGASUS:
+                     f0 *= f1 / (f1 + fx);
+                     break;
++                case REGULA_FALSI:
++                    if (x == x1) {
++                        final double delta = FastMath.max(rtol * FastMath.abs(x1),
++                                                          atol);
+                         // Update formula cannot make any progress: Update the
+                         // search interval.
++                        x0 = 0.5 * (x0 + x1 - delta);
++                        f0 = computeObjectiveValue(x0);
++                    }
++                    break;
+                 default:
+                     // Should never happen.
++                    throw new MathInternalError();
+                 }
+             }
+             // Update from [x0, x1] to [x0, x].

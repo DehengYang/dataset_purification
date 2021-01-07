@@ -1,0 +1,103 @@
+1 bug_id: Closure-62
+2 src folder:
+  name of src folder: src
+  number of files: 409
+  number of java files: 396
+  number of src classes: 1280
+  number of test classes: 211
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.LightweightMessageFormatterTest#testFormatErrorSpaceEndOfLine1
+  - com.google.javascript.jscomp.LightweightMessageFormatterTest#testFormatErrorSpaceEndOfLine2
+  failing tests:
+  - com.google.javascript.jscomp.LightweightMessageFormatterTest
+  number of all test cases: 7117
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.452
+  purification via delta debugging: 168.872
+  repair actions extraction: 0.8
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.LightweightMessageFormatterTest#testFormatErrorSpaceEndOfLine1: 74
+    com.google.javascript.jscomp.LightweightMessageFormatterTest#testFormatErrorSpaceEndOfLine2: 74
+  fixed:
+    com.google.javascript.jscomp.LightweightMessageFormatterTest#testFormatErrorSpaceEndOfLine1: 80
+    com.google.javascript.jscomp.LightweightMessageFormatterTest#testFormatErrorSpaceEndOfLine2: 80
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_62/src/com/google/javascript/jscomp/LightweightMessageFormatter.java\t\
+    2020-10-23 07:54:33.865186118 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_62/purify/patch/com/google/javascript/jscomp/LightweightMessageFormatter.java\t\
+    2020-10-23 07:54:33.865186118 -0400\n@@ -95,7 +95,7 @@\n       // charno == sourceExpert.length()\
+    \ means something is missing\n       // at the end of the line\n       if (excerpt.equals(LINE)\n\
+    -          && 0 <= charno && charno < sourceExcerpt.length()) {\n+          &&\
+    \ 0 <= charno && charno <= sourceExcerpt.length()) {\n         for (int i = 0;\
+    \ i < charno; i++) {\n           char c = sourceExcerpt.charAt(i);\n         \
+    \  if (Character.isWhitespace(c)) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_62/src/com/google/javascript/jscomp/LightweightMessageFormatter.java\t\
+    2020-10-23 07:57:44.198696602 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_62/purify/purified/com/google/javascript/jscomp/LightweightMessageFormatter.java\t\
+    2020-10-23 07:57:44.198696602 -0400\n@@ -95,7 +95,7 @@\n       // charno == sourceExpert.length()\
+    \ means something is missing\n       // at the end of the line\n       if (excerpt.equals(LINE)\n\
+    -          && 0 <= charno && charno < sourceExcerpt.length()) {\n+          &&\
+    \ 0 <= charno && charno <= sourceExcerpt.length()) {\n         for (int i = 0;\
+    \ i < charno; i++) {\n           char c = sourceExcerpt.charAt(i);\n         \
+    \  if (Character.isWhitespace(c)) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/LightweightMessageFormatter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:excerpt.equals(LINE) && 0 <= charno && charno
+      < sourceExcerpt.length() @TO@ InfixExpression:excerpt.equals(LINE) && 0 <= charno
+      && charno <= sourceExcerpt.length() '
+    - '---UPD InfixExpression@@excerpt.equals(LINE) && 0 <= charno && charno < sourceExcerpt.length()
+      @TO@ excerpt.equals(LINE) && 0 <= charno && charno <= sourceExcerpt.length() '
+    - '------UPD InfixExpression@@charno < sourceExcerpt.length() @TO@ charno <= sourceExcerpt.length() '
+    - '---------UPD Operator@@< @TO@ <= '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/LightweightMessageFormatter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:excerpt.equals(LINE) && 0 <= charno && charno
+      < sourceExcerpt.length() @TO@ InfixExpression:excerpt.equals(LINE) && 0 <= charno
+      && charno <= sourceExcerpt.length() '
+    - '---UPD InfixExpression@@excerpt.equals(LINE) && 0 <= charno && charno < sourceExcerpt.length()
+      @TO@ excerpt.equals(LINE) && 0 <= charno && charno <= sourceExcerpt.length() '
+    - '------UPD InfixExpression@@charno < sourceExcerpt.length() @TO@ charno <= sourceExcerpt.length() '
+    - '---------UPD Operator@@< @TO@ <= '
+  files_cnt: '1'
+  repair_actions_cnt: 1

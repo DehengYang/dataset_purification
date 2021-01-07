@@ -1,0 +1,93 @@
+1 bug_id: Closure-102
+2 src folder:
+  name of src folder: src
+  number of files: 321
+  number of java files: 311
+  number of src classes: 994
+  number of test classes: 158
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CompilerRunnerTest#testIssue115
+  failing tests:
+  - com.google.javascript.jscomp.CompilerRunnerTest
+  number of all test cases: 4519
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.005
+  purification via delta debugging: 149.381
+  repair actions extraction: 1.078
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CompilerRunnerTest#testIssue115: 6854
+  fixed:
+    com.google.javascript.jscomp.CompilerRunnerTest#testIssue115: 6664
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 1
+  passed: 1
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_102/src/com/google/javascript/jscomp/Normalize.java\t\
+    2020-10-23 13:03:41.434134945 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_102/purify/patch/com/google/javascript/jscomp/Normalize.java\t\
+    2020-10-23 13:03:41.434134945 -0400\n@@ -86,12 +86,12 @@\n   @Override\n   public\
+    \ void process(Node externs, Node root) {\n     NodeTraversal.traverse(compiler,\
+    \ root, this);\n+    removeDuplicateDeclarations(root);\n     if (MAKE_LOCAL_NAMES_UNIQUE)\
+    \ {\n       MakeDeclaredNamesUnique renamer = new MakeDeclaredNamesUnique();\n\
+    \       NodeTraversal t = new NodeTraversal(compiler, renamer);\n       t.traverseRoots(externs,\
+    \ root);\n     }\n-    removeDuplicateDeclarations(root);\n     new PropogateConstantAnnotations(compiler,\
+    \ assertOnChange)\n         .process(externs, root);\n   }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_102/src/com/google/javascript/jscomp/Normalize.java\t\
+    2020-10-23 13:06:37.107224489 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_102/purify/purified/com/google/javascript/jscomp/Normalize.java\t\
+    2020-10-23 13:06:37.107224489 -0400\n@@ -86,6 +86,7 @@\n   @Override\n   public\
+    \ void process(Node externs, Node root) {\n     NodeTraversal.traverse(compiler,\
+    \ root, this);\n+    removeDuplicateDeclarations(root);\n     if (MAKE_LOCAL_NAMES_UNIQUE)\
+    \ {\n       MakeDeclaredNamesUnique renamer = new MakeDeclaredNamesUnique();\n\
+    \       NodeTraversal t = new NodeTraversal(compiler, renamer);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 1
+  classes_cnt: '1'
+  com/google/javascript/jscomp/Normalize:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@SimpleName:MAKE_LOCAL_NAMES_UNIQUE @TO@ MethodDeclaration@@public,
+      @@void, MethodName:process, @@Argus:Node+externs+Node+root+ '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/Normalize:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:removeDuplicateDeclarations(root)
+      @TO@ MethodDeclaration@@public, @@void, MethodName:process, @@Argus:Node+externs+Node+root+ '
+    - '---INS MethodInvocation@@removeDuplicateDeclarations(root) @TO@ ExpressionStatement@@MethodInvocation:removeDuplicateDeclarations(root) '
+    - '------INS SimpleName@@MethodName:removeDuplicateDeclarations:[root] @TO@ MethodInvocation@@removeDuplicateDeclarations(root) '
+    - '---------INS SimpleName@@root @TO@ SimpleName@@MethodName:removeDuplicateDeclarations:[root] '
+  files_cnt: '1'
+  repair_actions_cnt: 1

@@ -1,0 +1,108 @@
+1 bug_id: Mockito-22
+2 src folder:
+  name of src folder: src
+  number of files: 344
+  number of java files: 306
+  number of src classes: 365
+  number of test classes: 266
+3 test (cases):
+  failing test cases:
+  - org.mockito.internal.matchers.EqualityTest#shouldKnowIfObjectsAreEqual
+  failing tests:
+  - org.mockito.internal.matchers.EqualityTest
+  number of all test cases: 1333
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.001
+  purification via delta debugging: 399.202
+  repair actions extraction: 0.696
+5 stmts covered by failing cases:
+  buggy:
+    org.mockito.internal.matchers.EqualityTest#shouldKnowIfObjectsAreEqual: 212
+  fixed:
+    org.mockito.internal.matchers.EqualityTest#shouldKnowIfObjectsAreEqual: 213
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 1
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 3
+  oriDel: 1
+  ori_patch_lines: 4
+  purAdd: 3
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 6
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_22/src/org/mockito/internal/matchers/Equality.java\t\
+    2020-10-24 13:21:23.162246158 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_22/purify/patch/org/mockito/internal/matchers/Equality.java\t\
+    2020-10-24 13:21:23.162246158 -0400\n@@ -10,7 +10,9 @@\n public class Equality\
+    \ {\n \n     public static boolean areEqual(Object o1, Object o2) {\n-       \
+    \ if (o1 == null || o2 == null) {\n+        if (o1 == o2 ) {\n+            return\
+    \ true;\n+\t} else if (o1 == null || o2 == null) {\n             return o1 ==\
+    \ null && o2 == null;\n         } else if (isArray(o1)) {\n             return\
+    \ isArray(o2) && areArraysEqual(o1, o2);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_22/src/org/mockito/internal/matchers/Equality.java\t\
+    2020-10-24 13:28:29.090186373 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_22/purify/purified/org/mockito/internal/matchers/Equality.java\t\
+    2020-10-24 13:28:29.090186373 -0400\n@@ -10,7 +10,9 @@\n public class Equality\
+    \ {\n \n     public static boolean areEqual(Object o1, Object o2) {\n-       \
+    \ if (o1 == null || o2 == null) {\n+        if (o1 == o2 ) {\n+            return\
+    \ true;\n+\t} else if (o1 == null || o2 == null) {\n             return o1 ==\
+    \ null && o2 == null;\n         } else if (isArray(o1)) {\n             return\
+    \ isArray(o2) && areArraysEqual(o1, o2);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/matchers/Equality:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:o1 == o2 @TO@ MethodDeclaration@@public, static,
+      @@boolean, MethodName:areEqual, @@Argus:Object+o1+Object+o2+ '
+    - '---INS InfixExpression@@o1 == o2 @TO@ IfStatement@@InfixExpression:o1 == o2 '
+    - '------INS SimpleName@@o1 @TO@ InfixExpression@@o1 == o2 '
+    - '------INS Operator@@== @TO@ InfixExpression@@o1 == o2 '
+    - '------INS SimpleName@@o2 @TO@ InfixExpression@@o1 == o2 '
+    - '---MOV IfStatement@@InfixExpression:o1 == null || o2 == null @TO@ IfStatement@@InfixExpression:o1
+      == o2 '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:o1
+      == o2 '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/matchers/Equality:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:o1 == o2 @TO@ MethodDeclaration@@public, static,
+      @@boolean, MethodName:areEqual, @@Argus:Object+o1+Object+o2+ '
+    - '---INS InfixExpression@@o1 == o2 @TO@ IfStatement@@InfixExpression:o1 == o2 '
+    - '------INS SimpleName@@o1 @TO@ InfixExpression@@o1 == o2 '
+    - '------INS Operator@@== @TO@ InfixExpression@@o1 == o2 '
+    - '------INS SimpleName@@o2 @TO@ InfixExpression@@o1 == o2 '
+    - '---MOV IfStatement@@InfixExpression:o1 == null || o2 == null @TO@ IfStatement@@InfixExpression:o1
+      == o2 '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:o1
+      == o2 '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  repair_actions_cnt: 1

@@ -1,0 +1,19 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_40/src/java/org/apache/commons/lang/StringUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_40/fixed-version/src/java/org/apache/commons/lang/StringUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_40/src/java/org/apache/commons/lang/StringUtils.java	2020-03-01 00:10:05.548249995 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_40/fixed-version/src/java/org/apache/commons/lang/StringUtils.java	2020-03-01 00:10:09.016413402 -0800
+@@ -1045,7 +1045,14 @@
+         if (str == null || searchStr == null) {
+             return false;
+         }
+-        return contains(str.toUpperCase(), searchStr.toUpperCase());
++        int len = searchStr.length();
++        int max = str.length() - len;
++        for (int i = 0; i <= max; i++) {
++            if (str.regionMatches(true, i, searchStr, 0, len)) {
++                return true;
++            }
++        }
++        return false;
+     }
+ 
+     // IndexOfAny chars

@@ -1,0 +1,161 @@
+1 bug_id: Lang-27
+2 src folder:
+  name of src folder: java
+  number of files: 102
+  number of java files: 90
+  number of src classes: 140
+  number of test classes: 91
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.math.NumberUtilsTest#testCreateNumber
+  failing tests:
+  - org.apache.commons.lang3.math.NumberUtilsTest
+  number of all test cases: 1785
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 9.0
+  purification via coverage: 0.842
+  purification via delta debugging: 62.276
+  repair actions extraction: 1.542
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.math.NumberUtilsTest#testCreateNumber: 216
+  fixed:
+    org.apache.commons.lang3.math.NumberUtilsTest#testCreateNumber: 217
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 4
+  covDel: 1
+  cov_patch_lines: 5
+  delta_patch_lines: 3
+  oriAdd: 4
+  oriDel: 1
+  ori_patch_lines: 5
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 1
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_27/src/main/java/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-21 01:14:35.628559236 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_27/purify/patch/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-21 01:14:35.628559236 -0400\n@@ -476,7 +476,7 @@\n         if (decPos\
+    \ > -1) {\n \n             if (expPos > -1) {\n-                if (expPos < decPos)\
+    \ {\n+                if (expPos < decPos || expPos > str.length()) {\n      \
+    \               throw new NumberFormatException(str + \" is not a valid number.\"\
+    );\n                 }\n                 dec = str.substring(decPos + 1, expPos);\n\
+    @@ -486,6 +486,9 @@\n             mant = str.substring(0, decPos);\n         }\
+    \ else {\n             if (expPos > -1) {\n+                if (expPos > str.length())\
+    \ {\n+                    throw new NumberFormatException(str + \" is not a valid\
+    \ number.\");\n+                }\n                 mant = str.substring(0, expPos);\n\
+    \             } else {\n                 mant = str;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_27/src/main/java/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-21 01:15:49.562694589 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_27/purify/purified/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-21 01:15:49.558694472 -0400\n@@ -486,6 +486,9 @@\n             mant =\
+    \ str.substring(0, decPos);\n         } else {\n             if (expPos > -1)\
+    \ {\n+                if (expPos > str.length()) {\n+                    throw\
+    \ new NumberFormatException(str + \" is not a valid number.\");\n+           \
+    \     }\n                 mant = str.substring(0, expPos);\n             } else\
+    \ {\n                 mant = str;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:expPos < decPos @TO@ InfixExpression:expPos
+      < decPos || expPos > str.length() '
+    - '---INS InfixExpression@@expPos < decPos || expPos > str.length() @TO@ IfStatement@@InfixExpression:expPos
+      < decPos '
+    - '------INS InfixExpression@@expPos < decPos @TO@ InfixExpression@@expPos < decPos
+      || expPos > str.length() '
+    - '---------MOV SimpleName@@expPos @TO@ InfixExpression@@expPos < decPos '
+    - '---------MOV Operator@@< @TO@ InfixExpression@@expPos < decPos '
+    - '---------MOV SimpleName@@decPos @TO@ InfixExpression@@expPos < decPos '
+    - '------INS Operator@@|| @TO@ InfixExpression@@expPos < decPos || expPos > str.length() '
+    - '------INS InfixExpression@@expPos > str.length() @TO@ InfixExpression@@expPos
+      < decPos || expPos > str.length() '
+    - '---------INS SimpleName@@expPos @TO@ InfixExpression@@expPos > str.length() '
+    - '---------INS Operator@@> @TO@ InfixExpression@@expPos > str.length() '
+    - '---------INS MethodInvocation@@str.length() @TO@ InfixExpression@@expPos >
+      str.length() '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.length() '
+    - '------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@str.length() '
+    - '---DEL InfixExpression@@expPos < decPos '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:expPos > str.length() @TO@ IfStatement@@InfixExpression:expPos
+      > -1 '
+    - '---INS InfixExpression@@expPos > str.length() @TO@ IfStatement@@InfixExpression:expPos
+      > str.length() '
+    - '------INS SimpleName@@expPos @TO@ InfixExpression@@expPos > str.length() '
+    - '------INS Operator@@> @TO@ InfixExpression@@expPos > str.length() '
+    - '------INS MethodInvocation@@str.length() @TO@ InfixExpression@@expPos > str.length() '
+    - '---------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.length() '
+    - '---------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@str.length() '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new NumberFormatException(str
+      + " is not a valid number.") @TO@ IfStatement@@InfixExpression:expPos > str.length() '
+    - '------INS ClassInstanceCreation@@NumberFormatException[str + " is not a valid
+      number."] @TO@ ThrowStatement@@ClassInstanceCreation:new NumberFormatException(str
+      + " is not a valid number.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@NumberFormatException[str
+      + " is not a valid number."] '
+    - '---------INS SimpleType@@NumberFormatException @TO@ ClassInstanceCreation@@NumberFormatException[str
+      + " is not a valid number."] '
+    - '---------INS InfixExpression@@str + " is not a valid number." @TO@ ClassInstanceCreation@@NumberFormatException[str
+      + " is not a valid number."] '
+    - '------------INS SimpleName@@str @TO@ InfixExpression@@str + " is not a valid
+      number." '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@str + " is not a valid number." '
+    - '------------INS StringLiteral@@" is not a valid number." @TO@ InfixExpression@@str
+      + " is not a valid number." '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:expPos > str.length() @TO@ IfStatement@@InfixExpression:expPos
+      > -1 '
+    - '---INS InfixExpression@@expPos > str.length() @TO@ IfStatement@@InfixExpression:expPos
+      > str.length() '
+    - '------INS SimpleName@@expPos @TO@ InfixExpression@@expPos > str.length() '
+    - '------INS Operator@@> @TO@ InfixExpression@@expPos > str.length() '
+    - '------INS MethodInvocation@@str.length() @TO@ InfixExpression@@expPos > str.length() '
+    - '---------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.length() '
+    - '---------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@str.length() '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new NumberFormatException(str
+      + " is not a valid number.") @TO@ IfStatement@@InfixExpression:expPos > str.length() '
+    - '------INS ClassInstanceCreation@@NumberFormatException[str + " is not a valid
+      number."] @TO@ ThrowStatement@@ClassInstanceCreation:new NumberFormatException(str
+      + " is not a valid number.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@NumberFormatException[str
+      + " is not a valid number."] '
+    - '---------INS SimpleType@@NumberFormatException @TO@ ClassInstanceCreation@@NumberFormatException[str
+      + " is not a valid number."] '
+    - '---------INS InfixExpression@@str + " is not a valid number." @TO@ ClassInstanceCreation@@NumberFormatException[str
+      + " is not a valid number."] '
+    - '------------INS SimpleName@@str @TO@ InfixExpression@@str + " is not a valid
+      number." '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@str + " is not a valid number." '
+    - '------------INS StringLiteral@@" is not a valid number." @TO@ InfixExpression@@str
+      + " is not a valid number." '
+  repair_actions_cnt: 1

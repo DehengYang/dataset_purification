@@ -1,0 +1,102 @@
+1 bug_id: Math-33
+2 src folder:
+  name of src folder: java
+  number of files: 619
+  number of java files: 618
+  number of src classes: 832
+  number of test classes: 302
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.optimization.linear.SimplexSolverTest#testMath781
+  failing tests:
+  - org.apache.commons.math3.optimization.linear.SimplexSolverTest
+  number of all test cases: 3576
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 87.219
+  repair actions extraction: 1.321
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.optimization.linear.SimplexSolverTest#testMath781: 406
+  fixed:
+    org.apache.commons.math3.optimization.linear.SimplexSolverTest#testMath781: 405
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_33/src/main/java/org/apache/commons/math3/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 10:38:44.079231052 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_33/purify/patch/org/apache/commons/math3/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 10:38:44.079231052 -0400\n@@ -335,7 +335,7 @@\n         // positive\
+    \ cost non-artificial variables\n         for (int i = getNumObjectiveFunctions();\
+    \ i < getArtificialVariableOffset(); i++) {\n             final double entry =\
+    \ tableau.getEntry(0, i);\n-            if (Precision.compareTo(entry, 0d, maxUlps)\
+    \ > 0) {\n+            if (Precision.compareTo(entry, 0d, epsilon) > 0) {\n  \
+    \               columnsToDrop.add(i);\n             }\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_33/src/main/java/org/apache/commons/math3/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 10:40:29.558285459 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_33/purify/purified/org/apache/commons/math3/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 10:40:29.558285459 -0400\n@@ -335,7 +335,7 @@\n         // positive\
+    \ cost non-artificial variables\n         for (int i = getNumObjectiveFunctions();\
+    \ i < getArtificialVariableOffset(); i++) {\n             final double entry =\
+    \ tableau.getEntry(0, i);\n-            if (Precision.compareTo(entry, 0d, maxUlps)\
+    \ > 0) {\n+            if (Precision.compareTo(entry, 0d, epsilon) > 0) {\n  \
+    \               columnsToDrop.add(i);\n             }\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/linear/SimplexTableau:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:Precision.compareTo(entry,0d,maxUlps) > 0
+      @TO@ InfixExpression:Precision.compareTo(entry,0d,epsilon) > 0 '
+    - '---UPD InfixExpression@@Precision.compareTo(entry,0d,maxUlps) > 0 @TO@ Precision.compareTo(entry,0d,epsilon)
+      > 0 '
+    - '------UPD MethodInvocation@@Precision.compareTo(entry,0d,maxUlps) @TO@ Precision.compareTo(entry,0d,epsilon) '
+    - '---------UPD SimpleName@@MethodName:compareTo:[entry, 0d, maxUlps] @TO@ MethodName:compareTo:[entry,
+      0d, epsilon] '
+    - '------------UPD SimpleName@@maxUlps @TO@ epsilon '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/linear/SimplexTableau:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:Precision.compareTo(entry,0d,maxUlps) > 0
+      @TO@ InfixExpression:Precision.compareTo(entry,0d,epsilon) > 0 '
+    - '---UPD InfixExpression@@Precision.compareTo(entry,0d,maxUlps) > 0 @TO@ Precision.compareTo(entry,0d,epsilon)
+      > 0 '
+    - '------UPD MethodInvocation@@Precision.compareTo(entry,0d,maxUlps) @TO@ Precision.compareTo(entry,0d,epsilon) '
+    - '---------UPD SimpleName@@MethodName:compareTo:[entry, 0d, maxUlps] @TO@ MethodName:compareTo:[entry,
+      0d, epsilon] '
+    - '------------UPD SimpleName@@maxUlps @TO@ epsilon '
+  repair_actions_cnt: 1

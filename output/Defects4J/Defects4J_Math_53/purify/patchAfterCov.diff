@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_53/src/main/java/org/apache/commons/math/complex/Complex.java	2020-10-21 12:12:19.705608908 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_53/purify/assertBeforeMut/org/apache/commons/math/complex/Complex.java	2020-10-21 12:12:19.705608908 -0400
+@@ -150,6 +150,9 @@
+     public Complex add(Complex rhs)
+         throws NullArgumentException {
+         MathUtils.checkNotNull(rhs);
++        if (isNaN || rhs.isNaN) {
++            return NaN;
++        }
+         return createComplex(real + rhs.getReal(),
+             imaginary + rhs.getImaginary());
+     }

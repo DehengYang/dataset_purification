@@ -1,0 +1,206 @@
+1 bug_id: Lang-17
+2 src folder:
+  name of src folder: java
+  number of files: 112
+  number of java files: 99
+  number of src classes: 151
+  number of test classes: 100
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.StringEscapeUtilsTest#testLang720
+  failing tests:
+  - org.apache.commons.lang3.StringEscapeUtilsTest
+  number of all test cases: 1903
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.06
+  purification via delta debugging: 794.866
+  repair actions extraction: 0.647
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.StringEscapeUtilsTest#testLang720: 132
+  fixed:
+    org.apache.commons.lang3.StringEscapeUtilsTest#testLang720: 131
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 3
+  covDel: 9
+  cov_patch_lines: 12
+  delta_patch_lines: 9
+  oriAdd: 3
+  oriDel: 9
+  ori_patch_lines: 12
+  purAdd: 2
+  purDel: 7
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 6
+  original: 6
+  purifiy: 7
+8 mutants by delta debugging:
+  failAll: 2
+  failCompile: 19
+  failFail: 6
+  passed: 1
+  total: 28
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_17/src/main/java/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java\t\
+    2020-10-23 02:57:16.745106645 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_17/purify/patch/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java\t\
+    2020-10-23 02:57:16.745106645 -0400\n@@ -80,26 +80,20 @@\n             return;\n\
+    \         }\n         int pos = 0;\n-        int len = Character.codePointCount(input,\
+    \ 0, input.length());\n+        int len = input.length();\n         while (pos\
+    \ < len) {\n             int consumed = translate(input, pos, out);\n        \
+    \     if (consumed == 0) {\n                 char[] c = Character.toChars(Character.codePointAt(input,\
+    \ pos));\n                 out.write(c);\n+                pos+= c.length;\n+\
+    \                continue;\n             }\n-            else {\n //         \
+    \ // contract with translators is that they have to understand codepoints \n //\
+    \          // and they just took care of a surrogate pair\n             for (int\
+    \ pt = 0; pt < consumed; pt++) {\n-                    if (pos < len - 2) {\n\
+    \                 pos += Character.charCount(Character.codePointAt(input, pos));\n\
+    -                    } else {\n-                        pos++;\n-            \
+    \        }\n-                }\n-                pos--;\n             }\n-   \
+    \         pos++;\n         }\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_17/src/main/java/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java\t\
+    2020-10-23 03:10:44.372456582 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_17/purify/purified/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java\t\
+    2020-10-23 03:10:44.372456582 -0400\n@@ -80,26 +80,21 @@\n             return;\n\
+    \         }\n         int pos = 0;\n-        int len = Character.codePointCount(input,\
+    \ 0, input.length());\n+        int len = input.length();\n         while (pos\
+    \ < len) {\n             int consumed = translate(input, pos, out);\n        \
+    \     if (consumed == 0) {\n                 char[] c = Character.toChars(Character.codePointAt(input,\
+    \ pos));\n                 out.write(c);\n+                pos+= c.length;\n \
+    \            }\n-            else {\n //          // contract with translators\
+    \ is that they have to understand codepoints \n //          // and they just took\
+    \ care of a surrogate pair\n             for (int pt = 0; pt < consumed; pt++)\
+    \ {\n-                    if (pos < len - 2) {\n                 pos += Character.charCount(Character.codePointAt(input,\
+    \ pos));\n-                    } else {\n                         pos++;\n-  \
+    \                  }\n-                }\n                 pos--;\n          \
+    \   }\n-            pos++;\n         }\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/translate/CharSequenceTranslator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int len=Character.codePointCount(input,0,input.length());
+      @TO@ int len=input.length(); '
+    - '---UPD VariableDeclarationFragment@@len=Character.codePointCount(input,0,input.length())
+      @TO@ len=input.length() '
+    - '------INS MethodInvocation@@input.length() @TO@ VariableDeclarationFragment@@len=Character.codePointCount(input,0,input.length()) '
+    - '---------MOV SimpleName@@Name:input @TO@ MethodInvocation@@input.length() '
+    - '---------MOV SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@input.length() '
+    - '------DEL MethodInvocation@@Character.codePointCount(input,0,input.length()) '
+    - '---------DEL SimpleName@@Name:Character '
+    - '---------DEL SimpleName@@MethodName:codePointCount:[input, 0, input.length()] '
+    - '------------DEL SimpleName@@input '
+    - '------------DEL NumberLiteral@@0 '
+    - '------------DEL MethodInvocation@@input.length() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ContinueStatement@@ @TO@ IfStatement@@InfixExpression:consumed == 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ForStatement@@[int pt=0];pt < consumed; [pt++] @TO@ WhileStatement@@InfixExpression:pos
+      < len '
+    - '---MOV ExpressionStatement@@Assignment:pos+=Character.charCount(Character.codePointAt(input,pos))
+      @TO@ ForStatement@@[int pt=0];pt < consumed; [pt++] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:pos < len - 2 '
+    - '---DEL InfixExpression@@pos < len - 2 '
+    - '------DEL SimpleName@@pos '
+    - '------DEL Operator@@< '
+    - '------DEL InfixExpression@@len - 2 '
+    - '---------DEL SimpleName@@len '
+    - '---------DEL Operator@@- '
+    - '---------DEL NumberLiteral@@2 '
+    - '---DEL ExpressionStatement@@PostfixExpression:pos++ '
+    - '------DEL PostfixExpression@@pos++ '
+    - '---------DEL SimpleName@@pos '
+    - '---------DEL Operator@@++ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@PostfixExpression:pos-- @TO@ Assignment:pos+=c.length '
+    - '---INS Assignment@@pos+=c.length @TO@ ExpressionStatement@@PostfixExpression:pos-- '
+    - '------INS SimpleName@@pos @TO@ Assignment@@pos+=c.length '
+    - '------INS Operator@@+= @TO@ Assignment@@pos+=c.length '
+    - '------INS QualifiedName@@c.length @TO@ Assignment@@pos+=c.length '
+    - '---------INS SimpleName@@c @TO@ QualifiedName@@c.length '
+    - '---------INS SimpleName@@length @TO@ QualifiedName@@c.length '
+    - '---DEL PostfixExpression@@pos-- '
+    - '------DEL SimpleName@@pos '
+    - '------DEL Operator@@-- '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@PostfixExpression:pos++ '
+    - '---DEL PostfixExpression@@pos++ '
+    - '------DEL SimpleName@@pos '
+    - '------DEL Operator@@++ '
+  repair_actions_cnt: 6
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/translate/CharSequenceTranslator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int len=Character.codePointCount(input,0,input.length());
+      @TO@ int len=input.length(); '
+    - '---UPD VariableDeclarationFragment@@len=Character.codePointCount(input,0,input.length())
+      @TO@ len=input.length() '
+    - '------INS MethodInvocation@@input.length() @TO@ VariableDeclarationFragment@@len=Character.codePointCount(input,0,input.length()) '
+    - '---------MOV SimpleName@@Name:input @TO@ MethodInvocation@@input.length() '
+    - '---------MOV SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@input.length() '
+    - '------DEL MethodInvocation@@Character.codePointCount(input,0,input.length()) '
+    - '---------DEL SimpleName@@Name:Character '
+    - '---------DEL SimpleName@@MethodName:codePointCount:[input, 0, input.length()] '
+    - '------------DEL SimpleName@@input '
+    - '------------DEL NumberLiteral@@0 '
+    - '------------DEL MethodInvocation@@input.length() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ForStatement@@[int pt=0];pt < consumed; [pt++] @TO@ WhileStatement@@InfixExpression:pos
+      < len '
+    - '---MOV ExpressionStatement@@Assignment:pos+=Character.charCount(Character.codePointAt(input,pos))
+      @TO@ ForStatement@@[int pt=0];pt < consumed; [pt++] '
+    - '---MOV ExpressionStatement@@PostfixExpression:pos++ @TO@ ForStatement@@[int
+      pt=0];pt < consumed; [pt++] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:pos < len - 2 '
+    - '---DEL InfixExpression@@pos < len - 2 '
+    - '------DEL SimpleName@@pos '
+    - '------DEL Operator@@< '
+    - '------DEL InfixExpression@@len - 2 '
+    - '---------DEL SimpleName@@len '
+    - '---------DEL Operator@@- '
+    - '---------DEL NumberLiteral@@2 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@PostfixExpression:pos-- @TO@ ForStatement@@[int pt=0];pt
+      < consumed; [pt++] '
+    - '---MOV PostfixExpression@@pos-- @TO@ ExpressionStatement@@PostfixExpression:pos-- '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@PostfixExpression:pos-- @TO@ Assignment:pos+=c.length '
+    - '---INS Assignment@@pos+=c.length @TO@ ExpressionStatement@@PostfixExpression:pos-- '
+    - '------INS SimpleName@@pos @TO@ Assignment@@pos+=c.length '
+    - '------INS Operator@@+= @TO@ Assignment@@pos+=c.length '
+    - '------INS QualifiedName@@c.length @TO@ Assignment@@pos+=c.length '
+    - '---------INS SimpleName@@c @TO@ QualifiedName@@c.length '
+    - '---------INS SimpleName@@length @TO@ QualifiedName@@c.length '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@PostfixExpression:pos++ '
+    - '---DEL PostfixExpression@@pos++ '
+    - '------DEL SimpleName@@pos '
+    - '------DEL Operator@@++ '
+  repair_actions_cnt: 6

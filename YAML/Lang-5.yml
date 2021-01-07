@@ -1,0 +1,548 @@
+1 bug_id: Lang-5
+2 src folder:
+  name of src folder: java
+  number of files: 121
+  number of java files: 108
+  number of src classes: 169
+  number of test classes: 112
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.LocaleUtilsTest#testLang865
+  failing tests:
+  - org.apache.commons.lang3.LocaleUtilsTest
+  number of all test cases: 2275
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.164
+  purification via delta debugging: 341.75
+  repair actions extraction: 1.534
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.LocaleUtilsTest#testLang865: 15
+  fixed:
+    org.apache.commons.lang3.LocaleUtilsTest#testLang865: 26
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 21
+  covDel: 0
+  cov_patch_lines: 21
+  delta_patch_lines: 21
+  oriAdd: 21
+  oriDel: 0
+  ori_patch_lines: 21
+  purAdd: 21
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 39
+  failFail: 12
+  passed: 0
+  total: 51
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_5/src/main/java/org/apache/commons/lang3/LocaleUtils.java\t\
+    2020-10-22 01:19:33.995132961 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_5/purify/patch/org/apache/commons/lang3/LocaleUtils.java\t\
+    2020-10-22 01:19:33.991132844 -0400\n@@ -94,6 +94,26 @@\n             throw new\
+    \ IllegalArgumentException(\"Invalid locale format: \" + str);\n         }\n \
+    \        final char ch0 = str.charAt(0);\n+        if (ch0 == '_') {\n+      \
+    \      if (len < 3) {\n+                throw new IllegalArgumentException(\"\
+    Invalid locale format: \" + str);\n+            }\n+            final char ch1\
+    \ = str.charAt(1);\n+            final char ch2 = str.charAt(2);\n+          \
+    \  if (!Character.isUpperCase(ch1) || !Character.isUpperCase(ch2)) {\n+      \
+    \          throw new IllegalArgumentException(\"Invalid locale format: \" + str);\n\
+    +            }\n+            if (len == 3) {\n+                return new Locale(\"\
+    \", str.substring(1, 3));\n+            }\n+            if (len < 5) {\n+    \
+    \            throw new IllegalArgumentException(\"Invalid locale format: \" +\
+    \ str);\n+            }\n+            if (str.charAt(3) != '_') {\n+         \
+    \       throw new IllegalArgumentException(\"Invalid locale format: \" + str);\n\
+    +            }\n+            return new Locale(\"\", str.substring(1, 3), str.substring(4));\n\
+    +        } else {\n             final char ch1 = str.charAt(1);\n            \
+    \ if (!Character.isLowerCase(ch0) || !Character.isLowerCase(ch1)) {\n        \
+    \         throw new IllegalArgumentException(\"Invalid locale format: \" + str);\n\
+    @@ -125,6 +145,7 @@\n                 throw new IllegalArgumentException(\"Invalid\
+    \ locale format: \" + str);\n             }\n             return new Locale(str.substring(0,\
+    \ 2), str.substring(3, 5), str.substring(6));\n+        }\n     }\n \n     //-----------------------------------------------------------------------"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_5/src/main/java/org/apache/commons/lang3/LocaleUtils.java\t\
+    2020-10-22 01:25:28.745390195 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_5/purify/purified/org/apache/commons/lang3/LocaleUtils.java\t\
+    2020-10-22 01:25:28.745390195 -0400\n@@ -94,6 +94,26 @@\n             throw new\
+    \ IllegalArgumentException(\"Invalid locale format: \" + str);\n         }\n \
+    \        final char ch0 = str.charAt(0);\n+        if (ch0 == '_') {\n+      \
+    \      if (len < 3) {\n+                throw new IllegalArgumentException(\"\
+    Invalid locale format: \" + str);\n+            }\n+            final char ch1\
+    \ = str.charAt(1);\n+            final char ch2 = str.charAt(2);\n+          \
+    \  if (!Character.isUpperCase(ch1) || !Character.isUpperCase(ch2)) {\n+      \
+    \          throw new IllegalArgumentException(\"Invalid locale format: \" + str);\n\
+    +            }\n+            if (len == 3) {\n+                return new Locale(\"\
+    \", str.substring(1, 3));\n+            }\n+            if (len < 5) {\n+    \
+    \            throw new IllegalArgumentException(\"Invalid locale format: \" +\
+    \ str);\n+            }\n+            if (str.charAt(3) != '_') {\n+         \
+    \       throw new IllegalArgumentException(\"Invalid locale format: \" + str);\n\
+    +            }\n+            return new Locale(\"\", str.substring(1, 3), str.substring(4));\n\
+    +        } else {\n             final char ch1 = str.charAt(1);\n            \
+    \ if (!Character.isLowerCase(ch0) || !Character.isLowerCase(ch1)) {\n        \
+    \         throw new IllegalArgumentException(\"Invalid locale format: \" + str);\n\
+    @@ -125,6 +145,7 @@\n                 throw new IllegalArgumentException(\"Invalid\
+    \ locale format: \" + str);\n             }\n             return new Locale(str.substring(0,\
+    \ 2), str.substring(3, 5), str.substring(6));\n+        }\n     }\n \n     //-----------------------------------------------------------------------"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/LocaleUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:ch0 == ''_'' @TO@ MethodDeclaration@@public,
+      static, @@Locale, MethodName:toLocale, @@Argus:String+str+ '
+    - '---INS InfixExpression@@ch0 == ''_'' @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS SimpleName@@ch0 @TO@ InfixExpression@@ch0 == ''_'' '
+    - '------INS Operator@@== @TO@ InfixExpression@@ch0 == ''_'' '
+    - '------INS CharacterLiteral@@''_'' @TO@ InfixExpression@@ch0 == ''_'' '
+    - '---MOV VariableDeclarationStatement@@final char ch1=str.charAt(1); @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---INS IfStatement@@InfixExpression:len < 3 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS InfixExpression@@len < 3 @TO@ IfStatement@@InfixExpression:len <
+      3 '
+    - '---------INS SimpleName@@len @TO@ InfixExpression@@len < 3 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@len < 3 '
+    - '---------INS NumberLiteral@@3 @TO@ InfixExpression@@len < 3 '
+    - '------INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) @TO@ IfStatement@@InfixExpression:len < 3 '
+    - '---------INS ClassInstanceCreation@@IllegalArgumentException["Invalid locale
+      format: " + str] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS InfixExpression@@"Invalid locale format: " + str @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '---------------INS StringLiteral@@"Invalid locale format: " @TO@ InfixExpression@@"Invalid
+      locale format: " + str '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---------------INS SimpleName@@str @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---MOV IfStatement@@InfixExpression:!Character.isLowerCase(ch0) || !Character.isLowerCase(ch1)
+      @TO@ IfStatement@@InfixExpression:ch0 == ''_'' '
+    - '---INS VariableDeclarationStatement@@final char ch1=str.charAt(1); @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final char ch1=str.charAt(1); '
+    - '------INS PrimitiveType@@char @TO@ VariableDeclarationStatement@@final char
+      ch1=str.charAt(1); '
+    - '------INS VariableDeclarationFragment@@ch1=str.charAt(1) @TO@ VariableDeclarationStatement@@final
+      char ch1=str.charAt(1); '
+    - '---------INS SimpleName@@ch1 @TO@ VariableDeclarationFragment@@ch1=str.charAt(1) '
+    - '---------INS MethodInvocation@@str.charAt(1) @TO@ VariableDeclarationFragment@@ch1=str.charAt(1) '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.charAt(1) '
+    - '------------INS SimpleName@@MethodName:charAt:[1] @TO@ MethodInvocation@@str.charAt(1) '
+    - '---------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:charAt:[1] '
+    - '---INS VariableDeclarationStatement@@final char ch2=str.charAt(2); @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final char ch2=str.charAt(2); '
+    - '------INS PrimitiveType@@char @TO@ VariableDeclarationStatement@@final char
+      ch2=str.charAt(2); '
+    - '------INS VariableDeclarationFragment@@ch2=str.charAt(2) @TO@ VariableDeclarationStatement@@final
+      char ch2=str.charAt(2); '
+    - '---------INS SimpleName@@ch2 @TO@ VariableDeclarationFragment@@ch2=str.charAt(2) '
+    - '---------INS MethodInvocation@@str.charAt(2) @TO@ VariableDeclarationFragment@@ch2=str.charAt(2) '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.charAt(2) '
+    - '------------INS SimpleName@@MethodName:charAt:[2] @TO@ MethodInvocation@@str.charAt(2) '
+    - '---------------INS NumberLiteral@@2 @TO@ SimpleName@@MethodName:charAt:[2] '
+    - '---MOV IfStatement@@InfixExpression:len == 2 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---INS IfStatement@@InfixExpression:!Character.isUpperCase(ch1) || !Character.isUpperCase(ch2)
+      @TO@ IfStatement@@InfixExpression:ch0 == ''_'' '
+    - '------INS InfixExpression@@!Character.isUpperCase(ch1) || !Character.isUpperCase(ch2)
+      @TO@ IfStatement@@InfixExpression:!Character.isUpperCase(ch1) || !Character.isUpperCase(ch2) '
+    - '---------INS PrefixExpression@@!Character.isUpperCase(ch1) @TO@ InfixExpression@@!Character.isUpperCase(ch1)
+      || !Character.isUpperCase(ch2) '
+    - '------------INS Operator@@! @TO@ PrefixExpression@@!Character.isUpperCase(ch1) '
+    - '------------INS MethodInvocation@@Character.isUpperCase(ch1) @TO@ PrefixExpression@@!Character.isUpperCase(ch1) '
+    - '---------------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isUpperCase(ch1) '
+    - '---------------INS SimpleName@@MethodName:isUpperCase:[ch1] @TO@ MethodInvocation@@Character.isUpperCase(ch1) '
+    - '------------------INS SimpleName@@ch1 @TO@ SimpleName@@MethodName:isUpperCase:[ch1] '
+    - '---------INS Operator@@|| @TO@ InfixExpression@@!Character.isUpperCase(ch1)
+      || !Character.isUpperCase(ch2) '
+    - '---------INS PrefixExpression@@!Character.isUpperCase(ch2) @TO@ InfixExpression@@!Character.isUpperCase(ch1)
+      || !Character.isUpperCase(ch2) '
+    - '------------INS Operator@@! @TO@ PrefixExpression@@!Character.isUpperCase(ch2) '
+    - '------------INS MethodInvocation@@Character.isUpperCase(ch2) @TO@ PrefixExpression@@!Character.isUpperCase(ch2) '
+    - '---------------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isUpperCase(ch2) '
+    - '---------------INS SimpleName@@MethodName:isUpperCase:[ch2] @TO@ MethodInvocation@@Character.isUpperCase(ch2) '
+    - '------------------INS SimpleName@@ch2 @TO@ SimpleName@@MethodName:isUpperCase:[ch2] '
+    - '------INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) @TO@ IfStatement@@InfixExpression:!Character.isUpperCase(ch1)
+      || !Character.isUpperCase(ch2) '
+    - '---------INS ClassInstanceCreation@@IllegalArgumentException["Invalid locale
+      format: " + str] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS InfixExpression@@"Invalid locale format: " + str @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '---------------INS StringLiteral@@"Invalid locale format: " @TO@ InfixExpression@@"Invalid
+      locale format: " + str '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---------------INS SimpleName@@str @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---MOV IfStatement@@InfixExpression:len < 5 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---INS IfStatement@@InfixExpression:len == 3 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS InfixExpression@@len == 3 @TO@ IfStatement@@InfixExpression:len ==
+      3 '
+    - '---------INS SimpleName@@len @TO@ InfixExpression@@len == 3 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@len == 3 '
+    - '---------INS NumberLiteral@@3 @TO@ InfixExpression@@len == 3 '
+    - '------INS ReturnStatement@@ClassInstanceCreation:new Locale("",str.substring(1,3))
+      @TO@ IfStatement@@InfixExpression:len == 3 '
+    - '---------INS ClassInstanceCreation@@Locale["", str.substring(1,3)] @TO@ ReturnStatement@@ClassInstanceCreation:new
+      Locale("",str.substring(1,3)) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@Locale["", str.substring(1,3)] '
+    - '------------INS SimpleType@@Locale @TO@ ClassInstanceCreation@@Locale["", str.substring(1,3)] '
+    - '------------INS StringLiteral@@"" @TO@ ClassInstanceCreation@@Locale["", str.substring(1,3)] '
+    - '------------INS MethodInvocation@@str.substring(1,3) @TO@ ClassInstanceCreation@@Locale["",
+      str.substring(1,3)] '
+    - '---------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.substring(1,3) '
+    - '---------------INS SimpleName@@MethodName:substring:[1, 3] @TO@ MethodInvocation@@str.substring(1,3) '
+    - '------------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1,
+      3] '
+    - '------------------INS NumberLiteral@@3 @TO@ SimpleName@@MethodName:substring:[1,
+      3] '
+    - '---MOV IfStatement@@InfixExpression:str.charAt(2) != ''_'' @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---INS IfStatement@@InfixExpression:len < 5 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS InfixExpression@@len < 5 @TO@ IfStatement@@InfixExpression:len <
+      5 '
+    - '---------INS SimpleName@@len @TO@ InfixExpression@@len < 5 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@len < 5 '
+    - '---------INS NumberLiteral@@5 @TO@ InfixExpression@@len < 5 '
+    - '------INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) @TO@ IfStatement@@InfixExpression:len < 5 '
+    - '---------INS ClassInstanceCreation@@IllegalArgumentException["Invalid locale
+      format: " + str] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS InfixExpression@@"Invalid locale format: " + str @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '---------------INS StringLiteral@@"Invalid locale format: " @TO@ InfixExpression@@"Invalid
+      locale format: " + str '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---------------INS SimpleName@@str @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---MOV VariableDeclarationStatement@@final char ch3=str.charAt(3); @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---MOV IfStatement@@InfixExpression:ch3 == ''_'' @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---INS IfStatement@@InfixExpression:str.charAt(3) != ''_'' @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS InfixExpression@@str.charAt(3) != ''_'' @TO@ IfStatement@@InfixExpression:str.charAt(3)
+      != ''_'' '
+    - '---------INS MethodInvocation@@str.charAt(3) @TO@ InfixExpression@@str.charAt(3)
+      != ''_'' '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.charAt(3) '
+    - '------------INS SimpleName@@MethodName:charAt:[3] @TO@ MethodInvocation@@str.charAt(3) '
+    - '---------------INS NumberLiteral@@3 @TO@ SimpleName@@MethodName:charAt:[3] '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@str.charAt(3) != ''_'' '
+    - '---------INS CharacterLiteral@@''_'' @TO@ InfixExpression@@str.charAt(3) !=
+      ''_'' '
+    - '------INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) @TO@ IfStatement@@InfixExpression:str.charAt(3) != ''_'' '
+    - '---------INS ClassInstanceCreation@@IllegalArgumentException["Invalid locale
+      format: " + str] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS InfixExpression@@"Invalid locale format: " + str @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '---------------INS StringLiteral@@"Invalid locale format: " @TO@ InfixExpression@@"Invalid
+      locale format: " + str '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---------------INS SimpleName@@str @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---MOV VariableDeclarationStatement@@final char ch4=str.charAt(4); @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---MOV IfStatement@@InfixExpression:!Character.isUpperCase(ch3) || !Character.isUpperCase(ch4)
+      @TO@ IfStatement@@InfixExpression:ch0 == ''_'' '
+    - '---INS ReturnStatement@@ClassInstanceCreation:new Locale("",str.substring(1,3),str.substring(4))
+      @TO@ IfStatement@@InfixExpression:ch0 == ''_'' '
+    - '------INS ClassInstanceCreation@@Locale["", str.substring(1,3), str.substring(4)]
+      @TO@ ReturnStatement@@ClassInstanceCreation:new Locale("",str.substring(1,3),str.substring(4)) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@Locale["", str.substring(1,3),
+      str.substring(4)] '
+    - '---------INS SimpleType@@Locale @TO@ ClassInstanceCreation@@Locale["", str.substring(1,3),
+      str.substring(4)] '
+    - '---------INS StringLiteral@@"" @TO@ ClassInstanceCreation@@Locale["", str.substring(1,3),
+      str.substring(4)] '
+    - '---------INS MethodInvocation@@str.substring(1,3) @TO@ ClassInstanceCreation@@Locale["",
+      str.substring(1,3), str.substring(4)] '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.substring(1,3) '
+    - '------------INS SimpleName@@MethodName:substring:[1, 3] @TO@ MethodInvocation@@str.substring(1,3) '
+    - '---------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1,
+      3] '
+    - '---------------INS NumberLiteral@@3 @TO@ SimpleName@@MethodName:substring:[1,
+      3] '
+    - '---------INS MethodInvocation@@str.substring(4) @TO@ ClassInstanceCreation@@Locale["",
+      str.substring(1,3), str.substring(4)] '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.substring(4) '
+    - '------------INS SimpleName@@MethodName:substring:[4] @TO@ MethodInvocation@@str.substring(4) '
+    - '---------------INS NumberLiteral@@4 @TO@ SimpleName@@MethodName:substring:[4] '
+    - '---MOV IfStatement@@InfixExpression:len == 5 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---MOV IfStatement@@InfixExpression:len < 7 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---MOV IfStatement@@InfixExpression:str.charAt(5) != ''_'' @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---MOV ReturnStatement@@ClassInstanceCreation:new Locale(str.substring(0,2),str.substring(3,5),str.substring(6))
+      @TO@ IfStatement@@InfixExpression:ch0 == ''_'' '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/LocaleUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:ch0 == ''_'' @TO@ MethodDeclaration@@public,
+      static, @@Locale, MethodName:toLocale, @@Argus:String+str+ '
+    - '---INS InfixExpression@@ch0 == ''_'' @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS SimpleName@@ch0 @TO@ InfixExpression@@ch0 == ''_'' '
+    - '------INS Operator@@== @TO@ InfixExpression@@ch0 == ''_'' '
+    - '------INS CharacterLiteral@@''_'' @TO@ InfixExpression@@ch0 == ''_'' '
+    - '---MOV VariableDeclarationStatement@@final char ch1=str.charAt(1); @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---INS IfStatement@@InfixExpression:len < 3 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS InfixExpression@@len < 3 @TO@ IfStatement@@InfixExpression:len <
+      3 '
+    - '---------INS SimpleName@@len @TO@ InfixExpression@@len < 3 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@len < 3 '
+    - '---------INS NumberLiteral@@3 @TO@ InfixExpression@@len < 3 '
+    - '------INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) @TO@ IfStatement@@InfixExpression:len < 3 '
+    - '---------INS ClassInstanceCreation@@IllegalArgumentException["Invalid locale
+      format: " + str] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS InfixExpression@@"Invalid locale format: " + str @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '---------------INS StringLiteral@@"Invalid locale format: " @TO@ InfixExpression@@"Invalid
+      locale format: " + str '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---------------INS SimpleName@@str @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---MOV IfStatement@@InfixExpression:!Character.isLowerCase(ch0) || !Character.isLowerCase(ch1)
+      @TO@ IfStatement@@InfixExpression:ch0 == ''_'' '
+    - '---INS VariableDeclarationStatement@@final char ch1=str.charAt(1); @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final char ch1=str.charAt(1); '
+    - '------INS PrimitiveType@@char @TO@ VariableDeclarationStatement@@final char
+      ch1=str.charAt(1); '
+    - '------INS VariableDeclarationFragment@@ch1=str.charAt(1) @TO@ VariableDeclarationStatement@@final
+      char ch1=str.charAt(1); '
+    - '---------INS SimpleName@@ch1 @TO@ VariableDeclarationFragment@@ch1=str.charAt(1) '
+    - '---------INS MethodInvocation@@str.charAt(1) @TO@ VariableDeclarationFragment@@ch1=str.charAt(1) '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.charAt(1) '
+    - '------------INS SimpleName@@MethodName:charAt:[1] @TO@ MethodInvocation@@str.charAt(1) '
+    - '---------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:charAt:[1] '
+    - '---INS VariableDeclarationStatement@@final char ch2=str.charAt(2); @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final char ch2=str.charAt(2); '
+    - '------INS PrimitiveType@@char @TO@ VariableDeclarationStatement@@final char
+      ch2=str.charAt(2); '
+    - '------INS VariableDeclarationFragment@@ch2=str.charAt(2) @TO@ VariableDeclarationStatement@@final
+      char ch2=str.charAt(2); '
+    - '---------INS SimpleName@@ch2 @TO@ VariableDeclarationFragment@@ch2=str.charAt(2) '
+    - '---------INS MethodInvocation@@str.charAt(2) @TO@ VariableDeclarationFragment@@ch2=str.charAt(2) '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.charAt(2) '
+    - '------------INS SimpleName@@MethodName:charAt:[2] @TO@ MethodInvocation@@str.charAt(2) '
+    - '---------------INS NumberLiteral@@2 @TO@ SimpleName@@MethodName:charAt:[2] '
+    - '---MOV IfStatement@@InfixExpression:len == 2 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---INS IfStatement@@InfixExpression:!Character.isUpperCase(ch1) || !Character.isUpperCase(ch2)
+      @TO@ IfStatement@@InfixExpression:ch0 == ''_'' '
+    - '------INS InfixExpression@@!Character.isUpperCase(ch1) || !Character.isUpperCase(ch2)
+      @TO@ IfStatement@@InfixExpression:!Character.isUpperCase(ch1) || !Character.isUpperCase(ch2) '
+    - '---------INS PrefixExpression@@!Character.isUpperCase(ch1) @TO@ InfixExpression@@!Character.isUpperCase(ch1)
+      || !Character.isUpperCase(ch2) '
+    - '------------INS Operator@@! @TO@ PrefixExpression@@!Character.isUpperCase(ch1) '
+    - '------------INS MethodInvocation@@Character.isUpperCase(ch1) @TO@ PrefixExpression@@!Character.isUpperCase(ch1) '
+    - '---------------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isUpperCase(ch1) '
+    - '---------------INS SimpleName@@MethodName:isUpperCase:[ch1] @TO@ MethodInvocation@@Character.isUpperCase(ch1) '
+    - '------------------INS SimpleName@@ch1 @TO@ SimpleName@@MethodName:isUpperCase:[ch1] '
+    - '---------INS Operator@@|| @TO@ InfixExpression@@!Character.isUpperCase(ch1)
+      || !Character.isUpperCase(ch2) '
+    - '---------INS PrefixExpression@@!Character.isUpperCase(ch2) @TO@ InfixExpression@@!Character.isUpperCase(ch1)
+      || !Character.isUpperCase(ch2) '
+    - '------------INS Operator@@! @TO@ PrefixExpression@@!Character.isUpperCase(ch2) '
+    - '------------INS MethodInvocation@@Character.isUpperCase(ch2) @TO@ PrefixExpression@@!Character.isUpperCase(ch2) '
+    - '---------------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isUpperCase(ch2) '
+    - '---------------INS SimpleName@@MethodName:isUpperCase:[ch2] @TO@ MethodInvocation@@Character.isUpperCase(ch2) '
+    - '------------------INS SimpleName@@ch2 @TO@ SimpleName@@MethodName:isUpperCase:[ch2] '
+    - '------INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) @TO@ IfStatement@@InfixExpression:!Character.isUpperCase(ch1)
+      || !Character.isUpperCase(ch2) '
+    - '---------INS ClassInstanceCreation@@IllegalArgumentException["Invalid locale
+      format: " + str] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS InfixExpression@@"Invalid locale format: " + str @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '---------------INS StringLiteral@@"Invalid locale format: " @TO@ InfixExpression@@"Invalid
+      locale format: " + str '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---------------INS SimpleName@@str @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---MOV IfStatement@@InfixExpression:len < 5 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---INS IfStatement@@InfixExpression:len == 3 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS InfixExpression@@len == 3 @TO@ IfStatement@@InfixExpression:len ==
+      3 '
+    - '---------INS SimpleName@@len @TO@ InfixExpression@@len == 3 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@len == 3 '
+    - '---------INS NumberLiteral@@3 @TO@ InfixExpression@@len == 3 '
+    - '------INS ReturnStatement@@ClassInstanceCreation:new Locale("",str.substring(1,3))
+      @TO@ IfStatement@@InfixExpression:len == 3 '
+    - '---------INS ClassInstanceCreation@@Locale["", str.substring(1,3)] @TO@ ReturnStatement@@ClassInstanceCreation:new
+      Locale("",str.substring(1,3)) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@Locale["", str.substring(1,3)] '
+    - '------------INS SimpleType@@Locale @TO@ ClassInstanceCreation@@Locale["", str.substring(1,3)] '
+    - '------------INS StringLiteral@@"" @TO@ ClassInstanceCreation@@Locale["", str.substring(1,3)] '
+    - '------------INS MethodInvocation@@str.substring(1,3) @TO@ ClassInstanceCreation@@Locale["",
+      str.substring(1,3)] '
+    - '---------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.substring(1,3) '
+    - '---------------INS SimpleName@@MethodName:substring:[1, 3] @TO@ MethodInvocation@@str.substring(1,3) '
+    - '------------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1,
+      3] '
+    - '------------------INS NumberLiteral@@3 @TO@ SimpleName@@MethodName:substring:[1,
+      3] '
+    - '---MOV IfStatement@@InfixExpression:str.charAt(2) != ''_'' @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---INS IfStatement@@InfixExpression:len < 5 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS InfixExpression@@len < 5 @TO@ IfStatement@@InfixExpression:len <
+      5 '
+    - '---------INS SimpleName@@len @TO@ InfixExpression@@len < 5 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@len < 5 '
+    - '---------INS NumberLiteral@@5 @TO@ InfixExpression@@len < 5 '
+    - '------INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) @TO@ IfStatement@@InfixExpression:len < 5 '
+    - '---------INS ClassInstanceCreation@@IllegalArgumentException["Invalid locale
+      format: " + str] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS InfixExpression@@"Invalid locale format: " + str @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '---------------INS StringLiteral@@"Invalid locale format: " @TO@ InfixExpression@@"Invalid
+      locale format: " + str '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---------------INS SimpleName@@str @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---MOV VariableDeclarationStatement@@final char ch3=str.charAt(3); @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---MOV IfStatement@@InfixExpression:ch3 == ''_'' @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---INS IfStatement@@InfixExpression:str.charAt(3) != ''_'' @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '------INS InfixExpression@@str.charAt(3) != ''_'' @TO@ IfStatement@@InfixExpression:str.charAt(3)
+      != ''_'' '
+    - '---------INS MethodInvocation@@str.charAt(3) @TO@ InfixExpression@@str.charAt(3)
+      != ''_'' '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.charAt(3) '
+    - '------------INS SimpleName@@MethodName:charAt:[3] @TO@ MethodInvocation@@str.charAt(3) '
+    - '---------------INS NumberLiteral@@3 @TO@ SimpleName@@MethodName:charAt:[3] '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@str.charAt(3) != ''_'' '
+    - '---------INS CharacterLiteral@@''_'' @TO@ InfixExpression@@str.charAt(3) !=
+      ''_'' '
+    - '------INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) @TO@ IfStatement@@InfixExpression:str.charAt(3) != ''_'' '
+    - '---------INS ClassInstanceCreation@@IllegalArgumentException["Invalid locale
+      format: " + str] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Invalid
+      locale format: " + str) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '------------INS InfixExpression@@"Invalid locale format: " + str @TO@ ClassInstanceCreation@@IllegalArgumentException["Invalid
+      locale format: " + str] '
+    - '---------------INS StringLiteral@@"Invalid locale format: " @TO@ InfixExpression@@"Invalid
+      locale format: " + str '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---------------INS SimpleName@@str @TO@ InfixExpression@@"Invalid locale format:
+      " + str '
+    - '---MOV VariableDeclarationStatement@@final char ch4=str.charAt(4); @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---MOV IfStatement@@InfixExpression:!Character.isUpperCase(ch3) || !Character.isUpperCase(ch4)
+      @TO@ IfStatement@@InfixExpression:ch0 == ''_'' '
+    - '---INS ReturnStatement@@ClassInstanceCreation:new Locale("",str.substring(1,3),str.substring(4))
+      @TO@ IfStatement@@InfixExpression:ch0 == ''_'' '
+    - '------INS ClassInstanceCreation@@Locale["", str.substring(1,3), str.substring(4)]
+      @TO@ ReturnStatement@@ClassInstanceCreation:new Locale("",str.substring(1,3),str.substring(4)) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@Locale["", str.substring(1,3),
+      str.substring(4)] '
+    - '---------INS SimpleType@@Locale @TO@ ClassInstanceCreation@@Locale["", str.substring(1,3),
+      str.substring(4)] '
+    - '---------INS StringLiteral@@"" @TO@ ClassInstanceCreation@@Locale["", str.substring(1,3),
+      str.substring(4)] '
+    - '---------INS MethodInvocation@@str.substring(1,3) @TO@ ClassInstanceCreation@@Locale["",
+      str.substring(1,3), str.substring(4)] '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.substring(1,3) '
+    - '------------INS SimpleName@@MethodName:substring:[1, 3] @TO@ MethodInvocation@@str.substring(1,3) '
+    - '---------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1,
+      3] '
+    - '---------------INS NumberLiteral@@3 @TO@ SimpleName@@MethodName:substring:[1,
+      3] '
+    - '---------INS MethodInvocation@@str.substring(4) @TO@ ClassInstanceCreation@@Locale["",
+      str.substring(1,3), str.substring(4)] '
+    - '------------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.substring(4) '
+    - '------------INS SimpleName@@MethodName:substring:[4] @TO@ MethodInvocation@@str.substring(4) '
+    - '---------------INS NumberLiteral@@4 @TO@ SimpleName@@MethodName:substring:[4] '
+    - '---MOV IfStatement@@InfixExpression:len == 5 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---MOV IfStatement@@InfixExpression:len < 7 @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---MOV IfStatement@@InfixExpression:str.charAt(5) != ''_'' @TO@ IfStatement@@InfixExpression:ch0
+      == ''_'' '
+    - '---MOV ReturnStatement@@ClassInstanceCreation:new Locale(str.substring(0,2),str.substring(3,5),str.substring(6))
+      @TO@ IfStatement@@InfixExpression:ch0 == ''_'' '
+  repair_actions_cnt: 1

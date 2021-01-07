@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_1/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_1/fixed-version/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_1/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2020-03-01 00:02:32.146887487 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_1/fixed-version/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2020-03-01 00:02:35.679053909 -0800
+@@ -1794,7 +1794,7 @@
+         }
+         int index = this.plot.getIndexOf(this);
+         CategoryDataset dataset = this.plot.getDataset(index);
+-        if (dataset != null) {
++        if (dataset == null) {
+             return result;
+         }
+         int seriesCount = dataset.getRowCount();

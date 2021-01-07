@@ -1,0 +1,231 @@
+1 bug_id: Math-74
+2 src folder:
+  name of src folder: java
+  number of files: 435
+  number of java files: 398
+  number of src classes: 542
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.ode.nonstiff.AdamsMoultonIntegratorTest#polynomial
+  failing tests:
+  - org.apache.commons.math.ode.nonstiff.AdamsMoultonIntegratorTest
+  number of all test cases: 2131
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.067
+  purification via delta debugging: 1435.9561
+  repair actions extraction: 0.923
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.ode.nonstiff.AdamsMoultonIntegratorTest#polynomial: 1092
+  fixed:
+    org.apache.commons.math.ode.nonstiff.AdamsMoultonIntegratorTest#polynomial: 1093
+6 reduced lines:
+  by all: 4
+  by coverage: 0
+  by delta debugging: 4
+  covAdd: 7
+  covDel: 4
+  cov_patch_lines: 11
+  delta_patch_lines: 7
+  oriAdd: 7
+  oriDel: 4
+  ori_patch_lines: 11
+  purAdd: 6
+  purDel: 1
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 3
+  original: 3
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 2
+  failCompile: 23
+  failFail: 1
+  passed: 1
+  total: 27
+9 sibling repair actions:
+- 1 4 0.7751937984496124
+- 2 5 0.9365351629502573
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_74/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java\t\
+    2020-10-22 08:01:20.355984285 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_74/purify/patch/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java\t\
+    2020-10-22 08:01:20.351984169 -0400\n@@ -242,12 +242,15 @@\n         }\n \n  \
+    \       if (firstTime) {\n-          final double[] scale;\n+          final double[]\
+    \ scale = new double[y0.length];\n           if (vecAbsoluteTolerance == null)\
+    \ {\n-              scale = new double[y0.length];\n-              java.util.Arrays.fill(scale,\
+    \ scalAbsoluteTolerance);\n+              for (int i = 0; i < scale.length; ++i)\
+    \ {\n+                scale[i] = scalAbsoluteTolerance + scalRelativeTolerance\
+    \ * Math.abs(y[i]);\n+              }\n             } else {\n-              scale\
+    \ = vecAbsoluteTolerance;\n+              for (int i = 0; i < scale.length; ++i)\
+    \ {\n+                scale[i] = vecAbsoluteTolerance[i] + vecRelativeTolerance[i]\
+    \ * Math.abs(y[i]);\n+              }\n             }\n           hNew = initializeStep(equations,\
+    \ forward, getOrder(), scale,\n                                 stepStart, y,\
+    \ yDotK[0], yTmp, yDotK[1]);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_74/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java\t\
+    2020-10-22 08:25:32.866019775 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_74/purify/purified/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java\t\
+    2020-10-22 08:25:32.862019659 -0400\n@@ -243,11 +243,16 @@\n \n         if (firstTime)\
+    \ {\n           final double[] scale;\n+          final double[] scale = new double[y0.length];\n\
+    \           if (vecAbsoluteTolerance == null) {\n-              scale = new double[y0.length];\n\
+    \               java.util.Arrays.fill(scale, scalAbsoluteTolerance);\n+      \
+    \        for (int i = 0; i < scale.length; ++i) {\n+                scale[i] =\
+    \ scalAbsoluteTolerance + scalRelativeTolerance * Math.abs(y[i]);\n+         \
+    \     }\n             } else {\n               scale = vecAbsoluteTolerance;\n\
+    +              for (int i = 0; i < scale.length; ++i) {\n+              }\n  \
+    \           }\n           hNew = initializeStep(equations, forward, getOrder(),\
+    \ scale,\n                                 stepStart, y, yDotK[0], yTmp, yDotK[1]);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final double[] scale; @TO@ final double[]
+      scale=new double[y0.length]; '
+    - '---UPD VariableDeclarationFragment@@scale @TO@ scale=new double[y0.length] '
+    - '------MOV ArrayCreation@@new double[y0.length] @TO@ VariableDeclarationFragment@@scale '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:scale=new double[y0.length] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < scale.length; [++i] @TO@ IfStatement@@InfixExpression:vecAbsoluteTolerance
+      == null '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < scale.length; [++i] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < scale.length @TO@ ForStatement@@[int i=0];i < scale.length;
+      [++i] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < scale.length '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < scale.length '
+    - '------INS QualifiedName@@scale.length @TO@ InfixExpression@@i < scale.length '
+    - '---------INS SimpleName@@scale @TO@ QualifiedName@@scale.length '
+    - '---------INS SimpleName@@length @TO@ QualifiedName@@scale.length '
+    - '---INS PrefixExpression@@++i @TO@ ForStatement@@[int i=0];i < scale.length;
+      [++i] '
+    - '------INS Operator@@++ @TO@ PrefixExpression@@++i '
+    - '------INS SimpleName@@i @TO@ PrefixExpression@@++i '
+    - '---INS ExpressionStatement@@Assignment:scale[i]=scalAbsoluteTolerance + scalRelativeTolerance
+      * Math.abs(y[i]) @TO@ ForStatement@@[int i=0];i < scale.length; [++i] '
+    - '------MOV Assignment@@scale=new double[y0.length] @TO@ ExpressionStatement@@Assignment:scale[i]=scalAbsoluteTolerance
+      + scalRelativeTolerance * Math.abs(y[i]) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@MethodInvocation:java.util.Arrays.fill(scale,scalAbsoluteTolerance) '
+    - '---DEL MethodInvocation@@java.util.Arrays.fill(scale,scalAbsoluteTolerance) '
+    - '------DEL QualifiedName@@Name:java.util.Arrays '
+    - '------DEL SimpleName@@MethodName:fill:[scale, scalAbsoluteTolerance] '
+    - '---------DEL SimpleName@@scale '
+    - '---------DEL SimpleName@@scalAbsoluteTolerance '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:scale=vecAbsoluteTolerance '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < scale.length; [++i] @TO@ IfStatement@@InfixExpression:vecAbsoluteTolerance
+      == null '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < scale.length; [++i] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < scale.length @TO@ ForStatement@@[int i=0];i < scale.length;
+      [++i] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < scale.length '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < scale.length '
+    - '------INS QualifiedName@@scale.length @TO@ InfixExpression@@i < scale.length '
+    - '---------INS SimpleName@@scale @TO@ QualifiedName@@scale.length '
+    - '---------INS SimpleName@@length @TO@ QualifiedName@@scale.length '
+    - '---INS PrefixExpression@@++i @TO@ ForStatement@@[int i=0];i < scale.length;
+      [++i] '
+    - '------INS Operator@@++ @TO@ PrefixExpression@@++i '
+    - '------INS SimpleName@@i @TO@ PrefixExpression@@++i '
+    - '---INS ExpressionStatement@@Assignment:scale[i]=vecAbsoluteTolerance[i] + vecRelativeTolerance[i]
+      * Math.abs(y[i]) @TO@ ForStatement@@[int i=0];i < scale.length; [++i] '
+    - '------MOV Assignment@@scale=vecAbsoluteTolerance @TO@ ExpressionStatement@@Assignment:scale[i]=vecAbsoluteTolerance[i]
+      + vecRelativeTolerance[i] * Math.abs(y[i]) '
+  repair_actions_cnt: 6
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double[] scale=new double[y0.length];
+      @TO@ IfStatement@@SimpleName:firstTime '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double[] scale=new
+      double[y0.length]; '
+    - '---INS ArrayType@@double[] @TO@ VariableDeclarationStatement@@final double[]
+      scale=new double[y0.length]; '
+    - '------INS PrimitiveType@@double @TO@ ArrayType@@double[] '
+    - '---INS VariableDeclarationFragment@@scale=new double[y0.length] @TO@ VariableDeclarationStatement@@final
+      double[] scale=new double[y0.length]; '
+    - '------INS SimpleName@@scale @TO@ VariableDeclarationFragment@@scale=new double[y0.length] '
+    - '------MOV ArrayCreation@@new double[y0.length] @TO@ VariableDeclarationFragment@@scale=new
+      double[y0.length] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:scale=new double[y0.length] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < scale.length; [++i] @TO@ IfStatement@@InfixExpression:vecAbsoluteTolerance
+      == null '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < scale.length; [++i] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < scale.length @TO@ ForStatement@@[int i=0];i < scale.length;
+      [++i] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < scale.length '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < scale.length '
+    - '------INS QualifiedName@@scale.length @TO@ InfixExpression@@i < scale.length '
+    - '---------INS SimpleName@@scale @TO@ QualifiedName@@scale.length '
+    - '---------INS SimpleName@@length @TO@ QualifiedName@@scale.length '
+    - '---INS PrefixExpression@@++i @TO@ ForStatement@@[int i=0];i < scale.length;
+      [++i] '
+    - '------INS Operator@@++ @TO@ PrefixExpression@@++i '
+    - '------INS SimpleName@@i @TO@ PrefixExpression@@++i '
+    - '---INS ExpressionStatement@@Assignment:scale[i]=scalAbsoluteTolerance + scalRelativeTolerance
+      * Math.abs(y[i]) @TO@ ForStatement@@[int i=0];i < scale.length; [++i] '
+    - '------MOV Assignment@@scale=new double[y0.length] @TO@ ExpressionStatement@@Assignment:scale[i]=scalAbsoluteTolerance
+      + scalRelativeTolerance * Math.abs(y[i]) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < scale.length; [++i] @TO@ IfStatement@@InfixExpression:vecAbsoluteTolerance
+      == null '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < scale.length; [++i] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < scale.length @TO@ ForStatement@@[int i=0];i < scale.length;
+      [++i] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < scale.length '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < scale.length '
+    - '------INS QualifiedName@@scale.length @TO@ InfixExpression@@i < scale.length '
+    - '---------INS SimpleName@@scale @TO@ QualifiedName@@scale.length '
+    - '---------INS SimpleName@@length @TO@ QualifiedName@@scale.length '
+    - '---INS PrefixExpression@@++i @TO@ ForStatement@@[int i=0];i < scale.length;
+      [++i] '
+    - '------INS Operator@@++ @TO@ PrefixExpression@@++i '
+    - '------INS SimpleName@@i @TO@ PrefixExpression@@++i '
+  repair_actions_cnt: 4

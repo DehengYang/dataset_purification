@@ -1,0 +1,261 @@
+1 bug_id: Closure-47
+2 src folder:
+  name of src folder: src
+  number of files: 408
+  number of java files: 394
+  number of src classes: 1319
+  number of test classes: 220
+3 test (cases):
+  failing test cases:
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testLiteralMappingsGoldenOutput
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput2
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testParseSourceMetaMap
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testMultilineMapping2
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testSourceMapMerging
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput4
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput3
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testLiteralMappings
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput0a
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testBasicMapping1
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput5
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testBasicMapping2
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testBasicMappingGoldenOutput
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testMultiFunctionMapping
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput1
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testMultilineMapping
+  failing tests:
+  - com.google.debugging.sourcemap.SourceMapGeneratorV3Test
+  number of all test cases: 7232
+  number of failing test cases: 16
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.465
+  purification via delta debugging: 1085.614
+  repair actions extraction: 1.463
+5 stmts covered by failing cases:
+  buggy:
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testBasicMapping1: 3541
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testBasicMapping2: 3599
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testBasicMappingGoldenOutput: 3314
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput0a: 3178
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput1: 3484
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput2: 3462
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput3: 3179
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput4: 3198
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput5: 3898
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testLiteralMappings: 3706
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testLiteralMappingsGoldenOutput: 3479
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testMultiFunctionMapping: 3711
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testMultilineMapping: 3711
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testMultilineMapping2: 3699
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testParseSourceMetaMap: 3629
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testSourceMapMerging: 3558
+  fixed:
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testBasicMapping1: 3546
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testBasicMapping2: 3605
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testBasicMappingGoldenOutput: 3316
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput0a: 3181
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput1: 3492
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput2: 3464
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput3: 3182
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput4: 3201
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testGoldenOutput5: 3908
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testLiteralMappings: 3713
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testLiteralMappingsGoldenOutput: 3481
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testMultiFunctionMapping: 3718
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testMultilineMapping: 3718
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testMultilineMapping2: 3705
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testParseSourceMetaMap: 3634
+    com.google.debugging.sourcemap.SourceMapGeneratorV3Test#testSourceMapMerging: 3563
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 8
+  covDel: 3
+  cov_patch_lines: 11
+  delta_patch_lines: 9
+  oriAdd: 8
+  oriDel: 3
+  ori_patch_lines: 11
+  purAdd: 7
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 18
+  failFail: 4
+  passed: 1
+  total: 24
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_47/src/com/google/javascript/jscomp/SourceMap.java\t\
+    2020-10-23 04:22:33.449139705 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_47/purify/patch/com/google/javascript/jscomp/SourceMap.java\t\
+    2020-10-23 04:22:33.449139705 -0400\n@@ -135,10 +135,15 @@\n     // zero based.\n\
+    \     // We don't change this for the v1 or v2 source maps but for\n     // v3\
+    \ we make them both 0 based.\n+    int lineBaseOffset = 1;\n+    if (generator\
+    \ instanceof SourceMapGeneratorV1\n+        || generator instanceof SourceMapGeneratorV2)\
+    \ {\n+      lineBaseOffset = 0;\n+    }\n \n     generator.addMapping(\n     \
+    \    sourceFile, originalName,\n-        new FilePosition(node.getLineno(), node.getCharno()),\n\
+    +        new FilePosition(node.getLineno() - lineBaseOffset, node.getCharno()),\n\
+    \         outputStartPosition, outputEndPosition);\n   }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_47/src/com/google/javascript/jscomp/SourceMap.java\t\
+    2020-10-23 04:41:16.401616705 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_47/purify/purified/com/google/javascript/jscomp/SourceMap.java\t\
+    2020-10-23 04:41:16.401616705 -0400\n@@ -135,10 +135,14 @@\n     // zero based.\n\
+    \     // We don't change this for the v1 or v2 source maps but for\n     // v3\
+    \ we make them both 0 based.\n+    int lineBaseOffset = 1;\n+    if (generator\
+    \ instanceof SourceMapGeneratorV1\n+        || generator instanceof SourceMapGeneratorV2)\
+    \ {\n+    }\n \n     generator.addMapping(\n         sourceFile, originalName,\n\
+    -        new FilePosition(node.getLineno(), node.getCharno()),\n+        new FilePosition(node.getLineno()\
+    \ - lineBaseOffset, node.getCharno()),\n         outputStartPosition, outputEndPosition);\n\
+    \   }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '2'
+  com/google/debugging/sourcemap/SourceMapConsumerV3, com/google/javascript/jscomp/SourceMap:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int lineBaseOffset=1; @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addMapping, @@Argus:Node+node+FilePosition+outputStartPosition+FilePosition+outputEndPosition+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int lineBaseOffset=1; '
+    - '---INS VariableDeclarationFragment@@lineBaseOffset=1 @TO@ VariableDeclarationStatement@@int
+      lineBaseOffset=1; '
+    - '------INS SimpleName@@lineBaseOffset @TO@ VariableDeclarationFragment@@lineBaseOffset=1 '
+    - '------INS NumberLiteral@@1 @TO@ VariableDeclarationFragment@@lineBaseOffset=1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:generator.addMapping(sourceFile,originalName,new
+      FilePosition(node.getLineno(),node.getCharno()),outputStartPosition,outputEndPosition)
+      @TO@ MethodInvocation:generator.addMapping(sourceFile,originalName,new FilePosition(node.getLineno()
+      - lineBaseOffset,node.getCharno()),outputStartPosition,outputEndPosition) '
+    - '---UPD MethodInvocation@@generator.addMapping(sourceFile,originalName,new FilePosition(node.getLineno(),node.getCharno()),outputStartPosition,outputEndPosition)
+      @TO@ generator.addMapping(sourceFile,originalName,new FilePosition(node.getLineno()
+      - lineBaseOffset,node.getCharno()),outputStartPosition,outputEndPosition) '
+    - '------UPD SimpleName@@MethodName:addMapping:[sourceFile, originalName, new
+      FilePosition(node.getLineno(),node.getCharno()), outputStartPosition, outputEndPosition]
+      @TO@ MethodName:addMapping:[sourceFile, originalName, new FilePosition(node.getLineno()
+      - lineBaseOffset,node.getCharno()), outputStartPosition, outputEndPosition] '
+    - '---------UPD ClassInstanceCreation@@FilePosition[node.getLineno(), node.getCharno()]
+      @TO@ FilePosition[node.getLineno() - lineBaseOffset, node.getCharno()] '
+    - '------------DEL MethodInvocation@@node.getLineno() '
+    - '------------INS InfixExpression@@node.getLineno() - lineBaseOffset @TO@ ClassInstanceCreation@@FilePosition[node.getLineno(),
+      node.getCharno()] '
+    - '---------------INS MethodInvocation@@node.getLineno() @TO@ InfixExpression@@node.getLineno()
+      - lineBaseOffset '
+    - '------------------MOV SimpleName@@Name:node @TO@ MethodInvocation@@node.getLineno() '
+    - '------------------MOV SimpleName@@MethodName:getLineno:[] @TO@ MethodInvocation@@node.getLineno() '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@node.getLineno() - lineBaseOffset '
+    - '---------------INS SimpleName@@lineBaseOffset @TO@ InfixExpression@@node.getLineno()
+      - lineBaseOffset '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:generator instanceof SourceMapGeneratorV1
+      || generator instanceof SourceMapGeneratorV2 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addMapping, @@Argus:Node+node+FilePosition+outputStartPosition+FilePosition+outputEndPosition+ '
+    - '---INS InfixExpression@@generator instanceof SourceMapGeneratorV1 || generator
+      instanceof SourceMapGeneratorV2 @TO@ IfStatement@@InfixExpression:generator
+      instanceof SourceMapGeneratorV1 || generator instanceof SourceMapGeneratorV2 '
+    - '------INS InstanceofExpression@@generator instanceof SourceMapGeneratorV1 @TO@
+      InfixExpression@@generator instanceof SourceMapGeneratorV1 || generator instanceof
+      SourceMapGeneratorV2 '
+    - '---------INS SimpleName@@generator @TO@ InstanceofExpression@@generator instanceof
+      SourceMapGeneratorV1 '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@generator instanceof
+      SourceMapGeneratorV1 '
+    - '---------INS SimpleType@@SourceMapGeneratorV1 @TO@ InstanceofExpression@@generator
+      instanceof SourceMapGeneratorV1 '
+    - '------INS Operator@@|| @TO@ InfixExpression@@generator instanceof SourceMapGeneratorV1
+      || generator instanceof SourceMapGeneratorV2 '
+    - '------INS InstanceofExpression@@generator instanceof SourceMapGeneratorV2 @TO@
+      InfixExpression@@generator instanceof SourceMapGeneratorV1 || generator instanceof
+      SourceMapGeneratorV2 '
+    - '---------INS SimpleName@@generator @TO@ InstanceofExpression@@generator instanceof
+      SourceMapGeneratorV2 '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@generator instanceof
+      SourceMapGeneratorV2 '
+    - '---------INS SimpleType@@SourceMapGeneratorV2 @TO@ InstanceofExpression@@generator
+      instanceof SourceMapGeneratorV2 '
+    - '---INS ExpressionStatement@@Assignment:lineBaseOffset=0 @TO@ IfStatement@@InfixExpression:generator
+      instanceof SourceMapGeneratorV1 || generator instanceof SourceMapGeneratorV2 '
+    - '------INS Assignment@@lineBaseOffset=0 @TO@ ExpressionStatement@@Assignment:lineBaseOffset=0 '
+    - '---------INS SimpleName@@lineBaseOffset @TO@ Assignment@@lineBaseOffset=0 '
+    - '---------INS Operator@@= @TO@ Assignment@@lineBaseOffset=0 '
+    - '---------INS NumberLiteral@@0 @TO@ Assignment@@lineBaseOffset=0 '
+  files_cnt: '2'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '2'
+  com/google/debugging/sourcemap/SourceMapConsumerV3, com/google/javascript/jscomp/SourceMap:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int lineBaseOffset=1; @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addMapping, @@Argus:Node+node+FilePosition+outputStartPosition+FilePosition+outputEndPosition+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int lineBaseOffset=1; '
+    - '---INS VariableDeclarationFragment@@lineBaseOffset=1 @TO@ VariableDeclarationStatement@@int
+      lineBaseOffset=1; '
+    - '------INS SimpleName@@lineBaseOffset @TO@ VariableDeclarationFragment@@lineBaseOffset=1 '
+    - '------INS NumberLiteral@@1 @TO@ VariableDeclarationFragment@@lineBaseOffset=1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:generator.addMapping(sourceFile,originalName,new
+      FilePosition(node.getLineno(),node.getCharno()),outputStartPosition,outputEndPosition)
+      @TO@ MethodInvocation:generator.addMapping(sourceFile,originalName,new FilePosition(node.getLineno()
+      - lineBaseOffset,node.getCharno()),outputStartPosition,outputEndPosition) '
+    - '---UPD MethodInvocation@@generator.addMapping(sourceFile,originalName,new FilePosition(node.getLineno(),node.getCharno()),outputStartPosition,outputEndPosition)
+      @TO@ generator.addMapping(sourceFile,originalName,new FilePosition(node.getLineno()
+      - lineBaseOffset,node.getCharno()),outputStartPosition,outputEndPosition) '
+    - '------UPD SimpleName@@MethodName:addMapping:[sourceFile, originalName, new
+      FilePosition(node.getLineno(),node.getCharno()), outputStartPosition, outputEndPosition]
+      @TO@ MethodName:addMapping:[sourceFile, originalName, new FilePosition(node.getLineno()
+      - lineBaseOffset,node.getCharno()), outputStartPosition, outputEndPosition] '
+    - '---------UPD ClassInstanceCreation@@FilePosition[node.getLineno(), node.getCharno()]
+      @TO@ FilePosition[node.getLineno() - lineBaseOffset, node.getCharno()] '
+    - '------------DEL MethodInvocation@@node.getLineno() '
+    - '------------INS InfixExpression@@node.getLineno() - lineBaseOffset @TO@ ClassInstanceCreation@@FilePosition[node.getLineno(),
+      node.getCharno()] '
+    - '---------------INS MethodInvocation@@node.getLineno() @TO@ InfixExpression@@node.getLineno()
+      - lineBaseOffset '
+    - '------------------MOV SimpleName@@Name:node @TO@ MethodInvocation@@node.getLineno() '
+    - '------------------MOV SimpleName@@MethodName:getLineno:[] @TO@ MethodInvocation@@node.getLineno() '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@node.getLineno() - lineBaseOffset '
+    - '---------------INS SimpleName@@lineBaseOffset @TO@ InfixExpression@@node.getLineno()
+      - lineBaseOffset '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:generator instanceof SourceMapGeneratorV1
+      || generator instanceof SourceMapGeneratorV2 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addMapping, @@Argus:Node+node+FilePosition+outputStartPosition+FilePosition+outputEndPosition+ '
+    - '---INS InfixExpression@@generator instanceof SourceMapGeneratorV1 || generator
+      instanceof SourceMapGeneratorV2 @TO@ IfStatement@@InfixExpression:generator
+      instanceof SourceMapGeneratorV1 || generator instanceof SourceMapGeneratorV2 '
+    - '------INS InstanceofExpression@@generator instanceof SourceMapGeneratorV1 @TO@
+      InfixExpression@@generator instanceof SourceMapGeneratorV1 || generator instanceof
+      SourceMapGeneratorV2 '
+    - '---------INS SimpleName@@generator @TO@ InstanceofExpression@@generator instanceof
+      SourceMapGeneratorV1 '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@generator instanceof
+      SourceMapGeneratorV1 '
+    - '---------INS SimpleType@@SourceMapGeneratorV1 @TO@ InstanceofExpression@@generator
+      instanceof SourceMapGeneratorV1 '
+    - '------INS Operator@@|| @TO@ InfixExpression@@generator instanceof SourceMapGeneratorV1
+      || generator instanceof SourceMapGeneratorV2 '
+    - '------INS InstanceofExpression@@generator instanceof SourceMapGeneratorV2 @TO@
+      InfixExpression@@generator instanceof SourceMapGeneratorV1 || generator instanceof
+      SourceMapGeneratorV2 '
+    - '---------INS SimpleName@@generator @TO@ InstanceofExpression@@generator instanceof
+      SourceMapGeneratorV2 '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@generator instanceof
+      SourceMapGeneratorV2 '
+    - '---------INS SimpleType@@SourceMapGeneratorV2 @TO@ InstanceofExpression@@generator
+      instanceof SourceMapGeneratorV2 '
+  files_cnt: '2'
+  repair_actions_cnt: 1

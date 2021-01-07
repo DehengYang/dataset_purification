@@ -1,0 +1,275 @@
+1 bug_id: Closure-6
+2 src folder:
+  name of src folder: src
+  number of files: 425
+  number of java files: 409
+  number of src classes: 1372
+  number of test classes: 226
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testTypeRedefinition
+  - com.google.javascript.jscomp.LooseTypeCheckTest#testTypeRedefinition
+  - com.google.javascript.jscomp.TypeCheckTest#testIssue635b
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  - com.google.javascript.jscomp.LooseTypeCheckTest
+  number of all test cases: 7758
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.012
+  purification via delta debugging: 720.084
+  repair actions extraction: 2.181
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.LooseTypeCheckTest#testTypeRedefinition: 4556
+    com.google.javascript.jscomp.TypeCheckTest#testIssue635b: 4884
+    com.google.javascript.jscomp.TypeCheckTest#testTypeRedefinition: 4562
+  fixed:
+    com.google.javascript.jscomp.LooseTypeCheckTest#testTypeRedefinition: 4580
+    com.google.javascript.jscomp.TypeCheckTest#testIssue635b: 4984
+    com.google.javascript.jscomp.TypeCheckTest#testTypeRedefinition: 4581
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 0
+  covDel: 8
+  cov_patch_lines: 8
+  delta_patch_lines: 7
+  oriAdd: 0
+  oriDel: 8
+  ori_patch_lines: 8
+  purAdd: 0
+  purDel: 7
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 4
+  original: 4
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 9
+  failFail: 4
+  passed: 1
+  total: 15
+9 sibling repair actions:
+- 1 3 0.8562124248496994
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_6/src/com/google/javascript/jscomp/TypeValidator.java\t\
+    2020-10-21 16:50:37.985567978 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_6/purify/patch/com/google/javascript/jscomp/TypeValidator.java\t\
+    2020-10-21 16:50:37.985567978 -0400\n@@ -363,9 +363,6 @@\n       JSType leftType,\
+    \ Node owner, String propName) {\n     // The NoType check is a hack to make typedefs\
+    \ work OK.\n     if (!leftType.isNoType() && !rightType.canAssignTo(leftType))\
+    \ {\n-      if ((leftType.isConstructor() || leftType.isEnumType()) && (rightType.isConstructor()\
+    \ || rightType.isEnumType())) {\n-        registerMismatch(rightType, leftType,\
+    \ null);\n-      } else {\n       // Do not type-check interface methods, because\
+    \ we expect that\n       // they will have dummy implementations that do not match\
+    \ the type\n       // annotations.\n@@ -382,7 +379,6 @@\n           \"assignment\
+    \ to property \" + propName + \" of \" +\n           getReadableJSTypeName(owner,\
+    \ true),\n           rightType, leftType);\n-      }\n       return false;\n \
+    \    }\n     return true;\n@@ -402,11 +398,7 @@\n   boolean expectCanAssignTo(NodeTraversal\
+    \ t, Node n, JSType rightType,\n       JSType leftType, String msg) {\n     if\
+    \ (!rightType.canAssignTo(leftType)) {\n-      if ((leftType.isConstructor() ||\
+    \ leftType.isEnumType()) && (rightType.isConstructor() || rightType.isEnumType()))\
+    \ {\n-        registerMismatch(rightType, leftType, null);\n-      } else {\n\
+    \       mismatch(t, n, msg, rightType, leftType);\n-      }\n       return false;\n\
+    \     }\n     return true;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_6/src/com/google/javascript/jscomp/TypeValidator.java\t\
+    2020-10-21 17:03:12.299366819 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_6/purify/purified/com/google/javascript/jscomp/TypeValidator.java\t\
+    2020-10-21 17:03:12.299366819 -0400\n@@ -363,9 +363,7 @@\n       JSType leftType,\
+    \ Node owner, String propName) {\n     // The NoType check is a hack to make typedefs\
+    \ work OK.\n     if (!leftType.isNoType() && !rightType.canAssignTo(leftType))\
+    \ {\n-      if ((leftType.isConstructor() || leftType.isEnumType()) && (rightType.isConstructor()\
+    \ || rightType.isEnumType())) {\n         registerMismatch(rightType, leftType,\
+    \ null);\n-      } else {\n       // Do not type-check interface methods, because\
+    \ we expect that\n       // they will have dummy implementations that do not match\
+    \ the type\n       // annotations.\n@@ -382,7 +380,6 @@\n           \"assignment\
+    \ to property \" + propName + \" of \" +\n           getReadableJSTypeName(owner,\
+    \ true),\n           rightType, leftType);\n-      }\n       return false;\n \
+    \    }\n     return true;\n@@ -402,11 +399,7 @@\n   boolean expectCanAssignTo(NodeTraversal\
+    \ t, Node n, JSType rightType,\n       JSType leftType, String msg) {\n     if\
+    \ (!rightType.canAssignTo(leftType)) {\n-      if ((leftType.isConstructor() ||\
+    \ leftType.isEnumType()) && (rightType.isConstructor() || rightType.isEnumType()))\
+    \ {\n-        registerMismatch(rightType, leftType, null);\n-      } else {\n\
+    \       mismatch(t, n, msg, rightType, leftType);\n-      }\n       return false;\n\
+    \     }\n     return true;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeValidator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:!leftType.isNoType() && !rightType.canAssignTo(leftType) '
+    - '---DEL ReturnStatement@@BooleanLiteral:false '
+    - '------DEL BooleanLiteral@@false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:(leftType.isConstructor() || leftType.isEnumType())
+      && (rightType.isConstructor() || rightType.isEnumType()) @TO@ InfixExpression:!leftType.isNoType()
+      && !rightType.canAssignTo(leftType) '
+    - '---MOV InfixExpression@@!leftType.isNoType() && !rightType.canAssignTo(leftType)
+      @TO@ IfStatement@@InfixExpression:(leftType.isConstructor() || leftType.isEnumType())
+      && (rightType.isConstructor() || rightType.isEnumType()) '
+    - '---DEL InfixExpression@@(leftType.isConstructor() || leftType.isEnumType())
+      && (rightType.isConstructor() || rightType.isEnumType()) '
+    - '------DEL ParenthesizedExpression@@(leftType.isConstructor() || leftType.isEnumType()) '
+    - '---------DEL InfixExpression@@leftType.isConstructor() || leftType.isEnumType() '
+    - '------------DEL MethodInvocation@@leftType.isConstructor() '
+    - '---------------DEL SimpleName@@Name:leftType '
+    - '---------------DEL SimpleName@@MethodName:isConstructor:[] '
+    - '------------DEL Operator@@|| '
+    - '------------DEL MethodInvocation@@leftType.isEnumType() '
+    - '---------------DEL SimpleName@@Name:leftType '
+    - '---------------DEL SimpleName@@MethodName:isEnumType:[] '
+    - '------DEL Operator@@&& '
+    - '------DEL ParenthesizedExpression@@(rightType.isConstructor() || rightType.isEnumType()) '
+    - '---------DEL InfixExpression@@rightType.isConstructor() || rightType.isEnumType() '
+    - '------------DEL MethodInvocation@@rightType.isConstructor() '
+    - '---------------DEL SimpleName@@Name:rightType '
+    - '---------------DEL SimpleName@@MethodName:isConstructor:[] '
+    - '------------DEL Operator@@|| '
+    - '------------DEL MethodInvocation@@rightType.isEnumType() '
+    - '---------------DEL SimpleName@@Name:rightType '
+    - '---------------DEL SimpleName@@MethodName:isEnumType:[] '
+    - '---DEL ExpressionStatement@@MethodInvocation:registerMismatch(rightType,leftType,null) '
+    - '------DEL MethodInvocation@@registerMismatch(rightType,leftType,null) '
+    - '---------DEL SimpleName@@MethodName:registerMismatch:[rightType, leftType,
+      null] '
+    - '------------DEL SimpleName@@rightType '
+    - '------------DEL SimpleName@@leftType '
+    - '------------DEL NullLiteral@@null '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:(leftType.isConstructor()
+      || leftType.isEnumType()) && (rightType.isConstructor() || rightType.isEnumType()) '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:(leftType.isConstructor() || leftType.isEnumType())
+      && (rightType.isConstructor() || rightType.isEnumType()) @TO@ MethodDeclaration@@@@boolean,
+      MethodName:expectCanAssignToPropertyOf, @@Argus:NodeTraversal+t+Node+n+JSType+rightType+JSType+leftType+Node+owner+String+propName+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:(leftType.isConstructor() || leftType.isEnumType())
+      && (rightType.isConstructor() || rightType.isEnumType()) '
+    - '---DEL InfixExpression@@(leftType.isConstructor() || leftType.isEnumType())
+      && (rightType.isConstructor() || rightType.isEnumType()) '
+    - '------DEL ParenthesizedExpression@@(leftType.isConstructor() || leftType.isEnumType()) '
+    - '---------DEL InfixExpression@@leftType.isConstructor() || leftType.isEnumType() '
+    - '------------DEL MethodInvocation@@leftType.isConstructor() '
+    - '---------------DEL SimpleName@@Name:leftType '
+    - '---------------DEL SimpleName@@MethodName:isConstructor:[] '
+    - '------------DEL Operator@@|| '
+    - '------------DEL MethodInvocation@@leftType.isEnumType() '
+    - '---------------DEL SimpleName@@Name:leftType '
+    - '---------------DEL SimpleName@@MethodName:isEnumType:[] '
+    - '------DEL Operator@@&& '
+    - '------DEL ParenthesizedExpression@@(rightType.isConstructor() || rightType.isEnumType()) '
+    - '---------DEL InfixExpression@@rightType.isConstructor() || rightType.isEnumType() '
+    - '------------DEL MethodInvocation@@rightType.isConstructor() '
+    - '---------------DEL SimpleName@@Name:rightType '
+    - '---------------DEL SimpleName@@MethodName:isConstructor:[] '
+    - '------------DEL Operator@@|| '
+    - '------------DEL MethodInvocation@@rightType.isEnumType() '
+    - '---------------DEL SimpleName@@Name:rightType '
+    - '---------------DEL SimpleName@@MethodName:isEnumType:[] '
+    - '---DEL ExpressionStatement@@MethodInvocation:registerMismatch(rightType,leftType,null) '
+    - '------DEL MethodInvocation@@registerMismatch(rightType,leftType,null) '
+    - '---------DEL SimpleName@@MethodName:registerMismatch:[rightType, leftType,
+      null] '
+    - '------------DEL SimpleName@@rightType '
+    - '------------DEL SimpleName@@leftType '
+    - '------------DEL NullLiteral@@null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:mismatch(t,n,msg,rightType,leftType)
+      @TO@ IfStatement@@PrefixExpression:!rightType.canAssignTo(leftType) '
+  files_cnt: '1'
+  repair_actions_cnt: 5
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeValidator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:!leftType.isNoType() && !rightType.canAssignTo(leftType) '
+    - '---DEL ReturnStatement@@BooleanLiteral:false '
+    - '------DEL BooleanLiteral@@false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:(leftType.isConstructor() || leftType.isEnumType())
+      && (rightType.isConstructor() || rightType.isEnumType()) @TO@ InfixExpression:!leftType.isNoType()
+      && !rightType.canAssignTo(leftType) '
+    - '---MOV InfixExpression@@!leftType.isNoType() && !rightType.canAssignTo(leftType)
+      @TO@ IfStatement@@InfixExpression:(leftType.isConstructor() || leftType.isEnumType())
+      && (rightType.isConstructor() || rightType.isEnumType()) '
+    - '---DEL InfixExpression@@(leftType.isConstructor() || leftType.isEnumType())
+      && (rightType.isConstructor() || rightType.isEnumType()) '
+    - '------DEL ParenthesizedExpression@@(leftType.isConstructor() || leftType.isEnumType()) '
+    - '---------DEL InfixExpression@@leftType.isConstructor() || leftType.isEnumType() '
+    - '------------DEL MethodInvocation@@leftType.isConstructor() '
+    - '---------------DEL SimpleName@@Name:leftType '
+    - '---------------DEL SimpleName@@MethodName:isConstructor:[] '
+    - '------------DEL Operator@@|| '
+    - '------------DEL MethodInvocation@@leftType.isEnumType() '
+    - '---------------DEL SimpleName@@Name:leftType '
+    - '---------------DEL SimpleName@@MethodName:isEnumType:[] '
+    - '------DEL Operator@@&& '
+    - '------DEL ParenthesizedExpression@@(rightType.isConstructor() || rightType.isEnumType()) '
+    - '---------DEL InfixExpression@@rightType.isConstructor() || rightType.isEnumType() '
+    - '------------DEL MethodInvocation@@rightType.isConstructor() '
+    - '---------------DEL SimpleName@@Name:rightType '
+    - '---------------DEL SimpleName@@MethodName:isConstructor:[] '
+    - '------------DEL Operator@@|| '
+    - '------------DEL MethodInvocation@@rightType.isEnumType() '
+    - '---------------DEL SimpleName@@Name:rightType '
+    - '---------------DEL SimpleName@@MethodName:isEnumType:[] '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:(leftType.isConstructor()
+      || leftType.isEnumType()) && (rightType.isConstructor() || rightType.isEnumType()) '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:(leftType.isConstructor() || leftType.isEnumType())
+      && (rightType.isConstructor() || rightType.isEnumType()) @TO@ MethodDeclaration@@@@boolean,
+      MethodName:expectCanAssignToPropertyOf, @@Argus:NodeTraversal+t+Node+n+JSType+rightType+JSType+leftType+Node+owner+String+propName+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:(leftType.isConstructor() || leftType.isEnumType())
+      && (rightType.isConstructor() || rightType.isEnumType()) '
+    - '---DEL InfixExpression@@(leftType.isConstructor() || leftType.isEnumType())
+      && (rightType.isConstructor() || rightType.isEnumType()) '
+    - '------DEL ParenthesizedExpression@@(leftType.isConstructor() || leftType.isEnumType()) '
+    - '---------DEL InfixExpression@@leftType.isConstructor() || leftType.isEnumType() '
+    - '------------DEL MethodInvocation@@leftType.isConstructor() '
+    - '---------------DEL SimpleName@@Name:leftType '
+    - '---------------DEL SimpleName@@MethodName:isConstructor:[] '
+    - '------------DEL Operator@@|| '
+    - '------------DEL MethodInvocation@@leftType.isEnumType() '
+    - '---------------DEL SimpleName@@Name:leftType '
+    - '---------------DEL SimpleName@@MethodName:isEnumType:[] '
+    - '------DEL Operator@@&& '
+    - '------DEL ParenthesizedExpression@@(rightType.isConstructor() || rightType.isEnumType()) '
+    - '---------DEL InfixExpression@@rightType.isConstructor() || rightType.isEnumType() '
+    - '------------DEL MethodInvocation@@rightType.isConstructor() '
+    - '---------------DEL SimpleName@@Name:rightType '
+    - '---------------DEL SimpleName@@MethodName:isConstructor:[] '
+    - '------------DEL Operator@@|| '
+    - '------------DEL MethodInvocation@@rightType.isEnumType() '
+    - '---------------DEL SimpleName@@Name:rightType '
+    - '---------------DEL SimpleName@@MethodName:isEnumType:[] '
+    - '---DEL ExpressionStatement@@MethodInvocation:registerMismatch(rightType,leftType,null) '
+    - '------DEL MethodInvocation@@registerMismatch(rightType,leftType,null) '
+    - '---------DEL SimpleName@@MethodName:registerMismatch:[rightType, leftType,
+      null] '
+    - '------------DEL SimpleName@@rightType '
+    - '------------DEL SimpleName@@leftType '
+    - '------------DEL NullLiteral@@null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:mismatch(t,n,msg,rightType,leftType)
+      @TO@ IfStatement@@PrefixExpression:!rightType.canAssignTo(leftType) '
+  files_cnt: '1'
+  repair_actions_cnt: 5

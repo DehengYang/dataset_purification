@@ -1,0 +1,23 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_86/src/java/org/apache/commons/math/linear/CholeskyDecompositionImpl.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_86/fixed-version/src/java/org/apache/commons/math/linear/CholeskyDecompositionImpl.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_86/src/java/org/apache/commons/math/linear/CholeskyDecompositionImpl.java	2020-03-01 00:22:40.055800304 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_86/fixed-version/src/java/org/apache/commons/math/linear/CholeskyDecompositionImpl.java	2020-03-01 00:22:43.655969942 -0800
+@@ -111,9 +111,6 @@
+ 
+             final double[] lI = lTData[i];
+ 
+-            if (lTData[i][i] < absolutePositivityThreshold) {
+-                throw new NotPositiveDefiniteMatrixException();
+-            }
+             // check off-diagonal elements (and reset them to 0)
+             for (int j = i + 1; j < order; ++j) {
+                 final double[] lJ = lTData[j];
+@@ -134,6 +131,9 @@
+             final double[] ltI = lTData[i];
+ 
+             // check diagonal element
++            if (ltI[i] < absolutePositivityThreshold) {
++                throw new NotPositiveDefiniteMatrixException();
++            }
+ 
+             ltI[i] = Math.sqrt(ltI[i]);
+             final double inverse = 1.0 / ltI[i];

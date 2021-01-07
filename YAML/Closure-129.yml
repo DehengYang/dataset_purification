@@ -1,0 +1,106 @@
+1 bug_id: Closure-129
+2 src folder:
+  name of src folder: src
+  number of files: 430
+  number of java files: 414
+  number of src classes: 1382
+  number of test classes: 227
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.IntegrationTest#testIssue937
+  failing tests:
+  - com.google.javascript.jscomp.IntegrationTest
+  number of all test cases: 7995
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.5
+  purification via delta debugging: 427.755
+  repair actions extraction: 0.814
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.IntegrationTest#testIssue937: 6780
+  fixed:
+    com.google.javascript.jscomp.IntegrationTest#testIssue937: 6698
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_129/src/com/google/javascript/jscomp/PrepareAst.java\t\
+    2020-10-23 17:48:25.060756305 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_129/purify/patch/com/google/javascript/jscomp/PrepareAst.java\t\
+    2020-10-23 17:48:25.060756305 -0400\n@@ -163,6 +163,9 @@\n       Node first =\
+    \ n.getFirstChild();\n \n       // ignore cast nodes.\n+      while (first.isCast())\
+    \ {\n+        first = first.getFirstChild();\n+      }\n \n       if (!NodeUtil.isGet(first))\
+    \ {\n         n.putBooleanProp(Node.FREE_CALL, true);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_129/src/com/google/javascript/jscomp/PrepareAst.java\t\
+    2020-10-23 17:56:03.242023866 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_129/purify/purified/com/google/javascript/jscomp/PrepareAst.java\t\
+    2020-10-23 17:56:03.238023750 -0400\n@@ -163,6 +163,9 @@\n       Node first =\
+    \ n.getFirstChild();\n \n       // ignore cast nodes.\n+      while (first.isCast())\
+    \ {\n+        first = first.getFirstChild();\n+      }\n \n       if (!NodeUtil.isGet(first))\
+    \ {\n         n.putBooleanProp(Node.FREE_CALL, true);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PrepareAst:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS WhileStatement@@MethodInvocation:first.isCast() @TO@ MethodDeclaration@@private,
+      @@void, MethodName:annotateCalls, @@Argus:Node+n+ '
+    - '---INS MethodInvocation@@first.isCast() @TO@ WhileStatement@@MethodInvocation:first.isCast() '
+    - '------INS SimpleName@@Name:first @TO@ MethodInvocation@@first.isCast() '
+    - '------INS SimpleName@@MethodName:isCast:[] @TO@ MethodInvocation@@first.isCast() '
+    - '---INS ExpressionStatement@@Assignment:first=first.getFirstChild() @TO@ WhileStatement@@MethodInvocation:first.isCast() '
+    - '------INS Assignment@@first=first.getFirstChild() @TO@ ExpressionStatement@@Assignment:first=first.getFirstChild() '
+    - '---------INS SimpleName@@first @TO@ Assignment@@first=first.getFirstChild() '
+    - '---------INS Operator@@= @TO@ Assignment@@first=first.getFirstChild() '
+    - '---------INS MethodInvocation@@first.getFirstChild() @TO@ Assignment@@first=first.getFirstChild() '
+    - '------------INS SimpleName@@Name:first @TO@ MethodInvocation@@first.getFirstChild() '
+    - '------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@first.getFirstChild() '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PrepareAst:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS WhileStatement@@MethodInvocation:first.isCast() @TO@ MethodDeclaration@@private,
+      @@void, MethodName:annotateCalls, @@Argus:Node+n+ '
+    - '---INS MethodInvocation@@first.isCast() @TO@ WhileStatement@@MethodInvocation:first.isCast() '
+    - '------INS SimpleName@@Name:first @TO@ MethodInvocation@@first.isCast() '
+    - '------INS SimpleName@@MethodName:isCast:[] @TO@ MethodInvocation@@first.isCast() '
+    - '---INS ExpressionStatement@@Assignment:first=first.getFirstChild() @TO@ WhileStatement@@MethodInvocation:first.isCast() '
+    - '------INS Assignment@@first=first.getFirstChild() @TO@ ExpressionStatement@@Assignment:first=first.getFirstChild() '
+    - '---------INS SimpleName@@first @TO@ Assignment@@first=first.getFirstChild() '
+    - '---------INS Operator@@= @TO@ Assignment@@first=first.getFirstChild() '
+    - '---------INS MethodInvocation@@first.getFirstChild() @TO@ Assignment@@first=first.getFirstChild() '
+    - '------------INS SimpleName@@Name:first @TO@ MethodInvocation@@first.getFirstChild() '
+    - '------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@first.getFirstChild() '
+  files_cnt: '1'
+  repair_actions_cnt: 1

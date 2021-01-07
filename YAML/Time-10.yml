@@ -1,0 +1,196 @@
+1 bug_id: Time-10
+2 src folder:
+  name of src folder: java
+  number of files: 186
+  number of java files: 157
+  number of src classes: 230
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestDays#testFactory_daysBetween_RPartial_MonthDay
+  - org.joda.time.TestMonths#testFactory_monthsBetween_RPartial_MonthDay
+  failing tests:
+  - org.joda.time.TestDays
+  - org.joda.time.TestMonths
+  number of all test cases: 3956
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.531
+  purification via delta debugging: 101.559
+  repair actions extraction: 0.958
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestDays#testFactory_daysBetween_RPartial_MonthDay: 1616
+    org.joda.time.TestMonths#testFactory_monthsBetween_RPartial_MonthDay: 1632
+  fixed:
+    org.joda.time.TestDays#testFactory_daysBetween_RPartial_MonthDay: 1605
+    org.joda.time.TestMonths#testFactory_monthsBetween_RPartial_MonthDay: 1634
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 2
+  oriDel: 1
+  ori_patch_lines: 3
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_10/src/main/java/org/joda/time/base/BaseSingleFieldPeriod.java\t\
+    2020-10-22 00:07:40.174380833 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_10/purify/patch/org/joda/time/base/BaseSingleFieldPeriod.java\t\
+    2020-10-22 00:07:40.174380833 -0400\n@@ -49,6 +49,7 @@\n     /** Serialization\
+    \ version. */\n     private static final long serialVersionUID = 9386874258972L;\n\
+    \     /** The start of 1972. */\n+    private static final long START_1972 = 2L\
+    \ * 365L * 86400L * 1000L;\n \n     /** The period in the units of this period.\
+    \ */\n     private volatile int iPeriod;\n@@ -101,7 +102,7 @@\n             throw\
+    \ new IllegalArgumentException(\"ReadablePartial objects must be contiguous\"\
+    );\n         }\n         Chronology chrono = DateTimeUtils.getChronology(start.getChronology()).withUTC();\n\
+    -        int[] values = chrono.get(zeroInstance, chrono.set(start, 0L), chrono.set(end,\
+    \ 0L));\n+        int[] values = chrono.get(zeroInstance, chrono.set(start, START_1972),\
+    \ chrono.set(end, START_1972));\n         return values[0];\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_10/src/main/java/org/joda/time/base/BaseSingleFieldPeriod.java\t\
+    2020-10-22 00:09:39.669837868 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_10/purify/purified/org/joda/time/base/BaseSingleFieldPeriod.java\t\
+    2020-10-22 00:09:39.669837868 -0400\n@@ -49,6 +49,7 @@\n     /** Serialization\
+    \ version. */\n     private static final long serialVersionUID = 9386874258972L;\n\
+    \     /** The start of 1972. */\n+    private static final long START_1972 = 2L\
+    \ * 365L * 86400L * 1000L;\n \n     /** The period in the units of this period.\
+    \ */\n     private volatile int iPeriod;\n@@ -101,7 +102,7 @@\n             throw\
+    \ new IllegalArgumentException(\"ReadablePartial objects must be contiguous\"\
+    );\n         }\n         Chronology chrono = DateTimeUtils.getChronology(start.getChronology()).withUTC();\n\
+    -        int[] values = chrono.get(zeroInstance, chrono.set(start, 0L), chrono.set(end,\
+    \ 0L));\n+        int[] values = chrono.get(zeroInstance, chrono.set(start, START_1972),\
+    \ chrono.set(end, START_1972));\n         return values[0];\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/base/BaseSingleFieldPeriod:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, static, final, long, [START_1972=2L * 365L *
+      86400L* 1000L] @TO@ TypeDeclaration@@[public, abstract]BaseSingleFieldPeriod,
+      [ReadablePeriod, Comparable<BaseSingleFieldPeriod>, Serializable] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, static, final, long,
+      [START_1972=2L * 365L * 86400L* 1000L] '
+    - '---INS Modifier@@static @TO@ FieldDeclaration@@private, static, final, long,
+      [START_1972=2L * 365L * 86400L* 1000L] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, static, final, long,
+      [START_1972=2L * 365L * 86400L* 1000L] '
+    - '---INS PrimitiveType@@long @TO@ FieldDeclaration@@private, static, final, long,
+      [START_1972=2L * 365L * 86400L* 1000L] '
+    - '---INS VariableDeclarationFragment@@START_1972=2L * 365L * 86400L* 1000L @TO@
+      FieldDeclaration@@private, static, final, long, [START_1972=2L * 365L * 86400L*
+      1000L] '
+    - '------INS SimpleName@@START_1972 @TO@ VariableDeclarationFragment@@START_1972=2L
+      * 365L * 86400L* 1000L '
+    - '------INS InfixExpression@@2L * 365L * 86400L* 1000L @TO@ VariableDeclarationFragment@@START_1972=2L
+      * 365L * 86400L* 1000L '
+    - '---------INS NumberLiteral@@2L @TO@ InfixExpression@@2L * 365L * 86400L* 1000L '
+    - '---------INS Operator@@* @TO@ InfixExpression@@2L * 365L * 86400L* 1000L '
+    - '---------INS NumberLiteral@@365L @TO@ InfixExpression@@2L * 365L * 86400L*
+      1000L '
+    - '---------INS NumberLiteral@@86400L @TO@ InfixExpression@@2L * 365L * 86400L*
+      1000L '
+    - '---------INS NumberLiteral@@1000L @TO@ InfixExpression@@2L * 365L * 86400L*
+      1000L '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int[] values=chrono.get(zeroInstance,chrono.set(start,0L),chrono.set(end,0L));
+      @TO@ int[] values=chrono.get(zeroInstance,chrono.set(start,START_1972),chrono.set(end,START_1972)); '
+    - '---UPD VariableDeclarationFragment@@values=chrono.get(zeroInstance,chrono.set(start,0L),chrono.set(end,0L))
+      @TO@ values=chrono.get(zeroInstance,chrono.set(start,START_1972),chrono.set(end,START_1972)) '
+    - '------UPD MethodInvocation@@chrono.get(zeroInstance,chrono.set(start,0L),chrono.set(end,0L))
+      @TO@ chrono.get(zeroInstance,chrono.set(start,START_1972),chrono.set(end,START_1972)) '
+    - '---------UPD SimpleName@@MethodName:get:[zeroInstance, chrono.set(start,0L),
+      chrono.set(end,0L)] @TO@ MethodName:get:[zeroInstance, chrono.set(start,START_1972),
+      chrono.set(end,START_1972)] '
+    - '------------UPD MethodInvocation@@chrono.set(start,0L) @TO@ chrono.set(start,START_1972) '
+    - '---------------UPD SimpleName@@MethodName:set:[start, 0L] @TO@ MethodName:set:[start,
+      START_1972] '
+    - '------------------DEL NumberLiteral@@0L '
+    - '------------------INS SimpleName@@START_1972 @TO@ SimpleName@@MethodName:set:[start,
+      0L] '
+    - '------------UPD MethodInvocation@@chrono.set(end,0L) @TO@ chrono.set(end,START_1972) '
+    - '---------------UPD SimpleName@@MethodName:set:[end, 0L] @TO@ MethodName:set:[end,
+      START_1972] '
+    - '------------------DEL NumberLiteral@@0L '
+    - '------------------INS SimpleName@@START_1972 @TO@ SimpleName@@MethodName:set:[end,
+      0L] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/base/BaseSingleFieldPeriod:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, static, final, long, [START_1972=2L * 365L *
+      86400L* 1000L] @TO@ TypeDeclaration@@[public, abstract]BaseSingleFieldPeriod,
+      [ReadablePeriod, Comparable<BaseSingleFieldPeriod>, Serializable] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, static, final, long,
+      [START_1972=2L * 365L * 86400L* 1000L] '
+    - '---INS Modifier@@static @TO@ FieldDeclaration@@private, static, final, long,
+      [START_1972=2L * 365L * 86400L* 1000L] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, static, final, long,
+      [START_1972=2L * 365L * 86400L* 1000L] '
+    - '---INS PrimitiveType@@long @TO@ FieldDeclaration@@private, static, final, long,
+      [START_1972=2L * 365L * 86400L* 1000L] '
+    - '---INS VariableDeclarationFragment@@START_1972=2L * 365L * 86400L* 1000L @TO@
+      FieldDeclaration@@private, static, final, long, [START_1972=2L * 365L * 86400L*
+      1000L] '
+    - '------INS SimpleName@@START_1972 @TO@ VariableDeclarationFragment@@START_1972=2L
+      * 365L * 86400L* 1000L '
+    - '------INS InfixExpression@@2L * 365L * 86400L* 1000L @TO@ VariableDeclarationFragment@@START_1972=2L
+      * 365L * 86400L* 1000L '
+    - '---------INS NumberLiteral@@2L @TO@ InfixExpression@@2L * 365L * 86400L* 1000L '
+    - '---------INS Operator@@* @TO@ InfixExpression@@2L * 365L * 86400L* 1000L '
+    - '---------INS NumberLiteral@@365L @TO@ InfixExpression@@2L * 365L * 86400L*
+      1000L '
+    - '---------INS NumberLiteral@@86400L @TO@ InfixExpression@@2L * 365L * 86400L*
+      1000L '
+    - '---------INS NumberLiteral@@1000L @TO@ InfixExpression@@2L * 365L * 86400L*
+      1000L '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int[] values=chrono.get(zeroInstance,chrono.set(start,0L),chrono.set(end,0L));
+      @TO@ int[] values=chrono.get(zeroInstance,chrono.set(start,START_1972),chrono.set(end,START_1972)); '
+    - '---UPD VariableDeclarationFragment@@values=chrono.get(zeroInstance,chrono.set(start,0L),chrono.set(end,0L))
+      @TO@ values=chrono.get(zeroInstance,chrono.set(start,START_1972),chrono.set(end,START_1972)) '
+    - '------UPD MethodInvocation@@chrono.get(zeroInstance,chrono.set(start,0L),chrono.set(end,0L))
+      @TO@ chrono.get(zeroInstance,chrono.set(start,START_1972),chrono.set(end,START_1972)) '
+    - '---------UPD SimpleName@@MethodName:get:[zeroInstance, chrono.set(start,0L),
+      chrono.set(end,0L)] @TO@ MethodName:get:[zeroInstance, chrono.set(start,START_1972),
+      chrono.set(end,START_1972)] '
+    - '------------UPD MethodInvocation@@chrono.set(start,0L) @TO@ chrono.set(start,START_1972) '
+    - '---------------UPD SimpleName@@MethodName:set:[start, 0L] @TO@ MethodName:set:[start,
+      START_1972] '
+    - '------------------DEL NumberLiteral@@0L '
+    - '------------------INS SimpleName@@START_1972 @TO@ SimpleName@@MethodName:set:[start,
+      0L] '
+    - '------------UPD MethodInvocation@@chrono.set(end,0L) @TO@ chrono.set(end,START_1972) '
+    - '---------------UPD SimpleName@@MethodName:set:[end, 0L] @TO@ MethodName:set:[end,
+      START_1972] '
+    - '------------------DEL NumberLiteral@@0L '
+    - '------------------INS SimpleName@@START_1972 @TO@ SimpleName@@MethodName:set:[end,
+      0L] '
+  repair_actions_cnt: 2

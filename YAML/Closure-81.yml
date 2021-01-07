@@ -1,0 +1,176 @@
+1 bug_id: Closure-81
+2 src folder:
+  name of src folder: src
+  number of files: 376
+  number of java files: 363
+  number of src classes: 1155
+  number of test classes: 190
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.parsing.ParserTest#testUnnamedFunctionStatement
+  failing tests:
+  - com.google.javascript.jscomp.parsing.ParserTest
+  number of all test cases: 6641
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.211
+  purification via delta debugging: 224.247
+  repair actions extraction: 2.732
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.parsing.ParserTest#testUnnamedFunctionStatement: 944
+  fixed:
+    com.google.javascript.jscomp.parsing.ParserTest#testUnnamedFunctionStatement: 976
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 7
+  covDel: 0
+  cov_patch_lines: 7
+  delta_patch_lines: 7
+  oriAdd: 7
+  oriDel: 0
+  ori_patch_lines: 7
+  purAdd: 7
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 13
+  failFail: 0
+  passed: 0
+  total: 13
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_81/src/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-23 10:12:01.699970978 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_81/purify/patch/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-23 10:12:01.695970862 -0400\n@@ -514,6 +514,13 @@\n       Name name =\
+    \ functionNode.getFunctionName();\n       Boolean isUnnamedFunction = false;\n\
+    \       if (name == null) {\n+        int functionType = functionNode.getFunctionType();\n\
+    +        if (functionType != FunctionNode.FUNCTION_EXPRESSION) {\n+          errorReporter.error(\n\
+    +            \"unnamed function statement\",\n+            sourceName,\n+    \
+    \        functionNode.getLineno(), \"\", 0);\n+        }\n         name = new\
+    \ Name();\n         name.setIdentifier(\"\");\n         isUnnamedFunction = true;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_81/src/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-23 10:16:10.827183776 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_81/purify/purified/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-23 10:16:10.823183660 -0400\n@@ -514,6 +514,13 @@\n       Name name =\
+    \ functionNode.getFunctionName();\n       Boolean isUnnamedFunction = false;\n\
+    \       if (name == null) {\n+        int functionType = functionNode.getFunctionType();\n\
+    +        if (functionType != FunctionNode.FUNCTION_EXPRESSION) {\n+          errorReporter.error(\n\
+    +            \"unnamed function statement\",\n+            sourceName,\n+    \
+    \        functionNode.getLineno(), \"\", 0);\n+        }\n         name = new\
+    \ Name();\n         name.setIdentifier(\"\");\n         isUnnamedFunction = true;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/IRFactory:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int functionType=functionNode.getFunctionType();
+      @TO@ IfStatement@@InfixExpression:name == null '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int functionType=functionNode.getFunctionType(); '
+    - '---INS VariableDeclarationFragment@@functionType=functionNode.getFunctionType()
+      @TO@ VariableDeclarationStatement@@int functionType=functionNode.getFunctionType(); '
+    - '------INS SimpleName@@functionType @TO@ VariableDeclarationFragment@@functionType=functionNode.getFunctionType() '
+    - '------INS MethodInvocation@@functionNode.getFunctionType() @TO@ VariableDeclarationFragment@@functionType=functionNode.getFunctionType() '
+    - '---------INS SimpleName@@Name:functionNode @TO@ MethodInvocation@@functionNode.getFunctionType() '
+    - '---------INS SimpleName@@MethodName:getFunctionType:[] @TO@ MethodInvocation@@functionNode.getFunctionType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:functionType != FunctionNode.FUNCTION_EXPRESSION
+      @TO@ IfStatement@@InfixExpression:name == null '
+    - '---INS InfixExpression@@functionType != FunctionNode.FUNCTION_EXPRESSION @TO@
+      IfStatement@@InfixExpression:functionType != FunctionNode.FUNCTION_EXPRESSION '
+    - '------INS SimpleName@@functionType @TO@ InfixExpression@@functionType != FunctionNode.FUNCTION_EXPRESSION '
+    - '------INS Operator@@!= @TO@ InfixExpression@@functionType != FunctionNode.FUNCTION_EXPRESSION '
+    - '------INS QualifiedName@@FunctionNode.FUNCTION_EXPRESSION @TO@ InfixExpression@@functionType
+      != FunctionNode.FUNCTION_EXPRESSION '
+    - '---------INS SimpleName@@FunctionNode @TO@ QualifiedName@@FunctionNode.FUNCTION_EXPRESSION '
+    - '---------INS SimpleName@@FUNCTION_EXPRESSION @TO@ QualifiedName@@FunctionNode.FUNCTION_EXPRESSION '
+    - '---INS ExpressionStatement@@MethodInvocation:errorReporter.error("unnamed function
+      statement",sourceName,functionNode.getLineno(),"",0) @TO@ IfStatement@@InfixExpression:functionType
+      != FunctionNode.FUNCTION_EXPRESSION '
+    - '------INS MethodInvocation@@errorReporter.error("unnamed function statement",sourceName,functionNode.getLineno(),"",0)
+      @TO@ ExpressionStatement@@MethodInvocation:errorReporter.error("unnamed function
+      statement",sourceName,functionNode.getLineno(),"",0) '
+    - '---------INS SimpleName@@Name:errorReporter @TO@ MethodInvocation@@errorReporter.error("unnamed
+      function statement",sourceName,functionNode.getLineno(),"",0) '
+    - '---------INS SimpleName@@MethodName:error:["unnamed function statement", sourceName,
+      functionNode.getLineno(), "", 0] @TO@ MethodInvocation@@errorReporter.error("unnamed
+      function statement",sourceName,functionNode.getLineno(),"",0) '
+    - '------------INS StringLiteral@@"unnamed function statement" @TO@ SimpleName@@MethodName:error:["unnamed
+      function statement", sourceName, functionNode.getLineno(), "", 0] '
+    - '------------INS SimpleName@@sourceName @TO@ SimpleName@@MethodName:error:["unnamed
+      function statement", sourceName, functionNode.getLineno(), "", 0] '
+    - '------------INS MethodInvocation@@functionNode.getLineno() @TO@ SimpleName@@MethodName:error:["unnamed
+      function statement", sourceName, functionNode.getLineno(), "", 0] '
+    - '---------------INS SimpleName@@Name:functionNode @TO@ MethodInvocation@@functionNode.getLineno() '
+    - '---------------INS SimpleName@@MethodName:getLineno:[] @TO@ MethodInvocation@@functionNode.getLineno() '
+    - '------------INS StringLiteral@@"" @TO@ SimpleName@@MethodName:error:["unnamed
+      function statement", sourceName, functionNode.getLineno(), "", 0] '
+    - '------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:error:["unnamed
+      function statement", sourceName, functionNode.getLineno(), "", 0] '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/IRFactory:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int functionType=functionNode.getFunctionType();
+      @TO@ IfStatement@@InfixExpression:name == null '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int functionType=functionNode.getFunctionType(); '
+    - '---INS VariableDeclarationFragment@@functionType=functionNode.getFunctionType()
+      @TO@ VariableDeclarationStatement@@int functionType=functionNode.getFunctionType(); '
+    - '------INS SimpleName@@functionType @TO@ VariableDeclarationFragment@@functionType=functionNode.getFunctionType() '
+    - '------INS MethodInvocation@@functionNode.getFunctionType() @TO@ VariableDeclarationFragment@@functionType=functionNode.getFunctionType() '
+    - '---------INS SimpleName@@Name:functionNode @TO@ MethodInvocation@@functionNode.getFunctionType() '
+    - '---------INS SimpleName@@MethodName:getFunctionType:[] @TO@ MethodInvocation@@functionNode.getFunctionType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:functionType != FunctionNode.FUNCTION_EXPRESSION
+      @TO@ IfStatement@@InfixExpression:name == null '
+    - '---INS InfixExpression@@functionType != FunctionNode.FUNCTION_EXPRESSION @TO@
+      IfStatement@@InfixExpression:functionType != FunctionNode.FUNCTION_EXPRESSION '
+    - '------INS SimpleName@@functionType @TO@ InfixExpression@@functionType != FunctionNode.FUNCTION_EXPRESSION '
+    - '------INS Operator@@!= @TO@ InfixExpression@@functionType != FunctionNode.FUNCTION_EXPRESSION '
+    - '------INS QualifiedName@@FunctionNode.FUNCTION_EXPRESSION @TO@ InfixExpression@@functionType
+      != FunctionNode.FUNCTION_EXPRESSION '
+    - '---------INS SimpleName@@FunctionNode @TO@ QualifiedName@@FunctionNode.FUNCTION_EXPRESSION '
+    - '---------INS SimpleName@@FUNCTION_EXPRESSION @TO@ QualifiedName@@FunctionNode.FUNCTION_EXPRESSION '
+    - '---INS ExpressionStatement@@MethodInvocation:errorReporter.error("unnamed function
+      statement",sourceName,functionNode.getLineno(),"",0) @TO@ IfStatement@@InfixExpression:functionType
+      != FunctionNode.FUNCTION_EXPRESSION '
+    - '------INS MethodInvocation@@errorReporter.error("unnamed function statement",sourceName,functionNode.getLineno(),"",0)
+      @TO@ ExpressionStatement@@MethodInvocation:errorReporter.error("unnamed function
+      statement",sourceName,functionNode.getLineno(),"",0) '
+    - '---------INS SimpleName@@Name:errorReporter @TO@ MethodInvocation@@errorReporter.error("unnamed
+      function statement",sourceName,functionNode.getLineno(),"",0) '
+    - '---------INS SimpleName@@MethodName:error:["unnamed function statement", sourceName,
+      functionNode.getLineno(), "", 0] @TO@ MethodInvocation@@errorReporter.error("unnamed
+      function statement",sourceName,functionNode.getLineno(),"",0) '
+    - '------------INS StringLiteral@@"unnamed function statement" @TO@ SimpleName@@MethodName:error:["unnamed
+      function statement", sourceName, functionNode.getLineno(), "", 0] '
+    - '------------INS SimpleName@@sourceName @TO@ SimpleName@@MethodName:error:["unnamed
+      function statement", sourceName, functionNode.getLineno(), "", 0] '
+    - '------------INS MethodInvocation@@functionNode.getLineno() @TO@ SimpleName@@MethodName:error:["unnamed
+      function statement", sourceName, functionNode.getLineno(), "", 0] '
+    - '---------------INS SimpleName@@Name:functionNode @TO@ MethodInvocation@@functionNode.getLineno() '
+    - '---------------INS SimpleName@@MethodName:getLineno:[] @TO@ MethodInvocation@@functionNode.getLineno() '
+    - '------------INS StringLiteral@@"" @TO@ SimpleName@@MethodName:error:["unnamed
+      function statement", sourceName, functionNode.getLineno(), "", 0] '
+    - '------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:error:["unnamed
+      function statement", sourceName, functionNode.getLineno(), "", 0] '
+  files_cnt: '1'
+  repair_actions_cnt: 2

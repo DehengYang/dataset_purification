@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_8/source/org/jfree/data/time/Week.java	2020-10-20 23:58:55.365422208 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_8/purify/purified/org/jfree/data/time/Week.java	2020-10-20 23:58:55.365422208 -0400
+@@ -172,7 +172,7 @@
+      */
+     public Week(Date time, TimeZone zone) {
+         // defer argument checking...
+-        this(time, RegularTimePeriod.DEFAULT_TIME_ZONE, Locale.getDefault());
++        this(time, zone, Locale.getDefault());
+     }
+ 
+     /**

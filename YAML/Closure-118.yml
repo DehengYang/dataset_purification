@@ -1,0 +1,99 @@
+1 bug_id: Closure-118
+2 src folder:
+  name of src folder: src
+  number of files: 444
+  number of java files: 428
+  number of src classes: 1427
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.DisambiguatePropertiesTest#testTwoTypes4
+  - com.google.javascript.jscomp.DisambiguatePropertiesTest#testOneType4
+  failing tests:
+  - com.google.javascript.jscomp.DisambiguatePropertiesTest
+  number of all test cases: 8294
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.156
+  purification via delta debugging: 261.252
+  repair actions extraction: 1.891
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.DisambiguatePropertiesTest#testOneType4: 6149
+    com.google.javascript.jscomp.DisambiguatePropertiesTest#testTwoTypes4: 6390
+  fixed:
+    com.google.javascript.jscomp.DisambiguatePropertiesTest#testOneType4: 6508
+    com.google.javascript.jscomp.DisambiguatePropertiesTest#testTwoTypes4: 6708
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_118/src/com/google/javascript/jscomp/DisambiguateProperties.java\t\
+    2020-10-23 16:29:47.092211150 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_118/purify/patch/com/google/javascript/jscomp/DisambiguateProperties.java\t\
+    2020-10-23 16:29:47.092211150 -0400\n@@ -492,6 +492,9 @@\n           child !=\
+    \ null;\n           child = child.getNext()) {\n         // Maybe STRING, GET,\
+    \ SET\n+        if (child.isQuotedString()) {\n+          continue;\n+       \
+    \ }\n \n         // We should never see a mix of numbers and strings.\n      \
+    \   String name = child.getString();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_118/src/com/google/javascript/jscomp/DisambiguateProperties.java\t\
+    2020-10-23 16:34:42.756763967 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_118/purify/purified/com/google/javascript/jscomp/DisambiguateProperties.java\t\
+    2020-10-23 16:34:42.748763736 -0400\n@@ -492,6 +492,9 @@\n           child !=\
+    \ null;\n           child = child.getNext()) {\n         // Maybe STRING, GET,\
+    \ SET\n+        if (child.isQuotedString()) {\n+          continue;\n+       \
+    \ }\n \n         // We should never see a mix of numbers and strings.\n      \
+    \   String name = child.getString();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/DisambiguateProperties:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:child.isQuotedString() @TO@ ForStatement@@[Node
+      child=n.getFirstChild()];child != null; [child=child.getNext()] '
+    - '---INS MethodInvocation@@child.isQuotedString() @TO@ IfStatement@@MethodInvocation:child.isQuotedString() '
+    - '------INS SimpleName@@Name:child @TO@ MethodInvocation@@child.isQuotedString() '
+    - '------INS SimpleName@@MethodName:isQuotedString:[] @TO@ MethodInvocation@@child.isQuotedString() '
+    - '---INS ContinueStatement@@ @TO@ IfStatement@@MethodInvocation:child.isQuotedString() '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/DisambiguateProperties:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:child.isQuotedString() @TO@ ForStatement@@[Node
+      child=n.getFirstChild()];child != null; [child=child.getNext()] '
+    - '---INS MethodInvocation@@child.isQuotedString() @TO@ IfStatement@@MethodInvocation:child.isQuotedString() '
+    - '------INS SimpleName@@Name:child @TO@ MethodInvocation@@child.isQuotedString() '
+    - '------INS SimpleName@@MethodName:isQuotedString:[] @TO@ MethodInvocation@@child.isQuotedString() '
+    - '---INS ContinueStatement@@ @TO@ IfStatement@@MethodInvocation:child.isQuotedString() '
+  files_cnt: '1'
+  repair_actions_cnt: 1

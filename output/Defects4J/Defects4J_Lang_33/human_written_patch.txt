@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_33/src/main/java/org/apache/commons/lang3/ClassUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_33/fixed-version/src/main/java/org/apache/commons/lang3/ClassUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_33/src/main/java/org/apache/commons/lang3/ClassUtils.java	2020-03-01 00:09:16.877956839 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_33/fixed-version/src/main/java/org/apache/commons/lang3/ClassUtils.java	2020-03-01 00:09:20.310118549 -0800
+@@ -907,7 +907,7 @@
+         }
+         Class<?>[] classes = new Class[array.length];
+         for (int i = 0; i < array.length; i++) {
+-            classes[i] = array[i].getClass();
++            classes[i] = array[i] == null ? null : array[i].getClass();
+         }
+         return classes;
+     }

@@ -1,0 +1,17 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_69/src/com/google/javascript/jscomp/TypeCheck.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_69/fixed-version/src/com/google/javascript/jscomp/TypeCheck.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_69/src/com/google/javascript/jscomp/TypeCheck.java	2020-03-01 00:29:48.223975333 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_69/fixed-version/src/com/google/javascript/jscomp/TypeCheck.java	2020-03-01 00:29:50.200068445 -0800
+@@ -1577,6 +1577,13 @@
+ 
+       // Functions with explcit 'this' types must be called in a GETPROP
+       // or GETELEM.
++      if (functionType.isOrdinaryFunction() &&
++          !functionType.getTypeOfThis().isUnknownType() &&
++          !functionType.getTypeOfThis().isNativeObjectType() &&
++          !(child.getType() == Token.GETELEM ||
++            child.getType() == Token.GETPROP)) {
++        report(t, n, EXPECTED_THIS_TYPE, functionType.toString());
++      }
+ 
+       visitParameterList(t, n, functionType);
+       ensureTyped(t, n, functionType.getReturnType());

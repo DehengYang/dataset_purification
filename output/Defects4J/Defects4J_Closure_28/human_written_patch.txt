@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_28/src/com/google/javascript/jscomp/InlineCostEstimator.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_28/fixed-version/src/com/google/javascript/jscomp/InlineCostEstimator.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_28/src/com/google/javascript/jscomp/InlineCostEstimator.java	2020-03-01 00:27:04.432257577 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_28/fixed-version/src/com/google/javascript/jscomp/InlineCostEstimator.java	2020-03-01 00:27:06.248343150 -0800
+@@ -99,5 +99,9 @@
+      * Constants (true, false, null) are considered basically free,
+      * because it's likely that they will get folded when we're done.
+      */
++    @Override
++    void addConstant(String newcode) {
++      add("0");
++    }
+   }
+ }

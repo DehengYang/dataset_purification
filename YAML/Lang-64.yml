@@ -1,0 +1,370 @@
+1 bug_id: Lang-64
+2 src folder:
+  name of src folder: java
+  number of files: 87
+  number of java files: 77
+  number of src classes: 123
+  number of test classes: 89
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.enums.ValuedEnumTest#testCompareTo_otherEnumType
+  failing tests:
+  - org.apache.commons.lang.enums.ValuedEnumTest
+  number of all test cases: 1666
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 7.0
+  purification via coverage: 1.286
+  purification via delta debugging: 258.701
+  repair actions extraction: 0.977
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.enums.ValuedEnumTest#testCompareTo_otherEnumType: 42
+  fixed:
+    org.apache.commons.lang.enums.ValuedEnumTest#testCompareTo_otherEnumType: 78
+6 reduced lines:
+  by all: 6
+  by coverage: 0
+  by delta debugging: 6
+  covAdd: 21
+  covDel: 0
+  cov_patch_lines: 21
+  delta_patch_lines: 15
+  oriAdd: 21
+  oriDel: 0
+  ori_patch_lines: 21
+  purAdd: 15
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 5
+  original: 5
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 62
+  failFail: 1
+  passed: 3
+  total: 66
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_64/src/java/org/apache/commons/lang/enums/ValuedEnum.java\t\
+    2020-10-22 02:54:07.335146524 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_64/purify/patch/org/apache/commons/lang/enums/ValuedEnum.java\t\
+    2020-10-22 02:54:07.335146524 -0400\n@@ -180,6 +180,16 @@\n      * @throws NullPointerException\
+    \ if other is <code>null</code>\n      */\n     public int compareTo(Object other)\
+    \ {\n+        if (other == this) {\n+            return 0;\n+        }\n+    \
+    \    if (other.getClass() != this.getClass()) {\n+            if (other.getClass().getName().equals(this.getClass().getName()))\
+    \ {\n+                return iValue - getValueInOtherClassLoader(other);\n+  \
+    \          }\n+            throw new ClassCastException(\n+                  \
+    \  \"Different enum class '\" + ClassUtils.getShortClassName(other.getClass())\
+    \ + \"'\");\n+        }\n         return iValue - ((ValuedEnum) other).iValue;\n\
+    \     }\n \n@@ -189,9 +199,20 @@\n      * @param other  the object to determine\
+    \ the value for\n      * @return the value\n      */\n+    private int getValueInOtherClassLoader(Object\
+    \ other) {\n+        try {\n+            Method mth = other.getClass().getMethod(\"\
+    getValue\", null);\n+            Integer value = (Integer) mth.invoke(other, null);\n\
+    +            return value.intValue();\n+        } catch (NoSuchMethodException\
+    \ e) {\n             // ignore - should never happen\n+        } catch (IllegalAccessException\
+    \ e) {\n             // ignore - should never happen\n+        } catch (InvocationTargetException\
+    \ e) {\n             // ignore - should never happen\n+        }\n+        throw\
+    \ new IllegalStateException(\"This should not happen\");\n+    }\n \n     /**\n\
+    \      * <p>Human readable description of this <code>Enum</code> item.</p>"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_64/src/java/org/apache/commons/lang/enums/ValuedEnum.java\t\
+    2020-10-22 02:58:36.122914305 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_64/purify/purified/org/apache/commons/lang/enums/ValuedEnum.java\t\
+    2020-10-22 02:58:36.122914305 -0400\n@@ -180,6 +180,14 @@\n      * @throws NullPointerException\
+    \ if other is <code>null</code>\n      */\n     public int compareTo(Object other)\
+    \ {\n+        if (other == this) {\n+        }\n+        if (other.getClass()\
+    \ != this.getClass()) {\n+            if (other.getClass().getName().equals(this.getClass().getName()))\
+    \ {\n+            }\n+            throw new ClassCastException(\n+           \
+    \         \"Different enum class '\" + ClassUtils.getShortClassName(other.getClass())\
+    \ + \"'\");\n+        }\n         return iValue - ((ValuedEnum) other).iValue;\n\
+    \     }\n \n@@ -189,9 +197,16 @@\n      * @param other  the object to determine\
+    \ the value for\n      * @return the value\n      */\n+    private int getValueInOtherClassLoader(Object\
+    \ other) {\n+        try {\n+        } catch (NoSuchMethodException e) {\n   \
+    \          // ignore - should never happen\n+        } catch (IllegalAccessException\
+    \ e) {\n             // ignore - should never happen\n+        } catch (InvocationTargetException\
+    \ e) {\n             // ignore - should never happen\n+        }\n+    }\n \n\
+    \     /**\n      * <p>Human readable description of this <code>Enum</code> item.</p>"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/enums/ValuedEnum:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:other == this @TO@ MethodDeclaration@@public,
+      @@int, MethodName:compareTo, @@Argus:Object+other+ '
+    - '---INS InfixExpression@@other == this @TO@ IfStatement@@InfixExpression:other
+      == this '
+    - '------INS SimpleName@@other @TO@ InfixExpression@@other == this '
+    - '------INS Operator@@== @TO@ InfixExpression@@other == this '
+    - '------INS ThisExpression@@this @TO@ InfixExpression@@other == this '
+    - '---INS ReturnStatement@@NumberLiteral:0 @TO@ IfStatement@@InfixExpression:other
+      == this '
+    - '------INS NumberLiteral@@0 @TO@ ReturnStatement@@NumberLiteral:0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:other.getClass() != this.getClass() @TO@ MethodDeclaration@@public,
+      @@int, MethodName:compareTo, @@Argus:Object+other+ '
+    - '---INS InfixExpression@@other.getClass() != this.getClass() @TO@ IfStatement@@InfixExpression:other.getClass()
+      != this.getClass() '
+    - '------INS MethodInvocation@@other.getClass() @TO@ InfixExpression@@other.getClass()
+      != this.getClass() '
+    - '---------INS SimpleName@@Name:other @TO@ MethodInvocation@@other.getClass() '
+    - '---------INS SimpleName@@MethodName:getClass:[] @TO@ MethodInvocation@@other.getClass() '
+    - '------INS Operator@@!= @TO@ InfixExpression@@other.getClass() != this.getClass() '
+    - '------INS MethodInvocation@@this.getClass() @TO@ InfixExpression@@other.getClass()
+      != this.getClass() '
+    - '---------INS ThisExpression@@this @TO@ MethodInvocation@@this.getClass() '
+    - '---------INS SimpleName@@MethodName:getClass:[] @TO@ MethodInvocation@@this.getClass() '
+    - '---INS IfStatement@@MethodInvocation:other.getClass().getName().equals(this.getClass().getName())
+      @TO@ IfStatement@@InfixExpression:other.getClass() != this.getClass() '
+    - '------INS MethodInvocation@@other.getClass().getName().equals(this.getClass().getName())
+      @TO@ IfStatement@@MethodInvocation:other.getClass().getName().equals(this.getClass().getName()) '
+    - '---------INS SimpleName@@Name:other @TO@ MethodInvocation@@other.getClass().getName().equals(this.getClass().getName()) '
+    - '---------INS MethodInvocation@@MethodName:getClass:[] @TO@ MethodInvocation@@other.getClass().getName().equals(this.getClass().getName()) '
+    - '---------INS MethodInvocation@@MethodName:getName:[] @TO@ MethodInvocation@@other.getClass().getName().equals(this.getClass().getName()) '
+    - '---------INS SimpleName@@MethodName:equals:[this.getClass().getName()] @TO@
+      MethodInvocation@@other.getClass().getName().equals(this.getClass().getName()) '
+    - '------------INS MethodInvocation@@this.getClass().getName() @TO@ SimpleName@@MethodName:equals:[this.getClass().getName()] '
+    - '---------------INS ThisExpression@@this @TO@ MethodInvocation@@this.getClass().getName() '
+    - '---------------INS MethodInvocation@@MethodName:getClass:[] @TO@ MethodInvocation@@this.getClass().getName() '
+    - '---------------INS SimpleName@@MethodName:getName:[] @TO@ MethodInvocation@@this.getClass().getName() '
+    - '------INS ReturnStatement@@InfixExpression:iValue - getValueInOtherClassLoader(other)
+      @TO@ IfStatement@@MethodInvocation:other.getClass().getName().equals(this.getClass().getName()) '
+    - '---------INS InfixExpression@@iValue - getValueInOtherClassLoader(other) @TO@
+      ReturnStatement@@InfixExpression:iValue - getValueInOtherClassLoader(other) '
+    - '------------INS SimpleName@@iValue @TO@ InfixExpression@@iValue - getValueInOtherClassLoader(other) '
+    - '------------INS Operator@@- @TO@ InfixExpression@@iValue - getValueInOtherClassLoader(other) '
+    - '------------INS MethodInvocation@@getValueInOtherClassLoader(other) @TO@ InfixExpression@@iValue
+      - getValueInOtherClassLoader(other) '
+    - '---------------INS SimpleName@@MethodName:getValueInOtherClassLoader:[other]
+      @TO@ MethodInvocation@@getValueInOtherClassLoader(other) '
+    - '------------------INS SimpleName@@other @TO@ SimpleName@@MethodName:getValueInOtherClassLoader:[other] '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new ClassCastException("Different
+      enum class ''" + ClassUtils.getShortClassName(other.getClass()) + "''") @TO@
+      IfStatement@@InfixExpression:other.getClass() != this.getClass() '
+    - '------INS ClassInstanceCreation@@ClassCastException["Different enum class ''"
+      + ClassUtils.getShortClassName(other.getClass()) + "''"] @TO@ ThrowStatement@@ClassInstanceCreation:new
+      ClassCastException("Different enum class ''" + ClassUtils.getShortClassName(other.getClass())
+      + "''") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@ClassCastException["Different
+      enum class ''" + ClassUtils.getShortClassName(other.getClass()) + "''"] '
+    - '---------INS SimpleType@@ClassCastException @TO@ ClassInstanceCreation@@ClassCastException["Different
+      enum class ''" + ClassUtils.getShortClassName(other.getClass()) + "''"] '
+    - '---------INS InfixExpression@@"Different enum class ''" + ClassUtils.getShortClassName(other.getClass())
+      + "''" @TO@ ClassInstanceCreation@@ClassCastException["Different enum class
+      ''" + ClassUtils.getShortClassName(other.getClass()) + "''"] '
+    - '------------INS StringLiteral@@"Different enum class ''" @TO@ InfixExpression@@"Different
+      enum class ''" + ClassUtils.getShortClassName(other.getClass()) + "''" '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Different enum class ''"
+      + ClassUtils.getShortClassName(other.getClass()) + "''" '
+    - '------------INS MethodInvocation@@ClassUtils.getShortClassName(other.getClass())
+      @TO@ InfixExpression@@"Different enum class ''" + ClassUtils.getShortClassName(other.getClass())
+      + "''" '
+    - '---------------INS SimpleName@@Name:ClassUtils @TO@ MethodInvocation@@ClassUtils.getShortClassName(other.getClass()) '
+    - '---------------INS SimpleName@@MethodName:getShortClassName:[other.getClass()]
+      @TO@ MethodInvocation@@ClassUtils.getShortClassName(other.getClass()) '
+    - '------------------INS MethodInvocation@@other.getClass() @TO@ SimpleName@@MethodName:getShortClassName:[other.getClass()] '
+    - '---------------------INS SimpleName@@Name:other @TO@ MethodInvocation@@other.getClass() '
+    - '---------------------INS SimpleName@@MethodName:getClass:[] @TO@ MethodInvocation@@other.getClass() '
+    - '------------INS StringLiteral@@"''" @TO@ InfixExpression@@"Different enum class
+      ''" + ClassUtils.getShortClassName(other.getClass()) + "''" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@int, MethodName:getValueInOtherClassLoader,
+      @@Argus:Object+other+ @TO@ TypeDeclaration@@[public, abstract]ValuedEnum, Enum '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@int, MethodName:getValueInOtherClassLoader,
+      @@Argus:Object+other+ '
+    - '---INS PrimitiveType@@int @TO@ MethodDeclaration@@private, @@int, MethodName:getValueInOtherClassLoader,
+      @@Argus:Object+other+ '
+    - '---INS SimpleName@@MethodName:getValueInOtherClassLoader @TO@ MethodDeclaration@@private,
+      @@int, MethodName:getValueInOtherClassLoader, @@Argus:Object+other+ '
+    - '---INS SingleVariableDeclaration@@Object other @TO@ MethodDeclaration@@private,
+      @@int, MethodName:getValueInOtherClassLoader, @@Argus:Object+other+ '
+    - '------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object other '
+    - '------INS SimpleName@@other @TO@ SingleVariableDeclaration@@Object other '
+    - '---INS TryStatement@@try:[] @TO@ MethodDeclaration@@private, @@int, MethodName:getValueInOtherClassLoader,
+      @@Argus:Object+other+ '
+    - '------INS VariableDeclarationStatement@@Method mth=other.getClass().getMethod("getValue",null);
+      @TO@ TryStatement@@try:[] '
+    - '---------INS SimpleType@@Method @TO@ VariableDeclarationStatement@@Method mth=other.getClass().getMethod("getValue",null); '
+    - '---------INS VariableDeclarationFragment@@mth=other.getClass().getMethod("getValue",null)
+      @TO@ VariableDeclarationStatement@@Method mth=other.getClass().getMethod("getValue",null); '
+    - '------------INS SimpleName@@mth @TO@ VariableDeclarationFragment@@mth=other.getClass().getMethod("getValue",null) '
+    - '------------INS MethodInvocation@@other.getClass().getMethod("getValue",null)
+      @TO@ VariableDeclarationFragment@@mth=other.getClass().getMethod("getValue",null) '
+    - '---------------INS SimpleName@@Name:other @TO@ MethodInvocation@@other.getClass().getMethod("getValue",null) '
+    - '---------------INS MethodInvocation@@MethodName:getClass:[] @TO@ MethodInvocation@@other.getClass().getMethod("getValue",null) '
+    - '---------------INS SimpleName@@MethodName:getMethod:["getValue", null] @TO@
+      MethodInvocation@@other.getClass().getMethod("getValue",null) '
+    - '------------------INS StringLiteral@@"getValue" @TO@ SimpleName@@MethodName:getMethod:["getValue",
+      null] '
+    - '------------------INS NullLiteral@@null @TO@ SimpleName@@MethodName:getMethod:["getValue",
+      null] '
+    - '------INS VariableDeclarationStatement@@Integer value=(Integer)mth.invoke(other,null);
+      @TO@ TryStatement@@try:[] '
+    - '---------INS SimpleType@@Integer @TO@ VariableDeclarationStatement@@Integer
+      value=(Integer)mth.invoke(other,null); '
+    - '---------INS VariableDeclarationFragment@@value=(Integer)mth.invoke(other,null)
+      @TO@ VariableDeclarationStatement@@Integer value=(Integer)mth.invoke(other,null); '
+    - '------------INS SimpleName@@value @TO@ VariableDeclarationFragment@@value=(Integer)mth.invoke(other,null) '
+    - '------------INS CastExpression@@(Integer)mth.invoke(other,null) @TO@ VariableDeclarationFragment@@value=(Integer)mth.invoke(other,null) '
+    - '---------------INS SimpleType@@Integer @TO@ CastExpression@@(Integer)mth.invoke(other,null) '
+    - '---------------INS MethodInvocation@@mth.invoke(other,null) @TO@ CastExpression@@(Integer)mth.invoke(other,null) '
+    - '------------------INS SimpleName@@Name:mth @TO@ MethodInvocation@@mth.invoke(other,null) '
+    - '------------------INS SimpleName@@MethodName:invoke:[other, null] @TO@ MethodInvocation@@mth.invoke(other,null) '
+    - '---------------------INS SimpleName@@other @TO@ SimpleName@@MethodName:invoke:[other,
+      null] '
+    - '---------------------INS NullLiteral@@null @TO@ SimpleName@@MethodName:invoke:[other,
+      null] '
+    - '------INS ReturnStatement@@MethodInvocation:value.intValue() @TO@ TryStatement@@try:[] '
+    - '---------INS MethodInvocation@@value.intValue() @TO@ ReturnStatement@@MethodInvocation:value.intValue() '
+    - '------------INS SimpleName@@Name:value @TO@ MethodInvocation@@value.intValue() '
+    - '------------INS SimpleName@@MethodName:intValue:[] @TO@ MethodInvocation@@value.intValue() '
+    - '------INS CatchClause@@NoSuchMethodException e @TO@ TryStatement@@try:[] '
+    - '---------INS SingleVariableDeclaration@@NoSuchMethodException e @TO@ CatchClause@@NoSuchMethodException
+      e '
+    - '------------INS SimpleType@@NoSuchMethodException @TO@ SingleVariableDeclaration@@NoSuchMethodException
+      e '
+    - '------------INS SimpleName@@e @TO@ SingleVariableDeclaration@@NoSuchMethodException
+      e '
+    - '------INS CatchClause@@IllegalAccessException e @TO@ TryStatement@@try:[] '
+    - '---------INS SingleVariableDeclaration@@IllegalAccessException e @TO@ CatchClause@@IllegalAccessException
+      e '
+    - '------------INS SimpleType@@IllegalAccessException @TO@ SingleVariableDeclaration@@IllegalAccessException
+      e '
+    - '------------INS SimpleName@@e @TO@ SingleVariableDeclaration@@IllegalAccessException
+      e '
+    - '------INS CatchClause@@InvocationTargetException e @TO@ TryStatement@@try:[] '
+    - '---------INS SingleVariableDeclaration@@InvocationTargetException e @TO@ CatchClause@@InvocationTargetException
+      e '
+    - '------------INS SimpleType@@InvocationTargetException @TO@ SingleVariableDeclaration@@InvocationTargetException
+      e '
+    - '------------INS SimpleName@@e @TO@ SingleVariableDeclaration@@InvocationTargetException
+      e '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalStateException("This
+      should not happen") @TO@ MethodDeclaration@@private, @@int, MethodName:getValueInOtherClassLoader,
+      @@Argus:Object+other+ '
+    - '------INS ClassInstanceCreation@@IllegalStateException["This should not happen"]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalStateException("This should
+      not happen") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalStateException["This
+      should not happen"] '
+    - '---------INS SimpleType@@IllegalStateException @TO@ ClassInstanceCreation@@IllegalStateException["This
+      should not happen"] '
+    - '---------INS StringLiteral@@"This should not happen" @TO@ ClassInstanceCreation@@IllegalStateException["This
+      should not happen"] '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/enums/ValuedEnum:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:other == this @TO@ MethodDeclaration@@public,
+      @@int, MethodName:compareTo, @@Argus:Object+other+ '
+    - '---INS InfixExpression@@other == this @TO@ IfStatement@@InfixExpression:other
+      == this '
+    - '------INS SimpleName@@other @TO@ InfixExpression@@other == this '
+    - '------INS Operator@@== @TO@ InfixExpression@@other == this '
+    - '------INS ThisExpression@@this @TO@ InfixExpression@@other == this '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:other.getClass() != this.getClass() @TO@ MethodDeclaration@@public,
+      @@int, MethodName:compareTo, @@Argus:Object+other+ '
+    - '---INS InfixExpression@@other.getClass() != this.getClass() @TO@ IfStatement@@InfixExpression:other.getClass()
+      != this.getClass() '
+    - '------INS MethodInvocation@@other.getClass() @TO@ InfixExpression@@other.getClass()
+      != this.getClass() '
+    - '---------INS SimpleName@@Name:other @TO@ MethodInvocation@@other.getClass() '
+    - '---------INS SimpleName@@MethodName:getClass:[] @TO@ MethodInvocation@@other.getClass() '
+    - '------INS Operator@@!= @TO@ InfixExpression@@other.getClass() != this.getClass() '
+    - '------INS MethodInvocation@@this.getClass() @TO@ InfixExpression@@other.getClass()
+      != this.getClass() '
+    - '---------INS ThisExpression@@this @TO@ MethodInvocation@@this.getClass() '
+    - '---------INS SimpleName@@MethodName:getClass:[] @TO@ MethodInvocation@@this.getClass() '
+    - '---INS IfStatement@@MethodInvocation:other.getClass().getName().equals(this.getClass().getName())
+      @TO@ IfStatement@@InfixExpression:other.getClass() != this.getClass() '
+    - '------INS MethodInvocation@@other.getClass().getName().equals(this.getClass().getName())
+      @TO@ IfStatement@@MethodInvocation:other.getClass().getName().equals(this.getClass().getName()) '
+    - '---------INS SimpleName@@Name:other @TO@ MethodInvocation@@other.getClass().getName().equals(this.getClass().getName()) '
+    - '---------INS MethodInvocation@@MethodName:getClass:[] @TO@ MethodInvocation@@other.getClass().getName().equals(this.getClass().getName()) '
+    - '---------INS MethodInvocation@@MethodName:getName:[] @TO@ MethodInvocation@@other.getClass().getName().equals(this.getClass().getName()) '
+    - '---------INS SimpleName@@MethodName:equals:[this.getClass().getName()] @TO@
+      MethodInvocation@@other.getClass().getName().equals(this.getClass().getName()) '
+    - '------------INS MethodInvocation@@this.getClass().getName() @TO@ SimpleName@@MethodName:equals:[this.getClass().getName()] '
+    - '---------------INS ThisExpression@@this @TO@ MethodInvocation@@this.getClass().getName() '
+    - '---------------INS MethodInvocation@@MethodName:getClass:[] @TO@ MethodInvocation@@this.getClass().getName() '
+    - '---------------INS SimpleName@@MethodName:getName:[] @TO@ MethodInvocation@@this.getClass().getName() '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new ClassCastException("Different
+      enum class ''" + ClassUtils.getShortClassName(other.getClass()) + "''") @TO@
+      IfStatement@@InfixExpression:other.getClass() != this.getClass() '
+    - '------INS ClassInstanceCreation@@ClassCastException["Different enum class ''"
+      + ClassUtils.getShortClassName(other.getClass()) + "''"] @TO@ ThrowStatement@@ClassInstanceCreation:new
+      ClassCastException("Different enum class ''" + ClassUtils.getShortClassName(other.getClass())
+      + "''") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@ClassCastException["Different
+      enum class ''" + ClassUtils.getShortClassName(other.getClass()) + "''"] '
+    - '---------INS SimpleType@@ClassCastException @TO@ ClassInstanceCreation@@ClassCastException["Different
+      enum class ''" + ClassUtils.getShortClassName(other.getClass()) + "''"] '
+    - '---------INS InfixExpression@@"Different enum class ''" + ClassUtils.getShortClassName(other.getClass())
+      + "''" @TO@ ClassInstanceCreation@@ClassCastException["Different enum class
+      ''" + ClassUtils.getShortClassName(other.getClass()) + "''"] '
+    - '------------INS StringLiteral@@"Different enum class ''" @TO@ InfixExpression@@"Different
+      enum class ''" + ClassUtils.getShortClassName(other.getClass()) + "''" '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Different enum class ''"
+      + ClassUtils.getShortClassName(other.getClass()) + "''" '
+    - '------------INS MethodInvocation@@ClassUtils.getShortClassName(other.getClass())
+      @TO@ InfixExpression@@"Different enum class ''" + ClassUtils.getShortClassName(other.getClass())
+      + "''" '
+    - '---------------INS SimpleName@@Name:ClassUtils @TO@ MethodInvocation@@ClassUtils.getShortClassName(other.getClass()) '
+    - '---------------INS SimpleName@@MethodName:getShortClassName:[other.getClass()]
+      @TO@ MethodInvocation@@ClassUtils.getShortClassName(other.getClass()) '
+    - '------------------INS MethodInvocation@@other.getClass() @TO@ SimpleName@@MethodName:getShortClassName:[other.getClass()] '
+    - '---------------------INS SimpleName@@Name:other @TO@ MethodInvocation@@other.getClass() '
+    - '---------------------INS SimpleName@@MethodName:getClass:[] @TO@ MethodInvocation@@other.getClass() '
+    - '------------INS StringLiteral@@"''" @TO@ InfixExpression@@"Different enum class
+      ''" + ClassUtils.getShortClassName(other.getClass()) + "''" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@int, MethodName:getValueInOtherClassLoader,
+      @@Argus:Object+other+ @TO@ TypeDeclaration@@[public, abstract]ValuedEnum, Enum '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@int, MethodName:getValueInOtherClassLoader,
+      @@Argus:Object+other+ '
+    - '---INS PrimitiveType@@int @TO@ MethodDeclaration@@private, @@int, MethodName:getValueInOtherClassLoader,
+      @@Argus:Object+other+ '
+    - '---INS SimpleName@@MethodName:getValueInOtherClassLoader @TO@ MethodDeclaration@@private,
+      @@int, MethodName:getValueInOtherClassLoader, @@Argus:Object+other+ '
+    - '---INS SingleVariableDeclaration@@Object other @TO@ MethodDeclaration@@private,
+      @@int, MethodName:getValueInOtherClassLoader, @@Argus:Object+other+ '
+    - '------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object other '
+    - '------INS SimpleName@@other @TO@ SingleVariableDeclaration@@Object other '
+    - '---INS TryStatement@@try:[] @TO@ MethodDeclaration@@private, @@int, MethodName:getValueInOtherClassLoader,
+      @@Argus:Object+other+ '
+    - '------INS CatchClause@@NoSuchMethodException e @TO@ TryStatement@@try:[] '
+    - '---------INS SingleVariableDeclaration@@NoSuchMethodException e @TO@ CatchClause@@NoSuchMethodException
+      e '
+    - '------------INS SimpleType@@NoSuchMethodException @TO@ SingleVariableDeclaration@@NoSuchMethodException
+      e '
+    - '------------INS SimpleName@@e @TO@ SingleVariableDeclaration@@NoSuchMethodException
+      e '
+    - '------INS CatchClause@@IllegalAccessException e @TO@ TryStatement@@try:[] '
+    - '---------INS SingleVariableDeclaration@@IllegalAccessException e @TO@ CatchClause@@IllegalAccessException
+      e '
+    - '------------INS SimpleType@@IllegalAccessException @TO@ SingleVariableDeclaration@@IllegalAccessException
+      e '
+    - '------------INS SimpleName@@e @TO@ SingleVariableDeclaration@@IllegalAccessException
+      e '
+    - '------INS CatchClause@@InvocationTargetException e @TO@ TryStatement@@try:[] '
+    - '---------INS SingleVariableDeclaration@@InvocationTargetException e @TO@ CatchClause@@InvocationTargetException
+      e '
+    - '------------INS SimpleType@@InvocationTargetException @TO@ SingleVariableDeclaration@@InvocationTargetException
+      e '
+    - '------------INS SimpleName@@e @TO@ SingleVariableDeclaration@@InvocationTargetException
+      e '
+  repair_actions_cnt: 3

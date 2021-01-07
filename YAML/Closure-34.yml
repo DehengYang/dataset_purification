@@ -1,0 +1,130 @@
+1 bug_id: Closure-34
+2 src folder:
+  name of src folder: src
+  number of files: 415
+  number of java files: 400
+  number of src classes: 1341
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CodePrinterTest#testManyAdds
+  failing tests:
+  - com.google.javascript.jscomp.CodePrinterTest
+  number of all test cases: 7450
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.1
+  purification via delta debugging: 574.543
+  repair actions extraction: 3.076
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CodePrinterTest#testManyAdds: 156
+  fixed:
+    com.google.javascript.jscomp.CodePrinterTest#testManyAdds: 251
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 3
+  covDel: 5
+  cov_patch_lines: 8
+  delta_patch_lines: 5
+  oriAdd: 3
+  oriDel: 5
+  ori_patch_lines: 8
+  purAdd: 3
+  purDel: 2
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 3
+  original: 3
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 2
+  failFail: 11
+  passed: 0
+  total: 14
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_34/src/com/google/javascript/jscomp/CodePrinter.java\t\
+    2020-10-22 11:23:58.271689694 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_34/purify/patch/com/google/javascript/jscomp/CodePrinter.java\t\
+    2020-10-22 11:23:58.271689694 -0400\n@@ -331,7 +331,7 @@\n     @Override\n   \
+    \  void appendOp(String op, boolean binOp) {\n       if (binOp) {\n-        if\
+    \ (getLastChar() != ' ') {\n+        if (getLastChar() != ' ' && op.charAt(0)\
+    \ != ',') {\n           append(\" \");\n         }\n         append(op);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_34/src/com/google/javascript/jscomp/CodePrinter.java\t\
+    2020-10-22 11:33:59.653086529 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_34/purify/purified/com/google/javascript/jscomp/CodePrinter.java\t\
+    2020-10-22 11:33:59.653086529 -0400\n@@ -331,7 +331,7 @@\n     @Override\n   \
+    \  void appendOp(String op, boolean binOp) {\n       if (binOp) {\n-        if\
+    \ (getLastChar() != ' ') {\n+        if (getLastChar() != ' ' && op.charAt(0)\
+    \ != ',') {\n           append(\" \");\n         }\n         append(op);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '2'
+  com/google/javascript/jscomp/CodeGenerator, com/google/javascript/jscomp/CodePrinter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:getLastChar() != '' '' @TO@ InfixExpression:getLastChar()
+      != '' '' && op.charAt(0) != '','' '
+    - '---INS InfixExpression@@getLastChar() != '' '' && op.charAt(0) != '','' @TO@
+      IfStatement@@InfixExpression:getLastChar() != '' '' '
+    - '------INS InfixExpression@@getLastChar() != '' '' @TO@ InfixExpression@@getLastChar()
+      != '' '' && op.charAt(0) != '','' '
+    - '---------MOV MethodInvocation@@MethodName:getLastChar:[] @TO@ InfixExpression@@getLastChar()
+      != '' '' '
+    - '---------MOV Operator@@!= @TO@ InfixExpression@@getLastChar() != '' '' '
+    - '---------MOV CharacterLiteral@@'' '' @TO@ InfixExpression@@getLastChar() !=
+      '' '' '
+    - '------INS Operator@@&& @TO@ InfixExpression@@getLastChar() != '' '' && op.charAt(0)
+      != '','' '
+    - '------INS InfixExpression@@op.charAt(0) != '','' @TO@ InfixExpression@@getLastChar()
+      != '' '' && op.charAt(0) != '','' '
+    - '---------INS MethodInvocation@@op.charAt(0) @TO@ InfixExpression@@op.charAt(0)
+      != '','' '
+    - '------------INS SimpleName@@Name:op @TO@ MethodInvocation@@op.charAt(0) '
+    - '------------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@op.charAt(0) '
+    - '---------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@op.charAt(0) != '','' '
+    - '---------INS CharacterLiteral@@'','' @TO@ InfixExpression@@op.charAt(0) !=
+      '','' '
+    - '---DEL InfixExpression@@getLastChar() != '' '' '
+  files_cnt: '2'
+  repair_actions_cnt: 5
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '2'
+  com/google/javascript/jscomp/CodeGenerator, com/google/javascript/jscomp/CodePrinter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:getLastChar() != '' '' @TO@ InfixExpression:getLastChar()
+      != '' '' && op.charAt(0) != '','' '
+    - '---INS InfixExpression@@getLastChar() != '' '' && op.charAt(0) != '','' @TO@
+      IfStatement@@InfixExpression:getLastChar() != '' '' '
+    - '------INS InfixExpression@@getLastChar() != '' '' @TO@ InfixExpression@@getLastChar()
+      != '' '' && op.charAt(0) != '','' '
+    - '---------MOV MethodInvocation@@MethodName:getLastChar:[] @TO@ InfixExpression@@getLastChar()
+      != '' '' '
+    - '---------MOV Operator@@!= @TO@ InfixExpression@@getLastChar() != '' '' '
+    - '---------MOV CharacterLiteral@@'' '' @TO@ InfixExpression@@getLastChar() !=
+      '' '' '
+    - '------INS Operator@@&& @TO@ InfixExpression@@getLastChar() != '' '' && op.charAt(0)
+      != '','' '
+    - '------INS InfixExpression@@op.charAt(0) != '','' @TO@ InfixExpression@@getLastChar()
+      != '' '' && op.charAt(0) != '','' '
+    - '---------INS MethodInvocation@@op.charAt(0) @TO@ InfixExpression@@op.charAt(0)
+      != '','' '
+    - '------------INS SimpleName@@Name:op @TO@ MethodInvocation@@op.charAt(0) '
+    - '------------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@op.charAt(0) '
+    - '---------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@op.charAt(0) != '','' '
+    - '---------INS CharacterLiteral@@'','' @TO@ InfixExpression@@op.charAt(0) !=
+      '','' '
+    - '---DEL InfixExpression@@getLastChar() != '' '' '
+  files_cnt: '2'
+  repair_actions_cnt: 3

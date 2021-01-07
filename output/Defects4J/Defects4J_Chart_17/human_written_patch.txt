@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_17/source/org/jfree/data/time/TimeSeries.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_17/fixed-version/source/org/jfree/data/time/TimeSeries.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_17/source/org/jfree/data/time/TimeSeries.java	2020-03-01 00:04:25.116210158 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_17/fixed-version/source/org/jfree/data/time/TimeSeries.java	2020-03-01 00:04:28.472368286 -0800
+@@ -854,7 +854,8 @@
+      *         subclasses may differ.
+      */
+     public Object clone() throws CloneNotSupportedException {
+-        Object clone = createCopy(0, getItemCount() - 1);
++        TimeSeries clone = (TimeSeries) super.clone();
++        clone.data = (List) ObjectUtilities.deepClone(this.data);
+         return clone;
+     }
+ 

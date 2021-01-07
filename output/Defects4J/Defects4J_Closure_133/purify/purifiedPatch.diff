@@ -1,0 +1,10 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_133/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java	2020-10-23 18:23:18.257367258 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_133/purify/purified/com/google/javascript/jscomp/parsing/JsDocInfoParser.java	2020-10-23 18:23:18.253367142 -0400
+@@ -2398,6 +2398,7 @@
+    */
+   private String getRemainingJSDocLine() {
+     String result = stream.getRemainingJSDocLine();
++    unreadToken = NO_UNREAD_TOKEN;
+     return result;
+   }
+ 

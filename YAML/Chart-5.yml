@@ -1,0 +1,130 @@
+1 bug_id: Chart-5
+2 src folder:
+  name of src folder: source
+  number of files: 667
+  number of java files: 594
+  number of src classes: 621
+  number of test classes: 344
+3 test (cases):
+  failing test cases:
+  - org.jfree.data.xy.junit.XYSeriesTests#testBug1955483
+  failing tests:
+  - org.jfree.data.xy.junit.XYSeriesTests
+  number of all test cases: 2041
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.873
+  purification via delta debugging: 182.541
+  repair actions extraction: 1.708
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.data.xy.junit.XYSeriesTests#testBug1955483: 57
+  fixed:
+    org.jfree.data.xy.junit.XYSeriesTests#testBug1955483: 79
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 5
+  covDel: 1
+  cov_patch_lines: 6
+  delta_patch_lines: 4
+  oriAdd: 5
+  oriDel: 1
+  ori_patch_lines: 6
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 8
+  failFail: 4
+  passed: 1
+  total: 13
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_5/source/org/jfree/data/xy/XYSeries.java\t\
+    2020-10-22 00:30:19.005685268 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_5/purify/patch/org/jfree/data/xy/XYSeries.java\t\
+    2020-10-22 00:30:19.001685152 -0400\n@@ -541,11 +541,15 @@\n         if (x ==\
+    \ null) {\n             throw new IllegalArgumentException(\"Null 'x' argument.\"\
+    );\n         }\n+        if (this.allowDuplicateXValues) {\n+            add(x,\
+    \ y);\n+            return null;\n+        }\n \n         // if we get to here,\
+    \ we know that duplicate X values are not permitted\n         XYDataItem overwritten\
+    \ = null;\n         int index = indexOf(x);\n-        if (index >= 0 && !this.allowDuplicateXValues)\
+    \ {\n+        if (index >= 0) {\n             XYDataItem existing = (XYDataItem)\
+    \ this.data.get(index);\n             try {\n                 overwritten = (XYDataItem)\
+    \ existing.clone();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_5/source/org/jfree/data/xy/XYSeries.java\t\
+    2020-10-22 00:33:43.719605755 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_5/purify/purified/org/jfree/data/xy/XYSeries.java\t\
+    2020-10-22 00:33:43.719605755 -0400\n@@ -541,6 +541,10 @@\n         if (x == null)\
+    \ {\n             throw new IllegalArgumentException(\"Null 'x' argument.\");\n\
+    \         }\n+        if (this.allowDuplicateXValues) {\n+            add(x, y);\n\
+    +            return null;\n+        }\n \n         // if we get to here, we know\
+    \ that duplicate X values are not permitted\n         XYDataItem overwritten =\
+    \ null;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/xy/XYSeries:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@FieldAccess:this.allowDuplicateXValues @TO@ MethodDeclaration@@public,
+      @@XYDataItem, MethodName:addOrUpdate, @@Argus:Number+x+Number+y+ '
+    - '---INS FieldAccess@@this.allowDuplicateXValues @TO@ IfStatement@@FieldAccess:this.allowDuplicateXValues '
+    - '------INS ThisExpression@@this @TO@ FieldAccess@@this.allowDuplicateXValues '
+    - '------INS SimpleName@@allowDuplicateXValues @TO@ FieldAccess@@this.allowDuplicateXValues '
+    - '---INS ExpressionStatement@@MethodInvocation:add(x,y) @TO@ IfStatement@@FieldAccess:this.allowDuplicateXValues '
+    - '------INS MethodInvocation@@add(x,y) @TO@ ExpressionStatement@@MethodInvocation:add(x,y) '
+    - '---------INS SimpleName@@MethodName:add:[x, y] @TO@ MethodInvocation@@add(x,y) '
+    - '------------INS SimpleName@@x @TO@ SimpleName@@MethodName:add:[x, y] '
+    - '------------INS SimpleName@@y @TO@ SimpleName@@MethodName:add:[x, y] '
+    - '---INS ReturnStatement@@NullLiteral:null @TO@ IfStatement@@FieldAccess:this.allowDuplicateXValues '
+    - '------INS NullLiteral@@null @TO@ ReturnStatement@@NullLiteral:null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:index >= 0 && !this.allowDuplicateXValues
+      @TO@ InfixExpression:index >= 0 '
+    - '---INS InfixExpression@@index >= 0 @TO@ IfStatement@@InfixExpression:index
+      >= 0 && !this.allowDuplicateXValues '
+    - '------MOV SimpleName@@index @TO@ InfixExpression@@index >= 0 '
+    - '------MOV Operator@@>= @TO@ InfixExpression@@index >= 0 '
+    - '------MOV NumberLiteral@@0 @TO@ InfixExpression@@index >= 0 '
+    - '---DEL InfixExpression@@index >= 0 && !this.allowDuplicateXValues '
+    - '------DEL InfixExpression@@index >= 0 '
+    - '------DEL Operator@@&& '
+    - '------DEL PrefixExpression@@!this.allowDuplicateXValues '
+    - '---------DEL Operator@@! '
+    - '---------DEL FieldAccess@@this.allowDuplicateXValues '
+    - '------------DEL ThisExpression@@this '
+    - '------------DEL SimpleName@@allowDuplicateXValues '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/xy/XYSeries:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@FieldAccess:this.allowDuplicateXValues @TO@ MethodDeclaration@@public,
+      @@XYDataItem, MethodName:addOrUpdate, @@Argus:Number+x+Number+y+ '
+    - '---INS FieldAccess@@this.allowDuplicateXValues @TO@ IfStatement@@FieldAccess:this.allowDuplicateXValues '
+    - '------INS ThisExpression@@this @TO@ FieldAccess@@this.allowDuplicateXValues '
+    - '------INS SimpleName@@allowDuplicateXValues @TO@ FieldAccess@@this.allowDuplicateXValues '
+    - '---INS ExpressionStatement@@MethodInvocation:add(x,y) @TO@ IfStatement@@FieldAccess:this.allowDuplicateXValues '
+    - '------INS MethodInvocation@@add(x,y) @TO@ ExpressionStatement@@MethodInvocation:add(x,y) '
+    - '---------INS SimpleName@@MethodName:add:[x, y] @TO@ MethodInvocation@@add(x,y) '
+    - '------------INS SimpleName@@x @TO@ SimpleName@@MethodName:add:[x, y] '
+    - '------------INS SimpleName@@y @TO@ SimpleName@@MethodName:add:[x, y] '
+    - '---INS ReturnStatement@@NullLiteral:null @TO@ IfStatement@@FieldAccess:this.allowDuplicateXValues '
+    - '------INS NullLiteral@@null @TO@ ReturnStatement@@NullLiteral:null '
+  repair_actions_cnt: 1

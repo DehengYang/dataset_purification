@@ -1,0 +1,135 @@
+1 bug_id: Math-35
+2 src folder:
+  name of src folder: java
+  number of files: 618
+  number of java files: 617
+  number of src classes: 831
+  number of test classes: 300
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.genetics.ElitisticListPopulationTest#testConstructorTooLow
+  - org.apache.commons.math3.genetics.ElitisticListPopulationTest#testChromosomeListConstructorTooLow
+  - org.apache.commons.math3.genetics.ElitisticListPopulationTest#testConstructorTooHigh
+  - org.apache.commons.math3.genetics.ElitisticListPopulationTest#testChromosomeListConstructorTooHigh
+  failing tests:
+  - org.apache.commons.math3.genetics.ElitisticListPopulationTest
+  number of all test cases: 3551
+  number of failing test cases: 4
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.002
+  purification via delta debugging: 340.285
+  repair actions extraction: 0.728
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.genetics.ElitisticListPopulationTest#testChromosomeListConstructorTooHigh: 10
+    org.apache.commons.math3.genetics.ElitisticListPopulationTest#testChromosomeListConstructorTooLow: 10
+    org.apache.commons.math3.genetics.ElitisticListPopulationTest#testConstructorTooHigh: 9
+    org.apache.commons.math3.genetics.ElitisticListPopulationTest#testConstructorTooLow: 9
+  fixed:
+    org.apache.commons.math3.genetics.ElitisticListPopulationTest#testChromosomeListConstructorTooHigh: 354
+    org.apache.commons.math3.genetics.ElitisticListPopulationTest#testChromosomeListConstructorTooLow: 354
+    org.apache.commons.math3.genetics.ElitisticListPopulationTest#testConstructorTooHigh: 353
+    org.apache.commons.math3.genetics.ElitisticListPopulationTest#testConstructorTooLow: 353
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 5
+  passed: 2
+  total: 7
+9 sibling repair actions:
+- 0 1 1.0
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_35/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java\t\
+    2020-10-21 10:44:02.332446578 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_35/purify/patch/org/apache/commons/math3/genetics/ElitisticListPopulation.java\t\
+    2020-10-21 10:44:02.332446578 -0400\n@@ -48,7 +48,7 @@\n                     \
+    \               final int populationLimit,\n                                 \
+    \   final double elitismRate) {\n         super(chromosomes, populationLimit);\n\
+    -        this.elitismRate = elitismRate;\n+        setElitismRate(elitismRate);\n\
+    \     }\n \n     /**\n@@ -62,7 +62,7 @@\n      */\n     public ElitisticListPopulation(final\
+    \ int populationLimit, final double elitismRate) {\n         super(populationLimit);\n\
+    -        this.elitismRate = elitismRate;\n+        setElitismRate(elitismRate);\n\
+    \     }\n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_35/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java\t\
+    2020-10-21 10:49:59.022759604 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_35/purify/purified/org/apache/commons/math3/genetics/ElitisticListPopulation.java\t\
+    2020-10-21 10:49:59.022759604 -0400\n@@ -49,6 +49,7 @@\n                     \
+    \               final double elitismRate) {\n         super(chromosomes, populationLimit);\n\
+    \         this.elitismRate = elitismRate;\n+        setElitismRate(elitismRate);\n\
+    \     }\n \n     /**\n@@ -63,6 +64,7 @@\n     public ElitisticListPopulation(final\
+    \ int populationLimit, final double elitismRate) {\n         super(populationLimit);\n\
+    \         this.elitismRate = elitismRate;\n+        setElitismRate(elitismRate);\n\
+    \     }\n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/genetics/ElitisticListPopulation:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:this.elitismRate=elitismRate @TO@ MethodInvocation:setElitismRate(elitismRate) '
+    - '---INS MethodInvocation@@setElitismRate(elitismRate) @TO@ ExpressionStatement@@Assignment:this.elitismRate=elitismRate '
+    - '------INS SimpleName@@MethodName:setElitismRate:[elitismRate] @TO@ MethodInvocation@@setElitismRate(elitismRate) '
+    - '---------INS SimpleName@@elitismRate @TO@ SimpleName@@MethodName:setElitismRate:[elitismRate] '
+    - '---DEL Assignment@@this.elitismRate=elitismRate '
+    - '------DEL FieldAccess@@this.elitismRate '
+    - '---------DEL ThisExpression@@this '
+    - '---------DEL SimpleName@@elitismRate '
+    - '------DEL Operator@@= '
+    - '------DEL SimpleName@@elitismRate '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:this.elitismRate=elitismRate @TO@ MethodInvocation:setElitismRate(elitismRate) '
+    - '---INS MethodInvocation@@setElitismRate(elitismRate) @TO@ ExpressionStatement@@Assignment:this.elitismRate=elitismRate '
+    - '------INS SimpleName@@MethodName:setElitismRate:[elitismRate] @TO@ MethodInvocation@@setElitismRate(elitismRate) '
+    - '---------INS SimpleName@@elitismRate @TO@ SimpleName@@MethodName:setElitismRate:[elitismRate] '
+    - '---DEL Assignment@@this.elitismRate=elitismRate '
+    - '------DEL FieldAccess@@this.elitismRate '
+    - '---------DEL ThisExpression@@this '
+    - '---------DEL SimpleName@@elitismRate '
+    - '------DEL Operator@@= '
+    - '------DEL SimpleName@@elitismRate '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/genetics/ElitisticListPopulation:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:setElitismRate(elitismRate) @TO@
+      MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ElitisticListPopulation,
+      @@Argus:List<Chromosome>+chromosomes+int+populationLimit+double+elitismRate+ '
+    - '---INS MethodInvocation@@setElitismRate(elitismRate) @TO@ ExpressionStatement@@MethodInvocation:setElitismRate(elitismRate) '
+    - '------INS SimpleName@@MethodName:setElitismRate:[elitismRate] @TO@ MethodInvocation@@setElitismRate(elitismRate) '
+    - '---------INS SimpleName@@elitismRate @TO@ SimpleName@@MethodName:setElitismRate:[elitismRate] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:setElitismRate(elitismRate) @TO@
+      MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ElitisticListPopulation,
+      @@Argus:int+populationLimit+double+elitismRate+ '
+    - '---INS MethodInvocation@@setElitismRate(elitismRate) @TO@ ExpressionStatement@@MethodInvocation:setElitismRate(elitismRate) '
+    - '------INS SimpleName@@MethodName:setElitismRate:[elitismRate] @TO@ MethodInvocation@@setElitismRate(elitismRate) '
+    - '---------INS SimpleName@@elitismRate @TO@ SimpleName@@MethodName:setElitismRate:[elitismRate] '
+  repair_actions_cnt: 2

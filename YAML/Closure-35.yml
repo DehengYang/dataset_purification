@@ -1,0 +1,250 @@
+1 bug_id: Closure-35
+2 src folder:
+  name of src folder: src
+  number of files: 411
+  number of java files: 397
+  number of src classes: 1333
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testIssue669
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 7418
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 2.193
+  purification via delta debugging: 726.005
+  repair actions extraction: 2.278
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue669: 5259
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue669: 5143
+6 reduced lines:
+  by all: 6
+  by coverage: 0
+  by delta debugging: 6
+  covAdd: 2
+  covDel: 15
+  cov_patch_lines: 17
+  delta_patch_lines: 11
+  oriAdd: 2
+  oriDel: 15
+  ori_patch_lines: 17
+  purAdd: 2
+  purDel: 9
+7 reduced chunks:
+  by all: -5
+  by coverage: 0
+  by delta debugging: -5
+  cov: 1
+  original: 1
+  purifiy: 6
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 45
+  failFail: 1
+  passed: 1
+  total: 47
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_35/src/com/google/javascript/jscomp/TypeInference.java\t\
+    2020-10-22 11:35:23.027498377 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_35/purify/patch/com/google/javascript/jscomp/TypeInference.java\t\
+    2020-10-22 11:35:23.023498261 -0400\n@@ -1118,21 +1118,8 @@\n \n     ObjectType\
+    \ constraintObj =\n         ObjectType.cast(constraint.restrictByNotNullOrUndefined());\n\
+    -    if (constraintObj != null && constraintObj.isRecordType()) {\n-      ObjectType\
+    \ objType = ObjectType.cast(type.restrictByNotNullOrUndefined());\n-      if (objType\
+    \ != null) {\n-        for (String prop : constraintObj.getOwnPropertyNames())\
+    \ {\n-          JSType propType = constraintObj.getPropertyType(prop);\n-    \
+    \      if (!objType.isPropertyTypeDeclared(prop)) {\n-            JSType typeToInfer\
+    \ = propType;\n-            if (!objType.hasProperty(prop)) {\n-             \
+    \ typeToInfer =\n-                  getNativeType(VOID_TYPE).getLeastSupertype(propType);\n\
+    -            }\n-            objType.defineInferredProperty(prop, typeToInfer,\
+    \ null);\n-          }\n-        }\n-      }\n+    if (constraintObj != null)\
+    \ {\n+      type.matchConstraint(constraintObj);\n     }\n   }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_35/src/com/google/javascript/jscomp/TypeInference.java\t\
+    2020-10-22 11:48:01.557436796 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_35/purify/purified/com/google/javascript/jscomp/TypeInference.java\t\
+    2020-10-22 11:48:01.557436796 -0400\n@@ -1118,21 +1118,14 @@\n \n     ObjectType\
+    \ constraintObj =\n         ObjectType.cast(constraint.restrictByNotNullOrUndefined());\n\
+    -    if (constraintObj != null && constraintObj.isRecordType()) {\n       ObjectType\
+    \ objType = ObjectType.cast(type.restrictByNotNullOrUndefined());\n-      if (objType\
+    \ != null) {\n-        for (String prop : constraintObj.getOwnPropertyNames())\
+    \ {\n           JSType propType = constraintObj.getPropertyType(prop);\n-    \
+    \      if (!objType.isPropertyTypeDeclared(prop)) {\n             JSType typeToInfer\
+    \ = propType;\n-            if (!objType.hasProperty(prop)) {\n              \
+    \ typeToInfer =\n                   getNativeType(VOID_TYPE).getLeastSupertype(propType);\n\
+    -            }\n             objType.defineInferredProperty(prop, typeToInfer,\
+    \ null);\n-          }\n-        }\n-      }\n+    if (constraintObj != null)\
+    \ {\n+      type.matchConstraint(constraintObj);\n     }\n   }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 10
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeInference:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:constraintObj != null && constraintObj.isRecordType()
+      @TO@ InfixExpression:constraintObj != null '
+    - '---INS InfixExpression@@constraintObj != null @TO@ IfStatement@@InfixExpression:constraintObj
+      != null && constraintObj.isRecordType() '
+    - '------MOV SimpleName@@constraintObj @TO@ InfixExpression@@constraintObj !=
+      null '
+    - '------MOV Operator@@!= @TO@ InfixExpression@@constraintObj != null '
+    - '------MOV NullLiteral@@null @TO@ InfixExpression@@constraintObj != null '
+    - '---DEL InfixExpression@@constraintObj != null && constraintObj.isRecordType() '
+    - '------DEL InfixExpression@@constraintObj != null '
+    - '------DEL Operator@@&& '
+    - '------DEL MethodInvocation@@constraintObj.isRecordType() '
+    - '---------DEL SimpleName@@Name:constraintObj '
+    - '---------DEL SimpleName@@MethodName:isRecordType:[] '
+    - '---DEL VariableDeclarationStatement@@ObjectType objType=ObjectType.cast(type.restrictByNotNullOrUndefined()); '
+    - '------DEL SimpleType@@ObjectType '
+    - '------DEL VariableDeclarationFragment@@objType=ObjectType.cast(type.restrictByNotNullOrUndefined()) '
+    - '---------DEL SimpleName@@objType '
+    - '---------DEL MethodInvocation@@ObjectType.cast(type.restrictByNotNullOrUndefined()) '
+    - '------------DEL SimpleName@@Name:ObjectType '
+    - '------------DEL SimpleName@@MethodName:cast:[type.restrictByNotNullOrUndefined()] '
+    - '---------------DEL MethodInvocation@@type.restrictByNotNullOrUndefined() '
+    - '------------------DEL SimpleName@@Name:type '
+    - '------------------DEL SimpleName@@MethodName:restrictByNotNullOrUndefined:[] '
+    - '---DEL IfStatement@@InfixExpression:objType != null '
+    - '------DEL InfixExpression@@objType != null '
+    - '---------DEL SimpleName@@objType '
+    - '---------DEL Operator@@!= '
+    - '---------DEL NullLiteral@@null '
+    - '------DEL EnhancedForStatement@@String prop, MethodInvocation:constraintObj.getOwnPropertyNames() '
+    - '---------DEL SingleVariableDeclaration@@String prop '
+    - '------------DEL SimpleType@@String '
+    - '------------DEL SimpleName@@prop '
+    - '---------DEL MethodInvocation@@constraintObj.getOwnPropertyNames() '
+    - '------------DEL SimpleName@@Name:constraintObj '
+    - '------------DEL SimpleName@@MethodName:getOwnPropertyNames:[] '
+    - '---------DEL VariableDeclarationStatement@@JSType propType=constraintObj.getPropertyType(prop); '
+    - '------------DEL SimpleType@@JSType '
+    - '------------DEL VariableDeclarationFragment@@propType=constraintObj.getPropertyType(prop) '
+    - '---------------DEL SimpleName@@propType '
+    - '---------------DEL MethodInvocation@@constraintObj.getPropertyType(prop) '
+    - '------------------DEL SimpleName@@Name:constraintObj '
+    - '------------------DEL SimpleName@@MethodName:getPropertyType:[prop] '
+    - '---------------------DEL SimpleName@@prop '
+    - '---------DEL IfStatement@@PrefixExpression:!objType.isPropertyTypeDeclared(prop) '
+    - '------------DEL PrefixExpression@@!objType.isPropertyTypeDeclared(prop) '
+    - '---------------DEL Operator@@! '
+    - '---------------DEL MethodInvocation@@objType.isPropertyTypeDeclared(prop) '
+    - '------------------DEL SimpleName@@Name:objType '
+    - '------------------DEL SimpleName@@MethodName:isPropertyTypeDeclared:[prop] '
+    - '---------------------DEL SimpleName@@prop '
+    - '------------DEL VariableDeclarationStatement@@JSType typeToInfer=propType; '
+    - '---------------DEL SimpleType@@JSType '
+    - '---------------DEL VariableDeclarationFragment@@typeToInfer=propType '
+    - '------------------DEL SimpleName@@typeToInfer '
+    - '------------------DEL SimpleName@@propType '
+    - '------------DEL IfStatement@@PrefixExpression:!objType.hasProperty(prop) '
+    - '---------------DEL PrefixExpression@@!objType.hasProperty(prop) '
+    - '------------------DEL Operator@@! '
+    - '------------------DEL MethodInvocation@@objType.hasProperty(prop) '
+    - '---------------------DEL SimpleName@@Name:objType '
+    - '---------------------DEL SimpleName@@MethodName:hasProperty:[prop] '
+    - '------------------------DEL SimpleName@@prop '
+    - '---------------DEL ExpressionStatement@@Assignment:typeToInfer=getNativeType(VOID_TYPE).getLeastSupertype(propType) '
+    - '------------------DEL Assignment@@typeToInfer=getNativeType(VOID_TYPE).getLeastSupertype(propType) '
+    - '---------------------DEL SimpleName@@typeToInfer '
+    - '---------------------DEL Operator@@= '
+    - '---------------------DEL MethodInvocation@@getNativeType(VOID_TYPE).getLeastSupertype(propType) '
+    - '------------------------DEL MethodInvocation@@MethodName:getNativeType:[VOID_TYPE] '
+    - '---------------------------DEL SimpleName@@VOID_TYPE '
+    - '------------------------DEL SimpleName@@MethodName:getLeastSupertype:[propType] '
+    - '---------------------------DEL SimpleName@@propType '
+    - '---MOV ExpressionStatement@@MethodInvocation:objType.defineInferredProperty(prop,typeToInfer,null)
+      @TO@ IfStatement@@InfixExpression:constraintObj != null && constraintObj.isRecordType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:objType.defineInferredProperty(prop,typeToInfer,null)
+      @TO@ MethodInvocation:type.matchConstraint(constraintObj) '
+    - '---UPD MethodInvocation@@objType.defineInferredProperty(prop,typeToInfer,null)
+      @TO@ type.matchConstraint(constraintObj) '
+    - '------UPD SimpleName@@Name:objType @TO@ Name:type '
+    - '------UPD SimpleName@@MethodName:defineInferredProperty:[prop, typeToInfer,
+      null] @TO@ MethodName:matchConstraint:[constraintObj] '
+    - '---------UPD SimpleName@@prop @TO@ constraintObj '
+    - '---------DEL SimpleName@@typeToInfer '
+    - '---------DEL NullLiteral@@null '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeInference:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:constraintObj != null && constraintObj.isRecordType()
+      @TO@ InfixExpression:constraintObj != null '
+    - '---DEL InfixExpression@@constraintObj != null && constraintObj.isRecordType() '
+    - '------DEL InfixExpression@@constraintObj != null '
+    - '------DEL Operator@@&& '
+    - '------DEL MethodInvocation@@constraintObj.isRecordType() '
+    - '---------DEL SimpleName@@Name:constraintObj '
+    - '---------DEL SimpleName@@MethodName:isRecordType:[] '
+    - '---DEL IfStatement@@InfixExpression:objType != null '
+    - '------DEL InfixExpression@@objType != null '
+    - '---------DEL SimpleName@@objType '
+    - '---------DEL Operator@@!= '
+    - '---------DEL NullLiteral@@null '
+    - '------DEL EnhancedForStatement@@String prop, MethodInvocation:constraintObj.getOwnPropertyNames() '
+    - '---------DEL SingleVariableDeclaration@@String prop '
+    - '------------DEL SimpleType@@String '
+    - '------------DEL SimpleName@@prop '
+    - '---------DEL MethodInvocation@@constraintObj.getOwnPropertyNames() '
+    - '------------DEL SimpleName@@Name:constraintObj '
+    - '------------DEL SimpleName@@MethodName:getOwnPropertyNames:[] '
+    - '---------DEL IfStatement@@PrefixExpression:!objType.isPropertyTypeDeclared(prop) '
+    - '------------DEL PrefixExpression@@!objType.isPropertyTypeDeclared(prop) '
+    - '---------------DEL Operator@@! '
+    - '---------------DEL MethodInvocation@@objType.isPropertyTypeDeclared(prop) '
+    - '------------------DEL SimpleName@@Name:objType '
+    - '------------------DEL SimpleName@@MethodName:isPropertyTypeDeclared:[prop] '
+    - '---------------------DEL SimpleName@@prop '
+    - '------------DEL IfStatement@@PrefixExpression:!objType.hasProperty(prop) '
+    - '---------------DEL PrefixExpression@@!objType.hasProperty(prop) '
+    - '------------------DEL Operator@@! '
+    - '------------------DEL MethodInvocation@@objType.hasProperty(prop) '
+    - '---INS InfixExpression@@constraintObj != null @TO@ IfStatement@@InfixExpression:constraintObj
+      != null && constraintObj.isRecordType() '
+    - '------MOV SimpleName@@constraintObj @TO@ InfixExpression@@constraintObj !=
+      null '
+    - '------MOV Operator@@!= @TO@ InfixExpression@@constraintObj != null '
+    - '------MOV NullLiteral@@null @TO@ InfixExpression@@constraintObj != null '
+    - '---INS ExpressionStatement@@MethodInvocation:type.matchConstraint(constraintObj)
+      @TO@ IfStatement@@InfixExpression:constraintObj != null && constraintObj.isRecordType() '
+    - '------INS MethodInvocation@@type.matchConstraint(constraintObj) @TO@ ExpressionStatement@@MethodInvocation:type.matchConstraint(constraintObj) '
+    - '---------MOV SimpleName@@Name:objType @TO@ MethodInvocation@@type.matchConstraint(constraintObj) '
+    - '---------MOV SimpleName@@MethodName:hasProperty:[prop] @TO@ MethodInvocation@@type.matchConstraint(constraintObj) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@ObjectType objType=ObjectType.cast(type.restrictByNotNullOrUndefined());
+      @TO@ MethodDeclaration@@private, @@void, MethodName:inferPropertyTypesToMatchConstraint,
+      @@Argus:JSType+type+JSType+constraint+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@JSType propType=constraintObj.getPropertyType(prop);
+      @TO@ MethodDeclaration@@private, @@void, MethodName:inferPropertyTypesToMatchConstraint,
+      @@Argus:JSType+type+JSType+constraint+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@JSType typeToInfer=propType; @TO@ MethodDeclaration@@private,
+      @@void, MethodName:inferPropertyTypesToMatchConstraint, @@Argus:JSType+type+JSType+constraint+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:typeToInfer=getNativeType(VOID_TYPE).getLeastSupertype(propType)
+      @TO@ MethodDeclaration@@private, @@void, MethodName:inferPropertyTypesToMatchConstraint,
+      @@Argus:JSType+type+JSType+constraint+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:objType.defineInferredProperty(prop,typeToInfer,null)
+      @TO@ MethodDeclaration@@private, @@void, MethodName:inferPropertyTypesToMatchConstraint,
+      @@Argus:JSType+type+JSType+constraint+ '
+  files_cnt: '1'
+  repair_actions_cnt: 6

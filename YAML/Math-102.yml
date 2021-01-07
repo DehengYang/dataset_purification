@@ -1,0 +1,478 @@
+1 bug_id: Math-102
+2 src folder:
+  name of src folder: java
+  number of files: 236
+  number of java files: 217
+  number of src classes: 229
+  number of test classes: 137
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.stat.inference.ChiSquareFactoryTest#testChiSquareLargeTestStatistic
+  - org.apache.commons.math.stat.inference.ChiSquareTestTest#testChiSquare
+  - org.apache.commons.math.stat.inference.TestUtilsTest#testChiSquare
+  - org.apache.commons.math.stat.inference.ChiSquareFactoryTest#testChiSquare
+  - org.apache.commons.math.stat.inference.ChiSquareTestTest#testChiSquareLargeTestStatistic
+  - org.apache.commons.math.stat.inference.TestUtilsTest#testChiSquareLargeTestStatistic
+  failing tests:
+  - org.apache.commons.math.stat.inference.ChiSquareFactoryTest
+  - org.apache.commons.math.stat.inference.ChiSquareTestTest
+  - org.apache.commons.math.stat.inference.TestUtilsTest
+  number of all test cases: 1146
+  number of failing test cases: 6
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 9.0
+  purification via coverage: 0.785
+  purification via delta debugging: 343.761
+  repair actions extraction: 1.248
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.stat.inference.ChiSquareFactoryTest#testChiSquare: 96
+    org.apache.commons.math.stat.inference.ChiSquareFactoryTest#testChiSquareLargeTestStatistic: 123
+    org.apache.commons.math.stat.inference.ChiSquareTestTest#testChiSquare: 79
+    org.apache.commons.math.stat.inference.ChiSquareTestTest#testChiSquareLargeTestStatistic: 106
+    org.apache.commons.math.stat.inference.TestUtilsTest#testChiSquare: 167
+    org.apache.commons.math.stat.inference.TestUtilsTest#testChiSquareLargeTestStatistic: 193
+  fixed:
+    org.apache.commons.math.stat.inference.ChiSquareFactoryTest#testChiSquare: 152
+    org.apache.commons.math.stat.inference.ChiSquareFactoryTest#testChiSquareLargeTestStatistic: 134
+    org.apache.commons.math.stat.inference.ChiSquareTestTest#testChiSquare: 135
+    org.apache.commons.math.stat.inference.ChiSquareTestTest#testChiSquareLargeTestStatistic: 117
+    org.apache.commons.math.stat.inference.TestUtilsTest#testChiSquare: 224
+    org.apache.commons.math.stat.inference.TestUtilsTest#testChiSquareLargeTestStatistic: 204
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 17
+  covDel: 0
+  cov_patch_lines: 17
+  delta_patch_lines: 17
+  oriAdd: 17
+  oriDel: 0
+  ori_patch_lines: 17
+  purAdd: 17
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 31
+  failFail: 16
+  passed: 0
+  total: 47
+9 sibling repair actions:
+- 0 3 0.8324022346368715
+- 0 4 0.730909090909091
+- 1 3 0.88268156424581
+- 1 4 0.7763636363636364
+- 3 4 0.8041044776119403
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_102/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java\t\
+    2020-10-21 14:17:41.639086328 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_102/purify/patch/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java\t\
+    2020-10-21 14:17:41.639086328 -0400\n@@ -71,11 +71,28 @@\n             throw new\
+    \ IllegalArgumentException(\n                 \"observed counts must be non-negative\
+    \ and expected counts must be postive\");\n         }\n+        double sumExpected\
+    \ = 0d;\n+        double sumObserved = 0d;\n+        for (int i = 0; i < observed.length;\
+    \ i++) {\n+            sumExpected += expected[i];\n+            sumObserved +=\
+    \ observed[i];\n+        }\n+        double ratio = 1.0d;\n+        boolean rescale\
+    \ = false;\n+        if (Math.abs(sumExpected - sumObserved) > 10E-6) {\n+   \
+    \         ratio = sumObserved / sumExpected;\n+            rescale = true;\n+\
+    \        }\n         double sumSq = 0.0d;\n         double dev = 0.0d;\n     \
+    \    for (int i = 0; i < observed.length; i++) {\n+            if (rescale) {\n\
+    +                dev = ((double) observed[i] - ratio * expected[i]);\n+      \
+    \          sumSq += dev * dev / (ratio * expected[i]);\n+            } else {\n\
+    \                 dev = ((double) observed[i] - expected[i]);\n              \
+    \   sumSq += dev * dev / expected[i];\n+            }\n         }\n         return\
+    \ sumSq;\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_102/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java\t\
+    2020-10-21 14:23:37.125358093 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_102/purify/purified/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java\t\
+    2020-10-21 14:23:37.125358093 -0400\n@@ -71,11 +71,28 @@\n             throw new\
+    \ IllegalArgumentException(\n                 \"observed counts must be non-negative\
+    \ and expected counts must be postive\");\n         }\n+        double sumExpected\
+    \ = 0d;\n+        double sumObserved = 0d;\n+        for (int i = 0; i < observed.length;\
+    \ i++) {\n+            sumExpected += expected[i];\n+            sumObserved +=\
+    \ observed[i];\n+        }\n+        double ratio = 1.0d;\n+        boolean rescale\
+    \ = false;\n+        if (Math.abs(sumExpected - sumObserved) > 10E-6) {\n+   \
+    \         ratio = sumObserved / sumExpected;\n+            rescale = true;\n+\
+    \        }\n         double sumSq = 0.0d;\n         double dev = 0.0d;\n     \
+    \    for (int i = 0; i < observed.length; i++) {\n+            if (rescale) {\n\
+    +                dev = ((double) observed[i] - ratio * expected[i]);\n+      \
+    \          sumSq += dev * dev / (ratio * expected[i]);\n+            } else {\n\
+    \                 dev = ((double) observed[i] - expected[i]);\n              \
+    \   sumSq += dev * dev / expected[i];\n+            }\n         }\n         return\
+    \ sumSq;\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/inference/ChiSquareTestImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double sumExpected=0d; @TO@ MethodDeclaration@@public,
+      @@double, MethodName:chiSquare, @@Argus:double[]+expected+long[]+observed+IllegalArgumentException,  '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double sumExpected=0d; '
+    - '---INS VariableDeclarationFragment@@sumExpected=0d @TO@ VariableDeclarationStatement@@double
+      sumExpected=0d; '
+    - '------INS SimpleName@@sumExpected @TO@ VariableDeclarationFragment@@sumExpected=0d '
+    - '------INS NumberLiteral@@0d @TO@ VariableDeclarationFragment@@sumExpected=0d '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double sumObserved=0d; @TO@ MethodDeclaration@@public,
+      @@double, MethodName:chiSquare, @@Argus:double[]+expected+long[]+observed+IllegalArgumentException,  '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double sumObserved=0d; '
+    - '---INS VariableDeclarationFragment@@sumObserved=0d @TO@ VariableDeclarationStatement@@double
+      sumObserved=0d; '
+    - '------INS SimpleName@@sumObserved @TO@ VariableDeclarationFragment@@sumObserved=0d '
+    - '------INS NumberLiteral@@0d @TO@ VariableDeclarationFragment@@sumObserved=0d '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < observed.length; [i++] @TO@ MethodDeclaration@@public,
+      @@double, MethodName:chiSquare, @@Argus:double[]+expected+long[]+observed+IllegalArgumentException,  '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < observed.length; [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < observed.length @TO@ ForStatement@@[int i=0];i
+      < observed.length; [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < observed.length '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < observed.length '
+    - '------INS QualifiedName@@observed.length @TO@ InfixExpression@@i < observed.length '
+    - '---------INS SimpleName@@observed @TO@ QualifiedName@@observed.length '
+    - '---------INS SimpleName@@length @TO@ QualifiedName@@observed.length '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < observed.length;
+      [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS ExpressionStatement@@Assignment:sumExpected+=expected[i] @TO@ ForStatement@@[int
+      i=0];i < observed.length; [i++] '
+    - '------INS Assignment@@sumExpected+=expected[i] @TO@ ExpressionStatement@@Assignment:sumExpected+=expected[i] '
+    - '---------INS SimpleName@@sumExpected @TO@ Assignment@@sumExpected+=expected[i] '
+    - '---------INS Operator@@+= @TO@ Assignment@@sumExpected+=expected[i] '
+    - '---------INS ArrayAccess@@expected[i] @TO@ Assignment@@sumExpected+=expected[i] '
+    - '------------INS SimpleName@@expected @TO@ ArrayAccess@@expected[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@expected[i] '
+    - '---INS ExpressionStatement@@Assignment:sumObserved+=observed[i] @TO@ ForStatement@@[int
+      i=0];i < observed.length; [i++] '
+    - '------INS Assignment@@sumObserved+=observed[i] @TO@ ExpressionStatement@@Assignment:sumObserved+=observed[i] '
+    - '---------INS SimpleName@@sumObserved @TO@ Assignment@@sumObserved+=observed[i] '
+    - '---------INS Operator@@+= @TO@ Assignment@@sumObserved+=observed[i] '
+    - '---------INS ArrayAccess@@observed[i] @TO@ Assignment@@sumObserved+=observed[i] '
+    - '------------INS SimpleName@@observed @TO@ ArrayAccess@@observed[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@observed[i] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double ratio=1.0d; @TO@ MethodDeclaration@@public,
+      @@double, MethodName:chiSquare, @@Argus:double[]+expected+long[]+observed+IllegalArgumentException,  '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double ratio=1.0d; '
+    - '---INS VariableDeclarationFragment@@ratio=1.0d @TO@ VariableDeclarationStatement@@double
+      ratio=1.0d; '
+    - '------INS SimpleName@@ratio @TO@ VariableDeclarationFragment@@ratio=1.0d '
+    - '------INS NumberLiteral@@1.0d @TO@ VariableDeclarationFragment@@ratio=1.0d '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean rescale=false; @TO@ MethodDeclaration@@public,
+      @@double, MethodName:chiSquare, @@Argus:double[]+expected+long[]+observed+IllegalArgumentException,  '
+    - '---INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean rescale=false; '
+    - '---INS VariableDeclarationFragment@@rescale=false @TO@ VariableDeclarationStatement@@boolean
+      rescale=false; '
+    - '------INS SimpleName@@rescale @TO@ VariableDeclarationFragment@@rescale=false '
+    - '------INS BooleanLiteral@@false @TO@ VariableDeclarationFragment@@rescale=false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:Math.abs(sumExpected - sumObserved) > 10E-6
+      @TO@ MethodDeclaration@@public, @@double, MethodName:chiSquare, @@Argus:double[]+expected+long[]+observed+IllegalArgumentException,  '
+    - '---INS InfixExpression@@Math.abs(sumExpected - sumObserved) > 10E-6 @TO@ IfStatement@@InfixExpression:Math.abs(sumExpected
+      - sumObserved) > 10E-6 '
+    - '------INS MethodInvocation@@Math.abs(sumExpected - sumObserved) @TO@ InfixExpression@@Math.abs(sumExpected
+      - sumObserved) > 10E-6 '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.abs(sumExpected
+      - sumObserved) '
+    - '---------INS SimpleName@@MethodName:abs:[sumExpected - sumObserved] @TO@ MethodInvocation@@Math.abs(sumExpected
+      - sumObserved) '
+    - '------------INS InfixExpression@@sumExpected - sumObserved @TO@ SimpleName@@MethodName:abs:[sumExpected
+      - sumObserved] '
+    - '---------------INS SimpleName@@sumExpected @TO@ InfixExpression@@sumExpected
+      - sumObserved '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@sumExpected - sumObserved '
+    - '---------------INS SimpleName@@sumObserved @TO@ InfixExpression@@sumExpected
+      - sumObserved '
+    - '------INS Operator@@> @TO@ InfixExpression@@Math.abs(sumExpected - sumObserved)
+      > 10E-6 '
+    - '------INS NumberLiteral@@10E-6 @TO@ InfixExpression@@Math.abs(sumExpected -
+      sumObserved) > 10E-6 '
+    - '---INS ExpressionStatement@@Assignment:ratio=sumObserved / sumExpected @TO@
+      IfStatement@@InfixExpression:Math.abs(sumExpected - sumObserved) > 10E-6 '
+    - '------INS Assignment@@ratio=sumObserved / sumExpected @TO@ ExpressionStatement@@Assignment:ratio=sumObserved
+      / sumExpected '
+    - '---------INS SimpleName@@ratio @TO@ Assignment@@ratio=sumObserved / sumExpected '
+    - '---------INS Operator@@= @TO@ Assignment@@ratio=sumObserved / sumExpected '
+    - '---------INS InfixExpression@@sumObserved / sumExpected @TO@ Assignment@@ratio=sumObserved
+      / sumExpected '
+    - '------------INS SimpleName@@sumObserved @TO@ InfixExpression@@sumObserved /
+      sumExpected '
+    - '------------INS Operator@@/ @TO@ InfixExpression@@sumObserved / sumExpected '
+    - '------------INS SimpleName@@sumExpected @TO@ InfixExpression@@sumObserved /
+      sumExpected '
+    - '---INS ExpressionStatement@@Assignment:rescale=true @TO@ IfStatement@@InfixExpression:Math.abs(sumExpected
+      - sumObserved) > 10E-6 '
+    - '------INS Assignment@@rescale=true @TO@ ExpressionStatement@@Assignment:rescale=true '
+    - '---------INS SimpleName@@rescale @TO@ Assignment@@rescale=true '
+    - '---------INS Operator@@= @TO@ Assignment@@rescale=true '
+    - '---------INS BooleanLiteral@@true @TO@ Assignment@@rescale=true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:rescale @TO@ ForStatement@@[int i=0];i < observed.length;
+      [i++] '
+    - '---MOV ExpressionStatement@@Assignment:dev=((double)observed[i] - expected[i])
+      @TO@ IfStatement@@SimpleName:rescale '
+    - '---MOV ExpressionStatement@@Assignment:sumSq+=dev * dev / expected[i] @TO@
+      IfStatement@@SimpleName:rescale '
+    - '---INS SimpleName@@rescale @TO@ IfStatement@@SimpleName:rescale '
+    - '---INS ExpressionStatement@@Assignment:dev=((double)observed[i] - ratio * expected[i])
+      @TO@ IfStatement@@SimpleName:rescale '
+    - '------INS Assignment@@dev=((double)observed[i] - ratio * expected[i]) @TO@
+      ExpressionStatement@@Assignment:dev=((double)observed[i] - ratio * expected[i]) '
+    - '---------INS SimpleName@@dev @TO@ Assignment@@dev=((double)observed[i] - ratio
+      * expected[i]) '
+    - '---------INS Operator@@= @TO@ Assignment@@dev=((double)observed[i] - ratio
+      * expected[i]) '
+    - '---------INS ParenthesizedExpression@@((double)observed[i] - ratio * expected[i])
+      @TO@ Assignment@@dev=((double)observed[i] - ratio * expected[i]) '
+    - '------------INS InfixExpression@@(double)observed[i] - ratio * expected[i]
+      @TO@ ParenthesizedExpression@@((double)observed[i] - ratio * expected[i]) '
+    - '---------------INS CastExpression@@(double)observed[i] @TO@ InfixExpression@@(double)observed[i]
+      - ratio * expected[i] '
+    - '------------------INS PrimitiveType@@double @TO@ CastExpression@@(double)observed[i] '
+    - '------------------INS ArrayAccess@@observed[i] @TO@ CastExpression@@(double)observed[i] '
+    - '---------------------INS SimpleName@@observed @TO@ ArrayAccess@@observed[i] '
+    - '---------------------INS SimpleName@@i @TO@ ArrayAccess@@observed[i] '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@(double)observed[i] -
+      ratio * expected[i] '
+    - '---------------INS InfixExpression@@ratio * expected[i] @TO@ InfixExpression@@(double)observed[i]
+      - ratio * expected[i] '
+    - '------------------INS SimpleName@@ratio @TO@ InfixExpression@@ratio * expected[i] '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@ratio * expected[i] '
+    - '------------------INS ArrayAccess@@expected[i] @TO@ InfixExpression@@ratio
+      * expected[i] '
+    - '---------------------INS SimpleName@@expected @TO@ ArrayAccess@@expected[i] '
+    - '---------------------INS SimpleName@@i @TO@ ArrayAccess@@expected[i] '
+    - '---INS ExpressionStatement@@Assignment:sumSq+=dev * dev / (ratio * expected[i])
+      @TO@ IfStatement@@SimpleName:rescale '
+    - '------INS Assignment@@sumSq+=dev * dev / (ratio * expected[i]) @TO@ ExpressionStatement@@Assignment:sumSq+=dev
+      * dev / (ratio * expected[i]) '
+    - '---------INS SimpleName@@sumSq @TO@ Assignment@@sumSq+=dev * dev / (ratio *
+      expected[i]) '
+    - '---------INS Operator@@+= @TO@ Assignment@@sumSq+=dev * dev / (ratio * expected[i]) '
+    - '---------INS InfixExpression@@dev * dev / (ratio * expected[i]) @TO@ Assignment@@sumSq+=dev
+      * dev / (ratio * expected[i]) '
+    - '------------INS InfixExpression@@dev * dev @TO@ InfixExpression@@dev * dev
+      / (ratio * expected[i]) '
+    - '---------------INS SimpleName@@dev @TO@ InfixExpression@@dev * dev '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@dev * dev '
+    - '---------------INS SimpleName@@dev @TO@ InfixExpression@@dev * dev '
+    - '------------INS Operator@@/ @TO@ InfixExpression@@dev * dev / (ratio * expected[i]) '
+    - '------------INS ParenthesizedExpression@@(ratio * expected[i]) @TO@ InfixExpression@@dev
+      * dev / (ratio * expected[i]) '
+    - '---------------INS InfixExpression@@ratio * expected[i] @TO@ ParenthesizedExpression@@(ratio
+      * expected[i]) '
+    - '------------------INS SimpleName@@ratio @TO@ InfixExpression@@ratio * expected[i] '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@ratio * expected[i] '
+    - '------------------INS ArrayAccess@@expected[i] @TO@ InfixExpression@@ratio
+      * expected[i] '
+    - '---------------------INS SimpleName@@expected @TO@ ArrayAccess@@expected[i] '
+    - '---------------------INS SimpleName@@i @TO@ ArrayAccess@@expected[i] '
+  repair_actions_cnt: 7
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/inference/ChiSquareTestImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double sumExpected=0d; @TO@ MethodDeclaration@@public,
+      @@double, MethodName:chiSquare, @@Argus:double[]+expected+long[]+observed+IllegalArgumentException,  '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double sumExpected=0d; '
+    - '---INS VariableDeclarationFragment@@sumExpected=0d @TO@ VariableDeclarationStatement@@double
+      sumExpected=0d; '
+    - '------INS SimpleName@@sumExpected @TO@ VariableDeclarationFragment@@sumExpected=0d '
+    - '------INS NumberLiteral@@0d @TO@ VariableDeclarationFragment@@sumExpected=0d '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double sumObserved=0d; @TO@ MethodDeclaration@@public,
+      @@double, MethodName:chiSquare, @@Argus:double[]+expected+long[]+observed+IllegalArgumentException,  '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double sumObserved=0d; '
+    - '---INS VariableDeclarationFragment@@sumObserved=0d @TO@ VariableDeclarationStatement@@double
+      sumObserved=0d; '
+    - '------INS SimpleName@@sumObserved @TO@ VariableDeclarationFragment@@sumObserved=0d '
+    - '------INS NumberLiteral@@0d @TO@ VariableDeclarationFragment@@sumObserved=0d '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < observed.length; [i++] @TO@ MethodDeclaration@@public,
+      @@double, MethodName:chiSquare, @@Argus:double[]+expected+long[]+observed+IllegalArgumentException,  '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < observed.length; [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < observed.length @TO@ ForStatement@@[int i=0];i
+      < observed.length; [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < observed.length '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < observed.length '
+    - '------INS QualifiedName@@observed.length @TO@ InfixExpression@@i < observed.length '
+    - '---------INS SimpleName@@observed @TO@ QualifiedName@@observed.length '
+    - '---------INS SimpleName@@length @TO@ QualifiedName@@observed.length '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < observed.length;
+      [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS ExpressionStatement@@Assignment:sumExpected+=expected[i] @TO@ ForStatement@@[int
+      i=0];i < observed.length; [i++] '
+    - '------INS Assignment@@sumExpected+=expected[i] @TO@ ExpressionStatement@@Assignment:sumExpected+=expected[i] '
+    - '---------INS SimpleName@@sumExpected @TO@ Assignment@@sumExpected+=expected[i] '
+    - '---------INS Operator@@+= @TO@ Assignment@@sumExpected+=expected[i] '
+    - '---------INS ArrayAccess@@expected[i] @TO@ Assignment@@sumExpected+=expected[i] '
+    - '------------INS SimpleName@@expected @TO@ ArrayAccess@@expected[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@expected[i] '
+    - '---INS ExpressionStatement@@Assignment:sumObserved+=observed[i] @TO@ ForStatement@@[int
+      i=0];i < observed.length; [i++] '
+    - '------INS Assignment@@sumObserved+=observed[i] @TO@ ExpressionStatement@@Assignment:sumObserved+=observed[i] '
+    - '---------INS SimpleName@@sumObserved @TO@ Assignment@@sumObserved+=observed[i] '
+    - '---------INS Operator@@+= @TO@ Assignment@@sumObserved+=observed[i] '
+    - '---------INS ArrayAccess@@observed[i] @TO@ Assignment@@sumObserved+=observed[i] '
+    - '------------INS SimpleName@@observed @TO@ ArrayAccess@@observed[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@observed[i] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double ratio=1.0d; @TO@ MethodDeclaration@@public,
+      @@double, MethodName:chiSquare, @@Argus:double[]+expected+long[]+observed+IllegalArgumentException,  '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double ratio=1.0d; '
+    - '---INS VariableDeclarationFragment@@ratio=1.0d @TO@ VariableDeclarationStatement@@double
+      ratio=1.0d; '
+    - '------INS SimpleName@@ratio @TO@ VariableDeclarationFragment@@ratio=1.0d '
+    - '------INS NumberLiteral@@1.0d @TO@ VariableDeclarationFragment@@ratio=1.0d '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean rescale=false; @TO@ MethodDeclaration@@public,
+      @@double, MethodName:chiSquare, @@Argus:double[]+expected+long[]+observed+IllegalArgumentException,  '
+    - '---INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean rescale=false; '
+    - '---INS VariableDeclarationFragment@@rescale=false @TO@ VariableDeclarationStatement@@boolean
+      rescale=false; '
+    - '------INS SimpleName@@rescale @TO@ VariableDeclarationFragment@@rescale=false '
+    - '------INS BooleanLiteral@@false @TO@ VariableDeclarationFragment@@rescale=false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:Math.abs(sumExpected - sumObserved) > 10E-6
+      @TO@ MethodDeclaration@@public, @@double, MethodName:chiSquare, @@Argus:double[]+expected+long[]+observed+IllegalArgumentException,  '
+    - '---INS InfixExpression@@Math.abs(sumExpected - sumObserved) > 10E-6 @TO@ IfStatement@@InfixExpression:Math.abs(sumExpected
+      - sumObserved) > 10E-6 '
+    - '------INS MethodInvocation@@Math.abs(sumExpected - sumObserved) @TO@ InfixExpression@@Math.abs(sumExpected
+      - sumObserved) > 10E-6 '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.abs(sumExpected
+      - sumObserved) '
+    - '---------INS SimpleName@@MethodName:abs:[sumExpected - sumObserved] @TO@ MethodInvocation@@Math.abs(sumExpected
+      - sumObserved) '
+    - '------------INS InfixExpression@@sumExpected - sumObserved @TO@ SimpleName@@MethodName:abs:[sumExpected
+      - sumObserved] '
+    - '---------------INS SimpleName@@sumExpected @TO@ InfixExpression@@sumExpected
+      - sumObserved '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@sumExpected - sumObserved '
+    - '---------------INS SimpleName@@sumObserved @TO@ InfixExpression@@sumExpected
+      - sumObserved '
+    - '------INS Operator@@> @TO@ InfixExpression@@Math.abs(sumExpected - sumObserved)
+      > 10E-6 '
+    - '------INS NumberLiteral@@10E-6 @TO@ InfixExpression@@Math.abs(sumExpected -
+      sumObserved) > 10E-6 '
+    - '---INS ExpressionStatement@@Assignment:ratio=sumObserved / sumExpected @TO@
+      IfStatement@@InfixExpression:Math.abs(sumExpected - sumObserved) > 10E-6 '
+    - '------INS Assignment@@ratio=sumObserved / sumExpected @TO@ ExpressionStatement@@Assignment:ratio=sumObserved
+      / sumExpected '
+    - '---------INS SimpleName@@ratio @TO@ Assignment@@ratio=sumObserved / sumExpected '
+    - '---------INS Operator@@= @TO@ Assignment@@ratio=sumObserved / sumExpected '
+    - '---------INS InfixExpression@@sumObserved / sumExpected @TO@ Assignment@@ratio=sumObserved
+      / sumExpected '
+    - '------------INS SimpleName@@sumObserved @TO@ InfixExpression@@sumObserved /
+      sumExpected '
+    - '------------INS Operator@@/ @TO@ InfixExpression@@sumObserved / sumExpected '
+    - '------------INS SimpleName@@sumExpected @TO@ InfixExpression@@sumObserved /
+      sumExpected '
+    - '---INS ExpressionStatement@@Assignment:rescale=true @TO@ IfStatement@@InfixExpression:Math.abs(sumExpected
+      - sumObserved) > 10E-6 '
+    - '------INS Assignment@@rescale=true @TO@ ExpressionStatement@@Assignment:rescale=true '
+    - '---------INS SimpleName@@rescale @TO@ Assignment@@rescale=true '
+    - '---------INS Operator@@= @TO@ Assignment@@rescale=true '
+    - '---------INS BooleanLiteral@@true @TO@ Assignment@@rescale=true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:rescale @TO@ ForStatement@@[int i=0];i < observed.length;
+      [i++] '
+    - '---MOV ExpressionStatement@@Assignment:dev=((double)observed[i] - expected[i])
+      @TO@ IfStatement@@SimpleName:rescale '
+    - '---MOV ExpressionStatement@@Assignment:sumSq+=dev * dev / expected[i] @TO@
+      IfStatement@@SimpleName:rescale '
+    - '---INS SimpleName@@rescale @TO@ IfStatement@@SimpleName:rescale '
+    - '---INS ExpressionStatement@@Assignment:dev=((double)observed[i] - ratio * expected[i])
+      @TO@ IfStatement@@SimpleName:rescale '
+    - '------INS Assignment@@dev=((double)observed[i] - ratio * expected[i]) @TO@
+      ExpressionStatement@@Assignment:dev=((double)observed[i] - ratio * expected[i]) '
+    - '---------INS SimpleName@@dev @TO@ Assignment@@dev=((double)observed[i] - ratio
+      * expected[i]) '
+    - '---------INS Operator@@= @TO@ Assignment@@dev=((double)observed[i] - ratio
+      * expected[i]) '
+    - '---------INS ParenthesizedExpression@@((double)observed[i] - ratio * expected[i])
+      @TO@ Assignment@@dev=((double)observed[i] - ratio * expected[i]) '
+    - '------------INS InfixExpression@@(double)observed[i] - ratio * expected[i]
+      @TO@ ParenthesizedExpression@@((double)observed[i] - ratio * expected[i]) '
+    - '---------------INS CastExpression@@(double)observed[i] @TO@ InfixExpression@@(double)observed[i]
+      - ratio * expected[i] '
+    - '------------------INS PrimitiveType@@double @TO@ CastExpression@@(double)observed[i] '
+    - '------------------INS ArrayAccess@@observed[i] @TO@ CastExpression@@(double)observed[i] '
+    - '---------------------INS SimpleName@@observed @TO@ ArrayAccess@@observed[i] '
+    - '---------------------INS SimpleName@@i @TO@ ArrayAccess@@observed[i] '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@(double)observed[i] -
+      ratio * expected[i] '
+    - '---------------INS InfixExpression@@ratio * expected[i] @TO@ InfixExpression@@(double)observed[i]
+      - ratio * expected[i] '
+    - '------------------INS SimpleName@@ratio @TO@ InfixExpression@@ratio * expected[i] '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@ratio * expected[i] '
+    - '------------------INS ArrayAccess@@expected[i] @TO@ InfixExpression@@ratio
+      * expected[i] '
+    - '---------------------INS SimpleName@@expected @TO@ ArrayAccess@@expected[i] '
+    - '---------------------INS SimpleName@@i @TO@ ArrayAccess@@expected[i] '
+    - '---INS ExpressionStatement@@Assignment:sumSq+=dev * dev / (ratio * expected[i])
+      @TO@ IfStatement@@SimpleName:rescale '
+    - '------INS Assignment@@sumSq+=dev * dev / (ratio * expected[i]) @TO@ ExpressionStatement@@Assignment:sumSq+=dev
+      * dev / (ratio * expected[i]) '
+    - '---------INS SimpleName@@sumSq @TO@ Assignment@@sumSq+=dev * dev / (ratio *
+      expected[i]) '
+    - '---------INS Operator@@+= @TO@ Assignment@@sumSq+=dev * dev / (ratio * expected[i]) '
+    - '---------INS InfixExpression@@dev * dev / (ratio * expected[i]) @TO@ Assignment@@sumSq+=dev
+      * dev / (ratio * expected[i]) '
+    - '------------INS InfixExpression@@dev * dev @TO@ InfixExpression@@dev * dev
+      / (ratio * expected[i]) '
+    - '---------------INS SimpleName@@dev @TO@ InfixExpression@@dev * dev '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@dev * dev '
+    - '---------------INS SimpleName@@dev @TO@ InfixExpression@@dev * dev '
+    - '------------INS Operator@@/ @TO@ InfixExpression@@dev * dev / (ratio * expected[i]) '
+    - '------------INS ParenthesizedExpression@@(ratio * expected[i]) @TO@ InfixExpression@@dev
+      * dev / (ratio * expected[i]) '
+    - '---------------INS InfixExpression@@ratio * expected[i] @TO@ ParenthesizedExpression@@(ratio
+      * expected[i]) '
+    - '------------------INS SimpleName@@ratio @TO@ InfixExpression@@ratio * expected[i] '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@ratio * expected[i] '
+    - '------------------INS ArrayAccess@@expected[i] @TO@ InfixExpression@@ratio
+      * expected[i] '
+    - '---------------------INS SimpleName@@expected @TO@ ArrayAccess@@expected[i] '
+    - '---------------------INS SimpleName@@i @TO@ ArrayAccess@@expected[i] '
+  repair_actions_cnt: 7

@@ -1,0 +1,145 @@
+1 bug_id: Closure-7
+2 src folder:
+  name of src folder: src
+  number of files: 424
+  number of java files: 408
+  number of src classes: 1372
+  number of test classes: 226
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.SemanticReverseAbstractInterpreterTest#testTypeof3
+  - com.google.javascript.jscomp.ClosureReverseAbstractInterpreterTest#testGoogIsFunction2
+  failing tests:
+  - com.google.javascript.jscomp.SemanticReverseAbstractInterpreterTest
+  - com.google.javascript.jscomp.ClosureReverseAbstractInterpreterTest
+  number of all test cases: 7719
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.014
+  purification via delta debugging: 741.831
+  repair actions extraction: 1.231
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.ClosureReverseAbstractInterpreterTest#testGoogIsFunction2: 2201
+    com.google.javascript.jscomp.SemanticReverseAbstractInterpreterTest#testTypeof3: 1642
+  fixed:
+    com.google.javascript.jscomp.ClosureReverseAbstractInterpreterTest#testGoogIsFunction2: 2217
+    com.google.javascript.jscomp.SemanticReverseAbstractInterpreterTest#testTypeof3: 1658
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 5
+  covDel: 1
+  cov_patch_lines: 6
+  delta_patch_lines: 4
+  oriAdd: 5
+  oriDel: 1
+  ori_patch_lines: 6
+  purAdd: 3
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 13
+  failFail: 4
+  passed: 2
+  total: 19
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_7/src/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java\t\
+    2020-10-21 17:04:43.029989170 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_7/purify/patch/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java\t\
+    2020-10-21 17:04:43.029989170 -0400\n@@ -610,9 +610,13 @@\n     public JSType\
+    \ caseObjectType(ObjectType type) {\n       if (value.equals(\"function\")) {\n\
+    \         JSType ctorType = getNativeType(U2U_CONSTRUCTOR_TYPE);\n-        return\
+    \ resultEqualsValue && ctorType.isSubtype(type) ? ctorType : null;\n+        if\
+    \ (resultEqualsValue) {\n           // Objects are restricted to \"Function\"\
+    , subtypes are left\n+          return ctorType.getGreatestSubtype(type);\n+ \
+    \       } else {\n           // Only filter out subtypes of \"function\"\n+  \
+    \        return type.isSubtype(ctorType) ? null : type;\n+        }\n       }\n\
+    \       return matchesExpectation(\"object\") ? type : null;\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_7/src/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java\t\
+    2020-10-21 17:17:35.932196972 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_7/purify/purified/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java\t\
+    2020-10-21 17:17:35.932196972 -0400\n@@ -610,9 +610,11 @@\n     public JSType\
+    \ caseObjectType(ObjectType type) {\n       if (value.equals(\"function\")) {\n\
+    \         JSType ctorType = getNativeType(U2U_CONSTRUCTOR_TYPE);\n-        return\
+    \ resultEqualsValue && ctorType.isSubtype(type) ? ctorType : null;\n+        if\
+    \ (resultEqualsValue) {\n           // Objects are restricted to \"Function\"\
+    , subtypes are left\n+          return ctorType.getGreatestSubtype(type);\n  \
+    \         // Only filter out subtypes of \"function\"\n+        }\n       }\n\
+    \       return matchesExpectation(\"object\") ? type : null;\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:resultEqualsValue @TO@ IfStatement@@MethodInvocation:value.equals("function") '
+    - '---INS SimpleName@@resultEqualsValue @TO@ IfStatement@@SimpleName:resultEqualsValue '
+    - '---INS ReturnStatement@@MethodInvocation:ctorType.getGreatestSubtype(type)
+      @TO@ IfStatement@@SimpleName:resultEqualsValue '
+    - '------INS MethodInvocation@@ctorType.getGreatestSubtype(type) @TO@ ReturnStatement@@MethodInvocation:ctorType.getGreatestSubtype(type) '
+    - '---------MOV SimpleName@@Name:ctorType @TO@ MethodInvocation@@ctorType.getGreatestSubtype(type) '
+    - '---------MOV SimpleName@@MethodName:isSubtype:[type] @TO@ MethodInvocation@@ctorType.getGreatestSubtype(type) '
+    - '---INS ReturnStatement@@ConditionalExpression:type.isSubtype(ctorType) ? null
+      : type @TO@ IfStatement@@SimpleName:resultEqualsValue '
+    - '------INS ConditionalExpression@@type.isSubtype(ctorType) ? null : type @TO@
+      ReturnStatement@@ConditionalExpression:type.isSubtype(ctorType) ? null : type '
+    - '---------MOV NullLiteral@@null @TO@ ConditionalExpression@@type.isSubtype(ctorType)
+      ? null : type '
+    - '---------INS MethodInvocation@@type.isSubtype(ctorType) @TO@ ConditionalExpression@@type.isSubtype(ctorType)
+      ? null : type '
+    - '------------INS SimpleName@@Name:type @TO@ MethodInvocation@@type.isSubtype(ctorType) '
+    - '------------INS SimpleName@@MethodName:isSubtype:[ctorType] @TO@ MethodInvocation@@type.isSubtype(ctorType) '
+    - '---------------INS SimpleName@@ctorType @TO@ SimpleName@@MethodName:isSubtype:[ctorType] '
+    - '---------INS SimpleName@@type @TO@ ConditionalExpression@@type.isSubtype(ctorType)
+      ? null : type '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@ConditionalExpression:resultEqualsValue && ctorType.isSubtype(type)
+      ? ctorType : null '
+    - '---DEL ConditionalExpression@@resultEqualsValue && ctorType.isSubtype(type)
+      ? ctorType : null '
+    - '------DEL InfixExpression@@resultEqualsValue && ctorType.isSubtype(type) '
+    - '---------DEL SimpleName@@resultEqualsValue '
+    - '---------DEL Operator@@&& '
+    - '---------DEL MethodInvocation@@ctorType.isSubtype(type) '
+    - '------DEL SimpleName@@ctorType '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:resultEqualsValue @TO@ IfStatement@@MethodInvocation:value.equals("function") '
+    - '---INS SimpleName@@resultEqualsValue @TO@ IfStatement@@SimpleName:resultEqualsValue '
+    - '---INS ReturnStatement@@MethodInvocation:ctorType.getGreatestSubtype(type)
+      @TO@ IfStatement@@SimpleName:resultEqualsValue '
+    - '------INS MethodInvocation@@ctorType.getGreatestSubtype(type) @TO@ ReturnStatement@@MethodInvocation:ctorType.getGreatestSubtype(type) '
+    - '---------MOV SimpleName@@Name:ctorType @TO@ MethodInvocation@@ctorType.getGreatestSubtype(type) '
+    - '---------MOV SimpleName@@MethodName:isSubtype:[type] @TO@ MethodInvocation@@ctorType.getGreatestSubtype(type) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@ConditionalExpression:resultEqualsValue && ctorType.isSubtype(type)
+      ? ctorType : null '
+    - '---DEL ConditionalExpression@@resultEqualsValue && ctorType.isSubtype(type)
+      ? ctorType : null '
+    - '------DEL InfixExpression@@resultEqualsValue && ctorType.isSubtype(type) '
+    - '---------DEL SimpleName@@resultEqualsValue '
+    - '---------DEL Operator@@&& '
+    - '---------DEL MethodInvocation@@ctorType.isSubtype(type) '
+    - '------DEL SimpleName@@ctorType '
+    - '------DEL NullLiteral@@null '
+  files_cnt: '1'
+  repair_actions_cnt: 2

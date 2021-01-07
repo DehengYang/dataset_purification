@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_9/source/org/jfree/data/time/TimeSeries.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_9/fixed-version/source/org/jfree/data/time/TimeSeries.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_9/source/org/jfree/data/time/TimeSeries.java	2020-03-01 00:03:28.901561544 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_9/fixed-version/source/org/jfree/data/time/TimeSeries.java	2020-03-01 00:03:32.301721746 -0800
+@@ -941,7 +941,7 @@
+             endIndex = -(endIndex + 1); // this is first item AFTER end period
+             endIndex = endIndex - 1;    // so this is last item BEFORE end
+         }
+-        if (endIndex < 0) {
++        if ((endIndex < 0)  || (endIndex < startIndex)) {
+             emptyRange = true;
+         }
+         if (emptyRange) {

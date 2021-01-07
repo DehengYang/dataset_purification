@@ -1,0 +1,108 @@
+1 bug_id: Math-53
+2 src folder:
+  name of src folder: java
+  number of files: 607
+  number of java files: 560
+  number of src classes: 734
+  number of test classes: 269
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.complex.ComplexTest#testAddNaN
+  failing tests:
+  - org.apache.commons.math.complex.ComplexTest
+  number of all test cases: 2526
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.453
+  purification via delta debugging: 86.064
+  repair actions extraction: 1.957
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.complex.ComplexTest#testAddNaN: 20
+  fixed:
+    org.apache.commons.math.complex.ComplexTest#testAddNaN: 20
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_53/src/main/java/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 12:12:04.145158923 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_53/purify/patch/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 12:12:04.145158923 -0400\n@@ -150,6 +150,9 @@\n     public Complex\
+    \ add(Complex rhs)\n         throws NullArgumentException {\n         MathUtils.checkNotNull(rhs);\n\
+    +        if (isNaN || rhs.isNaN) {\n+            return NaN;\n+        }\n   \
+    \      return createComplex(real + rhs.getReal(),\n             imaginary + rhs.getImaginary());\n\
+    \     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_53/src/main/java/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 12:13:47.292141788 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_53/purify/purified/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 12:13:47.292141788 -0400\n@@ -150,6 +150,9 @@\n     public Complex\
+    \ add(Complex rhs)\n         throws NullArgumentException {\n         MathUtils.checkNotNull(rhs);\n\
+    +        if (isNaN || rhs.isNaN) {\n+            return NaN;\n+        }\n   \
+    \      return createComplex(real + rhs.getReal(),\n             imaginary + rhs.getImaginary());\n\
+    \     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/complex/Complex:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:isNaN || rhs.isNaN @TO@ MethodDeclaration@@public,
+      @@Complex, MethodName:add, @@Argus:Complex+rhs+NullArgumentException,  '
+    - '---INS InfixExpression@@isNaN || rhs.isNaN @TO@ IfStatement@@InfixExpression:isNaN
+      || rhs.isNaN '
+    - '------INS SimpleName@@isNaN @TO@ InfixExpression@@isNaN || rhs.isNaN '
+    - '------INS Operator@@|| @TO@ InfixExpression@@isNaN || rhs.isNaN '
+    - '------INS QualifiedName@@rhs.isNaN @TO@ InfixExpression@@isNaN || rhs.isNaN '
+    - '---------INS SimpleName@@rhs @TO@ QualifiedName@@rhs.isNaN '
+    - '---------INS SimpleName@@isNaN @TO@ QualifiedName@@rhs.isNaN '
+    - '---INS ReturnStatement@@SimpleName:NaN @TO@ IfStatement@@InfixExpression:isNaN
+      || rhs.isNaN '
+    - '------INS SimpleName@@NaN @TO@ ReturnStatement@@SimpleName:NaN '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/complex/Complex:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:isNaN || rhs.isNaN @TO@ MethodDeclaration@@public,
+      @@Complex, MethodName:add, @@Argus:Complex+rhs+NullArgumentException,  '
+    - '---INS InfixExpression@@isNaN || rhs.isNaN @TO@ IfStatement@@InfixExpression:isNaN
+      || rhs.isNaN '
+    - '------INS SimpleName@@isNaN @TO@ InfixExpression@@isNaN || rhs.isNaN '
+    - '------INS Operator@@|| @TO@ InfixExpression@@isNaN || rhs.isNaN '
+    - '------INS QualifiedName@@rhs.isNaN @TO@ InfixExpression@@isNaN || rhs.isNaN '
+    - '---------INS SimpleName@@rhs @TO@ QualifiedName@@rhs.isNaN '
+    - '---------INS SimpleName@@isNaN @TO@ QualifiedName@@rhs.isNaN '
+    - '---INS ReturnStatement@@SimpleName:NaN @TO@ IfStatement@@InfixExpression:isNaN
+      || rhs.isNaN '
+    - '------INS SimpleName@@NaN @TO@ ReturnStatement@@SimpleName:NaN '
+  repair_actions_cnt: 1

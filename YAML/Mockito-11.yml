@@ -1,0 +1,174 @@
+1 bug_id: Mockito-11
+2 src folder:
+  name of src folder: src
+  number of files: 344
+  number of java files: 306
+  number of src classes: 365
+  number of test classes: 268
+3 test (cases):
+  failing test cases:
+  - org.mockito.internal.creation.DelegatingMethodTest#equals_should_return_true_when_equal
+  - org.mockito.internal.creation.DelegatingMethodTest#equals_should_return_true_when_self
+  failing tests:
+  - org.mockito.internal.creation.DelegatingMethodTest
+  number of all test cases: 1346
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 4.0
+  purification via coverage: 0.412
+  purification via delta debugging: 1013.676
+  repair actions extraction: 1.114
+5 stmts covered by failing cases:
+  buggy:
+    org.mockito.internal.creation.DelegatingMethodTest#equals_should_return_true_when_equal: 241
+    org.mockito.internal.creation.DelegatingMethodTest#equals_should_return_true_when_self: 241
+  fixed:
+    org.mockito.internal.creation.DelegatingMethodTest#equals_should_return_true_when_equal: 244
+    org.mockito.internal.creation.DelegatingMethodTest#equals_should_return_true_when_self: 242
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 9
+  covDel: 1
+  cov_patch_lines: 10
+  delta_patch_lines: 7
+  oriAdd: 9
+  oriDel: 1
+  ori_patch_lines: 10
+  purAdd: 7
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 3
+  original: 3
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 26
+  failFail: 0
+  passed: 2
+  total: 28
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_11/src/org/mockito/internal/creation/DelegatingMethod.java\t\
+    2020-10-23 22:21:42.299457677 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_11/purify/patch/org/mockito/internal/creation/DelegatingMethod.java\t\
+    2020-10-23 22:21:42.299457677 -0400\n@@ -52,11 +52,19 @@\n      */\n     @Override\n\
+    \     public boolean equals(Object o) {\n+        if (this == o) {\n+        \
+    \    return true;\n+        }\n+        if (o instanceof DelegatingMethod) {\n\
+    +            DelegatingMethod that = (DelegatingMethod) o;\n+            return\
+    \ method.equals(that.method);\n+        } else {\n             return method.equals(o);\n\
+    +        }\n     }\n \n     @Override\n     public int hashCode() {\n-       \
+    \ return 1;\n+        return method.hashCode();\n     }\n }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_11/src/org/mockito/internal/creation/DelegatingMethod.java\t\
+    2020-10-23 22:39:17.918022427 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_11/purify/purified/org/mockito/internal/creation/DelegatingMethod.java\t\
+    2020-10-23 22:39:17.914022311 -0400\n@@ -52,7 +52,14 @@\n      */\n     @Override\n\
+    \     public boolean equals(Object o) {\n+        if (this == o) {\n+        }\n\
+    +        if (o instanceof DelegatingMethod) {\n+            DelegatingMethod that\
+    \ = (DelegatingMethod) o;\n+            return method.equals(that.method);\n+\
+    \        } else {\n             return method.equals(o);\n+        }\n     }\n\
+    \ \n     @Override"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/creation/DelegatingMethod:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:this == o @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+o+ '
+    - '---INS InfixExpression@@this == o @TO@ IfStatement@@InfixExpression:this ==
+      o '
+    - '------INS ThisExpression@@this @TO@ InfixExpression@@this == o '
+    - '------INS Operator@@== @TO@ InfixExpression@@this == o '
+    - '------INS SimpleName@@o @TO@ InfixExpression@@this == o '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:this
+      == o '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InstanceofExpression:o instanceof DelegatingMethod @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+o+ '
+    - '---MOV ReturnStatement@@MethodInvocation:method.equals(o) @TO@ IfStatement@@InstanceofExpression:o
+      instanceof DelegatingMethod '
+    - '---INS InstanceofExpression@@o instanceof DelegatingMethod @TO@ IfStatement@@InstanceofExpression:o
+      instanceof DelegatingMethod '
+    - '------INS SimpleName@@o @TO@ InstanceofExpression@@o instanceof DelegatingMethod '
+    - '------INS Instanceof@@instanceof @TO@ InstanceofExpression@@o instanceof DelegatingMethod '
+    - '------INS SimpleType@@DelegatingMethod @TO@ InstanceofExpression@@o instanceof
+      DelegatingMethod '
+    - '---INS VariableDeclarationStatement@@DelegatingMethod that=(DelegatingMethod)o;
+      @TO@ IfStatement@@InstanceofExpression:o instanceof DelegatingMethod '
+    - '------INS SimpleType@@DelegatingMethod @TO@ VariableDeclarationStatement@@DelegatingMethod
+      that=(DelegatingMethod)o; '
+    - '------INS VariableDeclarationFragment@@that=(DelegatingMethod)o @TO@ VariableDeclarationStatement@@DelegatingMethod
+      that=(DelegatingMethod)o; '
+    - '---------INS SimpleName@@that @TO@ VariableDeclarationFragment@@that=(DelegatingMethod)o '
+    - '---------INS CastExpression@@(DelegatingMethod)o @TO@ VariableDeclarationFragment@@that=(DelegatingMethod)o '
+    - '------------INS SimpleType@@DelegatingMethod @TO@ CastExpression@@(DelegatingMethod)o '
+    - '------------INS SimpleName@@o @TO@ CastExpression@@(DelegatingMethod)o '
+    - '---INS ReturnStatement@@MethodInvocation:method.equals(that.method) @TO@ IfStatement@@InstanceofExpression:o
+      instanceof DelegatingMethod '
+    - '------INS MethodInvocation@@method.equals(that.method) @TO@ ReturnStatement@@MethodInvocation:method.equals(that.method) '
+    - '---------INS SimpleName@@Name:method @TO@ MethodInvocation@@method.equals(that.method) '
+    - '---------INS SimpleName@@MethodName:equals:[that.method] @TO@ MethodInvocation@@method.equals(that.method) '
+    - '------------INS QualifiedName@@that.method @TO@ SimpleName@@MethodName:equals:[that.method] '
+    - '---------------INS SimpleName@@that @TO@ QualifiedName@@that.method '
+    - '---------------INS SimpleName@@method @TO@ QualifiedName@@that.method '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@NumberLiteral:1 @TO@ MethodInvocation:method.hashCode() '
+    - '---DEL NumberLiteral@@1 '
+    - '---INS MethodInvocation@@method.hashCode() @TO@ ReturnStatement@@NumberLiteral:1 '
+    - '------INS SimpleName@@Name:method @TO@ MethodInvocation@@method.hashCode() '
+    - '------INS SimpleName@@MethodName:hashCode:[] @TO@ MethodInvocation@@method.hashCode() '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/creation/DelegatingMethod:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:this == o @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+o+ '
+    - '---INS InfixExpression@@this == o @TO@ IfStatement@@InfixExpression:this ==
+      o '
+    - '------INS ThisExpression@@this @TO@ InfixExpression@@this == o '
+    - '------INS Operator@@== @TO@ InfixExpression@@this == o '
+    - '------INS SimpleName@@o @TO@ InfixExpression@@this == o '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InstanceofExpression:o instanceof DelegatingMethod @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:equals, @@Argus:Object+o+ '
+    - '---MOV ReturnStatement@@MethodInvocation:method.equals(o) @TO@ IfStatement@@InstanceofExpression:o
+      instanceof DelegatingMethod '
+    - '---INS InstanceofExpression@@o instanceof DelegatingMethod @TO@ IfStatement@@InstanceofExpression:o
+      instanceof DelegatingMethod '
+    - '------INS SimpleName@@o @TO@ InstanceofExpression@@o instanceof DelegatingMethod '
+    - '------INS Instanceof@@instanceof @TO@ InstanceofExpression@@o instanceof DelegatingMethod '
+    - '------INS SimpleType@@DelegatingMethod @TO@ InstanceofExpression@@o instanceof
+      DelegatingMethod '
+    - '---INS VariableDeclarationStatement@@DelegatingMethod that=(DelegatingMethod)o;
+      @TO@ IfStatement@@InstanceofExpression:o instanceof DelegatingMethod '
+    - '------INS SimpleType@@DelegatingMethod @TO@ VariableDeclarationStatement@@DelegatingMethod
+      that=(DelegatingMethod)o; '
+    - '------INS VariableDeclarationFragment@@that=(DelegatingMethod)o @TO@ VariableDeclarationStatement@@DelegatingMethod
+      that=(DelegatingMethod)o; '
+    - '---------INS SimpleName@@that @TO@ VariableDeclarationFragment@@that=(DelegatingMethod)o '
+    - '---------INS CastExpression@@(DelegatingMethod)o @TO@ VariableDeclarationFragment@@that=(DelegatingMethod)o '
+    - '------------INS SimpleType@@DelegatingMethod @TO@ CastExpression@@(DelegatingMethod)o '
+    - '------------INS SimpleName@@o @TO@ CastExpression@@(DelegatingMethod)o '
+    - '---INS ReturnStatement@@MethodInvocation:method.equals(that.method) @TO@ IfStatement@@InstanceofExpression:o
+      instanceof DelegatingMethod '
+    - '------INS MethodInvocation@@method.equals(that.method) @TO@ ReturnStatement@@MethodInvocation:method.equals(that.method) '
+    - '---------INS SimpleName@@Name:method @TO@ MethodInvocation@@method.equals(that.method) '
+    - '---------INS SimpleName@@MethodName:equals:[that.method] @TO@ MethodInvocation@@method.equals(that.method) '
+    - '------------INS QualifiedName@@that.method @TO@ SimpleName@@MethodName:equals:[that.method] '
+    - '---------------INS SimpleName@@that @TO@ QualifiedName@@that.method '
+    - '---------------INS SimpleName@@method @TO@ QualifiedName@@that.method '
+  repair_actions_cnt: 2

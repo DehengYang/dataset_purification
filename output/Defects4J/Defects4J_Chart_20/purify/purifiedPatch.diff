@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_20/source/org/jfree/chart/plot/ValueMarker.java	2020-10-21 00:28:35.980856220 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_20/purify/purified/org/jfree/chart/plot/ValueMarker.java	2020-10-21 00:28:35.980856220 -0400
+@@ -92,7 +92,7 @@
+      */
+     public ValueMarker(double value, Paint paint, Stroke stroke, 
+                        Paint outlinePaint, Stroke outlineStroke, float alpha) {
+-        super(paint, stroke, paint, stroke, alpha);
++        super(paint, stroke, outlinePaint, outlineStroke, alpha);
+         this.value = value;
+     }
+     

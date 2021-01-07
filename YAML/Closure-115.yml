@@ -1,0 +1,217 @@
+1 bug_id: Closure-115
+2 src folder:
+  name of src folder: src
+  number of files: 444
+  number of java files: 428
+  number of src classes: 1428
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions6
+  - com.google.javascript.jscomp.InlineFunctionsTest#testDoubleInlining1
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions22
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions23
+  - com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified8
+  - com.google.javascript.jscomp.InlineFunctionsTest#testBug4944818
+  - com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified9
+  failing tests:
+  - com.google.javascript.jscomp.InlineFunctionsTest
+  number of all test cases: 8312
+  number of failing test cases: 7
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.139
+  purification via delta debugging: 1713.324
+  repair actions extraction: 1.392
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.InlineFunctionsTest#testBug4944818: 4977
+    com.google.javascript.jscomp.InlineFunctionsTest#testDoubleInlining1: 4089
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions22: 4964
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions23: 4964
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions6: 4637
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified8: 4411
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified9: 4369
+  fixed:
+    com.google.javascript.jscomp.InlineFunctionsTest#testBug4944818: 4976
+    com.google.javascript.jscomp.InlineFunctionsTest#testDoubleInlining1: 4008
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions22: 4848
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions23: 4848
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions6: 4035
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified8: 4074
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified9: 4032
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 0
+  covDel: 11
+  cov_patch_lines: 11
+  delta_patch_lines: 9
+  oriAdd: 0
+  oriDel: 11
+  ori_patch_lines: 11
+  purAdd: 0
+  purDel: 9
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 2
+  original: 2
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 4
+  failCompile: 19
+  failFail: 0
+  passed: 2
+  total: 25
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_115/src/com/google/javascript/jscomp/FunctionInjector.java\t\
+    2020-10-23 15:20:47.648317788 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_115/purify/patch/com/google/javascript/jscomp/FunctionInjector.java\t\
+    2020-10-23 15:20:47.648317788 -0400\n@@ -694,14 +694,6 @@\n \n     Node block\
+    \ = fnNode.getLastChild();\n \n-    boolean hasSideEffects = false;\n-    if (block.hasChildren())\
+    \ {\n-      Preconditions.checkState(block.hasOneChild());\n-      Node stmt =\
+    \ block.getFirstChild();\n-      if (stmt.isReturn()) {\n-        hasSideEffects\
+    \ = NodeUtil.mayHaveSideEffects(stmt.getFirstChild(), compiler);\n-      }\n-\
+    \    }\n     // CALL NODE: [ NAME, ARG1, ARG2, ... ]\n     Node cArg = callNode.getFirstChild().getNext();\n\
+    \ \n@@ -727,9 +719,6 @@\n       // For each named parameter check if a mutable\
+    \ argument use more than one.\n       if (fnParam != null) {\n         if (cArg\
+    \ != null) {\n-          if (hasSideEffects && NodeUtil.canBeSideEffected(cArg))\
+    \ {\n-            return CanInlineResult.NO;\n-          }\n           // Check\
+    \ for arguments that are evaluated more than once.\n           // Note: Unlike\
+    \ block inlining, there it is not possible that a\n           // parameter reference\
+    \ will be in a loop."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_115/src/com/google/javascript/jscomp/FunctionInjector.java\t\
+    2020-10-23 15:49:56.014935616 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_115/purify/purified/com/google/javascript/jscomp/FunctionInjector.java\t\
+    2020-10-23 15:49:56.014935616 -0400\n@@ -695,13 +695,7 @@\n     Node block = fnNode.getLastChild();\n\
+    \ \n     boolean hasSideEffects = false;\n-    if (block.hasChildren()) {\n- \
+    \     Preconditions.checkState(block.hasOneChild());\n       Node stmt = block.getFirstChild();\n\
+    -      if (stmt.isReturn()) {\n-        hasSideEffects = NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),\
+    \ compiler);\n-      }\n-    }\n     // CALL NODE: [ NAME, ARG1, ARG2, ... ]\n\
+    \     Node cArg = callNode.getFirstChild().getNext();\n \n@@ -727,9 +721,6 @@\n\
+    \       // For each named parameter check if a mutable argument use more than\
+    \ one.\n       if (fnParam != null) {\n         if (cArg != null) {\n-       \
+    \   if (hasSideEffects && NodeUtil.canBeSideEffected(cArg)) {\n-            return\
+    \ CanInlineResult.NO;\n-          }\n           // Check for arguments that are\
+    \ evaluated more than once.\n           // Note: Unlike block inlining, there\
+    \ it is not possible that a\n           // parameter reference will be in a loop."
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/FunctionInjector:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@boolean hasSideEffects=false; '
+    - '---DEL PrimitiveType@@boolean '
+    - '---DEL VariableDeclarationFragment@@hasSideEffects=false '
+    - '------DEL SimpleName@@hasSideEffects '
+    - '------DEL BooleanLiteral@@false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:block.hasChildren() '
+    - '---DEL MethodInvocation@@block.hasChildren() '
+    - '------DEL SimpleName@@Name:block '
+    - '------DEL SimpleName@@MethodName:hasChildren:[] '
+    - '---DEL ExpressionStatement@@MethodInvocation:Preconditions.checkState(block.hasOneChild()) '
+    - '------DEL MethodInvocation@@Preconditions.checkState(block.hasOneChild()) '
+    - '---------DEL SimpleName@@Name:Preconditions '
+    - '---------DEL SimpleName@@MethodName:checkState:[block.hasOneChild()] '
+    - '------------DEL MethodInvocation@@block.hasOneChild() '
+    - '---------------DEL SimpleName@@Name:block '
+    - '---------------DEL SimpleName@@MethodName:hasOneChild:[] '
+    - '---DEL VariableDeclarationStatement@@Node stmt=block.getFirstChild(); '
+    - '------DEL SimpleType@@Node '
+    - '------DEL VariableDeclarationFragment@@stmt=block.getFirstChild() '
+    - '---------DEL SimpleName@@stmt '
+    - '---------DEL MethodInvocation@@block.getFirstChild() '
+    - '------------DEL SimpleName@@Name:block '
+    - '------------DEL SimpleName@@MethodName:getFirstChild:[] '
+    - '---DEL IfStatement@@MethodInvocation:stmt.isReturn() '
+    - '------DEL MethodInvocation@@stmt.isReturn() '
+    - '---------DEL SimpleName@@Name:stmt '
+    - '---------DEL SimpleName@@MethodName:isReturn:[] '
+    - '------DEL ExpressionStatement@@Assignment:hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '---------DEL Assignment@@hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '------------DEL SimpleName@@hasSideEffects '
+    - '------------DEL Operator@@= '
+    - '------------DEL MethodInvocation@@NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '---------------DEL SimpleName@@Name:NodeUtil '
+    - '---------------DEL SimpleName@@MethodName:mayHaveSideEffects:[stmt.getFirstChild(),
+      compiler] '
+    - '------------------DEL MethodInvocation@@stmt.getFirstChild() '
+    - '---------------------DEL SimpleName@@Name:stmt '
+    - '---------------------DEL SimpleName@@MethodName:getFirstChild:[] '
+    - '------------------DEL SimpleName@@compiler '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:hasSideEffects && NodeUtil.canBeSideEffected(cArg) '
+    - '---DEL InfixExpression@@hasSideEffects && NodeUtil.canBeSideEffected(cArg) '
+    - '------DEL SimpleName@@hasSideEffects '
+    - '------DEL Operator@@&& '
+    - '------DEL MethodInvocation@@NodeUtil.canBeSideEffected(cArg) '
+    - '---------DEL SimpleName@@Name:NodeUtil '
+    - '---------DEL SimpleName@@MethodName:canBeSideEffected:[cArg] '
+    - '------------DEL SimpleName@@cArg '
+    - '---DEL ReturnStatement@@QualifiedName:CanInlineResult.NO '
+    - '------DEL QualifiedName@@CanInlineResult.NO '
+    - '---------DEL SimpleName@@CanInlineResult '
+    - '---------DEL SimpleName@@NO '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/FunctionInjector:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:block.hasChildren() '
+    - '---DEL MethodInvocation@@block.hasChildren() '
+    - '------DEL SimpleName@@Name:block '
+    - '------DEL SimpleName@@MethodName:hasChildren:[] '
+    - '---DEL ExpressionStatement@@MethodInvocation:Preconditions.checkState(block.hasOneChild()) '
+    - '------DEL MethodInvocation@@Preconditions.checkState(block.hasOneChild()) '
+    - '---------DEL SimpleName@@Name:Preconditions '
+    - '---------DEL SimpleName@@MethodName:checkState:[block.hasOneChild()] '
+    - '------------DEL MethodInvocation@@block.hasOneChild() '
+    - '---------------DEL SimpleName@@Name:block '
+    - '---------------DEL SimpleName@@MethodName:hasOneChild:[] '
+    - '---DEL IfStatement@@MethodInvocation:stmt.isReturn() '
+    - '------DEL MethodInvocation@@stmt.isReturn() '
+    - '---------DEL SimpleName@@Name:stmt '
+    - '---------DEL SimpleName@@MethodName:isReturn:[] '
+    - '------DEL ExpressionStatement@@Assignment:hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '---------DEL Assignment@@hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '------------DEL SimpleName@@hasSideEffects '
+    - '------------DEL Operator@@= '
+    - '------------DEL MethodInvocation@@NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '---------------DEL SimpleName@@Name:NodeUtil '
+    - '---------------DEL SimpleName@@MethodName:mayHaveSideEffects:[stmt.getFirstChild(),
+      compiler] '
+    - '------------------DEL MethodInvocation@@stmt.getFirstChild() '
+    - '---------------------DEL SimpleName@@Name:stmt '
+    - '---------------------DEL SimpleName@@MethodName:getFirstChild:[] '
+    - '------------------DEL SimpleName@@compiler '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@Node stmt=block.getFirstChild(); @TO@ MethodDeclaration@@private,
+      @@CanInlineResult, MethodName:canInlineReferenceDirectly, @@Argus:Node+callNode+Node+fnNode+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:hasSideEffects && NodeUtil.canBeSideEffected(cArg) '
+    - '---DEL InfixExpression@@hasSideEffects && NodeUtil.canBeSideEffected(cArg) '
+    - '------DEL SimpleName@@hasSideEffects '
+    - '------DEL Operator@@&& '
+    - '------DEL MethodInvocation@@NodeUtil.canBeSideEffected(cArg) '
+    - '---------DEL SimpleName@@Name:NodeUtil '
+    - '---------DEL SimpleName@@MethodName:canBeSideEffected:[cArg] '
+    - '------------DEL SimpleName@@cArg '
+    - '---DEL ReturnStatement@@QualifiedName:CanInlineResult.NO '
+    - '------DEL QualifiedName@@CanInlineResult.NO '
+    - '---------DEL SimpleName@@CanInlineResult '
+    - '---------DEL SimpleName@@NO '
+  files_cnt: '1'
+  repair_actions_cnt: 3

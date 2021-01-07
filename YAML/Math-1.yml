@@ -1,0 +1,140 @@
+1 bug_id: Math-1
+2 src folder:
+  name of src folder: java
+  number of files: 814
+  number of java files: 813
+  number of src classes: 1104
+  number of test classes: 411
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.fraction.FractionTest#testDigitLimitConstructor
+  - org.apache.commons.math3.fraction.BigFractionTest#testDigitLimitConstructor
+  failing tests:
+  - org.apache.commons.math3.fraction.FractionTest
+  - org.apache.commons.math3.fraction.BigFractionTest
+  number of all test cases: 5273
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.545
+  purification via delta debugging: 233.698
+  repair actions extraction: 1.943
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.fraction.BigFractionTest#testDigitLimitConstructor: 461
+    org.apache.commons.math3.fraction.FractionTest#testDigitLimitConstructor: 483
+  fixed:
+    org.apache.commons.math3.fraction.BigFractionTest#testDigitLimitConstructor: 419
+    org.apache.commons.math3.fraction.FractionTest#testDigitLimitConstructor: 122
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 6
+  covDel: 0
+  cov_patch_lines: 6
+  delta_patch_lines: 6
+  oriAdd: 6
+  oriDel: 0
+  ori_patch_lines: 6
+  purAdd: 6
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 7
+  failFail: 5
+  passed: 0
+  total: 12
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_1/src/main/java/org/apache/commons/math3/fraction/Fraction.java\t\
+    2020-10-21 04:17:33.797499062 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_1/purify/patch/org/apache/commons/math3/fraction/Fraction.java\t\
+    2020-10-21 04:17:33.797499062 -0400\n@@ -212,6 +212,9 @@\n             if ((FastMath.abs(p2)\
+    \ > overflow) || (FastMath.abs(q2) > overflow)) {\n                 // in maxDenominator\
+    \ mode, if the last fraction was very close to the actual value\n            \
+    \     // q2 may overflow in the next iteration; in this case return the last one.\n\
+    +                if (epsilon == 0.0 && FastMath.abs(q1) < maxDenominator) {\n\
+    +                    break;\n+                }\n                 throw new FractionConversionException(value,\
+    \ p2, q2);\n             }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_1/src/main/java/org/apache/commons/math3/fraction/Fraction.java\t\
+    2020-10-21 04:21:48.172846658 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_1/purify/purified/org/apache/commons/math3/fraction/Fraction.java\t\
+    2020-10-21 04:21:48.172846658 -0400\n@@ -212,6 +212,9 @@\n             if ((FastMath.abs(p2)\
+    \ > overflow) || (FastMath.abs(q2) > overflow)) {\n                 // in maxDenominator\
+    \ mode, if the last fraction was very close to the actual value\n            \
+    \     // q2 may overflow in the next iteration; in this case return the last one.\n\
+    +                if (epsilon == 0.0 && FastMath.abs(q1) < maxDenominator) {\n\
+    +                    break;\n+                }\n                 throw new FractionConversionException(value,\
+    \ p2, q2);\n             }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/apache/commons/math3/fraction/BigFraction, org/apache/commons/math3/fraction/Fraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:epsilon == 0.0 && FastMath.abs(q1) < maxDenominator
+      @TO@ IfStatement@@InfixExpression:(FastMath.abs(p2) > overflow) || (FastMath.abs(q2)
+      > overflow) '
+    - '---INS InfixExpression@@epsilon == 0.0 && FastMath.abs(q1) < maxDenominator
+      @TO@ IfStatement@@InfixExpression:epsilon == 0.0 && FastMath.abs(q1) < maxDenominator '
+    - '------INS InfixExpression@@epsilon == 0.0 @TO@ InfixExpression@@epsilon ==
+      0.0 && FastMath.abs(q1) < maxDenominator '
+    - '---------INS SimpleName@@epsilon @TO@ InfixExpression@@epsilon == 0.0 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@epsilon == 0.0 '
+    - '---------INS NumberLiteral@@0.0 @TO@ InfixExpression@@epsilon == 0.0 '
+    - '------INS Operator@@&& @TO@ InfixExpression@@epsilon == 0.0 && FastMath.abs(q1)
+      < maxDenominator '
+    - '------INS InfixExpression@@FastMath.abs(q1) < maxDenominator @TO@ InfixExpression@@epsilon
+      == 0.0 && FastMath.abs(q1) < maxDenominator '
+    - '---------INS MethodInvocation@@FastMath.abs(q1) @TO@ InfixExpression@@FastMath.abs(q1)
+      < maxDenominator '
+    - '------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.abs(q1) '
+    - '------------INS SimpleName@@MethodName:abs:[q1] @TO@ MethodInvocation@@FastMath.abs(q1) '
+    - '---------------INS SimpleName@@q1 @TO@ SimpleName@@MethodName:abs:[q1] '
+    - '---------INS Operator@@< @TO@ InfixExpression@@FastMath.abs(q1) < maxDenominator '
+    - '---------INS SimpleName@@maxDenominator @TO@ InfixExpression@@FastMath.abs(q1)
+      < maxDenominator '
+    - '---INS BreakStatement@@ @TO@ IfStatement@@InfixExpression:epsilon == 0.0 &&
+      FastMath.abs(q1) < maxDenominator '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/apache/commons/math3/fraction/BigFraction, org/apache/commons/math3/fraction/Fraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:epsilon == 0.0 && FastMath.abs(q1) < maxDenominator
+      @TO@ IfStatement@@InfixExpression:(FastMath.abs(p2) > overflow) || (FastMath.abs(q2)
+      > overflow) '
+    - '---INS InfixExpression@@epsilon == 0.0 && FastMath.abs(q1) < maxDenominator
+      @TO@ IfStatement@@InfixExpression:epsilon == 0.0 && FastMath.abs(q1) < maxDenominator '
+    - '------INS InfixExpression@@epsilon == 0.0 @TO@ InfixExpression@@epsilon ==
+      0.0 && FastMath.abs(q1) < maxDenominator '
+    - '---------INS SimpleName@@epsilon @TO@ InfixExpression@@epsilon == 0.0 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@epsilon == 0.0 '
+    - '---------INS NumberLiteral@@0.0 @TO@ InfixExpression@@epsilon == 0.0 '
+    - '------INS Operator@@&& @TO@ InfixExpression@@epsilon == 0.0 && FastMath.abs(q1)
+      < maxDenominator '
+    - '------INS InfixExpression@@FastMath.abs(q1) < maxDenominator @TO@ InfixExpression@@epsilon
+      == 0.0 && FastMath.abs(q1) < maxDenominator '
+    - '---------INS MethodInvocation@@FastMath.abs(q1) @TO@ InfixExpression@@FastMath.abs(q1)
+      < maxDenominator '
+    - '------------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.abs(q1) '
+    - '------------INS SimpleName@@MethodName:abs:[q1] @TO@ MethodInvocation@@FastMath.abs(q1) '
+    - '---------------INS SimpleName@@q1 @TO@ SimpleName@@MethodName:abs:[q1] '
+    - '---------INS Operator@@< @TO@ InfixExpression@@FastMath.abs(q1) < maxDenominator '
+    - '---------INS SimpleName@@maxDenominator @TO@ InfixExpression@@FastMath.abs(q1)
+      < maxDenominator '
+    - '---INS BreakStatement@@ @TO@ IfStatement@@InfixExpression:epsilon == 0.0 &&
+      FastMath.abs(q1) < maxDenominator '
+  repair_actions_cnt: 1

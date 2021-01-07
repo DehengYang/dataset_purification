@@ -1,0 +1,345 @@
+1 bug_id: Closure-43
+2 src folder:
+  name of src folder: src
+  number of files: 409
+  number of java files: 395
+  number of src classes: 1322
+  number of test classes: 219
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testLends11
+  - com.google.javascript.jscomp.TypeCheckTest#testLends10
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 7240
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.735
+  purification via delta debugging: 934.047
+  repair actions extraction: 2.948
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testLends10: 5154
+    com.google.javascript.jscomp.TypeCheckTest#testLends11: 5193
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testLends10: 5126
+    com.google.javascript.jscomp.TypeCheckTest#testLends11: 5206
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 17
+  covDel: 0
+  cov_patch_lines: 17
+  delta_patch_lines: 16
+  oriAdd: 17
+  oriDel: 0
+  ori_patch_lines: 17
+  purAdd: 16
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 42
+  failFail: 9
+  passed: 1
+  total: 52
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_43/src/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-22 12:55:02.001605825 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_43/purify/patch/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-22 12:55:02.001605825 -0400\n@@ -417,6 +417,7 @@\n      * For more information,\
+    \ see\n      * http://code.google.com/p/closure-compiler/issues/detail?id=314\n\
+    \      */\n+    private List<Node> lentObjectLiterals = null;\n \n     /**\n \
+    \     * Type-less stubs.\n@@ -544,6 +545,13 @@\n       }\n \n       // Analyze\
+    \ any @lends object literals in this statement.\n+      if (n.getParent() != null\
+    \ && NodeUtil.isStatement(n) &&\n+          lentObjectLiterals != null) {\n+ \
+    \       for (Node objLit : lentObjectLiterals) {\n+          defineObjectLiteral(objLit);\n\
+    +        }\n+        lentObjectLiterals.clear();\n+      }\n     }\n \n     private\
+    \ void attachLiteralTypes(NodeTraversal t, Node n) {\n@@ -577,7 +585,16 @@\n \
+    \          break;\n \n         case Token.OBJECTLIT:\n+          JSDocInfo info\
+    \ = n.getJSDocInfo();\n+          if (info != null &&\n+              info.getLendsName()\
+    \ != null) {\n+            if (lentObjectLiterals == null) {\n+              lentObjectLiterals\
+    \ = Lists.newArrayList();\n+            }\n+            lentObjectLiterals.add(n);\n\
+    +          } else {\n             defineObjectLiteral(n);\n+          }\n    \
+    \       break;\n \n           // NOTE(nicksantos): If we ever support Array tuples,"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_43/src/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-22 13:11:11.657602509 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_43/purify/purified/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-22 13:11:11.649602279 -0400\n@@ -417,6 +417,7 @@\n      * For more information,\
+    \ see\n      * http://code.google.com/p/closure-compiler/issues/detail?id=314\n\
+    \      */\n+    private List<Node> lentObjectLiterals = null;\n \n     /**\n \
+    \     * Type-less stubs.\n@@ -544,6 +545,12 @@\n       }\n \n       // Analyze\
+    \ any @lends object literals in this statement.\n+      if (n.getParent() != null\
+    \ && NodeUtil.isStatement(n) &&\n+          lentObjectLiterals != null) {\n+ \
+    \       for (Node objLit : lentObjectLiterals) {\n+          defineObjectLiteral(objLit);\n\
+    +        }\n+      }\n     }\n \n     private void attachLiteralTypes(NodeTraversal\
+    \ t, Node n) {\n@@ -577,7 +584,16 @@\n           break;\n \n         case Token.OBJECTLIT:\n\
+    +          JSDocInfo info = n.getJSDocInfo();\n+          if (info != null &&\n\
+    +              info.getLendsName() != null) {\n+            if (lentObjectLiterals\
+    \ == null) {\n+              lentObjectLiterals = Lists.newArrayList();\n+   \
+    \         }\n+            lentObjectLiterals.add(n);\n+          } else {\n  \
+    \           defineObjectLiteral(n);\n+          }\n           break;\n \n    \
+    \       // NOTE(nicksantos): If we ever support Array tuples,"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypedScopeCreator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, List<Node>, [lentObjectLiterals=null] @TO@ TypeDeclaration@@[private,
+      abstract]AbstractScopeBuilder, [NodeTraversal.Callback] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, List<Node>, [lentObjectLiterals=null] '
+    - '---INS ParameterizedType@@List<Node> @TO@ FieldDeclaration@@private, List<Node>,
+      [lentObjectLiterals=null] '
+    - '------INS SimpleType@@List @TO@ ParameterizedType@@List<Node> '
+    - '------INS SimpleType@@Node @TO@ ParameterizedType@@List<Node> '
+    - '---INS VariableDeclarationFragment@@lentObjectLiterals=null @TO@ FieldDeclaration@@private,
+      List<Node>, [lentObjectLiterals=null] '
+    - '------INS SimpleName@@lentObjectLiterals @TO@ VariableDeclarationFragment@@lentObjectLiterals=null '
+    - '------INS NullLiteral@@null @TO@ VariableDeclarationFragment@@lentObjectLiterals=null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n.getParent() != null && NodeUtil.isStatement(n)
+      && lentObjectLiterals != null @TO@ MethodDeclaration@@public, @@void, MethodName:visit,
+      @@Argus:NodeTraversal+t+Node+n+Node+parent+ '
+    - '---INS InfixExpression@@n.getParent() != null && NodeUtil.isStatement(n) &&
+      lentObjectLiterals != null @TO@ IfStatement@@InfixExpression:n.getParent() !=
+      null && NodeUtil.isStatement(n) && lentObjectLiterals != null '
+    - '------INS InfixExpression@@n.getParent() != null && NodeUtil.isStatement(n)
+      @TO@ InfixExpression@@n.getParent() != null && NodeUtil.isStatement(n) && lentObjectLiterals
+      != null '
+    - '---------INS InfixExpression@@n.getParent() != null @TO@ InfixExpression@@n.getParent()
+      != null && NodeUtil.isStatement(n) '
+    - '------------INS MethodInvocation@@n.getParent() @TO@ InfixExpression@@n.getParent()
+      != null '
+    - '---------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getParent() '
+    - '---------------INS SimpleName@@MethodName:getParent:[] @TO@ MethodInvocation@@n.getParent() '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@n.getParent() != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@n.getParent() != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@n.getParent() != null && NodeUtil.isStatement(n) '
+    - '---------INS MethodInvocation@@NodeUtil.isStatement(n) @TO@ InfixExpression@@n.getParent()
+      != null && NodeUtil.isStatement(n) '
+    - '------------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isStatement(n) '
+    - '------------INS SimpleName@@MethodName:isStatement:[n] @TO@ MethodInvocation@@NodeUtil.isStatement(n) '
+    - '---------------INS SimpleName@@n @TO@ SimpleName@@MethodName:isStatement:[n] '
+    - '------INS Operator@@&& @TO@ InfixExpression@@n.getParent() != null && NodeUtil.isStatement(n)
+      && lentObjectLiterals != null '
+    - '------INS InfixExpression@@lentObjectLiterals != null @TO@ InfixExpression@@n.getParent()
+      != null && NodeUtil.isStatement(n) && lentObjectLiterals != null '
+    - '---------INS SimpleName@@lentObjectLiterals @TO@ InfixExpression@@lentObjectLiterals
+      != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@lentObjectLiterals != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@lentObjectLiterals !=
+      null '
+    - '---INS EnhancedForStatement@@Node objLit, SimpleName:lentObjectLiterals @TO@
+      IfStatement@@InfixExpression:n.getParent() != null && NodeUtil.isStatement(n)
+      && lentObjectLiterals != null '
+    - '------INS SingleVariableDeclaration@@Node objLit @TO@ EnhancedForStatement@@Node
+      objLit, SimpleName:lentObjectLiterals '
+    - '---------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node objLit '
+    - '---------INS SimpleName@@objLit @TO@ SingleVariableDeclaration@@Node objLit '
+    - '------INS SimpleName@@lentObjectLiterals @TO@ EnhancedForStatement@@Node objLit,
+      SimpleName:lentObjectLiterals '
+    - '------INS ExpressionStatement@@MethodInvocation:defineObjectLiteral(objLit)
+      @TO@ EnhancedForStatement@@Node objLit, SimpleName:lentObjectLiterals '
+    - '---------INS MethodInvocation@@defineObjectLiteral(objLit) @TO@ ExpressionStatement@@MethodInvocation:defineObjectLiteral(objLit) '
+    - '------------INS SimpleName@@MethodName:defineObjectLiteral:[objLit] @TO@ MethodInvocation@@defineObjectLiteral(objLit) '
+    - '---------------INS SimpleName@@objLit @TO@ SimpleName@@MethodName:defineObjectLiteral:[objLit] '
+    - '---INS ExpressionStatement@@MethodInvocation:lentObjectLiterals.clear() @TO@
+      IfStatement@@InfixExpression:n.getParent() != null && NodeUtil.isStatement(n)
+      && lentObjectLiterals != null '
+    - '------INS MethodInvocation@@lentObjectLiterals.clear() @TO@ ExpressionStatement@@MethodInvocation:lentObjectLiterals.clear() '
+    - '---------INS SimpleName@@Name:lentObjectLiterals @TO@ MethodInvocation@@lentObjectLiterals.clear() '
+    - '---------INS SimpleName@@MethodName:clear:[] @TO@ MethodInvocation@@lentObjectLiterals.clear() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@JSDocInfo info=n.getJSDocInfo(); @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS SimpleType@@JSDocInfo @TO@ VariableDeclarationStatement@@JSDocInfo info=n.getJSDocInfo(); '
+    - '---INS VariableDeclarationFragment@@info=n.getJSDocInfo() @TO@ VariableDeclarationStatement@@JSDocInfo
+      info=n.getJSDocInfo(); '
+    - '------INS SimpleName@@info @TO@ VariableDeclarationFragment@@info=n.getJSDocInfo() '
+    - '------INS MethodInvocation@@n.getJSDocInfo() @TO@ VariableDeclarationFragment@@info=n.getJSDocInfo() '
+    - '---------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getJSDocInfo() '
+    - '---------INS SimpleName@@MethodName:getJSDocInfo:[] @TO@ MethodInvocation@@n.getJSDocInfo() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:info != null && info.getLendsName() != null
+      @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---MOV ExpressionStatement@@MethodInvocation:defineObjectLiteral(n) @TO@ IfStatement@@InfixExpression:info
+      != null && info.getLendsName() != null '
+    - '---INS InfixExpression@@info != null && info.getLendsName() != null @TO@ IfStatement@@InfixExpression:info
+      != null && info.getLendsName() != null '
+    - '------INS InfixExpression@@info != null @TO@ InfixExpression@@info != null
+      && info.getLendsName() != null '
+    - '---------INS SimpleName@@info @TO@ InfixExpression@@info != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@info != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@info != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@info != null && info.getLendsName()
+      != null '
+    - '------INS InfixExpression@@info.getLendsName() != null @TO@ InfixExpression@@info
+      != null && info.getLendsName() != null '
+    - '---------INS MethodInvocation@@info.getLendsName() @TO@ InfixExpression@@info.getLendsName()
+      != null '
+    - '------------INS SimpleName@@Name:info @TO@ MethodInvocation@@info.getLendsName() '
+    - '------------INS SimpleName@@MethodName:getLendsName:[] @TO@ MethodInvocation@@info.getLendsName() '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@info.getLendsName() != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@info.getLendsName() !=
+      null '
+    - '---INS IfStatement@@InfixExpression:lentObjectLiterals == null @TO@ IfStatement@@InfixExpression:info
+      != null && info.getLendsName() != null '
+    - '------INS InfixExpression@@lentObjectLiterals == null @TO@ IfStatement@@InfixExpression:lentObjectLiterals
+      == null '
+    - '---------INS SimpleName@@lentObjectLiterals @TO@ InfixExpression@@lentObjectLiterals
+      == null '
+    - '---------INS Operator@@== @TO@ InfixExpression@@lentObjectLiterals == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@lentObjectLiterals ==
+      null '
+    - '------INS ExpressionStatement@@Assignment:lentObjectLiterals=Lists.newArrayList()
+      @TO@ IfStatement@@InfixExpression:lentObjectLiterals == null '
+    - '---------INS Assignment@@lentObjectLiterals=Lists.newArrayList() @TO@ ExpressionStatement@@Assignment:lentObjectLiterals=Lists.newArrayList() '
+    - '------------INS SimpleName@@lentObjectLiterals @TO@ Assignment@@lentObjectLiterals=Lists.newArrayList() '
+    - '------------INS Operator@@= @TO@ Assignment@@lentObjectLiterals=Lists.newArrayList() '
+    - '------------INS MethodInvocation@@Lists.newArrayList() @TO@ Assignment@@lentObjectLiterals=Lists.newArrayList() '
+    - '---------------INS SimpleName@@Name:Lists @TO@ MethodInvocation@@Lists.newArrayList() '
+    - '---------------INS SimpleName@@MethodName:newArrayList:[] @TO@ MethodInvocation@@Lists.newArrayList() '
+    - '---INS ExpressionStatement@@MethodInvocation:lentObjectLiterals.add(n) @TO@
+      IfStatement@@InfixExpression:info != null && info.getLendsName() != null '
+    - '------INS MethodInvocation@@lentObjectLiterals.add(n) @TO@ ExpressionStatement@@MethodInvocation:lentObjectLiterals.add(n) '
+    - '---------INS SimpleName@@Name:lentObjectLiterals @TO@ MethodInvocation@@lentObjectLiterals.add(n) '
+    - '---------INS SimpleName@@MethodName:add:[n] @TO@ MethodInvocation@@lentObjectLiterals.add(n) '
+    - '------------INS SimpleName@@n @TO@ SimpleName@@MethodName:add:[n] '
+  files_cnt: '1'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypedScopeCreator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, List<Node>, [lentObjectLiterals=null] @TO@ TypeDeclaration@@[private,
+      abstract]AbstractScopeBuilder, [NodeTraversal.Callback] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, List<Node>, [lentObjectLiterals=null] '
+    - '---INS ParameterizedType@@List<Node> @TO@ FieldDeclaration@@private, List<Node>,
+      [lentObjectLiterals=null] '
+    - '------INS SimpleType@@List @TO@ ParameterizedType@@List<Node> '
+    - '------INS SimpleType@@Node @TO@ ParameterizedType@@List<Node> '
+    - '---INS VariableDeclarationFragment@@lentObjectLiterals=null @TO@ FieldDeclaration@@private,
+      List<Node>, [lentObjectLiterals=null] '
+    - '------INS SimpleName@@lentObjectLiterals @TO@ VariableDeclarationFragment@@lentObjectLiterals=null '
+    - '------INS NullLiteral@@null @TO@ VariableDeclarationFragment@@lentObjectLiterals=null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n.getParent() != null && NodeUtil.isStatement(n)
+      && lentObjectLiterals != null @TO@ MethodDeclaration@@public, @@void, MethodName:visit,
+      @@Argus:NodeTraversal+t+Node+n+Node+parent+ '
+    - '---INS InfixExpression@@n.getParent() != null && NodeUtil.isStatement(n) &&
+      lentObjectLiterals != null @TO@ IfStatement@@InfixExpression:n.getParent() !=
+      null && NodeUtil.isStatement(n) && lentObjectLiterals != null '
+    - '------INS InfixExpression@@n.getParent() != null && NodeUtil.isStatement(n)
+      @TO@ InfixExpression@@n.getParent() != null && NodeUtil.isStatement(n) && lentObjectLiterals
+      != null '
+    - '---------INS InfixExpression@@n.getParent() != null @TO@ InfixExpression@@n.getParent()
+      != null && NodeUtil.isStatement(n) '
+    - '------------INS MethodInvocation@@n.getParent() @TO@ InfixExpression@@n.getParent()
+      != null '
+    - '---------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getParent() '
+    - '---------------INS SimpleName@@MethodName:getParent:[] @TO@ MethodInvocation@@n.getParent() '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@n.getParent() != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@n.getParent() != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@n.getParent() != null && NodeUtil.isStatement(n) '
+    - '---------INS MethodInvocation@@NodeUtil.isStatement(n) @TO@ InfixExpression@@n.getParent()
+      != null && NodeUtil.isStatement(n) '
+    - '------------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isStatement(n) '
+    - '------------INS SimpleName@@MethodName:isStatement:[n] @TO@ MethodInvocation@@NodeUtil.isStatement(n) '
+    - '---------------INS SimpleName@@n @TO@ SimpleName@@MethodName:isStatement:[n] '
+    - '------INS Operator@@&& @TO@ InfixExpression@@n.getParent() != null && NodeUtil.isStatement(n)
+      && lentObjectLiterals != null '
+    - '------INS InfixExpression@@lentObjectLiterals != null @TO@ InfixExpression@@n.getParent()
+      != null && NodeUtil.isStatement(n) && lentObjectLiterals != null '
+    - '---------INS SimpleName@@lentObjectLiterals @TO@ InfixExpression@@lentObjectLiterals
+      != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@lentObjectLiterals != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@lentObjectLiterals !=
+      null '
+    - '---INS EnhancedForStatement@@Node objLit, SimpleName:lentObjectLiterals @TO@
+      IfStatement@@InfixExpression:n.getParent() != null && NodeUtil.isStatement(n)
+      && lentObjectLiterals != null '
+    - '------INS SingleVariableDeclaration@@Node objLit @TO@ EnhancedForStatement@@Node
+      objLit, SimpleName:lentObjectLiterals '
+    - '---------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node objLit '
+    - '---------INS SimpleName@@objLit @TO@ SingleVariableDeclaration@@Node objLit '
+    - '------INS SimpleName@@lentObjectLiterals @TO@ EnhancedForStatement@@Node objLit,
+      SimpleName:lentObjectLiterals '
+    - '------INS ExpressionStatement@@MethodInvocation:defineObjectLiteral(objLit)
+      @TO@ EnhancedForStatement@@Node objLit, SimpleName:lentObjectLiterals '
+    - '---------INS MethodInvocation@@defineObjectLiteral(objLit) @TO@ ExpressionStatement@@MethodInvocation:defineObjectLiteral(objLit) '
+    - '------------INS SimpleName@@MethodName:defineObjectLiteral:[objLit] @TO@ MethodInvocation@@defineObjectLiteral(objLit) '
+    - '---------------INS SimpleName@@objLit @TO@ SimpleName@@MethodName:defineObjectLiteral:[objLit] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@JSDocInfo info=n.getJSDocInfo(); @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS SimpleType@@JSDocInfo @TO@ VariableDeclarationStatement@@JSDocInfo info=n.getJSDocInfo(); '
+    - '---INS VariableDeclarationFragment@@info=n.getJSDocInfo() @TO@ VariableDeclarationStatement@@JSDocInfo
+      info=n.getJSDocInfo(); '
+    - '------INS SimpleName@@info @TO@ VariableDeclarationFragment@@info=n.getJSDocInfo() '
+    - '------INS MethodInvocation@@n.getJSDocInfo() @TO@ VariableDeclarationFragment@@info=n.getJSDocInfo() '
+    - '---------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getJSDocInfo() '
+    - '---------INS SimpleName@@MethodName:getJSDocInfo:[] @TO@ MethodInvocation@@n.getJSDocInfo() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:info != null && info.getLendsName() != null
+      @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---MOV ExpressionStatement@@MethodInvocation:defineObjectLiteral(n) @TO@ IfStatement@@InfixExpression:info
+      != null && info.getLendsName() != null '
+    - '---INS InfixExpression@@info != null && info.getLendsName() != null @TO@ IfStatement@@InfixExpression:info
+      != null && info.getLendsName() != null '
+    - '------INS InfixExpression@@info != null @TO@ InfixExpression@@info != null
+      && info.getLendsName() != null '
+    - '---------INS SimpleName@@info @TO@ InfixExpression@@info != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@info != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@info != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@info != null && info.getLendsName()
+      != null '
+    - '------INS InfixExpression@@info.getLendsName() != null @TO@ InfixExpression@@info
+      != null && info.getLendsName() != null '
+    - '---------INS MethodInvocation@@info.getLendsName() @TO@ InfixExpression@@info.getLendsName()
+      != null '
+    - '------------INS SimpleName@@Name:info @TO@ MethodInvocation@@info.getLendsName() '
+    - '------------INS SimpleName@@MethodName:getLendsName:[] @TO@ MethodInvocation@@info.getLendsName() '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@info.getLendsName() != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@info.getLendsName() !=
+      null '
+    - '---INS IfStatement@@InfixExpression:lentObjectLiterals == null @TO@ IfStatement@@InfixExpression:info
+      != null && info.getLendsName() != null '
+    - '------INS InfixExpression@@lentObjectLiterals == null @TO@ IfStatement@@InfixExpression:lentObjectLiterals
+      == null '
+    - '---------INS SimpleName@@lentObjectLiterals @TO@ InfixExpression@@lentObjectLiterals
+      == null '
+    - '---------INS Operator@@== @TO@ InfixExpression@@lentObjectLiterals == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@lentObjectLiterals ==
+      null '
+    - '------INS ExpressionStatement@@Assignment:lentObjectLiterals=Lists.newArrayList()
+      @TO@ IfStatement@@InfixExpression:lentObjectLiterals == null '
+    - '---------INS Assignment@@lentObjectLiterals=Lists.newArrayList() @TO@ ExpressionStatement@@Assignment:lentObjectLiterals=Lists.newArrayList() '
+    - '------------INS SimpleName@@lentObjectLiterals @TO@ Assignment@@lentObjectLiterals=Lists.newArrayList() '
+    - '------------INS Operator@@= @TO@ Assignment@@lentObjectLiterals=Lists.newArrayList() '
+    - '------------INS MethodInvocation@@Lists.newArrayList() @TO@ Assignment@@lentObjectLiterals=Lists.newArrayList() '
+    - '---------------INS SimpleName@@Name:Lists @TO@ MethodInvocation@@Lists.newArrayList() '
+    - '---------------INS SimpleName@@MethodName:newArrayList:[] @TO@ MethodInvocation@@Lists.newArrayList() '
+    - '---INS ExpressionStatement@@MethodInvocation:lentObjectLiterals.add(n) @TO@
+      IfStatement@@InfixExpression:info != null && info.getLendsName() != null '
+    - '------INS MethodInvocation@@lentObjectLiterals.add(n) @TO@ ExpressionStatement@@MethodInvocation:lentObjectLiterals.add(n) '
+    - '---------INS SimpleName@@Name:lentObjectLiterals @TO@ MethodInvocation@@lentObjectLiterals.add(n) '
+    - '---------INS SimpleName@@MethodName:add:[n] @TO@ MethodInvocation@@lentObjectLiterals.add(n) '
+    - '------------INS SimpleName@@n @TO@ SimpleName@@MethodName:add:[n] '
+  files_cnt: '1'
+  repair_actions_cnt: 4

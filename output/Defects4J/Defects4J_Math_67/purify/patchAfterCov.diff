@@ -1,0 +1,17 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_67/src/main/java/org/apache/commons/math/optimization/MultiStartUnivariateRealOptimizer.java	2020-10-22 07:59:07.636142104 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_67/purify/assertBeforeMut/org/apache/commons/math/optimization/MultiStartUnivariateRealOptimizer.java	2020-10-22 07:59:07.636142104 -0400
+@@ -89,12 +89,12 @@
+ 
+     /** {@inheritDoc} */
+     public double getFunctionValue() {
+-        return optimizer.getFunctionValue();
++        return optimaValues[0];
+     }
+ 
+     /** {@inheritDoc} */
+     public double getResult() {
+-        return optimizer.getResult();
++        return optima[0];
+     }
+ 
+     /** {@inheritDoc} */

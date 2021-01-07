@@ -1,0 +1,139 @@
+1 bug_id: Lang-48
+2 src folder:
+  name of src folder: java
+  number of files: 98
+  number of java files: 88
+  number of src classes: 141
+  number of test classes: 94
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.builder.EqualsBuilderTest#testBigDecimal
+  failing tests:
+  - org.apache.commons.lang.builder.EqualsBuilderTest
+  number of all test cases: 2624
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 0.582
+  purification via delta debugging: 61.419
+  repair actions extraction: 1.645
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.builder.EqualsBuilderTest#testBigDecimal: 12
+  fixed:
+    org.apache.commons.lang.builder.EqualsBuilderTest#testBigDecimal: 13
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 3
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 5
+  failFail: 1
+  passed: 1
+  total: 7
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_48/src/java/org/apache/commons/lang/builder/EqualsBuilder.java\t\
+    2020-10-21 03:47:33.361503726 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_48/purify/patch/org/apache/commons/lang/builder/EqualsBuilder.java\t\
+    2020-10-21 03:47:33.361503726 -0400\n@@ -377,8 +377,12 @@\n         }\n      \
+    \   Class lhsClass = lhs.getClass();\n         if (!lhsClass.isArray()) {\n+ \
+    \           if (lhs instanceof java.math.BigDecimal) {\n+                isEquals\
+    \ = (((java.math.BigDecimal)lhs).compareTo(rhs) == 0);\n+            } else {\n\
+    \                 // The simple case, not an array, just test the element\n  \
+    \               isEquals = lhs.equals(rhs);\n+            }\n         } else if\
+    \ (lhs.getClass() != rhs.getClass()) {\n             // Here when we compare different\
+    \ dimensions, for example: a boolean[][] to a boolean[] \n             this.setEquals(false);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_48/src/java/org/apache/commons/lang/builder/EqualsBuilder.java\t\
+    2020-10-21 03:48:45.071574884 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_48/purify/purified/org/apache/commons/lang/builder/EqualsBuilder.java\t\
+    2020-10-21 03:48:45.071574884 -0400\n@@ -377,8 +377,11 @@\n         }\n      \
+    \   Class lhsClass = lhs.getClass();\n         if (!lhsClass.isArray()) {\n+ \
+    \           if (lhs instanceof java.math.BigDecimal) {\n+            } else {\n\
+    \                 // The simple case, not an array, just test the element\n  \
+    \               isEquals = lhs.equals(rhs);\n+            }\n         } else if\
+    \ (lhs.getClass() != rhs.getClass()) {\n             // Here when we compare different\
+    \ dimensions, for example: a boolean[][] to a boolean[] \n             this.setEquals(false);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/builder/EqualsBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InstanceofExpression:lhs instanceof java.math.BigDecimal @TO@
+      IfStatement@@PrefixExpression:!lhsClass.isArray() '
+    - '---INS InstanceofExpression@@lhs instanceof java.math.BigDecimal @TO@ IfStatement@@InstanceofExpression:lhs
+      instanceof java.math.BigDecimal '
+    - '------INS SimpleName@@lhs @TO@ InstanceofExpression@@lhs instanceof java.math.BigDecimal '
+    - '------INS Instanceof@@instanceof @TO@ InstanceofExpression@@lhs instanceof
+      java.math.BigDecimal '
+    - '------INS SimpleType@@java.math.BigDecimal @TO@ InstanceofExpression@@lhs instanceof
+      java.math.BigDecimal '
+    - '---INS ExpressionStatement@@Assignment:isEquals=(((java.math.BigDecimal)lhs).compareTo(rhs)
+      == 0) @TO@ IfStatement@@InstanceofExpression:lhs instanceof java.math.BigDecimal '
+    - '------INS Assignment@@isEquals=(((java.math.BigDecimal)lhs).compareTo(rhs)
+      == 0) @TO@ ExpressionStatement@@Assignment:isEquals=(((java.math.BigDecimal)lhs).compareTo(rhs)
+      == 0) '
+    - '---------INS SimpleName@@isEquals @TO@ Assignment@@isEquals=(((java.math.BigDecimal)lhs).compareTo(rhs)
+      == 0) '
+    - '---------INS Operator@@= @TO@ Assignment@@isEquals=(((java.math.BigDecimal)lhs).compareTo(rhs)
+      == 0) '
+    - '---------INS ParenthesizedExpression@@(((java.math.BigDecimal)lhs).compareTo(rhs)
+      == 0) @TO@ Assignment@@isEquals=(((java.math.BigDecimal)lhs).compareTo(rhs)
+      == 0) '
+    - '------------INS InfixExpression@@((java.math.BigDecimal)lhs).compareTo(rhs)
+      == 0 @TO@ ParenthesizedExpression@@(((java.math.BigDecimal)lhs).compareTo(rhs)
+      == 0) '
+    - '---------------INS MethodInvocation@@((java.math.BigDecimal)lhs).compareTo(rhs)
+      @TO@ InfixExpression@@((java.math.BigDecimal)lhs).compareTo(rhs) == 0 '
+    - '------------------INS ParenthesizedExpression@@((java.math.BigDecimal)lhs)
+      @TO@ MethodInvocation@@((java.math.BigDecimal)lhs).compareTo(rhs) '
+    - '---------------------INS CastExpression@@(java.math.BigDecimal)lhs @TO@ ParenthesizedExpression@@((java.math.BigDecimal)lhs) '
+    - '------------------------INS SimpleType@@java.math.BigDecimal @TO@ CastExpression@@(java.math.BigDecimal)lhs '
+    - '------------------------INS SimpleName@@lhs @TO@ CastExpression@@(java.math.BigDecimal)lhs '
+    - '------------------INS SimpleName@@MethodName:compareTo:[rhs] @TO@ MethodInvocation@@((java.math.BigDecimal)lhs).compareTo(rhs) '
+    - '---------------------INS SimpleName@@rhs @TO@ SimpleName@@MethodName:compareTo:[rhs] '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@((java.math.BigDecimal)lhs).compareTo(rhs)
+      == 0 '
+    - '---------------INS NumberLiteral@@0 @TO@ InfixExpression@@((java.math.BigDecimal)lhs).compareTo(rhs)
+      == 0 '
+    - '---MOV ExpressionStatement@@Assignment:isEquals=lhs.equals(rhs) @TO@ IfStatement@@InstanceofExpression:lhs
+      instanceof java.math.BigDecimal '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/builder/EqualsBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InstanceofExpression:lhs instanceof java.math.BigDecimal @TO@
+      IfStatement@@PrefixExpression:!lhsClass.isArray() '
+    - '---INS InstanceofExpression@@lhs instanceof java.math.BigDecimal @TO@ IfStatement@@InstanceofExpression:lhs
+      instanceof java.math.BigDecimal '
+    - '------INS SimpleName@@lhs @TO@ InstanceofExpression@@lhs instanceof java.math.BigDecimal '
+    - '------INS Instanceof@@instanceof @TO@ InstanceofExpression@@lhs instanceof
+      java.math.BigDecimal '
+    - '------INS SimpleType@@java.math.BigDecimal @TO@ InstanceofExpression@@lhs instanceof
+      java.math.BigDecimal '
+    - '---MOV ExpressionStatement@@Assignment:isEquals=lhs.equals(rhs) @TO@ IfStatement@@InstanceofExpression:lhs
+      instanceof java.math.BigDecimal '
+  repair_actions_cnt: 1

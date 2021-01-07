@@ -1,0 +1,150 @@
+1 bug_id: Math-90
+2 src folder:
+  name of src folder: java
+  number of files: 364
+  number of java files: 329
+  number of src classes: 387
+  number of test classes: 176
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.stat.FrequencyTest#testAddNonComparable
+  failing tests:
+  - org.apache.commons.math.stat.FrequencyTest
+  number of all test cases: 1691
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.558
+  purification via delta debugging: 78.405
+  repair actions extraction: 1.02
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.stat.FrequencyTest#testAddNonComparable: 8
+  fixed:
+    org.apache.commons.math.stat.FrequencyTest#testAddNonComparable: 15
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 3
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_90/src/java/org/apache/commons/math/stat/Frequency.java\t\
+    2020-10-23 03:42:20.379316212 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_90/purify/patch/org/apache/commons/math/stat/Frequency.java\t\
+    2020-10-23 03:42:20.375316096 -0400\n@@ -107,6 +107,8 @@\n      */\n     @Deprecated\n\
+    \     public void addValue(Object v) {\n+        addValue((Comparable<?>) v);\n\
+    +    }\n     \n     /**\n      * Adds 1 to the frequency count for v.\n@@ -118,6\
+    \ +120,7 @@\n      * @param v the value to add.\n      * @throws IllegalArgumentException\
+    \ if <code>v</code> is not comparable with previous entries\n      */\n+    public\
+    \ void addValue(Comparable<?>v){\n         Object obj = v;\n         if (v instanceof\
+    \ Integer) {\n            obj = Long.valueOf(((Integer) v).longValue());"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_90/src/java/org/apache/commons/math/stat/Frequency.java\t\
+    2020-10-23 03:43:51.181942887 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_90/purify/purified/org/apache/commons/math/stat/Frequency.java\t\
+    2020-10-23 03:43:51.181942887 -0400\n@@ -107,6 +107,8 @@\n      */\n     @Deprecated\n\
+    \     public void addValue(Object v) {\n+        addValue((Comparable<?>) v);\n\
+    +    }\n     \n     /**\n      * Adds 1 to the frequency count for v.\n@@ -118,6\
+    \ +120,7 @@\n      * @param v the value to add.\n      * @throws IllegalArgumentException\
+    \ if <code>v</code> is not comparable with previous entries\n      */\n+    public\
+    \ void addValue(Comparable<?>v){\n         Object obj = v;\n         if (v instanceof\
+    \ Integer) {\n            obj = Long.valueOf(((Integer) v).longValue());"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/Frequency:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@public, @@void, MethodName:addValue, @@Argus:Object+v+
+      @TO@ TypeDeclaration@@[public]Frequency, [Serializable] '
+    - '---INS Modifier@@public @TO@ MethodDeclaration@@public, @@void, MethodName:addValue,
+      @@Argus:Object+v+ '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@public, @@void, MethodName:addValue,
+      @@Argus:Object+v+ '
+    - '---INS SimpleName@@MethodName:addValue @TO@ MethodDeclaration@@public, @@void,
+      MethodName:addValue, @@Argus:Object+v+ '
+    - '---INS SingleVariableDeclaration@@Object v @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addValue, @@Argus:Object+v+ '
+    - '------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object v '
+    - '------INS SimpleName@@v @TO@ SingleVariableDeclaration@@Object v '
+    - '---INS ExpressionStatement@@MethodInvocation:addValue((Comparable<?>)v) @TO@
+      MethodDeclaration@@public, @@void, MethodName:addValue, @@Argus:Object+v+ '
+    - '------INS MethodInvocation@@addValue((Comparable<?>)v) @TO@ ExpressionStatement@@MethodInvocation:addValue((Comparable<?>)v) '
+    - '---------INS SimpleName@@MethodName:addValue:[(Comparable<?>)v] @TO@ MethodInvocation@@addValue((Comparable<?>)v) '
+    - '------------INS CastExpression@@(Comparable<?>)v @TO@ SimpleName@@MethodName:addValue:[(Comparable<?>)v] '
+    - '---------------INS ParameterizedType@@Comparable<?> @TO@ CastExpression@@(Comparable<?>)v '
+    - '------------------INS SimpleType@@Comparable @TO@ ParameterizedType@@Comparable<?> '
+    - '------------------INS WildcardType@@? @TO@ ParameterizedType@@Comparable<?> '
+    - '---------------INS SimpleName@@v @TO@ CastExpression@@(Comparable<?>)v '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, @@void, MethodName:addValue, @@Argus:Object+v+
+      @TO@ public, @@void, MethodName:addValue, @@Argus:Comparable<?>+v+ '
+    - '---UPD SingleVariableDeclaration@@Object v @TO@ Comparable<?> v '
+    - '------DEL SimpleType@@Object '
+    - '------INS ParameterizedType@@Comparable<?> @TO@ SingleVariableDeclaration@@Object
+      v '
+    - '---------INS SimpleType@@Comparable @TO@ ParameterizedType@@Comparable<?> '
+    - '---------INS WildcardType@@? @TO@ ParameterizedType@@Comparable<?> '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/Frequency:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@public, @@void, MethodName:addValue, @@Argus:Object+v+
+      @TO@ TypeDeclaration@@[public]Frequency, [Serializable] '
+    - '---INS Modifier@@public @TO@ MethodDeclaration@@public, @@void, MethodName:addValue,
+      @@Argus:Object+v+ '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@public, @@void, MethodName:addValue,
+      @@Argus:Object+v+ '
+    - '---INS SimpleName@@MethodName:addValue @TO@ MethodDeclaration@@public, @@void,
+      MethodName:addValue, @@Argus:Object+v+ '
+    - '---INS SingleVariableDeclaration@@Object v @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addValue, @@Argus:Object+v+ '
+    - '------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object v '
+    - '------INS SimpleName@@v @TO@ SingleVariableDeclaration@@Object v '
+    - '---INS ExpressionStatement@@MethodInvocation:addValue((Comparable<?>)v) @TO@
+      MethodDeclaration@@public, @@void, MethodName:addValue, @@Argus:Object+v+ '
+    - '------INS MethodInvocation@@addValue((Comparable<?>)v) @TO@ ExpressionStatement@@MethodInvocation:addValue((Comparable<?>)v) '
+    - '---------INS SimpleName@@MethodName:addValue:[(Comparable<?>)v] @TO@ MethodInvocation@@addValue((Comparable<?>)v) '
+    - '------------INS CastExpression@@(Comparable<?>)v @TO@ SimpleName@@MethodName:addValue:[(Comparable<?>)v] '
+    - '---------------INS ParameterizedType@@Comparable<?> @TO@ CastExpression@@(Comparable<?>)v '
+    - '------------------INS SimpleType@@Comparable @TO@ ParameterizedType@@Comparable<?> '
+    - '------------------INS WildcardType@@? @TO@ ParameterizedType@@Comparable<?> '
+    - '---------------INS SimpleName@@v @TO@ CastExpression@@(Comparable<?>)v '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, @@void, MethodName:addValue, @@Argus:Object+v+
+      @TO@ public, @@void, MethodName:addValue, @@Argus:Comparable<?>+v+ '
+    - '---UPD SingleVariableDeclaration@@Object v @TO@ Comparable<?> v '
+    - '------DEL SimpleType@@Object '
+    - '------INS ParameterizedType@@Comparable<?> @TO@ SingleVariableDeclaration@@Object
+      v '
+    - '---------INS SimpleType@@Comparable @TO@ ParameterizedType@@Comparable<?> '
+    - '---------INS WildcardType@@? @TO@ ParameterizedType@@Comparable<?> '
+  repair_actions_cnt: 2

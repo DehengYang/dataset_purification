@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_8/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java	2020-10-23 21:48:52.934433498 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_8/purify/purified/org/mockito/internal/util/reflection/GenericMetadataSupport.java	2020-10-23 21:48:52.934433498 -0400
+@@ -76,7 +76,7 @@
+ 
+             if (actualTypeArgument instanceof WildcardType) {
+                 contextualActualTypeParameters.put(typeParameter, boundsOf((WildcardType) actualTypeArgument));
+-            } else {
++            } else if (typeParameter != actualTypeArgument) {
+                 contextualActualTypeParameters.put(typeParameter, actualTypeArgument);
+             }
+             // logger.log("For '" + parameterizedType + "' found type variable : { '" + typeParameter + "(" + System.identityHashCode(typeParameter) + ")" + "' : '" + actualTypeArgument + "(" + System.identityHashCode(typeParameter) + ")" + "' }");

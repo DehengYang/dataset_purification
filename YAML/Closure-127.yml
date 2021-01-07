@@ -1,0 +1,274 @@
+1 bug_id: Closure-127
+2 src folder:
+  name of src folder: src
+  number of files: 432
+  number of java files: 416
+  number of src classes: 1387
+  number of test classes: 228
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue4177428_return
+  - com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue4177428_continue
+  - com.google.javascript.jscomp.UnreachableCodeEliminationTest#testDontRemoveBreakInTryFinally
+  - com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue4177428a
+  - com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue4177428c
+  - com.google.javascript.jscomp.UnreachableCodeEliminationTest#testDontRemoveBreakInTryFinallySwitch
+  failing tests:
+  - com.google.javascript.jscomp.UnreachableCodeEliminationTest
+  number of all test cases: 8012
+  number of failing test cases: 6
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.954
+  purification via delta debugging: 510.603
+  repair actions extraction: 0.793
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testDontRemoveBreakInTryFinally: 3347
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testDontRemoveBreakInTryFinallySwitch: 3448
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue4177428_continue: 3562
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue4177428_return: 3500
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue4177428a: 3529
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue4177428c: 3536
+  fixed:
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testDontRemoveBreakInTryFinally: 3219
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testDontRemoveBreakInTryFinallySwitch: 3320
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue4177428_continue: 3440
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue4177428_return: 3417
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue4177428a: 3409
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue4177428c: 3416
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 10
+  covDel: 1
+  cov_patch_lines: 11
+  delta_patch_lines: 10
+  oriAdd: 10
+  oriDel: 1
+  ori_patch_lines: 11
+  purAdd: 9
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 23
+  failFail: 2
+  passed: 0
+  total: 25
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_127/src/com/google/javascript/jscomp/UnreachableCodeElimination.java\t\
+    2020-10-23 17:26:24.790538635 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_127/purify/patch/com/google/javascript/jscomp/UnreachableCodeElimination.java\t\
+    2020-10-23 17:26:24.790538635 -0400\n@@ -167,13 +167,22 @@\n                 outEdges.get(0).getValue()\
+    \ == Branch.UNCOND);\n             Node fallThrough = computeFollowing(n);\n \
+    \            Node nextCfgNode = outEdges.get(0).getDestination().getValue();\n\
+    -            if (nextCfgNode == fallThrough) {\n+            if (nextCfgNode ==\
+    \ fallThrough && !inFinally(n.getParent(), n)) {\n               removeNode(n);\n\
+    \             }\n           }\n       }\n     }\n \n+    private boolean inFinally(Node\
+    \ parent, Node child) {\n+      if (parent == null || parent.isFunction()) {\n\
+    +        return false;\n+      } else if (NodeUtil.isTryFinallyNode(parent, child))\
+    \ {\n+        return true;\n+      } else {\n+        return inFinally(parent.getParent(),\
+    \ parent);\n+      }\n+    }\n \n     private Node computeFollowing(Node n) {\n\
+    \       Node next = ControlFlowAnalysis.computeFollowNode(n);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_127/src/com/google/javascript/jscomp/UnreachableCodeElimination.java\t\
+    2020-10-23 17:35:27.670252198 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_127/purify/purified/com/google/javascript/jscomp/UnreachableCodeElimination.java\t\
+    2020-10-23 17:35:27.670252198 -0400\n@@ -167,13 +167,21 @@\n                 outEdges.get(0).getValue()\
+    \ == Branch.UNCOND);\n             Node fallThrough = computeFollowing(n);\n \
+    \            Node nextCfgNode = outEdges.get(0).getDestination().getValue();\n\
+    -            if (nextCfgNode == fallThrough) {\n+            if (nextCfgNode ==\
+    \ fallThrough && !inFinally(n.getParent(), n)) {\n               removeNode(n);\n\
+    \             }\n           }\n       }\n     }\n \n+    private boolean inFinally(Node\
+    \ parent, Node child) {\n+      if (parent == null || parent.isFunction()) {\n\
+    +      } else if (NodeUtil.isTryFinallyNode(parent, child)) {\n+        return\
+    \ true;\n+      } else {\n+        return inFinally(parent.getParent(), parent);\n\
+    +      }\n+    }\n \n     private Node computeFollowing(Node n) {\n       Node\
+    \ next = ControlFlowAnalysis.computeFollowNode(n);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/UnreachableCodeElimination:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:nextCfgNode == fallThrough @TO@ InfixExpression:nextCfgNode
+      == fallThrough && !inFinally(n.getParent(),n) '
+    - '---INS InfixExpression@@nextCfgNode == fallThrough && !inFinally(n.getParent(),n)
+      @TO@ IfStatement@@InfixExpression:nextCfgNode == fallThrough '
+    - '------INS InfixExpression@@nextCfgNode == fallThrough @TO@ InfixExpression@@nextCfgNode
+      == fallThrough && !inFinally(n.getParent(),n) '
+    - '---------MOV SimpleName@@nextCfgNode @TO@ InfixExpression@@nextCfgNode == fallThrough '
+    - '---------MOV Operator@@== @TO@ InfixExpression@@nextCfgNode == fallThrough '
+    - '---------MOV SimpleName@@fallThrough @TO@ InfixExpression@@nextCfgNode == fallThrough '
+    - '------INS Operator@@&& @TO@ InfixExpression@@nextCfgNode == fallThrough &&
+      !inFinally(n.getParent(),n) '
+    - '------INS PrefixExpression@@!inFinally(n.getParent(),n) @TO@ InfixExpression@@nextCfgNode
+      == fallThrough && !inFinally(n.getParent(),n) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!inFinally(n.getParent(),n) '
+    - '---------INS MethodInvocation@@inFinally(n.getParent(),n) @TO@ PrefixExpression@@!inFinally(n.getParent(),n) '
+    - '------------INS SimpleName@@MethodName:inFinally:[n.getParent(), n] @TO@ MethodInvocation@@inFinally(n.getParent(),n) '
+    - '---------------INS MethodInvocation@@n.getParent() @TO@ SimpleName@@MethodName:inFinally:[n.getParent(),
+      n] '
+    - '------------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getParent() '
+    - '------------------INS SimpleName@@MethodName:getParent:[] @TO@ MethodInvocation@@n.getParent() '
+    - '---------------INS SimpleName@@n @TO@ SimpleName@@MethodName:inFinally:[n.getParent(),
+      n] '
+    - '---DEL InfixExpression@@nextCfgNode == fallThrough '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@boolean, MethodName:inFinally, @@Argus:Node+parent+Node+child+
+      @TO@ TypeDeclaration@@[private]EliminationPass, AbstractShallowCallback '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@boolean, MethodName:inFinally,
+      @@Argus:Node+parent+Node+child+ '
+    - '---INS PrimitiveType@@boolean @TO@ MethodDeclaration@@private, @@boolean, MethodName:inFinally,
+      @@Argus:Node+parent+Node+child+ '
+    - '---INS SimpleName@@MethodName:inFinally @TO@ MethodDeclaration@@private, @@boolean,
+      MethodName:inFinally, @@Argus:Node+parent+Node+child+ '
+    - '---INS SingleVariableDeclaration@@Node parent @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:inFinally, @@Argus:Node+parent+Node+child+ '
+    - '------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node parent '
+    - '------INS SimpleName@@parent @TO@ SingleVariableDeclaration@@Node parent '
+    - '---INS SingleVariableDeclaration@@Node child @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:inFinally, @@Argus:Node+parent+Node+child+ '
+    - '------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node child '
+    - '------INS SimpleName@@child @TO@ SingleVariableDeclaration@@Node child '
+    - '---INS IfStatement@@InfixExpression:parent == null || parent.isFunction() @TO@
+      MethodDeclaration@@private, @@boolean, MethodName:inFinally, @@Argus:Node+parent+Node+child+ '
+    - '------INS InfixExpression@@parent == null || parent.isFunction() @TO@ IfStatement@@InfixExpression:parent
+      == null || parent.isFunction() '
+    - '---------INS InfixExpression@@parent == null @TO@ InfixExpression@@parent ==
+      null || parent.isFunction() '
+    - '------------INS SimpleName@@parent @TO@ InfixExpression@@parent == null '
+    - '------------INS Operator@@== @TO@ InfixExpression@@parent == null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@parent == null '
+    - '---------INS Operator@@|| @TO@ InfixExpression@@parent == null || parent.isFunction() '
+    - '---------INS MethodInvocation@@parent.isFunction() @TO@ InfixExpression@@parent
+      == null || parent.isFunction() '
+    - '------------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.isFunction() '
+    - '------------INS SimpleName@@MethodName:isFunction:[] @TO@ MethodInvocation@@parent.isFunction() '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:parent
+      == null || parent.isFunction() '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '------INS IfStatement@@MethodInvocation:NodeUtil.isTryFinallyNode(parent,child)
+      @TO@ IfStatement@@InfixExpression:parent == null || parent.isFunction() '
+    - '---------INS MethodInvocation@@NodeUtil.isTryFinallyNode(parent,child) @TO@
+      IfStatement@@MethodInvocation:NodeUtil.isTryFinallyNode(parent,child) '
+    - '------------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isTryFinallyNode(parent,child) '
+    - '------------INS SimpleName@@MethodName:isTryFinallyNode:[parent, child] @TO@
+      MethodInvocation@@NodeUtil.isTryFinallyNode(parent,child) '
+    - '---------------INS SimpleName@@parent @TO@ SimpleName@@MethodName:isTryFinallyNode:[parent,
+      child] '
+    - '---------------INS SimpleName@@child @TO@ SimpleName@@MethodName:isTryFinallyNode:[parent,
+      child] '
+    - '---------INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@MethodInvocation:NodeUtil.isTryFinallyNode(parent,child) '
+    - '------------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+    - '---------INS ReturnStatement@@MethodInvocation:inFinally(parent.getParent(),parent)
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isTryFinallyNode(parent,child) '
+    - '------------INS MethodInvocation@@inFinally(parent.getParent(),parent) @TO@
+      ReturnStatement@@MethodInvocation:inFinally(parent.getParent(),parent) '
+    - '---------------INS SimpleName@@MethodName:inFinally:[parent.getParent(), parent]
+      @TO@ MethodInvocation@@inFinally(parent.getParent(),parent) '
+    - '------------------INS MethodInvocation@@parent.getParent() @TO@ SimpleName@@MethodName:inFinally:[parent.getParent(),
+      parent] '
+    - '---------------------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.getParent() '
+    - '---------------------INS SimpleName@@MethodName:getParent:[] @TO@ MethodInvocation@@parent.getParent() '
+    - '------------------INS SimpleName@@parent @TO@ SimpleName@@MethodName:inFinally:[parent.getParent(),
+      parent] '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/UnreachableCodeElimination:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:nextCfgNode == fallThrough @TO@ InfixExpression:nextCfgNode
+      == fallThrough && !inFinally(n.getParent(),n) '
+    - '---INS InfixExpression@@nextCfgNode == fallThrough && !inFinally(n.getParent(),n)
+      @TO@ IfStatement@@InfixExpression:nextCfgNode == fallThrough '
+    - '------INS InfixExpression@@nextCfgNode == fallThrough @TO@ InfixExpression@@nextCfgNode
+      == fallThrough && !inFinally(n.getParent(),n) '
+    - '---------MOV SimpleName@@nextCfgNode @TO@ InfixExpression@@nextCfgNode == fallThrough '
+    - '---------MOV Operator@@== @TO@ InfixExpression@@nextCfgNode == fallThrough '
+    - '---------MOV SimpleName@@fallThrough @TO@ InfixExpression@@nextCfgNode == fallThrough '
+    - '------INS Operator@@&& @TO@ InfixExpression@@nextCfgNode == fallThrough &&
+      !inFinally(n.getParent(),n) '
+    - '------INS PrefixExpression@@!inFinally(n.getParent(),n) @TO@ InfixExpression@@nextCfgNode
+      == fallThrough && !inFinally(n.getParent(),n) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!inFinally(n.getParent(),n) '
+    - '---------INS MethodInvocation@@inFinally(n.getParent(),n) @TO@ PrefixExpression@@!inFinally(n.getParent(),n) '
+    - '------------INS SimpleName@@MethodName:inFinally:[n.getParent(), n] @TO@ MethodInvocation@@inFinally(n.getParent(),n) '
+    - '---------------INS MethodInvocation@@n.getParent() @TO@ SimpleName@@MethodName:inFinally:[n.getParent(),
+      n] '
+    - '------------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getParent() '
+    - '------------------INS SimpleName@@MethodName:getParent:[] @TO@ MethodInvocation@@n.getParent() '
+    - '---------------INS SimpleName@@n @TO@ SimpleName@@MethodName:inFinally:[n.getParent(),
+      n] '
+    - '---DEL InfixExpression@@nextCfgNode == fallThrough '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@boolean, MethodName:inFinally, @@Argus:Node+parent+Node+child+
+      @TO@ TypeDeclaration@@[private]EliminationPass, AbstractShallowCallback '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@boolean, MethodName:inFinally,
+      @@Argus:Node+parent+Node+child+ '
+    - '---INS PrimitiveType@@boolean @TO@ MethodDeclaration@@private, @@boolean, MethodName:inFinally,
+      @@Argus:Node+parent+Node+child+ '
+    - '---INS SimpleName@@MethodName:inFinally @TO@ MethodDeclaration@@private, @@boolean,
+      MethodName:inFinally, @@Argus:Node+parent+Node+child+ '
+    - '---INS SingleVariableDeclaration@@Node parent @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:inFinally, @@Argus:Node+parent+Node+child+ '
+    - '------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node parent '
+    - '------INS SimpleName@@parent @TO@ SingleVariableDeclaration@@Node parent '
+    - '---INS SingleVariableDeclaration@@Node child @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:inFinally, @@Argus:Node+parent+Node+child+ '
+    - '------INS SimpleType@@Node @TO@ SingleVariableDeclaration@@Node child '
+    - '------INS SimpleName@@child @TO@ SingleVariableDeclaration@@Node child '
+    - '---INS IfStatement@@InfixExpression:parent == null || parent.isFunction() @TO@
+      MethodDeclaration@@private, @@boolean, MethodName:inFinally, @@Argus:Node+parent+Node+child+ '
+    - '------INS InfixExpression@@parent == null || parent.isFunction() @TO@ IfStatement@@InfixExpression:parent
+      == null || parent.isFunction() '
+    - '---------INS InfixExpression@@parent == null @TO@ InfixExpression@@parent ==
+      null || parent.isFunction() '
+    - '------------INS SimpleName@@parent @TO@ InfixExpression@@parent == null '
+    - '------------INS Operator@@== @TO@ InfixExpression@@parent == null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@parent == null '
+    - '---------INS Operator@@|| @TO@ InfixExpression@@parent == null || parent.isFunction() '
+    - '---------INS MethodInvocation@@parent.isFunction() @TO@ InfixExpression@@parent
+      == null || parent.isFunction() '
+    - '------------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.isFunction() '
+    - '------------INS SimpleName@@MethodName:isFunction:[] @TO@ MethodInvocation@@parent.isFunction() '
+    - '------INS IfStatement@@MethodInvocation:NodeUtil.isTryFinallyNode(parent,child)
+      @TO@ IfStatement@@InfixExpression:parent == null || parent.isFunction() '
+    - '---------INS MethodInvocation@@NodeUtil.isTryFinallyNode(parent,child) @TO@
+      IfStatement@@MethodInvocation:NodeUtil.isTryFinallyNode(parent,child) '
+    - '------------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isTryFinallyNode(parent,child) '
+    - '------------INS SimpleName@@MethodName:isTryFinallyNode:[parent, child] @TO@
+      MethodInvocation@@NodeUtil.isTryFinallyNode(parent,child) '
+    - '---------------INS SimpleName@@parent @TO@ SimpleName@@MethodName:isTryFinallyNode:[parent,
+      child] '
+    - '---------------INS SimpleName@@child @TO@ SimpleName@@MethodName:isTryFinallyNode:[parent,
+      child] '
+    - '---------INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@MethodInvocation:NodeUtil.isTryFinallyNode(parent,child) '
+    - '------------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+    - '---------INS ReturnStatement@@MethodInvocation:inFinally(parent.getParent(),parent)
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isTryFinallyNode(parent,child) '
+    - '------------INS MethodInvocation@@inFinally(parent.getParent(),parent) @TO@
+      ReturnStatement@@MethodInvocation:inFinally(parent.getParent(),parent) '
+    - '---------------INS SimpleName@@MethodName:inFinally:[parent.getParent(), parent]
+      @TO@ MethodInvocation@@inFinally(parent.getParent(),parent) '
+    - '------------------INS MethodInvocation@@parent.getParent() @TO@ SimpleName@@MethodName:inFinally:[parent.getParent(),
+      parent] '
+    - '---------------------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.getParent() '
+    - '---------------------INS SimpleName@@MethodName:getParent:[] @TO@ MethodInvocation@@parent.getParent() '
+    - '------------------INS SimpleName@@parent @TO@ SimpleName@@MethodName:inFinally:[parent.getParent(),
+      parent] '
+  files_cnt: '1'
+  repair_actions_cnt: 2

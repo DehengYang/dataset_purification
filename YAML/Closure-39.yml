@@ -1,0 +1,171 @@
+1 bug_id: Closure-39
+2 src folder:
+  name of src folder: src
+  number of files: 409
+  number of java files: 395
+  number of src classes: 1322
+  number of test classes: 220
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.rhino.jstype.RecordTypeTest#testRecursiveRecord
+  - com.google.javascript.rhino.jstype.RecordTypeTest#testLongToString
+  failing tests:
+  - com.google.javascript.rhino.jstype.RecordTypeTest
+  number of all test cases: 7390
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.003
+  purification via delta debugging: 384.383
+  repair actions extraction: 1.502
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.rhino.jstype.RecordTypeTest#testLongToString: 757
+    com.google.javascript.rhino.jstype.RecordTypeTest#testRecursiveRecord: 765
+  fixed:
+    com.google.javascript.rhino.jstype.RecordTypeTest#testLongToString: 757
+    com.google.javascript.rhino.jstype.RecordTypeTest#testRecursiveRecord: 789
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 3
+  cov_patch_lines: 6
+  delta_patch_lines: 6
+  oriAdd: 3
+  oriDel: 3
+  ori_patch_lines: 6
+  purAdd: 3
+  purDel: 3
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 6
+  passed: 0
+  total: 12
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_39/src/com/google/javascript/rhino/jstype/PrototypeObjectType.java\t\
+    2020-10-22 12:07:59.168070479 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_39/purify/patch/com/google/javascript/rhino/jstype/PrototypeObjectType.java\t\
+    2020-10-22 12:07:59.168070479 -0400\n@@ -377,10 +377,10 @@\n \n         sb.append(property);\n\
+    \         sb.append(\": \");\n-        sb.append(getPropertyType(property).toString());\n\
+    +        sb.append(getPropertyType(property).toStringHelper(forAnnotations));\n\
+    \ \n         ++i;\n-        if (i == MAX_PRETTY_PRINTED_PROPERTIES) {\n+     \
+    \   if (!forAnnotations && i == MAX_PRETTY_PRINTED_PROPERTIES) {\n           sb.append(\"\
+    , ...\");\n           break;\n         }\n@@ -391,7 +391,7 @@\n       prettyPrint\
+    \ = true;\n       return sb.toString();\n     } else {\n-      return \"{...}\"\
+    ;\n+      return forAnnotations ? \"?\" : \"{...}\";\n     }\n   }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_39/src/com/google/javascript/rhino/jstype/PrototypeObjectType.java\t\
+    2020-10-22 12:14:50.255959017 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_39/purify/purified/com/google/javascript/rhino/jstype/PrototypeObjectType.java\t\
+    2020-10-22 12:14:50.243958670 -0400\n@@ -377,10 +377,10 @@\n \n         sb.append(property);\n\
+    \         sb.append(\": \");\n-        sb.append(getPropertyType(property).toString());\n\
+    +        sb.append(getPropertyType(property).toStringHelper(forAnnotations));\n\
+    \ \n         ++i;\n-        if (i == MAX_PRETTY_PRINTED_PROPERTIES) {\n+     \
+    \   if (!forAnnotations && i == MAX_PRETTY_PRINTED_PROPERTIES) {\n           sb.append(\"\
+    , ...\");\n           break;\n         }\n@@ -391,7 +391,7 @@\n       prettyPrint\
+    \ = true;\n       return sb.toString();\n     } else {\n-      return \"{...}\"\
+    ;\n+      return forAnnotations ? \"?\" : \"{...}\";\n     }\n   }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/rhino/jstype/PrototypeObjectType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:sb.append(getPropertyType(property).toString())
+      @TO@ MethodInvocation:sb.append(getPropertyType(property).toStringHelper(forAnnotations)) '
+    - '---UPD MethodInvocation@@sb.append(getPropertyType(property).toString()) @TO@
+      sb.append(getPropertyType(property).toStringHelper(forAnnotations)) '
+    - '------UPD SimpleName@@MethodName:append:[getPropertyType(property).toString()]
+      @TO@ MethodName:append:[getPropertyType(property).toStringHelper(forAnnotations)] '
+    - '---------UPD MethodInvocation@@getPropertyType(property).toString() @TO@ getPropertyType(property).toStringHelper(forAnnotations) '
+    - '------------UPD SimpleName@@MethodName:toString:[] @TO@ MethodName:toStringHelper:[forAnnotations] '
+    - '---------------INS SimpleName@@forAnnotations @TO@ SimpleName@@MethodName:toString:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:i == MAX_PRETTY_PRINTED_PROPERTIES @TO@ InfixExpression:!forAnnotations
+      && i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '---DEL InfixExpression@@i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '---INS InfixExpression@@!forAnnotations && i == MAX_PRETTY_PRINTED_PROPERTIES
+      @TO@ IfStatement@@InfixExpression:i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '------INS PrefixExpression@@!forAnnotations @TO@ InfixExpression@@!forAnnotations
+      && i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!forAnnotations '
+    - '---------INS SimpleName@@forAnnotations @TO@ PrefixExpression@@!forAnnotations '
+    - '------INS Operator@@&& @TO@ InfixExpression@@!forAnnotations && i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '------INS InfixExpression@@i == MAX_PRETTY_PRINTED_PROPERTIES @TO@ InfixExpression@@!forAnnotations
+      && i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '---------MOV SimpleName@@i @TO@ InfixExpression@@i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '---------MOV Operator@@== @TO@ InfixExpression@@i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '---------MOV SimpleName@@MAX_PRETTY_PRINTED_PROPERTIES @TO@ InfixExpression@@i
+      == MAX_PRETTY_PRINTED_PROPERTIES '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@StringLiteral:"{...}" @TO@ ConditionalExpression:forAnnotations
+      ? "?" : "{...}" '
+    - '---DEL StringLiteral@@"{...}" '
+    - '---INS ConditionalExpression@@forAnnotations ? "?" : "{...}" @TO@ ReturnStatement@@StringLiteral:"{...}" '
+    - '------INS SimpleName@@forAnnotations @TO@ ConditionalExpression@@forAnnotations
+      ? "?" : "{...}" '
+    - '------INS StringLiteral@@"?" @TO@ ConditionalExpression@@forAnnotations ? "?"
+      : "{...}" '
+    - '------INS StringLiteral@@"{...}" @TO@ ConditionalExpression@@forAnnotations
+      ? "?" : "{...}" '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/rhino/jstype/PrototypeObjectType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:sb.append(getPropertyType(property).toString())
+      @TO@ MethodInvocation:sb.append(getPropertyType(property).toStringHelper(forAnnotations)) '
+    - '---UPD MethodInvocation@@sb.append(getPropertyType(property).toString()) @TO@
+      sb.append(getPropertyType(property).toStringHelper(forAnnotations)) '
+    - '------UPD SimpleName@@MethodName:append:[getPropertyType(property).toString()]
+      @TO@ MethodName:append:[getPropertyType(property).toStringHelper(forAnnotations)] '
+    - '---------UPD MethodInvocation@@getPropertyType(property).toString() @TO@ getPropertyType(property).toStringHelper(forAnnotations) '
+    - '------------UPD SimpleName@@MethodName:toString:[] @TO@ MethodName:toStringHelper:[forAnnotations] '
+    - '---------------INS SimpleName@@forAnnotations @TO@ SimpleName@@MethodName:toString:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:i == MAX_PRETTY_PRINTED_PROPERTIES @TO@ InfixExpression:!forAnnotations
+      && i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '---DEL InfixExpression@@i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '---INS InfixExpression@@!forAnnotations && i == MAX_PRETTY_PRINTED_PROPERTIES
+      @TO@ IfStatement@@InfixExpression:i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '------INS PrefixExpression@@!forAnnotations @TO@ InfixExpression@@!forAnnotations
+      && i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!forAnnotations '
+    - '---------INS SimpleName@@forAnnotations @TO@ PrefixExpression@@!forAnnotations '
+    - '------INS Operator@@&& @TO@ InfixExpression@@!forAnnotations && i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '------INS InfixExpression@@i == MAX_PRETTY_PRINTED_PROPERTIES @TO@ InfixExpression@@!forAnnotations
+      && i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '---------MOV SimpleName@@i @TO@ InfixExpression@@i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '---------MOV Operator@@== @TO@ InfixExpression@@i == MAX_PRETTY_PRINTED_PROPERTIES '
+    - '---------MOV SimpleName@@MAX_PRETTY_PRINTED_PROPERTIES @TO@ InfixExpression@@i
+      == MAX_PRETTY_PRINTED_PROPERTIES '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@StringLiteral:"{...}" @TO@ ConditionalExpression:forAnnotations
+      ? "?" : "{...}" '
+    - '---DEL StringLiteral@@"{...}" '
+    - '---INS ConditionalExpression@@forAnnotations ? "?" : "{...}" @TO@ ReturnStatement@@StringLiteral:"{...}" '
+    - '------INS SimpleName@@forAnnotations @TO@ ConditionalExpression@@forAnnotations
+      ? "?" : "{...}" '
+    - '------INS StringLiteral@@"?" @TO@ ConditionalExpression@@forAnnotations ? "?"
+      : "{...}" '
+    - '------INS StringLiteral@@"{...}" @TO@ ConditionalExpression@@forAnnotations
+      ? "?" : "{...}" '
+  files_cnt: '1'
+  repair_actions_cnt: 3

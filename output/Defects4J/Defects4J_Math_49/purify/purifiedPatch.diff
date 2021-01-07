@@ -1,0 +1,19 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_49/src/main/java/org/apache/commons/math/linear/OpenMapRealVector.java	2020-10-22 07:22:34.504656048 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_49/purify/purified/org/apache/commons/math/linear/OpenMapRealVector.java	2020-10-22 07:22:34.504656048 -0400
+@@ -367,7 +367,7 @@
+     public OpenMapRealVector ebeMultiply(RealVector v) {
+         checkVectorDimensions(v.getDimension());
+         OpenMapRealVector res = new OpenMapRealVector(this);
+-        Iterator iter = res.entries.iterator();
++        Iterator iter = entries.iterator();
+         while (iter.hasNext()) {
+             iter.advance();
+             res.setEntry(iter.key(), iter.value() * v.getEntry(iter.key()));
+@@ -381,6 +381,7 @@
+         checkVectorDimensions(v.length);
+         OpenMapRealVector res = new OpenMapRealVector(this);
+         Iterator iter = res.entries.iterator();
++        Iterator iter = entries.iterator();
+         while (iter.hasNext()) {
+             iter.advance();
+             res.setEntry(iter.key(), iter.value() * v[iter.key()]);

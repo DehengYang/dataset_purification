@@ -1,0 +1,122 @@
+1 bug_id: Mockito-36
+2 src folder:
+  name of src folder: src
+  number of files: 228
+  number of java files: 190
+  number of src classes: 215
+  number of test classes: 163
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.spies.SpyingOnInterfacesTest#shouldFailInRuntimeWhenCallingRealMethodOnInterface
+  - org.mockito.internal.invocation.InvocationTest#shouldScreamWhenCallingRealMethodOnInterface
+  failing tests:
+  - org.mockitousage.spies.SpyingOnInterfacesTest
+  - org.mockito.internal.invocation.InvocationTest
+  number of all test cases: 0
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.631
+  purification via delta debugging: 197.644
+  repair actions extraction: 0.891
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 6
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_36/src/org/mockito/internal/invocation/Invocation.java\t\
+    2020-10-24 20:54:18.965268762 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_36/purify/patch/org/mockito/internal/invocation/Invocation.java\t\
+    2020-10-24 20:54:18.965268762 -0400\n@@ -8,6 +8,7 @@\n \n import org.hamcrest.Matcher;\n\
+    \ import org.mockito.exceptions.PrintableInvocation;\n+import org.mockito.exceptions.Reporter;\n\
+    \ import org.mockito.internal.debugging.Location;\n import org.mockito.internal.invocation.realmethod.RealMethod;\n\
+    \ import org.mockito.internal.matchers.*;\n@@ -199,6 +200,9 @@\n     }\n \n  \
+    \   public Object callRealMethod() throws Throwable {\n+        if (this.getMethod().getDeclaringClass().isInterface())\
+    \ {\n+            new Reporter().cannotCallRealMethodOnInterface();\n+       \
+    \ }\n         return realMethod.invoke(mock, rawArguments);\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_36/src/org/mockito/internal/invocation/Invocation.java\t\
+    2020-10-24 20:57:53.391474943 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_36/purify/purified/org/mockito/internal/invocation/Invocation.java\t\
+    2020-10-24 20:57:53.391474943 -0400\n@@ -8,6 +8,7 @@\n \n import org.hamcrest.Matcher;\n\
+    \ import org.mockito.exceptions.PrintableInvocation;\n+import org.mockito.exceptions.Reporter;\n\
+    \ import org.mockito.internal.debugging.Location;\n import org.mockito.internal.invocation.realmethod.RealMethod;\n\
+    \ import org.mockito.internal.matchers.*;\n@@ -199,6 +200,9 @@\n     }\n \n  \
+    \   public Object callRealMethod() throws Throwable {\n+        if (this.getMethod().getDeclaringClass().isInterface())\
+    \ {\n+            new Reporter().cannotCallRealMethodOnInterface();\n+       \
+    \ }\n         return realMethod.invoke(mock, rawArguments);\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/invocation/Invocation:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:this.getMethod().getDeclaringClass().isInterface()
+      @TO@ MethodDeclaration@@public, @@Object, MethodName:callRealMethod, @@Argus:nullThrowable,  '
+    - '---INS MethodInvocation@@this.getMethod().getDeclaringClass().isInterface()
+      @TO@ IfStatement@@MethodInvocation:this.getMethod().getDeclaringClass().isInterface() '
+    - '------INS ThisExpression@@this @TO@ MethodInvocation@@this.getMethod().getDeclaringClass().isInterface() '
+    - '------INS MethodInvocation@@MethodName:getMethod:[] @TO@ MethodInvocation@@this.getMethod().getDeclaringClass().isInterface() '
+    - '------INS MethodInvocation@@MethodName:getDeclaringClass:[] @TO@ MethodInvocation@@this.getMethod().getDeclaringClass().isInterface() '
+    - '------INS SimpleName@@MethodName:isInterface:[] @TO@ MethodInvocation@@this.getMethod().getDeclaringClass().isInterface() '
+    - '---INS ExpressionStatement@@MethodInvocation:new Reporter().cannotCallRealMethodOnInterface()
+      @TO@ IfStatement@@MethodInvocation:this.getMethod().getDeclaringClass().isInterface() '
+    - '------INS MethodInvocation@@new Reporter().cannotCallRealMethodOnInterface()
+      @TO@ ExpressionStatement@@MethodInvocation:new Reporter().cannotCallRealMethodOnInterface() '
+    - '---------INS ClassInstanceCreation@@Reporter[] @TO@ MethodInvocation@@new Reporter().cannotCallRealMethodOnInterface() '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@Reporter[] '
+    - '------------INS SimpleType@@Reporter @TO@ ClassInstanceCreation@@Reporter[] '
+    - '---------INS SimpleName@@MethodName:cannotCallRealMethodOnInterface:[] @TO@
+      MethodInvocation@@new Reporter().cannotCallRealMethodOnInterface() '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/invocation/Invocation:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:this.getMethod().getDeclaringClass().isInterface()
+      @TO@ MethodDeclaration@@public, @@Object, MethodName:callRealMethod, @@Argus:nullThrowable,  '
+    - '---INS MethodInvocation@@this.getMethod().getDeclaringClass().isInterface()
+      @TO@ IfStatement@@MethodInvocation:this.getMethod().getDeclaringClass().isInterface() '
+    - '------INS ThisExpression@@this @TO@ MethodInvocation@@this.getMethod().getDeclaringClass().isInterface() '
+    - '------INS MethodInvocation@@MethodName:getMethod:[] @TO@ MethodInvocation@@this.getMethod().getDeclaringClass().isInterface() '
+    - '------INS MethodInvocation@@MethodName:getDeclaringClass:[] @TO@ MethodInvocation@@this.getMethod().getDeclaringClass().isInterface() '
+    - '------INS SimpleName@@MethodName:isInterface:[] @TO@ MethodInvocation@@this.getMethod().getDeclaringClass().isInterface() '
+    - '---INS ExpressionStatement@@MethodInvocation:new Reporter().cannotCallRealMethodOnInterface()
+      @TO@ IfStatement@@MethodInvocation:this.getMethod().getDeclaringClass().isInterface() '
+    - '------INS MethodInvocation@@new Reporter().cannotCallRealMethodOnInterface()
+      @TO@ ExpressionStatement@@MethodInvocation:new Reporter().cannotCallRealMethodOnInterface() '
+    - '---------INS ClassInstanceCreation@@Reporter[] @TO@ MethodInvocation@@new Reporter().cannotCallRealMethodOnInterface() '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@Reporter[] '
+    - '------------INS SimpleType@@Reporter @TO@ ClassInstanceCreation@@Reporter[] '
+    - '---------INS SimpleName@@MethodName:cannotCallRealMethodOnInterface:[] @TO@
+      MethodInvocation@@new Reporter().cannotCallRealMethodOnInterface() '
+  repair_actions_cnt: 1

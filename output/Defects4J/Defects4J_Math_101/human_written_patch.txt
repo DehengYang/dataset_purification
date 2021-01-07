@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_101/src/java/org/apache/commons/math/complex/ComplexFormat.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_101/fixed-version/src/java/org/apache/commons/math/complex/ComplexFormat.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_101/src/java/org/apache/commons/math/complex/ComplexFormat.java	2020-03-01 00:24:20.392528120 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_101/fixed-version/src/java/org/apache/commons/math/complex/ComplexFormat.java	2020-03-01 00:24:22.908646678 -0800
+@@ -374,7 +374,8 @@
+         int n = getImaginaryCharacter().length();
+         startIndex = pos.getIndex();
+         int endIndex = startIndex + n;
+-        if (
++        if ((startIndex >= source.length()) ||
++            (endIndex > source.length()) ||
+             source.substring(startIndex, endIndex).compareTo(
+             getImaginaryCharacter()) != 0) {
+             // set index back to initial, error index should be the start index

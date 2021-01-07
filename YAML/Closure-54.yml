@@ -1,0 +1,190 @@
+1 bug_id: Closure-54
+2 src folder:
+  name of src folder: src
+  number of files: 418
+  number of java files: 404
+  number of src classes: 1306
+  number of test classes: 216
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypedScopeCreatorTest#testPropertyOnUnknownSuperClass2
+  - com.google.javascript.jscomp.TypeCheckTest#testIssue537b
+  - com.google.javascript.jscomp.TypeCheckTest#testIssue537a
+  failing tests:
+  - com.google.javascript.jscomp.TypedScopeCreatorTest
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 7228
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.848
+  purification via delta debugging: 1034.5601
+  repair actions extraction: 2.821
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue537a: 5021
+    com.google.javascript.jscomp.TypeCheckTest#testIssue537b: 5011
+    com.google.javascript.jscomp.TypedScopeCreatorTest#testPropertyOnUnknownSuperClass2: 4926
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue537a: 4982
+    com.google.javascript.jscomp.TypeCheckTest#testIssue537b: 4982
+    com.google.javascript.jscomp.TypedScopeCreatorTest#testPropertyOnUnknownSuperClass2: 4943
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 12
+  covDel: 3
+  cov_patch_lines: 15
+  delta_patch_lines: 13
+  oriAdd: 12
+  oriDel: 3
+  ori_patch_lines: 15
+  purAdd: 10
+  purDel: 3
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 5
+  original: 5
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 34
+  failFail: 8
+  passed: 2
+  total: 44
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_54/src/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 06:49:09.743583509 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_54/purify/patch/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 06:49:09.735583277 -0400\n@@ -1410,7 +1410,13 @@\n           // then\
+    \ they are responsible for making sure that the object literal's\n           //\
+    \ implicit prototype is set up appropriately. We just obey\n           // the\
+    \ @extends tag.\n-          if (!qVar.isTypeInferred()) {\n+          ObjectType\
+    \ qVarType = ObjectType.cast(qVar.getType());\n+          if (qVarType != null\
+    \ &&\n+              rhsValue != null &&\n+              rhsValue.getType() ==\
+    \ Token.OBJECTLIT) {\n+            typeRegistry.resetImplicitPrototype(\n+   \
+    \             rhsValue.getJSType(), qVarType.getImplicitPrototype());\n+     \
+    \     } else if (!qVar.isTypeInferred()) {\n             // If the programmer\
+    \ has declared that F inherits from Super,\n             // and they assign F.prototype\
+    \ to some arbitrary expression,\n             // there's not much we can do. We\
+    \ just ignore the expression,"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_54/src/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 07:06:58.294513090 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_54/purify/purified/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 07:06:58.294513090 -0400\n@@ -1410,7 +1410,12 @@\n           // then\
+    \ they are responsible for making sure that the object literal's\n           //\
+    \ implicit prototype is set up appropriately. We just obey\n           // the\
+    \ @extends tag.\n-          if (!qVar.isTypeInferred()) {\n+          ObjectType\
+    \ qVarType = ObjectType.cast(qVar.getType());\n+          if (qVarType != null\
+    \ &&\n+              rhsValue.getType() == Token.OBJECTLIT) {\n+            typeRegistry.resetImplicitPrototype(\n\
+    +                rhsValue.getJSType(), qVarType.getImplicitPrototype());\n+  \
+    \        } else if (!qVar.isTypeInferred()) {\n             // If the programmer\
+    \ has declared that F inherits from Super,\n             // and they assign F.prototype\
+    \ to some arbitrary expression,\n             // there's not much we can do. We\
+    \ just ignore the expression,"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '2'
+  com/google/javascript/jscomp/TypedScopeCreator, com/google/javascript/rhino/jstype/FunctionType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:baseType.hasReferenceName() || baseType.isUnknownType()
+      || isNativeObjectType()|| baseType.isFunctionPrototypeType()|| !(baseType instanceof
+      PrototypeObjectType) @TO@ InfixExpression:baseType.hasReferenceName() || isNativeObjectType()
+      || baseType.isFunctionPrototypeType()|| !(baseType instanceof PrototypeObjectType) '
+    - '---UPD InfixExpression@@baseType.hasReferenceName() || baseType.isUnknownType()
+      || isNativeObjectType()|| baseType.isFunctionPrototypeType()|| !(baseType instanceof
+      PrototypeObjectType) @TO@ baseType.hasReferenceName() || isNativeObjectType()
+      || baseType.isFunctionPrototypeType()|| !(baseType instanceof PrototypeObjectType) '
+    - '------DEL MethodInvocation@@baseType.isUnknownType() '
+    - '---------DEL SimpleName@@Name:baseType '
+    - '---------DEL SimpleName@@MethodName:isUnknownType:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@PrototypeObjectType oldPrototype=this.prototype;
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:setPrototype, @@Argus:PrototypeObjectType+prototype+ '
+    - '---INS SimpleType@@PrototypeObjectType @TO@ VariableDeclarationStatement@@PrototypeObjectType
+      oldPrototype=this.prototype; '
+    - '---INS VariableDeclarationFragment@@oldPrototype=this.prototype @TO@ VariableDeclarationStatement@@PrototypeObjectType
+      oldPrototype=this.prototype; '
+    - '------INS SimpleName@@oldPrototype @TO@ VariableDeclarationFragment@@oldPrototype=this.prototype '
+    - '------INS FieldAccess@@this.prototype @TO@ VariableDeclarationFragment@@oldPrototype=this.prototype '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.prototype '
+    - '---------INS SimpleName@@prototype @TO@ FieldAccess@@this.prototype '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@boolean replacedPrototype=prototype != null;
+      @TO@ boolean replacedPrototype=oldPrototype != null; '
+    - '---UPD VariableDeclarationFragment@@replacedPrototype=prototype != null @TO@
+      replacedPrototype=oldPrototype != null '
+    - '------UPD InfixExpression@@prototype != null @TO@ oldPrototype != null '
+    - '---------UPD SimpleName@@prototype @TO@ oldPrototype '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:oldPrototype != null @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:setPrototype, @@Argus:PrototypeObjectType+prototype+ '
+    - '---INS InfixExpression@@oldPrototype != null @TO@ IfStatement@@InfixExpression:oldPrototype
+      != null '
+    - '------INS SimpleName@@oldPrototype @TO@ InfixExpression@@oldPrototype != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@oldPrototype != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@oldPrototype != null '
+    - '---INS ExpressionStatement@@MethodInvocation:oldPrototype.setOwnerFunction(null)
+      @TO@ IfStatement@@InfixExpression:oldPrototype != null '
+    - '------INS MethodInvocation@@oldPrototype.setOwnerFunction(null) @TO@ ExpressionStatement@@MethodInvocation:oldPrototype.setOwnerFunction(null) '
+    - '---------INS SimpleName@@Name:oldPrototype @TO@ MethodInvocation@@oldPrototype.setOwnerFunction(null) '
+    - '---------INS SimpleName@@MethodName:setOwnerFunction:[null] @TO@ MethodInvocation@@oldPrototype.setOwnerFunction(null) '
+    - '------------INS NullLiteral@@null @TO@ SimpleName@@MethodName:setOwnerFunction:[null] '
+  files_cnt: '2'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '2'
+  com/google/javascript/jscomp/TypedScopeCreator, com/google/javascript/rhino/jstype/FunctionType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:baseType.hasReferenceName() || baseType.isUnknownType()
+      || isNativeObjectType()|| baseType.isFunctionPrototypeType()|| !(baseType instanceof
+      PrototypeObjectType) @TO@ InfixExpression:baseType.hasReferenceName() || isNativeObjectType()
+      || baseType.isFunctionPrototypeType()|| !(baseType instanceof PrototypeObjectType) '
+    - '---UPD InfixExpression@@baseType.hasReferenceName() || baseType.isUnknownType()
+      || isNativeObjectType()|| baseType.isFunctionPrototypeType()|| !(baseType instanceof
+      PrototypeObjectType) @TO@ baseType.hasReferenceName() || isNativeObjectType()
+      || baseType.isFunctionPrototypeType()|| !(baseType instanceof PrototypeObjectType) '
+    - '------DEL MethodInvocation@@baseType.isUnknownType() '
+    - '---------DEL SimpleName@@Name:baseType '
+    - '---------DEL SimpleName@@MethodName:isUnknownType:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@PrototypeObjectType oldPrototype=this.prototype;
+      @TO@ MethodDeclaration@@public, @@boolean, MethodName:setPrototype, @@Argus:PrototypeObjectType+prototype+ '
+    - '---INS SimpleType@@PrototypeObjectType @TO@ VariableDeclarationStatement@@PrototypeObjectType
+      oldPrototype=this.prototype; '
+    - '---INS VariableDeclarationFragment@@oldPrototype=this.prototype @TO@ VariableDeclarationStatement@@PrototypeObjectType
+      oldPrototype=this.prototype; '
+    - '------INS SimpleName@@oldPrototype @TO@ VariableDeclarationFragment@@oldPrototype=this.prototype '
+    - '------INS FieldAccess@@this.prototype @TO@ VariableDeclarationFragment@@oldPrototype=this.prototype '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.prototype '
+    - '---------INS SimpleName@@prototype @TO@ FieldAccess@@this.prototype '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@boolean replacedPrototype=prototype != null;
+      @TO@ boolean replacedPrototype=oldPrototype != null; '
+    - '---UPD VariableDeclarationFragment@@replacedPrototype=prototype != null @TO@
+      replacedPrototype=oldPrototype != null '
+    - '------UPD InfixExpression@@prototype != null @TO@ oldPrototype != null '
+    - '---------UPD SimpleName@@prototype @TO@ oldPrototype '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:oldPrototype != null @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:setPrototype, @@Argus:PrototypeObjectType+prototype+ '
+    - '---INS InfixExpression@@oldPrototype != null @TO@ IfStatement@@InfixExpression:oldPrototype
+      != null '
+    - '------INS SimpleName@@oldPrototype @TO@ InfixExpression@@oldPrototype != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@oldPrototype != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@oldPrototype != null '
+  files_cnt: '2'
+  repair_actions_cnt: 4

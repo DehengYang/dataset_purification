@@ -1,0 +1,26 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_88/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java	2020-10-21 13:55:57.705398122 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_88/purify/purified/org/apache/commons/math/optimization/linear/SimplexTableau.java	2020-10-21 13:55:57.705398122 -0400
+@@ -326,19 +326,17 @@
+         Integer basicRow =
+             getBasicRow(getNumObjectiveFunctions() + getOriginalNumDecisionVariables());
+         double mostNegative = basicRow == null ? 0 : getEntry(basicRow, getRhsOffset());
++        Set<Integer> basicRows = new HashSet<Integer>();
+         for (int i = 0; i < coefficients.length; i++) {
+             basicRow = getBasicRow(getNumObjectiveFunctions() + i);
++            if (basicRows.contains(basicRow)) {
+                 // if multiple variables can take a given value 
+                 // then we choose the first and set the rest equal to 0
++            } else {
++                basicRows.add(basicRow);
+                 coefficients[i] =
+                     (basicRow == null ? 0 : getEntry(basicRow, getRhsOffset())) -
+                     (restrictToNonNegative ? 0 : mostNegative);
+-            if (basicRow != null) {
+-                for (int j = getNumObjectiveFunctions(); j < getNumObjectiveFunctions() + i; j++) {
+-                    if (tableau.getEntry(basicRow, j) == 1) {
+-                         coefficients[i] = 0;
+-                    }
+-                }
+             }
+         }
+         return new RealPointValuePair(coefficients, f.getValue(coefficients));

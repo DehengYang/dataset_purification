@@ -1,0 +1,44 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_14/source/org/jfree/chart/plot/XYPlot.java	2020-10-21 00:11:46.495695055 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_14/purify/purified/org/jfree/chart/plot/XYPlot.java	2020-10-21 00:11:46.495695055 -0400
+@@ -2290,6 +2290,9 @@
+             markers = (ArrayList) this.backgroundDomainMarkers.get(new Integer(
+                     index));
+         }
++        if (markers == null) {
++            return false;
++        }
+         boolean removed = markers.remove(marker);
+         if (removed && notify) {
+             fireChangeEvent();
+@@ -2526,6 +2529,9 @@
+             markers = (ArrayList) this.backgroundRangeMarkers.get(new Integer(
+                     index));
+         }
++        if (markers == null) {
++            return false;
++        }
+         boolean removed = markers.remove(marker);
+         if (removed && notify) {
+             fireChangeEvent();
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_14/source/org/jfree/chart/plot/CategoryPlot.java	2020-10-21 00:11:46.503695287 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_14/purify/purified/org/jfree/chart/plot/CategoryPlot.java	2020-10-21 00:11:46.503695287 -0400
+@@ -2163,6 +2163,9 @@
+             markers = (ArrayList) this.backgroundDomainMarkers.get(new Integer(
+                     index));
+         }
++        if (markers == null) {
++            return false;
++        }
+         boolean removed = markers.remove(marker);
+         if (removed && notify) {
+             fireChangeEvent();
+@@ -2445,6 +2448,9 @@
+             markers = (ArrayList) this.backgroundRangeMarkers.get(new Integer(
+                     index));
+         }
++        if (markers == null) {
++            return false;
++        }
+         boolean removed = markers.remove(marker);
+         if (removed && notify) {
+             fireChangeEvent();

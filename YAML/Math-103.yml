@@ -1,0 +1,203 @@
+1 bug_id: Math-103
+2 src folder:
+  name of src folder: java
+  number of files: 234
+  number of java files: 215
+  number of src classes: 227
+  number of test classes: 133
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.distribution.NormalDistributionTest#testExtremeValues
+  failing tests:
+  - org.apache.commons.math.distribution.NormalDistributionTest
+  number of all test cases: 1014
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 0.528
+  purification via delta debugging: 150.929
+  repair actions extraction: 0.761
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.distribution.NormalDistributionTest#testExtremeValues: 75
+  fixed:
+    org.apache.commons.math.distribution.NormalDistributionTest#testExtremeValues: 74
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 10
+  covDel: 0
+  cov_patch_lines: 10
+  delta_patch_lines: 9
+  oriAdd: 10
+  oriDel: 0
+  ori_patch_lines: 10
+  purAdd: 9
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 24
+  failFail: 0
+  passed: 0
+  total: 24
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_103/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java\t\
+    2020-10-22 08:50:43.489728384 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_103/purify/patch/org/apache/commons/math/distribution/NormalDistributionImpl.java\t\
+    2020-10-22 08:50:43.489728384 -0400\n@@ -106,8 +106,18 @@\n      * convergence\
+    \ exception is caught and 0 or 1 is returned.\n      */\n     public double cumulativeProbability(double\
+    \ x) throws MathException {\n+        try {\n             return 0.5 * (1.0 +\
+    \ Erf.erf((x - mean) /\n                     (standardDeviation * Math.sqrt(2.0))));\n\
+    +        } catch (MaxIterationsExceededException ex) {\n+            if (x < (mean\
+    \ - 20 * standardDeviation)) { // JDK 1.5 blows at 38\n+                return\
+    \ 0.0d;\n+            } else if (x > (mean + 20 * standardDeviation)) {\n+   \
+    \             return 1.0d;\n+            } else {\n+                throw ex;\n\
+    +            }\n+        }\n     }\n     \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_103/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java\t\
+    2020-10-22 08:53:24.134376206 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_103/purify/purified/org/apache/commons/math/distribution/NormalDistributionImpl.java\t\
+    2020-10-22 08:53:24.134376206 -0400\n@@ -106,8 +106,17 @@\n      * convergence\
+    \ exception is caught and 0 or 1 is returned.\n      */\n     public double cumulativeProbability(double\
+    \ x) throws MathException {\n+        try {\n             return 0.5 * (1.0 +\
+    \ Erf.erf((x - mean) /\n                     (standardDeviation * Math.sqrt(2.0))));\n\
+    +        } catch (MaxIterationsExceededException ex) {\n+            if (x < (mean\
+    \ - 20 * standardDeviation)) { // JDK 1.5 blows at 38\n+                return\
+    \ 0.0d;\n+            } else if (x > (mean + 20 * standardDeviation)) {\n+   \
+    \             return 1.0d;\n+            } else {\n+            }\n+        }\n\
+    \     }\n     \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/distribution/NormalDistributionImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS TryStatement@@try:[] @TO@ MethodDeclaration@@public, @@double, MethodName:cumulativeProbability,
+      @@Argus:double+x+MathException,  '
+    - '---MOV ReturnStatement@@InfixExpression:0.5 * (1.0 + Erf.erf((x - mean) / (standardDeviation
+      * Math.sqrt(2.0)))) @TO@ TryStatement@@try:[] '
+    - '---INS CatchClause@@MaxIterationsExceededException ex @TO@ TryStatement@@try:[] '
+    - '------INS SingleVariableDeclaration@@MaxIterationsExceededException ex @TO@
+      CatchClause@@MaxIterationsExceededException ex '
+    - '---------INS SimpleType@@MaxIterationsExceededException @TO@ SingleVariableDeclaration@@MaxIterationsExceededException
+      ex '
+    - '---------INS SimpleName@@ex @TO@ SingleVariableDeclaration@@MaxIterationsExceededException
+      ex '
+    - '------INS IfStatement@@InfixExpression:x < (mean - 20 * standardDeviation)
+      @TO@ CatchClause@@MaxIterationsExceededException ex '
+    - '---------INS InfixExpression@@x < (mean - 20 * standardDeviation) @TO@ IfStatement@@InfixExpression:x
+      < (mean - 20 * standardDeviation) '
+    - '------------INS SimpleName@@x @TO@ InfixExpression@@x < (mean - 20 * standardDeviation) '
+    - '------------INS Operator@@< @TO@ InfixExpression@@x < (mean - 20 * standardDeviation) '
+    - '------------INS ParenthesizedExpression@@(mean - 20 * standardDeviation) @TO@
+      InfixExpression@@x < (mean - 20 * standardDeviation) '
+    - '---------------INS InfixExpression@@mean - 20 * standardDeviation @TO@ ParenthesizedExpression@@(mean
+      - 20 * standardDeviation) '
+    - '------------------INS SimpleName@@mean @TO@ InfixExpression@@mean - 20 * standardDeviation '
+    - '------------------INS Operator@@- @TO@ InfixExpression@@mean - 20 * standardDeviation '
+    - '------------------INS InfixExpression@@20 * standardDeviation @TO@ InfixExpression@@mean
+      - 20 * standardDeviation '
+    - '---------------------INS NumberLiteral@@20 @TO@ InfixExpression@@20 * standardDeviation '
+    - '---------------------INS Operator@@* @TO@ InfixExpression@@20 * standardDeviation '
+    - '---------------------INS SimpleName@@standardDeviation @TO@ InfixExpression@@20
+      * standardDeviation '
+    - '---------INS ReturnStatement@@NumberLiteral:0.0d @TO@ IfStatement@@InfixExpression:x
+      < (mean - 20 * standardDeviation) '
+    - '------------INS NumberLiteral@@0.0d @TO@ ReturnStatement@@NumberLiteral:0.0d '
+    - '---------INS IfStatement@@InfixExpression:x > (mean + 20 * standardDeviation)
+      @TO@ IfStatement@@InfixExpression:x < (mean - 20 * standardDeviation) '
+    - '------------INS InfixExpression@@x > (mean + 20 * standardDeviation) @TO@ IfStatement@@InfixExpression:x
+      > (mean + 20 * standardDeviation) '
+    - '---------------INS SimpleName@@x @TO@ InfixExpression@@x > (mean + 20 * standardDeviation) '
+    - '---------------INS Operator@@> @TO@ InfixExpression@@x > (mean + 20 * standardDeviation) '
+    - '---------------INS ParenthesizedExpression@@(mean + 20 * standardDeviation)
+      @TO@ InfixExpression@@x > (mean + 20 * standardDeviation) '
+    - '------------------INS InfixExpression@@mean + 20 * standardDeviation @TO@ ParenthesizedExpression@@(mean
+      + 20 * standardDeviation) '
+    - '---------------------INS SimpleName@@mean @TO@ InfixExpression@@mean + 20 *
+      standardDeviation '
+    - '---------------------INS Operator@@+ @TO@ InfixExpression@@mean + 20 * standardDeviation '
+    - '---------------------INS InfixExpression@@20 * standardDeviation @TO@ InfixExpression@@mean
+      + 20 * standardDeviation '
+    - '------------------------INS NumberLiteral@@20 @TO@ InfixExpression@@20 * standardDeviation '
+    - '------------------------INS Operator@@* @TO@ InfixExpression@@20 * standardDeviation '
+    - '------------------------INS SimpleName@@standardDeviation @TO@ InfixExpression@@20
+      * standardDeviation '
+    - '------------INS ReturnStatement@@NumberLiteral:1.0d @TO@ IfStatement@@InfixExpression:x
+      > (mean + 20 * standardDeviation) '
+    - '---------------INS NumberLiteral@@1.0d @TO@ ReturnStatement@@NumberLiteral:1.0d '
+    - '------------INS ThrowStatement@@SimpleName:ex @TO@ IfStatement@@InfixExpression:x
+      > (mean + 20 * standardDeviation) '
+    - '---------------INS SimpleName@@ex @TO@ ThrowStatement@@SimpleName:ex '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/distribution/NormalDistributionImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS TryStatement@@try:[] @TO@ MethodDeclaration@@public, @@double, MethodName:cumulativeProbability,
+      @@Argus:double+x+MathException,  '
+    - '---MOV ReturnStatement@@InfixExpression:0.5 * (1.0 + Erf.erf((x - mean) / (standardDeviation
+      * Math.sqrt(2.0)))) @TO@ TryStatement@@try:[] '
+    - '---INS CatchClause@@MaxIterationsExceededException ex @TO@ TryStatement@@try:[] '
+    - '------INS SingleVariableDeclaration@@MaxIterationsExceededException ex @TO@
+      CatchClause@@MaxIterationsExceededException ex '
+    - '---------INS SimpleType@@MaxIterationsExceededException @TO@ SingleVariableDeclaration@@MaxIterationsExceededException
+      ex '
+    - '---------INS SimpleName@@ex @TO@ SingleVariableDeclaration@@MaxIterationsExceededException
+      ex '
+    - '------INS IfStatement@@InfixExpression:x < (mean - 20 * standardDeviation)
+      @TO@ CatchClause@@MaxIterationsExceededException ex '
+    - '---------INS InfixExpression@@x < (mean - 20 * standardDeviation) @TO@ IfStatement@@InfixExpression:x
+      < (mean - 20 * standardDeviation) '
+    - '------------INS SimpleName@@x @TO@ InfixExpression@@x < (mean - 20 * standardDeviation) '
+    - '------------INS Operator@@< @TO@ InfixExpression@@x < (mean - 20 * standardDeviation) '
+    - '------------INS ParenthesizedExpression@@(mean - 20 * standardDeviation) @TO@
+      InfixExpression@@x < (mean - 20 * standardDeviation) '
+    - '---------------INS InfixExpression@@mean - 20 * standardDeviation @TO@ ParenthesizedExpression@@(mean
+      - 20 * standardDeviation) '
+    - '------------------INS SimpleName@@mean @TO@ InfixExpression@@mean - 20 * standardDeviation '
+    - '------------------INS Operator@@- @TO@ InfixExpression@@mean - 20 * standardDeviation '
+    - '------------------INS InfixExpression@@20 * standardDeviation @TO@ InfixExpression@@mean
+      - 20 * standardDeviation '
+    - '---------------------INS NumberLiteral@@20 @TO@ InfixExpression@@20 * standardDeviation '
+    - '---------------------INS Operator@@* @TO@ InfixExpression@@20 * standardDeviation '
+    - '---------------------INS SimpleName@@standardDeviation @TO@ InfixExpression@@20
+      * standardDeviation '
+    - '---------INS ReturnStatement@@NumberLiteral:0.0d @TO@ IfStatement@@InfixExpression:x
+      < (mean - 20 * standardDeviation) '
+    - '------------INS NumberLiteral@@0.0d @TO@ ReturnStatement@@NumberLiteral:0.0d '
+    - '---------INS IfStatement@@InfixExpression:x > (mean + 20 * standardDeviation)
+      @TO@ IfStatement@@InfixExpression:x < (mean - 20 * standardDeviation) '
+    - '------------INS InfixExpression@@x > (mean + 20 * standardDeviation) @TO@ IfStatement@@InfixExpression:x
+      > (mean + 20 * standardDeviation) '
+    - '---------------INS SimpleName@@x @TO@ InfixExpression@@x > (mean + 20 * standardDeviation) '
+    - '---------------INS Operator@@> @TO@ InfixExpression@@x > (mean + 20 * standardDeviation) '
+    - '---------------INS ParenthesizedExpression@@(mean + 20 * standardDeviation)
+      @TO@ InfixExpression@@x > (mean + 20 * standardDeviation) '
+    - '------------------INS InfixExpression@@mean + 20 * standardDeviation @TO@ ParenthesizedExpression@@(mean
+      + 20 * standardDeviation) '
+    - '---------------------INS SimpleName@@mean @TO@ InfixExpression@@mean + 20 *
+      standardDeviation '
+    - '---------------------INS Operator@@+ @TO@ InfixExpression@@mean + 20 * standardDeviation '
+    - '---------------------INS InfixExpression@@20 * standardDeviation @TO@ InfixExpression@@mean
+      + 20 * standardDeviation '
+    - '------------------------INS NumberLiteral@@20 @TO@ InfixExpression@@20 * standardDeviation '
+    - '------------------------INS Operator@@* @TO@ InfixExpression@@20 * standardDeviation '
+    - '------------------------INS SimpleName@@standardDeviation @TO@ InfixExpression@@20
+      * standardDeviation '
+    - '------------INS ReturnStatement@@NumberLiteral:1.0d @TO@ IfStatement@@InfixExpression:x
+      > (mean + 20 * standardDeviation) '
+    - '---------------INS NumberLiteral@@1.0d @TO@ ReturnStatement@@NumberLiteral:1.0d '
+  repair_actions_cnt: 1

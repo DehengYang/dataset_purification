@@ -1,0 +1,148 @@
+1 bug_id: Closure-53
+2 src folder:
+  name of src folder: src
+  number of files: 421
+  number of java files: 407
+  number of src classes: 1316
+  number of test classes: 217
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.InlineObjectLiteralsTest#testBug545
+  failing tests:
+  - com.google.javascript.jscomp.InlineObjectLiteralsTest
+  number of all test cases: 7245
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.736
+  purification via delta debugging: 216.869
+  repair actions extraction: 0.939
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.InlineObjectLiteralsTest#testBug545: 3195
+  fixed:
+    com.google.javascript.jscomp.InlineObjectLiteralsTest#testBug545: 3167
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 0
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_53/src/com/google/javascript/jscomp/InlineObjectLiterals.java\t\
+    2020-10-23 06:43:40.878066086 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_53/purify/patch/com/google/javascript/jscomp/InlineObjectLiterals.java\t\
+    2020-10-23 06:43:40.878066086 -0400\n@@ -328,6 +328,9 @@\n       }\n \n      \
+    \ Node replacement;\n+      if (nodes.isEmpty()) {\n+        replacement = new\
+    \ Node(Token.TRUE);\n+      } else {\n         // All assignments evaluate to\
+    \ true, so make sure that the\n         // expr statement evaluates to true in\
+    \ case it matters.\n         nodes.add(new Node(Token.TRUE));\n@@ -347,6 +350,7\
+    \ @@\n         }\n         cur.addChildToFront(nodes.get(i));\n         cur.addChildToFront(nodes.get(i\
+    \ + 1));\n+      }\n \n       Node replace = ref.getParent();\n       replacement.copyInformationFromForTree(replace);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_53/src/com/google/javascript/jscomp/InlineObjectLiterals.java\t\
+    2020-10-23 06:47:46.189165527 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_53/purify/purified/com/google/javascript/jscomp/InlineObjectLiterals.java\t\
+    2020-10-23 06:47:46.189165527 -0400\n@@ -328,6 +328,9 @@\n       }\n \n      \
+    \ Node replacement;\n+      if (nodes.isEmpty()) {\n+        replacement = new\
+    \ Node(Token.TRUE);\n+      } else {\n         // All assignments evaluate to\
+    \ true, so make sure that the\n         // expr statement evaluates to true in\
+    \ case it matters.\n         nodes.add(new Node(Token.TRUE));\n@@ -347,6 +350,7\
+    \ @@\n         }\n         cur.addChildToFront(nodes.get(i));\n         cur.addChildToFront(nodes.get(i\
+    \ + 1));\n+      }\n \n       Node replace = ref.getParent();\n       replacement.copyInformationFromForTree(replace);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/InlineObjectLiterals:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:nodes.isEmpty() @TO@ MethodDeclaration@@private,
+      @@void, MethodName:replaceAssignmentExpression, @@Argus:Var+v+Reference+ref+Map<String,String>+varmap+ '
+    - '---INS MethodInvocation@@nodes.isEmpty() @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '------INS SimpleName@@Name:nodes @TO@ MethodInvocation@@nodes.isEmpty() '
+    - '------INS SimpleName@@MethodName:isEmpty:[] @TO@ MethodInvocation@@nodes.isEmpty() '
+    - '---INS ExpressionStatement@@Assignment:replacement=new Node(Token.TRUE) @TO@
+      IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '------INS Assignment@@replacement=new Node(Token.TRUE) @TO@ ExpressionStatement@@Assignment:replacement=new
+      Node(Token.TRUE) '
+    - '---------INS SimpleName@@replacement @TO@ Assignment@@replacement=new Node(Token.TRUE) '
+    - '---------INS Operator@@= @TO@ Assignment@@replacement=new Node(Token.TRUE) '
+    - '---------INS ClassInstanceCreation@@Node[Token.TRUE] @TO@ Assignment@@replacement=new
+      Node(Token.TRUE) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@Node[Token.TRUE] '
+    - '------------INS SimpleType@@Node @TO@ ClassInstanceCreation@@Node[Token.TRUE] '
+    - '------------INS QualifiedName@@Token.TRUE @TO@ ClassInstanceCreation@@Node[Token.TRUE] '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.TRUE '
+    - '---------------INS SimpleName@@TRUE @TO@ QualifiedName@@Token.TRUE '
+    - '---MOV ExpressionStatement@@MethodInvocation:nodes.add(new Node(Token.TRUE))
+      @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV ExpressionStatement@@Assignment:nodes=Lists.reverse(nodes) @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV ExpressionStatement@@Assignment:replacement=new Node(Token.COMMA) @TO@
+      IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV VariableDeclarationStatement@@Node cur=replacement; @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV VariableDeclarationStatement@@int i; @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV ForStatement@@[i=0];i < nodes.size() - 2; [i++] @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV ExpressionStatement@@MethodInvocation:cur.addChildToFront(nodes.get(i))
+      @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV ExpressionStatement@@MethodInvocation:cur.addChildToFront(nodes.get(i
+      + 1)) @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/InlineObjectLiterals:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:nodes.isEmpty() @TO@ MethodDeclaration@@private,
+      @@void, MethodName:replaceAssignmentExpression, @@Argus:Var+v+Reference+ref+Map<String,String>+varmap+ '
+    - '---INS MethodInvocation@@nodes.isEmpty() @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '------INS SimpleName@@Name:nodes @TO@ MethodInvocation@@nodes.isEmpty() '
+    - '------INS SimpleName@@MethodName:isEmpty:[] @TO@ MethodInvocation@@nodes.isEmpty() '
+    - '---INS ExpressionStatement@@Assignment:replacement=new Node(Token.TRUE) @TO@
+      IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '------INS Assignment@@replacement=new Node(Token.TRUE) @TO@ ExpressionStatement@@Assignment:replacement=new
+      Node(Token.TRUE) '
+    - '---------INS SimpleName@@replacement @TO@ Assignment@@replacement=new Node(Token.TRUE) '
+    - '---------INS Operator@@= @TO@ Assignment@@replacement=new Node(Token.TRUE) '
+    - '---------INS ClassInstanceCreation@@Node[Token.TRUE] @TO@ Assignment@@replacement=new
+      Node(Token.TRUE) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@Node[Token.TRUE] '
+    - '------------INS SimpleType@@Node @TO@ ClassInstanceCreation@@Node[Token.TRUE] '
+    - '------------INS QualifiedName@@Token.TRUE @TO@ ClassInstanceCreation@@Node[Token.TRUE] '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.TRUE '
+    - '---------------INS SimpleName@@TRUE @TO@ QualifiedName@@Token.TRUE '
+    - '---MOV ExpressionStatement@@MethodInvocation:nodes.add(new Node(Token.TRUE))
+      @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV ExpressionStatement@@Assignment:nodes=Lists.reverse(nodes) @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV ExpressionStatement@@Assignment:replacement=new Node(Token.COMMA) @TO@
+      IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV VariableDeclarationStatement@@Node cur=replacement; @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV VariableDeclarationStatement@@int i; @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV ForStatement@@[i=0];i < nodes.size() - 2; [i++] @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV ExpressionStatement@@MethodInvocation:cur.addChildToFront(nodes.get(i))
+      @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+    - '---MOV ExpressionStatement@@MethodInvocation:cur.addChildToFront(nodes.get(i
+      + 1)) @TO@ IfStatement@@MethodInvocation:nodes.isEmpty() '
+  files_cnt: '1'
+  repair_actions_cnt: 1

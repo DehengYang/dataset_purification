@@ -1,0 +1,122 @@
+1 bug_id: Math-63
+2 src folder:
+  name of src folder: java
+  number of files: 498
+  number of java files: 459
+  number of src classes: 625
+  number of test classes: 244
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.util.MathUtilsTest#testArrayEquals
+  failing tests:
+  - org.apache.commons.math.util.MathUtilsTest
+  number of all test cases: 2282
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.0
+  purification via delta debugging: 61.283
+  repair actions extraction: 1.931
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.util.MathUtilsTest#testArrayEquals: 10
+  fixed:
+    org.apache.commons.math.util.MathUtilsTest#testArrayEquals: 314
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_63/src/main/java/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 12:52:14.006844165 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_63/purify/patch/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 12:52:14.002844048 -0400\n@@ -414,7 +414,7 @@\n      * @return {@code\
+    \ true} if the values are equal.\n      */\n     public static boolean equals(double\
+    \ x, double y) {\n-        return (Double.isNaN(x) && Double.isNaN(y)) || x ==\
+    \ y;\n+        return equals(x, y, 1);\n     }\n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_63/src/main/java/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 12:53:34.789180068 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_63/purify/purified/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 12:53:34.789180068 -0400\n@@ -414,7 +414,7 @@\n      * @return {@code\
+    \ true} if the values are equal.\n      */\n     public static boolean equals(double\
+    \ x, double y) {\n-        return (Double.isNaN(x) && Double.isNaN(y)) || x ==\
+    \ y;\n+        return equals(x, y, 1);\n     }\n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/MathUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@InfixExpression:(Double.isNaN(x) && Double.isNaN(y)) ||
+      x == y @TO@ MethodInvocation:equals(x,y,1) '
+    - '---INS MethodInvocation@@equals(x,y,1) @TO@ ReturnStatement@@InfixExpression:(Double.isNaN(x)
+      && Double.isNaN(y)) || x == y '
+    - '------MOV SimpleName@@MethodName:isNaN:[x] @TO@ MethodInvocation@@equals(x,y,1) '
+    - '---DEL InfixExpression@@(Double.isNaN(x) && Double.isNaN(y)) || x == y '
+    - '------DEL ParenthesizedExpression@@(Double.isNaN(x) && Double.isNaN(y)) '
+    - '---------DEL InfixExpression@@Double.isNaN(x) && Double.isNaN(y) '
+    - '------------DEL MethodInvocation@@Double.isNaN(x) '
+    - '---------------DEL SimpleName@@Name:Double '
+    - '------------DEL Operator@@&& '
+    - '------------DEL MethodInvocation@@Double.isNaN(y) '
+    - '---------------DEL SimpleName@@Name:Double '
+    - '---------------DEL SimpleName@@MethodName:isNaN:[y] '
+    - '------------------DEL SimpleName@@y '
+    - '------DEL Operator@@|| '
+    - '------DEL InfixExpression@@x == y '
+    - '---------DEL SimpleName@@x '
+    - '---------DEL Operator@@== '
+    - '---------DEL SimpleName@@y '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/MathUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@InfixExpression:(Double.isNaN(x) && Double.isNaN(y)) ||
+      x == y @TO@ MethodInvocation:equals(x,y,1) '
+    - '---INS MethodInvocation@@equals(x,y,1) @TO@ ReturnStatement@@InfixExpression:(Double.isNaN(x)
+      && Double.isNaN(y)) || x == y '
+    - '------MOV SimpleName@@MethodName:isNaN:[x] @TO@ MethodInvocation@@equals(x,y,1) '
+    - '---DEL InfixExpression@@(Double.isNaN(x) && Double.isNaN(y)) || x == y '
+    - '------DEL ParenthesizedExpression@@(Double.isNaN(x) && Double.isNaN(y)) '
+    - '---------DEL InfixExpression@@Double.isNaN(x) && Double.isNaN(y) '
+    - '------------DEL MethodInvocation@@Double.isNaN(x) '
+    - '---------------DEL SimpleName@@Name:Double '
+    - '------------DEL Operator@@&& '
+    - '------------DEL MethodInvocation@@Double.isNaN(y) '
+    - '---------------DEL SimpleName@@Name:Double '
+    - '---------------DEL SimpleName@@MethodName:isNaN:[y] '
+    - '------------------DEL SimpleName@@y '
+    - '------DEL Operator@@|| '
+    - '------DEL InfixExpression@@x == y '
+    - '---------DEL SimpleName@@x '
+    - '---------DEL Operator@@== '
+    - '---------DEL SimpleName@@y '
+  repair_actions_cnt: 1

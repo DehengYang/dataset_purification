@@ -1,0 +1,104 @@
+1 bug_id: Closure-38
+2 src folder:
+  name of src folder: src
+  number of files: 409
+  number of java files: 395
+  number of src classes: 1323
+  number of test classes: 220
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CodePrinterTest#testMinusNegativeZero
+  failing tests:
+  - com.google.javascript.jscomp.CodePrinterTest
+  number of all test cases: 7401
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 9.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.003
+  purification via delta debugging: 171.689
+  repair actions extraction: 1.281
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CodePrinterTest#testMinusNegativeZero: 1416
+  fixed:
+    com.google.javascript.jscomp.CodePrinterTest#testMinusNegativeZero: 1417
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_38/src/com/google/javascript/jscomp/CodeConsumer.java\t\
+    2020-10-22 12:03:21.948053439 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_38/purify/patch/com/google/javascript/jscomp/CodeConsumer.java\t\
+    2020-10-22 12:03:21.948053439 -0400\n@@ -242,7 +242,7 @@\n     // x--4 (which\
+    \ is a syntax error).\n     char prev = getLastChar();\n     boolean negativeZero\
+    \ = isNegativeZero(x);\n-    if (x < 0 && prev == '-') {\n+    if ((x < 0 || negativeZero)\
+    \ && prev == '-') {\n       add(\" \");\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_38/src/com/google/javascript/jscomp/CodeConsumer.java\t\
+    2020-10-22 12:06:41.309818858 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_38/purify/purified/com/google/javascript/jscomp/CodeConsumer.java\t\
+    2020-10-22 12:06:41.309818858 -0400\n@@ -242,7 +242,7 @@\n     // x--4 (which\
+    \ is a syntax error).\n     char prev = getLastChar();\n     boolean negativeZero\
+    \ = isNegativeZero(x);\n-    if (x < 0 && prev == '-') {\n+    if ((x < 0 || negativeZero)\
+    \ && prev == '-') {\n       add(\" \");\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CodeConsumer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:x < 0 && prev == ''-'' @TO@ InfixExpression:(x
+      < 0 || negativeZero) && prev == ''-'' '
+    - '---UPD InfixExpression@@x < 0 && prev == ''-'' @TO@ (x < 0 || negativeZero)
+      && prev == ''-'' '
+    - '------INS ParenthesizedExpression@@(x < 0 || negativeZero) @TO@ InfixExpression@@x
+      < 0 && prev == ''-'' '
+    - '---------INS InfixExpression@@x < 0 || negativeZero @TO@ ParenthesizedExpression@@(x
+      < 0 || negativeZero) '
+    - '------------MOV InfixExpression@@x < 0 @TO@ InfixExpression@@x < 0 || negativeZero '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@x < 0 || negativeZero '
+    - '------------INS SimpleName@@negativeZero @TO@ InfixExpression@@x < 0 || negativeZero '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CodeConsumer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:x < 0 && prev == ''-'' @TO@ InfixExpression:(x
+      < 0 || negativeZero) && prev == ''-'' '
+    - '---UPD InfixExpression@@x < 0 && prev == ''-'' @TO@ (x < 0 || negativeZero)
+      && prev == ''-'' '
+    - '------INS ParenthesizedExpression@@(x < 0 || negativeZero) @TO@ InfixExpression@@x
+      < 0 && prev == ''-'' '
+    - '---------INS InfixExpression@@x < 0 || negativeZero @TO@ ParenthesizedExpression@@(x
+      < 0 || negativeZero) '
+    - '------------MOV InfixExpression@@x < 0 @TO@ InfixExpression@@x < 0 || negativeZero '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@x < 0 || negativeZero '
+    - '------------INS SimpleName@@negativeZero @TO@ InfixExpression@@x < 0 || negativeZero '
+  files_cnt: '1'
+  repair_actions_cnt: 1

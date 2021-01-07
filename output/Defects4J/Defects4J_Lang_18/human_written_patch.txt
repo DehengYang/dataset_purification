@@ -1,0 +1,17 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_18/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_18/fixed-version/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_18/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java	2020-03-01 00:07:32.901057849 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_18/fixed-version/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java	2020-03-01 00:07:36.309218428 -0800
+@@ -492,10 +492,10 @@
+                 rule = new TextField(Calendar.ERA, ERAs);
+                 break;
+             case 'y': // year (number)
+-                if (tokenLen >= 4) {
+-                    rule = selectNumberRule(Calendar.YEAR, tokenLen);
+-                } else {
++                if (tokenLen == 2) {
+                     rule = TwoDigitYearField.INSTANCE;
++                } else {
++                    rule = selectNumberRule(Calendar.YEAR, tokenLen < 4 ? 4 : tokenLen);
+                 }
+                 break;
+             case 'M': // month in year (text and number)

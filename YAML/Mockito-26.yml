@@ -1,0 +1,108 @@
+1 bug_id: Mockito-26
+2 src folder:
+  name of src folder: src
+  number of files: 328
+  number of java files: 291
+  number of src classes: 334
+  number of test classes: 250
+3 test (cases):
+  failing test cases:
+  - org.mockito.internal.progress.HandyReturnValuesTest#should_default_values_for_primitive
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsEmptyValuesTest#should_return_primitive
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsMocksTest#should_return_the_usual_default_values_for_primitives
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsSmartNullsTest#should_return_the_usual_default_values_for_primitives
+  failing tests:
+  - org.mockito.internal.progress.HandyReturnValuesTest
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsEmptyValuesTest
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsMocksTest
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsSmartNullsTest
+  number of all test cases: 1213
+  number of failing test cases: 4
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.003
+  purification via delta debugging: 509.093
+  repair actions extraction: 0.768
+5 stmts covered by failing cases:
+  buggy:
+    org.mockito.internal.progress.HandyReturnValuesTest#should_default_values_for_primitive: 34
+    org.mockito.internal.stubbing.defaultanswers.ReturnsEmptyValuesTest#should_return_primitive: 264
+    org.mockito.internal.stubbing.defaultanswers.ReturnsMocksTest#should_return_the_usual_default_values_for_primitives: 523
+    org.mockito.internal.stubbing.defaultanswers.ReturnsSmartNullsTest#should_return_the_usual_default_values_for_primitives: 489
+  fixed:
+    org.mockito.internal.progress.HandyReturnValuesTest#should_default_values_for_primitive: 34
+    org.mockito.internal.stubbing.defaultanswers.ReturnsEmptyValuesTest#should_return_primitive: 264
+    org.mockito.internal.stubbing.defaultanswers.ReturnsMocksTest#should_return_the_usual_default_values_for_primitives: 523
+    org.mockito.internal.stubbing.defaultanswers.ReturnsSmartNullsTest#should_return_the_usual_default_values_for_primitives: 489
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 1
+  total: 1
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_26/src/org/mockito/internal/util/Primitives.java\t\
+    2020-10-24 19:49:25.997093059 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_26/purify/patch/org/mockito/internal/util/Primitives.java\t\
+    2020-10-24 19:49:25.997093059 -0400\n@@ -63,6 +63,6 @@\n         primitiveValues.put(int.class,\
+    \ 0);\n         primitiveValues.put(long.class, 0L);\n         primitiveValues.put(float.class,\
+    \ 0F);\n-        primitiveValues.put(double.class, 0);\n+        primitiveValues.put(double.class,\
+    \ 0D);\n     }\n }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_26/src/org/mockito/internal/util/Primitives.java\t\
+    2020-10-24 19:58:24.724607401 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_26/purify/purified/org/mockito/internal/util/Primitives.java\t\
+    2020-10-24 19:58:24.724607401 -0400\n@@ -64,5 +64,6 @@\n         primitiveValues.put(long.class,\
+    \ 0L);\n         primitiveValues.put(float.class, 0F);\n         primitiveValues.put(double.class,\
+    \ 0);\n+        primitiveValues.put(double.class, 0D);\n     }\n }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/util/Primitives:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:primitiveValues.put(double.class,0)
+      @TO@ MethodInvocation:primitiveValues.put(double.class,0D) '
+    - '---UPD MethodInvocation@@primitiveValues.put(double.class,0) @TO@ primitiveValues.put(double.class,0D) '
+    - '------UPD SimpleName@@MethodName:put:[double.class, 0] @TO@ MethodName:put:[double.class,
+      0D] '
+    - '---------UPD NumberLiteral@@0 @TO@ 0D '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/util/Primitives:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveValues.put(double.class,0D)
+      @TO@ Initializer@@Initializer '
+    - '---INS MethodInvocation@@primitiveValues.put(double.class,0D) @TO@ ExpressionStatement@@MethodInvocation:primitiveValues.put(double.class,0D) '
+    - '------INS SimpleName@@Name:primitiveValues @TO@ MethodInvocation@@primitiveValues.put(double.class,0D) '
+    - '------INS SimpleName@@MethodName:put:[double.class, 0D] @TO@ MethodInvocation@@primitiveValues.put(double.class,0D) '
+    - '---------INS TypeLiteral@@double.class @TO@ SimpleName@@MethodName:put:[double.class,
+      0D] '
+    - '---------INS NumberLiteral@@0D @TO@ SimpleName@@MethodName:put:[double.class,
+      0D] '
+  repair_actions_cnt: 1

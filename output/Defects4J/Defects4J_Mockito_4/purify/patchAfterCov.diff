@@ -1,0 +1,30 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_4/src/org/mockito/exceptions/Reporter.java	2020-10-23 18:46:14.797259078 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_4/purify/assertBeforeMut/org/mockito/exceptions/Reporter.java	2020-10-23 18:46:14.797259078 -0400
+@@ -421,7 +421,7 @@
+         throw new NoInteractionsWanted(join(
+                 "No interactions wanted here:",
+                 new LocationImpl(),
+-                "But found this interaction on mock '" + undesired.getMock() + "':",
++                "But found this interaction on mock '" + safelyGetMockName(undesired.getMock()) + "':",
+                 undesired.getLocation(),
+                 scenario
+         ));
+@@ -431,7 +431,7 @@
+         throw new VerificationInOrderFailure(join(
+                 "No interactions wanted here:",
+                 new LocationImpl(),
+-                "But found this interaction on mock '" + undesired.getMock() + "':",
++                "But found this interaction on mock '" + safelyGetMockName(undesired.getMock()) + "':",
+                 undesired.getLocation()
+         ));
+     }
+@@ -674,6 +674,9 @@
+     }
+ 
+     private String exceptionCauseMessageIfAvailable(Exception details) {
++        if (details.getCause() == null) {
++            return details.getMessage();
++        }
+         return details.getCause().getMessage();
+     }
+ 

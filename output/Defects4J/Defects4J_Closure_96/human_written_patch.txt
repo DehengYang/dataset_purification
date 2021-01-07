@@ -1,0 +1,18 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_96/src/com/google/javascript/jscomp/TypeCheck.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_96/fixed-version/src/com/google/javascript/jscomp/TypeCheck.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_96/src/com/google/javascript/jscomp/TypeCheck.java	2020-03-01 00:31:37.093105166 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_96/fixed-version/src/com/google/javascript/jscomp/TypeCheck.java	2020-03-01 00:31:39.073198467 -0800
+@@ -1406,10 +1406,13 @@
+     Node parameter = null;
+     Node argument = null;
+     while (arguments.hasNext() &&
+-           parameters.hasNext()) {
++           (parameters.hasNext() ||
++            parameter != null && parameter.isVarArgs())) {
+       // If there are no parameters left in the list, then the while loop
+       // above implies that this must be a var_args function.
++      if (parameters.hasNext()) {
+         parameter = parameters.next();
++      }
+       argument = arguments.next();
+       ordinal++;
+ 

@@ -1,0 +1,132 @@
+1 bug_id: Math-89
+2 src folder:
+  name of src folder: java
+  number of files: 364
+  number of java files: 329
+  number of src classes: 387
+  number of test classes: 176
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.stat.FrequencyTest#testAddNonComparable
+  failing tests:
+  - org.apache.commons.math.stat.FrequencyTest
+  number of all test cases: 1691
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.586
+  purification via delta debugging: 61.965
+  repair actions extraction: 1.104
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.stat.FrequencyTest#testAddNonComparable: 4
+  fixed:
+    org.apache.commons.math.stat.FrequencyTest#testAddNonComparable: 16
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 2
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_89/src/java/org/apache/commons/math/stat/Frequency.java\t\
+    2020-10-21 13:56:33.214424940 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_89/purify/patch/org/apache/commons/math/stat/Frequency.java\t\
+    2020-10-21 13:56:33.214424940 -0400\n@@ -107,7 +107,11 @@\n      */\n     @Deprecated\n\
+    \     public void addValue(Object v) {\n+        if (v instanceof Comparable<?>){\n\
+    \             addValue((Comparable<?>) v);            \n+        } else {\n+ \
+    \           throw new IllegalArgumentException(\"Object must implement Comparable\"\
+    );\n+        }\n     }\n     \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_89/src/java/org/apache/commons/math/stat/Frequency.java\t\
+    2020-10-21 13:57:48.676606873 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_89/purify/purified/org/apache/commons/math/stat/Frequency.java\t\
+    2020-10-21 13:57:48.676606873 -0400\n@@ -107,7 +107,11 @@\n      */\n     @Deprecated\n\
+    \     public void addValue(Object v) {\n+        if (v instanceof Comparable<?>){\n\
+    \             addValue((Comparable<?>) v);            \n+        } else {\n+ \
+    \           throw new IllegalArgumentException(\"Object must implement Comparable\"\
+    );\n+        }\n     }\n     \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/Frequency:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InstanceofExpression:v instanceof Comparable<?> @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addValue, @@Argus:Object+v+ '
+    - '---INS InstanceofExpression@@v instanceof Comparable<?> @TO@ IfStatement@@InstanceofExpression:v
+      instanceof Comparable<?> '
+    - '------INS SimpleName@@v @TO@ InstanceofExpression@@v instanceof Comparable<?> '
+    - '------INS Instanceof@@instanceof @TO@ InstanceofExpression@@v instanceof Comparable<?> '
+    - '------INS ParameterizedType@@Comparable<?> @TO@ InstanceofExpression@@v instanceof
+      Comparable<?> '
+    - '---------INS SimpleType@@Comparable @TO@ ParameterizedType@@Comparable<?> '
+    - '---------INS WildcardType@@? @TO@ ParameterizedType@@Comparable<?> '
+    - '---MOV ExpressionStatement@@MethodInvocation:addValue((Comparable<?>)v) @TO@
+      IfStatement@@InstanceofExpression:v instanceof Comparable<?> '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Object
+      must implement Comparable") @TO@ IfStatement@@InstanceofExpression:v instanceof
+      Comparable<?> '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Object must implement
+      Comparable"] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Object
+      must implement Comparable") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Object
+      must implement Comparable"] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Object
+      must implement Comparable"] '
+    - '---------INS StringLiteral@@"Object must implement Comparable" @TO@ ClassInstanceCreation@@IllegalArgumentException["Object
+      must implement Comparable"] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/Frequency:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InstanceofExpression:v instanceof Comparable<?> @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addValue, @@Argus:Object+v+ '
+    - '---INS InstanceofExpression@@v instanceof Comparable<?> @TO@ IfStatement@@InstanceofExpression:v
+      instanceof Comparable<?> '
+    - '------INS SimpleName@@v @TO@ InstanceofExpression@@v instanceof Comparable<?> '
+    - '------INS Instanceof@@instanceof @TO@ InstanceofExpression@@v instanceof Comparable<?> '
+    - '------INS ParameterizedType@@Comparable<?> @TO@ InstanceofExpression@@v instanceof
+      Comparable<?> '
+    - '---------INS SimpleType@@Comparable @TO@ ParameterizedType@@Comparable<?> '
+    - '---------INS WildcardType@@? @TO@ ParameterizedType@@Comparable<?> '
+    - '---MOV ExpressionStatement@@MethodInvocation:addValue((Comparable<?>)v) @TO@
+      IfStatement@@InstanceofExpression:v instanceof Comparable<?> '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Object
+      must implement Comparable") @TO@ IfStatement@@InstanceofExpression:v instanceof
+      Comparable<?> '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Object must implement
+      Comparable"] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Object
+      must implement Comparable") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Object
+      must implement Comparable"] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Object
+      must implement Comparable"] '
+    - '---------INS StringLiteral@@"Object must implement Comparable" @TO@ ClassInstanceCreation@@IllegalArgumentException["Object
+      must implement Comparable"] '
+  repair_actions_cnt: 1

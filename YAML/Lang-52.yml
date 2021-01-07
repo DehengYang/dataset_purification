@@ -1,0 +1,114 @@
+1 bug_id: Lang-52
+2 src folder:
+  name of src folder: java
+  number of files: 87
+  number of java files: 77
+  number of src classes: 124
+  number of test classes: 90
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.StringEscapeUtilsTest#testEscapeJavaScript
+  failing tests:
+  - org.apache.commons.lang.StringEscapeUtilsTest
+  number of all test cases: 1725
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 7.0
+  purification via coverage: 0.595
+  purification via delta debugging: 57.862
+  repair actions extraction: 0.984
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.StringEscapeUtilsTest#testEscapeJavaScript: 27
+  fixed:
+    org.apache.commons.lang.StringEscapeUtilsTest#testEscapeJavaScript: 30
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 2
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 1
+  passed: 1
+  total: 4
+9 sibling repair actions:
+- 1 2 0.9718969555035128
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_52/src/java/org/apache/commons/lang/StringEscapeUtils.java\t\
+    2020-10-21 03:56:09.860420288 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_52/purify/patch/org/apache/commons/lang/StringEscapeUtils.java\t\
+    2020-10-21 03:56:09.856420172 -0400\n@@ -233,6 +233,10 @@\n                  \
+    \       out.write('\\\\');\n                         out.write('\\\\');\n    \
+    \                     break;\n+                    case '/':\n+              \
+    \          out.write('\\\\');\n+                        out.write('/');\n+   \
+    \                     break;\n                     default :\n               \
+    \          out.write(ch);\n                         break;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_52/src/java/org/apache/commons/lang/StringEscapeUtils.java\t\
+    2020-10-21 03:57:17.130362748 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_52/purify/purified/org/apache/commons/lang/StringEscapeUtils.java\t\
+    2020-10-21 03:57:17.130362748 -0400\n@@ -233,6 +233,8 @@\n                   \
+    \      out.write('\\\\');\n                         out.write('\\\\');\n     \
+    \                    break;\n+                    case '/':\n+               \
+    \         out.write('\\\\');\n                     default :\n               \
+    \          out.write(ch);\n                         break;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/StringEscapeUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@CharacterLiteral:''/'' @TO@ SwitchStatement@@SimpleName:ch '
+    - '---INS CharacterLiteral@@''/'' @TO@ SwitchCase@@CharacterLiteral:''/'' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:out.write(''\\'') @TO@ SwitchStatement@@SimpleName:ch '
+    - '---INS MethodInvocation@@out.write(''\\'') @TO@ ExpressionStatement@@MethodInvocation:out.write(''\\'') '
+    - '------INS SimpleName@@Name:out @TO@ MethodInvocation@@out.write(''\\'') '
+    - '------INS SimpleName@@MethodName:write:[''\\''] @TO@ MethodInvocation@@out.write(''\\'') '
+    - '---------INS CharacterLiteral@@''\\'' @TO@ SimpleName@@MethodName:write:[''\\''] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:out.write(''/'') @TO@ SwitchStatement@@SimpleName:ch '
+    - '---INS MethodInvocation@@out.write(''/'') @TO@ ExpressionStatement@@MethodInvocation:out.write(''/'') '
+    - '------INS SimpleName@@Name:out @TO@ MethodInvocation@@out.write(''/'') '
+    - '------INS SimpleName@@MethodName:write:[''/''] @TO@ MethodInvocation@@out.write(''/'') '
+    - '---------INS CharacterLiteral@@''/'' @TO@ SimpleName@@MethodName:write:[''/''] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS BreakStatement@@ @TO@ SwitchStatement@@SimpleName:ch '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/StringEscapeUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@CharacterLiteral:''/'' @TO@ SwitchStatement@@SimpleName:ch '
+    - '---INS CharacterLiteral@@''/'' @TO@ SwitchCase@@CharacterLiteral:''/'' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:out.write(''\\'') @TO@ SwitchStatement@@SimpleName:ch '
+    - '---INS MethodInvocation@@out.write(''\\'') @TO@ ExpressionStatement@@MethodInvocation:out.write(''\\'') '
+    - '------INS SimpleName@@Name:out @TO@ MethodInvocation@@out.write(''\\'') '
+    - '------INS SimpleName@@MethodName:write:[''\\''] @TO@ MethodInvocation@@out.write(''\\'') '
+    - '---------INS CharacterLiteral@@''\\'' @TO@ SimpleName@@MethodName:write:[''\\''] '
+  repair_actions_cnt: 2

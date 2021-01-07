@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_23/src/com/google/javascript/jscomp/PeepholeFoldConstants.java	2020-10-21 20:42:42.930722426 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_23/purify/assertBeforeMut/com/google/javascript/jscomp/PeepholeFoldConstants.java	2020-10-21 20:42:42.930722426 -0400
+@@ -1448,8 +1448,14 @@
+ 
+     Node current = left.getFirstChild();
+     Node elem = null;
+-    for (int i = 0; current != null && i < intIndex; i++) {
++    for (int i = 0; current != null; i++) {
++      if (i != intIndex) {
++        if (mayHaveSideEffects(current)) {
++          return n;
++        }
++      } else {
+         elem = current;
++      }
+ 
+       current = current.getNext();
+     }

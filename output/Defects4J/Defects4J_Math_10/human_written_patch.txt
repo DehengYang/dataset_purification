@@ -1,0 +1,11 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_10/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_10/fixed-version/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_10/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java	2020-03-01 00:14:11.251826611 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_10/fixed-version/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java	2020-03-01 00:14:14.927999819 -0800
+@@ -1416,6 +1416,7 @@
+         }
+ 
+         // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly
++        result[resultOffset] = FastMath.atan2(y[yOffset], x[xOffset]);
+ 
+     }
+ 

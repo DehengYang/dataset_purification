@@ -1,0 +1,51 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_22/source/org/jfree/data/KeyedObjects2D.java	2020-10-21 00:38:21.985781073 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_22/purify/purified/org/jfree/data/KeyedObjects2D.java	2020-10-21 00:38:21.985781073 -0400
+@@ -228,9 +228,10 @@
+             throw new UnknownKeyException("Column key (" + columnKey 
+                     + ") not recognised.");
+         }
+-        if (row >= 0) {
+         KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+-            return rowData.getObject(columnKey);
++        int index = rowData.getIndex(columnKey);
++        if (index >= 0) {
++            return rowData.getObject(index);
+         }
+         else {
+             return null;
+@@ -316,7 +317,16 @@
+         
+         // 2. check whether the column is now empty.
+         
++        for (int item = 0, itemCount = this.rows.size(); item < itemCount; 
++             item++) {
++        }
+         
++        if (allNull) {
++            for (int item = 0, itemCount = this.rows.size(); item < itemCount; 
++                 item++) {
++            }
++            this.columnKeys.remove(columnKey);
++        }
+     }
+ 
+     /**
+@@ -342,6 +352,10 @@
+      */
+     public void removeRow(Comparable rowKey) {
+         int index = getRowIndex(rowKey);
++        if (index < 0) {
++            throw new UnknownKeyException("Row key (" + rowKey 
++                    + ") not recognised.");
++        }
+         removeRow(index);
+     }
+ 
+@@ -375,7 +389,6 @@
+         Iterator iterator = this.rows.iterator();
+         while (iterator.hasNext()) {
+             KeyedObjects rowData = (KeyedObjects) iterator.next();
+-                rowData.removeValue(columnKey);
+         }
+         this.columnKeys.remove(columnKey);
+     }

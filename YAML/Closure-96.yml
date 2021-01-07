@@ -1,0 +1,162 @@
+1 bug_id: Closure-96
+2 src folder:
+  name of src folder: src
+  number of files: 354
+  number of java files: 343
+  number of src classes: 1125
+  number of test classes: 184
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testFunctionArguments16
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 6018
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 9.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.756
+  purification via delta debugging: 156.595
+  repair actions extraction: 2.335
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testFunctionArguments16: 4165
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testFunctionArguments16: 4283
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 1
+  cov_patch_lines: 5
+  delta_patch_lines: 5
+  oriAdd: 4
+  oriDel: 1
+  ori_patch_lines: 5
+  purAdd: 4
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 10
+  failFail: 1
+  passed: 0
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_96/src/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-23 12:24:53.622738056 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_96/purify/patch/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-23 12:24:53.618737940 -0400\n@@ -1406,10 +1406,13 @@\n     Node parameter\
+    \ = null;\n     Node argument = null;\n     while (arguments.hasNext() &&\n- \
+    \          parameters.hasNext()) {\n+           (parameters.hasNext() ||\n+  \
+    \          parameter != null && parameter.isVarArgs())) {\n       // If there\
+    \ are no parameters left in the list, then the while loop\n       // above implies\
+    \ that this must be a var_args function.\n+      if (parameters.hasNext()) {\n\
+    \         parameter = parameters.next();\n+      }\n       argument = arguments.next();\n\
+    \       ordinal++;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_96/src/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-23 12:27:56.828041571 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_96/purify/purified/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-23 12:27:56.824041455 -0400\n@@ -1406,10 +1406,13 @@\n     Node parameter\
+    \ = null;\n     Node argument = null;\n     while (arguments.hasNext() &&\n- \
+    \          parameters.hasNext()) {\n+           (parameters.hasNext() ||\n+  \
+    \          parameter != null && parameter.isVarArgs())) {\n       // If there\
+    \ are no parameters left in the list, then the while loop\n       // above implies\
+    \ that this must be a var_args function.\n+      if (parameters.hasNext()) {\n\
+    \         parameter = parameters.next();\n+      }\n       argument = arguments.next();\n\
+    \       ordinal++;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeCheck:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD WhileStatement@@InfixExpression:arguments.hasNext() && parameters.hasNext()
+      @TO@ InfixExpression:arguments.hasNext() && (parameters.hasNext() || parameter
+      != null && parameter.isVarArgs()) '
+    - '---UPD InfixExpression@@arguments.hasNext() && parameters.hasNext() @TO@ arguments.hasNext()
+      && (parameters.hasNext() || parameter != null && parameter.isVarArgs()) '
+    - '------INS ParenthesizedExpression@@(parameters.hasNext() || parameter != null
+      && parameter.isVarArgs()) @TO@ InfixExpression@@arguments.hasNext() && parameters.hasNext() '
+    - '---------INS InfixExpression@@parameters.hasNext() || parameter != null &&
+      parameter.isVarArgs() @TO@ ParenthesizedExpression@@(parameters.hasNext() ||
+      parameter != null && parameter.isVarArgs()) '
+    - '------------MOV MethodInvocation@@parameters.hasNext() @TO@ InfixExpression@@parameters.hasNext()
+      || parameter != null && parameter.isVarArgs() '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@parameters.hasNext() ||
+      parameter != null && parameter.isVarArgs() '
+    - '------------INS InfixExpression@@parameter != null && parameter.isVarArgs()
+      @TO@ InfixExpression@@parameters.hasNext() || parameter != null && parameter.isVarArgs() '
+    - '---------------INS InfixExpression@@parameter != null @TO@ InfixExpression@@parameter
+      != null && parameter.isVarArgs() '
+    - '------------------INS SimpleName@@parameter @TO@ InfixExpression@@parameter
+      != null '
+    - '------------------INS Operator@@!= @TO@ InfixExpression@@parameter != null '
+    - '------------------INS NullLiteral@@null @TO@ InfixExpression@@parameter !=
+      null '
+    - '---------------INS Operator@@&& @TO@ InfixExpression@@parameter != null &&
+      parameter.isVarArgs() '
+    - '---------------INS MethodInvocation@@parameter.isVarArgs() @TO@ InfixExpression@@parameter
+      != null && parameter.isVarArgs() '
+    - '------------------INS SimpleName@@Name:parameter @TO@ MethodInvocation@@parameter.isVarArgs() '
+    - '------------------INS SimpleName@@MethodName:isVarArgs:[] @TO@ MethodInvocation@@parameter.isVarArgs() '
+    - '---INS IfStatement@@MethodInvocation:parameters.hasNext() @TO@ WhileStatement@@InfixExpression:arguments.hasNext()
+      && parameters.hasNext() '
+    - '------MOV ExpressionStatement@@Assignment:parameter=parameters.next() @TO@
+      IfStatement@@MethodInvocation:parameters.hasNext() '
+    - '------INS MethodInvocation@@parameters.hasNext() @TO@ IfStatement@@MethodInvocation:parameters.hasNext() '
+    - '---------INS SimpleName@@Name:parameters @TO@ MethodInvocation@@parameters.hasNext() '
+    - '---------INS SimpleName@@MethodName:hasNext:[] @TO@ MethodInvocation@@parameters.hasNext() '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeCheck:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD WhileStatement@@InfixExpression:arguments.hasNext() && parameters.hasNext()
+      @TO@ InfixExpression:arguments.hasNext() && (parameters.hasNext() || parameter
+      != null && parameter.isVarArgs()) '
+    - '---UPD InfixExpression@@arguments.hasNext() && parameters.hasNext() @TO@ arguments.hasNext()
+      && (parameters.hasNext() || parameter != null && parameter.isVarArgs()) '
+    - '------INS ParenthesizedExpression@@(parameters.hasNext() || parameter != null
+      && parameter.isVarArgs()) @TO@ InfixExpression@@arguments.hasNext() && parameters.hasNext() '
+    - '---------INS InfixExpression@@parameters.hasNext() || parameter != null &&
+      parameter.isVarArgs() @TO@ ParenthesizedExpression@@(parameters.hasNext() ||
+      parameter != null && parameter.isVarArgs()) '
+    - '------------MOV MethodInvocation@@parameters.hasNext() @TO@ InfixExpression@@parameters.hasNext()
+      || parameter != null && parameter.isVarArgs() '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@parameters.hasNext() ||
+      parameter != null && parameter.isVarArgs() '
+    - '------------INS InfixExpression@@parameter != null && parameter.isVarArgs()
+      @TO@ InfixExpression@@parameters.hasNext() || parameter != null && parameter.isVarArgs() '
+    - '---------------INS InfixExpression@@parameter != null @TO@ InfixExpression@@parameter
+      != null && parameter.isVarArgs() '
+    - '------------------INS SimpleName@@parameter @TO@ InfixExpression@@parameter
+      != null '
+    - '------------------INS Operator@@!= @TO@ InfixExpression@@parameter != null '
+    - '------------------INS NullLiteral@@null @TO@ InfixExpression@@parameter !=
+      null '
+    - '---------------INS Operator@@&& @TO@ InfixExpression@@parameter != null &&
+      parameter.isVarArgs() '
+    - '---------------INS MethodInvocation@@parameter.isVarArgs() @TO@ InfixExpression@@parameter
+      != null && parameter.isVarArgs() '
+    - '------------------INS SimpleName@@Name:parameter @TO@ MethodInvocation@@parameter.isVarArgs() '
+    - '------------------INS SimpleName@@MethodName:isVarArgs:[] @TO@ MethodInvocation@@parameter.isVarArgs() '
+    - '---INS IfStatement@@MethodInvocation:parameters.hasNext() @TO@ WhileStatement@@InfixExpression:arguments.hasNext()
+      && parameters.hasNext() '
+    - '------MOV ExpressionStatement@@Assignment:parameter=parameters.next() @TO@
+      IfStatement@@MethodInvocation:parameters.hasNext() '
+    - '------INS MethodInvocation@@parameters.hasNext() @TO@ IfStatement@@MethodInvocation:parameters.hasNext() '
+    - '---------INS SimpleName@@Name:parameters @TO@ MethodInvocation@@parameters.hasNext() '
+    - '---------INS SimpleName@@MethodName:hasNext:[] @TO@ MethodInvocation@@parameters.hasNext() '
+  files_cnt: '1'
+  repair_actions_cnt: 1

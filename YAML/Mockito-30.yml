@@ -1,0 +1,96 @@
+1 bug_id: Mockito-30
+2 src folder:
+  name of src folder: src
+  number of files: 276
+  number of java files: 240
+  number of src classes: 267
+  number of test classes: 214
+3 test (cases):
+  failing test cases:
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsSmartNullsTest#shouldPrintTheParametersOnSmartNullPointerExceptionMessage
+  failing tests:
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsSmartNullsTest
+  number of all test cases: 0
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.626
+  purification via delta debugging: 279.651
+  repair actions extraction: 1.86
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 2
+  cov_patch_lines: 5
+  delta_patch_lines: 5
+  oriAdd: 3
+  oriDel: 2
+  ori_patch_lines: 5
+  purAdd: 3
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 11
+  passed: 0
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_30/src/org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls.java\t\
+    2020-10-24 20:15:58.914962084 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_30/purify/patch/org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls.java\t\
+    2020-10-24 20:15:58.914962084 -0400\n@@ -53,7 +53,7 @@\n                 return\
+    \ \"SmartNull returned by unstubbed \" + formatMethodCall()  + \" method on mock\"\
+    ;\n             }\n \n-            new Reporter().smartNullPointerException(location);\n\
+    +            new Reporter().smartNullPointerException(obj, location);\n      \
+    \       return null;\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_30/src/org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls.java\t\
+    2020-10-24 20:20:58.315580362 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_30/purify/purified/org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls.java\t\
+    2020-10-24 20:20:58.315580362 -0400\n@@ -53,7 +53,7 @@\n                 return\
+    \ \"SmartNull returned by unstubbed \" + formatMethodCall()  + \" method on mock\"\
+    ;\n             }\n \n-            new Reporter().smartNullPointerException(location);\n\
+    +            new Reporter().smartNullPointerException(obj, location);\n      \
+    \       return null;\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/mockito/exceptions/Reporter, org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:new Reporter().smartNullPointerException(location)
+      @TO@ MethodInvocation:new Reporter().smartNullPointerException(obj,location) '
+    - '---UPD MethodInvocation@@new Reporter().smartNullPointerException(location)
+      @TO@ new Reporter().smartNullPointerException(obj,location) '
+    - '------UPD SimpleName@@MethodName:smartNullPointerException:[location] @TO@
+      MethodName:smartNullPointerException:[obj, location] '
+    - '---------INS SimpleName@@obj @TO@ SimpleName@@MethodName:smartNullPointerException:[location] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/mockito/exceptions/Reporter, org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:new Reporter().smartNullPointerException(location)
+      @TO@ MethodInvocation:new Reporter().smartNullPointerException(obj,location) '
+    - '---UPD MethodInvocation@@new Reporter().smartNullPointerException(location)
+      @TO@ new Reporter().smartNullPointerException(obj,location) '
+    - '------UPD SimpleName@@MethodName:smartNullPointerException:[location] @TO@
+      MethodName:smartNullPointerException:[obj, location] '
+    - '---------INS SimpleName@@obj @TO@ SimpleName@@MethodName:smartNullPointerException:[location] '
+  repair_actions_cnt: 1

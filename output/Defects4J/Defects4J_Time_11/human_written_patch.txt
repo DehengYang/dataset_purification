@@ -1,0 +1,19 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_11/src/main/java/org/joda/time/tz/ZoneInfoCompiler.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_11/fixed-version/src/main/java/org/joda/time/tz/ZoneInfoCompiler.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_11/src/main/java/org/joda/time/tz/ZoneInfoCompiler.java	2020-03-01 00:01:37.420309046 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_11/fixed-version/src/main/java/org/joda/time/tz/ZoneInfoCompiler.java	2020-03-01 00:01:38.824375191 -0800
+@@ -65,10 +65,11 @@
+ 
+     static Chronology cLenientISO;
+ 
+-    static ThreadLocal<Boolean> cVerbose = new ThreadLocal<Boolean>();
+-    static {
+-        cVerbose.set(Boolean.FALSE);
+-    }
++    static ThreadLocal<Boolean> cVerbose = new ThreadLocal<Boolean>() {
++        protected Boolean initialValue() {
++            return Boolean.FALSE;
++        }
++    };
+ 
+     /**
+      * Gets a flag indicating that verbose logging is required.

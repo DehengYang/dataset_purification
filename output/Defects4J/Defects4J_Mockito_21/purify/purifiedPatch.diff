@@ -1,0 +1,36 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_21/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java	2020-10-23 23:27:21.077525396 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_21/purify/purified/org/mockito/internal/creation/instance/ConstructorInstantiator.java	2020-10-23 23:27:21.077525396 -0400
+@@ -14,15 +14,19 @@
+         if (outerClassInstance == null) {
+             return noArgConstructor(cls);
+         }
+-        return withOuterClass(cls);
++        return withParams(cls, outerClassInstance);
+     }
+ 
+-    private <T> T withOuterClass(Class<T> cls) {
++    private static <T> T withParams(Class<T> cls, Object... params) {
+         try {
+             //this is kind of overengineered because we don't need to support more params
+             //however, I know we will be needing it :)
+-            Constructor<T> c = cls.getDeclaredConstructor(outerClassInstance.getClass());
+-            return c.newInstance(outerClassInstance);
++            for (Constructor<?> constructor : cls.getDeclaredConstructors()) {
++                Class<?>[] types = constructor.getParameterTypes();
++                if (paramsMatch(types, params)) {
++                    return (T) constructor.newInstance(params);
++                }
++            }
+         } catch (Exception e) {
+             throw paramsException(cls, e);
+         }
+@@ -33,6 +37,9 @@
+                 + cls.getSimpleName() + "'.\nPlease ensure that the outer instance has correct type and that the target class has parameter-less constructor.", e);
+     }
+ 
++    private static boolean paramsMatch(Class<?>[] types, Object[] params) {
++        return true;
++    }
+ 
+     private static <T> T noArgConstructor(Class<T> cls) {
+         try {

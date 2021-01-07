@@ -1,0 +1,31 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_102/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java	2020-10-21 14:23:37.125358093 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_102/purify/purified/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java	2020-10-21 14:23:37.125358093 -0400
+@@ -71,11 +71,28 @@
+             throw new IllegalArgumentException(
+                 "observed counts must be non-negative and expected counts must be postive");
+         }
++        double sumExpected = 0d;
++        double sumObserved = 0d;
++        for (int i = 0; i < observed.length; i++) {
++            sumExpected += expected[i];
++            sumObserved += observed[i];
++        }
++        double ratio = 1.0d;
++        boolean rescale = false;
++        if (Math.abs(sumExpected - sumObserved) > 10E-6) {
++            ratio = sumObserved / sumExpected;
++            rescale = true;
++        }
+         double sumSq = 0.0d;
+         double dev = 0.0d;
+         for (int i = 0; i < observed.length; i++) {
++            if (rescale) {
++                dev = ((double) observed[i] - ratio * expected[i]);
++                sumSq += dev * dev / (ratio * expected[i]);
++            } else {
+                 dev = ((double) observed[i] - expected[i]);
+                 sumSq += dev * dev / expected[i];
++            }
+         }
+         return sumSq;
+     }

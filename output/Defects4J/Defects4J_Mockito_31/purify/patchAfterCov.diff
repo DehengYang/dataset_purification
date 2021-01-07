@@ -1,0 +1,20 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_31/src/org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls.java	2020-10-24 20:22:48.194741917 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_31/purify/assertBeforeMut/org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls.java	2020-10-24 20:22:48.194741917 -0400
+@@ -6,6 +6,7 @@
+ 
+ import java.io.Serializable;
+ import java.lang.reflect.Method;
++import java.util.Arrays;
+ 
+ import org.mockito.Mockito;
+ import org.mockito.cglib.proxy.MethodInterceptor;
+@@ -57,7 +58,8 @@
+         }
+ 
+ 		private String formatMethodCall() {
+-			return invocation.getMethod().getName() + "()";
++			String args = Arrays.toString(invocation.getArguments());
++			return invocation.getMethod().getName() + "(" + args.substring(1, args.length() - 1) +	")";
+ 		}
+     }
+ 

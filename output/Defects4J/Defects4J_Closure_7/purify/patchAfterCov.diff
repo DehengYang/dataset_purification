@@ -1,0 +1,17 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_7/src/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java	2020-10-21 17:05:12.858851316 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_7/purify/assertBeforeMut/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java	2020-10-21 17:05:12.854851200 -0400
+@@ -610,9 +610,13 @@
+     public JSType caseObjectType(ObjectType type) {
+       if (value.equals("function")) {
+         JSType ctorType = getNativeType(U2U_CONSTRUCTOR_TYPE);
+-        return resultEqualsValue && ctorType.isSubtype(type) ? ctorType : null;
++        if (resultEqualsValue) {
+           // Objects are restricted to "Function", subtypes are left
++          return ctorType.getGreatestSubtype(type);
++        } else {
+           // Only filter out subtypes of "function"
++          return type.isSubtype(ctorType) ? null : type;
++        }
+       }
+       return matchesExpectation("object") ? type : null;
+     }

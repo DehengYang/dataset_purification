@@ -1,0 +1,16 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_61/src/com/google/javascript/jscomp/NodeUtil.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_61/fixed-version/src/com/google/javascript/jscomp/NodeUtil.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_61/src/com/google/javascript/jscomp/NodeUtil.java	2020-03-01 00:29:16.238468199 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_61/fixed-version/src/com/google/javascript/jscomp/NodeUtil.java	2020-03-01 00:29:18.226561876 -0800
+@@ -955,6 +955,12 @@
+       }
+ 
+       // Functions in the "Math" namespace have no side effects.
++      if (nameNode.getFirstChild().getType() == Token.NAME) {
++        String namespaceName = nameNode.getFirstChild().getString();
++        if (namespaceName.equals("Math")) {
++          return false;
++        }
++      }
+ 
+       if (compiler != null && !compiler.hasRegExpGlobalReferences()) {
+         if (nameNode.getFirstChild().getType() == Token.REGEXP

@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_59/src/main/java/org/apache/commons/math/util/FastMath.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_59/fixed-version/src/main/java/org/apache/commons/math/util/FastMath.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_59/src/main/java/org/apache/commons/math/util/FastMath.java	2020-03-01 00:19:54.355992599 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_59/fixed-version/src/main/java/org/apache/commons/math/util/FastMath.java	2020-03-01 00:19:57.004117378 -0800
+@@ -3479,7 +3479,7 @@
+      * @return b if a is lesser or equal to b, a otherwise
+      */
+     public static float max(final float a, final float b) {
+-        return (a <= b) ? b : (Float.isNaN(a + b) ? Float.NaN : b);
++        return (a <= b) ? b : (Float.isNaN(a + b) ? Float.NaN : a);
+     }
+ 
+     /** Compute the maximum of two values

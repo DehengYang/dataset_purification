@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_96/src/java/org/apache/commons/math/complex/Complex.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_96/fixed-version/src/java/org/apache/commons/math/complex/Complex.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_96/src/java/org/apache/commons/math/complex/Complex.java	2020-03-01 00:23:51.935187225 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_96/fixed-version/src/java/org/apache/commons/math/complex/Complex.java	2020-03-01 00:23:55.495354978 -0800
+@@ -255,7 +255,7 @@
+                 if (rhs.isNaN()) {
+                     ret = this.isNaN();
+                 } else {
+-                    ret = (Double.doubleToRawLongBits(real) == Double.doubleToRawLongBits(rhs.getReal())) && (Double.doubleToRawLongBits(imaginary) == Double.doubleToRawLongBits(rhs.getImaginary())); 
++                    ret = (real == rhs.real) && (imaginary == rhs.imaginary); 
+                 }
+             } catch (ClassCastException ex) {
+                 // ignore exception

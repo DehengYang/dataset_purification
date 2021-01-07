@@ -1,0 +1,127 @@
+1 bug_id: Lang-18
+2 src folder:
+  name of src folder: java
+  number of files: 112
+  number of java files: 99
+  number of src classes: 151
+  number of test classes: 100
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.time.FastDateFormatTest#testFormat
+  failing tests:
+  - org.apache.commons.lang3.time.FastDateFormatTest
+  number of all test cases: 1902
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 9.0
+  purification via coverage: 0.686
+  purification via delta debugging: 91.376
+  repair actions extraction: 1.817
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.time.FastDateFormatTest#testFormat: 275
+  fixed:
+    org.apache.commons.lang3.time.FastDateFormatTest#testFormat: 280
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 3
+  covDel: 3
+  cov_patch_lines: 6
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 3
+  ori_patch_lines: 6
+  purAdd: 1
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 10
+  failFail: 0
+  passed: 2
+  total: 12
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_18/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java\t\
+    2020-10-21 00:59:39.122667614 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_18/purify/patch/org/apache/commons/lang3/time/FastDateFormat.java\t\
+    2020-10-21 00:59:39.122667614 -0400\n@@ -492,10 +492,10 @@\n                 rule\
+    \ = new TextField(Calendar.ERA, ERAs);\n                 break;\n            \
+    \ case 'y': // year (number)\n-                if (tokenLen >= 4) {\n-       \
+    \             rule = selectNumberRule(Calendar.YEAR, tokenLen);\n-           \
+    \     } else {\n+                if (tokenLen == 2) {\n                     rule\
+    \ = TwoDigitYearField.INSTANCE;\n+                } else {\n+                \
+    \    rule = selectNumberRule(Calendar.YEAR, tokenLen < 4 ? 4 : tokenLen);\n  \
+    \               }\n                 break;\n             case 'M': // month in\
+    \ year (text and number)"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_18/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java\t\
+    2020-10-21 01:01:22.989667605 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_18/purify/purified/org/apache/commons/lang3/time/FastDateFormat.java\t\
+    2020-10-21 01:01:22.989667605 -0400\n@@ -492,9 +492,8 @@\n                 rule\
+    \ = new TextField(Calendar.ERA, ERAs);\n                 break;\n            \
+    \ case 'y': // year (number)\n-                if (tokenLen >= 4) {\n        \
+    \             rule = selectNumberRule(Calendar.YEAR, tokenLen);\n-           \
+    \     } else {\n+                if (tokenLen == 2) {\n                     rule\
+    \ = TwoDigitYearField.INSTANCE;\n                 }\n                 break;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/time/FastDateFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:tokenLen >= 4 @TO@ InfixExpression:tokenLen
+      == 2 '
+    - '---UPD InfixExpression@@tokenLen >= 4 @TO@ tokenLen == 2 '
+    - '------UPD Operator@@>= @TO@ == '
+    - '------UPD NumberLiteral@@4 @TO@ 2 '
+    - '---MOV ExpressionStatement@@Assignment:rule=selectNumberRule(Calendar.YEAR,tokenLen)
+      @TO@ IfStatement@@InfixExpression:tokenLen >= 4 '
+    - '---UPD ExpressionStatement@@Assignment:rule=selectNumberRule(Calendar.YEAR,tokenLen)
+      @TO@ Assignment:rule=selectNumberRule(Calendar.YEAR,tokenLen < 4 ? 4 : tokenLen) '
+    - '------UPD Assignment@@rule=selectNumberRule(Calendar.YEAR,tokenLen) @TO@ rule=selectNumberRule(Calendar.YEAR,tokenLen
+      < 4 ? 4 : tokenLen) '
+    - '---------UPD MethodInvocation@@selectNumberRule(Calendar.YEAR,tokenLen) @TO@
+      selectNumberRule(Calendar.YEAR,tokenLen < 4 ? 4 : tokenLen) '
+    - '------------UPD SimpleName@@MethodName:selectNumberRule:[Calendar.YEAR, tokenLen]
+      @TO@ MethodName:selectNumberRule:[Calendar.YEAR, tokenLen < 4 ? 4 : tokenLen] '
+    - '---------------DEL SimpleName@@tokenLen '
+    - '---------------INS ConditionalExpression@@tokenLen < 4 ? 4 : tokenLen @TO@
+      SimpleName@@MethodName:selectNumberRule:[Calendar.YEAR, tokenLen] '
+    - '------------------INS InfixExpression@@tokenLen < 4 @TO@ ConditionalExpression@@tokenLen
+      < 4 ? 4 : tokenLen '
+    - '---------------------INS SimpleName@@tokenLen @TO@ InfixExpression@@tokenLen
+      < 4 '
+    - '---------------------INS Operator@@< @TO@ InfixExpression@@tokenLen < 4 '
+    - '---------------------INS NumberLiteral@@4 @TO@ InfixExpression@@tokenLen <
+      4 '
+    - '------------------INS NumberLiteral@@4 @TO@ ConditionalExpression@@tokenLen
+      < 4 ? 4 : tokenLen '
+    - '------------------INS SimpleName@@tokenLen @TO@ ConditionalExpression@@tokenLen
+      < 4 ? 4 : tokenLen '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/time/FastDateFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:tokenLen >= 4 @TO@ InfixExpression:tokenLen
+      == 2 '
+    - '---UPD InfixExpression@@tokenLen >= 4 @TO@ tokenLen == 2 '
+    - '------UPD Operator@@>= @TO@ == '
+    - '------UPD NumberLiteral@@4 @TO@ 2 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:rule=selectNumberRule(Calendar.YEAR,tokenLen)
+      @TO@ SwitchStatement@@SimpleName:c '
+  repair_actions_cnt: 2

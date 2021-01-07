@@ -1,0 +1,15 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_83/src/com/google/javascript/jscomp/CommandLineRunner.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_83/fixed-version/src/com/google/javascript/jscomp/CommandLineRunner.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_83/src/com/google/javascript/jscomp/CommandLineRunner.java	2020-03-01 00:30:45.126656546 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_83/fixed-version/src/com/google/javascript/jscomp/CommandLineRunner.java	2020-03-01 00:30:47.166752674 -0800
+@@ -331,7 +331,10 @@
+ 
+       @Override
+       public int parseArguments(Parameters params) throws CmdLineException {
+-        String param = params.getParameter(0);
++        String param = null;
++        try {
++          param = params.getParameter(0);
++        } catch (CmdLineException e) {}
+ 
+         if (param == null) {
+           setter.addValue(true);

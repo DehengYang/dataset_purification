@@ -1,0 +1,108 @@
+1 bug_id: Math-4
+2 src folder:
+  name of src folder: java
+  number of files: 793
+  number of java files: 792
+  number of src classes: 1068
+  number of test classes: 398
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.geometry.euclidean.threed.SubLineTest#testIntersectionNotIntersecting
+  - org.apache.commons.math3.geometry.euclidean.twod.SubLineTest#testIntersectionParallel
+  failing tests:
+  - org.apache.commons.math3.geometry.euclidean.threed.SubLineTest
+  - org.apache.commons.math3.geometry.euclidean.twod.SubLineTest
+  number of all test cases: 5065
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 9.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.585
+  purification via delta debugging: 255.928
+  repair actions extraction: 0.992
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.geometry.euclidean.threed.SubLineTest#testIntersectionNotIntersecting: 183
+    org.apache.commons.math3.geometry.euclidean.twod.SubLineTest#testIntersectionParallel: 192
+  fixed:
+    org.apache.commons.math3.geometry.euclidean.threed.SubLineTest#testIntersectionNotIntersecting: 184
+    org.apache.commons.math3.geometry.euclidean.twod.SubLineTest#testIntersectionParallel: 192
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 6
+  covDel: 0
+  cov_patch_lines: 6
+  delta_patch_lines: 6
+  oriAdd: 6
+  oriDel: 0
+  ori_patch_lines: 6
+  purAdd: 6
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 7
+  failFail: 5
+  passed: 0
+  total: 12
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_4/src/main/java/org/apache/commons/math3/geometry/euclidean/twod/SubLine.java\t\
+    2020-10-21 04:31:03.428885894 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_4/purify/patch/org/apache/commons/math3/geometry/euclidean/twod/SubLine.java\t\
+    2020-10-21 04:31:03.428885894 -0400\n@@ -115,6 +115,9 @@\n \n         // compute\
+    \ the intersection on infinite line\n         Vector2D v2D = line1.intersection(line2);\n\
+    +        if (v2D == null) {\n+            return null;\n+        }\n \n      \
+    \   // check location of point with respect to first sub-line\n         Location\
+    \ loc1 = getRemainingRegion().checkPoint(line1.toSubSpace(v2D));"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_4/src/main/java/org/apache/commons/math3/geometry/euclidean/twod/SubLine.java\t\
+    2020-10-21 04:35:40.860900481 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_4/purify/purified/org/apache/commons/math3/geometry/euclidean/twod/SubLine.java\t\
+    2020-10-21 04:35:40.860900481 -0400\n@@ -115,6 +115,9 @@\n \n         // compute\
+    \ the intersection on infinite line\n         Vector2D v2D = line1.intersection(line2);\n\
+    +        if (v2D == null) {\n+            return null;\n+        }\n \n      \
+    \   // check location of point with respect to first sub-line\n         Location\
+    \ loc1 = getRemainingRegion().checkPoint(line1.toSubSpace(v2D));"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/apache/commons/math3/geometry/euclidean/threed/SubLine, org/apache/commons/math3/geometry/euclidean/twod/SubLine:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:v2D == null @TO@ MethodDeclaration@@public,
+      @@Vector2D, MethodName:intersection, @@Argus:SubLine+subLine+boolean+includeEndPoints+ '
+    - '---INS InfixExpression@@v2D == null @TO@ IfStatement@@InfixExpression:v2D ==
+      null '
+    - '------INS SimpleName@@v2D @TO@ InfixExpression@@v2D == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@v2D == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@v2D == null '
+    - '---INS ReturnStatement@@NullLiteral:null @TO@ IfStatement@@InfixExpression:v2D
+      == null '
+    - '------INS NullLiteral@@null @TO@ ReturnStatement@@NullLiteral:null '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/apache/commons/math3/geometry/euclidean/threed/SubLine, org/apache/commons/math3/geometry/euclidean/twod/SubLine:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:v2D == null @TO@ MethodDeclaration@@public,
+      @@Vector2D, MethodName:intersection, @@Argus:SubLine+subLine+boolean+includeEndPoints+ '
+    - '---INS InfixExpression@@v2D == null @TO@ IfStatement@@InfixExpression:v2D ==
+      null '
+    - '------INS SimpleName@@v2D @TO@ InfixExpression@@v2D == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@v2D == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@v2D == null '
+    - '---INS ReturnStatement@@NullLiteral:null @TO@ IfStatement@@InfixExpression:v2D
+      == null '
+    - '------INS NullLiteral@@null @TO@ ReturnStatement@@NullLiteral:null '
+  repair_actions_cnt: 1

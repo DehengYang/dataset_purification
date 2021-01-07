@@ -1,0 +1,164 @@
+1 bug_id: Lang-35
+2 src folder:
+  name of src folder: java
+  number of files: 91
+  number of java files: 80
+  number of src classes: 125
+  number of test classes: 85
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.ArrayUtilsAddTest#testLANG571
+  failing tests:
+  - org.apache.commons.lang3.ArrayUtilsAddTest
+  number of all test cases: 1644
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 9.0
+  purification via coverage: 1.192
+  purification via delta debugging: 89.839
+  repair actions extraction: 3.493
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.ArrayUtilsAddTest#testLANG571: 27
+  fixed:
+    org.apache.commons.lang3.ArrayUtilsAddTest#testLANG571: 26
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 1
+  failFail: 4
+  passed: 1
+  total: 6
+9 sibling repair actions:
+- 0 3 0.8988173455978975
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_35/src/main/java/org/apache/commons/lang3/ArrayUtils.java\t\
+    2020-10-22 02:27:14.092516319 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_35/purify/patch/org/apache/commons/lang3/ArrayUtils.java\t\
+    2020-10-22 02:27:14.084516088 -0400\n@@ -3292,7 +3292,7 @@\n         } else if\
+    \ (element != null) {\n             type = element.getClass();\n         } else\
+    \ {\n-            type = Object.class;\n+            throw new IllegalArgumentException(\"\
+    Arguments cannot both be null\");            \n         }\n         @SuppressWarnings(\"\
+    unchecked\") // type must be T\n         T[] newArray = (T[]) copyArrayGrow1(array,\
+    \ type);\n@@ -3571,7 +3571,7 @@\n         } else if (element != null) {\n    \
+    \         clss = element.getClass();\n         } else {\n-            return (T[])\
+    \ new Object[] { null };\n+            throw new IllegalArgumentException(\"Array\
+    \ and element cannot both be null\");            \n         }\n         @SuppressWarnings(\"\
+    unchecked\") // the add method creates an array of type clss, which is type T\n\
+    \         final T[] newArray = (T[]) add(array, index, element, clss);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_35/src/main/java/org/apache/commons/lang3/ArrayUtils.java\t\
+    2020-10-22 02:28:57.579507694 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_35/purify/purified/org/apache/commons/lang3/ArrayUtils.java\t\
+    2020-10-22 02:28:57.579507694 -0400\n@@ -3293,6 +3293,7 @@\n             type\
+    \ = element.getClass();\n         } else {\n             type = Object.class;\n\
+    +            throw new IllegalArgumentException(\"Arguments cannot both be null\"\
+    );            \n         }\n         @SuppressWarnings(\"unchecked\") // type\
+    \ must be T\n         T[] newArray = (T[]) copyArrayGrow1(array, type);\n@@ -3572,6\
+    \ +3573,7 @@\n             clss = element.getClass();\n         } else {\n   \
+    \          return (T[]) new Object[] { null };\n+            throw new IllegalArgumentException(\"\
+    Array and element cannot both be null\");            \n         }\n         @SuppressWarnings(\"\
+    unchecked\") // the add method creates an array of type clss, which is type T\n\
+    \         final T[] newArray = (T[]) add(array, index, element, clss);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/ArrayUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Arguments
+      cannot both be null") @TO@ IfStatement@@InfixExpression:element != null '
+    - '---INS ClassInstanceCreation@@IllegalArgumentException["Arguments cannot both
+      be null"] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Arguments
+      cannot both be null") '
+    - '------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Arguments
+      cannot both be null"] '
+    - '------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Arguments
+      cannot both be null"] '
+    - '------INS StringLiteral@@"Arguments cannot both be null" @TO@ ClassInstanceCreation@@IllegalArgumentException["Arguments
+      cannot both be null"] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:type=Object.class '
+    - '---DEL Assignment@@type=Object.class '
+    - '------DEL SimpleName@@type '
+    - '------DEL Operator@@= '
+    - '------DEL TypeLiteral@@Object.class '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@CastExpression:(T[])new Object[]{null} '
+    - '---DEL CastExpression@@(T[])new Object[]{null} '
+    - '------DEL ArrayType@@T[] '
+    - '---------DEL SimpleType@@T '
+    - '------DEL ArrayCreation@@new Object[]{null} '
+    - '---------DEL ArrayType@@Object[] '
+    - '------------DEL SimpleType@@Object '
+    - '---------DEL ArrayInitializer@@{null} '
+    - '------------DEL NullLiteral@@null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Array
+      and element cannot both be null") @TO@ IfStatement@@InfixExpression:element
+      != null '
+    - '---INS ClassInstanceCreation@@IllegalArgumentException["Array and element cannot
+      both be null"] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Array
+      and element cannot both be null") '
+    - '------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Array
+      and element cannot both be null"] '
+    - '------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Array
+      and element cannot both be null"] '
+    - '------INS StringLiteral@@"Array and element cannot both be null" @TO@ ClassInstanceCreation@@IllegalArgumentException["Array
+      and element cannot both be null"] '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/ArrayUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Arguments
+      cannot both be null") @TO@ IfStatement@@InfixExpression:element != null '
+    - '---INS ClassInstanceCreation@@IllegalArgumentException["Arguments cannot both
+      be null"] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Arguments
+      cannot both be null") '
+    - '------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Arguments
+      cannot both be null"] '
+    - '------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Arguments
+      cannot both be null"] '
+    - '------INS StringLiteral@@"Arguments cannot both be null" @TO@ ClassInstanceCreation@@IllegalArgumentException["Arguments
+      cannot both be null"] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Array
+      and element cannot both be null") @TO@ IfStatement@@InfixExpression:element
+      != null '
+    - '---INS ClassInstanceCreation@@IllegalArgumentException["Array and element cannot
+      both be null"] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Array
+      and element cannot both be null") '
+    - '------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Array
+      and element cannot both be null"] '
+    - '------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Array
+      and element cannot both be null"] '
+    - '------INS StringLiteral@@"Array and element cannot both be null" @TO@ ClassInstanceCreation@@IllegalArgumentException["Array
+      and element cannot both be null"] '
+  repair_actions_cnt: 2

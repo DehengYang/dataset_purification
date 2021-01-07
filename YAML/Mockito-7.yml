@@ -1,0 +1,108 @@
+1 bug_id: Mockito-7
+2 src folder:
+  name of src folder: src
+  number of files: 365
+  number of java files: 327
+  number of src classes: 388
+  number of test classes: 282
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.bugs.deepstubs.DeepStubFailingWhenGenricNestedAsRawTypeTest#discoverDeepMockingOfGenerics
+  failing tests:
+  - org.mockitousage.bugs.deepstubs.DeepStubFailingWhenGenricNestedAsRawTypeTest
+  number of all test cases: 1380
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.001
+  purification via delta debugging: 235.51
+  repair actions extraction: 1.393
+5 stmts covered by failing cases:
+  buggy:
+    org.mockitousage.bugs.deepstubs.DeepStubFailingWhenGenricNestedAsRawTypeTest#discoverDeepMockingOfGenerics: 654
+  fixed:
+    org.mockitousage.bugs.deepstubs.DeepStubFailingWhenGenricNestedAsRawTypeTest#discoverDeepMockingOfGenerics: 733
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 0
+  cov_patch_lines: 1
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 0
+  ori_patch_lines: 1
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 0
+  total: 0
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_7/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java\t\
+    2020-10-23 21:26:39.947844827 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_7/purify/patch/org/mockito/internal/util/reflection/GenericMetadataSupport.java\t\
+    2020-10-23 21:26:39.947844827 -0400\n@@ -376,6 +376,7 @@\n             for (Type\
+    \ type : typeVariable.getBounds()) {\n                 registerTypeVariablesOn(type);\n\
+    \             }\n+            registerTypeParametersOn(new TypeVariable[] { typeVariable\
+    \ });\n             registerTypeVariablesOn(getActualTypeArgumentFor(typeVariable));\n\
+    \         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_7/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java\t\
+    2020-10-23 21:31:11.947716784 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_7/purify/purified/org/mockito/internal/util/reflection/GenericMetadataSupport.java\t\
+    2020-10-23 21:31:11.943716668 -0400\n@@ -376,6 +376,7 @@\n             for (Type\
+    \ type : typeVariable.getBounds()) {\n                 registerTypeVariablesOn(type);\n\
+    \             }\n+            registerTypeParametersOn(new TypeVariable[] { typeVariable\
+    \ });\n             registerTypeVariablesOn(getActualTypeArgumentFor(typeVariable));\n\
+    \         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/util/reflection/GenericMetadataSupport:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:registerTypeParametersOn(new TypeVariable[]{typeVariable})
+      @TO@ MethodDeclaration@@private, @@void, MethodName:readTypeVariables, @@Argus:null '
+    - '---INS MethodInvocation@@registerTypeParametersOn(new TypeVariable[]{typeVariable})
+      @TO@ ExpressionStatement@@MethodInvocation:registerTypeParametersOn(new TypeVariable[]{typeVariable}) '
+    - '------INS SimpleName@@MethodName:registerTypeParametersOn:[new TypeVariable[]{typeVariable}]
+      @TO@ MethodInvocation@@registerTypeParametersOn(new TypeVariable[]{typeVariable}) '
+    - '---------INS ArrayCreation@@new TypeVariable[]{typeVariable} @TO@ SimpleName@@MethodName:registerTypeParametersOn:[new
+      TypeVariable[]{typeVariable}] '
+    - '------------INS ArrayType@@TypeVariable[] @TO@ ArrayCreation@@new TypeVariable[]{typeVariable} '
+    - '---------------INS SimpleType@@TypeVariable @TO@ ArrayType@@TypeVariable[] '
+    - '------------INS ArrayInitializer@@{typeVariable} @TO@ ArrayCreation@@new TypeVariable[]{typeVariable} '
+    - '---------------INS SimpleName@@typeVariable @TO@ ArrayInitializer@@{typeVariable} '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/util/reflection/GenericMetadataSupport:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:registerTypeParametersOn(new TypeVariable[]{typeVariable})
+      @TO@ MethodDeclaration@@private, @@void, MethodName:readTypeVariables, @@Argus:null '
+    - '---INS MethodInvocation@@registerTypeParametersOn(new TypeVariable[]{typeVariable})
+      @TO@ ExpressionStatement@@MethodInvocation:registerTypeParametersOn(new TypeVariable[]{typeVariable}) '
+    - '------INS SimpleName@@MethodName:registerTypeParametersOn:[new TypeVariable[]{typeVariable}]
+      @TO@ MethodInvocation@@registerTypeParametersOn(new TypeVariable[]{typeVariable}) '
+    - '---------INS ArrayCreation@@new TypeVariable[]{typeVariable} @TO@ SimpleName@@MethodName:registerTypeParametersOn:[new
+      TypeVariable[]{typeVariable}] '
+    - '------------INS ArrayType@@TypeVariable[] @TO@ ArrayCreation@@new TypeVariable[]{typeVariable} '
+    - '---------------INS SimpleType@@TypeVariable @TO@ ArrayType@@TypeVariable[] '
+    - '------------INS ArrayInitializer@@{typeVariable} @TO@ ArrayCreation@@new TypeVariable[]{typeVariable} '
+    - '---------------INS SimpleName@@typeVariable @TO@ ArrayInitializer@@{typeVariable} '
+  repair_actions_cnt: 1

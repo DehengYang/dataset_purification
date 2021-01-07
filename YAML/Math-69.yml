@@ -1,0 +1,123 @@
+1 bug_id: Math-69
+2 src folder:
+  name of src folder: java
+  number of files: 452
+  number of java files: 414
+  number of src classes: 571
+  number of test classes: 229
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.stat.correlation.SpearmansRankCorrelationTest#testPValueNearZero
+  - org.apache.commons.math.stat.correlation.PearsonsCorrelationTest#testPValueNearZero
+  failing tests:
+  - org.apache.commons.math.stat.correlation.SpearmansRankCorrelationTest
+  - org.apache.commons.math.stat.correlation.PearsonsCorrelationTest
+  number of all test cases: 2186
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 66.879
+  repair actions extraction: 0.844
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.stat.correlation.PearsonsCorrelationTest#testPValueNearZero: 253
+    org.apache.commons.math.stat.correlation.SpearmansRankCorrelationTest#testPValueNearZero: 253
+  fixed:
+    org.apache.commons.math.stat.correlation.PearsonsCorrelationTest#testPValueNearZero: 253
+    org.apache.commons.math.stat.correlation.SpearmansRankCorrelationTest#testPValueNearZero: 253
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 1
+  total: 1
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_69/src/main/java/org/apache/commons/math/stat/correlation/PearsonsCorrelation.java\t\
+    2020-10-21 13:07:31.165358998 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_69/purify/patch/org/apache/commons/math/stat/correlation/PearsonsCorrelation.java\t\
+    2020-10-21 13:07:31.161358882 -0400\n@@ -168,7 +168,7 @@\n                 } else\
+    \ {\n                     double r = correlationMatrix.getEntry(i, j);\n     \
+    \                double t = Math.abs(r * Math.sqrt((nObs - 2)/(1 - r * r)));\n\
+    -                    out[i][j] = 2 * (1 - tDistribution.cumulativeProbability(t));\n\
+    +                    out[i][j] = 2 * tDistribution.cumulativeProbability(-t);\n\
+    \                 }\n             }\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_69/src/main/java/org/apache/commons/math/stat/correlation/PearsonsCorrelation.java\t\
+    2020-10-21 13:08:51.947694312 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_69/purify/purified/org/apache/commons/math/stat/correlation/PearsonsCorrelation.java\t\
+    2020-10-21 13:08:51.947694312 -0400\n@@ -169,6 +169,7 @@\n                   \
+    \  double r = correlationMatrix.getEntry(i, j);\n                     double t\
+    \ = Math.abs(r * Math.sqrt((nObs - 2)/(1 - r * r)));\n                     out[i][j]\
+    \ = 2 * (1 - tDistribution.cumulativeProbability(t));\n+                    out[i][j]\
+    \ = 2 * tDistribution.cumulativeProbability(-t);\n                 }\n       \
+    \      }\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/correlation/PearsonsCorrelation:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:out[i][j]=2 * (1 - tDistribution.cumulativeProbability(t))
+      @TO@ Assignment:out[i][j]=2 * tDistribution.cumulativeProbability(-t) '
+    - '---UPD Assignment@@out[i][j]=2 * (1 - tDistribution.cumulativeProbability(t))
+      @TO@ out[i][j]=2 * tDistribution.cumulativeProbability(-t) '
+    - '------UPD InfixExpression@@2 * (1 - tDistribution.cumulativeProbability(t))
+      @TO@ 2 * tDistribution.cumulativeProbability(-t) '
+    - '---------DEL ParenthesizedExpression@@(1 - tDistribution.cumulativeProbability(t)) '
+    - '------------DEL InfixExpression@@1 - tDistribution.cumulativeProbability(t) '
+    - '---------------DEL NumberLiteral@@1 '
+    - '---------------DEL Operator@@- '
+    - '---------MOV MethodInvocation@@tDistribution.cumulativeProbability(t) @TO@
+      InfixExpression@@2 * (1 - tDistribution.cumulativeProbability(t)) '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/correlation/PearsonsCorrelation:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:out[i][j]=2 * tDistribution.cumulativeProbability(-t)
+      @TO@ IfStatement@@InfixExpression:i == j '
+    - '---INS Assignment@@out[i][j]=2 * tDistribution.cumulativeProbability(-t) @TO@
+      ExpressionStatement@@Assignment:out[i][j]=2 * tDistribution.cumulativeProbability(-t) '
+    - '------INS ArrayAccess@@out[i][j] @TO@ Assignment@@out[i][j]=2 * tDistribution.cumulativeProbability(-t) '
+    - '---------INS ArrayAccess@@out[i] @TO@ ArrayAccess@@out[i][j] '
+    - '------------INS SimpleName@@out @TO@ ArrayAccess@@out[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@out[i] '
+    - '---------INS SimpleName@@j @TO@ ArrayAccess@@out[i][j] '
+    - '------INS Operator@@= @TO@ Assignment@@out[i][j]=2 * tDistribution.cumulativeProbability(-t) '
+    - '------INS InfixExpression@@2 * tDistribution.cumulativeProbability(-t) @TO@
+      Assignment@@out[i][j]=2 * tDistribution.cumulativeProbability(-t) '
+    - '---------INS NumberLiteral@@2 @TO@ InfixExpression@@2 * tDistribution.cumulativeProbability(-t) '
+    - '---------INS Operator@@* @TO@ InfixExpression@@2 * tDistribution.cumulativeProbability(-t) '
+    - '---------INS MethodInvocation@@tDistribution.cumulativeProbability(-t) @TO@
+      InfixExpression@@2 * tDistribution.cumulativeProbability(-t) '
+    - '------------INS SimpleName@@Name:tDistribution @TO@ MethodInvocation@@tDistribution.cumulativeProbability(-t) '
+    - '------------INS SimpleName@@MethodName:cumulativeProbability:[-t] @TO@ MethodInvocation@@tDistribution.cumulativeProbability(-t) '
+    - '---------------INS PrefixExpression@@-t @TO@ SimpleName@@MethodName:cumulativeProbability:[-t] '
+    - '------------------INS Operator@@- @TO@ PrefixExpression@@-t '
+    - '------------------INS SimpleName@@t @TO@ PrefixExpression@@-t '
+  repair_actions_cnt: 1

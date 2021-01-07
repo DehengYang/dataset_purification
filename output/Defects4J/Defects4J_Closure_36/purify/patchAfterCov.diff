@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_36/src/com/google/javascript/jscomp/InlineVariables.java	2020-10-22 11:50:17.925380347 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_36/purify/assertBeforeMut/com/google/javascript/jscomp/InlineVariables.java	2020-10-22 11:50:17.925380347 -0400
+@@ -572,6 +572,9 @@
+ 
+           // issue 668: Don't inline singleton getter methods
+           // calls as this confused class removing logic.
++          if (convention.getSingletonGetterClassName(callNode) != null) {
++            return false;
++          }
+         }
+       }
+ 

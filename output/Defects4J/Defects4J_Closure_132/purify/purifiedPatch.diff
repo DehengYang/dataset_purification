@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_132/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java	2020-10-23 18:18:20.356742191 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_132/purify/purified/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java	2020-10-23 18:18:20.356742191 -0400
+@@ -779,7 +779,8 @@
+               // evaluates LHS before cond]
+               // NOTE - there are some circumstances where we can
+               // proceed even if there are side effects...
+-              !mayEffectMutableState(lhs)) {
++              (!mayHaveSideEffects(cond) ||
++                  (thenOp.isAssign() && thenOp.getFirstChild().isName()))) {
+ 
+             n.removeChild(cond);
+             Node assignName = thenOp.removeFirstChild();

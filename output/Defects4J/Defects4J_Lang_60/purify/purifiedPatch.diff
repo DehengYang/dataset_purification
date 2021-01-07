@@ -1,0 +1,20 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_60/src/java/org/apache/commons/lang/text/StrBuilder.java	2020-10-22 02:50:42.729233536 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_60/purify/purified/org/apache/commons/lang/text/StrBuilder.java	2020-10-22 02:50:42.729233536 -0400
+@@ -1670,7 +1670,7 @@
+      */
+     public boolean contains(char ch) {
+         char[] thisBuf = buffer;
+-        for (int i = 0; i < thisBuf.length; i++) {
++        for (int i = 0; i < this.size; i++) {
+             if (thisBuf[i] == ch) {
+                 return true;
+             }
+@@ -1727,7 +1727,7 @@
+             return -1;
+         }
+         char[] thisBuf = buffer;
+-        for (int i = startIndex; i < thisBuf.length; i++) {
++        for (int i = startIndex; i < size; i++) {
+             if (thisBuf[i] == ch) {
+                 return i;
+             }

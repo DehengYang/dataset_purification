@@ -1,0 +1,20 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_10/src/main/java/org/apache/commons/lang3/time/FastDateParser.java	2020-10-22 01:36:44.604932396 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_10/purify/assertBeforeMut/org/apache/commons/lang3/time/FastDateParser.java	2020-10-22 01:36:44.600932279 -0400
+@@ -301,17 +301,8 @@
+      * @return The <code>StringBuilder</code>
+      */
+     private static StringBuilder escapeRegex(StringBuilder regex, String value, boolean unquote) {
+-        boolean wasWhite= false;
+         for(int i= 0; i<value.length(); ++i) {
+             char c= value.charAt(i);
+-            if(Character.isWhitespace(c)) {
+-                if(!wasWhite) {
+-                    wasWhite= true;
+-                    regex.append("\\s*+");
+-                }
+-                continue;
+-            }
+-            wasWhite= false;
+             switch(c) {
+             case '\'':
+                 if(unquote) {

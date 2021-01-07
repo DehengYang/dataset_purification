@@ -1,0 +1,154 @@
+1 bug_id: Closure-23
+2 src folder:
+  name of src folder: src
+  number of files: 418
+  number of java files: 402
+  number of src classes: 1348
+  number of test classes: 224
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.PeepholeFoldConstantsTest#testFoldGetElem
+  failing tests:
+  - com.google.javascript.jscomp.PeepholeFoldConstantsTest
+  number of all test cases: 7563
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.496
+  purification via delta debugging: 346.269
+  repair actions extraction: 2.034
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testFoldGetElem: 2455
+  fixed:
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testFoldGetElem: 2948
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 7
+  covDel: 1
+  cov_patch_lines: 8
+  delta_patch_lines: 8
+  oriAdd: 7
+  oriDel: 1
+  ori_patch_lines: 8
+  purAdd: 7
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 11
+  failFail: 3
+  passed: 0
+  total: 14
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_23/src/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-21 20:42:12.469842252 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_23/purify/patch/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-21 20:42:12.465842136 -0400\n@@ -1448,8 +1448,14 @@\n \n     Node current\
+    \ = left.getFirstChild();\n     Node elem = null;\n-    for (int i = 0; current\
+    \ != null && i < intIndex; i++) {\n+    for (int i = 0; current != null; i++)\
+    \ {\n+      if (i != intIndex) {\n+        if (mayHaveSideEffects(current)) {\n\
+    +          return n;\n+        }\n+      } else {\n         elem = current;\n\
+    +      }\n \n       current = current.getNext();\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_23/src/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-21 20:48:31.056782191 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_23/purify/purified/com/google/javascript/jscomp/PeepholeFoldConstants.java\t\
+    2020-10-21 20:48:31.052782075 -0400\n@@ -1448,8 +1448,14 @@\n \n     Node current\
+    \ = left.getFirstChild();\n     Node elem = null;\n-    for (int i = 0; current\
+    \ != null && i < intIndex; i++) {\n+    for (int i = 0; current != null; i++)\
+    \ {\n+      if (i != intIndex) {\n+        if (mayHaveSideEffects(current)) {\n\
+    +          return n;\n+        }\n+      } else {\n         elem = current;\n\
+    +      }\n \n       current = current.getNext();\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeFoldConstants:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ForStatement@@[int i=0];current != null && i < intIndex; [i++] @TO@ [int
+      i=0];current != null; [i++] '
+    - '---INS InfixExpression@@current != null @TO@ ForStatement@@[int i=0];current
+      != null && i < intIndex; [i++] '
+    - '------MOV SimpleName@@current @TO@ InfixExpression@@current != null '
+    - '------MOV Operator@@!= @TO@ InfixExpression@@current != null '
+    - '------MOV NullLiteral@@null @TO@ InfixExpression@@current != null '
+    - '---DEL InfixExpression@@current != null && i < intIndex '
+    - '------DEL InfixExpression@@current != null '
+    - '------DEL Operator@@&& '
+    - '------DEL InfixExpression@@i < intIndex '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];current != null
+      && i < intIndex; [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS IfStatement@@InfixExpression:i != intIndex @TO@ ForStatement@@[int i=0];current
+      != null && i < intIndex; [i++] '
+    - '------INS InfixExpression@@i != intIndex @TO@ IfStatement@@InfixExpression:i
+      != intIndex '
+    - '---------MOV SimpleName@@i @TO@ InfixExpression@@i != intIndex '
+    - '---------MOV Operator@@< @TO@ InfixExpression@@i != intIndex '
+    - '---------MOV SimpleName@@intIndex @TO@ InfixExpression@@i != intIndex '
+    - '------MOV ExpressionStatement@@Assignment:elem=current @TO@ IfStatement@@InfixExpression:i
+      != intIndex '
+    - '------INS IfStatement@@MethodInvocation:mayHaveSideEffects(current) @TO@ IfStatement@@InfixExpression:i
+      != intIndex '
+    - '---------INS MethodInvocation@@mayHaveSideEffects(current) @TO@ IfStatement@@MethodInvocation:mayHaveSideEffects(current) '
+    - '------------INS SimpleName@@MethodName:mayHaveSideEffects:[current] @TO@ MethodInvocation@@mayHaveSideEffects(current) '
+    - '---------------INS SimpleName@@current @TO@ SimpleName@@MethodName:mayHaveSideEffects:[current] '
+    - '---------INS ReturnStatement@@SimpleName:n @TO@ IfStatement@@MethodInvocation:mayHaveSideEffects(current) '
+    - '------------INS SimpleName@@n @TO@ ReturnStatement@@SimpleName:n '
+    - '---DEL PostfixExpression@@i++ '
+    - '------DEL SimpleName@@i '
+    - '------DEL Operator@@++ '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeFoldConstants:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ForStatement@@[int i=0];current != null && i < intIndex; [i++] @TO@ [int
+      i=0];current != null; [i++] '
+    - '---INS InfixExpression@@current != null @TO@ ForStatement@@[int i=0];current
+      != null && i < intIndex; [i++] '
+    - '------MOV SimpleName@@current @TO@ InfixExpression@@current != null '
+    - '------MOV Operator@@!= @TO@ InfixExpression@@current != null '
+    - '------MOV NullLiteral@@null @TO@ InfixExpression@@current != null '
+    - '---DEL InfixExpression@@current != null && i < intIndex '
+    - '------DEL InfixExpression@@current != null '
+    - '------DEL Operator@@&& '
+    - '------DEL InfixExpression@@i < intIndex '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];current != null
+      && i < intIndex; [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS IfStatement@@InfixExpression:i != intIndex @TO@ ForStatement@@[int i=0];current
+      != null && i < intIndex; [i++] '
+    - '------INS InfixExpression@@i != intIndex @TO@ IfStatement@@InfixExpression:i
+      != intIndex '
+    - '---------MOV SimpleName@@i @TO@ InfixExpression@@i != intIndex '
+    - '---------MOV Operator@@< @TO@ InfixExpression@@i != intIndex '
+    - '---------MOV SimpleName@@intIndex @TO@ InfixExpression@@i != intIndex '
+    - '------MOV ExpressionStatement@@Assignment:elem=current @TO@ IfStatement@@InfixExpression:i
+      != intIndex '
+    - '------INS IfStatement@@MethodInvocation:mayHaveSideEffects(current) @TO@ IfStatement@@InfixExpression:i
+      != intIndex '
+    - '---------INS MethodInvocation@@mayHaveSideEffects(current) @TO@ IfStatement@@MethodInvocation:mayHaveSideEffects(current) '
+    - '------------INS SimpleName@@MethodName:mayHaveSideEffects:[current] @TO@ MethodInvocation@@mayHaveSideEffects(current) '
+    - '---------------INS SimpleName@@current @TO@ SimpleName@@MethodName:mayHaveSideEffects:[current] '
+    - '---------INS ReturnStatement@@SimpleName:n @TO@ IfStatement@@MethodInvocation:mayHaveSideEffects(current) '
+    - '------------INS SimpleName@@n @TO@ ReturnStatement@@SimpleName:n '
+    - '---DEL PostfixExpression@@i++ '
+    - '------DEL SimpleName@@i '
+    - '------DEL Operator@@++ '
+  files_cnt: '1'
+  repair_actions_cnt: 1

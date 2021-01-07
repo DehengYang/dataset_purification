@@ -1,0 +1,94 @@
+1 bug_id: Closure-124
+2 src folder:
+  name of src folder: src
+  number of files: 438
+  number of java files: 422
+  number of src classes: 1419
+  number of test classes: 234
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.ExploitAssignsTest#testIssue1017
+  failing tests:
+  - com.google.javascript.jscomp.ExploitAssignsTest
+  number of all test cases: 8228
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.509
+  purification via delta debugging: 200.576
+  repair actions extraction: 0.797
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.ExploitAssignsTest#testIssue1017: 2938
+  fixed:
+    com.google.javascript.jscomp.ExploitAssignsTest#testIssue1017: 2831
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 0
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 0
+  ori_patch_lines: 2
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_124/src/com/google/javascript/jscomp/ExploitAssigns.java\t\
+    2020-10-23 17:07:19.833401418 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_124/purify/patch/com/google/javascript/jscomp/ExploitAssigns.java\t\
+    2020-10-23 17:07:19.829401302 -0400\n@@ -210,7 +210,9 @@\n     }\n     Preconditions.checkArgument(node.isGetProp());\n\
+    \ \n+    while (node.isGetProp()) {\n       node = node.getFirstChild();\n+  \
+    \  }\n     if (node.isName()\n         && isNameAssignedTo(node.getString(), replacement))\
+    \ {\n       return false;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_124/src/com/google/javascript/jscomp/ExploitAssigns.java\t\
+    2020-10-23 17:11:07.920002850 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_124/purify/purified/com/google/javascript/jscomp/ExploitAssigns.java\t\
+    2020-10-23 17:11:07.920002850 -0400\n@@ -210,7 +210,9 @@\n     }\n     Preconditions.checkArgument(node.isGetProp());\n\
+    \ \n+    while (node.isGetProp()) {\n       node = node.getFirstChild();\n+  \
+    \  }\n     if (node.isName()\n         && isNameAssignedTo(node.getString(), replacement))\
+    \ {\n       return false;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ExploitAssigns:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS WhileStatement@@MethodInvocation:node.isGetProp() @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:isSafeReplacement, @@Argus:Node+node+Node+replacement+ '
+    - '---MOV ExpressionStatement@@Assignment:node=node.getFirstChild() @TO@ WhileStatement@@MethodInvocation:node.isGetProp() '
+    - '---INS MethodInvocation@@node.isGetProp() @TO@ WhileStatement@@MethodInvocation:node.isGetProp() '
+    - '------INS SimpleName@@Name:node @TO@ MethodInvocation@@node.isGetProp() '
+    - '------INS SimpleName@@MethodName:isGetProp:[] @TO@ MethodInvocation@@node.isGetProp() '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ExploitAssigns:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS WhileStatement@@MethodInvocation:node.isGetProp() @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:isSafeReplacement, @@Argus:Node+node+Node+replacement+ '
+    - '---MOV ExpressionStatement@@Assignment:node=node.getFirstChild() @TO@ WhileStatement@@MethodInvocation:node.isGetProp() '
+    - '---INS MethodInvocation@@node.isGetProp() @TO@ WhileStatement@@MethodInvocation:node.isGetProp() '
+    - '------INS SimpleName@@Name:node @TO@ MethodInvocation@@node.isGetProp() '
+    - '------INS SimpleName@@MethodName:isGetProp:[] @TO@ MethodInvocation@@node.isGetProp() '
+  files_cnt: '1'
+  repair_actions_cnt: 1

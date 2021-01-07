@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_59/src/java/org/apache/commons/lang/text/StrBuilder.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_59/fixed-version/src/java/org/apache/commons/lang/text/StrBuilder.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_59/src/java/org/apache/commons/lang/text/StrBuilder.java	2020-03-01 00:12:16.858436830 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_59/fixed-version/src/java/org/apache/commons/lang/text/StrBuilder.java	2020-03-01 00:12:20.298598917 -0800
+@@ -881,7 +881,7 @@
+             String str = (obj == null ? getNullText() : obj.toString());
+             int strLen = str.length();
+             if (strLen >= width) {
+-                str.getChars(0, strLen, buffer, size);
++                str.getChars(0, width, buffer, size);
+             } else {
+                 int padLen = width - strLen;
+                 str.getChars(0, strLen, buffer, size);

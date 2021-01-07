@@ -1,0 +1,21 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_5/src/main/java/org/joda/time/Period.java	2020-10-21 23:42:37.526898519 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_5/purify/purified/org/joda/time/Period.java	2020-10-21 23:42:37.522898403 -0400
+@@ -1627,11 +1627,15 @@
+         if (years != 0 || months != 0) {
+             years = FieldUtils.safeAdd(years, months / 12);
+             months = months % 12;
+-            if (years != 0) {
+-                result = result.withYears(years);
++            long totalMonths = years * 12L + months;
++            if (type.isSupported(DurationFieldType.YEARS_TYPE)) {
+             }
+-            if (months != 0) {
+                 result = result.withMonths(months);
++            if (type.isSupported(DurationFieldType.MONTHS_TYPE)) {
++                int normalizedMonths = FieldUtils.safeToInt(totalMonths);
++                result = result.withMonths(normalizedMonths);
++            }
++            if (totalMonths != 0) {
+             }
+         }
+         return result;

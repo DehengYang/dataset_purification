@@ -1,0 +1,65 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_22/source/org/jfree/data/KeyedObjects2D.java	2020-10-21 00:30:26.456046775 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_22/purify/assertBeforeMut/org/jfree/data/KeyedObjects2D.java	2020-10-21 00:30:26.456046775 -0400
+@@ -228,9 +228,10 @@
+             throw new UnknownKeyException("Column key (" + columnKey 
+                     + ") not recognised.");
+         }
+-        if (row >= 0) {
+         KeyedObjects rowData = (KeyedObjects) this.rows.get(row);
+-            return rowData.getObject(columnKey);
++        int index = rowData.getIndex(columnKey);
++        if (index >= 0) {
++            return rowData.getObject(index);
+         }
+         else {
+             return null;
+@@ -315,8 +316,26 @@
+         }
+         
+         // 2. check whether the column is now empty.
++        allNull = true;
+         
++        for (int item = 0, itemCount = this.rows.size(); item < itemCount; 
++             item++) {
++            row = (KeyedObjects) this.rows.get(item);
++            int columnIndex = row.getIndex(columnKey);
++            if (columnIndex >= 0 && row.getObject(columnIndex) != null) {
++            }
++        }
+         
++        if (allNull) {
++            for (int item = 0, itemCount = this.rows.size(); item < itemCount; 
++                 item++) {
++                row = (KeyedObjects) this.rows.get(item);
++                int columnIndex = row.getIndex(columnKey);
++                if (columnIndex >= 0) {
++                }
++            }
++            this.columnKeys.remove(columnKey);
++        }
+     }
+ 
+     /**
+@@ -342,6 +361,10 @@
+      */
+     public void removeRow(Comparable rowKey) {
+         int index = getRowIndex(rowKey);
++        if (index < 0) {
++            throw new UnknownKeyException("Row key (" + rowKey 
++                    + ") not recognised.");
++        }
+         removeRow(index);
+     }
+ 
+@@ -375,7 +398,10 @@
+         Iterator iterator = this.rows.iterator();
+         while (iterator.hasNext()) {
+             KeyedObjects rowData = (KeyedObjects) iterator.next();
+-                rowData.removeValue(columnKey);
++            int i = rowData.getIndex(columnKey);
++            if (i >= 0) {
++                rowData.removeValue(i);
++            }
+         }
+         this.columnKeys.remove(columnKey);
+     }

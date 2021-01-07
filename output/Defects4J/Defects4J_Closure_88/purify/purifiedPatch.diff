@@ -1,0 +1,14 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_88/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java	2020-10-23 11:38:36.758352992 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_88/purify/purified/com/google/javascript/jscomp/DeadAssignmentsElimination.java	2020-10-23 11:38:36.746352646 -0400
+@@ -327,6 +327,11 @@
+         // The expression to which the assignment is made is evaluated before
+         // the RHS is evaluated (normal left to right evaluation) but the KILL
+         // occurs after the RHS is evaluated.
++        Node rhs = n.getNext();
++        VariableLiveness state = isVariableReadBeforeKill(rhs, variable);
++        if (state == VariableLiveness.READ) {
++          return state;
++        }
+         return VariableLiveness.KILL;
+       } else {
+         return VariableLiveness.READ;

@@ -1,0 +1,155 @@
+1 bug_id: Lang-4
+2 src folder:
+  name of src folder: java
+  number of files: 121
+  number of java files: 108
+  number of src classes: 169
+  number of test classes: 112
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.text.translate.LookupTranslatorTest#testLang882
+  failing tests:
+  - org.apache.commons.lang3.text.translate.LookupTranslatorTest
+  number of all test cases: 2289
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.552
+  purification via delta debugging: 214.066
+  repair actions extraction: 1.146
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.text.translate.LookupTranslatorTest#testLang882: 23
+  fixed:
+    org.apache.commons.lang3.text.translate.LookupTranslatorTest#testLang882: 24
+6 reduced lines:
+  by all: 7
+  by coverage: 0
+  by delta debugging: 7
+  covAdd: 4
+  covDel: 4
+  cov_patch_lines: 8
+  delta_patch_lines: 1
+  oriAdd: 4
+  oriDel: 4
+  ori_patch_lines: 8
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  cov: 4
+  original: 4
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 1
+  passed: 3
+  total: 4
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_4/src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java\t\
+    2020-10-22 01:15:01.899265602 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_4/purify/patch/org/apache/commons/lang3/text/translate/LookupTranslator.java\t\
+    2020-10-22 01:15:01.899265602 -0400\n@@ -28,7 +28,7 @@\n  */\n public class LookupTranslator\
+    \ extends CharSequenceTranslator {\n \n-    private final HashMap<CharSequence,\
+    \ CharSequence> lookupMap;\n+    private final HashMap<String, CharSequence> lookupMap;\n\
+    \     private final int shortest;\n     private final int longest;\n \n@@ -43,12\
+    \ +43,12 @@\n      * @param lookup CharSequence[][] table of size [*][2]\n   \
+    \   */\n     public LookupTranslator(final CharSequence[]... lookup) {\n-    \
+    \    lookupMap = new HashMap<CharSequence, CharSequence>();\n+        lookupMap\
+    \ = new HashMap<String, CharSequence>();\n         int _shortest = Integer.MAX_VALUE;\n\
+    \         int _longest = 0;\n         if (lookup != null) {\n             for\
+    \ (final CharSequence[] seq : lookup) {\n-                this.lookupMap.put(seq[0],\
+    \ seq[1]);\n+                this.lookupMap.put(seq[0].toString(), seq[1]);\n\
+    \                 final int sz = seq[0].length();\n                 if (sz < _shortest)\
+    \ {\n                     _shortest = sz;\n@@ -74,7 +74,7 @@\n         // descend\
+    \ so as to get a greedy algorithm\n         for (int i = max; i >= shortest; i--)\
+    \ {\n             final CharSequence subSeq = input.subSequence(index, index +\
+    \ i);\n-            final CharSequence result = lookupMap.get(subSeq);\n+    \
+    \        final CharSequence result = lookupMap.get(subSeq.toString());\n     \
+    \        if (result != null) {\n                 out.write(result.toString());\n\
+    \                 return i;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_4/src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java\t\
+    2020-10-22 01:18:52.005918896 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_4/purify/purified/org/apache/commons/lang3/text/translate/LookupTranslator.java\t\
+    2020-10-22 01:18:52.005918896 -0400\n@@ -49,6 +49,7 @@\n         if (lookup !=\
+    \ null) {\n             for (final CharSequence[] seq : lookup) {\n          \
+    \       this.lookupMap.put(seq[0], seq[1]);\n+                this.lookupMap.put(seq[0].toString(),\
+    \ seq[1]);\n                 final int sz = seq[0].length();\n               \
+    \  if (sz < _shortest) {\n                     _shortest = sz;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/translate/LookupTranslator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD FieldDeclaration@@private, final, HashMap<CharSequence,CharSequence>, [lookupMap]
+      @TO@ private, final, HashMap<String,CharSequence>, [lookupMap] '
+    - '---UPD ParameterizedType@@HashMap<CharSequence,CharSequence> @TO@ HashMap<String,CharSequence> '
+    - '------UPD SimpleType@@CharSequence @TO@ String '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:lookupMap=new HashMap<CharSequence,CharSequence>()
+      @TO@ Assignment:lookupMap=new HashMap<String,CharSequence>() '
+    - '---UPD Assignment@@lookupMap=new HashMap<CharSequence,CharSequence>() @TO@
+      lookupMap=new HashMap<String,CharSequence>() '
+    - '------UPD ClassInstanceCreation@@HashMap<CharSequence,CharSequence>[] @TO@
+      HashMap<String,CharSequence>[] '
+    - '---------UPD ParameterizedType@@HashMap<CharSequence,CharSequence> @TO@ HashMap<String,CharSequence> '
+    - '------------UPD SimpleType@@CharSequence @TO@ String '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:this.lookupMap.put(seq[0],seq[1])
+      @TO@ MethodInvocation:this.lookupMap.put(seq[0].toString(),seq[1]) '
+    - '---UPD MethodInvocation@@this.lookupMap.put(seq[0],seq[1]) @TO@ this.lookupMap.put(seq[0].toString(),seq[1]) '
+    - '------UPD SimpleName@@MethodName:put:[seq[0], seq[1]] @TO@ MethodName:put:[seq[0].toString(),
+      seq[1]] '
+    - '---------INS MethodInvocation@@seq[0].toString() @TO@ SimpleName@@MethodName:put:[seq[0],
+      seq[1]] '
+    - '------------INS ArrayAccess@@seq[0] @TO@ MethodInvocation@@seq[0].toString() '
+    - '---------------MOV SimpleName@@seq @TO@ ArrayAccess@@seq[0] '
+    - '---------------MOV NumberLiteral@@0 @TO@ ArrayAccess@@seq[0] '
+    - '------------INS SimpleName@@MethodName:toString:[] @TO@ MethodInvocation@@seq[0].toString() '
+    - '---------DEL ArrayAccess@@seq[0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final CharSequence result=lookupMap.get(subSeq);
+      @TO@ final CharSequence result=lookupMap.get(subSeq.toString()); '
+    - '---UPD VariableDeclarationFragment@@result=lookupMap.get(subSeq) @TO@ result=lookupMap.get(subSeq.toString()) '
+    - '------UPD MethodInvocation@@lookupMap.get(subSeq) @TO@ lookupMap.get(subSeq.toString()) '
+    - '---------UPD SimpleName@@MethodName:get:[subSeq] @TO@ MethodName:get:[subSeq.toString()] '
+    - '------------INS MethodInvocation@@subSeq.toString() @TO@ SimpleName@@MethodName:get:[subSeq] '
+    - '---------------INS SimpleName@@Name:subSeq @TO@ MethodInvocation@@subSeq.toString() '
+    - '---------------INS SimpleName@@MethodName:toString:[] @TO@ MethodInvocation@@subSeq.toString() '
+    - '------------DEL SimpleName@@subSeq '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/translate/LookupTranslator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:this.lookupMap.put(seq[0].toString(),seq[1])
+      @TO@ EnhancedForStatement@@final CharSequence[] seq, SimpleName:lookup '
+    - '---INS MethodInvocation@@this.lookupMap.put(seq[0].toString(),seq[1]) @TO@
+      ExpressionStatement@@MethodInvocation:this.lookupMap.put(seq[0].toString(),seq[1]) '
+    - '------INS FieldAccess@@this.lookupMap @TO@ MethodInvocation@@this.lookupMap.put(seq[0].toString(),seq[1]) '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.lookupMap '
+    - '---------INS SimpleName@@lookupMap @TO@ FieldAccess@@this.lookupMap '
+    - '------INS SimpleName@@MethodName:put:[seq[0].toString(), seq[1]] @TO@ MethodInvocation@@this.lookupMap.put(seq[0].toString(),seq[1]) '
+    - '---------INS MethodInvocation@@seq[0].toString() @TO@ SimpleName@@MethodName:put:[seq[0].toString(),
+      seq[1]] '
+    - '------------INS ArrayAccess@@seq[0] @TO@ MethodInvocation@@seq[0].toString() '
+    - '---------------INS SimpleName@@seq @TO@ ArrayAccess@@seq[0] '
+    - '---------------INS NumberLiteral@@0 @TO@ ArrayAccess@@seq[0] '
+    - '------------INS SimpleName@@MethodName:toString:[] @TO@ MethodInvocation@@seq[0].toString() '
+    - '---------INS ArrayAccess@@seq[1] @TO@ SimpleName@@MethodName:put:[seq[0].toString(),
+      seq[1]] '
+    - '------------INS SimpleName@@seq @TO@ ArrayAccess@@seq[1] '
+    - '------------INS NumberLiteral@@1 @TO@ ArrayAccess@@seq[1] '
+  repair_actions_cnt: 1

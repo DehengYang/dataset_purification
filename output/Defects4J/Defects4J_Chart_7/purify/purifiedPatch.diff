@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_7/source/org/jfree/data/time/TimePeriodValues.java	2020-10-20 23:57:04.602223292 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_7/purify/purified/org/jfree/data/time/TimePeriodValues.java	2020-10-20 23:57:04.598223176 -0400
+@@ -299,7 +299,7 @@
+         if (this.maxMiddleIndex >= 0) {
+             long s = getDataItem(this.minMiddleIndex).getPeriod().getStart()
+                 .getTime();
+-            long e = getDataItem(this.minMiddleIndex).getPeriod().getEnd()
++            long e = getDataItem(this.maxMiddleIndex).getPeriod().getEnd()
+                 .getTime();
+             long maxMiddle = s + (e - s) / 2;
+             if (middle > maxMiddle) {

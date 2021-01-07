@@ -1,0 +1,11 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_43/src/java/org/apache/commons/lang/text/ExtendedMessageFormat.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_43/fixed-version/src/java/org/apache/commons/lang/text/ExtendedMessageFormat.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_43/src/java/org/apache/commons/lang/text/ExtendedMessageFormat.java	2020-03-01 00:10:26.373231189 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_43/fixed-version/src/java/org/apache/commons/lang/text/ExtendedMessageFormat.java	2020-03-01 00:10:29.821393653 -0800
+@@ -419,6 +419,7 @@
+         int start = pos.getIndex();
+         char[] c = pattern.toCharArray();
+         if (escapingOn && c[start] == QUOTE) {
++            next(pos);
+             return appendTo == null ? null : appendTo.append(QUOTE);
+         }
+         int lastHold = start;

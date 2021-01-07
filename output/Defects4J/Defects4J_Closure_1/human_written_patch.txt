@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_1/src/com/google/javascript/jscomp/RemoveUnusedVars.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_1/fixed-version/src/com/google/javascript/jscomp/RemoveUnusedVars.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_1/src/com/google/javascript/jscomp/RemoveUnusedVars.java	2020-03-01 00:24:51.237981541 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_1/fixed-version/src/com/google/javascript/jscomp/RemoveUnusedVars.java	2020-03-01 00:24:54.238122907 -0800
+@@ -376,6 +376,9 @@
+     // is removing globals, then it's OK to remove unused function args.
+     //
+     // See http://code.google.com/p/closure-compiler/issues/detail?id=253
++    if (!removeGlobals) {
++      return;
++    }
+ 
+     Node function = fnScope.getRootNode();
+ 

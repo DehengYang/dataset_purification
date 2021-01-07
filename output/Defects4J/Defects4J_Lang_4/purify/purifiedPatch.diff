@@ -1,0 +1,10 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_4/src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java	2020-10-22 01:18:52.005918896 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_4/purify/purified/org/apache/commons/lang3/text/translate/LookupTranslator.java	2020-10-22 01:18:52.005918896 -0400
+@@ -49,6 +49,7 @@
+         if (lookup != null) {
+             for (final CharSequence[] seq : lookup) {
+                 this.lookupMap.put(seq[0], seq[1]);
++                this.lookupMap.put(seq[0].toString(), seq[1]);
+                 final int sz = seq[0].length();
+                 if (sz < _shortest) {
+                     _shortest = sz;

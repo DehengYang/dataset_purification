@@ -1,0 +1,14 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_89/src/java/org/apache/commons/math/stat/Frequency.java	2020-10-21 13:56:45.770788034 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_89/purify/assertBeforeMut/org/apache/commons/math/stat/Frequency.java	2020-10-21 13:56:45.770788034 -0400
+@@ -107,7 +107,11 @@
+      */
+     @Deprecated
+     public void addValue(Object v) {
++        if (v instanceof Comparable<?>){
+             addValue((Comparable<?>) v);            
++        } else {
++            throw new IllegalArgumentException("Object must implement Comparable");
++        }
+     }
+     
+     /**

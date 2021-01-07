@@ -1,0 +1,235 @@
+1 bug_id: Math-88
+2 src folder:
+  name of src folder: java
+  number of files: 398
+  number of java files: 362
+  number of src classes: 444
+  number of test classes: 186
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.linear.SimplexSolverTest#testMath272
+  failing tests:
+  - org.apache.commons.math.optimization.linear.SimplexSolverTest
+  number of all test cases: 1893
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.98
+  purification via delta debugging: 222.639
+  repair actions extraction: 1.129
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.linear.SimplexSolverTest#testMath272: 268
+  fixed:
+    org.apache.commons.math.optimization.linear.SimplexSolverTest#testMath272: 268
+6 reduced lines:
+  by all: 1
+  by coverage: 1
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 6
+  cov_patch_lines: 10
+  delta_patch_lines: 10
+  oriAdd: 5
+  oriDel: 6
+  ori_patch_lines: 11
+  purAdd: 4
+  purDel: 6
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 3
+  failCompile: 16
+  failFail: 5
+  passed: 0
+  total: 24
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_88/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 13:52:00.206530375 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_88/purify/patch/org/apache/commons/math/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 13:52:00.202530260 -0400\n@@ -326,19 +326,18 @@\n         Integer basicRow\
+    \ =\n             getBasicRow(getNumObjectiveFunctions() + getOriginalNumDecisionVariables());\n\
+    \         double mostNegative = basicRow == null ? 0 : getEntry(basicRow, getRhsOffset());\n\
+    +        Set<Integer> basicRows = new HashSet<Integer>();\n         for (int i\
+    \ = 0; i < coefficients.length; i++) {\n             basicRow = getBasicRow(getNumObjectiveFunctions()\
+    \ + i);\n+            if (basicRows.contains(basicRow)) {\n                 //\
+    \ if multiple variables can take a given value \n                 // then we choose\
+    \ the first and set the rest equal to 0\n+                coefficients[i] = 0;\n\
+    +            } else {\n+                basicRows.add(basicRow);\n           \
+    \      coefficients[i] =\n                     (basicRow == null ? 0 : getEntry(basicRow,\
+    \ getRhsOffset())) -\n                     (restrictToNonNegative ? 0 : mostNegative);\n\
+    -            if (basicRow != null) {\n-                for (int j = getNumObjectiveFunctions();\
+    \ j < getNumObjectiveFunctions() + i; j++) {\n-                    if (tableau.getEntry(basicRow,\
+    \ j) == 1) {\n-                         coefficients[i] = 0;\n-              \
+    \      }\n-                }\n             }\n         }\n         return new\
+    \ RealPointValuePair(coefficients, f.getValue(coefficients));"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_88/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 13:55:57.705398122 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_88/purify/purified/org/apache/commons/math/optimization/linear/SimplexTableau.java\t\
+    2020-10-21 13:55:57.705398122 -0400\n@@ -326,19 +326,17 @@\n         Integer basicRow\
+    \ =\n             getBasicRow(getNumObjectiveFunctions() + getOriginalNumDecisionVariables());\n\
+    \         double mostNegative = basicRow == null ? 0 : getEntry(basicRow, getRhsOffset());\n\
+    +        Set<Integer> basicRows = new HashSet<Integer>();\n         for (int i\
+    \ = 0; i < coefficients.length; i++) {\n             basicRow = getBasicRow(getNumObjectiveFunctions()\
+    \ + i);\n+            if (basicRows.contains(basicRow)) {\n                 //\
+    \ if multiple variables can take a given value \n                 // then we choose\
+    \ the first and set the rest equal to 0\n+            } else {\n+            \
+    \    basicRows.add(basicRow);\n                 coefficients[i] =\n          \
+    \           (basicRow == null ? 0 : getEntry(basicRow, getRhsOffset())) -\n  \
+    \                   (restrictToNonNegative ? 0 : mostNegative);\n-           \
+    \ if (basicRow != null) {\n-                for (int j = getNumObjectiveFunctions();\
+    \ j < getNumObjectiveFunctions() + i; j++) {\n-                    if (tableau.getEntry(basicRow,\
+    \ j) == 1) {\n-                         coefficients[i] = 0;\n-              \
+    \      }\n-                }\n             }\n         }\n         return new\
+    \ RealPointValuePair(coefficients, f.getValue(coefficients));"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/linear/SimplexTableau:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Set<Integer> basicRows=new HashSet<Integer>();
+      @TO@ MethodDeclaration@@protected, @@RealPointValuePair, MethodName:getSolution,
+      @@Argus:null '
+    - '---INS ParameterizedType@@Set<Integer> @TO@ VariableDeclarationStatement@@Set<Integer>
+      basicRows=new HashSet<Integer>(); '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<Integer> '
+    - '------INS SimpleType@@Integer @TO@ ParameterizedType@@Set<Integer> '
+    - '---INS VariableDeclarationFragment@@basicRows=new HashSet<Integer>() @TO@ VariableDeclarationStatement@@Set<Integer>
+      basicRows=new HashSet<Integer>(); '
+    - '------INS SimpleName@@basicRows @TO@ VariableDeclarationFragment@@basicRows=new
+      HashSet<Integer>() '
+    - '------INS ClassInstanceCreation@@HashSet<Integer>[] @TO@ VariableDeclarationFragment@@basicRows=new
+      HashSet<Integer>() '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@HashSet<Integer>[] '
+    - '---------INS ParameterizedType@@HashSet<Integer> @TO@ ClassInstanceCreation@@HashSet<Integer>[] '
+    - '------------INS SimpleType@@HashSet @TO@ ParameterizedType@@HashSet<Integer> '
+    - '------------INS SimpleType@@Integer @TO@ ParameterizedType@@HashSet<Integer> '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:basicRow != null @TO@ MethodInvocation:basicRows.contains(basicRow) '
+    - '---INS MethodInvocation@@basicRows.contains(basicRow) @TO@ IfStatement@@InfixExpression:basicRow
+      != null '
+    - '------INS SimpleName@@Name:basicRows @TO@ MethodInvocation@@basicRows.contains(basicRow) '
+    - '------INS SimpleName@@MethodName:contains:[basicRow] @TO@ MethodInvocation@@basicRows.contains(basicRow) '
+    - '---------INS SimpleName@@basicRow @TO@ SimpleName@@MethodName:contains:[basicRow] '
+    - '---MOV ExpressionStatement@@Assignment:coefficients[i]=(basicRow == null ?
+      0 : getEntry(basicRow,getRhsOffset())) - (restrictToNonNegative ? 0 : mostNegative)
+      @TO@ IfStatement@@InfixExpression:basicRow != null '
+    - '---INS ExpressionStatement@@MethodInvocation:basicRows.add(basicRow) @TO@ IfStatement@@InfixExpression:basicRow
+      != null '
+    - '------INS MethodInvocation@@basicRows.add(basicRow) @TO@ ExpressionStatement@@MethodInvocation:basicRows.add(basicRow) '
+    - '---------MOV SimpleName@@Name:tableau @TO@ MethodInvocation@@basicRows.add(basicRow) '
+    - '---------MOV SimpleName@@MethodName:getEntry:[basicRow, j] @TO@ MethodInvocation@@basicRows.add(basicRow) '
+    - '---DEL InfixExpression@@basicRow != null '
+    - '------DEL SimpleName@@basicRow '
+    - '------DEL Operator@@!= '
+    - '------DEL NullLiteral@@null '
+    - '---DEL ForStatement@@[int j=getNumObjectiveFunctions()];j < getNumObjectiveFunctions()
+      + i; [j++] '
+    - '------DEL VariableDeclarationExpression@@int j=getNumObjectiveFunctions() '
+    - '---------DEL PrimitiveType@@int '
+    - '---------DEL VariableDeclarationFragment@@j=getNumObjectiveFunctions() '
+    - '------------DEL SimpleName@@j '
+    - '------------DEL MethodInvocation@@MethodName:getNumObjectiveFunctions:[] '
+    - '------DEL InfixExpression@@j < getNumObjectiveFunctions() + i '
+    - '---------DEL SimpleName@@j '
+    - '---------DEL Operator@@< '
+    - '---------DEL InfixExpression@@getNumObjectiveFunctions() + i '
+    - '------------DEL MethodInvocation@@MethodName:getNumObjectiveFunctions:[] '
+    - '------------DEL Operator@@+ '
+    - '------------DEL SimpleName@@i '
+    - '------DEL PostfixExpression@@j++ '
+    - '---------DEL SimpleName@@j '
+    - '---------DEL Operator@@++ '
+    - '------DEL IfStatement@@InfixExpression:tableau.getEntry(basicRow,j) == 1 '
+    - '---------DEL InfixExpression@@tableau.getEntry(basicRow,j) == 1 '
+    - '------------DEL MethodInvocation@@tableau.getEntry(basicRow,j) '
+    - '------------DEL Operator@@== '
+    - '------------DEL NumberLiteral@@1 '
+    - '---MOV ExpressionStatement@@Assignment:coefficients[i]=0 @TO@ IfStatement@@InfixExpression:basicRow
+      != null '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/linear/SimplexTableau:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Set<Integer> basicRows=new HashSet<Integer>();
+      @TO@ MethodDeclaration@@protected, @@RealPointValuePair, MethodName:getSolution,
+      @@Argus:null '
+    - '---INS ParameterizedType@@Set<Integer> @TO@ VariableDeclarationStatement@@Set<Integer>
+      basicRows=new HashSet<Integer>(); '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<Integer> '
+    - '------INS SimpleType@@Integer @TO@ ParameterizedType@@Set<Integer> '
+    - '---INS VariableDeclarationFragment@@basicRows=new HashSet<Integer>() @TO@ VariableDeclarationStatement@@Set<Integer>
+      basicRows=new HashSet<Integer>(); '
+    - '------INS SimpleName@@basicRows @TO@ VariableDeclarationFragment@@basicRows=new
+      HashSet<Integer>() '
+    - '------INS ClassInstanceCreation@@HashSet<Integer>[] @TO@ VariableDeclarationFragment@@basicRows=new
+      HashSet<Integer>() '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@HashSet<Integer>[] '
+    - '---------INS ParameterizedType@@HashSet<Integer> @TO@ ClassInstanceCreation@@HashSet<Integer>[] '
+    - '------------INS SimpleType@@HashSet @TO@ ParameterizedType@@HashSet<Integer> '
+    - '------------INS SimpleType@@Integer @TO@ ParameterizedType@@HashSet<Integer> '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:basicRow != null @TO@ MethodInvocation:basicRows.contains(basicRow) '
+    - '---INS MethodInvocation@@basicRows.contains(basicRow) @TO@ IfStatement@@InfixExpression:basicRow
+      != null '
+    - '------MOV SimpleName@@Name:tableau @TO@ MethodInvocation@@basicRows.contains(basicRow) '
+    - '------MOV SimpleName@@MethodName:getEntry:[basicRow, j] @TO@ MethodInvocation@@basicRows.contains(basicRow) '
+    - '---MOV ExpressionStatement@@Assignment:coefficients[i]=(basicRow == null ?
+      0 : getEntry(basicRow,getRhsOffset())) - (restrictToNonNegative ? 0 : mostNegative)
+      @TO@ IfStatement@@InfixExpression:basicRow != null '
+    - '---DEL InfixExpression@@basicRow != null '
+    - '------DEL SimpleName@@basicRow '
+    - '------DEL Operator@@!= '
+    - '------DEL NullLiteral@@null '
+    - '---DEL ForStatement@@[int j=getNumObjectiveFunctions()];j < getNumObjectiveFunctions()
+      + i; [j++] '
+    - '------DEL VariableDeclarationExpression@@int j=getNumObjectiveFunctions() '
+    - '---------DEL PrimitiveType@@int '
+    - '---------DEL VariableDeclarationFragment@@j=getNumObjectiveFunctions() '
+    - '------------DEL SimpleName@@j '
+    - '------------DEL MethodInvocation@@MethodName:getNumObjectiveFunctions:[] '
+    - '------DEL InfixExpression@@j < getNumObjectiveFunctions() + i '
+    - '---------DEL SimpleName@@j '
+    - '---------DEL Operator@@< '
+    - '---------DEL InfixExpression@@getNumObjectiveFunctions() + i '
+    - '------------DEL MethodInvocation@@MethodName:getNumObjectiveFunctions:[] '
+    - '------------DEL Operator@@+ '
+    - '------------DEL SimpleName@@i '
+    - '------DEL PostfixExpression@@j++ '
+    - '---------DEL SimpleName@@j '
+    - '---------DEL Operator@@++ '
+    - '------DEL IfStatement@@InfixExpression:tableau.getEntry(basicRow,j) == 1 '
+    - '---------DEL InfixExpression@@tableau.getEntry(basicRow,j) == 1 '
+    - '------------DEL MethodInvocation@@tableau.getEntry(basicRow,j) '
+    - '------------DEL Operator@@== '
+    - '------------DEL NumberLiteral@@1 '
+    - '---MOV ExpressionStatement@@Assignment:coefficients[i]=0 @TO@ IfStatement@@InfixExpression:basicRow
+      != null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:coefficients[i]=0 @TO@ MethodInvocation:basicRows.add(basicRow) '
+    - '---INS MethodInvocation@@basicRows.add(basicRow) @TO@ ExpressionStatement@@Assignment:coefficients[i]=0 '
+    - '------INS SimpleName@@Name:basicRows @TO@ MethodInvocation@@basicRows.add(basicRow) '
+    - '------INS SimpleName@@MethodName:add:[basicRow] @TO@ MethodInvocation@@basicRows.add(basicRow) '
+    - '---------INS SimpleName@@basicRow @TO@ SimpleName@@MethodName:add:[basicRow] '
+    - '---DEL Assignment@@coefficients[i]=0 '
+    - '------DEL ArrayAccess@@coefficients[i] '
+    - '---------DEL SimpleName@@coefficients '
+    - '---------DEL SimpleName@@i '
+    - '------DEL Operator@@= '
+    - '------DEL NumberLiteral@@0 '
+  repair_actions_cnt: 3

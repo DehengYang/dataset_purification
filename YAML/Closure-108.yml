@@ -1,0 +1,198 @@
+1 bug_id: Closure-108
+2 src folder:
+  name of src folder: src
+  number of files: 559
+  number of java files: 543
+  number of src classes: 1566
+  number of test classes: 239
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.ScopedAliasesTest#testIssue1144
+  failing tests:
+  - com.google.javascript.jscomp.ScopedAliasesTest
+  number of all test cases: 8442
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.007
+  purification via delta debugging: 563.026
+  repair actions extraction: 1.882
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.ScopedAliasesTest#testIssue1144: 3779
+  fixed:
+    com.google.javascript.jscomp.ScopedAliasesTest#testIssue1144: 4260
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 4
+  covDel: 1
+  cov_patch_lines: 5
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 1
+  ori_patch_lines: 5
+  purAdd: 3
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 4
+  original: 4
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 4
+  passed: 1
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_108/src/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-23 13:31:59.711322183 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_108/purify/patch/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-23 13:31:59.711322183 -0400\n@@ -256,6 +256,7 @@\n     private final Map<String,\
+    \ Var> aliases = Maps.newHashMap();\n \n     // Also temporary and cleared for\
+    \ each scope.\n+    private final Set<Node> injectedDecls = Sets.newHashSet();\n\
+    \ \n     // Suppose you create an alias.\n     // var x = goog.x;\n@@ -313,6 +314,7\
+    \ @@\n \n       if (t.getScopeDepth() == 2) {\n         renameNamespaceShadows(t);\n\
+    +        injectedDecls.clear();\n         aliases.clear();\n         forbiddenLocals.clear();\n\
+    \         transformation = null;\n@@ -429,6 +431,7 @@\n             } else {\n\
+    \               grandparent.addChildBefore(newDecl, varNode);\n             }\n\
+    +            injectedDecls.add(newDecl.getFirstChild());\n           }\n \n  \
+    \         // Rewrite \"var name = EXPR;\" to \"var name = $jscomp.scope.name;\"\
+    \n@@ -578,7 +581,7 @@\n         // When we inject declarations, we duplicate jsdoc.\
+    \ Make sure\n         // we only process that jsdoc once.\n         JSDocInfo\
+    \ info = n.getJSDocInfo();\n-        if (info != null) {\n+        if (info !=\
+    \ null && !injectedDecls.contains(n)) {\n           for (Node node : info.getTypeNodes())\
+    \ {\n             fixTypeNode(node);\n           }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_108/src/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-23 13:41:54.720549588 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_108/purify/purified/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-23 13:41:54.720549588 -0400\n@@ -256,6 +256,7 @@\n     private final Map<String,\
+    \ Var> aliases = Maps.newHashMap();\n \n     // Also temporary and cleared for\
+    \ each scope.\n+    private final Set<Node> injectedDecls = Sets.newHashSet();\n\
+    \ \n     // Suppose you create an alias.\n     // var x = goog.x;\n@@ -429,6 +430,7\
+    \ @@\n             } else {\n               grandparent.addChildBefore(newDecl,\
+    \ varNode);\n             }\n+            injectedDecls.add(newDecl.getFirstChild());\n\
+    \           }\n \n           // Rewrite \"var name = EXPR;\" to \"var name = $jscomp.scope.name;\"\
+    \n@@ -578,7 +580,7 @@\n         // When we inject declarations, we duplicate jsdoc.\
+    \ Make sure\n         // we only process that jsdoc once.\n         JSDocInfo\
+    \ info = n.getJSDocInfo();\n-        if (info != null) {\n+        if (info !=\
+    \ null && !injectedDecls.contains(n)) {\n           for (Node node : info.getTypeNodes())\
+    \ {\n             fixTypeNode(node);\n           }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ScopedAliases:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, final, Set<Node>, [injectedDecls=Sets.newHashSet()]
+      @TO@ TypeDeclaration@@[private]Traversal, [NodeTraversal.ScopedCallback] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, final, Set<Node>,
+      [injectedDecls=Sets.newHashSet()] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, final, Set<Node>, [injectedDecls=Sets.newHashSet()] '
+    - '---INS ParameterizedType@@Set<Node> @TO@ FieldDeclaration@@private, final,
+      Set<Node>, [injectedDecls=Sets.newHashSet()] '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<Node> '
+    - '------INS SimpleType@@Node @TO@ ParameterizedType@@Set<Node> '
+    - '---INS VariableDeclarationFragment@@injectedDecls=Sets.newHashSet() @TO@ FieldDeclaration@@private,
+      final, Set<Node>, [injectedDecls=Sets.newHashSet()] '
+    - '------INS SimpleName@@injectedDecls @TO@ VariableDeclarationFragment@@injectedDecls=Sets.newHashSet() '
+    - '------INS MethodInvocation@@Sets.newHashSet() @TO@ VariableDeclarationFragment@@injectedDecls=Sets.newHashSet() '
+    - '---------INS SimpleName@@Name:Sets @TO@ MethodInvocation@@Sets.newHashSet() '
+    - '---------INS SimpleName@@MethodName:newHashSet:[] @TO@ MethodInvocation@@Sets.newHashSet() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:injectedDecls.clear() @TO@ IfStatement@@InfixExpression:t.getScopeDepth()
+      == 2 '
+    - '---INS MethodInvocation@@injectedDecls.clear() @TO@ ExpressionStatement@@MethodInvocation:injectedDecls.clear() '
+    - '------INS SimpleName@@Name:injectedDecls @TO@ MethodInvocation@@injectedDecls.clear() '
+    - '------INS SimpleName@@MethodName:clear:[] @TO@ MethodInvocation@@injectedDecls.clear() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:injectedDecls.add(newDecl.getFirstChild())
+      @TO@ IfStatement@@InfixExpression:value != null || v.getJSDocInfo() != null '
+    - '---INS MethodInvocation@@injectedDecls.add(newDecl.getFirstChild()) @TO@ ExpressionStatement@@MethodInvocation:injectedDecls.add(newDecl.getFirstChild()) '
+    - '------INS SimpleName@@Name:injectedDecls @TO@ MethodInvocation@@injectedDecls.add(newDecl.getFirstChild()) '
+    - '------INS SimpleName@@MethodName:add:[newDecl.getFirstChild()] @TO@ MethodInvocation@@injectedDecls.add(newDecl.getFirstChild()) '
+    - '---------INS MethodInvocation@@newDecl.getFirstChild() @TO@ SimpleName@@MethodName:add:[newDecl.getFirstChild()] '
+    - '------------INS SimpleName@@Name:newDecl @TO@ MethodInvocation@@newDecl.getFirstChild() '
+    - '------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@newDecl.getFirstChild() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:info != null @TO@ InfixExpression:info !=
+      null && !injectedDecls.contains(n) '
+    - '---DEL InfixExpression@@info != null '
+    - '---INS InfixExpression@@info != null && !injectedDecls.contains(n) @TO@ IfStatement@@InfixExpression:info
+      != null '
+    - '------INS InfixExpression@@info != null @TO@ InfixExpression@@info != null
+      && !injectedDecls.contains(n) '
+    - '---------MOV SimpleName@@info @TO@ InfixExpression@@info != null '
+    - '---------MOV Operator@@!= @TO@ InfixExpression@@info != null '
+    - '---------MOV NullLiteral@@null @TO@ InfixExpression@@info != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@info != null && !injectedDecls.contains(n) '
+    - '------INS PrefixExpression@@!injectedDecls.contains(n) @TO@ InfixExpression@@info
+      != null && !injectedDecls.contains(n) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!injectedDecls.contains(n) '
+    - '---------INS MethodInvocation@@injectedDecls.contains(n) @TO@ PrefixExpression@@!injectedDecls.contains(n) '
+    - '------------INS SimpleName@@Name:injectedDecls @TO@ MethodInvocation@@injectedDecls.contains(n) '
+    - '------------INS SimpleName@@MethodName:contains:[n] @TO@ MethodInvocation@@injectedDecls.contains(n) '
+    - '---------------INS SimpleName@@n @TO@ SimpleName@@MethodName:contains:[n] '
+  files_cnt: '1'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ScopedAliases:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, final, Set<Node>, [injectedDecls=Sets.newHashSet()]
+      @TO@ TypeDeclaration@@[private]Traversal, [NodeTraversal.ScopedCallback] '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, final, Set<Node>,
+      [injectedDecls=Sets.newHashSet()] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, final, Set<Node>, [injectedDecls=Sets.newHashSet()] '
+    - '---INS ParameterizedType@@Set<Node> @TO@ FieldDeclaration@@private, final,
+      Set<Node>, [injectedDecls=Sets.newHashSet()] '
+    - '------INS SimpleType@@Set @TO@ ParameterizedType@@Set<Node> '
+    - '------INS SimpleType@@Node @TO@ ParameterizedType@@Set<Node> '
+    - '---INS VariableDeclarationFragment@@injectedDecls=Sets.newHashSet() @TO@ FieldDeclaration@@private,
+      final, Set<Node>, [injectedDecls=Sets.newHashSet()] '
+    - '------INS SimpleName@@injectedDecls @TO@ VariableDeclarationFragment@@injectedDecls=Sets.newHashSet() '
+    - '------INS MethodInvocation@@Sets.newHashSet() @TO@ VariableDeclarationFragment@@injectedDecls=Sets.newHashSet() '
+    - '---------INS SimpleName@@Name:Sets @TO@ MethodInvocation@@Sets.newHashSet() '
+    - '---------INS SimpleName@@MethodName:newHashSet:[] @TO@ MethodInvocation@@Sets.newHashSet() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:injectedDecls.add(newDecl.getFirstChild())
+      @TO@ IfStatement@@InfixExpression:value != null || v.getJSDocInfo() != null '
+    - '---INS MethodInvocation@@injectedDecls.add(newDecl.getFirstChild()) @TO@ ExpressionStatement@@MethodInvocation:injectedDecls.add(newDecl.getFirstChild()) '
+    - '------INS SimpleName@@Name:injectedDecls @TO@ MethodInvocation@@injectedDecls.add(newDecl.getFirstChild()) '
+    - '------INS SimpleName@@MethodName:add:[newDecl.getFirstChild()] @TO@ MethodInvocation@@injectedDecls.add(newDecl.getFirstChild()) '
+    - '---------INS MethodInvocation@@newDecl.getFirstChild() @TO@ SimpleName@@MethodName:add:[newDecl.getFirstChild()] '
+    - '------------INS SimpleName@@Name:newDecl @TO@ MethodInvocation@@newDecl.getFirstChild() '
+    - '------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@newDecl.getFirstChild() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:info != null @TO@ InfixExpression:info !=
+      null && !injectedDecls.contains(n) '
+    - '---DEL InfixExpression@@info != null '
+    - '---INS InfixExpression@@info != null && !injectedDecls.contains(n) @TO@ IfStatement@@InfixExpression:info
+      != null '
+    - '------INS InfixExpression@@info != null @TO@ InfixExpression@@info != null
+      && !injectedDecls.contains(n) '
+    - '---------MOV SimpleName@@info @TO@ InfixExpression@@info != null '
+    - '---------MOV Operator@@!= @TO@ InfixExpression@@info != null '
+    - '---------MOV NullLiteral@@null @TO@ InfixExpression@@info != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@info != null && !injectedDecls.contains(n) '
+    - '------INS PrefixExpression@@!injectedDecls.contains(n) @TO@ InfixExpression@@info
+      != null && !injectedDecls.contains(n) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!injectedDecls.contains(n) '
+    - '---------INS MethodInvocation@@injectedDecls.contains(n) @TO@ PrefixExpression@@!injectedDecls.contains(n) '
+    - '------------INS SimpleName@@Name:injectedDecls @TO@ MethodInvocation@@injectedDecls.contains(n) '
+    - '------------INS SimpleName@@MethodName:contains:[n] @TO@ MethodInvocation@@injectedDecls.contains(n) '
+    - '---------------INS SimpleName@@n @TO@ SimpleName@@MethodName:contains:[n] '
+  files_cnt: '1'
+  repair_actions_cnt: 3

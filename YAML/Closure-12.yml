@@ -1,0 +1,182 @@
+1 bug_id: Closure-12
+2 src folder:
+  name of src folder: src
+  number of files: 419
+  number of java files: 403
+  number of src classes: 1363
+  number of test classes: 224
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testIssue794b
+  failing tests:
+  - com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest
+  number of all test cases: 7614
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.451
+  purification via delta debugging: 275.014
+  repair actions extraction: 1.253
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testIssue794b: 4606
+  fixed:
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testIssue794b: 4377
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 6
+  covDel: 0
+  cov_patch_lines: 6
+  delta_patch_lines: 6
+  oriAdd: 6
+  oriDel: 0
+  ori_patch_lines: 6
+  purAdd: 6
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 11
+  failFail: 1
+  passed: 0
+  total: 12
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_12/src/com/google/javascript/jscomp/MaybeReachingVariableUse.java\t\
+    2020-10-21 17:42:19.818792478 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_12/purify/patch/com/google/javascript/jscomp/MaybeReachingVariableUse.java\t\
+    2020-10-21 17:42:19.818792478 -0400\n@@ -157,6 +157,12 @@\n   }\n \n   private\
+    \ boolean hasExceptionHandler(Node cfgNode) {\n+    List<DiGraphEdge<Node, Branch>>\
+    \ branchEdges = getCfg().getOutEdges(cfgNode);\n+    for (DiGraphEdge<Node, Branch>\
+    \ edge : branchEdges) {\n+      if (edge.getValue() == Branch.ON_EX) {\n+    \
+    \    return true;\n+      }\n+    }\n     return false;\n   }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_12/src/com/google/javascript/jscomp/MaybeReachingVariableUse.java\t\
+    2020-10-21 17:47:24.651546984 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_12/purify/purified/com/google/javascript/jscomp/MaybeReachingVariableUse.java\t\
+    2020-10-21 17:47:24.651546984 -0400\n@@ -157,6 +157,12 @@\n   }\n \n   private\
+    \ boolean hasExceptionHandler(Node cfgNode) {\n+    List<DiGraphEdge<Node, Branch>>\
+    \ branchEdges = getCfg().getOutEdges(cfgNode);\n+    for (DiGraphEdge<Node, Branch>\
+    \ edge : branchEdges) {\n+      if (edge.getValue() == Branch.ON_EX) {\n+    \
+    \    return true;\n+      }\n+    }\n     return false;\n   }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/MaybeReachingVariableUse:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@List<DiGraphEdge<Node,Branch>> branchEdges=getCfg().getOutEdges(cfgNode);
+      @TO@ MethodDeclaration@@private, @@boolean, MethodName:hasExceptionHandler,
+      @@Argus:Node+cfgNode+ '
+    - '---INS ParameterizedType@@List<DiGraphEdge<Node,Branch>> @TO@ VariableDeclarationStatement@@List<DiGraphEdge<Node,Branch>>
+      branchEdges=getCfg().getOutEdges(cfgNode); '
+    - '------INS SimpleType@@List @TO@ ParameterizedType@@List<DiGraphEdge<Node,Branch>> '
+    - '------INS ParameterizedType@@DiGraphEdge<Node,Branch> @TO@ ParameterizedType@@List<DiGraphEdge<Node,Branch>> '
+    - '---------INS SimpleType@@DiGraphEdge @TO@ ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '---------INS SimpleType@@Node @TO@ ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '---------INS SimpleType@@Branch @TO@ ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '---INS VariableDeclarationFragment@@branchEdges=getCfg().getOutEdges(cfgNode)
+      @TO@ VariableDeclarationStatement@@List<DiGraphEdge<Node,Branch>> branchEdges=getCfg().getOutEdges(cfgNode); '
+    - '------INS SimpleName@@branchEdges @TO@ VariableDeclarationFragment@@branchEdges=getCfg().getOutEdges(cfgNode) '
+    - '------INS MethodInvocation@@getCfg().getOutEdges(cfgNode) @TO@ VariableDeclarationFragment@@branchEdges=getCfg().getOutEdges(cfgNode) '
+    - '---------INS MethodInvocation@@MethodName:getCfg:[] @TO@ MethodInvocation@@getCfg().getOutEdges(cfgNode) '
+    - '---------INS SimpleName@@MethodName:getOutEdges:[cfgNode] @TO@ MethodInvocation@@getCfg().getOutEdges(cfgNode) '
+    - '------------INS SimpleName@@cfgNode @TO@ SimpleName@@MethodName:getOutEdges:[cfgNode] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS EnhancedForStatement@@DiGraphEdge<Node,Branch> edge, SimpleName:branchEdges
+      @TO@ MethodDeclaration@@private, @@boolean, MethodName:hasExceptionHandler,
+      @@Argus:Node+cfgNode+ '
+    - '---INS SingleVariableDeclaration@@DiGraphEdge<Node,Branch> edge @TO@ EnhancedForStatement@@DiGraphEdge<Node,Branch>
+      edge, SimpleName:branchEdges '
+    - '------INS ParameterizedType@@DiGraphEdge<Node,Branch> @TO@ SingleVariableDeclaration@@DiGraphEdge<Node,Branch>
+      edge '
+    - '---------INS SimpleType@@DiGraphEdge @TO@ ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '---------INS SimpleType@@Node @TO@ ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '---------INS SimpleType@@Branch @TO@ ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '------INS SimpleName@@edge @TO@ SingleVariableDeclaration@@DiGraphEdge<Node,Branch>
+      edge '
+    - '---INS SimpleName@@branchEdges @TO@ EnhancedForStatement@@DiGraphEdge<Node,Branch>
+      edge, SimpleName:branchEdges '
+    - '---INS IfStatement@@InfixExpression:edge.getValue() == Branch.ON_EX @TO@ EnhancedForStatement@@DiGraphEdge<Node,Branch>
+      edge, SimpleName:branchEdges '
+    - '------INS InfixExpression@@edge.getValue() == Branch.ON_EX @TO@ IfStatement@@InfixExpression:edge.getValue()
+      == Branch.ON_EX '
+    - '---------INS MethodInvocation@@edge.getValue() @TO@ InfixExpression@@edge.getValue()
+      == Branch.ON_EX '
+    - '------------INS SimpleName@@Name:edge @TO@ MethodInvocation@@edge.getValue() '
+    - '------------INS SimpleName@@MethodName:getValue:[] @TO@ MethodInvocation@@edge.getValue() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@edge.getValue() == Branch.ON_EX '
+    - '---------INS QualifiedName@@Branch.ON_EX @TO@ InfixExpression@@edge.getValue()
+      == Branch.ON_EX '
+    - '------------INS SimpleName@@Branch @TO@ QualifiedName@@Branch.ON_EX '
+    - '------------INS SimpleName@@ON_EX @TO@ QualifiedName@@Branch.ON_EX '
+    - '------INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:edge.getValue()
+      == Branch.ON_EX '
+    - '---------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/MaybeReachingVariableUse:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@List<DiGraphEdge<Node,Branch>> branchEdges=getCfg().getOutEdges(cfgNode);
+      @TO@ MethodDeclaration@@private, @@boolean, MethodName:hasExceptionHandler,
+      @@Argus:Node+cfgNode+ '
+    - '---INS ParameterizedType@@List<DiGraphEdge<Node,Branch>> @TO@ VariableDeclarationStatement@@List<DiGraphEdge<Node,Branch>>
+      branchEdges=getCfg().getOutEdges(cfgNode); '
+    - '------INS SimpleType@@List @TO@ ParameterizedType@@List<DiGraphEdge<Node,Branch>> '
+    - '------INS ParameterizedType@@DiGraphEdge<Node,Branch> @TO@ ParameterizedType@@List<DiGraphEdge<Node,Branch>> '
+    - '---------INS SimpleType@@DiGraphEdge @TO@ ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '---------INS SimpleType@@Node @TO@ ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '---------INS SimpleType@@Branch @TO@ ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '---INS VariableDeclarationFragment@@branchEdges=getCfg().getOutEdges(cfgNode)
+      @TO@ VariableDeclarationStatement@@List<DiGraphEdge<Node,Branch>> branchEdges=getCfg().getOutEdges(cfgNode); '
+    - '------INS SimpleName@@branchEdges @TO@ VariableDeclarationFragment@@branchEdges=getCfg().getOutEdges(cfgNode) '
+    - '------INS MethodInvocation@@getCfg().getOutEdges(cfgNode) @TO@ VariableDeclarationFragment@@branchEdges=getCfg().getOutEdges(cfgNode) '
+    - '---------INS MethodInvocation@@MethodName:getCfg:[] @TO@ MethodInvocation@@getCfg().getOutEdges(cfgNode) '
+    - '---------INS SimpleName@@MethodName:getOutEdges:[cfgNode] @TO@ MethodInvocation@@getCfg().getOutEdges(cfgNode) '
+    - '------------INS SimpleName@@cfgNode @TO@ SimpleName@@MethodName:getOutEdges:[cfgNode] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS EnhancedForStatement@@DiGraphEdge<Node,Branch> edge, SimpleName:branchEdges
+      @TO@ MethodDeclaration@@private, @@boolean, MethodName:hasExceptionHandler,
+      @@Argus:Node+cfgNode+ '
+    - '---INS SingleVariableDeclaration@@DiGraphEdge<Node,Branch> edge @TO@ EnhancedForStatement@@DiGraphEdge<Node,Branch>
+      edge, SimpleName:branchEdges '
+    - '------INS ParameterizedType@@DiGraphEdge<Node,Branch> @TO@ SingleVariableDeclaration@@DiGraphEdge<Node,Branch>
+      edge '
+    - '---------INS SimpleType@@DiGraphEdge @TO@ ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '---------INS SimpleType@@Node @TO@ ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '---------INS SimpleType@@Branch @TO@ ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '------INS SimpleName@@edge @TO@ SingleVariableDeclaration@@DiGraphEdge<Node,Branch>
+      edge '
+    - '---INS SimpleName@@branchEdges @TO@ EnhancedForStatement@@DiGraphEdge<Node,Branch>
+      edge, SimpleName:branchEdges '
+    - '---INS IfStatement@@InfixExpression:edge.getValue() == Branch.ON_EX @TO@ EnhancedForStatement@@DiGraphEdge<Node,Branch>
+      edge, SimpleName:branchEdges '
+    - '------INS InfixExpression@@edge.getValue() == Branch.ON_EX @TO@ IfStatement@@InfixExpression:edge.getValue()
+      == Branch.ON_EX '
+    - '---------INS MethodInvocation@@edge.getValue() @TO@ InfixExpression@@edge.getValue()
+      == Branch.ON_EX '
+    - '------------INS SimpleName@@Name:edge @TO@ MethodInvocation@@edge.getValue() '
+    - '------------INS SimpleName@@MethodName:getValue:[] @TO@ MethodInvocation@@edge.getValue() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@edge.getValue() == Branch.ON_EX '
+    - '---------INS QualifiedName@@Branch.ON_EX @TO@ InfixExpression@@edge.getValue()
+      == Branch.ON_EX '
+    - '------------INS SimpleName@@Branch @TO@ QualifiedName@@Branch.ON_EX '
+    - '------------INS SimpleName@@ON_EX @TO@ QualifiedName@@Branch.ON_EX '
+    - '------INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:edge.getValue()
+      == Branch.ON_EX '
+    - '---------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  files_cnt: '1'
+  repair_actions_cnt: 2

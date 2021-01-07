@@ -1,0 +1,191 @@
+1 bug_id: Chart-26
+2 src folder:
+  name of src folder: source
+  number of files: 625
+  number of java files: 553
+  number of src classes: 576
+  number of test classes: 303
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.renderer.category.junit.LevelRendererTests#testDrawWithNullInfo
+  - org.jfree.chart.renderer.category.junit.BoxAndWhiskerRendererTests#testDrawWithNullInfo
+  - org.jfree.chart.renderer.category.junit.GroupedStackedBarRendererTests#testDrawWithNullInfo
+  - org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.BarChartTests#testDrawWithNullInfo
+  - org.jfree.chart.renderer.category.junit.LayeredBarRendererTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.GanttChartTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.LineChart3DTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.AreaChartTests#testDrawWithNullInfo
+  - org.jfree.chart.plot.junit.CategoryPlotTests#test1654215
+  - org.jfree.chart.renderer.category.junit.MinMaxCategoryRendererTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.LineChartTests#testDrawWithNullInfo
+  - org.jfree.chart.renderer.category.junit.StatisticalLineAndShapeRendererTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.StackedBarChart3DTests#testDrawWithNullInfo
+  - org.jfree.chart.renderer.category.junit.IntervalBarRendererTests#testDrawWithNullInfo
+  - org.jfree.chart.plot.junit.CategoryPlotTests#testSerialization4
+  - org.jfree.chart.plot.junit.CategoryPlotTests#testSerialization3
+  - org.jfree.chart.junit.GanttChartTests#testDrawWithNullInfo2
+  - org.jfree.chart.junit.StackedAreaChartTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.StackedBarChartTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.WaterfallChartTests#testDrawWithNullInfo
+  - org.jfree.chart.junit.BarChart3DTests#testDrawWithNullInfo
+  failing tests:
+  - org.jfree.chart.renderer.category.junit.LevelRendererTests
+  - org.jfree.chart.renderer.category.junit.BoxAndWhiskerRendererTests
+  - org.jfree.chart.renderer.category.junit.GroupedStackedBarRendererTests
+  - org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests
+  - org.jfree.chart.junit.BarChartTests
+  - org.jfree.chart.renderer.category.junit.LayeredBarRendererTests
+  - org.jfree.chart.junit.GanttChartTests
+  - org.jfree.chart.junit.LineChart3DTests
+  - org.jfree.chart.junit.AreaChartTests
+  - org.jfree.chart.plot.junit.CategoryPlotTests
+  - org.jfree.chart.renderer.category.junit.MinMaxCategoryRendererTests
+  - org.jfree.chart.junit.LineChartTests
+  - org.jfree.chart.renderer.category.junit.StatisticalLineAndShapeRendererTests
+  - org.jfree.chart.junit.StackedBarChart3DTests
+  - org.jfree.chart.renderer.category.junit.IntervalBarRendererTests
+  - org.jfree.chart.junit.StackedAreaChartTests
+  - org.jfree.chart.junit.StackedBarChartTests
+  - org.jfree.chart.junit.WaterfallChartTests
+  - org.jfree.chart.junit.BarChart3DTests
+  number of all test cases: 1599
+  number of failing test cases: 22
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.865
+  purification via delta debugging: 104.609
+  repair actions extraction: 1.677
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.junit.AreaChartTests#testDrawWithNullInfo: 2854
+    org.jfree.chart.junit.BarChart3DTests#testDrawWithNullInfo: 2955
+    org.jfree.chart.junit.BarChartTests#testDrawWithNullInfo: 2886
+    org.jfree.chart.junit.GanttChartTests#testDrawWithNullInfo: 2310
+    org.jfree.chart.junit.GanttChartTests#testDrawWithNullInfo2: 3110
+    org.jfree.chart.junit.LineChart3DTests#testDrawWithNullInfo: 2930
+    org.jfree.chart.junit.LineChartTests#testDrawWithNullInfo: 2877
+    org.jfree.chart.junit.StackedAreaChartTests#testDrawWithNullInfo: 2857
+    org.jfree.chart.junit.StackedBarChart3DTests#testDrawWithNullInfo: 2952
+    org.jfree.chart.junit.StackedBarChartTests#testDrawWithNullInfo: 2890
+    org.jfree.chart.junit.WaterfallChartTests#testDrawWithNullInfo: 2957
+    org.jfree.chart.plot.junit.CategoryPlotTests#test1654215: 2230
+    org.jfree.chart.plot.junit.CategoryPlotTests#testSerialization3: 2905
+    org.jfree.chart.plot.junit.CategoryPlotTests#testSerialization4: 3401
+    org.jfree.chart.renderer.category.junit.BoxAndWhiskerRendererTests#testDrawWithNullInfo: 2701
+    org.jfree.chart.renderer.category.junit.GroupedStackedBarRendererTests#testDrawWithNullInfo: 2803
+    org.jfree.chart.renderer.category.junit.IntervalBarRendererTests#testDrawWithNullInfo: 2726
+    org.jfree.chart.renderer.category.junit.LayeredBarRendererTests#testDrawWithNullInfo: 2737
+    org.jfree.chart.renderer.category.junit.LevelRendererTests#testDrawWithNullInfo: 2727
+    org.jfree.chart.renderer.category.junit.MinMaxCategoryRendererTests#testDrawWithNullInfo: 2740
+    org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullInfo: 2739
+    org.jfree.chart.renderer.category.junit.StatisticalLineAndShapeRendererTests#testDrawWithNullInfo: 2765
+  fixed:
+    org.jfree.chart.junit.AreaChartTests#testDrawWithNullInfo: 3274
+    org.jfree.chart.junit.BarChart3DTests#testDrawWithNullInfo: 3469
+    org.jfree.chart.junit.BarChartTests#testDrawWithNullInfo: 3343
+    org.jfree.chart.junit.GanttChartTests#testDrawWithNullInfo: 2573
+    org.jfree.chart.junit.GanttChartTests#testDrawWithNullInfo2: 3586
+    org.jfree.chart.junit.LineChart3DTests#testDrawWithNullInfo: 3370
+    org.jfree.chart.junit.LineChartTests#testDrawWithNullInfo: 3279
+    org.jfree.chart.junit.StackedAreaChartTests#testDrawWithNullInfo: 3342
+    org.jfree.chart.junit.StackedBarChart3DTests#testDrawWithNullInfo: 3530
+    org.jfree.chart.junit.StackedBarChartTests#testDrawWithNullInfo: 3333
+    org.jfree.chart.junit.WaterfallChartTests#testDrawWithNullInfo: 3429
+    org.jfree.chart.plot.junit.CategoryPlotTests#test1654215: 2530
+    org.jfree.chart.plot.junit.CategoryPlotTests#testSerialization3: 3205
+    org.jfree.chart.plot.junit.CategoryPlotTests#testSerialization4: 3713
+    org.jfree.chart.renderer.category.junit.BoxAndWhiskerRendererTests#testDrawWithNullInfo: 3203
+    org.jfree.chart.renderer.category.junit.GroupedStackedBarRendererTests#testDrawWithNullInfo: 3225
+    org.jfree.chart.renderer.category.junit.IntervalBarRendererTests#testDrawWithNullInfo: 3143
+    org.jfree.chart.renderer.category.junit.LayeredBarRendererTests#testDrawWithNullInfo: 3162
+    org.jfree.chart.renderer.category.junit.LevelRendererTests#testDrawWithNullInfo: 3130
+    org.jfree.chart.renderer.category.junit.MinMaxCategoryRendererTests#testDrawWithNullInfo: 3104
+    org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests#testDrawWithNullInfo: 3197
+    org.jfree.chart.renderer.category.junit.StatisticalLineAndShapeRendererTests#testDrawWithNullInfo: 3188
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 0
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 0
+  ori_patch_lines: 2
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_26/source/org/jfree/chart/axis/Axis.java\t\
+    2020-10-22 01:03:18.014913026 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_26/purify/patch/org/jfree/chart/axis/Axis.java\t\
+    2020-10-22 01:03:18.014913026 -0400\n@@ -1189,11 +1189,13 @@\n         }\n   \
+    \      if (plotState != null && hotspot != null) {\n             ChartRenderingInfo\
+    \ owner = plotState.getOwner();\n+            if (owner != null) {\n         \
+    \        EntityCollection entities = owner.getEntityCollection();\n          \
+    \       if (entities != null) {\n                     entities.add(new AxisLabelEntity(this,\
+    \ hotspot, \n                             this.labelToolTip, this.labelURL));\n\
+    \                 }\n+            }\n         }\n         return state;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_26/source/org/jfree/chart/axis/Axis.java\t\
+    2020-10-22 01:05:31.322767565 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_26/purify/purified/org/jfree/chart/axis/Axis.java\t\
+    2020-10-22 01:05:31.322767565 -0400\n@@ -1189,11 +1189,13 @@\n         }\n   \
+    \      if (plotState != null && hotspot != null) {\n             ChartRenderingInfo\
+    \ owner = plotState.getOwner();\n+            if (owner != null) {\n         \
+    \        EntityCollection entities = owner.getEntityCollection();\n          \
+    \       if (entities != null) {\n                     entities.add(new AxisLabelEntity(this,\
+    \ hotspot, \n                             this.labelToolTip, this.labelURL));\n\
+    \                 }\n+            }\n         }\n         return state;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/axis/Axis:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:owner != null @TO@ IfStatement@@InfixExpression:plotState
+      != null && hotspot != null '
+    - '---INS InfixExpression@@owner != null @TO@ IfStatement@@InfixExpression:owner
+      != null '
+    - '------INS SimpleName@@owner @TO@ InfixExpression@@owner != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@owner != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@owner != null '
+    - '---MOV VariableDeclarationStatement@@EntityCollection entities=owner.getEntityCollection();
+      @TO@ IfStatement@@InfixExpression:owner != null '
+    - '---MOV IfStatement@@InfixExpression:entities != null @TO@ IfStatement@@InfixExpression:owner
+      != null '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/axis/Axis:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:owner != null @TO@ IfStatement@@InfixExpression:plotState
+      != null && hotspot != null '
+    - '---INS InfixExpression@@owner != null @TO@ IfStatement@@InfixExpression:owner
+      != null '
+    - '------INS SimpleName@@owner @TO@ InfixExpression@@owner != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@owner != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@owner != null '
+    - '---MOV VariableDeclarationStatement@@EntityCollection entities=owner.getEntityCollection();
+      @TO@ IfStatement@@InfixExpression:owner != null '
+    - '---MOV IfStatement@@InfixExpression:entities != null @TO@ IfStatement@@InfixExpression:owner
+      != null '
+  repair_actions_cnt: 1

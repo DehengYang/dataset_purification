@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_130/src/com/google/javascript/jscomp/CollapseProperties.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_130/fixed-version/src/com/google/javascript/jscomp/CollapseProperties.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_130/src/com/google/javascript/jscomp/CollapseProperties.java	2020-03-01 00:34:58.190580714 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_130/fixed-version/src/com/google/javascript/jscomp/CollapseProperties.java	2020-03-01 00:35:01.198722455 -0800
+@@ -169,7 +169,7 @@
+         continue;
+       }
+ 
+-      if (name.globalSets == 1 && name.localSets == 0 &&
++      if (!name.inExterns && name.globalSets == 1 && name.localSets == 0 &&
+           name.aliasingGets > 0) {
+         // {@code name} meets condition (b). Find all of its local aliases
+         // and try to inline them.

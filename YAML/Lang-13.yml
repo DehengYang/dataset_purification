@@ -1,0 +1,489 @@
+1 bug_id: Lang-13
+2 src folder:
+  name of src folder: java
+  number of files: 119
+  number of java files: 106
+  number of src classes: 170
+  number of test classes: 109
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.SerializationUtilsTest#testPrimitiveTypeClassSerialization
+  failing tests:
+  - org.apache.commons.lang3.SerializationUtilsTest
+  number of all test cases: 2139
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.662
+  purification via delta debugging: 450.719
+  repair actions extraction: 0.803
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.SerializationUtilsTest#testPrimitiveTypeClassSerialization: 33
+  fixed:
+    org.apache.commons.lang3.SerializationUtilsTest#testPrimitiveTypeClassSerialization: 43
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 19
+  covDel: 0
+  cov_patch_lines: 19
+  delta_patch_lines: 17
+  oriAdd: 19
+  oriDel: 0
+  ori_patch_lines: 19
+  purAdd: 17
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 31
+  failFail: 33
+  passed: 1
+  total: 65
+9 sibling repair actions:
+- 2 3 0.8969465648854962
+- 2 4 0.8742138364779874
+- 2 5 0.8768656716417911
+- 2 6 0.8548585485854858
+- 2 7 0.8454987834549879
+- 2 8 0.8742138364779874
+- 2 9 0.8742138364779874
+- 3 4 0.8944658944658944
+- 3 5 0.8969465648854962
+- 3 6 0.8742138364779874
+- 3 7 0.8644278606965174
+- 3 8 0.8944658944658944
+- 3 9 0.8944658944658944
+- 4 5 0.8742138364779874
+- 4 6 0.8644278606965174
+- 4 7 0.8548585485854858
+- 4 8 0.8842239185750637
+- 4 9 0.8842239185750637
+- 5 6 0.8548585485854858
+- 5 7 0.8454987834549879
+- 5 8 0.8742138364779874
+- 5 9 0.8742138364779874
+- 6 7 0.8363417569193743
+- 6 8 0.8644278606965174
+- 6 9 0.8644278606965174
+- 7 8 0.8548585485854858
+- 7 9 0.8548585485854858
+- 8 9 0.8842239185750637
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_13/src/main/java/org/apache/commons/lang3/SerializationUtils.java\t\
+    2020-10-22 01:48:40.101619370 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_13/purify/patch/org/apache/commons/lang3/SerializationUtils.java\t\
+    2020-10-22 01:48:40.101619370 -0400\n@@ -236,6 +236,8 @@\n      * class here is\
+    \ a workaround, see the JIRA issue LANG-626. </p>\n      */\n      static class\
+    \ ClassLoaderAwareObjectInputStream extends ObjectInputStream {\n+        private\
+    \ static final Map<String, Class<?>> primitiveTypes = \n+                new HashMap<String,\
+    \ Class<?>>();\n         private ClassLoader classLoader;\n         \n       \
+    \  /**\n@@ -249,6 +251,15 @@\n             super(in);\n             this.classLoader\
+    \ = classLoader;\n \n+            primitiveTypes.put(\"byte\", byte.class);\n\
+    +            primitiveTypes.put(\"short\", short.class);\n+            primitiveTypes.put(\"\
+    int\", int.class);\n+            primitiveTypes.put(\"long\", long.class);\n+\
+    \            primitiveTypes.put(\"float\", float.class);\n+            primitiveTypes.put(\"\
+    double\", double.class);\n+            primitiveTypes.put(\"boolean\", boolean.class);\n\
+    +            primitiveTypes.put(\"char\", char.class);\n+            primitiveTypes.put(\"\
+    void\", void.class);\n         }\n \n         /**\n@@ -265,7 +276,15 @@\n    \
+    \         try {\n                 return Class.forName(name, false, classLoader);\n\
+    \             } catch (ClassNotFoundException ex) {\n+                try {\n\
+    \                     return Class.forName(name, false, Thread.currentThread().getContextClassLoader());\n\
+    +                } catch (ClassNotFoundException cnfe) {\n+                  \
+    \  Class<?> cls = primitiveTypes.get(name);\n+                    if (cls != null)\n\
+    +                        return cls;\n+                    else\n+           \
+    \             throw cnfe;\n+                }\n             }\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_13/src/main/java/org/apache/commons/lang3/SerializationUtils.java\t\
+    2020-10-22 01:56:22.386985988 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_13/purify/purified/org/apache/commons/lang3/SerializationUtils.java\t\
+    2020-10-22 01:56:22.386985988 -0400\n@@ -236,6 +236,8 @@\n      * class here is\
+    \ a workaround, see the JIRA issue LANG-626. </p>\n      */\n      static class\
+    \ ClassLoaderAwareObjectInputStream extends ObjectInputStream {\n+        private\
+    \ static final Map<String, Class<?>> primitiveTypes = \n+                new HashMap<String,\
+    \ Class<?>>();\n         private ClassLoader classLoader;\n         \n       \
+    \  /**\n@@ -249,6 +251,15 @@\n             super(in);\n             this.classLoader\
+    \ = classLoader;\n \n+            primitiveTypes.put(\"byte\", byte.class);\n\
+    +            primitiveTypes.put(\"short\", short.class);\n+            primitiveTypes.put(\"\
+    int\", int.class);\n+            primitiveTypes.put(\"long\", long.class);\n+\
+    \            primitiveTypes.put(\"float\", float.class);\n+            primitiveTypes.put(\"\
+    double\", double.class);\n+            primitiveTypes.put(\"boolean\", boolean.class);\n\
+    +            primitiveTypes.put(\"char\", char.class);\n+            primitiveTypes.put(\"\
+    void\", void.class);\n         }\n \n         /**\n@@ -265,7 +276,13 @@\n    \
+    \         try {\n                 return Class.forName(name, false, classLoader);\n\
+    \             } catch (ClassNotFoundException ex) {\n+                try {\n\
+    \                     return Class.forName(name, false, Thread.currentThread().getContextClassLoader());\n\
+    +                } catch (ClassNotFoundException cnfe) {\n+                  \
+    \  Class<?> cls = primitiveTypes.get(name);\n+                    if (cls != null)\n\
+    +                        return cls;\n+                }\n             }\n   \
+    \      }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/SerializationUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, static, final, Map<String,Class<?>>, [primitiveTypes=new
+      HashMap<String,Class<?>>()] @TO@ TypeDeclaration@@[static]ClassLoaderAwareObjectInputStream,
+      ObjectInputStream '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, static, final, Map<String,Class<?>>,
+      [primitiveTypes=new HashMap<String,Class<?>>()] '
+    - '---INS Modifier@@static @TO@ FieldDeclaration@@private, static, final, Map<String,Class<?>>,
+      [primitiveTypes=new HashMap<String,Class<?>>()] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, static, final, Map<String,Class<?>>,
+      [primitiveTypes=new HashMap<String,Class<?>>()] '
+    - '---INS ParameterizedType@@Map<String,Class<?>> @TO@ FieldDeclaration@@private,
+      static, final, Map<String,Class<?>>, [primitiveTypes=new HashMap<String,Class<?>>()] '
+    - '------INS SimpleType@@Map @TO@ ParameterizedType@@Map<String,Class<?>> '
+    - '------INS SimpleType@@String @TO@ ParameterizedType@@Map<String,Class<?>> '
+    - '------INS ParameterizedType@@Class<?> @TO@ ParameterizedType@@Map<String,Class<?>> '
+    - '---------INS SimpleType@@Class @TO@ ParameterizedType@@Class<?> '
+    - '---------INS WildcardType@@? @TO@ ParameterizedType@@Class<?> '
+    - '---INS VariableDeclarationFragment@@primitiveTypes=new HashMap<String,Class<?>>()
+      @TO@ FieldDeclaration@@private, static, final, Map<String,Class<?>>, [primitiveTypes=new
+      HashMap<String,Class<?>>()] '
+    - '------INS SimpleName@@primitiveTypes @TO@ VariableDeclarationFragment@@primitiveTypes=new
+      HashMap<String,Class<?>>() '
+    - '------INS ClassInstanceCreation@@HashMap<String,Class<?>>[] @TO@ VariableDeclarationFragment@@primitiveTypes=new
+      HashMap<String,Class<?>>() '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@HashMap<String,Class<?>>[] '
+    - '---------INS ParameterizedType@@HashMap<String,Class<?>> @TO@ ClassInstanceCreation@@HashMap<String,Class<?>>[] '
+    - '------------INS SimpleType@@HashMap @TO@ ParameterizedType@@HashMap<String,Class<?>> '
+    - '------------INS SimpleType@@String @TO@ ParameterizedType@@HashMap<String,Class<?>> '
+    - '------------INS ParameterizedType@@Class<?> @TO@ ParameterizedType@@HashMap<String,Class<?>> '
+    - '---------------INS SimpleType@@Class @TO@ ParameterizedType@@Class<?> '
+    - '---------------INS WildcardType@@? @TO@ ParameterizedType@@Class<?> '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("byte",byte.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("byte",byte.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("byte",byte.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("byte",byte.class) '
+    - '------INS SimpleName@@MethodName:put:["byte", byte.class] @TO@ MethodInvocation@@primitiveTypes.put("byte",byte.class) '
+    - '---------INS StringLiteral@@"byte" @TO@ SimpleName@@MethodName:put:["byte",
+      byte.class] '
+    - '---------INS TypeLiteral@@byte.class @TO@ SimpleName@@MethodName:put:["byte",
+      byte.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("short",short.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("short",short.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("short",short.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("short",short.class) '
+    - '------INS SimpleName@@MethodName:put:["short", short.class] @TO@ MethodInvocation@@primitiveTypes.put("short",short.class) '
+    - '---------INS StringLiteral@@"short" @TO@ SimpleName@@MethodName:put:["short",
+      short.class] '
+    - '---------INS TypeLiteral@@short.class @TO@ SimpleName@@MethodName:put:["short",
+      short.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("int",int.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("int",int.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("int",int.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("int",int.class) '
+    - '------INS SimpleName@@MethodName:put:["int", int.class] @TO@ MethodInvocation@@primitiveTypes.put("int",int.class) '
+    - '---------INS StringLiteral@@"int" @TO@ SimpleName@@MethodName:put:["int", int.class] '
+    - '---------INS TypeLiteral@@int.class @TO@ SimpleName@@MethodName:put:["int",
+      int.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("long",long.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("long",long.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("long",long.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("long",long.class) '
+    - '------INS SimpleName@@MethodName:put:["long", long.class] @TO@ MethodInvocation@@primitiveTypes.put("long",long.class) '
+    - '---------INS StringLiteral@@"long" @TO@ SimpleName@@MethodName:put:["long",
+      long.class] '
+    - '---------INS TypeLiteral@@long.class @TO@ SimpleName@@MethodName:put:["long",
+      long.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("float",float.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("float",float.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("float",float.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("float",float.class) '
+    - '------INS SimpleName@@MethodName:put:["float", float.class] @TO@ MethodInvocation@@primitiveTypes.put("float",float.class) '
+    - '---------INS StringLiteral@@"float" @TO@ SimpleName@@MethodName:put:["float",
+      float.class] '
+    - '---------INS TypeLiteral@@float.class @TO@ SimpleName@@MethodName:put:["float",
+      float.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("double",double.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("double",double.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("double",double.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("double",double.class) '
+    - '------INS SimpleName@@MethodName:put:["double", double.class] @TO@ MethodInvocation@@primitiveTypes.put("double",double.class) '
+    - '---------INS StringLiteral@@"double" @TO@ SimpleName@@MethodName:put:["double",
+      double.class] '
+    - '---------INS TypeLiteral@@double.class @TO@ SimpleName@@MethodName:put:["double",
+      double.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("boolean",boolean.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("boolean",boolean.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("boolean",boolean.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("boolean",boolean.class) '
+    - '------INS SimpleName@@MethodName:put:["boolean", boolean.class] @TO@ MethodInvocation@@primitiveTypes.put("boolean",boolean.class) '
+    - '---------INS StringLiteral@@"boolean" @TO@ SimpleName@@MethodName:put:["boolean",
+      boolean.class] '
+    - '---------INS TypeLiteral@@boolean.class @TO@ SimpleName@@MethodName:put:["boolean",
+      boolean.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("char",char.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("char",char.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("char",char.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("char",char.class) '
+    - '------INS SimpleName@@MethodName:put:["char", char.class] @TO@ MethodInvocation@@primitiveTypes.put("char",char.class) '
+    - '---------INS StringLiteral@@"char" @TO@ SimpleName@@MethodName:put:["char",
+      char.class] '
+    - '---------INS TypeLiteral@@char.class @TO@ SimpleName@@MethodName:put:["char",
+      char.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("void",void.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("void",void.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("void",void.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("void",void.class) '
+    - '------INS SimpleName@@MethodName:put:["void", void.class] @TO@ MethodInvocation@@primitiveTypes.put("void",void.class) '
+    - '---------INS StringLiteral@@"void" @TO@ SimpleName@@MethodName:put:["void",
+      void.class] '
+    - '---------INS TypeLiteral@@void.class @TO@ SimpleName@@MethodName:put:["void",
+      void.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS TryStatement@@try:[] @TO@ CatchClause@@ClassNotFoundException ex '
+    - '---MOV ReturnStatement@@MethodInvocation:Class.forName(name,false,Thread.currentThread().getContextClassLoader())
+      @TO@ TryStatement@@try:[] '
+    - '---INS CatchClause@@ClassNotFoundException cnfe @TO@ TryStatement@@try:[] '
+    - '------INS SingleVariableDeclaration@@ClassNotFoundException cnfe @TO@ CatchClause@@ClassNotFoundException
+      cnfe '
+    - '---------INS SimpleType@@ClassNotFoundException @TO@ SingleVariableDeclaration@@ClassNotFoundException
+      cnfe '
+    - '---------INS SimpleName@@cnfe @TO@ SingleVariableDeclaration@@ClassNotFoundException
+      cnfe '
+    - '------INS VariableDeclarationStatement@@Class<?> cls=primitiveTypes.get(name);
+      @TO@ CatchClause@@ClassNotFoundException cnfe '
+    - '---------INS ParameterizedType@@Class<?> @TO@ VariableDeclarationStatement@@Class<?>
+      cls=primitiveTypes.get(name); '
+    - '------------INS SimpleType@@Class @TO@ ParameterizedType@@Class<?> '
+    - '------------INS WildcardType@@? @TO@ ParameterizedType@@Class<?> '
+    - '---------INS VariableDeclarationFragment@@cls=primitiveTypes.get(name) @TO@
+      VariableDeclarationStatement@@Class<?> cls=primitiveTypes.get(name); '
+    - '------------INS SimpleName@@cls @TO@ VariableDeclarationFragment@@cls=primitiveTypes.get(name) '
+    - '------------INS MethodInvocation@@primitiveTypes.get(name) @TO@ VariableDeclarationFragment@@cls=primitiveTypes.get(name) '
+    - '---------------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.get(name) '
+    - '---------------INS SimpleName@@MethodName:get:[name] @TO@ MethodInvocation@@primitiveTypes.get(name) '
+    - '------------------INS SimpleName@@name @TO@ SimpleName@@MethodName:get:[name] '
+    - '------INS IfStatement@@InfixExpression:cls != null @TO@ CatchClause@@ClassNotFoundException
+      cnfe '
+    - '---------INS InfixExpression@@cls != null @TO@ IfStatement@@InfixExpression:cls
+      != null '
+    - '------------INS SimpleName@@cls @TO@ InfixExpression@@cls != null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@cls != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@cls != null '
+    - '---------INS ReturnStatement@@SimpleName:cls @TO@ IfStatement@@InfixExpression:cls
+      != null '
+    - '------------INS SimpleName@@cls @TO@ ReturnStatement@@SimpleName:cls '
+    - '---------INS ThrowStatement@@SimpleName:cnfe @TO@ IfStatement@@InfixExpression:cls
+      != null '
+    - '------------INS SimpleName@@cnfe @TO@ ThrowStatement@@SimpleName:cnfe '
+  repair_actions_cnt: 11
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/SerializationUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, static, final, Map<String,Class<?>>, [primitiveTypes=new
+      HashMap<String,Class<?>>()] @TO@ TypeDeclaration@@[static]ClassLoaderAwareObjectInputStream,
+      ObjectInputStream '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, static, final, Map<String,Class<?>>,
+      [primitiveTypes=new HashMap<String,Class<?>>()] '
+    - '---INS Modifier@@static @TO@ FieldDeclaration@@private, static, final, Map<String,Class<?>>,
+      [primitiveTypes=new HashMap<String,Class<?>>()] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, static, final, Map<String,Class<?>>,
+      [primitiveTypes=new HashMap<String,Class<?>>()] '
+    - '---INS ParameterizedType@@Map<String,Class<?>> @TO@ FieldDeclaration@@private,
+      static, final, Map<String,Class<?>>, [primitiveTypes=new HashMap<String,Class<?>>()] '
+    - '------INS SimpleType@@Map @TO@ ParameterizedType@@Map<String,Class<?>> '
+    - '------INS SimpleType@@String @TO@ ParameterizedType@@Map<String,Class<?>> '
+    - '------INS ParameterizedType@@Class<?> @TO@ ParameterizedType@@Map<String,Class<?>> '
+    - '---------INS SimpleType@@Class @TO@ ParameterizedType@@Class<?> '
+    - '---------INS WildcardType@@? @TO@ ParameterizedType@@Class<?> '
+    - '---INS VariableDeclarationFragment@@primitiveTypes=new HashMap<String,Class<?>>()
+      @TO@ FieldDeclaration@@private, static, final, Map<String,Class<?>>, [primitiveTypes=new
+      HashMap<String,Class<?>>()] '
+    - '------INS SimpleName@@primitiveTypes @TO@ VariableDeclarationFragment@@primitiveTypes=new
+      HashMap<String,Class<?>>() '
+    - '------INS ClassInstanceCreation@@HashMap<String,Class<?>>[] @TO@ VariableDeclarationFragment@@primitiveTypes=new
+      HashMap<String,Class<?>>() '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@HashMap<String,Class<?>>[] '
+    - '---------INS ParameterizedType@@HashMap<String,Class<?>> @TO@ ClassInstanceCreation@@HashMap<String,Class<?>>[] '
+    - '------------INS SimpleType@@HashMap @TO@ ParameterizedType@@HashMap<String,Class<?>> '
+    - '------------INS SimpleType@@String @TO@ ParameterizedType@@HashMap<String,Class<?>> '
+    - '------------INS ParameterizedType@@Class<?> @TO@ ParameterizedType@@HashMap<String,Class<?>> '
+    - '---------------INS SimpleType@@Class @TO@ ParameterizedType@@Class<?> '
+    - '---------------INS WildcardType@@? @TO@ ParameterizedType@@Class<?> '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("byte",byte.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("byte",byte.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("byte",byte.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("byte",byte.class) '
+    - '------INS SimpleName@@MethodName:put:["byte", byte.class] @TO@ MethodInvocation@@primitiveTypes.put("byte",byte.class) '
+    - '---------INS StringLiteral@@"byte" @TO@ SimpleName@@MethodName:put:["byte",
+      byte.class] '
+    - '---------INS TypeLiteral@@byte.class @TO@ SimpleName@@MethodName:put:["byte",
+      byte.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("short",short.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("short",short.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("short",short.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("short",short.class) '
+    - '------INS SimpleName@@MethodName:put:["short", short.class] @TO@ MethodInvocation@@primitiveTypes.put("short",short.class) '
+    - '---------INS StringLiteral@@"short" @TO@ SimpleName@@MethodName:put:["short",
+      short.class] '
+    - '---------INS TypeLiteral@@short.class @TO@ SimpleName@@MethodName:put:["short",
+      short.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("int",int.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("int",int.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("int",int.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("int",int.class) '
+    - '------INS SimpleName@@MethodName:put:["int", int.class] @TO@ MethodInvocation@@primitiveTypes.put("int",int.class) '
+    - '---------INS StringLiteral@@"int" @TO@ SimpleName@@MethodName:put:["int", int.class] '
+    - '---------INS TypeLiteral@@int.class @TO@ SimpleName@@MethodName:put:["int",
+      int.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("long",long.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("long",long.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("long",long.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("long",long.class) '
+    - '------INS SimpleName@@MethodName:put:["long", long.class] @TO@ MethodInvocation@@primitiveTypes.put("long",long.class) '
+    - '---------INS StringLiteral@@"long" @TO@ SimpleName@@MethodName:put:["long",
+      long.class] '
+    - '---------INS TypeLiteral@@long.class @TO@ SimpleName@@MethodName:put:["long",
+      long.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("float",float.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("float",float.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("float",float.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("float",float.class) '
+    - '------INS SimpleName@@MethodName:put:["float", float.class] @TO@ MethodInvocation@@primitiveTypes.put("float",float.class) '
+    - '---------INS StringLiteral@@"float" @TO@ SimpleName@@MethodName:put:["float",
+      float.class] '
+    - '---------INS TypeLiteral@@float.class @TO@ SimpleName@@MethodName:put:["float",
+      float.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("double",double.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("double",double.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("double",double.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("double",double.class) '
+    - '------INS SimpleName@@MethodName:put:["double", double.class] @TO@ MethodInvocation@@primitiveTypes.put("double",double.class) '
+    - '---------INS StringLiteral@@"double" @TO@ SimpleName@@MethodName:put:["double",
+      double.class] '
+    - '---------INS TypeLiteral@@double.class @TO@ SimpleName@@MethodName:put:["double",
+      double.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("boolean",boolean.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("boolean",boolean.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("boolean",boolean.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("boolean",boolean.class) '
+    - '------INS SimpleName@@MethodName:put:["boolean", boolean.class] @TO@ MethodInvocation@@primitiveTypes.put("boolean",boolean.class) '
+    - '---------INS StringLiteral@@"boolean" @TO@ SimpleName@@MethodName:put:["boolean",
+      boolean.class] '
+    - '---------INS TypeLiteral@@boolean.class @TO@ SimpleName@@MethodName:put:["boolean",
+      boolean.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("char",char.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("char",char.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("char",char.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("char",char.class) '
+    - '------INS SimpleName@@MethodName:put:["char", char.class] @TO@ MethodInvocation@@primitiveTypes.put("char",char.class) '
+    - '---------INS StringLiteral@@"char" @TO@ SimpleName@@MethodName:put:["char",
+      char.class] '
+    - '---------INS TypeLiteral@@char.class @TO@ SimpleName@@MethodName:put:["char",
+      char.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:primitiveTypes.put("void",void.class)
+      @TO@ MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:ClassLoaderAwareObjectInputStream,
+      @@Argus:InputStream+in+ClassLoader+classLoader+IOException,  '
+    - '---INS MethodInvocation@@primitiveTypes.put("void",void.class) @TO@ ExpressionStatement@@MethodInvocation:primitiveTypes.put("void",void.class) '
+    - '------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.put("void",void.class) '
+    - '------INS SimpleName@@MethodName:put:["void", void.class] @TO@ MethodInvocation@@primitiveTypes.put("void",void.class) '
+    - '---------INS StringLiteral@@"void" @TO@ SimpleName@@MethodName:put:["void",
+      void.class] '
+    - '---------INS TypeLiteral@@void.class @TO@ SimpleName@@MethodName:put:["void",
+      void.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS TryStatement@@try:[] @TO@ CatchClause@@ClassNotFoundException ex '
+    - '---MOV ReturnStatement@@MethodInvocation:Class.forName(name,false,Thread.currentThread().getContextClassLoader())
+      @TO@ TryStatement@@try:[] '
+    - '---INS CatchClause@@ClassNotFoundException cnfe @TO@ TryStatement@@try:[] '
+    - '------INS SingleVariableDeclaration@@ClassNotFoundException cnfe @TO@ CatchClause@@ClassNotFoundException
+      cnfe '
+    - '---------INS SimpleType@@ClassNotFoundException @TO@ SingleVariableDeclaration@@ClassNotFoundException
+      cnfe '
+    - '---------INS SimpleName@@cnfe @TO@ SingleVariableDeclaration@@ClassNotFoundException
+      cnfe '
+    - '------INS VariableDeclarationStatement@@Class<?> cls=primitiveTypes.get(name);
+      @TO@ CatchClause@@ClassNotFoundException cnfe '
+    - '---------INS ParameterizedType@@Class<?> @TO@ VariableDeclarationStatement@@Class<?>
+      cls=primitiveTypes.get(name); '
+    - '------------INS SimpleType@@Class @TO@ ParameterizedType@@Class<?> '
+    - '------------INS WildcardType@@? @TO@ ParameterizedType@@Class<?> '
+    - '---------INS VariableDeclarationFragment@@cls=primitiveTypes.get(name) @TO@
+      VariableDeclarationStatement@@Class<?> cls=primitiveTypes.get(name); '
+    - '------------INS SimpleName@@cls @TO@ VariableDeclarationFragment@@cls=primitiveTypes.get(name) '
+    - '------------INS MethodInvocation@@primitiveTypes.get(name) @TO@ VariableDeclarationFragment@@cls=primitiveTypes.get(name) '
+    - '---------------INS SimpleName@@Name:primitiveTypes @TO@ MethodInvocation@@primitiveTypes.get(name) '
+    - '---------------INS SimpleName@@MethodName:get:[name] @TO@ MethodInvocation@@primitiveTypes.get(name) '
+    - '------------------INS SimpleName@@name @TO@ SimpleName@@MethodName:get:[name] '
+    - '------INS IfStatement@@InfixExpression:cls != null @TO@ CatchClause@@ClassNotFoundException
+      cnfe '
+    - '---------INS InfixExpression@@cls != null @TO@ IfStatement@@InfixExpression:cls
+      != null '
+    - '------------INS SimpleName@@cls @TO@ InfixExpression@@cls != null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@cls != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@cls != null '
+    - '---------INS ReturnStatement@@SimpleName:cls @TO@ IfStatement@@InfixExpression:cls
+      != null '
+    - '------------INS SimpleName@@cls @TO@ ReturnStatement@@SimpleName:cls '
+  repair_actions_cnt: 11

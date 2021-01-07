@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_28/src/com/google/javascript/jscomp/InlineCostEstimator.java	2020-10-22 10:49:39.780144852 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_28/purify/purified/com/google/javascript/jscomp/InlineCostEstimator.java	2020-10-22 10:49:39.780144852 -0400
+@@ -99,5 +99,8 @@
+      * Constants (true, false, null) are considered basically free,
+      * because it's likely that they will get folded when we're done.
+      */
++    void addConstant(String newcode) {
++      add("0");
++    }
+   }
+ }

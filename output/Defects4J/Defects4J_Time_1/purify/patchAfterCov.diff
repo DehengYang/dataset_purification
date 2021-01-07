@@ -1,0 +1,34 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_1/src/main/java/org/joda/time/field/UnsupportedDurationField.java	2020-10-20 19:57:45.599193849 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_1/purify/assertBeforeMut/org/joda/time/field/UnsupportedDurationField.java	2020-10-20 19:57:45.599193849 -0400
+@@ -224,9 +224,6 @@
+      * @return zero always
+      */
+     public int compareTo(DurationField durationField) {
+-        if (durationField.isSupported()) {
+-            return 1;
+-        }
+         return 0;
+     }
+ 
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_1/src/main/java/org/joda/time/Partial.java	2020-10-20 19:57:45.611194197 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_1/purify/assertBeforeMut/org/joda/time/Partial.java	2020-10-20 19:57:45.611194197 -0400
+@@ -214,11 +214,18 @@
+             DateTimeFieldType loopType = types[i];
+             DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
+             if (i > 0) {
++                if (loopUnitField.isSupported() == false) {
++                    if (lastUnitField.isSupported()) {
++                        throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
++                                        types[i - 1].getName() + " < " + loopType.getName());
++                    } else {
++                    }
++                }
+                 int compare = lastUnitField.compareTo(loopUnitField);
+                 if (compare < 0) {
+                     throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
+                             types[i - 1].getName() + " < " + loopType.getName());
+-                } else if (compare == 0) {
++                } else if (compare == 0 && lastUnitField.equals(loopUnitField)) {
+                     if (types[i - 1].getRangeDurationType() == null) {
+                         if (loopType.getRangeDurationType() == null) {
+                             throw new IllegalArgumentException("Types array must not contain duplicate: " +

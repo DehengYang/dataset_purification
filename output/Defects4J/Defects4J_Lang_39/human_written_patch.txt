@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_39/src/java/org/apache/commons/lang3/StringUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_39/fixed-version/src/java/org/apache/commons/lang3/StringUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_39/src/java/org/apache/commons/lang3/StringUtils.java	2020-03-01 00:09:58.491917528 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_39/fixed-version/src/java/org/apache/commons/lang3/StringUtils.java	2020-03-01 00:10:01.988082254 -0800
+@@ -3673,6 +3673,9 @@
+ 
+         // count the replacement text elements that are larger than their corresponding text being replaced
+         for (int i = 0; i < searchList.length; i++) {
++            if (searchList[i] == null || replacementList[i] == null) {
++                continue;
++            }
+             int greater = replacementList[i].length() - searchList[i].length();
+             if (greater > 0) {
+                 increase += 3 * greater; // assume 3 matches

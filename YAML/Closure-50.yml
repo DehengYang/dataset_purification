@@ -1,0 +1,214 @@
+1 bug_id: Closure-50
+2 src folder:
+  name of src folder: src
+  number of files: 422
+  number of java files: 408
+  number of src classes: 1329
+  number of test classes: 219
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.PeepholeReplaceKnownMethodsTest#testNoStringJoin
+  - com.google.javascript.jscomp.PeepholeReplaceKnownMethodsTest#testStringJoinAdd
+  failing tests:
+  - com.google.javascript.jscomp.PeepholeReplaceKnownMethodsTest
+  number of all test cases: 7303
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.731
+  purification via delta debugging: 477.82
+  repair actions extraction: 1.48
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.PeepholeReplaceKnownMethodsTest#testNoStringJoin: 2734
+    com.google.javascript.jscomp.PeepholeReplaceKnownMethodsTest#testStringJoinAdd: 2782
+  fixed:
+    com.google.javascript.jscomp.PeepholeReplaceKnownMethodsTest#testNoStringJoin: 2592
+    com.google.javascript.jscomp.PeepholeReplaceKnownMethodsTest#testStringJoinAdd: 2764
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 6
+  covDel: 1
+  cov_patch_lines: 7
+  delta_patch_lines: 6
+  oriAdd: 6
+  oriDel: 1
+  ori_patch_lines: 7
+  purAdd: 5
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 15
+  failFail: 2
+  passed: 1
+  total: 18
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_50/src/com/google/javascript/jscomp/PeepholeReplaceKnownMethods.java\t\
+    2020-10-23 06:24:19.800462278 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_50/purify/patch/com/google/javascript/jscomp/PeepholeReplaceKnownMethods.java\t\
+    2020-10-23 06:24:19.800462278 -0400\n@@ -373,7 +373,7 @@\n \n     Node right =\
+    \ callTarget.getNext();\n     if (right != null) {\n-      if (!NodeUtil.isImmutableValue(right))\
+    \ {\n+      if (right.getNext() != null || !NodeUtil.isImmutableValue(right))\
+    \ {\n         return n;\n       }\n     }\n@@ -386,7 +386,12 @@\n       return\
+    \ n;\n     }\n \n+    if (right != null && right.getType() == Token.STRING\n+\
+    \        && \",\".equals(right.getString())) {\n       // \",\" is the default,\
+    \ it doesn't need to be explicit\n+      n.removeChild(right);\n+      reportCodeChange();\n\
+    +    }\n \n     String joinString = (right == null) ? \",\" : NodeUtil.getStringValue(right);\n\
+    \     List<Node> arrayFoldedChildren = Lists.newLinkedList();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_50/src/com/google/javascript/jscomp/PeepholeReplaceKnownMethods.java\t\
+    2020-10-23 06:32:49.199203141 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_50/purify/purified/com/google/javascript/jscomp/PeepholeReplaceKnownMethods.java\t\
+    2020-10-23 06:32:49.199203141 -0400\n@@ -373,7 +373,7 @@\n \n     Node right =\
+    \ callTarget.getNext();\n     if (right != null) {\n-      if (!NodeUtil.isImmutableValue(right))\
+    \ {\n+      if (right.getNext() != null || !NodeUtil.isImmutableValue(right))\
+    \ {\n         return n;\n       }\n     }\n@@ -386,7 +386,11 @@\n       return\
+    \ n;\n     }\n \n+    if (right != null && right.getType() == Token.STRING\n+\
+    \        && \",\".equals(right.getString())) {\n       // \",\" is the default,\
+    \ it doesn't need to be explicit\n+      n.removeChild(right);\n+    }\n \n  \
+    \   String joinString = (right == null) ? \",\" : NodeUtil.getStringValue(right);\n\
+    \     List<Node> arrayFoldedChildren = Lists.newLinkedList();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeReplaceKnownMethods:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!NodeUtil.isImmutableValue(right) @TO@ InfixExpression:right.getNext()
+      != null || !NodeUtil.isImmutableValue(right) '
+    - '---INS InfixExpression@@right.getNext() != null || !NodeUtil.isImmutableValue(right)
+      @TO@ IfStatement@@PrefixExpression:!NodeUtil.isImmutableValue(right) '
+    - '------INS InfixExpression@@right.getNext() != null @TO@ InfixExpression@@right.getNext()
+      != null || !NodeUtil.isImmutableValue(right) '
+    - '---------INS MethodInvocation@@right.getNext() @TO@ InfixExpression@@right.getNext()
+      != null '
+    - '------------INS SimpleName@@Name:right @TO@ MethodInvocation@@right.getNext() '
+    - '------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@right.getNext() '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@right.getNext() != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@right.getNext() != null '
+    - '------MOV PrefixExpression@@!NodeUtil.isImmutableValue(right) @TO@ InfixExpression@@right.getNext()
+      != null || !NodeUtil.isImmutableValue(right) '
+    - '------INS Operator@@|| @TO@ InfixExpression@@right.getNext() != null || !NodeUtil.isImmutableValue(right) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:right != null && right.getType() == Token.STRING
+      && ",".equals(right.getString()) @TO@ MethodDeclaration@@private, @@Node, MethodName:tryFoldArrayJoin,
+      @@Argus:Node+n+ '
+    - '---INS InfixExpression@@right != null && right.getType() == Token.STRING &&
+      ",".equals(right.getString()) @TO@ IfStatement@@InfixExpression:right != null
+      && right.getType() == Token.STRING && ",".equals(right.getString()) '
+    - '------INS InfixExpression@@right != null && right.getType() == Token.STRING
+      @TO@ InfixExpression@@right != null && right.getType() == Token.STRING && ",".equals(right.getString()) '
+    - '---------INS InfixExpression@@right != null @TO@ InfixExpression@@right !=
+      null && right.getType() == Token.STRING '
+    - '------------INS SimpleName@@right @TO@ InfixExpression@@right != null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@right != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@right != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@right != null && right.getType()
+      == Token.STRING '
+    - '---------INS InfixExpression@@right.getType() == Token.STRING @TO@ InfixExpression@@right
+      != null && right.getType() == Token.STRING '
+    - '------------INS MethodInvocation@@right.getType() @TO@ InfixExpression@@right.getType()
+      == Token.STRING '
+    - '---------------INS SimpleName@@Name:right @TO@ MethodInvocation@@right.getType() '
+    - '---------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@right.getType() '
+    - '------------INS Operator@@== @TO@ InfixExpression@@right.getType() == Token.STRING '
+    - '------------INS QualifiedName@@Token.STRING @TO@ InfixExpression@@right.getType()
+      == Token.STRING '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.STRING '
+    - '---------------INS SimpleName@@STRING @TO@ QualifiedName@@Token.STRING '
+    - '------INS Operator@@&& @TO@ InfixExpression@@right != null && right.getType()
+      == Token.STRING && ",".equals(right.getString()) '
+    - '------INS MethodInvocation@@",".equals(right.getString()) @TO@ InfixExpression@@right
+      != null && right.getType() == Token.STRING && ",".equals(right.getString()) '
+    - '---------INS StringLiteral@@"," @TO@ MethodInvocation@@",".equals(right.getString()) '
+    - '---------INS SimpleName@@MethodName:equals:[right.getString()] @TO@ MethodInvocation@@",".equals(right.getString()) '
+    - '------------INS MethodInvocation@@right.getString() @TO@ SimpleName@@MethodName:equals:[right.getString()] '
+    - '---------------INS SimpleName@@Name:right @TO@ MethodInvocation@@right.getString() '
+    - '---------------INS SimpleName@@MethodName:getString:[] @TO@ MethodInvocation@@right.getString() '
+    - '---INS ExpressionStatement@@MethodInvocation:n.removeChild(right) @TO@ IfStatement@@InfixExpression:right
+      != null && right.getType() == Token.STRING && ",".equals(right.getString()) '
+    - '------INS MethodInvocation@@n.removeChild(right) @TO@ ExpressionStatement@@MethodInvocation:n.removeChild(right) '
+    - '---------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.removeChild(right) '
+    - '---------INS SimpleName@@MethodName:removeChild:[right] @TO@ MethodInvocation@@n.removeChild(right) '
+    - '------------INS SimpleName@@right @TO@ SimpleName@@MethodName:removeChild:[right] '
+    - '---INS ExpressionStatement@@MethodInvocation:reportCodeChange() @TO@ IfStatement@@InfixExpression:right
+      != null && right.getType() == Token.STRING && ",".equals(right.getString()) '
+    - '------INS MethodInvocation@@MethodName:reportCodeChange:[] @TO@ ExpressionStatement@@MethodInvocation:reportCodeChange() '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeReplaceKnownMethods:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!NodeUtil.isImmutableValue(right) @TO@ InfixExpression:right.getNext()
+      != null || !NodeUtil.isImmutableValue(right) '
+    - '---INS InfixExpression@@right.getNext() != null || !NodeUtil.isImmutableValue(right)
+      @TO@ IfStatement@@PrefixExpression:!NodeUtil.isImmutableValue(right) '
+    - '------INS InfixExpression@@right.getNext() != null @TO@ InfixExpression@@right.getNext()
+      != null || !NodeUtil.isImmutableValue(right) '
+    - '---------INS MethodInvocation@@right.getNext() @TO@ InfixExpression@@right.getNext()
+      != null '
+    - '------------INS SimpleName@@Name:right @TO@ MethodInvocation@@right.getNext() '
+    - '------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@right.getNext() '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@right.getNext() != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@right.getNext() != null '
+    - '------MOV PrefixExpression@@!NodeUtil.isImmutableValue(right) @TO@ InfixExpression@@right.getNext()
+      != null || !NodeUtil.isImmutableValue(right) '
+    - '------INS Operator@@|| @TO@ InfixExpression@@right.getNext() != null || !NodeUtil.isImmutableValue(right) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:right != null && right.getType() == Token.STRING
+      && ",".equals(right.getString()) @TO@ MethodDeclaration@@private, @@Node, MethodName:tryFoldArrayJoin,
+      @@Argus:Node+n+ '
+    - '---INS InfixExpression@@right != null && right.getType() == Token.STRING &&
+      ",".equals(right.getString()) @TO@ IfStatement@@InfixExpression:right != null
+      && right.getType() == Token.STRING && ",".equals(right.getString()) '
+    - '------INS InfixExpression@@right != null && right.getType() == Token.STRING
+      @TO@ InfixExpression@@right != null && right.getType() == Token.STRING && ",".equals(right.getString()) '
+    - '---------INS InfixExpression@@right != null @TO@ InfixExpression@@right !=
+      null && right.getType() == Token.STRING '
+    - '------------INS SimpleName@@right @TO@ InfixExpression@@right != null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@right != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@right != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@right != null && right.getType()
+      == Token.STRING '
+    - '---------INS InfixExpression@@right.getType() == Token.STRING @TO@ InfixExpression@@right
+      != null && right.getType() == Token.STRING '
+    - '------------INS MethodInvocation@@right.getType() @TO@ InfixExpression@@right.getType()
+      == Token.STRING '
+    - '---------------INS SimpleName@@Name:right @TO@ MethodInvocation@@right.getType() '
+    - '---------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@right.getType() '
+    - '------------INS Operator@@== @TO@ InfixExpression@@right.getType() == Token.STRING '
+    - '------------INS QualifiedName@@Token.STRING @TO@ InfixExpression@@right.getType()
+      == Token.STRING '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.STRING '
+    - '---------------INS SimpleName@@STRING @TO@ QualifiedName@@Token.STRING '
+    - '------INS Operator@@&& @TO@ InfixExpression@@right != null && right.getType()
+      == Token.STRING && ",".equals(right.getString()) '
+    - '------INS MethodInvocation@@",".equals(right.getString()) @TO@ InfixExpression@@right
+      != null && right.getType() == Token.STRING && ",".equals(right.getString()) '
+    - '---------INS StringLiteral@@"," @TO@ MethodInvocation@@",".equals(right.getString()) '
+    - '---------INS SimpleName@@MethodName:equals:[right.getString()] @TO@ MethodInvocation@@",".equals(right.getString()) '
+    - '------------INS MethodInvocation@@right.getString() @TO@ SimpleName@@MethodName:equals:[right.getString()] '
+    - '---------------INS SimpleName@@Name:right @TO@ MethodInvocation@@right.getString() '
+    - '---------------INS SimpleName@@MethodName:getString:[] @TO@ MethodInvocation@@right.getString() '
+    - '---INS ExpressionStatement@@MethodInvocation:n.removeChild(right) @TO@ IfStatement@@InfixExpression:right
+      != null && right.getType() == Token.STRING && ",".equals(right.getString()) '
+    - '------INS MethodInvocation@@n.removeChild(right) @TO@ ExpressionStatement@@MethodInvocation:n.removeChild(right) '
+    - '---------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.removeChild(right) '
+    - '---------INS SimpleName@@MethodName:removeChild:[right] @TO@ MethodInvocation@@n.removeChild(right) '
+    - '------------INS SimpleName@@right @TO@ SimpleName@@MethodName:removeChild:[right] '
+  files_cnt: '1'
+  repair_actions_cnt: 2

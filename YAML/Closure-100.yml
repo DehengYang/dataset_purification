@@ -1,0 +1,294 @@
+1 bug_id: Closure-100
+2 src folder:
+  name of src folder: src
+  number of files: 338
+  number of java files: 327
+  number of src classes: 1039
+  number of test classes: 170
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testInnerFunction3
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testGlobalThis7
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testStaticMethod2
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testStaticMethod3
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testInnerFunction2
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testStaticFunction8
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testInnerFunction1
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testStaticFunction7
+  - com.google.javascript.jscomp.CheckGlobalThisTest#testStaticFunction6
+  failing tests:
+  - com.google.javascript.jscomp.CheckGlobalThisTest
+  number of all test cases: 5656
+  number of failing test cases: 9
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.569
+  purification via delta debugging: 331.558
+  repair actions extraction: 0.835
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CheckGlobalThisTest#testGlobalThis7: 1795
+    com.google.javascript.jscomp.CheckGlobalThisTest#testInnerFunction1: 1859
+    com.google.javascript.jscomp.CheckGlobalThisTest#testInnerFunction2: 1890
+    com.google.javascript.jscomp.CheckGlobalThisTest#testInnerFunction3: 1924
+    com.google.javascript.jscomp.CheckGlobalThisTest#testStaticFunction6: 1951
+    com.google.javascript.jscomp.CheckGlobalThisTest#testStaticFunction7: 1967
+    com.google.javascript.jscomp.CheckGlobalThisTest#testStaticFunction8: 1890
+    com.google.javascript.jscomp.CheckGlobalThisTest#testStaticMethod2: 1975
+    com.google.javascript.jscomp.CheckGlobalThisTest#testStaticMethod3: 1975
+  fixed:
+    com.google.javascript.jscomp.CheckGlobalThisTest#testGlobalThis7: 1861
+    com.google.javascript.jscomp.CheckGlobalThisTest#testInnerFunction1: 1924
+    com.google.javascript.jscomp.CheckGlobalThisTest#testInnerFunction2: 1954
+    com.google.javascript.jscomp.CheckGlobalThisTest#testInnerFunction3: 1989
+    com.google.javascript.jscomp.CheckGlobalThisTest#testStaticFunction6: 2186
+    com.google.javascript.jscomp.CheckGlobalThisTest#testStaticFunction7: 2209
+    com.google.javascript.jscomp.CheckGlobalThisTest#testStaticFunction8: 1956
+    com.google.javascript.jscomp.CheckGlobalThisTest#testStaticMethod2: 2216
+    com.google.javascript.jscomp.CheckGlobalThisTest#testStaticMethod3: 2217
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 8
+  covDel: 1
+  cov_patch_lines: 9
+  delta_patch_lines: 9
+  oriAdd: 8
+  oriDel: 1
+  ori_patch_lines: 9
+  purAdd: 8
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 15
+  failFail: 8
+  passed: 0
+  total: 23
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_100/src/com/google/javascript/jscomp/CheckGlobalThis.java\t\
+    2020-10-23 12:52:41.967032439 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_100/purify/patch/com/google/javascript/jscomp/CheckGlobalThis.java\t\
+    2020-10-23 12:52:41.967032439 -0400\n@@ -96,6 +96,13 @@\n       // var a = function()\
+    \ { }; // or\n       // function a() {} // or\n       // a.x = function() {};\n\
+    +      int pType = parent.getType();\n+      if (!(pType == Token.BLOCK ||\n+\
+    \            pType == Token.SCRIPT ||\n+            pType == Token.NAME ||\n+\
+    \            pType == Token.ASSIGN)) {\n+        return false;\n+      }\n   \
+    \  }\n \n     if (parent != null && parent.getType() == Token.ASSIGN) {\n@@ -143,7\
+    \ +150,7 @@\n     }\n \n     // Also report a THIS with a property access.\n-\
+    \    return false;\n+    return parent != null && NodeUtil.isGet(parent);\n  \
+    \ }\n \n   /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_100/src/com/google/javascript/jscomp/CheckGlobalThis.java\t\
+    2020-10-23 12:58:40.453412514 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_100/purify/purified/com/google/javascript/jscomp/CheckGlobalThis.java\t\
+    2020-10-23 12:58:40.449412398 -0400\n@@ -96,6 +96,13 @@\n       // var a = function()\
+    \ { }; // or\n       // function a() {} // or\n       // a.x = function() {};\n\
+    +      int pType = parent.getType();\n+      if (!(pType == Token.BLOCK ||\n+\
+    \            pType == Token.SCRIPT ||\n+            pType == Token.NAME ||\n+\
+    \            pType == Token.ASSIGN)) {\n+        return false;\n+      }\n   \
+    \  }\n \n     if (parent != null && parent.getType() == Token.ASSIGN) {\n@@ -143,7\
+    \ +150,7 @@\n     }\n \n     // Also report a THIS with a property access.\n-\
+    \    return false;\n+    return parent != null && NodeUtil.isGet(parent);\n  \
+    \ }\n \n   /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CheckGlobalThis:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int pType=parent.getType(); @TO@ IfStatement@@InfixExpression:n.getType()
+      == Token.FUNCTION '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int pType=parent.getType(); '
+    - '---INS VariableDeclarationFragment@@pType=parent.getType() @TO@ VariableDeclarationStatement@@int
+      pType=parent.getType(); '
+    - '------INS SimpleName@@pType @TO@ VariableDeclarationFragment@@pType=parent.getType() '
+    - '------INS MethodInvocation@@parent.getType() @TO@ VariableDeclarationFragment@@pType=parent.getType() '
+    - '---------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.getType() '
+    - '---------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@parent.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!(pType == Token.BLOCK || pType == Token.SCRIPT
+      || pType == Token.NAME || pType == Token.ASSIGN) @TO@ IfStatement@@InfixExpression:n.getType()
+      == Token.FUNCTION '
+    - '---INS PrefixExpression@@!(pType == Token.BLOCK || pType == Token.SCRIPT ||
+      pType == Token.NAME || pType == Token.ASSIGN) @TO@ IfStatement@@PrefixExpression:!(pType
+      == Token.BLOCK || pType == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!(pType == Token.BLOCK || pType
+      == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN) '
+    - '------INS ParenthesizedExpression@@(pType == Token.BLOCK || pType == Token.SCRIPT
+      || pType == Token.NAME || pType == Token.ASSIGN) @TO@ PrefixExpression@@!(pType
+      == Token.BLOCK || pType == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN) '
+    - '---------INS InfixExpression@@pType == Token.BLOCK || pType == Token.SCRIPT
+      || pType == Token.NAME || pType == Token.ASSIGN @TO@ ParenthesizedExpression@@(pType
+      == Token.BLOCK || pType == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN) '
+    - '------------INS InfixExpression@@pType == Token.BLOCK || pType == Token.SCRIPT
+      || pType == Token.NAME @TO@ InfixExpression@@pType == Token.BLOCK || pType ==
+      Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN '
+    - '---------------INS InfixExpression@@pType == Token.BLOCK || pType == Token.SCRIPT
+      @TO@ InfixExpression@@pType == Token.BLOCK || pType == Token.SCRIPT || pType
+      == Token.NAME '
+    - '------------------INS InfixExpression@@pType == Token.BLOCK @TO@ InfixExpression@@pType
+      == Token.BLOCK || pType == Token.SCRIPT '
+    - '---------------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.BLOCK '
+    - '---------------------INS Operator@@== @TO@ InfixExpression@@pType == Token.BLOCK '
+    - '---------------------INS QualifiedName@@Token.BLOCK @TO@ InfixExpression@@pType
+      == Token.BLOCK '
+    - '------------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.BLOCK '
+    - '------------------------INS SimpleName@@BLOCK @TO@ QualifiedName@@Token.BLOCK '
+    - '------------------INS Operator@@|| @TO@ InfixExpression@@pType == Token.BLOCK
+      || pType == Token.SCRIPT '
+    - '------------------INS InfixExpression@@pType == Token.SCRIPT @TO@ InfixExpression@@pType
+      == Token.BLOCK || pType == Token.SCRIPT '
+    - '---------------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.SCRIPT '
+    - '---------------------INS Operator@@== @TO@ InfixExpression@@pType == Token.SCRIPT '
+    - '---------------------INS QualifiedName@@Token.SCRIPT @TO@ InfixExpression@@pType
+      == Token.SCRIPT '
+    - '------------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.SCRIPT '
+    - '------------------------INS SimpleName@@SCRIPT @TO@ QualifiedName@@Token.SCRIPT '
+    - '---------------INS Operator@@|| @TO@ InfixExpression@@pType == Token.BLOCK
+      || pType == Token.SCRIPT || pType == Token.NAME '
+    - '---------------INS InfixExpression@@pType == Token.NAME @TO@ InfixExpression@@pType
+      == Token.BLOCK || pType == Token.SCRIPT || pType == Token.NAME '
+    - '------------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.NAME '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@pType == Token.NAME '
+    - '------------------INS QualifiedName@@Token.NAME @TO@ InfixExpression@@pType
+      == Token.NAME '
+    - '---------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.NAME '
+    - '---------------------INS SimpleName@@NAME @TO@ QualifiedName@@Token.NAME '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@pType == Token.BLOCK ||
+      pType == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN '
+    - '------------INS InfixExpression@@pType == Token.ASSIGN @TO@ InfixExpression@@pType
+      == Token.BLOCK || pType == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN '
+    - '---------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.ASSIGN '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@pType == Token.ASSIGN '
+    - '---------------INS QualifiedName@@Token.ASSIGN @TO@ InfixExpression@@pType
+      == Token.ASSIGN '
+    - '------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.ASSIGN '
+    - '------------------INS SimpleName@@ASSIGN @TO@ QualifiedName@@Token.ASSIGN '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@PrefixExpression:!(pType
+      == Token.BLOCK || pType == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN) '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@BooleanLiteral:false @TO@ InfixExpression:parent != null
+      && NodeUtil.isGet(parent) '
+    - '---DEL BooleanLiteral@@false '
+    - '---INS InfixExpression@@parent != null && NodeUtil.isGet(parent) @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '------INS InfixExpression@@parent != null @TO@ InfixExpression@@parent != null
+      && NodeUtil.isGet(parent) '
+    - '---------INS SimpleName@@parent @TO@ InfixExpression@@parent != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@parent != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@parent != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@parent != null && NodeUtil.isGet(parent) '
+    - '------INS MethodInvocation@@NodeUtil.isGet(parent) @TO@ InfixExpression@@parent
+      != null && NodeUtil.isGet(parent) '
+    - '---------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isGet(parent) '
+    - '---------INS SimpleName@@MethodName:isGet:[parent] @TO@ MethodInvocation@@NodeUtil.isGet(parent) '
+    - '------------INS SimpleName@@parent @TO@ SimpleName@@MethodName:isGet:[parent] '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CheckGlobalThis:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int pType=parent.getType(); @TO@ IfStatement@@InfixExpression:n.getType()
+      == Token.FUNCTION '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int pType=parent.getType(); '
+    - '---INS VariableDeclarationFragment@@pType=parent.getType() @TO@ VariableDeclarationStatement@@int
+      pType=parent.getType(); '
+    - '------INS SimpleName@@pType @TO@ VariableDeclarationFragment@@pType=parent.getType() '
+    - '------INS MethodInvocation@@parent.getType() @TO@ VariableDeclarationFragment@@pType=parent.getType() '
+    - '---------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.getType() '
+    - '---------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@parent.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!(pType == Token.BLOCK || pType == Token.SCRIPT
+      || pType == Token.NAME || pType == Token.ASSIGN) @TO@ IfStatement@@InfixExpression:n.getType()
+      == Token.FUNCTION '
+    - '---INS PrefixExpression@@!(pType == Token.BLOCK || pType == Token.SCRIPT ||
+      pType == Token.NAME || pType == Token.ASSIGN) @TO@ IfStatement@@PrefixExpression:!(pType
+      == Token.BLOCK || pType == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!(pType == Token.BLOCK || pType
+      == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN) '
+    - '------INS ParenthesizedExpression@@(pType == Token.BLOCK || pType == Token.SCRIPT
+      || pType == Token.NAME || pType == Token.ASSIGN) @TO@ PrefixExpression@@!(pType
+      == Token.BLOCK || pType == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN) '
+    - '---------INS InfixExpression@@pType == Token.BLOCK || pType == Token.SCRIPT
+      || pType == Token.NAME || pType == Token.ASSIGN @TO@ ParenthesizedExpression@@(pType
+      == Token.BLOCK || pType == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN) '
+    - '------------INS InfixExpression@@pType == Token.BLOCK || pType == Token.SCRIPT
+      || pType == Token.NAME @TO@ InfixExpression@@pType == Token.BLOCK || pType ==
+      Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN '
+    - '---------------INS InfixExpression@@pType == Token.BLOCK || pType == Token.SCRIPT
+      @TO@ InfixExpression@@pType == Token.BLOCK || pType == Token.SCRIPT || pType
+      == Token.NAME '
+    - '------------------INS InfixExpression@@pType == Token.BLOCK @TO@ InfixExpression@@pType
+      == Token.BLOCK || pType == Token.SCRIPT '
+    - '---------------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.BLOCK '
+    - '---------------------INS Operator@@== @TO@ InfixExpression@@pType == Token.BLOCK '
+    - '---------------------INS QualifiedName@@Token.BLOCK @TO@ InfixExpression@@pType
+      == Token.BLOCK '
+    - '------------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.BLOCK '
+    - '------------------------INS SimpleName@@BLOCK @TO@ QualifiedName@@Token.BLOCK '
+    - '------------------INS Operator@@|| @TO@ InfixExpression@@pType == Token.BLOCK
+      || pType == Token.SCRIPT '
+    - '------------------INS InfixExpression@@pType == Token.SCRIPT @TO@ InfixExpression@@pType
+      == Token.BLOCK || pType == Token.SCRIPT '
+    - '---------------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.SCRIPT '
+    - '---------------------INS Operator@@== @TO@ InfixExpression@@pType == Token.SCRIPT '
+    - '---------------------INS QualifiedName@@Token.SCRIPT @TO@ InfixExpression@@pType
+      == Token.SCRIPT '
+    - '------------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.SCRIPT '
+    - '------------------------INS SimpleName@@SCRIPT @TO@ QualifiedName@@Token.SCRIPT '
+    - '---------------INS Operator@@|| @TO@ InfixExpression@@pType == Token.BLOCK
+      || pType == Token.SCRIPT || pType == Token.NAME '
+    - '---------------INS InfixExpression@@pType == Token.NAME @TO@ InfixExpression@@pType
+      == Token.BLOCK || pType == Token.SCRIPT || pType == Token.NAME '
+    - '------------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.NAME '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@pType == Token.NAME '
+    - '------------------INS QualifiedName@@Token.NAME @TO@ InfixExpression@@pType
+      == Token.NAME '
+    - '---------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.NAME '
+    - '---------------------INS SimpleName@@NAME @TO@ QualifiedName@@Token.NAME '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@pType == Token.BLOCK ||
+      pType == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN '
+    - '------------INS InfixExpression@@pType == Token.ASSIGN @TO@ InfixExpression@@pType
+      == Token.BLOCK || pType == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN '
+    - '---------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.ASSIGN '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@pType == Token.ASSIGN '
+    - '---------------INS QualifiedName@@Token.ASSIGN @TO@ InfixExpression@@pType
+      == Token.ASSIGN '
+    - '------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.ASSIGN '
+    - '------------------INS SimpleName@@ASSIGN @TO@ QualifiedName@@Token.ASSIGN '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@PrefixExpression:!(pType
+      == Token.BLOCK || pType == Token.SCRIPT || pType == Token.NAME || pType == Token.ASSIGN) '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@BooleanLiteral:false @TO@ InfixExpression:parent != null
+      && NodeUtil.isGet(parent) '
+    - '---DEL BooleanLiteral@@false '
+    - '---INS InfixExpression@@parent != null && NodeUtil.isGet(parent) @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '------INS InfixExpression@@parent != null @TO@ InfixExpression@@parent != null
+      && NodeUtil.isGet(parent) '
+    - '---------INS SimpleName@@parent @TO@ InfixExpression@@parent != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@parent != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@parent != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@parent != null && NodeUtil.isGet(parent) '
+    - '------INS MethodInvocation@@NodeUtil.isGet(parent) @TO@ InfixExpression@@parent
+      != null && NodeUtil.isGet(parent) '
+    - '---------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isGet(parent) '
+    - '---------INS SimpleName@@MethodName:isGet:[parent] @TO@ MethodInvocation@@NodeUtil.isGet(parent) '
+    - '------------INS SimpleName@@parent @TO@ SimpleName@@MethodName:isGet:[parent] '
+  files_cnt: '1'
+  repair_actions_cnt: 3

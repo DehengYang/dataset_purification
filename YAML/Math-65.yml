@@ -1,0 +1,261 @@
+1 bug_id: Math-65
+2 src folder:
+  name of src folder: java
+  number of files: 480
+  number of java files: 441
+  number of src classes: 605
+  number of test classes: 242
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.general.LevenbergMarquardtOptimizerTest#testCircleFitting
+  failing tests:
+  - org.apache.commons.math.optimization.general.LevenbergMarquardtOptimizerTest
+  number of all test cases: 2273
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.476
+  purification via delta debugging: 386.164
+  repair actions extraction: 1.024
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.general.LevenbergMarquardtOptimizerTest#testCircleFitting: 414
+  fixed:
+    org.apache.commons.math.optimization.general.LevenbergMarquardtOptimizerTest#testCircleFitting: 410
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 2
+  covDel: 7
+  cov_patch_lines: 9
+  delta_patch_lines: 8
+  oriAdd: 2
+  oriDel: 7
+  ori_patch_lines: 9
+  purAdd: 2
+  purDel: 6
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 21
+  passed: 1
+  total: 22
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_65/src/main/java/org/apache/commons/math/optimization/general/AbstractLeastSquaresOptimizer.java\t\
+    2020-10-27 04:16:51.162157228 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_65/purify/patch/org/apache/commons/math/optimization/general/AbstractLeastSquaresOptimizer.java\t\
+    2020-10-27 04:16:51.158157112 -0400\n@@ -237,12 +237,7 @@\n      * @return RMS\
+    \ value\n      */\n     public double getRMS() {\n-        double criterion =\
+    \ 0;\n-        for (int i = 0; i < rows; ++i) {\n-            final double residual\
+    \ = residuals[i];\n-            criterion += residual * residual * residualsWeights[i];\n\
+    -        }\n-        return Math.sqrt(criterion / rows);\n+        return Math.sqrt(getChiSquare()\
+    \ / rows);\n     }\n \n     /**\n@@ -255,7 +250,7 @@\n         double chiSquare\
+    \ = 0;\n         for (int i = 0; i < rows; ++i) {\n             final double residual\
+    \ = residuals[i];\n-            chiSquare += residual * residual / residualsWeights[i];\n\
+    +            chiSquare += residual * residual * residualsWeights[i];\n       \
+    \  }\n         return chiSquare;\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_65/src/main/java/org/apache/commons/math/optimization/general/AbstractLeastSquaresOptimizer.java\t\
+    2020-10-27 04:23:44.286142310 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_65/purify/purified/org/apache/commons/math/optimization/general/AbstractLeastSquaresOptimizer.java\t\
+    2020-10-27 04:23:44.282142194 -0400\n@@ -238,11 +238,7 @@\n      */\n     public\
+    \ double getRMS() {\n         double criterion = 0;\n-        for (int i = 0;\
+    \ i < rows; ++i) {\n-            final double residual = residuals[i];\n-    \
+    \        criterion += residual * residual * residualsWeights[i];\n-        }\n\
+    -        return Math.sqrt(criterion / rows);\n+        return Math.sqrt(getChiSquare()\
+    \ / rows);\n     }\n \n     /**\n@@ -255,7 +251,7 @@\n         double chiSquare\
+    \ = 0;\n         for (int i = 0; i < rows; ++i) {\n             final double residual\
+    \ = residuals[i];\n-            chiSquare += residual * residual / residualsWeights[i];\n\
+    +            chiSquare += residual * residual * residualsWeights[i];\n       \
+    \  }\n         return chiSquare;\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/general/AbstractLeastSquaresOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV MethodDeclaration@@public, @@double, MethodName:getRMS, @@Argus:null @TO@
+      TypeDeclaration@@[public, abstract]AbstractLeastSquaresOptimizer, [DifferentiableMultivariateVectorialOptimizer] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, @@double, MethodName:getRMS, @@Argus:null @TO@
+      public, @@double, MethodName:getChiSquare, @@Argus:null '
+    - '---UPD SimpleName@@MethodName:getRMS @TO@ MethodName:getChiSquare '
+    - '---UPD VariableDeclarationStatement@@double criterion=0; @TO@ double chiSquare=0; '
+    - '------MOV PrimitiveType@@double @TO@ VariableDeclarationStatement@@double criterion=0; '
+    - '------MOV VariableDeclarationFragment@@chiSquare=0 @TO@ VariableDeclarationStatement@@double
+      criterion=0; '
+    - '---UPD ReturnStatement@@MethodInvocation:Math.sqrt(criterion / rows) @TO@ SimpleName:chiSquare '
+    - '------DEL MethodInvocation@@Math.sqrt(criterion / rows) '
+    - '---------DEL SimpleName@@Name:Math '
+    - '---------DEL SimpleName@@MethodName:sqrt:[criterion / rows] '
+    - '------------DEL InfixExpression@@criterion / rows '
+    - '---------------DEL SimpleName@@criterion '
+    - '---------------DEL Operator@@/ '
+    - '---------------DEL SimpleName@@rows '
+    - '------INS SimpleName@@chiSquare @TO@ ReturnStatement@@MethodInvocation:Math.sqrt(criterion
+      / rows) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:criterion+=residual * residual * residualsWeights[i]
+      @TO@ Assignment:chiSquare+=residual * residual * residualsWeights[i] '
+    - '---UPD Assignment@@criterion+=residual * residual * residualsWeights[i] @TO@
+      chiSquare+=residual * residual * residualsWeights[i] '
+    - '------UPD SimpleName@@criterion @TO@ chiSquare '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, @@double, MethodName:getChiSquare, @@Argus:null
+      @TO@ public, @@double, MethodName:getRMS, @@Argus:null '
+    - '---INS ReturnStatement@@MethodInvocation:Math.sqrt(getChiSquare() / rows) @TO@
+      MethodDeclaration@@public, @@double, MethodName:getChiSquare, @@Argus:null '
+    - '------INS MethodInvocation@@Math.sqrt(getChiSquare() / rows) @TO@ ReturnStatement@@MethodInvocation:Math.sqrt(getChiSquare()
+      / rows) '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.sqrt(getChiSquare()
+      / rows) '
+    - '---------INS SimpleName@@MethodName:sqrt:[getChiSquare() / rows] @TO@ MethodInvocation@@Math.sqrt(getChiSquare()
+      / rows) '
+    - '------------INS InfixExpression@@getChiSquare() / rows @TO@ SimpleName@@MethodName:sqrt:[getChiSquare()
+      / rows] '
+    - '---------------INS MethodInvocation@@MethodName:getChiSquare:[] @TO@ InfixExpression@@getChiSquare()
+      / rows '
+    - '---------------MOV Operator@@< @TO@ InfixExpression@@getChiSquare() / rows '
+    - '---------------MOV SimpleName@@rows @TO@ InfixExpression@@getChiSquare() /
+      rows '
+    - '---UPD SimpleName@@MethodName:getChiSquare @TO@ MethodName:getRMS '
+    - '---DEL ForStatement@@[int i=0];i < rows; [++i] '
+    - '------DEL VariableDeclarationExpression@@int i=0 '
+    - '---------DEL PrimitiveType@@int '
+    - '---------DEL VariableDeclarationFragment@@i=0 '
+    - '------------DEL SimpleName@@i '
+    - '------------DEL NumberLiteral@@0 '
+    - '------DEL InfixExpression@@i < rows '
+    - '---------DEL SimpleName@@i '
+    - '------DEL PrefixExpression@@++i '
+    - '---------DEL Operator@@++ '
+    - '---------DEL SimpleName@@i '
+    - '------DEL VariableDeclarationStatement@@final double residual=residuals[i]; '
+    - '---------DEL Modifier@@final '
+    - '---------DEL PrimitiveType@@double '
+    - '---------DEL VariableDeclarationFragment@@residual=residuals[i] '
+    - '------------DEL SimpleName@@residual '
+    - '------------DEL ArrayAccess@@residuals[i] '
+    - '---------------DEL SimpleName@@residuals '
+    - '---------------DEL SimpleName@@i '
+    - '------DEL ExpressionStatement@@Assignment:chiSquare+=residual * residual /
+      residualsWeights[i] '
+    - '---------DEL Assignment@@chiSquare+=residual * residual / residualsWeights[i] '
+    - '------------DEL SimpleName@@chiSquare '
+    - '------------DEL Operator@@+= '
+    - '------------DEL InfixExpression@@residual * residual / residualsWeights[i] '
+    - '---------------DEL InfixExpression@@residual * residual '
+    - '------------------DEL SimpleName@@residual '
+    - '------------------DEL Operator@@* '
+    - '------------------DEL SimpleName@@residual '
+    - '---------------DEL Operator@@/ '
+    - '---------------DEL ArrayAccess@@residualsWeights[i] '
+    - '------------------DEL SimpleName@@residualsWeights '
+    - '------------------DEL SimpleName@@i '
+    - '---DEL ReturnStatement@@SimpleName:chiSquare '
+    - '------DEL SimpleName@@chiSquare '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/general/AbstractLeastSquaresOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV MethodDeclaration@@public, @@double, MethodName:getRMS, @@Argus:null @TO@
+      TypeDeclaration@@[public, abstract]AbstractLeastSquaresOptimizer, [DifferentiableMultivariateVectorialOptimizer] '
+    - '---MOV VariableDeclarationStatement@@double chiSquare=0; @TO@ MethodDeclaration@@public,
+      @@double, MethodName:getRMS, @@Argus:null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, @@double, MethodName:getRMS, @@Argus:null @TO@
+      public, @@double, MethodName:getChiSquare, @@Argus:null '
+    - '---UPD SimpleName@@MethodName:getRMS @TO@ MethodName:getChiSquare '
+    - '---DEL ReturnStatement@@MethodInvocation:Math.sqrt(criterion / rows) '
+    - '------DEL MethodInvocation@@Math.sqrt(criterion / rows) '
+    - '---------DEL SimpleName@@Name:Math '
+    - '---------DEL SimpleName@@MethodName:sqrt:[criterion / rows] '
+    - '------------DEL InfixExpression@@criterion / rows '
+    - '---------------DEL SimpleName@@criterion '
+    - '---------------DEL Operator@@/ '
+    - '---------------DEL SimpleName@@rows '
+    - '---INS ReturnStatement@@SimpleName:chiSquare @TO@ MethodDeclaration@@public,
+      @@double, MethodName:getRMS, @@Argus:null '
+    - '------INS SimpleName@@chiSquare @TO@ ReturnStatement@@SimpleName:chiSquare '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:criterion+=residual * residual * residualsWeights[i]
+      @TO@ Assignment:chiSquare+=residual * residual * residualsWeights[i] '
+    - '---UPD Assignment@@criterion+=residual * residual * residualsWeights[i] @TO@
+      chiSquare+=residual * residual * residualsWeights[i] '
+    - '------UPD SimpleName@@criterion @TO@ chiSquare '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, @@double, MethodName:getChiSquare, @@Argus:null
+      @TO@ public, @@double, MethodName:getRMS, @@Argus:null '
+    - '---MOV VariableDeclarationStatement@@double criterion=0; @TO@ MethodDeclaration@@public,
+      @@double, MethodName:getChiSquare, @@Argus:null '
+    - '---INS ReturnStatement@@MethodInvocation:Math.sqrt(getChiSquare() / rows) @TO@
+      MethodDeclaration@@public, @@double, MethodName:getChiSquare, @@Argus:null '
+    - '------INS MethodInvocation@@Math.sqrt(getChiSquare() / rows) @TO@ ReturnStatement@@MethodInvocation:Math.sqrt(getChiSquare()
+      / rows) '
+    - '---------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.sqrt(getChiSquare()
+      / rows) '
+    - '---------INS SimpleName@@MethodName:sqrt:[getChiSquare() / rows] @TO@ MethodInvocation@@Math.sqrt(getChiSquare()
+      / rows) '
+    - '------------INS InfixExpression@@getChiSquare() / rows @TO@ SimpleName@@MethodName:sqrt:[getChiSquare()
+      / rows] '
+    - '---------------INS MethodInvocation@@MethodName:getChiSquare:[] @TO@ InfixExpression@@getChiSquare()
+      / rows '
+    - '---------------MOV Operator@@< @TO@ InfixExpression@@getChiSquare() / rows '
+    - '---------------MOV SimpleName@@rows @TO@ InfixExpression@@getChiSquare() /
+      rows '
+    - '---UPD SimpleName@@MethodName:getChiSquare @TO@ MethodName:getRMS '
+    - '---DEL ForStatement@@[int i=0];i < rows; [++i] '
+    - '------DEL VariableDeclarationExpression@@int i=0 '
+    - '---------DEL PrimitiveType@@int '
+    - '---------DEL VariableDeclarationFragment@@i=0 '
+    - '------------DEL SimpleName@@i '
+    - '------------DEL NumberLiteral@@0 '
+    - '------DEL InfixExpression@@i < rows '
+    - '---------DEL SimpleName@@i '
+    - '------DEL PrefixExpression@@++i '
+    - '---------DEL Operator@@++ '
+    - '---------DEL SimpleName@@i '
+    - '------DEL VariableDeclarationStatement@@final double residual=residuals[i]; '
+    - '---------DEL Modifier@@final '
+    - '---------DEL PrimitiveType@@double '
+    - '---------DEL VariableDeclarationFragment@@residual=residuals[i] '
+    - '------------DEL SimpleName@@residual '
+    - '------------DEL ArrayAccess@@residuals[i] '
+    - '---------------DEL SimpleName@@residuals '
+    - '---------------DEL SimpleName@@i '
+    - '------DEL ExpressionStatement@@Assignment:chiSquare+=residual * residual /
+      residualsWeights[i] '
+    - '---------DEL Assignment@@chiSquare+=residual * residual / residualsWeights[i] '
+    - '------------DEL SimpleName@@chiSquare '
+    - '------------DEL Operator@@+= '
+    - '------------DEL InfixExpression@@residual * residual / residualsWeights[i] '
+    - '---------------DEL InfixExpression@@residual * residual '
+    - '------------------DEL SimpleName@@residual '
+    - '------------------DEL Operator@@* '
+    - '------------------DEL SimpleName@@residual '
+    - '---------------DEL Operator@@/ '
+    - '---------------DEL ArrayAccess@@residualsWeights[i] '
+    - '------------------DEL SimpleName@@residualsWeights '
+    - '------------------DEL SimpleName@@i '
+    - '---DEL ReturnStatement@@SimpleName:chiSquare '
+    - '------DEL SimpleName@@chiSquare '
+  repair_actions_cnt: 4

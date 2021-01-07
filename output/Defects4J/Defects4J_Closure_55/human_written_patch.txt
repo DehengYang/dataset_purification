@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_55/src/com/google/javascript/jscomp/FunctionRewriter.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_55/fixed-version/src/com/google/javascript/jscomp/FunctionRewriter.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_55/src/com/google/javascript/jscomp/FunctionRewriter.java	2020-03-01 00:28:52.189335020 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_55/fixed-version/src/com/google/javascript/jscomp/FunctionRewriter.java	2020-03-01 00:28:54.429440572 -0800
+@@ -114,7 +114,8 @@
+   }
+ 
+   private static boolean isReduceableFunctionExpression(Node n) {
+-    return NodeUtil.isFunctionExpression(n);
++    return NodeUtil.isFunctionExpression(n)
++        && !NodeUtil.isGetOrSetKey(n.getParent());
+   }
+ 
+   /**

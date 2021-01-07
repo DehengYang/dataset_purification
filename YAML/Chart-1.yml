@@ -1,0 +1,92 @@
+1 bug_id: Chart-1
+2 src folder:
+  name of src folder: source
+  number of files: 728
+  number of java files: 654
+  number of src classes: 681
+  number of test classes: 357
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.renderer.category.junit.AbstractCategoryItemRendererTests#test2947660
+  failing tests:
+  - org.jfree.chart.renderer.category.junit.AbstractCategoryItemRendererTests
+  number of all test cases: 2201
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 40.31
+  repair actions extraction: 2.15
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.renderer.category.junit.AbstractCategoryItemRendererTests#test2947660: 642
+  fixed:
+    org.jfree.chart.renderer.category.junit.AbstractCategoryItemRendererTests#test2947660: 863
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_1/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java\t\
+    2020-10-20 23:36:12.302047378 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_1/purify/patch/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java\t\
+    2020-10-20 23:36:12.302047378 -0400\n@@ -1794,7 +1794,7 @@\n         }\n     \
+    \    int index = this.plot.getIndexOf(this);\n         CategoryDataset dataset\
+    \ = this.plot.getDataset(index);\n-        if (dataset != null) {\n+        if\
+    \ (dataset == null) {\n             return result;\n         }\n         int seriesCount\
+    \ = dataset.getRowCount();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_1/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java\t\
+    2020-10-20 23:37:11.731764619 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_1/purify/purified/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java\t\
+    2020-10-20 23:37:11.731764619 -0400\n@@ -1794,7 +1794,7 @@\n         }\n     \
+    \    int index = this.plot.getIndexOf(this);\n         CategoryDataset dataset\
+    \ = this.plot.getDataset(index);\n-        if (dataset != null) {\n+        if\
+    \ (dataset == null) {\n             return result;\n         }\n         int seriesCount\
+    \ = dataset.getRowCount();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/renderer/category/AbstractCategoryItemRenderer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:dataset != null @TO@ InfixExpression:dataset
+      == null '
+    - '---UPD InfixExpression@@dataset != null @TO@ dataset == null '
+    - '------UPD Operator@@!= @TO@ == '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/renderer/category/AbstractCategoryItemRenderer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:dataset != null @TO@ InfixExpression:dataset
+      == null '
+    - '---UPD InfixExpression@@dataset != null @TO@ dataset == null '
+    - '------UPD Operator@@!= @TO@ == '
+  repair_actions_cnt: 1

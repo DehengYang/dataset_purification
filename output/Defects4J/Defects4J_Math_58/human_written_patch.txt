@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_58/src/main/java/org/apache/commons/math/optimization/fitting/GaussianFitter.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_58/fixed-version/src/main/java/org/apache/commons/math/optimization/fitting/GaussianFitter.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_58/src/main/java/org/apache/commons/math/optimization/fitting/GaussianFitter.java	2020-03-01 00:19:49.163747943 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_58/fixed-version/src/main/java/org/apache/commons/math/optimization/fitting/GaussianFitter.java	2020-03-01 00:19:51.747869705 -0800
+@@ -118,7 +118,7 @@
+      */
+     public double[] fit() {
+         final double[] guess = (new ParameterGuesser(getObservations())).guess();
+-        return fit(new Gaussian.Parametric(), guess);
++        return fit(guess);
+     }
+ 
+     /**

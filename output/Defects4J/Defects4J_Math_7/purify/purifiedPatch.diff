@@ -1,0 +1,33 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_7/src/main/java/org/apache/commons/math3/ode/AbstractIntegrator.java	2020-10-22 05:08:36.588249232 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_7/purify/purified/org/apache/commons/math3/ode/AbstractIntegrator.java	2020-10-22 05:08:36.584249117 -0400
+@@ -343,8 +343,11 @@
+                 final double[] eventY = interpolator.getInterpolatedState().clone();
+ 
+                 // advance all event states to current time
+-                currentEvent.stepAccepted(eventT, eventY);
+                 isLastStep = currentEvent.stop();
++                for (final EventState state : eventsStates) {
++                    state.stepAccepted(eventT, eventY);
++                    isLastStep = isLastStep || state.stop();
++                }
+ 
+                 // handle the first part of the step, up to the event
+                 for (final StepHandler handler : stepHandlers) {
+@@ -354,13 +357,14 @@
+                 if (isLastStep) {
+                     // the event asked to stop integration
+                     System.arraycopy(eventY, 0, y, 0, y.length);
+-                    for (final EventState remaining : occuringEvents) {
+                         remaining.stepAccepted(eventT, eventY);
+-                    }
+                     return eventT;
+                 }
+ 
+-                boolean needReset = currentEvent.reset(eventT, eventY);
++                boolean needReset = false;
++                for (final EventState state : eventsStates) {
++                    needReset =  needReset || state.reset(eventT, eventY);
++                }
+                 if (needReset) {
+                     // some event handler has triggered changes that
+                     // invalidate the derivatives, we need to recompute them

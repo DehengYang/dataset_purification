@@ -1,0 +1,24 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_53/src/java/org/apache/commons/lang/time/DateUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_53/fixed-version/src/java/org/apache/commons/lang/time/DateUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_53/src/java/org/apache/commons/lang/time/DateUtils.java	2020-03-01 00:11:35.472486881 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_53/fixed-version/src/java/org/apache/commons/lang/time/DateUtils.java	2020-03-01 00:11:38.900648403 -0800
+@@ -640,18 +640,18 @@
+         int millisecs = val.get(Calendar.MILLISECOND);
+         if (!round || millisecs < 500) {
+             time = time - millisecs;
++        }
+         if (field == Calendar.SECOND) {
+             done = true;
+-            }
+         }
+ 
+         // truncate seconds
+         int seconds = val.get(Calendar.SECOND);
+         if (!done && (!round || seconds < 30)) {
+             time = time - (seconds * 1000L);
++        }
+         if (field == Calendar.MINUTE) {
+             done = true;
+-            }
+         }
+ 
+         // truncate minutes

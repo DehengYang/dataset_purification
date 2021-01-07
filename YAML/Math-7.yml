@@ -1,0 +1,301 @@
+1 bug_id: Math-7
+2 src folder:
+  name of src folder: java
+  number of files: 766
+  number of java files: 765
+  number of src classes: 1029
+  number of test classes: 384
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.ode.nonstiff.DormandPrince853IntegratorTest#testEventsScheduling
+  failing tests:
+  - org.apache.commons.math3.ode.nonstiff.DormandPrince853IntegratorTest
+  number of all test cases: 4976
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.074
+  purification via delta debugging: 1692.59
+  repair actions extraction: 1.1
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.ode.nonstiff.DormandPrince853IntegratorTest#testEventsScheduling: 983
+  fixed:
+    org.apache.commons.math3.ode.nonstiff.DormandPrince853IntegratorTest#testEventsScheduling: 1017
+6 reduced lines:
+  by all: 5
+  by coverage: 0
+  by delta debugging: 5
+  covAdd: 8
+  covDel: 9
+  cov_patch_lines: 17
+  delta_patch_lines: 12
+  oriAdd: 8
+  oriDel: 9
+  ori_patch_lines: 17
+  purAdd: 8
+  purDel: 4
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 4
+  original: 4
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 6
+  failCompile: 27
+  failFail: 1
+  passed: 2
+  total: 36
+9 sibling repair actions:
+- 3 7 1.0
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_7/src/main/java/org/apache/commons/math3/ode/AbstractIntegrator.java\t\
+    2020-10-22 04:40:03.054741361 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_7/purify/patch/org/apache/commons/math3/ode/AbstractIntegrator.java\t\
+    2020-10-22 04:40:03.054741361 -0400\n@@ -343,8 +343,10 @@\n                 final\
+    \ double[] eventY = interpolator.getInterpolatedState().clone();\n \n        \
+    \         // advance all event states to current time\n-                currentEvent.stepAccepted(eventT,\
+    \ eventY);\n-                isLastStep = currentEvent.stop();\n+            \
+    \    for (final EventState state : eventsStates) {\n+                    state.stepAccepted(eventT,\
+    \ eventY);\n+                    isLastStep = isLastStep || state.stop();\n+ \
+    \               }\n \n                 // handle the first part of the step, up\
+    \ to the event\n                 for (final StepHandler handler : stepHandlers)\
+    \ {\n@@ -354,22 +356,19 @@\n                 if (isLastStep) {\n             \
+    \        // the event asked to stop integration\n                     System.arraycopy(eventY,\
+    \ 0, y, 0, y.length);\n-                    for (final EventState remaining :\
+    \ occuringEvents) {\n-                        remaining.stepAccepted(eventT, eventY);\n\
+    -                    }\n                     return eventT;\n                \
+    \ }\n \n-                boolean needReset = currentEvent.reset(eventT, eventY);\n\
+    +                boolean needReset = false;\n+                for (final EventState\
+    \ state : eventsStates) {\n+                    needReset =  needReset || state.reset(eventT,\
+    \ eventY);\n+                }\n                 if (needReset) {\n          \
+    \           // some event handler has triggered changes that\n               \
+    \      // invalidate the derivatives, we need to recompute them\n            \
+    \         System.arraycopy(eventY, 0, y, 0, y.length);\n                     computeDerivatives(eventT,\
+    \ y, yDot);\n                     resetOccurred = true;\n-                   \
+    \ for (final EventState remaining : occuringEvents) {\n-                     \
+    \   remaining.stepAccepted(eventT, eventY);\n-                    }\n        \
+    \             return eventT;\n                 }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_7/src/main/java/org/apache/commons/math3/ode/AbstractIntegrator.java\t\
+    2020-10-22 05:08:36.588249232 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_7/purify/purified/org/apache/commons/math3/ode/AbstractIntegrator.java\t\
+    2020-10-22 05:08:36.584249117 -0400\n@@ -343,8 +343,11 @@\n                 final\
+    \ double[] eventY = interpolator.getInterpolatedState().clone();\n \n        \
+    \         // advance all event states to current time\n-                currentEvent.stepAccepted(eventT,\
+    \ eventY);\n                 isLastStep = currentEvent.stop();\n+            \
+    \    for (final EventState state : eventsStates) {\n+                    state.stepAccepted(eventT,\
+    \ eventY);\n+                    isLastStep = isLastStep || state.stop();\n+ \
+    \               }\n \n                 // handle the first part of the step, up\
+    \ to the event\n                 for (final StepHandler handler : stepHandlers)\
+    \ {\n@@ -354,13 +357,14 @@\n                 if (isLastStep) {\n             \
+    \        // the event asked to stop integration\n                     System.arraycopy(eventY,\
+    \ 0, y, 0, y.length);\n-                    for (final EventState remaining :\
+    \ occuringEvents) {\n                         remaining.stepAccepted(eventT, eventY);\n\
+    -                    }\n                     return eventT;\n                \
+    \ }\n \n-                boolean needReset = currentEvent.reset(eventT, eventY);\n\
+    +                boolean needReset = false;\n+                for (final EventState\
+    \ state : eventsStates) {\n+                    needReset =  needReset || state.reset(eventT,\
+    \ eventY);\n+                }\n                 if (needReset) {\n          \
+    \           // some event handler has triggered changes that\n               \
+    \      // invalidate the derivatives, we need to recompute them"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/ode/AbstractIntegrator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS EnhancedForStatement@@final EventState state, SimpleName:eventsStates @TO@
+      WhileStatement@@PrefixExpression:!occuringEvents.isEmpty() '
+    - '---INS SingleVariableDeclaration@@final EventState state @TO@ EnhancedForStatement@@final
+      EventState state, SimpleName:eventsStates '
+    - '------INS Modifier@@final @TO@ SingleVariableDeclaration@@final EventState
+      state '
+    - '------INS SimpleType@@EventState @TO@ SingleVariableDeclaration@@final EventState
+      state '
+    - '------INS SimpleName@@state @TO@ SingleVariableDeclaration@@final EventState
+      state '
+    - '---INS SimpleName@@eventsStates @TO@ EnhancedForStatement@@final EventState
+      state, SimpleName:eventsStates '
+    - '---INS ExpressionStatement@@MethodInvocation:state.stepAccepted(eventT,eventY)
+      @TO@ EnhancedForStatement@@final EventState state, SimpleName:eventsStates '
+    - '------MOV MethodInvocation@@currentEvent.stepAccepted(eventT,eventY) @TO@ ExpressionStatement@@MethodInvocation:state.stepAccepted(eventT,eventY) '
+    - '---INS ExpressionStatement@@Assignment:isLastStep=isLastStep || state.stop()
+      @TO@ EnhancedForStatement@@final EventState state, SimpleName:eventsStates '
+    - '------MOV Assignment@@isLastStep=currentEvent.stop() @TO@ ExpressionStatement@@Assignment:isLastStep=isLastStep
+      || state.stop() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@MethodInvocation:currentEvent.stepAccepted(eventT,eventY) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:isLastStep=currentEvent.stop() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL EnhancedForStatement@@final EventState remaining, SimpleName:occuringEvents '
+    - '---DEL SingleVariableDeclaration@@final EventState remaining '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@EventState '
+    - '------DEL SimpleName@@remaining '
+    - '---DEL SimpleName@@occuringEvents '
+    - '---DEL ExpressionStatement@@MethodInvocation:remaining.stepAccepted(eventT,eventY) '
+    - '------DEL MethodInvocation@@remaining.stepAccepted(eventT,eventY) '
+    - '---------DEL SimpleName@@Name:remaining '
+    - '---------DEL SimpleName@@MethodName:stepAccepted:[eventT, eventY] '
+    - '------------DEL SimpleName@@eventT '
+    - '------------DEL SimpleName@@eventY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean needReset=false; @TO@ WhileStatement@@PrefixExpression:!occuringEvents.isEmpty() '
+    - '---INS VariableDeclarationFragment@@needReset=false @TO@ VariableDeclarationStatement@@boolean
+      needReset=false; '
+    - '------INS BooleanLiteral@@false @TO@ VariableDeclarationFragment@@needReset=false '
+    - '------MOV SimpleName@@needReset @TO@ VariableDeclarationFragment@@needReset=false '
+    - '---MOV PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean needReset=false; '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS EnhancedForStatement@@final EventState state, SimpleName:eventsStates @TO@
+      WhileStatement@@PrefixExpression:!occuringEvents.isEmpty() '
+    - '---INS SingleVariableDeclaration@@final EventState state @TO@ EnhancedForStatement@@final
+      EventState state, SimpleName:eventsStates '
+    - '------INS Modifier@@final @TO@ SingleVariableDeclaration@@final EventState
+      state '
+    - '------INS SimpleType@@EventState @TO@ SingleVariableDeclaration@@final EventState
+      state '
+    - '------INS SimpleName@@state @TO@ SingleVariableDeclaration@@final EventState
+      state '
+    - '---INS SimpleName@@eventsStates @TO@ EnhancedForStatement@@final EventState
+      state, SimpleName:eventsStates '
+    - '---INS ExpressionStatement@@Assignment:needReset=needReset || state.reset(eventT,eventY)
+      @TO@ EnhancedForStatement@@final EventState state, SimpleName:eventsStates '
+    - '------INS Assignment@@needReset=needReset || state.reset(eventT,eventY) @TO@
+      ExpressionStatement@@Assignment:needReset=needReset || state.reset(eventT,eventY) '
+    - '---------INS SimpleName@@needReset @TO@ Assignment@@needReset=needReset ||
+      state.reset(eventT,eventY) '
+    - '---------INS Operator@@= @TO@ Assignment@@needReset=needReset || state.reset(eventT,eventY) '
+    - '---------INS InfixExpression@@needReset || state.reset(eventT,eventY) @TO@
+      Assignment@@needReset=needReset || state.reset(eventT,eventY) '
+    - '------------INS SimpleName@@needReset @TO@ InfixExpression@@needReset || state.reset(eventT,eventY) '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@needReset || state.reset(eventT,eventY) '
+    - '------------INS MethodInvocation@@state.reset(eventT,eventY) @TO@ InfixExpression@@needReset
+      || state.reset(eventT,eventY) '
+    - '---------------MOV SimpleName@@Name:currentEvent @TO@ MethodInvocation@@state.reset(eventT,eventY) '
+    - '---------------MOV SimpleName@@MethodName:reset:[eventT, eventY] @TO@ MethodInvocation@@state.reset(eventT,eventY) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@boolean needReset=currentEvent.reset(eventT,eventY); '
+    - '---DEL VariableDeclarationFragment@@needReset=currentEvent.reset(eventT,eventY) '
+    - '------DEL MethodInvocation@@currentEvent.reset(eventT,eventY) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL EnhancedForStatement@@final EventState remaining, SimpleName:occuringEvents '
+    - '---DEL SingleVariableDeclaration@@final EventState remaining '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@EventState '
+    - '------DEL SimpleName@@remaining '
+    - '---DEL SimpleName@@occuringEvents '
+    - '---DEL ExpressionStatement@@MethodInvocation:remaining.stepAccepted(eventT,eventY) '
+    - '------DEL MethodInvocation@@remaining.stepAccepted(eventT,eventY) '
+    - '---------DEL SimpleName@@Name:remaining '
+    - '---------DEL SimpleName@@MethodName:stepAccepted:[eventT, eventY] '
+    - '------------DEL SimpleName@@eventT '
+    - '------------DEL SimpleName@@eventY '
+  repair_actions_cnt: 8
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/ode/AbstractIntegrator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@MethodInvocation:currentEvent.stepAccepted(eventT,eventY) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS EnhancedForStatement@@final EventState state, SimpleName:eventsStates @TO@
+      WhileStatement@@PrefixExpression:!occuringEvents.isEmpty() '
+    - '---INS SingleVariableDeclaration@@final EventState state @TO@ EnhancedForStatement@@final
+      EventState state, SimpleName:eventsStates '
+    - '------INS Modifier@@final @TO@ SingleVariableDeclaration@@final EventState
+      state '
+    - '------INS SimpleType@@EventState @TO@ SingleVariableDeclaration@@final EventState
+      state '
+    - '------INS SimpleName@@state @TO@ SingleVariableDeclaration@@final EventState
+      state '
+    - '---INS SimpleName@@eventsStates @TO@ EnhancedForStatement@@final EventState
+      state, SimpleName:eventsStates '
+    - '---INS ExpressionStatement@@MethodInvocation:state.stepAccepted(eventT,eventY)
+      @TO@ EnhancedForStatement@@final EventState state, SimpleName:eventsStates '
+    - '------MOV MethodInvocation@@currentEvent.stepAccepted(eventT,eventY) @TO@ ExpressionStatement@@MethodInvocation:state.stepAccepted(eventT,eventY) '
+    - '---INS ExpressionStatement@@Assignment:isLastStep=isLastStep || state.stop()
+      @TO@ EnhancedForStatement@@final EventState state, SimpleName:eventsStates '
+    - '------INS Assignment@@isLastStep=isLastStep || state.stop() @TO@ ExpressionStatement@@Assignment:isLastStep=isLastStep
+      || state.stop() '
+    - '---------INS SimpleName@@isLastStep @TO@ Assignment@@isLastStep=isLastStep
+      || state.stop() '
+    - '---------INS Operator@@= @TO@ Assignment@@isLastStep=isLastStep || state.stop() '
+    - '---------INS InfixExpression@@isLastStep || state.stop() @TO@ Assignment@@isLastStep=isLastStep
+      || state.stop() '
+    - '------------INS SimpleName@@isLastStep @TO@ InfixExpression@@isLastStep ||
+      state.stop() '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@isLastStep || state.stop() '
+    - '------------INS MethodInvocation@@state.stop() @TO@ InfixExpression@@isLastStep
+      || state.stop() '
+    - '---------------INS SimpleName@@Name:state @TO@ MethodInvocation@@state.stop() '
+    - '---------------INS SimpleName@@MethodName:stop:[] @TO@ MethodInvocation@@state.stop() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL EnhancedForStatement@@final EventState remaining, SimpleName:occuringEvents '
+    - '---DEL SingleVariableDeclaration@@final EventState remaining '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@EventState '
+    - '------DEL SimpleName@@remaining '
+    - '---DEL SimpleName@@occuringEvents '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:remaining.stepAccepted(eventT,eventY)
+      @TO@ IfStatement@@SimpleName:isLastStep '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@boolean needReset=currentEvent.reset(eventT,eventY); '
+    - '---DEL VariableDeclarationFragment@@needReset=currentEvent.reset(eventT,eventY) '
+    - '------DEL MethodInvocation@@currentEvent.reset(eventT,eventY) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean needReset=false; @TO@ WhileStatement@@PrefixExpression:!occuringEvents.isEmpty() '
+    - '---MOV PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean needReset=false; '
+    - '---INS VariableDeclarationFragment@@needReset=false @TO@ VariableDeclarationStatement@@boolean
+      needReset=false; '
+    - '------MOV SimpleName@@needReset @TO@ VariableDeclarationFragment@@needReset=false '
+    - '------INS BooleanLiteral@@false @TO@ VariableDeclarationFragment@@needReset=false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS EnhancedForStatement@@final EventState state, SimpleName:eventsStates @TO@
+      WhileStatement@@PrefixExpression:!occuringEvents.isEmpty() '
+    - '---INS SingleVariableDeclaration@@final EventState state @TO@ EnhancedForStatement@@final
+      EventState state, SimpleName:eventsStates '
+    - '------INS Modifier@@final @TO@ SingleVariableDeclaration@@final EventState
+      state '
+    - '------INS SimpleType@@EventState @TO@ SingleVariableDeclaration@@final EventState
+      state '
+    - '------INS SimpleName@@state @TO@ SingleVariableDeclaration@@final EventState
+      state '
+    - '---INS SimpleName@@eventsStates @TO@ EnhancedForStatement@@final EventState
+      state, SimpleName:eventsStates '
+    - '---INS ExpressionStatement@@Assignment:needReset=needReset || state.reset(eventT,eventY)
+      @TO@ EnhancedForStatement@@final EventState state, SimpleName:eventsStates '
+    - '------INS Assignment@@needReset=needReset || state.reset(eventT,eventY) @TO@
+      ExpressionStatement@@Assignment:needReset=needReset || state.reset(eventT,eventY) '
+    - '---------INS SimpleName@@needReset @TO@ Assignment@@needReset=needReset ||
+      state.reset(eventT,eventY) '
+    - '---------INS Operator@@= @TO@ Assignment@@needReset=needReset || state.reset(eventT,eventY) '
+    - '---------INS InfixExpression@@needReset || state.reset(eventT,eventY) @TO@
+      Assignment@@needReset=needReset || state.reset(eventT,eventY) '
+    - '------------INS SimpleName@@needReset @TO@ InfixExpression@@needReset || state.reset(eventT,eventY) '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@needReset || state.reset(eventT,eventY) '
+    - '------------INS MethodInvocation@@state.reset(eventT,eventY) @TO@ InfixExpression@@needReset
+      || state.reset(eventT,eventY) '
+    - '---------------MOV SimpleName@@Name:currentEvent @TO@ MethodInvocation@@state.reset(eventT,eventY) '
+    - '---------------MOV SimpleName@@MethodName:reset:[eventT, eventY] @TO@ MethodInvocation@@state.reset(eventT,eventY) '
+  repair_actions_cnt: 7

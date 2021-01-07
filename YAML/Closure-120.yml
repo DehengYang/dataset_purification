@@ -1,0 +1,120 @@
+1 bug_id: Closure-120
+2 src folder:
+  name of src folder: src
+  number of files: 444
+  number of java files: 428
+  number of src classes: 1427
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.InlineVariablesTest#testExternalIssue1053
+  failing tests:
+  - com.google.javascript.jscomp.InlineVariablesTest
+  number of all test cases: 8282
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.665
+  purification via delta debugging: 252.913
+  repair actions extraction: 1.225
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.InlineVariablesTest#testExternalIssue1053: 3870
+  fixed:
+    com.google.javascript.jscomp.InlineVariablesTest#testExternalIssue1053: 3723
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_120/src/com/google/javascript/jscomp/ReferenceCollectingCallback.java\t\
+    2020-10-23 16:41:22.128316696 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_120/purify/patch/com/google/javascript/jscomp/ReferenceCollectingCallback.java\t\
+    2020-10-23 16:41:22.128316696 -0400\n@@ -428,6 +428,9 @@\n       for (BasicBlock\
+    \ block = ref.getBasicBlock();\n            block != null; block = block.getParent())\
+    \ {\n         if (block.isFunction) {\n+          if (ref.getSymbol().getScope()\
+    \ != ref.scope) {\n+            return false;\n+          }\n           break;\n\
+    \         } else if (block.isLoop) {\n           return false;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_120/src/com/google/javascript/jscomp/ReferenceCollectingCallback.java\t\
+    2020-10-23 16:46:06.844552803 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_120/purify/purified/com/google/javascript/jscomp/ReferenceCollectingCallback.java\t\
+    2020-10-23 16:46:06.840552687 -0400\n@@ -428,6 +428,9 @@\n       for (BasicBlock\
+    \ block = ref.getBasicBlock();\n            block != null; block = block.getParent())\
+    \ {\n         if (block.isFunction) {\n+          if (ref.getSymbol().getScope()\
+    \ != ref.scope) {\n+            return false;\n+          }\n           break;\n\
+    \         } else if (block.isLoop) {\n           return false;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ReferenceCollectingCallback:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:ref.getSymbol().getScope() != ref.scope @TO@
+      IfStatement@@QualifiedName:block.isFunction '
+    - '---INS InfixExpression@@ref.getSymbol().getScope() != ref.scope @TO@ IfStatement@@InfixExpression:ref.getSymbol().getScope()
+      != ref.scope '
+    - '------INS MethodInvocation@@ref.getSymbol().getScope() @TO@ InfixExpression@@ref.getSymbol().getScope()
+      != ref.scope '
+    - '---------INS SimpleName@@Name:ref @TO@ MethodInvocation@@ref.getSymbol().getScope() '
+    - '---------INS MethodInvocation@@MethodName:getSymbol:[] @TO@ MethodInvocation@@ref.getSymbol().getScope() '
+    - '---------INS SimpleName@@MethodName:getScope:[] @TO@ MethodInvocation@@ref.getSymbol().getScope() '
+    - '------INS Operator@@!= @TO@ InfixExpression@@ref.getSymbol().getScope() !=
+      ref.scope '
+    - '------INS QualifiedName@@ref.scope @TO@ InfixExpression@@ref.getSymbol().getScope()
+      != ref.scope '
+    - '---------INS SimpleName@@ref @TO@ QualifiedName@@ref.scope '
+    - '---------INS SimpleName@@scope @TO@ QualifiedName@@ref.scope '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:ref.getSymbol().getScope()
+      != ref.scope '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ReferenceCollectingCallback:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:ref.getSymbol().getScope() != ref.scope @TO@
+      IfStatement@@QualifiedName:block.isFunction '
+    - '---INS InfixExpression@@ref.getSymbol().getScope() != ref.scope @TO@ IfStatement@@InfixExpression:ref.getSymbol().getScope()
+      != ref.scope '
+    - '------INS MethodInvocation@@ref.getSymbol().getScope() @TO@ InfixExpression@@ref.getSymbol().getScope()
+      != ref.scope '
+    - '---------INS SimpleName@@Name:ref @TO@ MethodInvocation@@ref.getSymbol().getScope() '
+    - '---------INS MethodInvocation@@MethodName:getSymbol:[] @TO@ MethodInvocation@@ref.getSymbol().getScope() '
+    - '---------INS SimpleName@@MethodName:getScope:[] @TO@ MethodInvocation@@ref.getSymbol().getScope() '
+    - '------INS Operator@@!= @TO@ InfixExpression@@ref.getSymbol().getScope() !=
+      ref.scope '
+    - '------INS QualifiedName@@ref.scope @TO@ InfixExpression@@ref.getSymbol().getScope()
+      != ref.scope '
+    - '---------INS SimpleName@@ref @TO@ QualifiedName@@ref.scope '
+    - '---------INS SimpleName@@scope @TO@ QualifiedName@@ref.scope '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:ref.getSymbol().getScope()
+      != ref.scope '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  files_cnt: '1'
+  repair_actions_cnt: 1

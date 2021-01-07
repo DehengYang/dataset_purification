@@ -1,0 +1,190 @@
+1 bug_id: Mockito-15
+2 src folder:
+  name of src folder: src
+  number of files: 276
+  number of java files: 240
+  number of src classes: 267
+  number of test classes: 214
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.bugs.InjectMocksShouldTryPropertySettersFirstBeforeFieldAccessTest#shouldInjectUsingPropertySetterIfAvailable
+  failing tests:
+  - org.mockitousage.bugs.InjectMocksShouldTryPropertySettersFirstBeforeFieldAccessTest
+  number of all test cases: 0
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.286
+  purification via delta debugging: 246.213
+  repair actions extraction: 0.551
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 5
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_15/src/org/mockito/internal/configuration/injection/FinalMockCandidateFilter.java\t\
+    2020-10-24 11:46:46.913274402 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_15/purify/patch/org/mockito/internal/configuration/injection/FinalMockCandidateFilter.java\t\
+    2020-10-24 11:46:46.913274402 -0400\n@@ -1,6 +1,7 @@\n package org.mockito.internal.configuration.injection;\n\
+    \ \n import org.mockito.exceptions.base.MockitoException;\n+import org.mockito.internal.util.reflection.BeanPropertySetter;\n\
+    \ import org.mockito.internal.util.reflection.FieldSetter;\n \n import java.lang.reflect.Field;\n\
+    @@ -22,7 +23,9 @@\n             return new OngoingInjecter() {\n             \
+    \    public boolean thenInject() {\n                     try {\n+            \
+    \            if (!new BeanPropertySetter(fieldInstance, field).set(matchingMock))\
+    \ {\n                             new FieldSetter(fieldInstance, field).set(matchingMock);\n\
+    +                        }\n                     } catch (Exception e) {\n   \
+    \                      throw new MockitoException(\"Problems injecting dependency\
+    \ in \" + field.getName(), e);\n                     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_15/src/org/mockito/internal/configuration/injection/FinalMockCandidateFilter.java\t\
+    2020-10-24 11:51:10.087591746 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_15/purify/purified/org/mockito/internal/configuration/injection/FinalMockCandidateFilter.java\t\
+    2020-10-24 11:51:10.087591746 -0400\n@@ -1,6 +1,7 @@\n package org.mockito.internal.configuration.injection;\n\
+    \ \n import org.mockito.exceptions.base.MockitoException;\n+import org.mockito.internal.util.reflection.BeanPropertySetter;\n\
+    \ import org.mockito.internal.util.reflection.FieldSetter;\n \n import java.lang.reflect.Field;\n\
+    @@ -22,7 +23,9 @@\n             return new OngoingInjecter() {\n             \
+    \    public boolean thenInject() {\n                     try {\n+            \
+    \            if (!new BeanPropertySetter(fieldInstance, field).set(matchingMock))\
+    \ {\n                             new FieldSetter(fieldInstance, field).set(matchingMock);\n\
+    +                        }\n                     } catch (Exception e) {\n   \
+    \                      throw new MockitoException(\"Problems injecting dependency\
+    \ in \" + field.getName(), e);\n                     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/configuration/injection/FinalMockCandidateFilter:
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD ReturnStatement@@ClassInstanceCreation:new OngoingInjecter()
+    - '  public boolean thenInject()'
+    - '    try '
+    - '      new FieldSetter(fieldInstance,field).set(matchingMock)'
+    - '    '
+    - ' catch (    Exception e) '
+    - '      throw new MockitoException("Problems injecting dependency in " + field.getName(),e)'
+    - '    '
+    - '    return true'
+    - '  '
+    - ''
+    - ' @TO@ ClassInstanceCreation:new OngoingInjecter()'
+    - '  public boolean thenInject()'
+    - '    try '
+    - '      if (!new BeanPropertySetter(fieldInstance,field).set(matchingMock)) '
+    - '        new FieldSetter(fieldInstance,field).set(matchingMock)'
+    - '      '
+    - '    '
+    - ' catch (    Exception e) '
+    - '      throw new MockitoException("Problems injecting dependency in " + field.getName(),e)'
+    - '    '
+    - '    return true'
+    - '  '
+    - ''
+    - ' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!new BeanPropertySetter(fieldInstance,field).set(matchingMock)
+      @TO@ TryStatement@@try:[] '
+    - '---MOV ExpressionStatement@@MethodInvocation:new FieldSetter(fieldInstance,field).set(matchingMock)
+      @TO@ IfStatement@@PrefixExpression:!new BeanPropertySetter(fieldInstance,field).set(matchingMock) '
+    - '---INS PrefixExpression@@!new BeanPropertySetter(fieldInstance,field).set(matchingMock)
+      @TO@ IfStatement@@PrefixExpression:!new BeanPropertySetter(fieldInstance,field).set(matchingMock) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!new BeanPropertySetter(fieldInstance,field).set(matchingMock) '
+    - '------INS MethodInvocation@@new BeanPropertySetter(fieldInstance,field).set(matchingMock)
+      @TO@ PrefixExpression@@!new BeanPropertySetter(fieldInstance,field).set(matchingMock) '
+    - '---------INS ClassInstanceCreation@@BeanPropertySetter[fieldInstance, field]
+      @TO@ MethodInvocation@@new BeanPropertySetter(fieldInstance,field).set(matchingMock) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@BeanPropertySetter[fieldInstance,
+      field] '
+    - '------------INS SimpleType@@BeanPropertySetter @TO@ ClassInstanceCreation@@BeanPropertySetter[fieldInstance,
+      field] '
+    - '------------INS SimpleName@@fieldInstance @TO@ ClassInstanceCreation@@BeanPropertySetter[fieldInstance,
+      field] '
+    - '------------INS SimpleName@@field @TO@ ClassInstanceCreation@@BeanPropertySetter[fieldInstance,
+      field] '
+    - '---------INS SimpleName@@MethodName:set:[matchingMock] @TO@ MethodInvocation@@new
+      BeanPropertySetter(fieldInstance,field).set(matchingMock) '
+    - '------------INS SimpleName@@matchingMock @TO@ SimpleName@@MethodName:set:[matchingMock] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/configuration/injection/FinalMockCandidateFilter:
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD ReturnStatement@@ClassInstanceCreation:new OngoingInjecter()
+    - '  public boolean thenInject()'
+    - '    try '
+    - '      new FieldSetter(fieldInstance,field).set(matchingMock)'
+    - '    '
+    - ' catch (    Exception e) '
+    - '      throw new MockitoException("Problems injecting dependency in " + field.getName(),e)'
+    - '    '
+    - '    return true'
+    - '  '
+    - ''
+    - ' @TO@ ClassInstanceCreation:new OngoingInjecter()'
+    - '  public boolean thenInject()'
+    - '    try '
+    - '      if (!new BeanPropertySetter(fieldInstance,field).set(matchingMock)) '
+    - '        new FieldSetter(fieldInstance,field).set(matchingMock)'
+    - '      '
+    - '    '
+    - ' catch (    Exception e) '
+    - '      throw new MockitoException("Problems injecting dependency in " + field.getName(),e)'
+    - '    '
+    - '    return true'
+    - '  '
+    - ''
+    - ' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!new BeanPropertySetter(fieldInstance,field).set(matchingMock)
+      @TO@ TryStatement@@try:[] '
+    - '---MOV ExpressionStatement@@MethodInvocation:new FieldSetter(fieldInstance,field).set(matchingMock)
+      @TO@ IfStatement@@PrefixExpression:!new BeanPropertySetter(fieldInstance,field).set(matchingMock) '
+    - '---INS PrefixExpression@@!new BeanPropertySetter(fieldInstance,field).set(matchingMock)
+      @TO@ IfStatement@@PrefixExpression:!new BeanPropertySetter(fieldInstance,field).set(matchingMock) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!new BeanPropertySetter(fieldInstance,field).set(matchingMock) '
+    - '------INS MethodInvocation@@new BeanPropertySetter(fieldInstance,field).set(matchingMock)
+      @TO@ PrefixExpression@@!new BeanPropertySetter(fieldInstance,field).set(matchingMock) '
+    - '---------INS ClassInstanceCreation@@BeanPropertySetter[fieldInstance, field]
+      @TO@ MethodInvocation@@new BeanPropertySetter(fieldInstance,field).set(matchingMock) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@BeanPropertySetter[fieldInstance,
+      field] '
+    - '------------INS SimpleType@@BeanPropertySetter @TO@ ClassInstanceCreation@@BeanPropertySetter[fieldInstance,
+      field] '
+    - '------------INS SimpleName@@fieldInstance @TO@ ClassInstanceCreation@@BeanPropertySetter[fieldInstance,
+      field] '
+    - '------------INS SimpleName@@field @TO@ ClassInstanceCreation@@BeanPropertySetter[fieldInstance,
+      field] '
+    - '---------INS SimpleName@@MethodName:set:[matchingMock] @TO@ MethodInvocation@@new
+      BeanPropertySetter(fieldInstance,field).set(matchingMock) '
+    - '------------INS SimpleName@@matchingMock @TO@ SimpleName@@MethodName:set:[matchingMock] '
+  repair_actions_cnt: 2

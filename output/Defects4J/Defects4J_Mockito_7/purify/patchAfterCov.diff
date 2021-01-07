@@ -1,0 +1,10 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_7/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java	2020-10-23 21:28:29.575017564 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_7/purify/assertBeforeMut/org/mockito/internal/util/reflection/GenericMetadataSupport.java	2020-10-23 21:28:29.575017564 -0400
+@@ -376,6 +376,7 @@
+             for (Type type : typeVariable.getBounds()) {
+                 registerTypeVariablesOn(type);
+             }
++            registerTypeParametersOn(new TypeVariable[] { typeVariable });
+             registerTypeVariablesOn(getActualTypeArgumentFor(typeVariable));
+         }
+ 

@@ -1,0 +1,19 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_91/src/com/google/javascript/jscomp/CheckGlobalThis.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_91/fixed-version/src/com/google/javascript/jscomp/CheckGlobalThis.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_91/src/com/google/javascript/jscomp/CheckGlobalThis.java	2020-03-01 00:31:17.156165753 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_91/fixed-version/src/com/google/javascript/jscomp/CheckGlobalThis.java	2020-03-01 00:31:19.100257357 -0800
+@@ -112,6 +112,15 @@
+       }
+ 
+       // Don't traverse functions that are getting lent to a prototype.
++      Node gramps = parent.getParent();
++      if (NodeUtil.isObjectLitKey(parent, gramps)) {
++        JSDocInfo maybeLends = gramps.getJSDocInfo();
++        if (maybeLends != null &&
++            maybeLends.getLendsName() != null &&
++            maybeLends.getLendsName().endsWith(".prototype")) {
++          return false;
++        }
++      }
+     }
+ 
+     if (parent != null && parent.getType() == Token.ASSIGN) {

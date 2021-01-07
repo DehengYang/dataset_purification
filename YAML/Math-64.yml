@@ -1,0 +1,368 @@
+1 bug_id: Math-64
+2 src folder:
+  name of src folder: java
+  number of files: 483
+  number of java files: 444
+  number of src classes: 608
+  number of test classes: 243
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.general.MinpackTest#testMinpackFreudensteinRoth
+  - org.apache.commons.math.optimization.general.MinpackTest#testMinpackJennrichSampson
+  failing tests:
+  - org.apache.commons.math.optimization.general.MinpackTest
+  number of all test cases: 2274
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.598
+  purification via delta debugging: 1417.822
+  repair actions extraction: 1.474
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.general.MinpackTest#testMinpackFreudensteinRoth: 380
+    org.apache.commons.math.optimization.general.MinpackTest#testMinpackJennrichSampson: 381
+  fixed:
+    org.apache.commons.math.optimization.general.MinpackTest#testMinpackFreudensteinRoth: 391
+    org.apache.commons.math.optimization.general.MinpackTest#testMinpackJennrichSampson: 392
+6 reduced lines:
+  by all: 20
+  by coverage: 0
+  by delta debugging: 20
+  covAdd: 22
+  covDel: 8
+  cov_patch_lines: 30
+  delta_patch_lines: 10
+  oriAdd: 22
+  oriDel: 8
+  ori_patch_lines: 30
+  purAdd: 7
+  purDel: 3
+7 reduced chunks:
+  by all: 6
+  by coverage: 0
+  by delta debugging: 6
+  cov: 13
+  original: 13
+  purifiy: 7
+8 mutants by delta debugging:
+  failAll: 6
+  failCompile: 68
+  failFail: 29
+  passed: 14
+  total: 117
+9 sibling repair actions:
+- 0 1 0.9654415798134942
+- 8 13 0.8975356679636836
+- 9 14 0.8975356679636836
+- 10 15 0.8916323731138546
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_64/src/main/java/org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer.java\t\
+    2020-10-22 07:33:12.039104889 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_64/purify/patch/org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer.java\t\
+    2020-10-22 07:33:12.035104773 -0400\n@@ -255,6 +255,8 @@\n         double[] diag\
+    \    = new double[cols];\n         double[] oldX    = new double[cols];\n    \
+    \     double[] oldRes  = new double[rows];\n+        double[] oldObj  = new double[rows];\n\
+    +        double[] qtf     = new double[rows];\n         double[] work1   = new\
+    \ double[cols];\n         double[] work2   = new double[cols];\n         double[]\
+    \ work3   = new double[cols];\n@@ -267,6 +269,9 @@\n         boolean firstIteration\
+    \ = true;\n         VectorialPointValuePair current = new VectorialPointValuePair(point,\
+    \ objective);\n         while (true) {\n+            for (int i=0;i<rows;i++)\
+    \ {\n+                qtf[i]=residuals[i];\n+            }\n             incrementIterationsCounter();\n\
+    \ \n             // compute the Q.R. decomposition of the jacobian matrix\n@@\
+    \ -275,7 +280,7 @@\n             qrDecomposition();\n \n             // compute\
+    \ Qt.res\n-            qTy(residuals);\n+            qTy(qtf);\n             //\
+    \ now we don't need Q anymore,\n             // so let jacobian contain the R\
+    \ matrix with its diagonal elements\n             for (int k = 0; k < solvedCols;\
+    \ ++k) {\n@@ -313,7 +318,7 @@\n                     if (s != 0) {\n          \
+    \               double sum = 0;\n                         for (int i = 0; i <=\
+    \ j; ++i) {\n-                            sum += jacobian[i][pj] * residuals[i];\n\
+    +                            sum += jacobian[i][pj] * qtf[i];\n              \
+    \           }\n                         maxCosine = Math.max(maxCosine, Math.abs(sum)\
+    \ / (s * cost));\n                     }\n@@ -321,6 +326,8 @@\n             }\n\
+    \             if (maxCosine <= orthoTolerance) {\n                 // convergence\
+    \ has been reached\n+            \tupdateResidualsAndCost();\n+            \t\
+    current = new VectorialPointValuePair(point, objective);\n                 return\
+    \ current;\n             }\n \n@@ -341,9 +348,12 @@\n                 double[]\
+    \ tmpVec = residuals;\n                 residuals = oldRes;\n                \
+    \ oldRes    = tmpVec;\n+                tmpVec    = objective;\n+            \
+    \    objective = oldObj;\n+                oldObj    = tmpVec;\n \n          \
+    \       // determine the Levenberg-Marquardt parameter\n-                determineLMParameter(oldRes,\
+    \ delta, diag, work1, work2, work3);\n+                determineLMParameter(qtf,\
+    \ delta, diag, work1, work2, work3);\n \n                 // compute the new point\
+    \ and the norm of the evolution direction\n                 double lmNorm = 0;\n\
+    @@ -362,7 +372,6 @@\n \n                 // evaluate the function at x + p and\
+    \ calculate its norm\n                 updateResidualsAndCost();\n-          \
+    \      current = new VectorialPointValuePair(point, objective);\n \n         \
+    \        // compute the scaled actual reduction\n                 double actRed\
+    \ = -1.0;\n@@ -418,9 +427,15 @@\n                         xNorm    += xK * xK;\n\
+    \                     }\n                     xNorm = Math.sqrt(xNorm);\n+   \
+    \                 current = new VectorialPointValuePair(point, objective);\n \n\
+    \                     // tests for convergence.\n+                    if (checker\
+    \ != null) {\n                     // we use the vectorial convergence checker\n\
+    +                    \tif (checker.converged(getIterations(), previous, current))\
+    \ {\n+                    \t\treturn current;\n+                    \t}\n+   \
+    \                 }\n                 } else {\n                     // failed\
+    \ iteration, reset the previous values\n                     cost = previousCost;\n\
+    @@ -431,6 +446,9 @@\n                     tmpVec    = residuals;\n           \
+    \          residuals = oldRes;\n                     oldRes    = tmpVec;\n+  \
+    \                  tmpVec    = objective;\n+                    objective = oldObj;\n\
+    +                    oldObj    = tmpVec;\n                 }\n               \
+    \  if (checker==null) {\n                 \tif (((Math.abs(actRed) <= costRelativeTolerance)\
+    \ &&\n@@ -439,10 +457,6 @@\n                        (delta <= parRelativeTolerance\
+    \ * xNorm)) {\n                        return current;\n                    }\n\
+    -                } else {\n-                    if (checker.converged(getIterations(),\
+    \ previous, current)) {\n-                        return current;\n-         \
+    \           }\n                 }\n                 // tests for termination and\
+    \ stringent tolerances\n                 // (2.2204e-16 is the machine epsilon\
+    \ for IEEE754)"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_64/src/main/java/org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer.java\t\
+    2020-10-22 07:57:07.324658808 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_64/purify/purified/org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer.java\t\
+    2020-10-22 07:57:07.324658808 -0400\n@@ -267,6 +267,8 @@\n         boolean firstIteration\
+    \ = true;\n         VectorialPointValuePair current = new VectorialPointValuePair(point,\
+    \ objective);\n         while (true) {\n+            for (int i=0;i<rows;i++)\
+    \ {\n+            }\n             incrementIterationsCounter();\n \n         \
+    \    // compute the Q.R. decomposition of the jacobian matrix\n@@ -362,7 +364,6\
+    \ @@\n \n                 // evaluate the function at x + p and calculate its\
+    \ norm\n                 updateResidualsAndCost();\n-                current =\
+    \ new VectorialPointValuePair(point, objective);\n \n                 // compute\
+    \ the scaled actual reduction\n                 double actRed = -1.0;\n@@ -418,9\
+    \ +419,14 @@\n                         xNorm    += xK * xK;\n                \
+    \     }\n                     xNorm = Math.sqrt(xNorm);\n+                   \
+    \ current = new VectorialPointValuePair(point, objective);\n \n              \
+    \       // tests for convergence.\n+                    if (checker != null) {\n\
+    \                     // we use the vectorial convergence checker\n+         \
+    \           \tif (checker.converged(getIterations(), previous, current)) {\n+\
+    \                    \t}\n+                    }\n                 } else {\n\
+    \                     // failed iteration, reset the previous values\n       \
+    \              cost = previousCost;\n@@ -440,9 +446,7 @@\n                   \
+    \     return current;\n                    }\n                 } else {\n-   \
+    \                 if (checker.converged(getIterations(), previous, current)) {\n\
+    \                         return current;\n-                    }\n          \
+    \       }\n                 // tests for termination and stringent tolerances\n\
+    \                 // (2.2204e-16 is the machine epsilon for IEEE754)"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double[] oldObj=new double[rows]; @TO@ MethodDeclaration@@protected,
+      @@VectorialPointValuePair, MethodName:doOptimize, @@Argus:nullFunctionEvaluationException,
+      OptimizationException, IllegalArgumentException,  '
+    - '---INS ArrayType@@double[] @TO@ VariableDeclarationStatement@@double[] oldObj=new
+      double[rows]; '
+    - '------INS PrimitiveType@@double @TO@ ArrayType@@double[] '
+    - '---INS VariableDeclarationFragment@@oldObj=new double[rows] @TO@ VariableDeclarationStatement@@double[]
+      oldObj=new double[rows]; '
+    - '------INS SimpleName@@oldObj @TO@ VariableDeclarationFragment@@oldObj=new double[rows] '
+    - '------INS ArrayCreation@@new double[rows] @TO@ VariableDeclarationFragment@@oldObj=new
+      double[rows] '
+    - '---------INS ArrayType@@double[] @TO@ ArrayCreation@@new double[rows] '
+    - '------------INS PrimitiveType@@double @TO@ ArrayType@@double[] '
+    - '---------INS SimpleName@@rows @TO@ ArrayCreation@@new double[rows] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double[] qtf=new double[rows]; @TO@ MethodDeclaration@@protected,
+      @@VectorialPointValuePair, MethodName:doOptimize, @@Argus:nullFunctionEvaluationException,
+      OptimizationException, IllegalArgumentException,  '
+    - '---INS ArrayType@@double[] @TO@ VariableDeclarationStatement@@double[] qtf=new
+      double[rows]; '
+    - '------INS PrimitiveType@@double @TO@ ArrayType@@double[] '
+    - '---INS VariableDeclarationFragment@@qtf=new double[rows] @TO@ VariableDeclarationStatement@@double[]
+      qtf=new double[rows]; '
+    - '------INS SimpleName@@qtf @TO@ VariableDeclarationFragment@@qtf=new double[rows] '
+    - '------INS ArrayCreation@@new double[rows] @TO@ VariableDeclarationFragment@@qtf=new
+      double[rows] '
+    - '---------INS ArrayType@@double[] @TO@ ArrayCreation@@new double[rows] '
+    - '------------INS PrimitiveType@@double @TO@ ArrayType@@double[] '
+    - '---------INS SimpleName@@rows @TO@ ArrayCreation@@new double[rows] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < rows; [i++] @TO@ WhileStatement@@BooleanLiteral:true '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < rows; [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < rows @TO@ ForStatement@@[int i=0];i < rows; [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < rows '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < rows '
+    - '------INS SimpleName@@rows @TO@ InfixExpression@@i < rows '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < rows; [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS ExpressionStatement@@Assignment:qtf[i]=residuals[i] @TO@ ForStatement@@[int
+      i=0];i < rows; [i++] '
+    - '------INS Assignment@@qtf[i]=residuals[i] @TO@ ExpressionStatement@@Assignment:qtf[i]=residuals[i] '
+    - '---------INS ArrayAccess@@qtf[i] @TO@ Assignment@@qtf[i]=residuals[i] '
+    - '------------INS SimpleName@@qtf @TO@ ArrayAccess@@qtf[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@qtf[i] '
+    - '---------INS Operator@@= @TO@ Assignment@@qtf[i]=residuals[i] '
+    - '---------INS ArrayAccess@@residuals[i] @TO@ Assignment@@qtf[i]=residuals[i] '
+    - '------------INS SimpleName@@residuals @TO@ ArrayAccess@@residuals[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@residuals[i] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:qTy(residuals) @TO@ MethodInvocation:qTy(qtf) '
+    - '---UPD MethodInvocation@@qTy(residuals) @TO@ qTy(qtf) '
+    - '------UPD SimpleName@@MethodName:qTy:[residuals] @TO@ MethodName:qTy:[qtf] '
+    - '---------UPD SimpleName@@residuals @TO@ qtf '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:sum+=jacobian[i][pj] * residuals[i] @TO@
+      Assignment:sum+=jacobian[i][pj] * qtf[i] '
+    - '---UPD Assignment@@sum+=jacobian[i][pj] * residuals[i] @TO@ sum+=jacobian[i][pj]
+      * qtf[i] '
+    - '------UPD InfixExpression@@jacobian[i][pj] * residuals[i] @TO@ jacobian[i][pj]
+      * qtf[i] '
+    - '---------UPD ArrayAccess@@residuals[i] @TO@ qtf[i] '
+    - '------------UPD SimpleName@@residuals @TO@ qtf '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:updateResidualsAndCost() @TO@ IfStatement@@InfixExpression:maxCosine
+      <= orthoTolerance '
+    - '---INS MethodInvocation@@MethodName:updateResidualsAndCost:[] @TO@ ExpressionStatement@@MethodInvocation:updateResidualsAndCost() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:current=new VectorialPointValuePair(point,objective)
+      @TO@ IfStatement@@InfixExpression:maxCosine <= orthoTolerance '
+    - '---INS Assignment@@current=new VectorialPointValuePair(point,objective) @TO@
+      ExpressionStatement@@Assignment:current=new VectorialPointValuePair(point,objective) '
+    - '------INS SimpleName@@current @TO@ Assignment@@current=new VectorialPointValuePair(point,objective) '
+    - '------INS Operator@@= @TO@ Assignment@@current=new VectorialPointValuePair(point,objective) '
+    - '------INS ClassInstanceCreation@@VectorialPointValuePair[point, objective]
+      @TO@ Assignment@@current=new VectorialPointValuePair(point,objective) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleType@@VectorialPointValuePair @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleName@@point @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+    - '---------INS SimpleName@@objective @TO@ ClassInstanceCreation@@VectorialPointValuePair[point,
+      objective] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:determineLMParameter(oldRes,delta,diag,work1,work2,work3)
+      @TO@ MethodInvocation:determineLMParameter(qtf,delta,diag,work1,work2,work3) '
+    - '---UPD MethodInvocation@@determineLMParameter(oldRes,delta,diag,work1,work2,work3)
+      @TO@ determineLMParameter(qtf,delta,diag,work1,work2,work3) '
+    - '------UPD SimpleName@@MethodName:determineLMParameter:[oldRes, delta, diag,
+      work1, work2, work3] @TO@ MethodName:determineLMParameter:[qtf, delta, diag,
+      work1, work2, work3] '
+    - '---------UPD SimpleName@@oldRes @TO@ qtf '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:tmpVec=objective @TO@ ForStatement@@[double
+      ratio=0];ratio < 1.0e-4; [] '
+    - '---INS Assignment@@tmpVec=objective @TO@ ExpressionStatement@@Assignment:tmpVec=objective '
+    - '------INS SimpleName@@tmpVec @TO@ Assignment@@tmpVec=objective '
+    - '------INS Operator@@= @TO@ Assignment@@tmpVec=objective '
+    - '------INS SimpleName@@objective @TO@ Assignment@@tmpVec=objective '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:objective=oldObj @TO@ ForStatement@@[double
+      ratio=0];ratio < 1.0e-4; [] '
+    - '---INS Assignment@@objective=oldObj @TO@ ExpressionStatement@@Assignment:objective=oldObj '
+    - '------INS SimpleName@@objective @TO@ Assignment@@objective=oldObj '
+    - '------INS Operator@@= @TO@ Assignment@@objective=oldObj '
+    - '------INS SimpleName@@oldObj @TO@ Assignment@@objective=oldObj '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:oldObj=tmpVec @TO@ ForStatement@@[double
+      ratio=0];ratio < 1.0e-4; [] '
+    - '---INS Assignment@@oldObj=tmpVec @TO@ ExpressionStatement@@Assignment:oldObj=tmpVec '
+    - '------INS SimpleName@@oldObj @TO@ Assignment@@oldObj=tmpVec '
+    - '------INS Operator@@= @TO@ Assignment@@oldObj=tmpVec '
+    - '------INS SimpleName@@tmpVec @TO@ Assignment@@oldObj=tmpVec '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:current=new VectorialPointValuePair(point,objective)
+      @TO@ IfStatement@@InfixExpression:ratio >= 1.0e-4 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:checker != null @TO@ IfStatement@@InfixExpression:ratio
+      >= 1.0e-4 '
+    - '---INS InfixExpression@@checker != null @TO@ IfStatement@@InfixExpression:checker
+      != null '
+    - '------INS SimpleName@@checker @TO@ InfixExpression@@checker != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@checker != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@checker != null '
+    - '---MOV IfStatement@@MethodInvocation:checker.converged(getIterations(),previous,current)
+      @TO@ IfStatement@@InfixExpression:checker != null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:tmpVec=objective @TO@ IfStatement@@InfixExpression:ratio
+      >= 1.0e-4 '
+    - '---INS Assignment@@tmpVec=objective @TO@ ExpressionStatement@@Assignment:tmpVec=objective '
+    - '------INS SimpleName@@tmpVec @TO@ Assignment@@tmpVec=objective '
+    - '------INS Operator@@= @TO@ Assignment@@tmpVec=objective '
+    - '------INS SimpleName@@objective @TO@ Assignment@@tmpVec=objective '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:objective=oldObj @TO@ IfStatement@@InfixExpression:ratio
+      >= 1.0e-4 '
+    - '---INS Assignment@@objective=oldObj @TO@ ExpressionStatement@@Assignment:objective=oldObj '
+    - '------INS SimpleName@@objective @TO@ Assignment@@objective=oldObj '
+    - '------INS Operator@@= @TO@ Assignment@@objective=oldObj '
+    - '------INS SimpleName@@oldObj @TO@ Assignment@@objective=oldObj '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:oldObj=tmpVec @TO@ IfStatement@@InfixExpression:ratio
+      >= 1.0e-4 '
+    - '---INS Assignment@@oldObj=tmpVec @TO@ ExpressionStatement@@Assignment:oldObj=tmpVec '
+    - '------INS SimpleName@@oldObj @TO@ Assignment@@oldObj=tmpVec '
+    - '------INS Operator@@= @TO@ Assignment@@oldObj=tmpVec '
+    - '------INS SimpleName@@tmpVec @TO@ Assignment@@oldObj=tmpVec '
+  repair_actions_cnt: 16
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/general/LevenbergMarquardtOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < rows; [i++] @TO@ WhileStatement@@BooleanLiteral:true '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < rows; [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < rows @TO@ ForStatement@@[int i=0];i < rows; [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < rows '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < rows '
+    - '------INS SimpleName@@rows @TO@ InfixExpression@@i < rows '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < rows; [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:current=new VectorialPointValuePair(point,objective)
+      @TO@ IfStatement@@InfixExpression:ratio >= 1.0e-4 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:checker != null @TO@ IfStatement@@InfixExpression:ratio
+      >= 1.0e-4 '
+    - '---INS InfixExpression@@checker != null @TO@ IfStatement@@InfixExpression:checker
+      != null '
+    - '------INS SimpleName@@checker @TO@ InfixExpression@@checker != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@checker != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@checker != null '
+    - '---INS IfStatement@@MethodInvocation:checker.converged(getIterations(),previous,current)
+      @TO@ IfStatement@@InfixExpression:checker != null '
+    - '------MOV MethodInvocation@@checker.converged(getIterations(),previous,current)
+      @TO@ IfStatement@@MethodInvocation:checker.converged(getIterations(),previous,current) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:checker.converged(getIterations(),previous,current) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ReturnStatement@@SimpleName:current @TO@ IfStatement@@InfixExpression:checker
+      == null '
+  repair_actions_cnt: 5

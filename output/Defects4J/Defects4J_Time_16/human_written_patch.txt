@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_16/src/main/java/org/joda/time/format/DateTimeFormatter.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_16/fixed-version/src/main/java/org/joda/time/format/DateTimeFormatter.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_16/src/main/java/org/joda/time/format/DateTimeFormatter.java	2020-03-01 00:01:50.956946780 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_16/fixed-version/src/main/java/org/joda/time/format/DateTimeFormatter.java	2020-03-01 00:01:52.309010484 -0800
+@@ -706,7 +706,7 @@
+         chrono = selectChronology(chrono);
+         
+         DateTimeParserBucket bucket = new DateTimeParserBucket(
+-            instantLocal, chrono, iLocale, iPivotYear, iDefaultYear);
++            instantLocal, chrono, iLocale, iPivotYear, chrono.year().get(instantLocal));
+         int newPos = parser.parseInto(bucket, text, position);
+         instant.setMillis(bucket.computeMillis(false, text));
+         if (iOffsetParsed && bucket.getOffsetInteger() != null) {

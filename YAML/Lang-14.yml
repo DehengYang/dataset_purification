@@ -1,0 +1,188 @@
+1 bug_id: Lang-14
+2 src folder:
+  name of src folder: java
+  number of files: 115
+  number of java files: 102
+  number of src classes: 156
+  number of test classes: 107
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testEquals
+  failing tests:
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest
+  number of all test cases: 2077
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 9.0
+  purification via coverage: 1.963
+  purification via delta debugging: 40.838
+  repair actions extraction: 3.111
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testEquals: 5
+  fixed:
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testEquals: 10
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 5
+  failFail: 0
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_14/src/main/java/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 00:54:01.128905774 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_14/purify/patch/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 00:54:01.108905197 -0400\n@@ -785,7 +785,10 @@\n         if (cs1 ==\
+    \ null || cs2 == null) {\n             return false;\n         }\n+        if\
+    \ (cs1 instanceof String && cs2 instanceof String) {\n             return cs1.equals(cs2);\n\
+    +        }\n+        return CharSequenceUtils.regionMatches(cs1, false, 0, cs2,\
+    \ 0, Math.max(cs1.length(), cs2.length()));\n     }\n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_14/src/main/java/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 00:54:55.882487105 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_14/purify/purified/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 00:54:55.878486989 -0400\n@@ -785,7 +785,10 @@\n         if (cs1 ==\
+    \ null || cs2 == null) {\n             return false;\n         }\n+        if\
+    \ (cs1 instanceof String && cs2 instanceof String) {\n             return cs1.equals(cs2);\n\
+    +        }\n+        return CharSequenceUtils.regionMatches(cs1, false, 0, cs2,\
+    \ 0, Math.max(cs1.length(), cs2.length()));\n     }\n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/StringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:cs1 instanceof String && cs2 instanceof String
+      @TO@ MethodDeclaration@@public, static, @@boolean, MethodName:equals, @@Argus:CharSequence+cs1+CharSequence+cs2+ '
+    - '---INS InfixExpression@@cs1 instanceof String && cs2 instanceof String @TO@
+      IfStatement@@InfixExpression:cs1 instanceof String && cs2 instanceof String '
+    - '------INS InstanceofExpression@@cs1 instanceof String @TO@ InfixExpression@@cs1
+      instanceof String && cs2 instanceof String '
+    - '---------INS SimpleName@@cs1 @TO@ InstanceofExpression@@cs1 instanceof String '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@cs1 instanceof
+      String '
+    - '---------INS SimpleType@@String @TO@ InstanceofExpression@@cs1 instanceof String '
+    - '------INS Operator@@&& @TO@ InfixExpression@@cs1 instanceof String && cs2 instanceof
+      String '
+    - '------INS InstanceofExpression@@cs2 instanceof String @TO@ InfixExpression@@cs1
+      instanceof String && cs2 instanceof String '
+    - '---------INS SimpleName@@cs2 @TO@ InstanceofExpression@@cs2 instanceof String '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@cs2 instanceof
+      String '
+    - '---------INS SimpleType@@String @TO@ InstanceofExpression@@cs2 instanceof String '
+    - '---MOV ReturnStatement@@MethodInvocation:cs1.equals(cs2) @TO@ IfStatement@@InfixExpression:cs1
+      instanceof String && cs2 instanceof String '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@MethodInvocation:CharSequenceUtils.regionMatches(cs1,false,0,cs2,0,Math.max(cs1.length(),cs2.length()))
+      @TO@ MethodDeclaration@@public, static, @@boolean, MethodName:equals, @@Argus:CharSequence+cs1+CharSequence+cs2+ '
+    - '---INS MethodInvocation@@CharSequenceUtils.regionMatches(cs1,false,0,cs2,0,Math.max(cs1.length(),cs2.length()))
+      @TO@ ReturnStatement@@MethodInvocation:CharSequenceUtils.regionMatches(cs1,false,0,cs2,0,Math.max(cs1.length(),cs2.length())) '
+    - '------INS SimpleName@@Name:CharSequenceUtils @TO@ MethodInvocation@@CharSequenceUtils.regionMatches(cs1,false,0,cs2,0,Math.max(cs1.length(),cs2.length())) '
+    - '------INS SimpleName@@MethodName:regionMatches:[cs1, false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())]
+      @TO@ MethodInvocation@@CharSequenceUtils.regionMatches(cs1,false,0,cs2,0,Math.max(cs1.length(),cs2.length())) '
+    - '---------INS SimpleName@@cs1 @TO@ SimpleName@@MethodName:regionMatches:[cs1,
+      false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())] '
+    - '---------INS BooleanLiteral@@false @TO@ SimpleName@@MethodName:regionMatches:[cs1,
+      false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())] '
+    - '---------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:regionMatches:[cs1,
+      false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())] '
+    - '---------INS SimpleName@@cs2 @TO@ SimpleName@@MethodName:regionMatches:[cs1,
+      false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())] '
+    - '---------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:regionMatches:[cs1,
+      false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())] '
+    - '---------INS MethodInvocation@@Math.max(cs1.length(),cs2.length()) @TO@ SimpleName@@MethodName:regionMatches:[cs1,
+      false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())] '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(cs1.length(),cs2.length()) '
+    - '------------INS SimpleName@@MethodName:max:[cs1.length(), cs2.length()] @TO@
+      MethodInvocation@@Math.max(cs1.length(),cs2.length()) '
+    - '---------------INS MethodInvocation@@cs1.length() @TO@ SimpleName@@MethodName:max:[cs1.length(),
+      cs2.length()] '
+    - '------------------INS SimpleName@@Name:cs1 @TO@ MethodInvocation@@cs1.length() '
+    - '------------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@cs1.length() '
+    - '---------------INS MethodInvocation@@cs2.length() @TO@ SimpleName@@MethodName:max:[cs1.length(),
+      cs2.length()] '
+    - '------------------INS SimpleName@@Name:cs2 @TO@ MethodInvocation@@cs2.length() '
+    - '------------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@cs2.length() '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/StringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:cs1 instanceof String && cs2 instanceof String
+      @TO@ MethodDeclaration@@public, static, @@boolean, MethodName:equals, @@Argus:CharSequence+cs1+CharSequence+cs2+ '
+    - '---INS InfixExpression@@cs1 instanceof String && cs2 instanceof String @TO@
+      IfStatement@@InfixExpression:cs1 instanceof String && cs2 instanceof String '
+    - '------INS InstanceofExpression@@cs1 instanceof String @TO@ InfixExpression@@cs1
+      instanceof String && cs2 instanceof String '
+    - '---------INS SimpleName@@cs1 @TO@ InstanceofExpression@@cs1 instanceof String '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@cs1 instanceof
+      String '
+    - '---------INS SimpleType@@String @TO@ InstanceofExpression@@cs1 instanceof String '
+    - '------INS Operator@@&& @TO@ InfixExpression@@cs1 instanceof String && cs2 instanceof
+      String '
+    - '------INS InstanceofExpression@@cs2 instanceof String @TO@ InfixExpression@@cs1
+      instanceof String && cs2 instanceof String '
+    - '---------INS SimpleName@@cs2 @TO@ InstanceofExpression@@cs2 instanceof String '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@cs2 instanceof
+      String '
+    - '---------INS SimpleType@@String @TO@ InstanceofExpression@@cs2 instanceof String '
+    - '---MOV ReturnStatement@@MethodInvocation:cs1.equals(cs2) @TO@ IfStatement@@InfixExpression:cs1
+      instanceof String && cs2 instanceof String '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@MethodInvocation:CharSequenceUtils.regionMatches(cs1,false,0,cs2,0,Math.max(cs1.length(),cs2.length()))
+      @TO@ MethodDeclaration@@public, static, @@boolean, MethodName:equals, @@Argus:CharSequence+cs1+CharSequence+cs2+ '
+    - '---INS MethodInvocation@@CharSequenceUtils.regionMatches(cs1,false,0,cs2,0,Math.max(cs1.length(),cs2.length()))
+      @TO@ ReturnStatement@@MethodInvocation:CharSequenceUtils.regionMatches(cs1,false,0,cs2,0,Math.max(cs1.length(),cs2.length())) '
+    - '------INS SimpleName@@Name:CharSequenceUtils @TO@ MethodInvocation@@CharSequenceUtils.regionMatches(cs1,false,0,cs2,0,Math.max(cs1.length(),cs2.length())) '
+    - '------INS SimpleName@@MethodName:regionMatches:[cs1, false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())]
+      @TO@ MethodInvocation@@CharSequenceUtils.regionMatches(cs1,false,0,cs2,0,Math.max(cs1.length(),cs2.length())) '
+    - '---------INS SimpleName@@cs1 @TO@ SimpleName@@MethodName:regionMatches:[cs1,
+      false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())] '
+    - '---------INS BooleanLiteral@@false @TO@ SimpleName@@MethodName:regionMatches:[cs1,
+      false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())] '
+    - '---------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:regionMatches:[cs1,
+      false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())] '
+    - '---------INS SimpleName@@cs2 @TO@ SimpleName@@MethodName:regionMatches:[cs1,
+      false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())] '
+    - '---------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:regionMatches:[cs1,
+      false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())] '
+    - '---------INS MethodInvocation@@Math.max(cs1.length(),cs2.length()) @TO@ SimpleName@@MethodName:regionMatches:[cs1,
+      false, 0, cs2, 0, Math.max(cs1.length(),cs2.length())] '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(cs1.length(),cs2.length()) '
+    - '------------INS SimpleName@@MethodName:max:[cs1.length(), cs2.length()] @TO@
+      MethodInvocation@@Math.max(cs1.length(),cs2.length()) '
+    - '---------------INS MethodInvocation@@cs1.length() @TO@ SimpleName@@MethodName:max:[cs1.length(),
+      cs2.length()] '
+    - '------------------INS SimpleName@@Name:cs1 @TO@ MethodInvocation@@cs1.length() '
+    - '------------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@cs1.length() '
+    - '---------------INS MethodInvocation@@cs2.length() @TO@ SimpleName@@MethodName:max:[cs1.length(),
+      cs2.length()] '
+    - '------------------INS SimpleName@@Name:cs2 @TO@ MethodInvocation@@cs2.length() '
+    - '------------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@cs2.length() '
+  repair_actions_cnt: 2

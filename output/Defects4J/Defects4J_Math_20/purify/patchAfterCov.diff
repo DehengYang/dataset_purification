@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_20/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java	2020-10-21 05:41:36.631286058 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_20/purify/assertBeforeMut/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java	2020-10-21 05:41:36.631286058 -0400
+@@ -918,7 +918,8 @@
+          * @return the original objective variables, possibly repaired.
+          */
+         public double[] repairAndDecode(final double[] x) {
+-            return
++            return boundaries != null && isRepairMode ?
++                decode(repair(x)) :
+                 decode(x);
+         }
+ 

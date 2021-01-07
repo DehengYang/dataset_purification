@@ -1,0 +1,225 @@
+1 bug_id: Time-18
+2 src folder:
+  name of src folder: java
+  number of files: 182
+  number of java files: 156
+  number of src classes: 228
+  number of test classes: 122
+3 test (cases):
+  failing test cases:
+  - org.joda.time.chrono.TestGJChronology#testLeapYearRulesConstruction
+  failing tests:
+  - org.joda.time.chrono.TestGJChronology
+  number of all test cases: 3875
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.604
+  purification via delta debugging: 192.379
+  repair actions extraction: 1.637
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.chrono.TestGJChronology#testLeapYearRulesConstruction: 1142
+  fixed:
+    org.joda.time.chrono.TestGJChronology#testLeapYearRulesConstruction: 1168
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 12
+  covDel: 0
+  cov_patch_lines: 12
+  delta_patch_lines: 10
+  oriAdd: 12
+  oriDel: 0
+  ori_patch_lines: 12
+  purAdd: 10
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 34
+  failFail: 0
+  passed: 2
+  total: 36
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_18/src/main/java/org/joda/time/chrono/GJChronology.java\t\
+    2020-10-22 00:21:39.718666462 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_18/purify/patch/org/joda/time/chrono/GJChronology.java\t\
+    2020-10-22 00:21:39.714666346 -0400\n@@ -361,9 +361,21 @@\n \n         // Assume\
+    \ date is Gregorian.\n         long instant;\n+        try {\n             instant\
+    \ = iGregorianChronology.getDateTimeMillis\n                 (year, monthOfYear,\
+    \ dayOfMonth,\n                  hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);\n\
+    +        } catch (IllegalFieldValueException ex) {\n+            if (monthOfYear\
+    \ != 2 || dayOfMonth != 29) {\n+                throw ex;\n+            }\n+ \
+    \           instant = iGregorianChronology.getDateTimeMillis\n+              \
+    \  (year, monthOfYear, 28,\n+                 hourOfDay, minuteOfHour, secondOfMinute,\
+    \ millisOfSecond);\n+            if (instant >= iCutoverMillis) {\n+         \
+    \       throw ex;\n+            }\n+        }\n         if (instant < iCutoverMillis)\
+    \ {\n             // Maybe it's Julian.\n             instant = iJulianChronology.getDateTimeMillis"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_18/src/main/java/org/joda/time/chrono/GJChronology.java\t\
+    2020-10-22 00:25:10.128752144 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_18/purify/purified/org/joda/time/chrono/GJChronology.java\t\
+    2020-10-22 00:25:10.124752028 -0400\n@@ -361,9 +361,19 @@\n \n         // Assume\
+    \ date is Gregorian.\n         long instant;\n+        try {\n             instant\
+    \ = iGregorianChronology.getDateTimeMillis\n                 (year, monthOfYear,\
+    \ dayOfMonth,\n                  hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);\n\
+    +        } catch (IllegalFieldValueException ex) {\n+            if (monthOfYear\
+    \ != 2 || dayOfMonth != 29) {\n+            }\n+            instant = iGregorianChronology.getDateTimeMillis\n\
+    +                (year, monthOfYear, 28,\n+                 hourOfDay, minuteOfHour,\
+    \ secondOfMinute, millisOfSecond);\n+            if (instant >= iCutoverMillis)\
+    \ {\n+            }\n+        }\n         if (instant < iCutoverMillis) {\n  \
+    \           // Maybe it's Julian.\n             instant = iJulianChronology.getDateTimeMillis"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/chrono/GJChronology:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS TryStatement@@try:[] @TO@ MethodDeclaration@@public, @@long, MethodName:getDateTimeMillis,
+      @@Argus:int+year+int+monthOfYear+int+dayOfMonth+int+hourOfDay+int+minuteOfHour+int+secondOfMinute+int+millisOfSecond+IllegalArgumentException,  '
+    - '---MOV ExpressionStatement@@Assignment:instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,dayOfMonth,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond)
+      @TO@ TryStatement@@try:[] '
+    - '---INS CatchClause@@IllegalFieldValueException ex @TO@ TryStatement@@try:[] '
+    - '------INS SingleVariableDeclaration@@IllegalFieldValueException ex @TO@ CatchClause@@IllegalFieldValueException
+      ex '
+    - '---------INS SimpleType@@IllegalFieldValueException @TO@ SingleVariableDeclaration@@IllegalFieldValueException
+      ex '
+    - '---------INS SimpleName@@ex @TO@ SingleVariableDeclaration@@IllegalFieldValueException
+      ex '
+    - '------INS IfStatement@@InfixExpression:monthOfYear != 2 || dayOfMonth != 29
+      @TO@ CatchClause@@IllegalFieldValueException ex '
+    - '---------INS InfixExpression@@monthOfYear != 2 || dayOfMonth != 29 @TO@ IfStatement@@InfixExpression:monthOfYear
+      != 2 || dayOfMonth != 29 '
+    - '------------INS InfixExpression@@monthOfYear != 2 @TO@ InfixExpression@@monthOfYear
+      != 2 || dayOfMonth != 29 '
+    - '---------------INS SimpleName@@monthOfYear @TO@ InfixExpression@@monthOfYear
+      != 2 '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@monthOfYear != 2 '
+    - '---------------INS NumberLiteral@@2 @TO@ InfixExpression@@monthOfYear != 2 '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@monthOfYear != 2 || dayOfMonth
+      != 29 '
+    - '------------INS InfixExpression@@dayOfMonth != 29 @TO@ InfixExpression@@monthOfYear
+      != 2 || dayOfMonth != 29 '
+    - '---------------INS SimpleName@@dayOfMonth @TO@ InfixExpression@@dayOfMonth
+      != 29 '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@dayOfMonth != 29 '
+    - '---------------INS NumberLiteral@@29 @TO@ InfixExpression@@dayOfMonth != 29 '
+    - '---------INS ThrowStatement@@SimpleName:ex @TO@ IfStatement@@InfixExpression:monthOfYear
+      != 2 || dayOfMonth != 29 '
+    - '------------INS SimpleName@@ex @TO@ ThrowStatement@@SimpleName:ex '
+    - '------INS ExpressionStatement@@Assignment:instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond)
+      @TO@ CatchClause@@IllegalFieldValueException ex '
+    - '---------INS Assignment@@instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond)
+      @TO@ ExpressionStatement@@Assignment:instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond) '
+    - '------------INS SimpleName@@instant @TO@ Assignment@@instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond) '
+    - '------------INS Operator@@= @TO@ Assignment@@instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond) '
+    - '------------INS MethodInvocation@@iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond)
+      @TO@ Assignment@@instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond) '
+    - '---------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond) '
+    - '---------------INS SimpleName@@MethodName:getDateTimeMillis:[year, monthOfYear,
+      28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] @TO@ MethodInvocation@@iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond) '
+    - '------------------INS SimpleName@@year @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------------------INS SimpleName@@monthOfYear @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------------------INS NumberLiteral@@28 @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------------------INS SimpleName@@hourOfDay @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------------------INS SimpleName@@minuteOfHour @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------------------INS SimpleName@@secondOfMinute @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------------------INS SimpleName@@millisOfSecond @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------INS IfStatement@@InfixExpression:instant >= iCutoverMillis @TO@ CatchClause@@IllegalFieldValueException
+      ex '
+    - '---------INS InfixExpression@@instant >= iCutoverMillis @TO@ IfStatement@@InfixExpression:instant
+      >= iCutoverMillis '
+    - '------------INS SimpleName@@instant @TO@ InfixExpression@@instant >= iCutoverMillis '
+    - '------------INS Operator@@>= @TO@ InfixExpression@@instant >= iCutoverMillis '
+    - '------------INS SimpleName@@iCutoverMillis @TO@ InfixExpression@@instant >=
+      iCutoverMillis '
+    - '---------INS ThrowStatement@@SimpleName:ex @TO@ IfStatement@@InfixExpression:instant
+      >= iCutoverMillis '
+    - '------------INS SimpleName@@ex @TO@ ThrowStatement@@SimpleName:ex '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/chrono/GJChronology:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS TryStatement@@try:[] @TO@ MethodDeclaration@@public, @@long, MethodName:getDateTimeMillis,
+      @@Argus:int+year+int+monthOfYear+int+dayOfMonth+int+hourOfDay+int+minuteOfHour+int+secondOfMinute+int+millisOfSecond+IllegalArgumentException,  '
+    - '---MOV ExpressionStatement@@Assignment:instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,dayOfMonth,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond)
+      @TO@ TryStatement@@try:[] '
+    - '---INS CatchClause@@IllegalFieldValueException ex @TO@ TryStatement@@try:[] '
+    - '------INS SingleVariableDeclaration@@IllegalFieldValueException ex @TO@ CatchClause@@IllegalFieldValueException
+      ex '
+    - '---------INS SimpleType@@IllegalFieldValueException @TO@ SingleVariableDeclaration@@IllegalFieldValueException
+      ex '
+    - '---------INS SimpleName@@ex @TO@ SingleVariableDeclaration@@IllegalFieldValueException
+      ex '
+    - '------INS IfStatement@@InfixExpression:monthOfYear != 2 || dayOfMonth != 29
+      @TO@ CatchClause@@IllegalFieldValueException ex '
+    - '---------INS InfixExpression@@monthOfYear != 2 || dayOfMonth != 29 @TO@ IfStatement@@InfixExpression:monthOfYear
+      != 2 || dayOfMonth != 29 '
+    - '------------INS InfixExpression@@monthOfYear != 2 @TO@ InfixExpression@@monthOfYear
+      != 2 || dayOfMonth != 29 '
+    - '---------------INS SimpleName@@monthOfYear @TO@ InfixExpression@@monthOfYear
+      != 2 '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@monthOfYear != 2 '
+    - '---------------INS NumberLiteral@@2 @TO@ InfixExpression@@monthOfYear != 2 '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@monthOfYear != 2 || dayOfMonth
+      != 29 '
+    - '------------INS InfixExpression@@dayOfMonth != 29 @TO@ InfixExpression@@monthOfYear
+      != 2 || dayOfMonth != 29 '
+    - '---------------INS SimpleName@@dayOfMonth @TO@ InfixExpression@@dayOfMonth
+      != 29 '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@dayOfMonth != 29 '
+    - '---------------INS NumberLiteral@@29 @TO@ InfixExpression@@dayOfMonth != 29 '
+    - '------INS ExpressionStatement@@Assignment:instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond)
+      @TO@ CatchClause@@IllegalFieldValueException ex '
+    - '---------INS Assignment@@instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond)
+      @TO@ ExpressionStatement@@Assignment:instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond) '
+    - '------------INS SimpleName@@instant @TO@ Assignment@@instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond) '
+    - '------------INS Operator@@= @TO@ Assignment@@instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond) '
+    - '------------INS MethodInvocation@@iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond)
+      @TO@ Assignment@@instant=iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond) '
+    - '---------------INS SimpleName@@Name:iGregorianChronology @TO@ MethodInvocation@@iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond) '
+    - '---------------INS SimpleName@@MethodName:getDateTimeMillis:[year, monthOfYear,
+      28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] @TO@ MethodInvocation@@iGregorianChronology.getDateTimeMillis(year,monthOfYear,28,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond) '
+    - '------------------INS SimpleName@@year @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------------------INS SimpleName@@monthOfYear @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------------------INS NumberLiteral@@28 @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------------------INS SimpleName@@hourOfDay @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------------------INS SimpleName@@minuteOfHour @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------------------INS SimpleName@@secondOfMinute @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------------------INS SimpleName@@millisOfSecond @TO@ SimpleName@@MethodName:getDateTimeMillis:[year,
+      monthOfYear, 28, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond] '
+    - '------INS IfStatement@@InfixExpression:instant >= iCutoverMillis @TO@ CatchClause@@IllegalFieldValueException
+      ex '
+    - '---------INS InfixExpression@@instant >= iCutoverMillis @TO@ IfStatement@@InfixExpression:instant
+      >= iCutoverMillis '
+    - '------------INS SimpleName@@instant @TO@ InfixExpression@@instant >= iCutoverMillis '
+    - '------------INS Operator@@>= @TO@ InfixExpression@@instant >= iCutoverMillis '
+    - '------------INS SimpleName@@iCutoverMillis @TO@ InfixExpression@@instant >=
+      iCutoverMillis '
+  repair_actions_cnt: 1

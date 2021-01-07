@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_105/src/java/org/apache/commons/math/stat/regression/SimpleRegression.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_105/fixed-version/src/java/org/apache/commons/math/stat/regression/SimpleRegression.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_105/src/java/org/apache/commons/math/stat/regression/SimpleRegression.java	2020-03-01 00:24:40.733486576 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_105/fixed-version/src/java/org/apache/commons/math/stat/regression/SimpleRegression.java	2020-03-01 00:24:43.221603814 -0800
+@@ -261,7 +261,7 @@
+      * @return sum of squared errors associated with the regression model
+      */
+     public double getSumSquaredErrors() {
+-        return sumYY - sumXY * sumXY / sumXX;
++        return Math.max(0d, sumYY - sumXY * sumXY / sumXX);
+     }
+ 
+     /**

@@ -1,0 +1,13 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_126/src/com/google/javascript/jscomp/MinimizeExitPoints.java	2020-10-23 17:18:38.081031258 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_126/purify/assertBeforeMut/com/google/javascript/jscomp/MinimizeExitPoints.java	2020-10-23 17:18:38.081031258 -0400
+@@ -138,10 +138,6 @@
+        * can cause problems if it changes the completion type of the finally
+        * block. See ECMA 262 Sections 8.9 & 12.14
+        */
+-      if (NodeUtil.hasFinally(n)) {
+-        Node finallyBlock = n.getLastChild();
+-        tryMinimizeExits(finallyBlock, exitType, labelName);
+-      }
+     }
+ 
+     // Just a 'label'.

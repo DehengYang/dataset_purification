@@ -1,0 +1,11 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_51/src/java/org/apache/commons/lang/BooleanUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_51/fixed-version/src/java/org/apache/commons/lang/BooleanUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_51/src/java/org/apache/commons/lang/BooleanUtils.java	2020-03-01 00:11:21.655835894 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_51/fixed-version/src/java/org/apache/commons/lang/BooleanUtils.java	2020-03-01 00:11:25.095997980 -0800
+@@ -679,6 +679,7 @@
+                         (str.charAt(1) == 'E' || str.charAt(1) == 'e') &&
+                         (str.charAt(2) == 'S' || str.charAt(2) == 's');
+                 }
++                return false;
+             }
+             case 4: {
+                 char ch = str.charAt(0);

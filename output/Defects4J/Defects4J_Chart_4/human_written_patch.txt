@@ -1,0 +1,19 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_4/source/org/jfree/chart/plot/XYPlot.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_4/fixed-version/source/org/jfree/chart/plot/XYPlot.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_4/source/org/jfree/chart/plot/XYPlot.java	2020-03-01 00:02:53.827909011 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_4/fixed-version/source/org/jfree/chart/plot/XYPlot.java	2020-03-01 00:02:57.364075622 -0800
+@@ -4490,6 +4490,7 @@
+                     }
+                 }
+                 
++                if (r != null) {
+                     Collection c = r.getAnnotations();
+                     Iterator i = c.iterator();
+                     while (i.hasNext()) {
+@@ -4498,6 +4499,7 @@
+                             includedAnnotations.add(a);
+                         }
+                     }
++                }
+             }
+         }
+ 

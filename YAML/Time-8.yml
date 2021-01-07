@@ -1,0 +1,228 @@
+1 bug_id: Time-8
+2 src folder:
+  name of src folder: java
+  number of files: 186
+  number of java files: 157
+  number of src classes: 230
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestDateTimeZone#testForOffsetHoursMinutes_int_int
+  failing tests:
+  - org.joda.time.TestDateTimeZone
+  number of all test cases: 3972
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.705
+  purification via delta debugging: 95.245
+  repair actions extraction: 1.567
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestDateTimeZone#testForOffsetHoursMinutes_int_int: 510
+  fixed:
+    org.joda.time.TestDateTimeZone#testForOffsetHoursMinutes_int_int: 514
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 5
+  covDel: 2
+  cov_patch_lines: 7
+  delta_patch_lines: 7
+  oriAdd: 5
+  oriDel: 2
+  ori_patch_lines: 7
+  purAdd: 5
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 10
+  failFail: 2
+  passed: 0
+  total: 12
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_8/src/main/java/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 20:04:06.562205860 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_8/purify/patch/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 20:04:06.558205745 -0400\n@@ -276,14 +276,17 @@\n         if (hoursOffset\
+    \ < -23 || hoursOffset > 23) {\n             throw new IllegalArgumentException(\"\
+    Hours out of range: \" + hoursOffset);\n         }\n-        if (minutesOffset\
+    \ < 0 || minutesOffset > 59) {\n+        if (minutesOffset < -59 || minutesOffset\
+    \ > 59) {\n             throw new IllegalArgumentException(\"Minutes out of range:\
+    \ \" + minutesOffset);\n         }\n+        if (hoursOffset > 0 && minutesOffset\
+    \ < 0) {\n+            throw new IllegalArgumentException(\"Positive hours must\
+    \ not have negative minutes: \" + minutesOffset);\n+        }\n         int offset\
+    \ = 0;\n         try {\n             int hoursInMinutes = hoursOffset * 60;\n\
+    \             if (hoursInMinutes < 0) {\n-                minutesOffset = hoursInMinutes\
+    \ - minutesOffset;\n+                minutesOffset = hoursInMinutes - Math.abs(minutesOffset);\n\
+    \             } else {\n                 minutesOffset = hoursInMinutes + minutesOffset;\n\
+    \             }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_8/src/main/java/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 20:05:59.597473293 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_8/purify/purified/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 20:05:59.597473293 -0400\n@@ -276,14 +276,17 @@\n         if (hoursOffset\
+    \ < -23 || hoursOffset > 23) {\n             throw new IllegalArgumentException(\"\
+    Hours out of range: \" + hoursOffset);\n         }\n-        if (minutesOffset\
+    \ < 0 || minutesOffset > 59) {\n+        if (minutesOffset < -59 || minutesOffset\
+    \ > 59) {\n             throw new IllegalArgumentException(\"Minutes out of range:\
+    \ \" + minutesOffset);\n         }\n+        if (hoursOffset > 0 && minutesOffset\
+    \ < 0) {\n+            throw new IllegalArgumentException(\"Positive hours must\
+    \ not have negative minutes: \" + minutesOffset);\n+        }\n         int offset\
+    \ = 0;\n         try {\n             int hoursInMinutes = hoursOffset * 60;\n\
+    \             if (hoursInMinutes < 0) {\n-                minutesOffset = hoursInMinutes\
+    \ - minutesOffset;\n+                minutesOffset = hoursInMinutes - Math.abs(minutesOffset);\n\
+    \             } else {\n                 minutesOffset = hoursInMinutes + minutesOffset;\n\
+    \             }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/DateTimeZone:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:minutesOffset < 0 || minutesOffset > 59 @TO@
+      InfixExpression:minutesOffset < -59 || minutesOffset > 59 '
+    - '---UPD InfixExpression@@minutesOffset < 0 || minutesOffset > 59 @TO@ minutesOffset
+      < -59 || minutesOffset > 59 '
+    - '------UPD InfixExpression@@minutesOffset < 0 @TO@ minutesOffset < -59 '
+    - '---------INS PrefixExpression@@-59 @TO@ InfixExpression@@minutesOffset < 0 '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-59 '
+    - '------------INS NumberLiteral@@59 @TO@ PrefixExpression@@-59 '
+    - '---------DEL NumberLiteral@@0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:hoursOffset > 0 && minutesOffset < 0 @TO@
+      MethodDeclaration@@public, static, @@DateTimeZone, MethodName:forOffsetHoursMinutes,
+      @@Argus:int+hoursOffset+int+minutesOffset+IllegalArgumentException,  '
+    - '---INS InfixExpression@@hoursOffset > 0 && minutesOffset < 0 @TO@ IfStatement@@InfixExpression:hoursOffset
+      > 0 && minutesOffset < 0 '
+    - '------INS InfixExpression@@hoursOffset > 0 @TO@ InfixExpression@@hoursOffset
+      > 0 && minutesOffset < 0 '
+    - '---------INS SimpleName@@hoursOffset @TO@ InfixExpression@@hoursOffset > 0 '
+    - '---------INS Operator@@> @TO@ InfixExpression@@hoursOffset > 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@hoursOffset > 0 '
+    - '------INS Operator@@&& @TO@ InfixExpression@@hoursOffset > 0 && minutesOffset
+      < 0 '
+    - '------INS InfixExpression@@minutesOffset < 0 @TO@ InfixExpression@@hoursOffset
+      > 0 && minutesOffset < 0 '
+    - '---------INS SimpleName@@minutesOffset @TO@ InfixExpression@@minutesOffset
+      < 0 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@minutesOffset < 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@minutesOffset < 0 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Positive
+      hours must not have negative minutes: " + minutesOffset) @TO@ IfStatement@@InfixExpression:hoursOffset
+      > 0 && minutesOffset < 0 '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Positive hours must
+      not have negative minutes: " + minutesOffset] @TO@ ThrowStatement@@ClassInstanceCreation:new
+      IllegalArgumentException("Positive hours must not have negative minutes: " +
+      minutesOffset) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Positive
+      hours must not have negative minutes: " + minutesOffset] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Positive
+      hours must not have negative minutes: " + minutesOffset] '
+    - '---------INS InfixExpression@@"Positive hours must not have negative minutes:
+      " + minutesOffset @TO@ ClassInstanceCreation@@IllegalArgumentException["Positive
+      hours must not have negative minutes: " + minutesOffset] '
+    - '------------INS StringLiteral@@"Positive hours must not have negative minutes:
+      " @TO@ InfixExpression@@"Positive hours must not have negative minutes: " +
+      minutesOffset '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Positive hours must not
+      have negative minutes: " + minutesOffset '
+    - '------------INS SimpleName@@minutesOffset @TO@ InfixExpression@@"Positive hours
+      must not have negative minutes: " + minutesOffset '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:minutesOffset=hoursInMinutes - minutesOffset
+      @TO@ Assignment:minutesOffset=hoursInMinutes - Math.abs(minutesOffset) '
+    - '---UPD Assignment@@minutesOffset=hoursInMinutes - minutesOffset @TO@ minutesOffset=hoursInMinutes
+      - Math.abs(minutesOffset) '
+    - '------UPD InfixExpression@@hoursInMinutes - minutesOffset @TO@ hoursInMinutes
+      - Math.abs(minutesOffset) '
+    - '---------DEL SimpleName@@minutesOffset '
+    - '---------INS MethodInvocation@@Math.abs(minutesOffset) @TO@ InfixExpression@@hoursInMinutes
+      - minutesOffset '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.abs(minutesOffset) '
+    - '------------INS SimpleName@@MethodName:abs:[minutesOffset] @TO@ MethodInvocation@@Math.abs(minutesOffset) '
+    - '---------------INS SimpleName@@minutesOffset @TO@ SimpleName@@MethodName:abs:[minutesOffset] '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/DateTimeZone:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:minutesOffset < 0 || minutesOffset > 59 @TO@
+      InfixExpression:minutesOffset < -59 || minutesOffset > 59 '
+    - '---UPD InfixExpression@@minutesOffset < 0 || minutesOffset > 59 @TO@ minutesOffset
+      < -59 || minutesOffset > 59 '
+    - '------UPD InfixExpression@@minutesOffset < 0 @TO@ minutesOffset < -59 '
+    - '---------INS PrefixExpression@@-59 @TO@ InfixExpression@@minutesOffset < 0 '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-59 '
+    - '------------INS NumberLiteral@@59 @TO@ PrefixExpression@@-59 '
+    - '---------DEL NumberLiteral@@0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:hoursOffset > 0 && minutesOffset < 0 @TO@
+      MethodDeclaration@@public, static, @@DateTimeZone, MethodName:forOffsetHoursMinutes,
+      @@Argus:int+hoursOffset+int+minutesOffset+IllegalArgumentException,  '
+    - '---INS InfixExpression@@hoursOffset > 0 && minutesOffset < 0 @TO@ IfStatement@@InfixExpression:hoursOffset
+      > 0 && minutesOffset < 0 '
+    - '------INS InfixExpression@@hoursOffset > 0 @TO@ InfixExpression@@hoursOffset
+      > 0 && minutesOffset < 0 '
+    - '---------INS SimpleName@@hoursOffset @TO@ InfixExpression@@hoursOffset > 0 '
+    - '---------INS Operator@@> @TO@ InfixExpression@@hoursOffset > 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@hoursOffset > 0 '
+    - '------INS Operator@@&& @TO@ InfixExpression@@hoursOffset > 0 && minutesOffset
+      < 0 '
+    - '------INS InfixExpression@@minutesOffset < 0 @TO@ InfixExpression@@hoursOffset
+      > 0 && minutesOffset < 0 '
+    - '---------INS SimpleName@@minutesOffset @TO@ InfixExpression@@minutesOffset
+      < 0 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@minutesOffset < 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@minutesOffset < 0 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Positive
+      hours must not have negative minutes: " + minutesOffset) @TO@ IfStatement@@InfixExpression:hoursOffset
+      > 0 && minutesOffset < 0 '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Positive hours must
+      not have negative minutes: " + minutesOffset] @TO@ ThrowStatement@@ClassInstanceCreation:new
+      IllegalArgumentException("Positive hours must not have negative minutes: " +
+      minutesOffset) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Positive
+      hours must not have negative minutes: " + minutesOffset] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Positive
+      hours must not have negative minutes: " + minutesOffset] '
+    - '---------INS InfixExpression@@"Positive hours must not have negative minutes:
+      " + minutesOffset @TO@ ClassInstanceCreation@@IllegalArgumentException["Positive
+      hours must not have negative minutes: " + minutesOffset] '
+    - '------------INS StringLiteral@@"Positive hours must not have negative minutes:
+      " @TO@ InfixExpression@@"Positive hours must not have negative minutes: " +
+      minutesOffset '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Positive hours must not
+      have negative minutes: " + minutesOffset '
+    - '------------INS SimpleName@@minutesOffset @TO@ InfixExpression@@"Positive hours
+      must not have negative minutes: " + minutesOffset '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:minutesOffset=hoursInMinutes - minutesOffset
+      @TO@ Assignment:minutesOffset=hoursInMinutes - Math.abs(minutesOffset) '
+    - '---UPD Assignment@@minutesOffset=hoursInMinutes - minutesOffset @TO@ minutesOffset=hoursInMinutes
+      - Math.abs(minutesOffset) '
+    - '------UPD InfixExpression@@hoursInMinutes - minutesOffset @TO@ hoursInMinutes
+      - Math.abs(minutesOffset) '
+    - '---------DEL SimpleName@@minutesOffset '
+    - '---------INS MethodInvocation@@Math.abs(minutesOffset) @TO@ InfixExpression@@hoursInMinutes
+      - minutesOffset '
+    - '------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.abs(minutesOffset) '
+    - '------------INS SimpleName@@MethodName:abs:[minutesOffset] @TO@ MethodInvocation@@Math.abs(minutesOffset) '
+    - '---------------INS SimpleName@@minutesOffset @TO@ SimpleName@@MethodName:abs:[minutesOffset] '
+  repair_actions_cnt: 3

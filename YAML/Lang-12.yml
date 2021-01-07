@@ -1,0 +1,162 @@
+1 bug_id: Lang-12
+2 src folder:
+  name of src folder: java
+  number of files: 119
+  number of java files: 106
+  number of src classes: 169
+  number of test classes: 109
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.RandomStringUtilsTest#testExceptions
+  - org.apache.commons.lang3.RandomStringUtilsTest#testLANG805
+  failing tests:
+  - org.apache.commons.lang3.RandomStringUtilsTest
+  number of all test cases: 2141
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 9.0
+  purification via coverage: 0.493
+  purification via delta debugging: 101.511
+  repair actions extraction: 0.959
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.RandomStringUtilsTest#testExceptions: 17
+    org.apache.commons.lang3.RandomStringUtilsTest#testLANG805: 11
+  fixed:
+    org.apache.commons.lang3.RandomStringUtilsTest#testExceptions: 15
+    org.apache.commons.lang3.RandomStringUtilsTest#testLANG805: 19
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 7
+  covDel: 0
+  cov_patch_lines: 7
+  delta_patch_lines: 4
+  oriAdd: 7
+  oriDel: 0
+  ori_patch_lines: 7
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 3
+  original: 3
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 2
+  passed: 1
+  total: 7
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_12/src/main/java/org/apache/commons/lang3/RandomStringUtils.java\t\
+    2020-10-22 01:46:13.913392372 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_12/purify/patch/org/apache/commons/lang3/RandomStringUtils.java\t\
+    2020-10-22 01:46:13.909392257 -0400\n@@ -227,14 +227,21 @@\n         } else if\
+    \ (count < 0) {\n             throw new IllegalArgumentException(\"Requested random\
+    \ string length \" + count + \" is less than 0.\");\n         }\n+        if (chars\
+    \ != null && chars.length == 0) {\n+            throw new IllegalArgumentException(\"\
+    The chars array must not be empty\");\n+        }\n \n         if (start == 0\
+    \ && end == 0) {\n+            if (chars != null) {\n+                end = chars.length;\n\
+    +            } else {\n                 if (!letters && !numbers) {\n        \
+    \             end = Integer.MAX_VALUE;\n                 } else {\n          \
+    \           end = 'z' + 1;\n                     start = ' ';                \n\
+    \                 }\n+            }\n         }\n \n         char[] buffer = new\
+    \ char[count];"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_12/src/main/java/org/apache/commons/lang3/RandomStringUtils.java\t\
+    2020-10-22 01:48:05.968632427 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_12/purify/purified/org/apache/commons/lang3/RandomStringUtils.java\t\
+    2020-10-22 01:48:05.968632427 -0400\n@@ -229,12 +229,16 @@\n         }\n \n  \
+    \       if (start == 0 && end == 0) {\n+            if (chars != null) {\n+  \
+    \              end = chars.length;\n+            } else {\n                 if\
+    \ (!letters && !numbers) {\n                     end = Integer.MAX_VALUE;\n  \
+    \               } else {\n                     end = 'z' + 1;\n              \
+    \       start = ' ';                \n                 }\n+            }\n   \
+    \      }\n \n         char[] buffer = new char[count];"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/RandomStringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:chars != null && chars.length == 0 @TO@ MethodDeclaration@@public,
+      static, @@String, MethodName:random, @@Argus:int+count+int+start+int+end+boolean+letters+boolean+numbers+char[]+chars+Random+random+ '
+    - '---INS InfixExpression@@chars != null && chars.length == 0 @TO@ IfStatement@@InfixExpression:chars
+      != null && chars.length == 0 '
+    - '------INS InfixExpression@@chars != null @TO@ InfixExpression@@chars != null
+      && chars.length == 0 '
+    - '---------INS SimpleName@@chars @TO@ InfixExpression@@chars != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@chars != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@chars != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@chars != null && chars.length
+      == 0 '
+    - '------INS InfixExpression@@chars.length == 0 @TO@ InfixExpression@@chars !=
+      null && chars.length == 0 '
+    - '---------INS QualifiedName@@chars.length @TO@ InfixExpression@@chars.length
+      == 0 '
+    - '------------INS SimpleName@@chars @TO@ QualifiedName@@chars.length '
+    - '------------INS SimpleName@@length @TO@ QualifiedName@@chars.length '
+    - '---------INS Operator@@== @TO@ InfixExpression@@chars.length == 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@chars.length == 0 '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("The
+      chars array must not be empty") @TO@ IfStatement@@InfixExpression:chars != null
+      && chars.length == 0 '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["The chars array
+      must not be empty"] @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("The
+      chars array must not be empty") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["The
+      chars array must not be empty"] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["The
+      chars array must not be empty"] '
+    - '---------INS StringLiteral@@"The chars array must not be empty" @TO@ ClassInstanceCreation@@IllegalArgumentException["The
+      chars array must not be empty"] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:chars != null @TO@ IfStatement@@InfixExpression:start
+      == 0 && end == 0 '
+    - '---MOV IfStatement@@InfixExpression:!letters && !numbers @TO@ IfStatement@@InfixExpression:chars
+      != null '
+    - '---INS InfixExpression@@chars != null @TO@ IfStatement@@InfixExpression:chars
+      != null '
+    - '------INS SimpleName@@chars @TO@ InfixExpression@@chars != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@chars != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@chars != null '
+    - '---INS ExpressionStatement@@Assignment:end=chars.length @TO@ IfStatement@@InfixExpression:chars
+      != null '
+    - '------INS Assignment@@end=chars.length @TO@ ExpressionStatement@@Assignment:end=chars.length '
+    - '---------INS SimpleName@@end @TO@ Assignment@@end=chars.length '
+    - '---------INS Operator@@= @TO@ Assignment@@end=chars.length '
+    - '---------INS QualifiedName@@chars.length @TO@ Assignment@@end=chars.length '
+    - '------------INS SimpleName@@chars @TO@ QualifiedName@@chars.length '
+    - '------------INS SimpleName@@length @TO@ QualifiedName@@chars.length '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/RandomStringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:chars != null @TO@ IfStatement@@InfixExpression:start
+      == 0 && end == 0 '
+    - '---INS InfixExpression@@chars != null @TO@ IfStatement@@InfixExpression:chars
+      != null '
+    - '------INS SimpleName@@chars @TO@ InfixExpression@@chars != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@chars != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@chars != null '
+    - '---MOV IfStatement@@InfixExpression:!letters && !numbers @TO@ IfStatement@@InfixExpression:chars
+      != null '
+    - '---INS ExpressionStatement@@Assignment:end=chars.length @TO@ IfStatement@@InfixExpression:chars
+      != null '
+    - '------INS Assignment@@end=chars.length @TO@ ExpressionStatement@@Assignment:end=chars.length '
+    - '---------INS SimpleName@@end @TO@ Assignment@@end=chars.length '
+    - '---------INS Operator@@= @TO@ Assignment@@end=chars.length '
+    - '---------INS QualifiedName@@chars.length @TO@ Assignment@@end=chars.length '
+    - '------------INS SimpleName@@chars @TO@ QualifiedName@@chars.length '
+    - '------------INS SimpleName@@length @TO@ QualifiedName@@chars.length '
+  repair_actions_cnt: 1

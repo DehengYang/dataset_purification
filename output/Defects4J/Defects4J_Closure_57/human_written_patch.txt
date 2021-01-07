@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_57/src/com/google/javascript/jscomp/ClosureCodingConvention.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_57/fixed-version/src/com/google/javascript/jscomp/ClosureCodingConvention.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_57/src/com/google/javascript/jscomp/ClosureCodingConvention.java	2020-03-01 00:29:00.221713501 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_57/fixed-version/src/com/google/javascript/jscomp/ClosureCodingConvention.java	2020-03-01 00:29:02.193806424 -0800
+@@ -194,7 +194,7 @@
+         String qualifiedName = callee.getQualifiedName();
+         if (functionName.equals(qualifiedName)) {
+           Node target = callee.getNext();
+-          if (target != null) {
++          if (target != null && target.getType() == Token.STRING) {
+             className = target.getString();
+           }
+         }

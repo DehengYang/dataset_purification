@@ -1,0 +1,204 @@
+1 bug_id: Lang-50
+2 src folder:
+  name of src folder: java
+  number of files: 97
+  number of java files: 87
+  number of src classes: 140
+  number of test classes: 93
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.time.FastDateFormatTest#test_changeDefault_Locale_DateTimeInstance
+  - org.apache.commons.lang.time.FastDateFormatTest#test_changeDefault_Locale_DateInstance
+  failing tests:
+  - org.apache.commons.lang.time.FastDateFormatTest
+  number of all test cases: 1814
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 1.252
+  purification via delta debugging: 243.03
+  repair actions extraction: 1.78
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.time.FastDateFormatTest#test_changeDefault_Locale_DateInstance: 148
+    org.apache.commons.lang.time.FastDateFormatTest#test_changeDefault_Locale_DateTimeInstance: 188
+  fixed:
+    org.apache.commons.lang.time.FastDateFormatTest#test_changeDefault_Locale_DateInstance: 151
+    org.apache.commons.lang.time.FastDateFormatTest#test_changeDefault_Locale_DateTimeInstance: 187
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 6
+  covDel: 10
+  cov_patch_lines: 16
+  delta_patch_lines: 14
+  oriAdd: 6
+  oriDel: 10
+  ori_patch_lines: 16
+  purAdd: 6
+  purDel: 8
+7 reduced chunks:
+  by all: -2
+  by coverage: 0
+  by delta debugging: -2
+  cov: 6
+  original: 6
+  purifiy: 8
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 22
+  failFail: 15
+  passed: 2
+  total: 39
+9 sibling repair actions:
+- 0 3 1.0
+- 1 2 0.8184019370460048
+- 1 4 0.9464285714285714
+- 1 5 0.7724137931034483
+- 2 4 0.7724137931034483
+- 2 5 0.943127962085308
+- 4 5 0.8358862144420132
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_50/src/java/org/apache/commons/lang/time/FastDateFormat.java\t\
+    2020-10-21 03:50:28.954575312 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_50/purify/patch/org/apache/commons/lang/time/FastDateFormat.java\t\
+    2020-10-21 03:50:28.954575312 -0400\n@@ -282,16 +282,14 @@\n             key =\
+    \ new Pair(key, timeZone);\n         }\n \n-        if (locale != null) {\n- \
+    \           key = new Pair(key, locale);\n+        if (locale == null) {\n+  \
+    \          locale = Locale.getDefault();\n         }\n \n+        key = new Pair(key,\
+    \ locale);\n \n         FastDateFormat format = (FastDateFormat) cDateInstanceCache.get(key);\n\
+    \         if (format == null) {\n-            if (locale == null) {\n-       \
+    \         locale = Locale.getDefault();\n-            }\n             try {\n\
+    \                 SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateInstance(style,\
+    \ locale);\n                 String pattern = formatter.toPattern();\n@@ -462,15\
+    \ +460,13 @@\n         if (timeZone != null) {\n             key = new Pair(key,\
+    \ timeZone);\n         }\n-        if (locale != null) {\n-            key = new\
+    \ Pair(key, locale);\n+        if (locale == null) {\n+            locale = Locale.getDefault();\n\
+    \         }\n+        key = new Pair(key, locale);\n \n         FastDateFormat\
+    \ format = (FastDateFormat) cDateTimeInstanceCache.get(key);\n         if (format\
+    \ == null) {\n-            if (locale == null) {\n-                locale = Locale.getDefault();\n\
+    -            }\n             try {\n                 SimpleDateFormat formatter\
+    \ = (SimpleDateFormat) DateFormat.getDateTimeInstance(dateStyle, timeStyle,\n\
+    \                         locale);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_50/src/java/org/apache/commons/lang/time/FastDateFormat.java\t\
+    2020-10-21 03:54:43.265919594 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_50/purify/purified/org/apache/commons/lang/time/FastDateFormat.java\t\
+    2020-10-21 03:54:43.265919594 -0400\n@@ -282,16 +282,15 @@\n             key =\
+    \ new Pair(key, timeZone);\n         }\n \n-        if (locale != null) {\n  \
+    \           key = new Pair(key, locale);\n+        if (locale == null) {\n+  \
+    \          locale = Locale.getDefault();\n         }\n \n+        key = new Pair(key,\
+    \ locale);\n \n         FastDateFormat format = (FastDateFormat) cDateInstanceCache.get(key);\n\
+    \         if (format == null) {\n-            if (locale == null) {\n-       \
+    \         locale = Locale.getDefault();\n-            }\n             try {\n\
+    \                 SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateInstance(style,\
+    \ locale);\n                 String pattern = formatter.toPattern();\n@@ -462,15\
+    \ +461,14 @@\n         if (timeZone != null) {\n             key = new Pair(key,\
+    \ timeZone);\n         }\n-        if (locale != null) {\n             key = new\
+    \ Pair(key, locale);\n+        if (locale == null) {\n+            locale = Locale.getDefault();\n\
+    \         }\n+        key = new Pair(key, locale);\n \n         FastDateFormat\
+    \ format = (FastDateFormat) cDateTimeInstanceCache.get(key);\n         if (format\
+    \ == null) {\n-            if (locale == null) {\n-                locale = Locale.getDefault();\n\
+    -            }\n             try {\n                 SimpleDateFormat formatter\
+    \ = (SimpleDateFormat) DateFormat.getDateTimeInstance(dateStyle, timeStyle,\n\
+    \                         locale);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/time/FastDateFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:locale != null '
+    - '---DEL InfixExpression@@locale != null '
+    - '------DEL SimpleName@@locale '
+    - '------DEL Operator@@!= '
+    - '------DEL NullLiteral@@null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:key=new Pair(key,locale) @TO@ MethodDeclaration@@public,
+      static, synchronized, @@FastDateFormat, MethodName:getDateInstance, @@Argus:int+style+TimeZone+timeZone+Locale+locale+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:locale == null @TO@ MethodDeclaration@@public,
+      static, synchronized, @@FastDateFormat, MethodName:getDateInstance, @@Argus:int+style+TimeZone+timeZone+Locale+locale+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:locale != null '
+    - '---DEL InfixExpression@@locale != null '
+    - '------DEL SimpleName@@locale '
+    - '------DEL Operator@@!= '
+    - '------DEL NullLiteral@@null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:key=new Pair(key,locale) @TO@ MethodDeclaration@@public,
+      static, synchronized, @@FastDateFormat, MethodName:getDateTimeInstance, @@Argus:int+dateStyle+int+timeStyle+TimeZone+timeZone+Locale+locale+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:locale == null @TO@ MethodDeclaration@@public,
+      static, synchronized, @@FastDateFormat, MethodName:getDateTimeInstance, @@Argus:int+dateStyle+int+timeStyle+TimeZone+timeZone+Locale+locale+ '
+  repair_actions_cnt: 6
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/time/FastDateFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:locale != null '
+    - '---DEL InfixExpression@@locale != null '
+    - '------DEL SimpleName@@locale '
+    - '------DEL Operator@@!= '
+    - '------DEL NullLiteral@@null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:key=new Pair(key,locale) @TO@ MethodDeclaration@@public,
+      static, synchronized, @@FastDateFormat, MethodName:getDateInstance, @@Argus:int+style+TimeZone+timeZone+Locale+locale+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:key=new Pair(key,locale) @TO@ MethodDeclaration@@public,
+      static, synchronized, @@FastDateFormat, MethodName:getDateInstance, @@Argus:int+style+TimeZone+timeZone+Locale+locale+ '
+    - '---INS Assignment@@key=new Pair(key,locale) @TO@ ExpressionStatement@@Assignment:key=new
+      Pair(key,locale) '
+    - '------INS SimpleName@@key @TO@ Assignment@@key=new Pair(key,locale) '
+    - '------INS Operator@@= @TO@ Assignment@@key=new Pair(key,locale) '
+    - '------INS ClassInstanceCreation@@Pair[key, locale] @TO@ Assignment@@key=new
+      Pair(key,locale) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@Pair[key, locale] '
+    - '---------INS SimpleType@@Pair @TO@ ClassInstanceCreation@@Pair[key, locale] '
+    - '---------INS SimpleName@@key @TO@ ClassInstanceCreation@@Pair[key, locale] '
+    - '---------INS SimpleName@@locale @TO@ ClassInstanceCreation@@Pair[key, locale] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:locale == null @TO@ MethodDeclaration@@public,
+      static, synchronized, @@FastDateFormat, MethodName:getDateInstance, @@Argus:int+style+TimeZone+timeZone+Locale+locale+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:locale != null '
+    - '---DEL InfixExpression@@locale != null '
+    - '------DEL SimpleName@@locale '
+    - '------DEL Operator@@!= '
+    - '------DEL NullLiteral@@null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:key=new Pair(key,locale) @TO@ MethodDeclaration@@public,
+      static, synchronized, @@FastDateFormat, MethodName:getDateTimeInstance, @@Argus:int+dateStyle+int+timeStyle+TimeZone+timeZone+Locale+locale+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:key=new Pair(key,locale) @TO@ MethodDeclaration@@public,
+      static, synchronized, @@FastDateFormat, MethodName:getDateTimeInstance, @@Argus:int+dateStyle+int+timeStyle+TimeZone+timeZone+Locale+locale+ '
+    - '---INS Assignment@@key=new Pair(key,locale) @TO@ ExpressionStatement@@Assignment:key=new
+      Pair(key,locale) '
+    - '------INS SimpleName@@key @TO@ Assignment@@key=new Pair(key,locale) '
+    - '------INS Operator@@= @TO@ Assignment@@key=new Pair(key,locale) '
+    - '------INS ClassInstanceCreation@@Pair[key, locale] @TO@ Assignment@@key=new
+      Pair(key,locale) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@Pair[key, locale] '
+    - '---------INS SimpleType@@Pair @TO@ ClassInstanceCreation@@Pair[key, locale] '
+    - '---------INS SimpleName@@key @TO@ ClassInstanceCreation@@Pair[key, locale] '
+    - '---------INS SimpleName@@locale @TO@ ClassInstanceCreation@@Pair[key, locale] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:locale == null @TO@ MethodDeclaration@@public,
+      static, synchronized, @@FastDateFormat, MethodName:getDateTimeInstance, @@Argus:int+dateStyle+int+timeStyle+TimeZone+timeZone+Locale+locale+ '
+  repair_actions_cnt: 8

@@ -1,0 +1,116 @@
+1 bug_id: Closure-28
+2 src folder:
+  name of src folder: src
+  number of files: 417
+  number of java files: 401
+  number of src classes: 1346
+  number of test classes: 222
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.InlineCostEstimatorTest#testCost
+  - com.google.javascript.jscomp.InlineFunctionsTest#testIssue728
+  failing tests:
+  - com.google.javascript.jscomp.InlineCostEstimatorTest
+  - com.google.javascript.jscomp.InlineFunctionsTest
+  number of all test cases: 7515
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.67
+  purification via delta debugging: 369.692
+  repair actions extraction: 0.849
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.InlineCostEstimatorTest#testCost: 1361
+    com.google.javascript.jscomp.InlineFunctionsTest#testIssue728: 3797
+  fixed:
+    com.google.javascript.jscomp.InlineCostEstimatorTest#testCost: 1764
+    com.google.javascript.jscomp.InlineFunctionsTest#testIssue728: 3872
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 3
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 1
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_28/src/com/google/javascript/jscomp/InlineCostEstimator.java\t\
+    2020-10-22 10:42:57.036499188 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_28/purify/patch/com/google/javascript/jscomp/InlineCostEstimator.java\t\
+    2020-10-22 10:42:57.036499188 -0400\n@@ -99,5 +99,9 @@\n      * Constants (true,\
+    \ false, null) are considered basically free,\n      * because it's likely that\
+    \ they will get folded when we're done.\n      */\n+    @Override\n+    void addConstant(String\
+    \ newcode) {\n+      add(\"0\");\n+    }\n   }\n }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_28/src/com/google/javascript/jscomp/InlineCostEstimator.java\t\
+    2020-10-22 10:49:39.780144852 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_28/purify/purified/com/google/javascript/jscomp/InlineCostEstimator.java\t\
+    2020-10-22 10:49:39.780144852 -0400\n@@ -99,5 +99,8 @@\n      * Constants (true,\
+    \ false, null) are considered basically free,\n      * because it's likely that\
+    \ they will get folded when we're done.\n      */\n+    void addConstant(String\
+    \ newcode) {\n+      add(\"0\");\n+    }\n   }\n }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/InlineCostEstimator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@@@void, MethodName:addConstant, @@Argus:String+newcode+
+      @TO@ TypeDeclaration@@[private, static]CompiledSizeEstimator, CodeConsumer '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@@@void, MethodName:addConstant,
+      @@Argus:String+newcode+ '
+    - '---INS SimpleName@@MethodName:addConstant @TO@ MethodDeclaration@@@@void, MethodName:addConstant,
+      @@Argus:String+newcode+ '
+    - '---INS SingleVariableDeclaration@@String newcode @TO@ MethodDeclaration@@@@void,
+      MethodName:addConstant, @@Argus:String+newcode+ '
+    - '------INS SimpleType@@String @TO@ SingleVariableDeclaration@@String newcode '
+    - '------INS SimpleName@@newcode @TO@ SingleVariableDeclaration@@String newcode '
+    - '---INS ExpressionStatement@@MethodInvocation:add("0") @TO@ MethodDeclaration@@@@void,
+      MethodName:addConstant, @@Argus:String+newcode+ '
+    - '------INS MethodInvocation@@add("0") @TO@ ExpressionStatement@@MethodInvocation:add("0") '
+    - '---------INS SimpleName@@MethodName:add:["0"] @TO@ MethodInvocation@@add("0") '
+    - '------------INS StringLiteral@@"0" @TO@ SimpleName@@MethodName:add:["0"] '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/InlineCostEstimator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@@@void, MethodName:addConstant, @@Argus:String+newcode+
+      @TO@ TypeDeclaration@@[private, static]CompiledSizeEstimator, CodeConsumer '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@@@void, MethodName:addConstant,
+      @@Argus:String+newcode+ '
+    - '---INS SimpleName@@MethodName:addConstant @TO@ MethodDeclaration@@@@void, MethodName:addConstant,
+      @@Argus:String+newcode+ '
+    - '---INS SingleVariableDeclaration@@String newcode @TO@ MethodDeclaration@@@@void,
+      MethodName:addConstant, @@Argus:String+newcode+ '
+    - '------INS SimpleType@@String @TO@ SingleVariableDeclaration@@String newcode '
+    - '------INS SimpleName@@newcode @TO@ SingleVariableDeclaration@@String newcode '
+    - '---INS ExpressionStatement@@MethodInvocation:add("0") @TO@ MethodDeclaration@@@@void,
+      MethodName:addConstant, @@Argus:String+newcode+ '
+    - '------INS MethodInvocation@@add("0") @TO@ ExpressionStatement@@MethodInvocation:add("0") '
+    - '---------INS SimpleName@@MethodName:add:["0"] @TO@ MethodInvocation@@add("0") '
+    - '------------INS StringLiteral@@"0" @TO@ SimpleName@@MethodName:add:["0"] '
+  files_cnt: '1'
+  repair_actions_cnt: 1

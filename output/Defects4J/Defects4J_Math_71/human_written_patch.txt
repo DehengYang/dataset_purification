@@ -1,0 +1,27 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_71/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_71/fixed-version/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_71/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java	2020-03-01 00:21:03.663258331 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_71/fixed-version/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java	2020-03-01 00:21:07.235426650 -0800
+@@ -297,6 +297,10 @@
+                   // it is so small (much probably exactly 0 due to limited accuracy)
+                   // that the code above would fail handling it.
+                   // So we set up an artificial 0 size step by copying states
++                  interpolator.storeTime(stepStart);
++                  System.arraycopy(y, 0, yTmp, 0, y0.length);
++                  hNew     = 0;
++                  stepSize = 0;
+                   loop     = false;
+               } else {
+                   // reject the step to match exactly the next switch time
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_71/src/main/java/org/apache/commons/math/ode/nonstiff/RungeKuttaIntegrator.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_71/fixed-version/src/main/java/org/apache/commons/math/ode/nonstiff/RungeKuttaIntegrator.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_71/src/main/java/org/apache/commons/math/ode/nonstiff/RungeKuttaIntegrator.java	2020-03-01 00:21:03.663258331 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_71/fixed-version/src/main/java/org/apache/commons/math/ode/nonstiff/RungeKuttaIntegrator.java	2020-03-01 00:21:07.235426650 -0800
+@@ -177,6 +177,9 @@
+                 // it is so small (much probably exactly 0 due to limited accuracy)
+                 // that the code above would fail handling it.
+                 // So we set up an artificial 0 size step by copying states
++                interpolator.storeTime(stepStart);
++                System.arraycopy(y, 0, yTmp, 0, y0.length);
++                stepSize = 0;
+                 loop     = false;
+             } else {
+                 // reject the step to match exactly the next switch time

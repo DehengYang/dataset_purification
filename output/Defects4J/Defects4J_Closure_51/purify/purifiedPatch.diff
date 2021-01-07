@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_51/src/com/google/javascript/jscomp/CodeConsumer.java	2020-10-23 06:37:27.015245128 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_51/purify/purified/com/google/javascript/jscomp/CodeConsumer.java	2020-10-23 06:37:27.015245128 -0400
+@@ -238,7 +238,7 @@
+       add(" ");
+     }
+ 
+-    if ((long) x == x) {
++    if ((long) x == x && !isNegativeZero(x)) {
+       long value = (long) x;
+       long mantissa = value;
+       int exp = 0;

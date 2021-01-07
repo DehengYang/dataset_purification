@@ -1,0 +1,437 @@
+1 bug_id: Closure-49
+2 src folder:
+  name of src folder: src
+  number of files: 423
+  number of java files: 409
+  number of src classes: 1337
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.MakeDeclaredNamesUniqueTest#testMakeLocalNamesUniqueWithContext5
+  - com.google.javascript.jscomp.InlineFunctionsTest#testFunctionExpressionOmega
+  - com.google.javascript.jscomp.InlineFunctionsTest#testComplexFunctionWithFunctionDefinition2a
+  - com.google.javascript.jscomp.InlineFunctionsTest#testComplexFunctionWithFunctionDefinition2
+  - com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutate8
+  - com.google.javascript.jscomp.InlineFunctionsTest#testComplexFunctionWithFunctionDefinition3
+  - com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateFunctionDefinition
+  - com.google.javascript.jscomp.FunctionInjectorTest#testInlineFunctionWithInnerFunction5
+  - com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified4
+  - com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified5
+  - com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified6
+  - com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified7
+  - com.google.javascript.jscomp.InlineFunctionsTest#testCostBasedInlining11
+  - com.google.javascript.jscomp.InlineFunctionsTest#testBug4944818
+  - com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified2
+  - com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified3
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineNeverMutateConstants
+  - com.google.javascript.jscomp.InlineFunctionsTest#testComplexInlineNoResultNoParamCall3
+  - com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateInitializeUninitializedVars2
+  - com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateInitializeUninitializedVars1
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions16a
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineNeverOverrideNewValues
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineBlockMutableArgs3
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions9
+  - com.google.javascript.jscomp.InlineFunctionsTest#testLoopWithFunctionWithFunction
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions15b
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineBlockMutableArgs2
+  - com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified1
+  - com.google.javascript.jscomp.InlineFunctionsTest#testComplexInlineVars7
+  - com.google.javascript.jscomp.InlineFunctionsTest#testFunctionExpressionCallInlining11b
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions10
+  - com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateWithParameters3
+  - com.google.javascript.jscomp.InlineFunctionsTest#testDecomposeFunctionExpressionInCall
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineWithThis7
+  - com.google.javascript.jscomp.InlineFunctionsTest#testMixedModeInliningCosting3
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions15d
+  - com.google.javascript.jscomp.InlineFunctionsTest#testMethodWithFunctionWithFunction
+  - com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateCallInLoopVars1
+  - com.google.javascript.jscomp.InlineFunctionsTest#testFunctionExpressionYCombinator
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions22
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions23
+  - com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables18
+  - com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables16
+  - com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables6
+  - com.google.javascript.jscomp.InlineFunctionsTest#testIssue423
+  - com.google.javascript.jscomp.InlineFunctionsTest#testComplexInline7
+  - com.google.javascript.jscomp.FunctionInjectorTest#testBug1897706
+  - com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables7
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions13
+  - com.google.javascript.jscomp.InlineFunctionsTest#testAnonymous3
+  - com.google.javascript.jscomp.InlineFunctionsTest#testAnonymous1
+  - com.google.javascript.jscomp.InlineFunctionsTest#testComplexSample
+  - com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables1
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineBlockMutableArgs1
+  - com.google.javascript.jscomp.FunctionInjectorTest#testInline18
+  - com.google.javascript.jscomp.FunctionInjectorTest#testInline19
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineBlockMutableArgs4
+  - com.google.javascript.jscomp.FunctionInjectorTest#testInlineIntoLoop
+  - com.google.javascript.jscomp.InlineFunctionsTest#testCostBasedInlining9
+  - com.google.javascript.jscomp.FunctionInjectorTest#testInline13
+  - com.google.javascript.jscomp.FunctionInjectorTest#testInline19b
+  - com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables3
+  - com.google.javascript.jscomp.FunctionInjectorTest#testInline16
+  - com.google.javascript.jscomp.FunctionInjectorTest#testInline17
+  - com.google.javascript.jscomp.FunctionInjectorTest#testInline14
+  - com.google.javascript.jscomp.FunctionInjectorTest#testInline15
+  failing tests:
+  - com.google.javascript.jscomp.MakeDeclaredNamesUniqueTest
+  - com.google.javascript.jscomp.InlineFunctionsTest
+  - com.google.javascript.jscomp.FunctionToBlockMutatorTest
+  - com.google.javascript.jscomp.FunctionInjectorTest
+  number of all test cases: 7315
+  number of failing test cases: 66
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 5.0
+  purification via coverage: 1.222
+  purification via delta debugging: 4822.6738
+  repair actions extraction: 1.277
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.FunctionInjectorTest#testBug1897706: 3422
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline13: 3499
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline14: 3513
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline15: 3502
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline16: 3504
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline17: 3492
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline18: 3511
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline19: 3549
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline19b: 3549
+    com.google.javascript.jscomp.FunctionInjectorTest#testInlineFunctionWithInnerFunction5: 3458
+    com.google.javascript.jscomp.FunctionInjectorTest#testInlineIntoLoop: 3572
+    com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutate8: 3040
+    com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateCallInLoopVars1: 3001
+    com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateFunctionDefinition: 2948
+    com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateInitializeUninitializedVars1: 3016
+    com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateInitializeUninitializedVars2: 3145
+    com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateWithParameters3: 3004
+    com.google.javascript.jscomp.InlineFunctionsTest#testAnonymous1: 4010
+    com.google.javascript.jscomp.InlineFunctionsTest#testAnonymous3: 3984
+    com.google.javascript.jscomp.InlineFunctionsTest#testBug4944818: 4562
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexFunctionWithFunctionDefinition2: 4256
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexFunctionWithFunctionDefinition2a: 4220
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexFunctionWithFunctionDefinition3: 4001
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexInline7: 4312
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexInlineNoResultNoParamCall3: 4029
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexInlineVars7: 4310
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexSample: 4429
+    com.google.javascript.jscomp.InlineFunctionsTest#testCostBasedInlining11: 4201
+    com.google.javascript.jscomp.InlineFunctionsTest#testCostBasedInlining9: 4200
+    com.google.javascript.jscomp.InlineFunctionsTest#testDecomposeFunctionExpressionInCall: 4212
+    com.google.javascript.jscomp.InlineFunctionsTest#testFunctionExpressionCallInlining11b: 4082
+    com.google.javascript.jscomp.InlineFunctionsTest#testFunctionExpressionOmega: 4066
+    com.google.javascript.jscomp.InlineFunctionsTest#testFunctionExpressionYCombinator: 4439
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineBlockMutableArgs1: 3980
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineBlockMutableArgs2: 3986
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineBlockMutableArgs3: 4004
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineBlockMutableArgs4: 3983
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions10: 4156
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions13: 4083
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions15b: 4374
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions15d: 4385
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions16a: 4230
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions22: 4453
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions23: 4453
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions9: 4076
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineNeverMutateConstants: 4056
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineNeverOverrideNewValues: 4062
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineWithThis7: 4107
+    com.google.javascript.jscomp.InlineFunctionsTest#testIssue423: 4400
+    com.google.javascript.jscomp.InlineFunctionsTest#testLoopWithFunctionWithFunction: 4398
+    com.google.javascript.jscomp.InlineFunctionsTest#testMethodWithFunctionWithFunction: 4270
+    com.google.javascript.jscomp.InlineFunctionsTest#testMixedModeInliningCosting3: 4178
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified1: 4056
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified2: 4058
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified3: 4045
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified4: 4100
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified5: 4108
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified6: 4133
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified7: 4062
+    com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables1: 4131
+    com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables16: 4127
+    com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables18: 4178
+    com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables3: 4082
+    com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables6: 4112
+    com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables7: 4127
+    com.google.javascript.jscomp.MakeDeclaredNamesUniqueTest#testMakeLocalNamesUniqueWithContext5: 2997
+  fixed:
+    com.google.javascript.jscomp.FunctionInjectorTest#testBug1897706: 3386
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline13: 3421
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline14: 3434
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline15: 3421
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline16: 3424
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline17: 3411
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline18: 3431
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline19: 3467
+    com.google.javascript.jscomp.FunctionInjectorTest#testInline19b: 3467
+    com.google.javascript.jscomp.FunctionInjectorTest#testInlineFunctionWithInnerFunction5: 3376
+    com.google.javascript.jscomp.FunctionInjectorTest#testInlineIntoLoop: 3652
+    com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutate8: 2975
+    com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateCallInLoopVars1: 2945
+    com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateFunctionDefinition: 2880
+    com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateInitializeUninitializedVars1: 2949
+    com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateInitializeUninitializedVars2: 3075
+    com.google.javascript.jscomp.FunctionToBlockMutatorTest#testMutateWithParameters3: 2940
+    com.google.javascript.jscomp.InlineFunctionsTest#testAnonymous1: 3946
+    com.google.javascript.jscomp.InlineFunctionsTest#testAnonymous3: 3898
+    com.google.javascript.jscomp.InlineFunctionsTest#testBug4944818: 4481
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexFunctionWithFunctionDefinition2: 4172
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexFunctionWithFunctionDefinition2a: 4136
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexFunctionWithFunctionDefinition3: 3918
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexInline7: 4230
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexInlineNoResultNoParamCall3: 3948
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexInlineVars7: 4228
+    com.google.javascript.jscomp.InlineFunctionsTest#testComplexSample: 4355
+    com.google.javascript.jscomp.InlineFunctionsTest#testCostBasedInlining11: 4126
+    com.google.javascript.jscomp.InlineFunctionsTest#testCostBasedInlining9: 4125
+    com.google.javascript.jscomp.InlineFunctionsTest#testDecomposeFunctionExpressionInCall: 4139
+    com.google.javascript.jscomp.InlineFunctionsTest#testFunctionExpressionCallInlining11b: 3999
+    com.google.javascript.jscomp.InlineFunctionsTest#testFunctionExpressionOmega: 3991
+    com.google.javascript.jscomp.InlineFunctionsTest#testFunctionExpressionYCombinator: 4349
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineBlockMutableArgs1: 3914
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineBlockMutableArgs2: 3915
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineBlockMutableArgs3: 3931
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineBlockMutableArgs4: 3912
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions10: 4085
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions13: 4012
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions15b: 4290
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions15d: 4301
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions16a: 4147
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions22: 4373
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions23: 4373
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions9: 4005
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineNeverMutateConstants: 3984
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineNeverOverrideNewValues: 3992
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineWithThis7: 4045
+    com.google.javascript.jscomp.InlineFunctionsTest#testIssue423: 4317
+    com.google.javascript.jscomp.InlineFunctionsTest#testLoopWithFunctionWithFunction: 4317
+    com.google.javascript.jscomp.InlineFunctionsTest#testMethodWithFunctionWithFunction: 4190
+    com.google.javascript.jscomp.InlineFunctionsTest#testMixedModeInliningCosting3: 4102
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified1: 3984
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified2: 3985
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified3: 3973
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified4: 4026
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified5: 4034
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified6: 4058
+    com.google.javascript.jscomp.InlineFunctionsTest#testNoInlineIfParametersModified7: 3992
+    com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables1: 4057
+    com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables16: 4058
+    com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables18: 4097
+    com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables3: 4001
+    com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables6: 4031
+    com.google.javascript.jscomp.InlineFunctionsTest#testShadowVariables7: 4058
+    com.google.javascript.jscomp.MakeDeclaredNamesUniqueTest#testMakeLocalNamesUniqueWithContext5: 2913
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 14
+  covDel: 8
+  cov_patch_lines: 22
+  delta_patch_lines: 19
+  oriAdd: 14
+  oriDel: 8
+  ori_patch_lines: 22
+  purAdd: 12
+  purDel: 7
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 8
+  original: 8
+  purifiy: 7
+8 mutants by delta debugging:
+  failAll: 2
+  failCompile: 51
+  failFail: 13
+  passed: 2
+  total: 68
+9 sibling repair actions:
+- 3 7 1.0
+- 4 5 0.958904109589041
+- 4 6 1.0
+- 4 8 0.7544910179640718
+- 4 10 0.958904109589041
+- 5 6 0.958904109589041
+- 5 10 1.0
+- 6 8 0.7544910179640718
+- 6 10 0.958904109589041
+- 8 10 0.718562874251497
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_49/src/com/google/javascript/jscomp/MakeDeclaredNamesUnique.java\t\
+    2020-10-23 05:01:33.124764044 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_49/purify/patch/com/google/javascript/jscomp/MakeDeclaredNamesUnique.java\t\
+    2020-10-23 05:01:33.124764044 -0400\n@@ -88,14 +88,6 @@\n       renamer = nameStack.peek().forChildScope();\n\
+    \     }\n \n-    if (declarationRoot.getType() == Token.FUNCTION) {\n-      for\
+    \ (Node c = declarationRoot.getFirstChild().getNext().getFirstChild(); c != null;\
+    \ c = c.getNext()) {\n-        String name = c.getString();\n-        renamer.addDeclaredName(name);\n\
+    -      }\n-      Node functionBody = declarationRoot.getLastChild();\n-      findDeclaredNames(functionBody,\
+    \ null, renamer);\n-    }  else \n     if (declarationRoot.getType() != Token.FUNCTION)\
+    \ {\n       // Add the block declarations\n       findDeclaredNames(declarationRoot,\
+    \ null, renamer);\n@@ -127,11 +119,22 @@\n             renamer.addDeclaredName(name);\n\
+    \           }\n \n+          nameStack.push(renamer);\n+        }\n+        break;\n\
+    \ \n+      case Token.LP: {\n+          Renamer renamer = nameStack.peek().forChildScope();\n\
+    \ \n           // Add the function parameters\n+          for (Node c = n.getFirstChild();\
+    \ c != null; c = c.getNext()) {\n+            String name = c.getString();\n+\
+    \            renamer.addDeclaredName(name);\n+          }\n \n           // Add\
+    \ the function body declarations\n+          Node functionBody = n.getNext();\n\
+    +          findDeclaredNames(functionBody, null, renamer);\n \n           nameStack.push(renamer);\n\
+    \         }\n@@ -170,13 +173,16 @@\n \n       case Token.FUNCTION:\n         //\
+    \ Remove the function body scope\n+        nameStack.pop();\n         // Remove\
+    \ function recursive name (if any).\n         nameStack.pop();\n         break;\n\
+    \ \n+      case Token.LP:\n         // Note: The parameters and function body\
+    \ variables live in the\n         // same scope, we introduce the scope when in\
+    \ the \"shouldTraverse\"\n         // visit of LP, but remove it when when we\
+    \ exit the function above.\n+        break;\n \n       case Token.CATCH:\n   \
+    \      // Remove catch except name from the stack of names."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_49/src/com/google/javascript/jscomp/MakeDeclaredNamesUnique.java\t\
+    2020-10-23 06:22:57.018066699 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_49/purify/purified/com/google/javascript/jscomp/MakeDeclaredNamesUnique.java\t\
+    2020-10-23 06:22:57.018066699 -0400\n@@ -88,14 +88,7 @@\n       renamer = nameStack.peek().forChildScope();\n\
+    \     }\n \n-    if (declarationRoot.getType() == Token.FUNCTION) {\n-      for\
+    \ (Node c = declarationRoot.getFirstChild().getNext().getFirstChild(); c != null;\
+    \ c = c.getNext()) {\n-        String name = c.getString();\n-        renamer.addDeclaredName(name);\n\
+    -      }\n       Node functionBody = declarationRoot.getLastChild();\n-      findDeclaredNames(functionBody,\
+    \ null, renamer);\n-    }  else \n     if (declarationRoot.getType() != Token.FUNCTION)\
+    \ {\n       // Add the block declarations\n       findDeclaredNames(declarationRoot,\
+    \ null, renamer);\n@@ -127,11 +120,22 @@\n             renamer.addDeclaredName(name);\n\
+    \           }\n \n+          nameStack.push(renamer);\n+        }\n+        break;\n\
+    \ \n+      case Token.LP: {\n+          Renamer renamer = nameStack.peek().forChildScope();\n\
+    \ \n           // Add the function parameters\n+          for (Node c = n.getFirstChild();\
+    \ c != null; c = c.getNext()) {\n+            String name = c.getString();\n+\
+    \            renamer.addDeclaredName(name);\n+          }\n \n           // Add\
+    \ the function body declarations\n+          Node functionBody = n.getNext();\n\
+    +          findDeclaredNames(functionBody, null, renamer);\n \n           nameStack.push(renamer);\n\
+    \         }\n@@ -170,6 +174,7 @@\n \n       case Token.FUNCTION:\n         //\
+    \ Remove the function body scope\n+        nameStack.pop();\n         // Remove\
+    \ function recursive name (if any).\n         nameStack.pop();\n         break;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/MakeDeclaredNamesUnique:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:declarationRoot.getType() == Token.FUNCTION '
+    - '---DEL InfixExpression@@declarationRoot.getType() == Token.FUNCTION '
+    - '------DEL MethodInvocation@@declarationRoot.getType() '
+    - '---------DEL SimpleName@@Name:declarationRoot '
+    - '---------DEL SimpleName@@MethodName:getType:[] '
+    - '------DEL Operator@@== '
+    - '------DEL QualifiedName@@Token.FUNCTION '
+    - '---------DEL SimpleName@@Token '
+    - '---------DEL SimpleName@@FUNCTION '
+    - '---DEL VariableDeclarationStatement@@Node functionBody=declarationRoot.getLastChild(); '
+    - '------DEL SimpleType@@Node '
+    - '------DEL VariableDeclarationFragment@@functionBody=declarationRoot.getLastChild() '
+    - '---------DEL SimpleName@@functionBody '
+    - '---------DEL MethodInvocation@@declarationRoot.getLastChild() '
+    - '------------DEL SimpleName@@Name:declarationRoot '
+    - '------------DEL SimpleName@@MethodName:getLastChild:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ForStatement@@[Node c=declarationRoot.getFirstChild().getNext().getFirstChild()];c
+      != null; [c=c.getNext()] @TO@ [Node c=n.getFirstChild()];c != null; [c=c.getNext()] '
+    - '---UPD VariableDeclarationExpression@@Node c=declarationRoot.getFirstChild().getNext().getFirstChild()
+      @TO@ Node c=n.getFirstChild() '
+    - '------UPD VariableDeclarationFragment@@c=declarationRoot.getFirstChild().getNext().getFirstChild()
+      @TO@ c=n.getFirstChild() '
+    - '---------UPD MethodInvocation@@declarationRoot.getFirstChild().getNext().getFirstChild()
+      @TO@ n.getFirstChild() '
+    - '------------UPD SimpleName@@Name:declarationRoot @TO@ Name:n '
+    - '------------DEL MethodInvocation@@MethodName:getFirstChild:[] '
+    - '------------DEL MethodInvocation@@MethodName:getNext:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:declarationRoot.getType() != Token.FUNCTION
+      @TO@ MethodDeclaration@@public, @@void, MethodName:enterScope, @@Argus:NodeTraversal+t+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.LP @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS QualifiedName@@Token.LP @TO@ SwitchCase@@QualifiedName:Token.LP '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.LP '
+    - '------INS SimpleName@@LP @TO@ QualifiedName@@Token.LP '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV BreakStatement@@ @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS BreakStatement@@ @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV BreakStatement@@ @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.LP @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS QualifiedName@@Token.LP @TO@ SwitchCase@@QualifiedName:Token.LP '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.LP '
+    - '------INS SimpleName@@LP @TO@ QualifiedName@@Token.LP '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV SwitchCase@@QualifiedName:Token.CATCH @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:nameStack.pop() @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS MethodInvocation@@nameStack.pop() @TO@ ExpressionStatement@@MethodInvocation:nameStack.pop() '
+    - '------INS SimpleName@@Name:nameStack @TO@ MethodInvocation@@nameStack.pop() '
+    - '------INS SimpleName@@MethodName:pop:[] @TO@ MethodInvocation@@nameStack.pop() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS BreakStatement@@ @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  files_cnt: '1'
+  repair_actions_cnt: 11
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/MakeDeclaredNamesUnique:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:declarationRoot.getType() == Token.FUNCTION '
+    - '---DEL InfixExpression@@declarationRoot.getType() == Token.FUNCTION '
+    - '------DEL MethodInvocation@@declarationRoot.getType() '
+    - '---------DEL SimpleName@@Name:declarationRoot '
+    - '---------DEL SimpleName@@MethodName:getType:[] '
+    - '------DEL Operator@@== '
+    - '------DEL QualifiedName@@Token.FUNCTION '
+    - '---------DEL SimpleName@@Token '
+    - '---------DEL SimpleName@@FUNCTION '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ForStatement@@[Node c=declarationRoot.getFirstChild().getNext().getFirstChild()];c
+      != null; [c=c.getNext()] @TO@ [Node c=n.getFirstChild()];c != null; [c=c.getNext()] '
+    - '---UPD VariableDeclarationExpression@@Node c=declarationRoot.getFirstChild().getNext().getFirstChild()
+      @TO@ Node c=n.getFirstChild() '
+    - '------UPD VariableDeclarationFragment@@c=declarationRoot.getFirstChild().getNext().getFirstChild()
+      @TO@ c=n.getFirstChild() '
+    - '---------UPD MethodInvocation@@declarationRoot.getFirstChild().getNext().getFirstChild()
+      @TO@ n.getFirstChild() '
+    - '------------UPD SimpleName@@Name:declarationRoot @TO@ Name:n '
+    - '------------DEL MethodInvocation@@MethodName:getFirstChild:[] '
+    - '------------DEL MethodInvocation@@MethodName:getNext:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@Node functionBody=declarationRoot.getLastChild();
+      @TO@ MethodDeclaration@@public, @@void, MethodName:enterScope, @@Argus:NodeTraversal+t+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:declarationRoot.getType() != Token.FUNCTION
+      @TO@ MethodDeclaration@@public, @@void, MethodName:enterScope, @@Argus:NodeTraversal+t+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.LP @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS QualifiedName@@Token.LP @TO@ SwitchCase@@QualifiedName:Token.LP '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.LP '
+    - '------INS SimpleName@@LP @TO@ QualifiedName@@Token.LP '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV BreakStatement@@ @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS BreakStatement@@ @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:nameStack.pop() @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS MethodInvocation@@nameStack.pop() @TO@ ExpressionStatement@@MethodInvocation:nameStack.pop() '
+    - '------INS SimpleName@@Name:nameStack @TO@ MethodInvocation@@nameStack.pop() '
+    - '------INS SimpleName@@MethodName:pop:[] @TO@ MethodInvocation@@nameStack.pop() '
+  files_cnt: '1'
+  repair_actions_cnt: 8

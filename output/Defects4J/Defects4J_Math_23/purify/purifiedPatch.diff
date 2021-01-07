@@ -1,0 +1,34 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_23/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java	2020-10-22 05:46:48.734414381 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_23/purify/purified/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java	2020-10-22 05:46:48.734414381 -0400
+@@ -148,6 +148,7 @@
+         UnivariatePointValuePair current
+             = new UnivariatePointValuePair(x, isMinim ? fx : -fx);
+         // Best point encountered so far (which is the initial guess).
++        UnivariatePointValuePair best = current;
+ 
+         int iter = 0;
+         while (true) {
+@@ -231,6 +232,11 @@
+                 // User-defined convergence checker.
+                 previous = current;
+                 current = new UnivariatePointValuePair(u, isMinim ? fu : -fu);
++                best = best(best,
++                            best(current,
++                                 previous,
++                                 isMinim),
++                            isMinim);
+ 
+                 if (checker != null) {
+                     if (checker.converged(iter, previous, current)) {
+@@ -271,9 +277,10 @@
+                     }
+                 }
+             } else { // Default termination (Brent's criterion).
+-                return
++                return best(best,
+                             best(current,
+                                  previous,
++                                 isMinim),
+                             isMinim);
+             }
+             ++iter;

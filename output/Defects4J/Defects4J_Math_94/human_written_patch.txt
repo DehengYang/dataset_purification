@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_94/src/java/org/apache/commons/math/util/MathUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_94/fixed-version/src/java/org/apache/commons/math/util/MathUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_94/src/java/org/apache/commons/math/util/MathUtils.java	2020-03-01 00:23:37.554509615 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_94/fixed-version/src/java/org/apache/commons/math/util/MathUtils.java	2020-03-01 00:23:41.166679819 -0800
+@@ -409,7 +409,7 @@
+      * @since 1.1
+      */
+     public static int gcd(int u, int v) {
+-        if (u * v == 0) {
++        if ((u == 0) || (v == 0)) {
+             return (Math.abs(u) + Math.abs(v));
+         }
+         // keep u and v negative, as negative integers range down to

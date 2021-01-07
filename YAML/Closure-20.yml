@@ -1,0 +1,146 @@
+1 bug_id: Closure-20
+2 src folder:
+  name of src folder: src
+  number of files: 419
+  number of java files: 403
+  number of src classes: 1359
+  number of test classes: 224
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest#testSimpleFunctionCall
+  failing tests:
+  - com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest
+  number of all test cases: 7583
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.929
+  purification via delta debugging: 203.286
+  repair actions extraction: 2.554
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest#testSimpleFunctionCall: 2965
+  fixed:
+    com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest#testSimpleFunctionCall: 3093
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 2
+  oriDel: 1
+  ori_patch_lines: 3
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 5
+  failFail: 0
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_20/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java\t\
+    2020-10-22 09:28:04.154549212 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_20/purify/patch/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java\t\
+    2020-10-22 09:28:04.154549212 -0400\n@@ -217,7 +217,8 @@\n       // slightly different\
+    \ semantics than '' + (a). See\n       // http://code.google.com/p/closure-compiler/issues/detail?id=759\n\
+    \       Node value = callTarget.getNext();\n-      if (value != null) {\n+   \
+    \   if (value != null && value.getNext() == null &&\n+          NodeUtil.isImmutableValue(value))\
+    \ {\n         Node addition = IR.add(\n             IR.string(\"\").srcref(callTarget),\n\
+    \             value.detachFromParent());"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_20/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java\t\
+    2020-10-22 09:31:57.993312384 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_20/purify/purified/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java\t\
+    2020-10-22 09:31:57.993312384 -0400\n@@ -217,7 +217,8 @@\n       // slightly different\
+    \ semantics than '' + (a). See\n       // http://code.google.com/p/closure-compiler/issues/detail?id=759\n\
+    \       Node value = callTarget.getNext();\n-      if (value != null) {\n+   \
+    \   if (value != null && value.getNext() == null &&\n+          NodeUtil.isImmutableValue(value))\
+    \ {\n         Node addition = IR.add(\n             IR.string(\"\").srcref(callTarget),\n\
+    \             value.detachFromParent());"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:value != null @TO@ InfixExpression:value !=
+      null && value.getNext() == null && NodeUtil.isImmutableValue(value) '
+    - '---INS InfixExpression@@value != null && value.getNext() == null && NodeUtil.isImmutableValue(value)
+      @TO@ IfStatement@@InfixExpression:value != null '
+    - '------INS InfixExpression@@value != null && value.getNext() == null @TO@ InfixExpression@@value
+      != null && value.getNext() == null && NodeUtil.isImmutableValue(value) '
+    - '---------INS InfixExpression@@value != null @TO@ InfixExpression@@value !=
+      null && value.getNext() == null '
+    - '------------MOV SimpleName@@value @TO@ InfixExpression@@value != null '
+    - '------------MOV Operator@@!= @TO@ InfixExpression@@value != null '
+    - '------------MOV NullLiteral@@null @TO@ InfixExpression@@value != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@value != null && value.getNext()
+      == null '
+    - '---------INS InfixExpression@@value.getNext() == null @TO@ InfixExpression@@value
+      != null && value.getNext() == null '
+    - '------------INS MethodInvocation@@value.getNext() @TO@ InfixExpression@@value.getNext()
+      == null '
+    - '---------------INS SimpleName@@Name:value @TO@ MethodInvocation@@value.getNext() '
+    - '---------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@value.getNext() '
+    - '------------INS Operator@@== @TO@ InfixExpression@@value.getNext() == null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@value.getNext() ==
+      null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@value != null && value.getNext()
+      == null && NodeUtil.isImmutableValue(value) '
+    - '------INS MethodInvocation@@NodeUtil.isImmutableValue(value) @TO@ InfixExpression@@value
+      != null && value.getNext() == null && NodeUtil.isImmutableValue(value) '
+    - '---------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isImmutableValue(value) '
+    - '---------INS SimpleName@@MethodName:isImmutableValue:[value] @TO@ MethodInvocation@@NodeUtil.isImmutableValue(value) '
+    - '------------INS SimpleName@@value @TO@ SimpleName@@MethodName:isImmutableValue:[value] '
+    - '---DEL InfixExpression@@value != null '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:value != null @TO@ InfixExpression:value !=
+      null && value.getNext() == null && NodeUtil.isImmutableValue(value) '
+    - '---INS InfixExpression@@value != null && value.getNext() == null && NodeUtil.isImmutableValue(value)
+      @TO@ IfStatement@@InfixExpression:value != null '
+    - '------INS InfixExpression@@value != null && value.getNext() == null @TO@ InfixExpression@@value
+      != null && value.getNext() == null && NodeUtil.isImmutableValue(value) '
+    - '---------INS InfixExpression@@value != null @TO@ InfixExpression@@value !=
+      null && value.getNext() == null '
+    - '------------MOV SimpleName@@value @TO@ InfixExpression@@value != null '
+    - '------------MOV Operator@@!= @TO@ InfixExpression@@value != null '
+    - '------------MOV NullLiteral@@null @TO@ InfixExpression@@value != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@value != null && value.getNext()
+      == null '
+    - '---------INS InfixExpression@@value.getNext() == null @TO@ InfixExpression@@value
+      != null && value.getNext() == null '
+    - '------------INS MethodInvocation@@value.getNext() @TO@ InfixExpression@@value.getNext()
+      == null '
+    - '---------------INS SimpleName@@Name:value @TO@ MethodInvocation@@value.getNext() '
+    - '---------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@value.getNext() '
+    - '------------INS Operator@@== @TO@ InfixExpression@@value.getNext() == null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@value.getNext() ==
+      null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@value != null && value.getNext()
+      == null && NodeUtil.isImmutableValue(value) '
+    - '------INS MethodInvocation@@NodeUtil.isImmutableValue(value) @TO@ InfixExpression@@value
+      != null && value.getNext() == null && NodeUtil.isImmutableValue(value) '
+    - '---------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.isImmutableValue(value) '
+    - '---------INS SimpleName@@MethodName:isImmutableValue:[value] @TO@ MethodInvocation@@NodeUtil.isImmutableValue(value) '
+    - '------------INS SimpleName@@value @TO@ SimpleName@@MethodName:isImmutableValue:[value] '
+    - '---DEL InfixExpression@@value != null '
+  files_cnt: '1'
+  repair_actions_cnt: 1

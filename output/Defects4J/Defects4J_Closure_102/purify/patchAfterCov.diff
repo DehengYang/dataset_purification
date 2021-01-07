@@ -1,0 +1,16 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_102/src/com/google/javascript/jscomp/Normalize.java	2020-10-23 13:04:19.607241015 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_102/purify/assertBeforeMut/com/google/javascript/jscomp/Normalize.java	2020-10-23 13:04:19.607241015 -0400
+@@ -86,12 +86,12 @@
+   @Override
+   public void process(Node externs, Node root) {
+     NodeTraversal.traverse(compiler, root, this);
++    removeDuplicateDeclarations(root);
+     if (MAKE_LOCAL_NAMES_UNIQUE) {
+       MakeDeclaredNamesUnique renamer = new MakeDeclaredNamesUnique();
+       NodeTraversal t = new NodeTraversal(compiler, renamer);
+       t.traverseRoots(externs, root);
+     }
+-    removeDuplicateDeclarations(root);
+     new PropogateConstantAnnotations(compiler, assertOnChange)
+         .process(externs, root);
+   }

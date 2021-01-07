@@ -1,0 +1,98 @@
+1 bug_id: Closure-73
+2 src folder:
+  name of src folder: src
+  number of files: 390
+  number of java files: 377
+  number of src classes: 1211
+  number of test classes: 199
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CodePrinterTest#testUnicode
+  failing tests:
+  - com.google.javascript.jscomp.CodePrinterTest
+  number of all test cases: 6909
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.002
+  purification via delta debugging: 135.277
+  repair actions extraction: 2.368
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CodePrinterTest#testUnicode: 1336
+  fixed:
+    com.google.javascript.jscomp.CodePrinterTest#testUnicode: 1336
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_73/src/com/google/javascript/jscomp/CodeGenerator.java\t\
+    2020-10-23 08:52:34.989967418 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_73/purify/patch/com/google/javascript/jscomp/CodeGenerator.java\t\
+    2020-10-23 08:52:34.989967418 -0400\n@@ -1042,7 +1042,7 @@\n             // No\
+    \ charsetEncoder provided - pass straight latin characters\n             // through,\
+    \ and escape the rest.  Doing the explicit character\n             // check is\
+    \ measurably faster than using the CharsetEncoder.\n-            if (c > 0x1f\
+    \ && c <= 0x7f) {\n+            if (c > 0x1f && c < 0x7f) {\n               sb.append(c);\n\
+    \             } else {\n               // Other characters can be misinterpreted\
+    \ by some js parsers,"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_73/src/com/google/javascript/jscomp/CodeGenerator.java\t\
+    2020-10-23 08:55:16.002629343 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_73/purify/purified/com/google/javascript/jscomp/CodeGenerator.java\t\
+    2020-10-23 08:55:16.002629343 -0400\n@@ -1042,7 +1042,7 @@\n             // No\
+    \ charsetEncoder provided - pass straight latin characters\n             // through,\
+    \ and escape the rest.  Doing the explicit character\n             // check is\
+    \ measurably faster than using the CharsetEncoder.\n-            if (c > 0x1f\
+    \ && c <= 0x7f) {\n+            if (c > 0x1f && c < 0x7f) {\n               sb.append(c);\n\
+    \             } else {\n               // Other characters can be misinterpreted\
+    \ by some js parsers,"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CodeGenerator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:c > 0x1f && c <= 0x7f @TO@ InfixExpression:c
+      > 0x1f && c < 0x7f '
+    - '---UPD InfixExpression@@c > 0x1f && c <= 0x7f @TO@ c > 0x1f && c < 0x7f '
+    - '------UPD InfixExpression@@c <= 0x7f @TO@ c < 0x7f '
+    - '---------UPD Operator@@<= @TO@ < '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CodeGenerator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:c > 0x1f && c <= 0x7f @TO@ InfixExpression:c
+      > 0x1f && c < 0x7f '
+    - '---UPD InfixExpression@@c > 0x1f && c <= 0x7f @TO@ c > 0x1f && c < 0x7f '
+    - '------UPD InfixExpression@@c <= 0x7f @TO@ c < 0x7f '
+    - '---------UPD Operator@@<= @TO@ < '
+  files_cnt: '1'
+  repair_actions_cnt: 1

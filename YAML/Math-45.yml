@@ -1,0 +1,207 @@
+1 bug_id: Math-45
+2 src folder:
+  name of src folder: java
+  number of files: 627
+  number of java files: 626
+  number of src classes: 820
+  number of test classes: 284
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.linear.OpenMapRealMatrixTest#testMath679
+  failing tests:
+  - org.apache.commons.math.linear.OpenMapRealMatrixTest
+  number of all test cases: 3075
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.557
+  purification via delta debugging: 164.183
+  repair actions extraction: 0.971
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.linear.OpenMapRealMatrixTest#testMath679: 47
+  fixed:
+    org.apache.commons.math.linear.OpenMapRealMatrixTest#testMath679: 346
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 5
+  covDel: 0
+  cov_patch_lines: 5
+  delta_patch_lines: 5
+  oriAdd: 5
+  oriDel: 0
+  ori_patch_lines: 5
+  purAdd: 5
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 9
+  failFail: 2
+  passed: 0
+  total: 11
+9 sibling repair actions:
+- 0 1 0.9139504563233377
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_45/src/main/java/org/apache/commons/math/linear/OpenMapRealMatrix.java\t\
+    2020-10-21 11:39:31.636696312 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_45/purify/patch/org/apache/commons/math/linear/OpenMapRealMatrix.java\t\
+    2020-10-21 11:39:31.636696312 -0400\n@@ -47,6 +47,11 @@\n      */\n     public\
+    \ OpenMapRealMatrix(int rowDimension, int columnDimension) {\n         super(rowDimension,\
+    \ columnDimension);\n+        long lRow = (long) rowDimension;\n+        long\
+    \ lCol = (long) columnDimension;\n+        if (lRow * lCol >= (long) Integer.MAX_VALUE)\
+    \ {\n+            throw new NumberIsTooLargeException(lRow * lCol, Integer.MAX_VALUE,\
+    \ false);\n+        }\n         this.rows = rowDimension;\n         this.columns\
+    \ = columnDimension;\n         this.entries = new OpenIntToDoubleHashMap(0.0);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_45/src/main/java/org/apache/commons/math/linear/OpenMapRealMatrix.java\t\
+    2020-10-21 11:42:31.973911065 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_45/purify/purified/org/apache/commons/math/linear/OpenMapRealMatrix.java\t\
+    2020-10-21 11:42:31.973911065 -0400\n@@ -47,6 +47,11 @@\n      */\n     public\
+    \ OpenMapRealMatrix(int rowDimension, int columnDimension) {\n         super(rowDimension,\
+    \ columnDimension);\n+        long lRow = (long) rowDimension;\n+        long\
+    \ lCol = (long) columnDimension;\n+        if (lRow * lCol >= (long) Integer.MAX_VALUE)\
+    \ {\n+            throw new NumberIsTooLargeException(lRow * lCol, Integer.MAX_VALUE,\
+    \ false);\n+        }\n         this.rows = rowDimension;\n         this.columns\
+    \ = columnDimension;\n         this.entries = new OpenIntToDoubleHashMap(0.0);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/linear/OpenMapRealMatrix:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long lRow=(long)rowDimension; @TO@ MethodDeclaration@@public,
+      @@=CONSTRUCTOR=, MethodName:OpenMapRealMatrix, @@Argus:int+rowDimension+int+columnDimension+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long lRow=(long)rowDimension; '
+    - '---INS VariableDeclarationFragment@@lRow=(long)rowDimension @TO@ VariableDeclarationStatement@@long
+      lRow=(long)rowDimension; '
+    - '------INS SimpleName@@lRow @TO@ VariableDeclarationFragment@@lRow=(long)rowDimension '
+    - '------INS CastExpression@@(long)rowDimension @TO@ VariableDeclarationFragment@@lRow=(long)rowDimension '
+    - '---------INS PrimitiveType@@long @TO@ CastExpression@@(long)rowDimension '
+    - '---------INS SimpleName@@rowDimension @TO@ CastExpression@@(long)rowDimension '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long lCol=(long)columnDimension; @TO@ MethodDeclaration@@public,
+      @@=CONSTRUCTOR=, MethodName:OpenMapRealMatrix, @@Argus:int+rowDimension+int+columnDimension+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long lCol=(long)columnDimension; '
+    - '---INS VariableDeclarationFragment@@lCol=(long)columnDimension @TO@ VariableDeclarationStatement@@long
+      lCol=(long)columnDimension; '
+    - '------INS SimpleName@@lCol @TO@ VariableDeclarationFragment@@lCol=(long)columnDimension '
+    - '------INS CastExpression@@(long)columnDimension @TO@ VariableDeclarationFragment@@lCol=(long)columnDimension '
+    - '---------INS PrimitiveType@@long @TO@ CastExpression@@(long)columnDimension '
+    - '---------INS SimpleName@@columnDimension @TO@ CastExpression@@(long)columnDimension '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:lRow * lCol >= (long)Integer.MAX_VALUE @TO@
+      MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:OpenMapRealMatrix, @@Argus:int+rowDimension+int+columnDimension+ '
+    - '---INS InfixExpression@@lRow * lCol >= (long)Integer.MAX_VALUE @TO@ IfStatement@@InfixExpression:lRow
+      * lCol >= (long)Integer.MAX_VALUE '
+    - '------INS InfixExpression@@lRow * lCol @TO@ InfixExpression@@lRow * lCol >=
+      (long)Integer.MAX_VALUE '
+    - '---------INS SimpleName@@lRow @TO@ InfixExpression@@lRow * lCol '
+    - '---------INS Operator@@* @TO@ InfixExpression@@lRow * lCol '
+    - '---------INS SimpleName@@lCol @TO@ InfixExpression@@lRow * lCol '
+    - '------INS Operator@@>= @TO@ InfixExpression@@lRow * lCol >= (long)Integer.MAX_VALUE '
+    - '------INS CastExpression@@(long)Integer.MAX_VALUE @TO@ InfixExpression@@lRow
+      * lCol >= (long)Integer.MAX_VALUE '
+    - '---------INS PrimitiveType@@long @TO@ CastExpression@@(long)Integer.MAX_VALUE '
+    - '---------INS QualifiedName@@Integer.MAX_VALUE @TO@ CastExpression@@(long)Integer.MAX_VALUE '
+    - '------------INS SimpleName@@Integer @TO@ QualifiedName@@Integer.MAX_VALUE '
+    - '------------INS SimpleName@@MAX_VALUE @TO@ QualifiedName@@Integer.MAX_VALUE '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new NumberIsTooLargeException(lRow
+      * lCol,Integer.MAX_VALUE,false) @TO@ IfStatement@@InfixExpression:lRow * lCol
+      >= (long)Integer.MAX_VALUE '
+    - '------INS ClassInstanceCreation@@NumberIsTooLargeException[lRow * lCol, Integer.MAX_VALUE,
+      false] @TO@ ThrowStatement@@ClassInstanceCreation:new NumberIsTooLargeException(lRow
+      * lCol,Integer.MAX_VALUE,false) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@NumberIsTooLargeException[lRow
+      * lCol, Integer.MAX_VALUE, false] '
+    - '---------INS SimpleType@@NumberIsTooLargeException @TO@ ClassInstanceCreation@@NumberIsTooLargeException[lRow
+      * lCol, Integer.MAX_VALUE, false] '
+    - '---------INS InfixExpression@@lRow * lCol @TO@ ClassInstanceCreation@@NumberIsTooLargeException[lRow
+      * lCol, Integer.MAX_VALUE, false] '
+    - '------------INS SimpleName@@lRow @TO@ InfixExpression@@lRow * lCol '
+    - '------------INS Operator@@* @TO@ InfixExpression@@lRow * lCol '
+    - '------------INS SimpleName@@lCol @TO@ InfixExpression@@lRow * lCol '
+    - '---------INS QualifiedName@@Integer.MAX_VALUE @TO@ ClassInstanceCreation@@NumberIsTooLargeException[lRow
+      * lCol, Integer.MAX_VALUE, false] '
+    - '------------INS SimpleName@@Integer @TO@ QualifiedName@@Integer.MAX_VALUE '
+    - '------------INS SimpleName@@MAX_VALUE @TO@ QualifiedName@@Integer.MAX_VALUE '
+    - '---------INS BooleanLiteral@@false @TO@ ClassInstanceCreation@@NumberIsTooLargeException[lRow
+      * lCol, Integer.MAX_VALUE, false] '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/linear/OpenMapRealMatrix:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long lRow=(long)rowDimension; @TO@ MethodDeclaration@@public,
+      @@=CONSTRUCTOR=, MethodName:OpenMapRealMatrix, @@Argus:int+rowDimension+int+columnDimension+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long lRow=(long)rowDimension; '
+    - '---INS VariableDeclarationFragment@@lRow=(long)rowDimension @TO@ VariableDeclarationStatement@@long
+      lRow=(long)rowDimension; '
+    - '------INS SimpleName@@lRow @TO@ VariableDeclarationFragment@@lRow=(long)rowDimension '
+    - '------INS CastExpression@@(long)rowDimension @TO@ VariableDeclarationFragment@@lRow=(long)rowDimension '
+    - '---------INS PrimitiveType@@long @TO@ CastExpression@@(long)rowDimension '
+    - '---------INS SimpleName@@rowDimension @TO@ CastExpression@@(long)rowDimension '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long lCol=(long)columnDimension; @TO@ MethodDeclaration@@public,
+      @@=CONSTRUCTOR=, MethodName:OpenMapRealMatrix, @@Argus:int+rowDimension+int+columnDimension+ '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long lCol=(long)columnDimension; '
+    - '---INS VariableDeclarationFragment@@lCol=(long)columnDimension @TO@ VariableDeclarationStatement@@long
+      lCol=(long)columnDimension; '
+    - '------INS SimpleName@@lCol @TO@ VariableDeclarationFragment@@lCol=(long)columnDimension '
+    - '------INS CastExpression@@(long)columnDimension @TO@ VariableDeclarationFragment@@lCol=(long)columnDimension '
+    - '---------INS PrimitiveType@@long @TO@ CastExpression@@(long)columnDimension '
+    - '---------INS SimpleName@@columnDimension @TO@ CastExpression@@(long)columnDimension '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:lRow * lCol >= (long)Integer.MAX_VALUE @TO@
+      MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:OpenMapRealMatrix, @@Argus:int+rowDimension+int+columnDimension+ '
+    - '---INS InfixExpression@@lRow * lCol >= (long)Integer.MAX_VALUE @TO@ IfStatement@@InfixExpression:lRow
+      * lCol >= (long)Integer.MAX_VALUE '
+    - '------INS InfixExpression@@lRow * lCol @TO@ InfixExpression@@lRow * lCol >=
+      (long)Integer.MAX_VALUE '
+    - '---------INS SimpleName@@lRow @TO@ InfixExpression@@lRow * lCol '
+    - '---------INS Operator@@* @TO@ InfixExpression@@lRow * lCol '
+    - '---------INS SimpleName@@lCol @TO@ InfixExpression@@lRow * lCol '
+    - '------INS Operator@@>= @TO@ InfixExpression@@lRow * lCol >= (long)Integer.MAX_VALUE '
+    - '------INS CastExpression@@(long)Integer.MAX_VALUE @TO@ InfixExpression@@lRow
+      * lCol >= (long)Integer.MAX_VALUE '
+    - '---------INS PrimitiveType@@long @TO@ CastExpression@@(long)Integer.MAX_VALUE '
+    - '---------INS QualifiedName@@Integer.MAX_VALUE @TO@ CastExpression@@(long)Integer.MAX_VALUE '
+    - '------------INS SimpleName@@Integer @TO@ QualifiedName@@Integer.MAX_VALUE '
+    - '------------INS SimpleName@@MAX_VALUE @TO@ QualifiedName@@Integer.MAX_VALUE '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new NumberIsTooLargeException(lRow
+      * lCol,Integer.MAX_VALUE,false) @TO@ IfStatement@@InfixExpression:lRow * lCol
+      >= (long)Integer.MAX_VALUE '
+    - '------INS ClassInstanceCreation@@NumberIsTooLargeException[lRow * lCol, Integer.MAX_VALUE,
+      false] @TO@ ThrowStatement@@ClassInstanceCreation:new NumberIsTooLargeException(lRow
+      * lCol,Integer.MAX_VALUE,false) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@NumberIsTooLargeException[lRow
+      * lCol, Integer.MAX_VALUE, false] '
+    - '---------INS SimpleType@@NumberIsTooLargeException @TO@ ClassInstanceCreation@@NumberIsTooLargeException[lRow
+      * lCol, Integer.MAX_VALUE, false] '
+    - '---------INS InfixExpression@@lRow * lCol @TO@ ClassInstanceCreation@@NumberIsTooLargeException[lRow
+      * lCol, Integer.MAX_VALUE, false] '
+    - '------------INS SimpleName@@lRow @TO@ InfixExpression@@lRow * lCol '
+    - '------------INS Operator@@* @TO@ InfixExpression@@lRow * lCol '
+    - '------------INS SimpleName@@lCol @TO@ InfixExpression@@lRow * lCol '
+    - '---------INS QualifiedName@@Integer.MAX_VALUE @TO@ ClassInstanceCreation@@NumberIsTooLargeException[lRow
+      * lCol, Integer.MAX_VALUE, false] '
+    - '------------INS SimpleName@@Integer @TO@ QualifiedName@@Integer.MAX_VALUE '
+    - '------------INS SimpleName@@MAX_VALUE @TO@ QualifiedName@@Integer.MAX_VALUE '
+    - '---------INS BooleanLiteral@@false @TO@ ClassInstanceCreation@@NumberIsTooLargeException[lRow
+      * lCol, Integer.MAX_VALUE, false] '
+  repair_actions_cnt: 3

@@ -1,0 +1,98 @@
+1 bug_id: Closure-92
+2 src folder:
+  name of src folder: src
+  number of files: 367
+  number of java files: 355
+  number of src classes: 1148
+  number of test classes: 183
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.ProcessClosurePrimitivesTest#testProvideInIndependentModules4
+  failing tests:
+  - com.google.javascript.jscomp.ProcessClosurePrimitivesTest
+  number of all test cases: 6170
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 9.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.003
+  purification via delta debugging: 115.463
+  repair actions extraction: 1.493
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.ProcessClosurePrimitivesTest#testProvideInIndependentModules4: 2524
+  fixed:
+    com.google.javascript.jscomp.ProcessClosurePrimitivesTest#testProvideInIndependentModules4: 2433
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_92/src/com/google/javascript/jscomp/ProcessClosurePrimitives.java\t\
+    2020-10-23 11:59:05.849929218 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_92/purify/patch/com/google/javascript/jscomp/ProcessClosurePrimitives.java\t\
+    2020-10-23 11:59:05.849929218 -0400\n@@ -786,7 +786,7 @@\n         } else {\n\
+    \           // In this case, the name was implicitly provided by two independent\n\
+    \           // modules. We need to move this code up to a common module.\n-  \
+    \        int indexOfDot = namespace.indexOf('.');\n+          int indexOfDot =\
+    \ namespace.lastIndexOf('.');\n           if (indexOfDot == -1) {\n          \
+    \   // Any old place is fine.\n             compiler.getNodeForCodeInsertion(minimumModule)"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_92/src/com/google/javascript/jscomp/ProcessClosurePrimitives.java\t\
+    2020-10-23 12:01:26.077988740 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_92/purify/purified/com/google/javascript/jscomp/ProcessClosurePrimitives.java\t\
+    2020-10-23 12:01:26.077988740 -0400\n@@ -786,7 +786,7 @@\n         } else {\n\
+    \           // In this case, the name was implicitly provided by two independent\n\
+    \           // modules. We need to move this code up to a common module.\n-  \
+    \        int indexOfDot = namespace.indexOf('.');\n+          int indexOfDot =\
+    \ namespace.lastIndexOf('.');\n           if (indexOfDot == -1) {\n          \
+    \   // Any old place is fine.\n             compiler.getNodeForCodeInsertion(minimumModule)"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ProcessClosurePrimitives:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int indexOfDot=namespace.indexOf(''.'');
+      @TO@ int indexOfDot=namespace.lastIndexOf(''.''); '
+    - '---UPD VariableDeclarationFragment@@indexOfDot=namespace.indexOf(''.'') @TO@
+      indexOfDot=namespace.lastIndexOf(''.'') '
+    - '------UPD MethodInvocation@@namespace.indexOf(''.'') @TO@ namespace.lastIndexOf(''.'') '
+    - '---------UPD SimpleName@@MethodName:indexOf:[''.''] @TO@ MethodName:lastIndexOf:[''.''] '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ProcessClosurePrimitives:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int indexOfDot=namespace.indexOf(''.'');
+      @TO@ int indexOfDot=namespace.lastIndexOf(''.''); '
+    - '---UPD VariableDeclarationFragment@@indexOfDot=namespace.indexOf(''.'') @TO@
+      indexOfDot=namespace.lastIndexOf(''.'') '
+    - '------UPD MethodInvocation@@namespace.indexOf(''.'') @TO@ namespace.lastIndexOf(''.'') '
+    - '---------UPD SimpleName@@MethodName:indexOf:[''.''] @TO@ MethodName:lastIndexOf:[''.''] '
+  files_cnt: '1'
+  repair_actions_cnt: 1

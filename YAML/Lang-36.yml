@@ -1,0 +1,175 @@
+1 bug_id: Lang-36
+2 src folder:
+  name of src folder: java
+  number of files: 90
+  number of java files: 79
+  number of src classes: 123
+  number of test classes: 84
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.math.NumberUtilsTest#testCreateNumber
+  - org.apache.commons.lang3.math.NumberUtilsTest#testIsNumber
+  failing tests:
+  - org.apache.commons.lang3.math.NumberUtilsTest
+  number of all test cases: 1628
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 9.0
+  purification via coverage: 1.425
+  purification via delta debugging: 138.658
+  repair actions extraction: 1.456
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.math.NumberUtilsTest#testCreateNumber: 195
+    org.apache.commons.lang3.math.NumberUtilsTest#testIsNumber: 155
+  fixed:
+    org.apache.commons.lang3.math.NumberUtilsTest#testCreateNumber: 194
+    org.apache.commons.lang3.math.NumberUtilsTest#testIsNumber: 158
+6 reduced lines:
+  by all: 3
+  by coverage: 1
+  by delta debugging: 2
+  covAdd: 8
+  covDel: 1
+  cov_patch_lines: 9
+  delta_patch_lines: 7
+  oriAdd: 9
+  oriDel: 1
+  ori_patch_lines: 10
+  purAdd: 6
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 26
+  failFail: 2
+  passed: 2
+  total: 30
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_36/src/java/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-21 01:28:53.821347264 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_36/purify/patch/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-21 01:28:53.817347148 -0400\n@@ -488,7 +488,7 @@\n             }\n   \
+    \          dec = null;\n         }\n-        if (!Character.isDigit(lastChar))\
+    \ {\n+        if (!Character.isDigit(lastChar) && lastChar != '.') {\n       \
+    \      if (expPos > -1 && expPos < str.length() - 1) {\n                 exp =\
+    \ str.substring(expPos + 1, str.length() - 1);\n             } else {\n@@ -1385,6\
+    \ +1385,14 @@\n                 // can't have an E at the last byte\n        \
+    \         return false;\n             }\n+            if (chars[i] == '.') {\n\
+    +                if (hasDecPoint || hasExp) {\n+                    // two decimal\
+    \ points or dec in exponent\n+                    return false;\n+           \
+    \     }\n+                // single trailing decimal point after non-exponent\
+    \ is ok\n+                return foundDigit;\n+            }\n             if\
+    \ (!allowSigns\n                 && (chars[i] == 'd'\n                     ||\
+    \ chars[i] == 'D'"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_36/src/java/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-21 01:31:24.817709031 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_36/purify/purified/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-21 01:31:24.813708915 -0400\n@@ -488,7 +488,7 @@\n             }\n   \
+    \          dec = null;\n         }\n-        if (!Character.isDigit(lastChar))\
+    \ {\n+        if (!Character.isDigit(lastChar) && lastChar != '.') {\n       \
+    \      if (expPos > -1 && expPos < str.length() - 1) {\n                 exp =\
+    \ str.substring(expPos + 1, str.length() - 1);\n             } else {\n@@ -1385,6\
+    \ +1385,11 @@\n                 // can't have an E at the last byte\n        \
+    \         return false;\n             }\n+            if (chars[i] == '.') {\n\
+    +                if (hasDecPoint || hasExp) {\n+                }\n+         \
+    \       return foundDigit;\n+            }\n             if (!allowSigns\n   \
+    \              && (chars[i] == 'd'\n                     || chars[i] == 'D'"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!Character.isDigit(lastChar) @TO@ InfixExpression:!Character.isDigit(lastChar)
+      && lastChar != ''.'' '
+    - '---INS InfixExpression@@!Character.isDigit(lastChar) && lastChar != ''.'' @TO@
+      IfStatement@@PrefixExpression:!Character.isDigit(lastChar) '
+    - '------MOV PrefixExpression@@!Character.isDigit(lastChar) @TO@ InfixExpression@@!Character.isDigit(lastChar)
+      && lastChar != ''.'' '
+    - '------INS Operator@@&& @TO@ InfixExpression@@!Character.isDigit(lastChar) &&
+      lastChar != ''.'' '
+    - '------INS InfixExpression@@lastChar != ''.'' @TO@ InfixExpression@@!Character.isDigit(lastChar)
+      && lastChar != ''.'' '
+    - '---------INS SimpleName@@lastChar @TO@ InfixExpression@@lastChar != ''.'' '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@lastChar != ''.'' '
+    - '---------INS CharacterLiteral@@''.'' @TO@ InfixExpression@@lastChar != ''.'' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:chars[i] == ''.'' @TO@ IfStatement@@InfixExpression:i
+      < chars.length '
+    - '---INS InfixExpression@@chars[i] == ''.'' @TO@ IfStatement@@InfixExpression:chars[i]
+      == ''.'' '
+    - '------INS ArrayAccess@@chars[i] @TO@ InfixExpression@@chars[i] == ''.'' '
+    - '---------INS SimpleName@@chars @TO@ ArrayAccess@@chars[i] '
+    - '---------INS SimpleName@@i @TO@ ArrayAccess@@chars[i] '
+    - '------INS Operator@@== @TO@ InfixExpression@@chars[i] == ''.'' '
+    - '------INS CharacterLiteral@@''.'' @TO@ InfixExpression@@chars[i] == ''.'' '
+    - '---INS IfStatement@@InfixExpression:hasDecPoint || hasExp @TO@ IfStatement@@InfixExpression:chars[i]
+      == ''.'' '
+    - '------INS InfixExpression@@hasDecPoint || hasExp @TO@ IfStatement@@InfixExpression:hasDecPoint
+      || hasExp '
+    - '---------INS SimpleName@@hasDecPoint @TO@ InfixExpression@@hasDecPoint || hasExp '
+    - '---------INS Operator@@|| @TO@ InfixExpression@@hasDecPoint || hasExp '
+    - '---------INS SimpleName@@hasExp @TO@ InfixExpression@@hasDecPoint || hasExp '
+    - '------MOV ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:hasDecPoint
+      || hasExp '
+    - '---INS ReturnStatement@@SimpleName:foundDigit @TO@ IfStatement@@InfixExpression:chars[i]
+      == ''.'' '
+    - '------INS SimpleName@@foundDigit @TO@ ReturnStatement@@SimpleName:foundDigit '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:i
+      < chars.length '
+    - '---INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@PrefixExpression:!Character.isDigit(lastChar) @TO@ InfixExpression:!Character.isDigit(lastChar)
+      && lastChar != ''.'' '
+    - '---INS InfixExpression@@!Character.isDigit(lastChar) && lastChar != ''.'' @TO@
+      IfStatement@@PrefixExpression:!Character.isDigit(lastChar) '
+    - '------MOV PrefixExpression@@!Character.isDigit(lastChar) @TO@ InfixExpression@@!Character.isDigit(lastChar)
+      && lastChar != ''.'' '
+    - '------INS Operator@@&& @TO@ InfixExpression@@!Character.isDigit(lastChar) &&
+      lastChar != ''.'' '
+    - '------INS InfixExpression@@lastChar != ''.'' @TO@ InfixExpression@@!Character.isDigit(lastChar)
+      && lastChar != ''.'' '
+    - '---------INS SimpleName@@lastChar @TO@ InfixExpression@@lastChar != ''.'' '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@lastChar != ''.'' '
+    - '---------INS CharacterLiteral@@''.'' @TO@ InfixExpression@@lastChar != ''.'' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:chars[i] == ''.'' @TO@ IfStatement@@InfixExpression:i
+      < chars.length '
+    - '---INS InfixExpression@@chars[i] == ''.'' @TO@ IfStatement@@InfixExpression:chars[i]
+      == ''.'' '
+    - '------INS ArrayAccess@@chars[i] @TO@ InfixExpression@@chars[i] == ''.'' '
+    - '---------INS SimpleName@@chars @TO@ ArrayAccess@@chars[i] '
+    - '---------INS SimpleName@@i @TO@ ArrayAccess@@chars[i] '
+    - '------INS Operator@@== @TO@ InfixExpression@@chars[i] == ''.'' '
+    - '------INS CharacterLiteral@@''.'' @TO@ InfixExpression@@chars[i] == ''.'' '
+    - '---INS IfStatement@@InfixExpression:hasDecPoint || hasExp @TO@ IfStatement@@InfixExpression:chars[i]
+      == ''.'' '
+    - '------INS InfixExpression@@hasDecPoint || hasExp @TO@ IfStatement@@InfixExpression:hasDecPoint
+      || hasExp '
+    - '---------INS SimpleName@@hasDecPoint @TO@ InfixExpression@@hasDecPoint || hasExp '
+    - '---------INS Operator@@|| @TO@ InfixExpression@@hasDecPoint || hasExp '
+    - '---------INS SimpleName@@hasExp @TO@ InfixExpression@@hasDecPoint || hasExp '
+    - '---INS ReturnStatement@@SimpleName:foundDigit @TO@ IfStatement@@InfixExpression:chars[i]
+      == ''.'' '
+    - '------INS SimpleName@@foundDigit @TO@ ReturnStatement@@SimpleName:foundDigit '
+  repair_actions_cnt: 2

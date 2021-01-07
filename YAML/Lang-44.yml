@@ -1,0 +1,168 @@
+1 bug_id: Lang-44
+2 src folder:
+  name of src folder: java
+  number of files: 96
+  number of java files: 85
+  number of src classes: 132
+  number of test classes: 96
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.NumberUtilsTest#testLang457
+  failing tests:
+  - org.apache.commons.lang.NumberUtilsTest
+  number of all test cases: 1879
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 0.532
+  purification via delta debugging: 38.633
+  repair actions extraction: 1.306
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.NumberUtilsTest#testLang457: 22
+  fixed:
+    org.apache.commons.lang.NumberUtilsTest#testLang457: 4
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_44/src/java/org/apache/commons/lang/NumberUtils.java\t\
+    2020-10-21 03:42:20.248460536 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_44/purify/patch/org/apache/commons/lang/NumberUtils.java\t\
+    2020-10-21 03:42:20.248460536 -0400\n@@ -142,6 +142,9 @@\n         if (val.length()\
+    \ == 0) {\n             throw new NumberFormatException(\"\\\"\\\" is not a valid\
+    \ number.\");\n         }\n+        if (val.length() == 1 && !Character.isDigit(val.charAt(0)))\
+    \ {\n+            throw new NumberFormatException(val + \" is not a valid number.\"\
+    );\n+        }\n         if (val.startsWith(\"--\")) {\n             // this is\
+    \ protection for poorness in java.lang.BigDecimal.\n             // it accepts\
+    \ this as a legal value, but it does not appear"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_44/src/java/org/apache/commons/lang/NumberUtils.java\t\
+    2020-10-21 03:43:09.349878632 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_44/purify/purified/org/apache/commons/lang/NumberUtils.java\t\
+    2020-10-21 03:43:09.345878517 -0400\n@@ -142,6 +142,9 @@\n         if (val.length()\
+    \ == 0) {\n             throw new NumberFormatException(\"\\\"\\\" is not a valid\
+    \ number.\");\n         }\n+        if (val.length() == 1 && !Character.isDigit(val.charAt(0)))\
+    \ {\n+            throw new NumberFormatException(val + \" is not a valid number.\"\
+    );\n+        }\n         if (val.startsWith(\"--\")) {\n             // this is\
+    \ protection for poorness in java.lang.BigDecimal.\n             // it accepts\
+    \ this as a legal value, but it does not appear"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:val.length() == 1 && !Character.isDigit(val.charAt(0))
+      @TO@ MethodDeclaration@@public, static, @@Number, MethodName:createNumber, @@Argus:String+val+NumberFormatException,  '
+    - '---INS InfixExpression@@val.length() == 1 && !Character.isDigit(val.charAt(0))
+      @TO@ IfStatement@@InfixExpression:val.length() == 1 && !Character.isDigit(val.charAt(0)) '
+    - '------INS InfixExpression@@val.length() == 1 @TO@ InfixExpression@@val.length()
+      == 1 && !Character.isDigit(val.charAt(0)) '
+    - '---------INS MethodInvocation@@val.length() @TO@ InfixExpression@@val.length()
+      == 1 '
+    - '------------INS SimpleName@@Name:val @TO@ MethodInvocation@@val.length() '
+    - '------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@val.length() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@val.length() == 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@val.length() == 1 '
+    - '------INS Operator@@&& @TO@ InfixExpression@@val.length() == 1 && !Character.isDigit(val.charAt(0)) '
+    - '------INS PrefixExpression@@!Character.isDigit(val.charAt(0)) @TO@ InfixExpression@@val.length()
+      == 1 && !Character.isDigit(val.charAt(0)) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!Character.isDigit(val.charAt(0)) '
+    - '---------INS MethodInvocation@@Character.isDigit(val.charAt(0)) @TO@ PrefixExpression@@!Character.isDigit(val.charAt(0)) '
+    - '------------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isDigit(val.charAt(0)) '
+    - '------------INS SimpleName@@MethodName:isDigit:[val.charAt(0)] @TO@ MethodInvocation@@Character.isDigit(val.charAt(0)) '
+    - '---------------INS MethodInvocation@@val.charAt(0) @TO@ SimpleName@@MethodName:isDigit:[val.charAt(0)] '
+    - '------------------INS SimpleName@@Name:val @TO@ MethodInvocation@@val.charAt(0) '
+    - '------------------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@val.charAt(0) '
+    - '---------------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new NumberFormatException(val
+      + " is not a valid number.") @TO@ IfStatement@@InfixExpression:val.length()
+      == 1 && !Character.isDigit(val.charAt(0)) '
+    - '------INS ClassInstanceCreation@@NumberFormatException[val + " is not a valid
+      number."] @TO@ ThrowStatement@@ClassInstanceCreation:new NumberFormatException(val
+      + " is not a valid number.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@NumberFormatException[val
+      + " is not a valid number."] '
+    - '---------INS SimpleType@@NumberFormatException @TO@ ClassInstanceCreation@@NumberFormatException[val
+      + " is not a valid number."] '
+    - '---------INS InfixExpression@@val + " is not a valid number." @TO@ ClassInstanceCreation@@NumberFormatException[val
+      + " is not a valid number."] '
+    - '------------INS SimpleName@@val @TO@ InfixExpression@@val + " is not a valid
+      number." '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@val + " is not a valid number." '
+    - '------------INS StringLiteral@@" is not a valid number." @TO@ InfixExpression@@val
+      + " is not a valid number." '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:val.length() == 1 && !Character.isDigit(val.charAt(0))
+      @TO@ MethodDeclaration@@public, static, @@Number, MethodName:createNumber, @@Argus:String+val+NumberFormatException,  '
+    - '---INS InfixExpression@@val.length() == 1 && !Character.isDigit(val.charAt(0))
+      @TO@ IfStatement@@InfixExpression:val.length() == 1 && !Character.isDigit(val.charAt(0)) '
+    - '------INS InfixExpression@@val.length() == 1 @TO@ InfixExpression@@val.length()
+      == 1 && !Character.isDigit(val.charAt(0)) '
+    - '---------INS MethodInvocation@@val.length() @TO@ InfixExpression@@val.length()
+      == 1 '
+    - '------------INS SimpleName@@Name:val @TO@ MethodInvocation@@val.length() '
+    - '------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@val.length() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@val.length() == 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@val.length() == 1 '
+    - '------INS Operator@@&& @TO@ InfixExpression@@val.length() == 1 && !Character.isDigit(val.charAt(0)) '
+    - '------INS PrefixExpression@@!Character.isDigit(val.charAt(0)) @TO@ InfixExpression@@val.length()
+      == 1 && !Character.isDigit(val.charAt(0)) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!Character.isDigit(val.charAt(0)) '
+    - '---------INS MethodInvocation@@Character.isDigit(val.charAt(0)) @TO@ PrefixExpression@@!Character.isDigit(val.charAt(0)) '
+    - '------------INS SimpleName@@Name:Character @TO@ MethodInvocation@@Character.isDigit(val.charAt(0)) '
+    - '------------INS SimpleName@@MethodName:isDigit:[val.charAt(0)] @TO@ MethodInvocation@@Character.isDigit(val.charAt(0)) '
+    - '---------------INS MethodInvocation@@val.charAt(0) @TO@ SimpleName@@MethodName:isDigit:[val.charAt(0)] '
+    - '------------------INS SimpleName@@Name:val @TO@ MethodInvocation@@val.charAt(0) '
+    - '------------------INS SimpleName@@MethodName:charAt:[0] @TO@ MethodInvocation@@val.charAt(0) '
+    - '---------------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:charAt:[0] '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new NumberFormatException(val
+      + " is not a valid number.") @TO@ IfStatement@@InfixExpression:val.length()
+      == 1 && !Character.isDigit(val.charAt(0)) '
+    - '------INS ClassInstanceCreation@@NumberFormatException[val + " is not a valid
+      number."] @TO@ ThrowStatement@@ClassInstanceCreation:new NumberFormatException(val
+      + " is not a valid number.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@NumberFormatException[val
+      + " is not a valid number."] '
+    - '---------INS SimpleType@@NumberFormatException @TO@ ClassInstanceCreation@@NumberFormatException[val
+      + " is not a valid number."] '
+    - '---------INS InfixExpression@@val + " is not a valid number." @TO@ ClassInstanceCreation@@NumberFormatException[val
+      + " is not a valid number."] '
+    - '------------INS SimpleName@@val @TO@ InfixExpression@@val + " is not a valid
+      number." '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@val + " is not a valid number." '
+    - '------------INS StringLiteral@@" is not a valid number." @TO@ InfixExpression@@val
+      + " is not a valid number." '
+  repair_actions_cnt: 1

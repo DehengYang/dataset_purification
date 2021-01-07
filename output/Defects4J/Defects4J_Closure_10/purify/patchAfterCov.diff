@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_10/src/com/google/javascript/jscomp/NodeUtil.java	2020-10-21 17:29:42.189047775 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_10/purify/assertBeforeMut/com/google/javascript/jscomp/NodeUtil.java	2020-10-21 17:29:42.181047546 -0400
+@@ -1414,7 +1414,7 @@
+ 
+   static boolean mayBeString(Node n, boolean recurse) {
+     if (recurse) {
+-      return allResultsMatch(n, MAY_BE_STRING_PREDICATE);
++      return anyResultsMatch(n, MAY_BE_STRING_PREDICATE);
+     } else {
+       return mayBeStringHelper(n);
+     }

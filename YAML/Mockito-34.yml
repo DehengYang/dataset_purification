@@ -1,0 +1,134 @@
+1 bug_id: Mockito-34
+2 src folder:
+  name of src folder: src
+  number of files: 235
+  number of java files: 199
+  number of src classes: 224
+  number of test classes: 172
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.basicapi.UsingVarargsTest#shouldMatchEasilyEmptyVararg
+  - org.mockito.internal.invocation.InvocationMatcherTest#shouldMatchCaptureArgumentsWhenArgsCountDoesNOTMatch
+  failing tests:
+  - org.mockitousage.basicapi.UsingVarargsTest
+  - org.mockito.internal.invocation.InvocationMatcherTest
+  number of all test cases: 0
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.363
+  purification via delta debugging: 215.849
+  repair actions extraction: 0.683
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_34/src/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-24 20:42:40.673089992 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_34/purify/patch/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-24 20:42:40.673089992 -0400\n@@ -103,7 +103,7 @@\n     public void captureArgumentsFrom(Invocation\
+    \ i) {\n         int k = 0;\n         for (Matcher m : matchers) {\n-        \
+    \    if (m instanceof CapturesArguments) {\n+            if (m instanceof CapturesArguments\
+    \ && i.getArguments().length > k) {\n                 ((CapturesArguments) m).captureFrom(i.getArguments()[k]);\n\
+    \             }\n             k++;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_34/src/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-24 20:46:32.723784388 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_34/purify/purified/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-24 20:46:32.723784388 -0400\n@@ -103,7 +103,7 @@\n     public void captureArgumentsFrom(Invocation\
+    \ i) {\n         int k = 0;\n         for (Matcher m : matchers) {\n-        \
+    \    if (m instanceof CapturesArguments) {\n+            if (m instanceof CapturesArguments\
+    \ && i.getArguments().length > k) {\n                 ((CapturesArguments) m).captureFrom(i.getArguments()[k]);\n\
+    \             }\n             k++;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/invocation/InvocationMatcher:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InstanceofExpression:m instanceof CapturesArguments @TO@ InfixExpression:m
+      instanceof CapturesArguments && i.getArguments().length > k '
+    - '---INS InfixExpression@@m instanceof CapturesArguments && i.getArguments().length
+      > k @TO@ IfStatement@@InstanceofExpression:m instanceof CapturesArguments '
+    - '------INS InstanceofExpression@@m instanceof CapturesArguments @TO@ InfixExpression@@m
+      instanceof CapturesArguments && i.getArguments().length > k '
+    - '---------MOV SimpleName@@m @TO@ InstanceofExpression@@m instanceof CapturesArguments '
+    - '---------MOV Instanceof@@instanceof @TO@ InstanceofExpression@@m instanceof
+      CapturesArguments '
+    - '---------MOV SimpleType@@CapturesArguments @TO@ InstanceofExpression@@m instanceof
+      CapturesArguments '
+    - '------INS Operator@@&& @TO@ InfixExpression@@m instanceof CapturesArguments
+      && i.getArguments().length > k '
+    - '------INS InfixExpression@@i.getArguments().length > k @TO@ InfixExpression@@m
+      instanceof CapturesArguments && i.getArguments().length > k '
+    - '---------INS FieldAccess@@i.getArguments().length @TO@ InfixExpression@@i.getArguments().length
+      > k '
+    - '------------INS MethodInvocation@@i.getArguments() @TO@ FieldAccess@@i.getArguments().length '
+    - '---------------INS SimpleName@@Name:i @TO@ MethodInvocation@@i.getArguments() '
+    - '---------------INS SimpleName@@MethodName:getArguments:[] @TO@ MethodInvocation@@i.getArguments() '
+    - '------------INS SimpleName@@length @TO@ FieldAccess@@i.getArguments().length '
+    - '---------INS Operator@@> @TO@ InfixExpression@@i.getArguments().length > k '
+    - '---------INS SimpleName@@k @TO@ InfixExpression@@i.getArguments().length >
+      k '
+    - '---DEL InstanceofExpression@@m instanceof CapturesArguments '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/invocation/InvocationMatcher:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InstanceofExpression:m instanceof CapturesArguments @TO@ InfixExpression:m
+      instanceof CapturesArguments && i.getArguments().length > k '
+    - '---INS InfixExpression@@m instanceof CapturesArguments && i.getArguments().length
+      > k @TO@ IfStatement@@InstanceofExpression:m instanceof CapturesArguments '
+    - '------INS InstanceofExpression@@m instanceof CapturesArguments @TO@ InfixExpression@@m
+      instanceof CapturesArguments && i.getArguments().length > k '
+    - '---------MOV SimpleName@@m @TO@ InstanceofExpression@@m instanceof CapturesArguments '
+    - '---------MOV Instanceof@@instanceof @TO@ InstanceofExpression@@m instanceof
+      CapturesArguments '
+    - '---------MOV SimpleType@@CapturesArguments @TO@ InstanceofExpression@@m instanceof
+      CapturesArguments '
+    - '------INS Operator@@&& @TO@ InfixExpression@@m instanceof CapturesArguments
+      && i.getArguments().length > k '
+    - '------INS InfixExpression@@i.getArguments().length > k @TO@ InfixExpression@@m
+      instanceof CapturesArguments && i.getArguments().length > k '
+    - '---------INS FieldAccess@@i.getArguments().length @TO@ InfixExpression@@i.getArguments().length
+      > k '
+    - '------------INS MethodInvocation@@i.getArguments() @TO@ FieldAccess@@i.getArguments().length '
+    - '---------------INS SimpleName@@Name:i @TO@ MethodInvocation@@i.getArguments() '
+    - '---------------INS SimpleName@@MethodName:getArguments:[] @TO@ MethodInvocation@@i.getArguments() '
+    - '------------INS SimpleName@@length @TO@ FieldAccess@@i.getArguments().length '
+    - '---------INS Operator@@> @TO@ InfixExpression@@i.getArguments().length > k '
+    - '---------INS SimpleName@@k @TO@ InfixExpression@@i.getArguments().length >
+      k '
+    - '---DEL InstanceofExpression@@m instanceof CapturesArguments '
+  repair_actions_cnt: 1

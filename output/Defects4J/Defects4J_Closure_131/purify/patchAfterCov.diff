@@ -1,0 +1,17 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_131/src/com/google/javascript/rhino/TokenStream.java	2020-10-23 18:03:38.891218270 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_131/purify/assertBeforeMut/com/google/javascript/rhino/TokenStream.java	2020-10-23 18:03:38.891218270 -0400
+@@ -191,12 +191,13 @@
+       int length = s.length();
+ 
+       if (length == 0 ||
++          Character.isIdentifierIgnorable(s.charAt(0)) ||
+           !Character.isJavaIdentifierStart(s.charAt(0))) {
+         return false;
+       }
+ 
+       for (int i = 1; i < length; i++) {
+-        if (
++        if (Character.isIdentifierIgnorable(s.charAt(i)) ||
+             !Character.isJavaIdentifierPart(s.charAt(i))) {
+           return false;
+         }

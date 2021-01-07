@@ -1,0 +1,130 @@
+1 bug_id: Math-20
+2 src folder:
+  name of src folder: java
+  number of files: 664
+  number of java files: 663
+  number of src classes: 872
+  number of test classes: 328
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.optimization.direct.CMAESOptimizerTest#testMath864
+  failing tests:
+  - org.apache.commons.math3.optimization.direct.CMAESOptimizerTest
+  number of all test cases: 4206
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.848
+  purification via delta debugging: 121.482
+  repair actions extraction: 1.982
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.optimization.direct.CMAESOptimizerTest#testMath864: 1093
+  fixed:
+    org.apache.commons.math3.optimization.direct.CMAESOptimizerTest#testMath864: 1060
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 1
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 2
+  oriDel: 1
+  ori_patch_lines: 3
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 5
+  failFail: 0
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_20/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java\t\
+    2020-10-21 05:41:19.426788469 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_20/purify/patch/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java\t\
+    2020-10-21 05:41:19.426788469 -0400\n@@ -918,7 +918,8 @@\n          * @return\
+    \ the original objective variables, possibly repaired.\n          */\n       \
+    \  public double[] repairAndDecode(final double[] x) {\n-            return\n\
+    +            return boundaries != null && isRepairMode ?\n+                decode(repair(x))\
+    \ :\n                 decode(x);\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_20/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java\t\
+    2020-10-21 05:43:40.070856136 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_20/purify/purified/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java\t\
+    2020-10-21 05:43:40.070856136 -0400\n@@ -918,7 +918,8 @@\n          * @return\
+    \ the original objective variables, possibly repaired.\n          */\n       \
+    \  public double[] repairAndDecode(final double[] x) {\n-            return\n\
+    +            return boundaries != null && isRepairMode ?\n+                decode(repair(x))\
+    \ :\n                 decode(x);\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/direct/CMAESOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:decode(x) @TO@ ConditionalExpression:boundaries
+      != null && isRepairMode ? decode(repair(x)) : decode(x) '
+    - '---INS ConditionalExpression@@boundaries != null && isRepairMode ? decode(repair(x))
+      : decode(x) @TO@ ReturnStatement@@MethodInvocation:decode(x) '
+    - '------INS InfixExpression@@boundaries != null && isRepairMode @TO@ ConditionalExpression@@boundaries
+      != null && isRepairMode ? decode(repair(x)) : decode(x) '
+    - '---------INS InfixExpression@@boundaries != null @TO@ InfixExpression@@boundaries
+      != null && isRepairMode '
+    - '------------INS SimpleName@@boundaries @TO@ InfixExpression@@boundaries !=
+      null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@boundaries != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@boundaries != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@boundaries != null && isRepairMode '
+    - '---------INS SimpleName@@isRepairMode @TO@ InfixExpression@@boundaries != null
+      && isRepairMode '
+    - '------MOV MethodInvocation@@decode(x) @TO@ ConditionalExpression@@boundaries
+      != null && isRepairMode ? decode(repair(x)) : decode(x) '
+    - '------INS MethodInvocation@@decode(repair(x)) @TO@ ConditionalExpression@@boundaries
+      != null && isRepairMode ? decode(repair(x)) : decode(x) '
+    - '---------INS SimpleName@@MethodName:decode:[repair(x)] @TO@ MethodInvocation@@decode(repair(x)) '
+    - '------------INS MethodInvocation@@repair(x) @TO@ SimpleName@@MethodName:decode:[repair(x)] '
+    - '---------------INS SimpleName@@MethodName:repair:[x] @TO@ MethodInvocation@@repair(x) '
+    - '------------------INS SimpleName@@x @TO@ SimpleName@@MethodName:repair:[x] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/direct/CMAESOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:decode(x) @TO@ ConditionalExpression:boundaries
+      != null && isRepairMode ? decode(repair(x)) : decode(x) '
+    - '---INS ConditionalExpression@@boundaries != null && isRepairMode ? decode(repair(x))
+      : decode(x) @TO@ ReturnStatement@@MethodInvocation:decode(x) '
+    - '------INS InfixExpression@@boundaries != null && isRepairMode @TO@ ConditionalExpression@@boundaries
+      != null && isRepairMode ? decode(repair(x)) : decode(x) '
+    - '---------INS InfixExpression@@boundaries != null @TO@ InfixExpression@@boundaries
+      != null && isRepairMode '
+    - '------------INS SimpleName@@boundaries @TO@ InfixExpression@@boundaries !=
+      null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@boundaries != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@boundaries != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@boundaries != null && isRepairMode '
+    - '---------INS SimpleName@@isRepairMode @TO@ InfixExpression@@boundaries != null
+      && isRepairMode '
+    - '------MOV MethodInvocation@@decode(x) @TO@ ConditionalExpression@@boundaries
+      != null && isRepairMode ? decode(repair(x)) : decode(x) '
+    - '------INS MethodInvocation@@decode(repair(x)) @TO@ ConditionalExpression@@boundaries
+      != null && isRepairMode ? decode(repair(x)) : decode(x) '
+    - '---------INS SimpleName@@MethodName:decode:[repair(x)] @TO@ MethodInvocation@@decode(repair(x)) '
+    - '------------INS MethodInvocation@@repair(x) @TO@ SimpleName@@MethodName:decode:[repair(x)] '
+    - '---------------INS SimpleName@@MethodName:repair:[x] @TO@ MethodInvocation@@repair(x) '
+    - '------------------INS SimpleName@@x @TO@ SimpleName@@MethodName:repair:[x] '
+  repair_actions_cnt: 1

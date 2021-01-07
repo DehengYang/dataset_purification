@@ -1,0 +1,256 @@
+1 bug_id: Closure-116
+2 src folder:
+  name of src folder: src
+  number of files: 444
+  number of java files: 428
+  number of src classes: 1428
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions6
+  - com.google.javascript.jscomp.InlineFunctionsTest#testIssue1101
+  - com.google.javascript.jscomp.InlineFunctionsTest#testDoubleInlining2
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineIfParametersModified9
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineIfParametersModified8
+  - com.google.javascript.jscomp.FunctionInjectorTest#testIssue1101b
+  - com.google.javascript.jscomp.FunctionInjectorTest#testIssue1101a
+  - com.google.javascript.jscomp.InlineFunctionsTest#testBug4944818
+  failing tests:
+  - com.google.javascript.jscomp.InlineFunctionsTest
+  - com.google.javascript.jscomp.FunctionInjectorTest
+  number of all test cases: 8315
+  number of failing test cases: 8
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.13
+  purification via delta debugging: 803.084
+  repair actions extraction: 2.28
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.FunctionInjectorTest#testIssue1101a: 1526
+    com.google.javascript.jscomp.FunctionInjectorTest#testIssue1101b: 1575
+    com.google.javascript.jscomp.InlineFunctionsTest#testBug4944818: 5652
+    com.google.javascript.jscomp.InlineFunctionsTest#testDoubleInlining2: 4593
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions6: 4728
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineIfParametersModified8: 4643
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineIfParametersModified9: 4605
+    com.google.javascript.jscomp.InlineFunctionsTest#testIssue1101: 4748
+  fixed:
+    com.google.javascript.jscomp.FunctionInjectorTest#testIssue1101a: 1556
+    com.google.javascript.jscomp.FunctionInjectorTest#testIssue1101b: 1600
+    com.google.javascript.jscomp.InlineFunctionsTest#testBug4944818: 5642
+    com.google.javascript.jscomp.InlineFunctionsTest#testDoubleInlining2: 4925
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions6: 5271
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineIfParametersModified8: 4972
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineIfParametersModified9: 4934
+    com.google.javascript.jscomp.InlineFunctionsTest#testIssue1101: 5128
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 12
+  covDel: 0
+  cov_patch_lines: 12
+  delta_patch_lines: 11
+  oriAdd: 12
+  oriDel: 0
+  ori_patch_lines: 12
+  purAdd: 11
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 23
+  failFail: 3
+  passed: 1
+  total: 27
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_116/src/com/google/javascript/jscomp/FunctionInjector.java\t\
+    2020-10-23 15:51:26.577560759 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_116/purify/patch/com/google/javascript/jscomp/FunctionInjector.java\t\
+    2020-10-23 15:51:26.577560759 -0400\n@@ -694,6 +694,15 @@\n \n     Node block\
+    \ = fnNode.getLastChild();\n \n+    boolean hasSideEffects = false;  // empty\
+    \ function case\n+    if (block.hasChildren()) {\n+      Preconditions.checkState(block.hasOneChild());\n\
+    +      Node stmt = block.getFirstChild();\n+      if (stmt.isReturn()) {\n+  \
+    \      hasSideEffects = NodeUtil.mayHaveSideEffects(\n+            stmt.getFirstChild(),\
+    \ compiler);\n+      }\n+    }\n \n     // CALL NODE: [ NAME, ARG1, ARG2, ...\
+    \ ]\n     Node cArg = callNode.getFirstChild().getNext();\n@@ -720,6 +729,9 @@\n\
+    \       // For each named parameter check if a mutable argument use more than\
+    \ one.\n       if (fnParam != null) {\n         if (cArg != null) {\n+       \
+    \   if (hasSideEffects && NodeUtil.canBeSideEffected(cArg)) {\n+            return\
+    \ CanInlineResult.NO;\n+          }\n \n           // Check for arguments that\
+    \ are evaluated more than once.\n           // Note: Unlike block inlining, there\
+    \ it is not possible that a"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_116/src/com/google/javascript/jscomp/FunctionInjector.java\t\
+    2020-10-23 16:05:28.645970010 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_116/purify/purified/com/google/javascript/jscomp/FunctionInjector.java\t\
+    2020-10-23 16:05:28.633969663 -0400\n@@ -694,6 +694,14 @@\n \n     Node block\
+    \ = fnNode.getLastChild();\n \n+    boolean hasSideEffects = false;  // empty\
+    \ function case\n+    if (block.hasChildren()) {\n+      Node stmt = block.getFirstChild();\n\
+    +      if (stmt.isReturn()) {\n+        hasSideEffects = NodeUtil.mayHaveSideEffects(\n\
+    +            stmt.getFirstChild(), compiler);\n+      }\n+    }\n \n     // CALL\
+    \ NODE: [ NAME, ARG1, ARG2, ... ]\n     Node cArg = callNode.getFirstChild().getNext();\n\
+    @@ -720,6 +728,9 @@\n       // For each named parameter check if a mutable argument\
+    \ use more than one.\n       if (fnParam != null) {\n         if (cArg != null)\
+    \ {\n+          if (hasSideEffects && NodeUtil.canBeSideEffected(cArg)) {\n+ \
+    \           return CanInlineResult.NO;\n+          }\n \n           // Check for\
+    \ arguments that are evaluated more than once.\n           // Note: Unlike block\
+    \ inlining, there it is not possible that a"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/FunctionInjector:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean hasSideEffects=false; @TO@ MethodDeclaration@@private,
+      @@CanInlineResult, MethodName:canInlineReferenceDirectly, @@Argus:Node+callNode+Node+fnNode+ '
+    - '---INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean hasSideEffects=false; '
+    - '---INS VariableDeclarationFragment@@hasSideEffects=false @TO@ VariableDeclarationStatement@@boolean
+      hasSideEffects=false; '
+    - '------INS SimpleName@@hasSideEffects @TO@ VariableDeclarationFragment@@hasSideEffects=false '
+    - '------INS BooleanLiteral@@false @TO@ VariableDeclarationFragment@@hasSideEffects=false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:block.hasChildren() @TO@ MethodDeclaration@@private,
+      @@CanInlineResult, MethodName:canInlineReferenceDirectly, @@Argus:Node+callNode+Node+fnNode+ '
+    - '---INS MethodInvocation@@block.hasChildren() @TO@ IfStatement@@MethodInvocation:block.hasChildren() '
+    - '------INS SimpleName@@Name:block @TO@ MethodInvocation@@block.hasChildren() '
+    - '------INS SimpleName@@MethodName:hasChildren:[] @TO@ MethodInvocation@@block.hasChildren() '
+    - '---INS ExpressionStatement@@MethodInvocation:Preconditions.checkState(block.hasOneChild())
+      @TO@ IfStatement@@MethodInvocation:block.hasChildren() '
+    - '------INS MethodInvocation@@Preconditions.checkState(block.hasOneChild()) @TO@
+      ExpressionStatement@@MethodInvocation:Preconditions.checkState(block.hasOneChild()) '
+    - '---------INS SimpleName@@Name:Preconditions @TO@ MethodInvocation@@Preconditions.checkState(block.hasOneChild()) '
+    - '---------INS SimpleName@@MethodName:checkState:[block.hasOneChild()] @TO@ MethodInvocation@@Preconditions.checkState(block.hasOneChild()) '
+    - '------------INS MethodInvocation@@block.hasOneChild() @TO@ SimpleName@@MethodName:checkState:[block.hasOneChild()] '
+    - '---------------INS SimpleName@@Name:block @TO@ MethodInvocation@@block.hasOneChild() '
+    - '---------------INS SimpleName@@MethodName:hasOneChild:[] @TO@ MethodInvocation@@block.hasOneChild() '
+    - '---INS VariableDeclarationStatement@@Node stmt=block.getFirstChild(); @TO@
+      IfStatement@@MethodInvocation:block.hasChildren() '
+    - '------INS SimpleType@@Node @TO@ VariableDeclarationStatement@@Node stmt=block.getFirstChild(); '
+    - '------INS VariableDeclarationFragment@@stmt=block.getFirstChild() @TO@ VariableDeclarationStatement@@Node
+      stmt=block.getFirstChild(); '
+    - '---------INS SimpleName@@stmt @TO@ VariableDeclarationFragment@@stmt=block.getFirstChild() '
+    - '---------INS MethodInvocation@@block.getFirstChild() @TO@ VariableDeclarationFragment@@stmt=block.getFirstChild() '
+    - '------------INS SimpleName@@Name:block @TO@ MethodInvocation@@block.getFirstChild() '
+    - '------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@block.getFirstChild() '
+    - '---INS IfStatement@@MethodInvocation:stmt.isReturn() @TO@ IfStatement@@MethodInvocation:block.hasChildren() '
+    - '------INS MethodInvocation@@stmt.isReturn() @TO@ IfStatement@@MethodInvocation:stmt.isReturn() '
+    - '---------INS SimpleName@@Name:stmt @TO@ MethodInvocation@@stmt.isReturn() '
+    - '---------INS SimpleName@@MethodName:isReturn:[] @TO@ MethodInvocation@@stmt.isReturn() '
+    - '------INS ExpressionStatement@@Assignment:hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler)
+      @TO@ IfStatement@@MethodInvocation:stmt.isReturn() '
+    - '---------INS Assignment@@hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler)
+      @TO@ ExpressionStatement@@Assignment:hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '------------INS SimpleName@@hasSideEffects @TO@ Assignment@@hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '------------INS Operator@@= @TO@ Assignment@@hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '------------INS MethodInvocation@@NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler)
+      @TO@ Assignment@@hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '---------------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '---------------INS SimpleName@@MethodName:mayHaveSideEffects:[stmt.getFirstChild(),
+      compiler] @TO@ MethodInvocation@@NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '------------------INS MethodInvocation@@stmt.getFirstChild() @TO@ SimpleName@@MethodName:mayHaveSideEffects:[stmt.getFirstChild(),
+      compiler] '
+    - '---------------------INS SimpleName@@Name:stmt @TO@ MethodInvocation@@stmt.getFirstChild() '
+    - '---------------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@stmt.getFirstChild() '
+    - '------------------INS SimpleName@@compiler @TO@ SimpleName@@MethodName:mayHaveSideEffects:[stmt.getFirstChild(),
+      compiler] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:hasSideEffects && NodeUtil.canBeSideEffected(cArg)
+      @TO@ IfStatement@@InfixExpression:cArg != null '
+    - '---INS InfixExpression@@hasSideEffects && NodeUtil.canBeSideEffected(cArg)
+      @TO@ IfStatement@@InfixExpression:hasSideEffects && NodeUtil.canBeSideEffected(cArg) '
+    - '------INS SimpleName@@hasSideEffects @TO@ InfixExpression@@hasSideEffects &&
+      NodeUtil.canBeSideEffected(cArg) '
+    - '------INS Operator@@&& @TO@ InfixExpression@@hasSideEffects && NodeUtil.canBeSideEffected(cArg) '
+    - '------INS MethodInvocation@@NodeUtil.canBeSideEffected(cArg) @TO@ InfixExpression@@hasSideEffects
+      && NodeUtil.canBeSideEffected(cArg) '
+    - '---------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.canBeSideEffected(cArg) '
+    - '---------INS SimpleName@@MethodName:canBeSideEffected:[cArg] @TO@ MethodInvocation@@NodeUtil.canBeSideEffected(cArg) '
+    - '------------INS SimpleName@@cArg @TO@ SimpleName@@MethodName:canBeSideEffected:[cArg] '
+    - '---INS ReturnStatement@@QualifiedName:CanInlineResult.NO @TO@ IfStatement@@InfixExpression:hasSideEffects
+      && NodeUtil.canBeSideEffected(cArg) '
+    - '------INS QualifiedName@@CanInlineResult.NO @TO@ ReturnStatement@@QualifiedName:CanInlineResult.NO '
+    - '---------INS SimpleName@@CanInlineResult @TO@ QualifiedName@@CanInlineResult.NO '
+    - '---------INS SimpleName@@NO @TO@ QualifiedName@@CanInlineResult.NO '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/FunctionInjector:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean hasSideEffects=false; @TO@ MethodDeclaration@@private,
+      @@CanInlineResult, MethodName:canInlineReferenceDirectly, @@Argus:Node+callNode+Node+fnNode+ '
+    - '---INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean hasSideEffects=false; '
+    - '---INS VariableDeclarationFragment@@hasSideEffects=false @TO@ VariableDeclarationStatement@@boolean
+      hasSideEffects=false; '
+    - '------INS SimpleName@@hasSideEffects @TO@ VariableDeclarationFragment@@hasSideEffects=false '
+    - '------INS BooleanLiteral@@false @TO@ VariableDeclarationFragment@@hasSideEffects=false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:block.hasChildren() @TO@ MethodDeclaration@@private,
+      @@CanInlineResult, MethodName:canInlineReferenceDirectly, @@Argus:Node+callNode+Node+fnNode+ '
+    - '---INS MethodInvocation@@block.hasChildren() @TO@ IfStatement@@MethodInvocation:block.hasChildren() '
+    - '------INS SimpleName@@Name:block @TO@ MethodInvocation@@block.hasChildren() '
+    - '------INS SimpleName@@MethodName:hasChildren:[] @TO@ MethodInvocation@@block.hasChildren() '
+    - '---INS VariableDeclarationStatement@@Node stmt=block.getFirstChild(); @TO@
+      IfStatement@@MethodInvocation:block.hasChildren() '
+    - '------INS SimpleType@@Node @TO@ VariableDeclarationStatement@@Node stmt=block.getFirstChild(); '
+    - '------INS VariableDeclarationFragment@@stmt=block.getFirstChild() @TO@ VariableDeclarationStatement@@Node
+      stmt=block.getFirstChild(); '
+    - '---------INS SimpleName@@stmt @TO@ VariableDeclarationFragment@@stmt=block.getFirstChild() '
+    - '---------INS MethodInvocation@@block.getFirstChild() @TO@ VariableDeclarationFragment@@stmt=block.getFirstChild() '
+    - '------------INS SimpleName@@Name:block @TO@ MethodInvocation@@block.getFirstChild() '
+    - '------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@block.getFirstChild() '
+    - '---INS IfStatement@@MethodInvocation:stmt.isReturn() @TO@ IfStatement@@MethodInvocation:block.hasChildren() '
+    - '------INS MethodInvocation@@stmt.isReturn() @TO@ IfStatement@@MethodInvocation:stmt.isReturn() '
+    - '---------INS SimpleName@@Name:stmt @TO@ MethodInvocation@@stmt.isReturn() '
+    - '---------INS SimpleName@@MethodName:isReturn:[] @TO@ MethodInvocation@@stmt.isReturn() '
+    - '------INS ExpressionStatement@@Assignment:hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler)
+      @TO@ IfStatement@@MethodInvocation:stmt.isReturn() '
+    - '---------INS Assignment@@hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler)
+      @TO@ ExpressionStatement@@Assignment:hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '------------INS SimpleName@@hasSideEffects @TO@ Assignment@@hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '------------INS Operator@@= @TO@ Assignment@@hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '------------INS MethodInvocation@@NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler)
+      @TO@ Assignment@@hasSideEffects=NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '---------------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '---------------INS SimpleName@@MethodName:mayHaveSideEffects:[stmt.getFirstChild(),
+      compiler] @TO@ MethodInvocation@@NodeUtil.mayHaveSideEffects(stmt.getFirstChild(),compiler) '
+    - '------------------INS MethodInvocation@@stmt.getFirstChild() @TO@ SimpleName@@MethodName:mayHaveSideEffects:[stmt.getFirstChild(),
+      compiler] '
+    - '---------------------INS SimpleName@@Name:stmt @TO@ MethodInvocation@@stmt.getFirstChild() '
+    - '---------------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@stmt.getFirstChild() '
+    - '------------------INS SimpleName@@compiler @TO@ SimpleName@@MethodName:mayHaveSideEffects:[stmt.getFirstChild(),
+      compiler] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:hasSideEffects && NodeUtil.canBeSideEffected(cArg)
+      @TO@ IfStatement@@InfixExpression:cArg != null '
+    - '---INS InfixExpression@@hasSideEffects && NodeUtil.canBeSideEffected(cArg)
+      @TO@ IfStatement@@InfixExpression:hasSideEffects && NodeUtil.canBeSideEffected(cArg) '
+    - '------INS SimpleName@@hasSideEffects @TO@ InfixExpression@@hasSideEffects &&
+      NodeUtil.canBeSideEffected(cArg) '
+    - '------INS Operator@@&& @TO@ InfixExpression@@hasSideEffects && NodeUtil.canBeSideEffected(cArg) '
+    - '------INS MethodInvocation@@NodeUtil.canBeSideEffected(cArg) @TO@ InfixExpression@@hasSideEffects
+      && NodeUtil.canBeSideEffected(cArg) '
+    - '---------INS SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@NodeUtil.canBeSideEffected(cArg) '
+    - '---------INS SimpleName@@MethodName:canBeSideEffected:[cArg] @TO@ MethodInvocation@@NodeUtil.canBeSideEffected(cArg) '
+    - '------------INS SimpleName@@cArg @TO@ SimpleName@@MethodName:canBeSideEffected:[cArg] '
+    - '---INS ReturnStatement@@QualifiedName:CanInlineResult.NO @TO@ IfStatement@@InfixExpression:hasSideEffects
+      && NodeUtil.canBeSideEffected(cArg) '
+    - '------INS QualifiedName@@CanInlineResult.NO @TO@ ReturnStatement@@QualifiedName:CanInlineResult.NO '
+    - '---------INS SimpleName@@CanInlineResult @TO@ QualifiedName@@CanInlineResult.NO '
+    - '---------INS SimpleName@@NO @TO@ QualifiedName@@CanInlineResult.NO '
+  files_cnt: '1'
+  repair_actions_cnt: 3

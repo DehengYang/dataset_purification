@@ -1,0 +1,130 @@
+1 bug_id: Chart-24
+2 src folder:
+  name of src folder: source
+  number of files: 630
+  number of java files: 558
+  number of src classes: 582
+  number of test classes: 306
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.renderer.junit.GrayPaintScaleTests#testGetPaint
+  failing tests:
+  - org.jfree.chart.renderer.junit.GrayPaintScaleTests
+  number of all test cases: 1630
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 35.635
+  repair actions extraction: 0.686
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.renderer.junit.GrayPaintScaleTests#testGetPaint: 20
+  fixed:
+    org.jfree.chart.renderer.junit.GrayPaintScaleTests#testGetPaint: 24
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_24/source/org/jfree/chart/renderer/GrayPaintScale.java\t\
+    2020-10-21 00:44:27.384335435 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_24/purify/patch/org/jfree/chart/renderer/GrayPaintScale.java\t\
+    2020-10-21 00:44:27.384335435 -0400\n@@ -123,7 +123,7 @@\n     public Paint getPaint(double\
+    \ value) {\n         double v = Math.max(value, this.lowerBound);\n         v\
+    \ = Math.min(v, this.upperBound);\n-        int g = (int) ((value - this.lowerBound)\
+    \ / (this.upperBound \n+        int g = (int) ((v - this.lowerBound) / (this.upperBound\
+    \ \n                 - this.lowerBound) * 255.0);\n         return new Color(g,\
+    \ g, g);\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_24/source/org/jfree/chart/renderer/GrayPaintScale.java\t\
+    2020-10-21 00:45:16.669759076 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_24/purify/purified/org/jfree/chart/renderer/GrayPaintScale.java\t\
+    2020-10-21 00:45:16.669759076 -0400\n@@ -123,7 +123,7 @@\n     public Paint getPaint(double\
+    \ value) {\n         double v = Math.max(value, this.lowerBound);\n         v\
+    \ = Math.min(v, this.upperBound);\n-        int g = (int) ((value - this.lowerBound)\
+    \ / (this.upperBound \n+        int g = (int) ((v - this.lowerBound) / (this.upperBound\
+    \ \n                 - this.lowerBound) * 255.0);\n         return new Color(g,\
+    \ g, g);\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/renderer/GrayPaintScale:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int g=(int)((value - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0); @TO@ int g=(int)((v - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0); '
+    - '---UPD VariableDeclarationFragment@@g=(int)((value - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0) @TO@ g=(int)((v - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0) '
+    - '------UPD CastExpression@@(int)((value - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0) @TO@ (int)((v - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0) '
+    - '---------UPD ParenthesizedExpression@@((value - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0) @TO@ ((v - this.lowerBound) / (this.upperBound -
+      this.lowerBound) * 255.0) '
+    - '------------UPD InfixExpression@@(value - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0 @TO@ (v - this.lowerBound) / (this.upperBound - this.lowerBound)
+      * 255.0 '
+    - '---------------UPD InfixExpression@@(value - this.lowerBound) / (this.upperBound
+      - this.lowerBound) @TO@ (v - this.lowerBound) / (this.upperBound - this.lowerBound) '
+    - '------------------UPD ParenthesizedExpression@@(value - this.lowerBound) @TO@
+      (v - this.lowerBound) '
+    - '---------------------UPD InfixExpression@@value - this.lowerBound @TO@ v -
+      this.lowerBound '
+    - '------------------------UPD SimpleName@@value @TO@ v '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/renderer/GrayPaintScale:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int g=(int)((value - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0); @TO@ int g=(int)((v - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0); '
+    - '---UPD VariableDeclarationFragment@@g=(int)((value - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0) @TO@ g=(int)((v - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0) '
+    - '------UPD CastExpression@@(int)((value - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0) @TO@ (int)((v - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0) '
+    - '---------UPD ParenthesizedExpression@@((value - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0) @TO@ ((v - this.lowerBound) / (this.upperBound -
+      this.lowerBound) * 255.0) '
+    - '------------UPD InfixExpression@@(value - this.lowerBound) / (this.upperBound
+      - this.lowerBound) * 255.0 @TO@ (v - this.lowerBound) / (this.upperBound - this.lowerBound)
+      * 255.0 '
+    - '---------------UPD InfixExpression@@(value - this.lowerBound) / (this.upperBound
+      - this.lowerBound) @TO@ (v - this.lowerBound) / (this.upperBound - this.lowerBound) '
+    - '------------------UPD ParenthesizedExpression@@(value - this.lowerBound) @TO@
+      (v - this.lowerBound) '
+    - '---------------------UPD InfixExpression@@value - this.lowerBound @TO@ v -
+      this.lowerBound '
+    - '------------------------UPD SimpleName@@value @TO@ v '
+  repair_actions_cnt: 1

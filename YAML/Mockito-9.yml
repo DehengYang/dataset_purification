@@ -1,0 +1,142 @@
+1 bug_id: Mockito-9
+2 src folder:
+  name of src folder: src
+  number of files: 353
+  number of java files: 315
+  number of src classes: 375
+  number of test classes: 275
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.constructor.CreatingMocksWithConstructorTest#abstractMethodStubbed
+  - org.mockitousage.constructor.CreatingMocksWithConstructorTest#testCallsRealInterfaceMethod
+  - org.mockitousage.constructor.CreatingMocksWithConstructorTest#abstractMethodReturnsDefault
+  failing tests:
+  - org.mockitousage.constructor.CreatingMocksWithConstructorTest
+  number of all test cases: 1376
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 4.0
+  purification via coverage: 0.313
+  purification via delta debugging: 625.445
+  repair actions extraction: 0.945
+5 stmts covered by failing cases:
+  buggy:
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#abstractMethodReturnsDefault: 639
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#abstractMethodStubbed: 632
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#testCallsRealInterfaceMethod: 629
+  fixed:
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#abstractMethodReturnsDefault: 682
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#abstractMethodStubbed: 797
+    org.mockitousage.constructor.CreatingMocksWithConstructorTest#testCallsRealInterfaceMethod: 670
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 5
+  covDel: 0
+  cov_patch_lines: 5
+  delta_patch_lines: 5
+  oriAdd: 5
+  oriDel: 0
+  ori_patch_lines: 5
+  purAdd: 5
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 9
+  failFail: 2
+  passed: 0
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_9/src/org/mockito/internal/stubbing/answers/CallsRealMethods.java\t\
+    2020-10-23 21:52:10.640158269 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_9/purify/patch/org/mockito/internal/stubbing/answers/CallsRealMethods.java\t\
+    2020-10-23 21:52:10.640158269 -0400\n@@ -5,7 +5,9 @@\n package org.mockito.internal.stubbing.answers;\n\
+    \ \n import java.io.Serializable;\n+import java.lang.reflect.Modifier;\n \n+import\
+    \ org.mockito.internal.stubbing.defaultanswers.GloballyConfiguredAnswer;\n import\
+    \ org.mockito.invocation.InvocationOnMock;\n import org.mockito.stubbing.Answer;\n\
+    \ \n@@ -33,6 +35,9 @@\n     private static final long serialVersionUID = 9057165148930624087L;\n\
+    \ \n     public Object answer(InvocationOnMock invocation) throws Throwable {\n\
+    +    \tif (Modifier.isAbstract(invocation.getMethod().getModifiers())) {\n+  \
+    \  \t\treturn new GloballyConfiguredAnswer().answer(invocation);\n+    \t}\n \
+    \        return invocation.callRealMethod();\n     }\n }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_9/src/org/mockito/internal/stubbing/answers/CallsRealMethods.java\t\
+    2020-10-23 22:03:17.371464587 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_9/purify/purified/org/mockito/internal/stubbing/answers/CallsRealMethods.java\t\
+    2020-10-23 22:03:17.371464587 -0400\n@@ -5,7 +5,9 @@\n package org.mockito.internal.stubbing.answers;\n\
+    \ \n import java.io.Serializable;\n+import java.lang.reflect.Modifier;\n \n+import\
+    \ org.mockito.internal.stubbing.defaultanswers.GloballyConfiguredAnswer;\n import\
+    \ org.mockito.invocation.InvocationOnMock;\n import org.mockito.stubbing.Answer;\n\
+    \ \n@@ -33,6 +35,9 @@\n     private static final long serialVersionUID = 9057165148930624087L;\n\
+    \ \n     public Object answer(InvocationOnMock invocation) throws Throwable {\n\
+    +    \tif (Modifier.isAbstract(invocation.getMethod().getModifiers())) {\n+  \
+    \  \t\treturn new GloballyConfiguredAnswer().answer(invocation);\n+    \t}\n \
+    \        return invocation.callRealMethod();\n     }\n }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/answers/CallsRealMethods:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:Modifier.isAbstract(invocation.getMethod().getModifiers())
+      @TO@ MethodDeclaration@@public, @@Object, MethodName:answer, @@Argus:InvocationOnMock+invocation+Throwable,  '
+    - '---INS MethodInvocation@@Modifier.isAbstract(invocation.getMethod().getModifiers())
+      @TO@ IfStatement@@MethodInvocation:Modifier.isAbstract(invocation.getMethod().getModifiers()) '
+    - '------INS SimpleName@@Name:Modifier @TO@ MethodInvocation@@Modifier.isAbstract(invocation.getMethod().getModifiers()) '
+    - '------INS SimpleName@@MethodName:isAbstract:[invocation.getMethod().getModifiers()]
+      @TO@ MethodInvocation@@Modifier.isAbstract(invocation.getMethod().getModifiers()) '
+    - '---------INS MethodInvocation@@invocation.getMethod().getModifiers() @TO@ SimpleName@@MethodName:isAbstract:[invocation.getMethod().getModifiers()] '
+    - '------------INS SimpleName@@Name:invocation @TO@ MethodInvocation@@invocation.getMethod().getModifiers() '
+    - '------------INS MethodInvocation@@MethodName:getMethod:[] @TO@ MethodInvocation@@invocation.getMethod().getModifiers() '
+    - '------------INS SimpleName@@MethodName:getModifiers:[] @TO@ MethodInvocation@@invocation.getMethod().getModifiers() '
+    - '---INS ReturnStatement@@MethodInvocation:new GloballyConfiguredAnswer().answer(invocation)
+      @TO@ IfStatement@@MethodInvocation:Modifier.isAbstract(invocation.getMethod().getModifiers()) '
+    - '------INS MethodInvocation@@new GloballyConfiguredAnswer().answer(invocation)
+      @TO@ ReturnStatement@@MethodInvocation:new GloballyConfiguredAnswer().answer(invocation) '
+    - '---------INS ClassInstanceCreation@@GloballyConfiguredAnswer[] @TO@ MethodInvocation@@new
+      GloballyConfiguredAnswer().answer(invocation) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@GloballyConfiguredAnswer[] '
+    - '------------INS SimpleType@@GloballyConfiguredAnswer @TO@ ClassInstanceCreation@@GloballyConfiguredAnswer[] '
+    - '---------INS SimpleName@@MethodName:answer:[invocation] @TO@ MethodInvocation@@new
+      GloballyConfiguredAnswer().answer(invocation) '
+    - '------------INS SimpleName@@invocation @TO@ SimpleName@@MethodName:answer:[invocation] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/answers/CallsRealMethods:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:Modifier.isAbstract(invocation.getMethod().getModifiers())
+      @TO@ MethodDeclaration@@public, @@Object, MethodName:answer, @@Argus:InvocationOnMock+invocation+Throwable,  '
+    - '---INS MethodInvocation@@Modifier.isAbstract(invocation.getMethod().getModifiers())
+      @TO@ IfStatement@@MethodInvocation:Modifier.isAbstract(invocation.getMethod().getModifiers()) '
+    - '------INS SimpleName@@Name:Modifier @TO@ MethodInvocation@@Modifier.isAbstract(invocation.getMethod().getModifiers()) '
+    - '------INS SimpleName@@MethodName:isAbstract:[invocation.getMethod().getModifiers()]
+      @TO@ MethodInvocation@@Modifier.isAbstract(invocation.getMethod().getModifiers()) '
+    - '---------INS MethodInvocation@@invocation.getMethod().getModifiers() @TO@ SimpleName@@MethodName:isAbstract:[invocation.getMethod().getModifiers()] '
+    - '------------INS SimpleName@@Name:invocation @TO@ MethodInvocation@@invocation.getMethod().getModifiers() '
+    - '------------INS MethodInvocation@@MethodName:getMethod:[] @TO@ MethodInvocation@@invocation.getMethod().getModifiers() '
+    - '------------INS SimpleName@@MethodName:getModifiers:[] @TO@ MethodInvocation@@invocation.getMethod().getModifiers() '
+    - '---INS ReturnStatement@@MethodInvocation:new GloballyConfiguredAnswer().answer(invocation)
+      @TO@ IfStatement@@MethodInvocation:Modifier.isAbstract(invocation.getMethod().getModifiers()) '
+    - '------INS MethodInvocation@@new GloballyConfiguredAnswer().answer(invocation)
+      @TO@ ReturnStatement@@MethodInvocation:new GloballyConfiguredAnswer().answer(invocation) '
+    - '---------INS ClassInstanceCreation@@GloballyConfiguredAnswer[] @TO@ MethodInvocation@@new
+      GloballyConfiguredAnswer().answer(invocation) '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@GloballyConfiguredAnswer[] '
+    - '------------INS SimpleType@@GloballyConfiguredAnswer @TO@ ClassInstanceCreation@@GloballyConfiguredAnswer[] '
+    - '---------INS SimpleName@@MethodName:answer:[invocation] @TO@ MethodInvocation@@new
+      GloballyConfiguredAnswer().answer(invocation) '
+    - '------------INS SimpleName@@invocation @TO@ SimpleName@@MethodName:answer:[invocation] '
+  repair_actions_cnt: 1

@@ -1,0 +1,13 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_11/src/main/java/org/apache/commons/lang3/RandomStringUtils.java	2020-10-22 01:45:42.048471000 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_11/purify/purified/org/apache/commons/lang3/RandomStringUtils.java	2020-10-22 01:45:42.040470769 -0400
+@@ -242,6 +242,10 @@
+                     start = ' ';                
+                 }
+             }
++        } else {
++            if (end <= start) {
++                throw new IllegalArgumentException("Parameter end (" + end + ") must be greater than start (" + start + ")");
++            }
+         }
+ 
+         char[] buffer = new char[count];

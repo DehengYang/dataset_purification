@@ -1,0 +1,277 @@
+1 bug_id: Time-23
+2 src folder:
+  name of src folder: java
+  number of files: 182
+  number of java files: 156
+  number of src classes: 226
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestDateTimeZone#testForID_String_old
+  failing tests:
+  - org.joda.time.TestDateTimeZone
+  number of all test cases: 3870
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.004
+  purification via delta debugging: 807.502
+  repair actions extraction: 1.323
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestDateTimeZone#testForID_String_old: 265
+  fixed:
+    org.joda.time.TestDateTimeZone#testForID_String_old: 267
+6 reduced lines:
+  by all: 11
+  by coverage: 0
+  by delta debugging: 11
+  covAdd: 9
+  covDel: 8
+  cov_patch_lines: 17
+  delta_patch_lines: 6
+  oriAdd: 9
+  oriDel: 8
+  ori_patch_lines: 17
+  purAdd: 2
+  purDel: 4
+7 reduced chunks:
+  by all: 4
+  by coverage: 0
+  by delta debugging: 4
+  cov: 8
+  original: 8
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 37
+  passed: 6
+  total: 43
+9 sibling repair actions:
+- 0 2 0.9133858267716536
+- 0 4 0.8987854251012146
+- 0 6 0.8943089430894309
+- 0 9 0.872
+- 0 11 0.9142857142857143
+- 1 3 0.822429906542056
+- 1 5 0.7004830917874396
+- 2 4 0.8825910931174089
+- 2 6 0.8861788617886179
+- 2 9 0.896
+- 2 11 0.9061224489795918
+- 3 5 0.7439613526570048
+- 4 6 0.9456066945606695
+- 4 9 0.9300411522633745
+- 4 11 0.907563025210084
+- 5 7 0.8266666666666667
+- 5 10 0.7754569190600522
+- 6 9 0.9586776859504132
+- 6 11 0.9113924050632911
+- 7 10 0.8575418994413407
+- 9 11 0.8962655601659751
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_23/src/main/java/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 23:10:11.296934813 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_23/purify/patch/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 23:10:11.292934697 -0400\n@@ -561,6 +561,11 @@\n             // Backwards\
+    \ compatibility with TimeZone.\n             map = new HashMap<String, String>();\n\
+    \             map.put(\"GMT\", \"UTC\");\n+            map.put(\"WET\", \"WET\"\
+    );\n+            map.put(\"CET\", \"CET\");\n+            map.put(\"MET\", \"\
+    CET\");\n+            map.put(\"ECT\", \"CET\");\n+            map.put(\"EET\"\
+    , \"EET\");\n             map.put(\"MIT\", \"Pacific/Apia\");\n             map.put(\"\
+    HST\", \"Pacific/Honolulu\");  // JDK 1.1 compatible\n             map.put(\"\
+    AST\", \"America/Anchorage\");\n@@ -569,23 +574,19 @@\n             map.put(\"\
+    PNT\", \"America/Phoenix\");\n             map.put(\"CST\", \"America/Chicago\"\
+    );\n             map.put(\"EST\", \"America/New_York\");  // JDK 1.1 compatible\n\
+    -            map.put(\"IET\", \"America/Indianapolis\");\n+            map.put(\"\
+    IET\", \"America/Indiana/Indianapolis\");\n             map.put(\"PRT\", \"America/Puerto_Rico\"\
+    );\n             map.put(\"CNT\", \"America/St_Johns\");\n-            map.put(\"\
+    AGT\", \"America/Buenos_Aires\");\n+            map.put(\"AGT\", \"America/Argentina/Buenos_Aires\"\
+    );\n             map.put(\"BET\", \"America/Sao_Paulo\");\n-            map.put(\"\
+    WET\", \"Europe/London\");\n-            map.put(\"ECT\", \"Europe/Paris\");\n\
+    \             map.put(\"ART\", \"Africa/Cairo\");\n             map.put(\"CAT\"\
+    , \"Africa/Harare\");\n-            map.put(\"EET\", \"Europe/Bucharest\");\n\
+    \             map.put(\"EAT\", \"Africa/Addis_Ababa\");\n-            map.put(\"\
+    MET\", \"Asia/Tehran\");\n             map.put(\"NET\", \"Asia/Yerevan\");\n \
+    \            map.put(\"PLT\", \"Asia/Karachi\");\n-            map.put(\"IST\"\
+    , \"Asia/Calcutta\");\n+            map.put(\"IST\", \"Asia/Kolkata\");\n    \
+    \         map.put(\"BST\", \"Asia/Dhaka\");\n-            map.put(\"VST\", \"\
+    Asia/Saigon\");\n+            map.put(\"VST\", \"Asia/Ho_Chi_Minh\");\n      \
+    \       map.put(\"CTT\", \"Asia/Shanghai\");\n             map.put(\"JST\", \"\
+    Asia/Tokyo\");\n             map.put(\"ACT\", \"Australia/Darwin\");"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_23/src/main/java/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 23:23:54.660731123 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_23/purify/purified/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 23:23:54.656731007 -0400\n@@ -561,6 +561,8 @@\n             // Backwards\
+    \ compatibility with TimeZone.\n             map = new HashMap<String, String>();\n\
+    \             map.put(\"GMT\", \"UTC\");\n+            map.put(\"MET\", \"CET\"\
+    );\n+            map.put(\"ECT\", \"CET\");\n             map.put(\"MIT\", \"\
+    Pacific/Apia\");\n             map.put(\"HST\", \"Pacific/Honolulu\");  // JDK\
+    \ 1.1 compatible\n             map.put(\"AST\", \"America/Anchorage\");\n@@ -574,13\
+    \ +576,9 @@\n             map.put(\"CNT\", \"America/St_Johns\");\n          \
+    \   map.put(\"AGT\", \"America/Buenos_Aires\");\n             map.put(\"BET\"\
+    , \"America/Sao_Paulo\");\n-            map.put(\"WET\", \"Europe/London\");\n\
+    -            map.put(\"ECT\", \"Europe/Paris\");\n             map.put(\"ART\"\
+    , \"Africa/Cairo\");\n             map.put(\"CAT\", \"Africa/Harare\");\n-   \
+    \         map.put(\"EET\", \"Europe/Bucharest\");\n             map.put(\"EAT\"\
+    , \"Africa/Addis_Ababa\");\n-            map.put(\"MET\", \"Asia/Tehran\");\n\
+    \             map.put(\"NET\", \"Asia/Yerevan\");\n             map.put(\"PLT\"\
+    , \"Asia/Karachi\");\n             map.put(\"IST\", \"Asia/Calcutta\");"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/DateTimeZone:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:map.put("IET","America/Indianapolis")
+      @TO@ IfStatement@@InfixExpression:map == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:map.put("IET","America/Indianapolis")
+      @TO@ MethodInvocation:map.put("WET","WET") '
+    - '---UPD MethodInvocation@@map.put("IET","America/Indianapolis") @TO@ map.put("WET","WET") '
+    - '------UPD SimpleName@@MethodName:put:["IET", "America/Indianapolis"] @TO@ MethodName:put:["WET",
+      "WET"] '
+    - '---------UPD StringLiteral@@"IET" @TO@ "WET" '
+    - '---------UPD StringLiteral@@"America/Indianapolis" @TO@ "WET" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:map.put("AGT","America/Buenos_Aires")
+      @TO@ IfStatement@@InfixExpression:map == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:map.put("AGT","America/Buenos_Aires")
+      @TO@ MethodInvocation:map.put("CET","CET") '
+    - '---UPD MethodInvocation@@map.put("AGT","America/Buenos_Aires") @TO@ map.put("CET","CET") '
+    - '------UPD SimpleName@@MethodName:put:["AGT", "America/Buenos_Aires"] @TO@ MethodName:put:["CET",
+      "CET"] '
+    - '---------UPD StringLiteral@@"AGT" @TO@ "CET" '
+    - '---------UPD StringLiteral@@"America/Buenos_Aires" @TO@ "CET" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:map.put("WET","Europe/London") @TO@
+      IfStatement@@InfixExpression:map == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:map.put("WET","Europe/London") @TO@
+      MethodInvocation:map.put("MET","CET") '
+    - '---UPD MethodInvocation@@map.put("WET","Europe/London") @TO@ map.put("MET","CET") '
+    - '------UPD SimpleName@@MethodName:put:["WET", "Europe/London"] @TO@ MethodName:put:["MET",
+      "CET"] '
+    - '---------UPD StringLiteral@@"WET" @TO@ "MET" '
+    - '---------UPD StringLiteral@@"Europe/London" @TO@ "CET" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:map.put("ECT","Europe/Paris") @TO@
+      IfStatement@@InfixExpression:map == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:map.put("ECT","Europe/Paris") @TO@
+      MethodInvocation:map.put("ECT","CET") '
+    - '---UPD MethodInvocation@@map.put("ECT","Europe/Paris") @TO@ map.put("ECT","CET") '
+    - '------UPD SimpleName@@MethodName:put:["ECT", "Europe/Paris"] @TO@ MethodName:put:["ECT",
+      "CET"] '
+    - '---------UPD StringLiteral@@"Europe/Paris" @TO@ "CET" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:map.put("AGT","America/Argentina/Buenos_Aires")
+      @TO@ IfStatement@@InfixExpression:map == null '
+    - '---INS MethodInvocation@@map.put("AGT","America/Argentina/Buenos_Aires") @TO@
+      ExpressionStatement@@MethodInvocation:map.put("AGT","America/Argentina/Buenos_Aires") '
+    - '------INS SimpleName@@Name:map @TO@ MethodInvocation@@map.put("AGT","America/Argentina/Buenos_Aires") '
+    - '------INS SimpleName@@MethodName:put:["AGT", "America/Argentina/Buenos_Aires"]
+      @TO@ MethodInvocation@@map.put("AGT","America/Argentina/Buenos_Aires") '
+    - '---------INS StringLiteral@@"AGT" @TO@ SimpleName@@MethodName:put:["AGT", "America/Argentina/Buenos_Aires"] '
+    - '---------INS StringLiteral@@"America/Argentina/Buenos_Aires" @TO@ SimpleName@@MethodName:put:["AGT",
+      "America/Argentina/Buenos_Aires"] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:map.put("EET","Europe/Bucharest")
+      @TO@ IfStatement@@InfixExpression:map == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:map.put("EET","Europe/Bucharest")
+      @TO@ MethodInvocation:map.put("EET","EET") '
+    - '---UPD MethodInvocation@@map.put("EET","Europe/Bucharest") @TO@ map.put("EET","EET") '
+    - '------UPD SimpleName@@MethodName:put:["EET", "Europe/Bucharest"] @TO@ MethodName:put:["EET",
+      "EET"] '
+    - '---------UPD StringLiteral@@"Europe/Bucharest" @TO@ "EET" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:map.put("MET","Asia/Tehran") @TO@
+      IfStatement@@InfixExpression:map == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:map.put("MET","Asia/Tehran") @TO@
+      MethodInvocation:map.put("IET","America/Indiana/Indianapolis") '
+    - '---UPD MethodInvocation@@map.put("MET","Asia/Tehran") @TO@ map.put("IET","America/Indiana/Indianapolis") '
+    - '------UPD SimpleName@@MethodName:put:["MET", "Asia/Tehran"] @TO@ MethodName:put:["IET",
+      "America/Indiana/Indianapolis"] '
+    - '---------UPD StringLiteral@@"MET" @TO@ "IET" '
+    - '---------UPD StringLiteral@@"Asia/Tehran" @TO@ "America/Indiana/Indianapolis" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:map.put("IST","Asia/Calcutta") @TO@
+      MethodInvocation:map.put("IST","Asia/Kolkata") '
+    - '---UPD MethodInvocation@@map.put("IST","Asia/Calcutta") @TO@ map.put("IST","Asia/Kolkata") '
+    - '------UPD SimpleName@@MethodName:put:["IST", "Asia/Calcutta"] @TO@ MethodName:put:["IST",
+      "Asia/Kolkata"] '
+    - '---------UPD StringLiteral@@"Asia/Calcutta" @TO@ "Asia/Kolkata" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:map.put("VST","Asia/Saigon") @TO@
+      MethodInvocation:map.put("VST","Asia/Ho_Chi_Minh") '
+    - '---UPD MethodInvocation@@map.put("VST","Asia/Saigon") @TO@ map.put("VST","Asia/Ho_Chi_Minh") '
+    - '------UPD SimpleName@@MethodName:put:["VST", "Asia/Saigon"] @TO@ MethodName:put:["VST",
+      "Asia/Ho_Chi_Minh"] '
+    - '---------UPD StringLiteral@@"Asia/Saigon" @TO@ "Asia/Ho_Chi_Minh" '
+  repair_actions_cnt: 15
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/DateTimeZone:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:map.put("WET","Europe/London") @TO@
+      IfStatement@@InfixExpression:map == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:map.put("WET","Europe/London") @TO@
+      MethodInvocation:map.put("MET","CET") '
+    - '---UPD MethodInvocation@@map.put("WET","Europe/London") @TO@ map.put("MET","CET") '
+    - '------UPD SimpleName@@MethodName:put:["WET", "Europe/London"] @TO@ MethodName:put:["MET",
+      "CET"] '
+    - '---------UPD StringLiteral@@"WET" @TO@ "MET" '
+    - '---------UPD StringLiteral@@"Europe/London" @TO@ "CET" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:map.put("ECT","Europe/Paris") @TO@
+      IfStatement@@InfixExpression:map == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:map.put("ECT","Europe/Paris") @TO@
+      MethodInvocation:map.put("ECT","CET") '
+    - '---UPD MethodInvocation@@map.put("ECT","Europe/Paris") @TO@ map.put("ECT","CET") '
+    - '------UPD SimpleName@@MethodName:put:["ECT", "Europe/Paris"] @TO@ MethodName:put:["ECT",
+      "CET"] '
+    - '---------UPD StringLiteral@@"Europe/Paris" @TO@ "CET" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@MethodInvocation:map.put("EET","Europe/Bucharest") '
+    - '---DEL MethodInvocation@@map.put("EET","Europe/Bucharest") '
+    - '------DEL SimpleName@@Name:map '
+    - '------DEL SimpleName@@MethodName:put:["EET", "Europe/Bucharest"] '
+    - '---------DEL StringLiteral@@"EET" '
+    - '---------DEL StringLiteral@@"Europe/Bucharest" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@MethodInvocation:map.put("MET","Asia/Tehran") '
+    - '---DEL MethodInvocation@@map.put("MET","Asia/Tehran") '
+    - '------DEL SimpleName@@Name:map '
+    - '------DEL SimpleName@@MethodName:put:["MET", "Asia/Tehran"] '
+    - '---------DEL StringLiteral@@"MET" '
+    - '---------DEL StringLiteral@@"Asia/Tehran" '
+  repair_actions_cnt: 6

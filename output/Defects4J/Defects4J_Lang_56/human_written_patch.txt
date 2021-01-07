@@ -1,0 +1,28 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_56/src/java/org/apache/commons/lang/time/FastDateFormat.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_56/fixed-version/src/java/org/apache/commons/lang/time/FastDateFormat.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_56/src/java/org/apache/commons/lang/time/FastDateFormat.java	2020-03-01 00:11:56.169462044 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_56/fixed-version/src/java/org/apache/commons/lang/time/FastDateFormat.java	2020-03-01 00:11:59.593623377 -0800
+@@ -137,11 +137,11 @@
+     /**
+      * The parsed rules.
+      */
+-    private Rule[] mRules;
++    private transient Rule[] mRules;
+     /**
+      * The estimated maximum length.
+      */
+-    private int mMaxLengthEstimate;
++    private transient int mMaxLengthEstimate;
+ 
+     //-----------------------------------------------------------------------
+     /**
+@@ -1019,6 +1019,10 @@
+ 
+     // Serializing
+     //-----------------------------------------------------------------------
++    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
++        in.defaultReadObject();
++        init();
++    }
+     
+     // Rules
+     //-----------------------------------------------------------------------

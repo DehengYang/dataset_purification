@@ -1,0 +1,475 @@
+1 bug_id: Time-21
+2 src folder:
+  name of src folder: java
+  number of files: 182
+  number of java files: 156
+  number of src classes: 228
+  number of test classes: 122
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestDateTimeZone#testGetShortName_berlin
+  - org.joda.time.TestDateTimeZone#testGetName_berlin
+  failing tests:
+  - org.joda.time.TestDateTimeZone
+  number of all test cases: 3868
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.777
+  purification via delta debugging: 797.027
+  repair actions extraction: 0.665
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestDateTimeZone#testGetName_berlin: 1071
+    org.joda.time.TestDateTimeZone#testGetShortName_berlin: 1071
+  fixed:
+    org.joda.time.TestDateTimeZone#testGetName_berlin: 1045
+    org.joda.time.TestDateTimeZone#testGetShortName_berlin: 1045
+6 reduced lines:
+  by all: 6
+  by coverage: 0
+  by delta debugging: 6
+  covAdd: 16
+  covDel: 6
+  cov_patch_lines: 22
+  delta_patch_lines: 16
+  oriAdd: 16
+  oriDel: 6
+  ori_patch_lines: 22
+  purAdd: 13
+  purDel: 3
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 5
+  original: 5
+  purifiy: 6
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 89
+  failFail: 14
+  passed: 6
+  total: 109
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_21/src/main/java/org/joda/time/tz/DefaultNameProvider.java\t\
+    2020-10-23 02:43:05.844503811 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_21/purify/patch/org/joda/time/tz/DefaultNameProvider.java\t\
+    2020-10-23 02:43:05.844503811 -0400\n@@ -63,22 +63,32 @@\n         if (byNameKeyCache\
+    \ == null) {\n             byIdCache.put(id, byNameKeyCache = createCache());\n\
+    \             \n+            String[][] zoneStringsEn = DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings();\n\
+    +            String[] setEn = null;\n+            for (String[] strings : zoneStringsEn)\
+    \ {\n+              if (strings != null && strings.length == 5 && id.equals(strings[0]))\
+    \ {\n+                setEn = strings;\n+                break;\n+           \
+    \   }\n+            }\n             String[][] zoneStringsLoc = DateTimeUtils.getDateFormatSymbols(locale).getZoneStrings();\n\
+    \             String[] setLoc = null;\n             for (String[] strings : zoneStringsLoc)\
+    \ {\n               if (strings != null && strings.length == 5 && id.equals(strings[0]))\
+    \ {\n                 setLoc = strings;\n+                break;\n+          \
+    \    }\n+            }\n             \n-              byNameKeyCache.put(setLoc[2],\
+    \ new String[] {setLoc[2], setLoc[1]});\n+            if (setEn != null && setLoc\
+    \ != null) {\n+              byNameKeyCache.put(setEn[2], new String[] {setLoc[2],\
+    \ setLoc[1]});\n               // need to handle case where summer and winter\
+    \ have the same\n               // abbreviation, such as EST in Australia [1716305]\n\
+    \               // we handle this by appending \"-Summer\", cf ZoneInfoCompiler\n\
+    -              if (setLoc[2].equals(setLoc[4])) {\n-                  byNameKeyCache.put(setLoc[4]\
+    \ + \"-Summer\", new String[] {setLoc[4], setLoc[3]});\n+              if (setEn[2].equals(setEn[4]))\
+    \ {\n+                  byNameKeyCache.put(setEn[4] + \"-Summer\", new String[]\
+    \ {setLoc[4], setLoc[3]});\n               } else {\n-                  byNameKeyCache.put(setLoc[4],\
+    \ new String[] {setLoc[4], setLoc[3]});\n-              }\n-                break;\n\
+    +                  byNameKeyCache.put(setEn[4], new String[] {setLoc[4], setLoc[3]});\n\
+    \               }\n             }\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_21/src/main/java/org/joda/time/tz/DefaultNameProvider.java\t\
+    2020-10-23 02:56:40.572061289 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_21/purify/purified/org/joda/time/tz/DefaultNameProvider.java\t\
+    2020-10-23 02:56:40.572061289 -0400\n@@ -63,22 +63,32 @@\n         if (byNameKeyCache\
+    \ == null) {\n             byIdCache.put(id, byNameKeyCache = createCache());\n\
+    \             \n+            String[][] zoneStringsEn = DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings();\n\
+    +            String[] setEn = null;\n+            for (String[] strings : zoneStringsEn)\
+    \ {\n+              if (strings != null && strings.length == 5 && id.equals(strings[0]))\
+    \ {\n+                setEn = strings;\n+              }\n+            }\n   \
+    \          String[][] zoneStringsLoc = DateTimeUtils.getDateFormatSymbols(locale).getZoneStrings();\n\
+    \             String[] setLoc = null;\n             for (String[] strings : zoneStringsLoc)\
+    \ {\n               if (strings != null && strings.length == 5 && id.equals(strings[0]))\
+    \ {\n                 setLoc = strings;\n+              }\n+            }\n  \
+    \           \n               byNameKeyCache.put(setLoc[2], new String[] {setLoc[2],\
+    \ setLoc[1]});\n+            if (setEn != null && setLoc != null) {\n+       \
+    \       byNameKeyCache.put(setEn[2], new String[] {setLoc[2], setLoc[1]});\n \
+    \              // need to handle case where summer and winter have the same\n\
+    \               // abbreviation, such as EST in Australia [1716305]\n        \
+    \       // we handle this by appending \"-Summer\", cf ZoneInfoCompiler\n-   \
+    \           if (setLoc[2].equals(setLoc[4])) {\n                   byNameKeyCache.put(setLoc[4]\
+    \ + \"-Summer\", new String[] {setLoc[4], setLoc[3]});\n+              if (setEn[2].equals(setEn[4]))\
+    \ {\n               } else {\n                   byNameKeyCache.put(setLoc[4],\
+    \ new String[] {setLoc[4], setLoc[3]});\n-              }\n-                break;\n\
+    +                  byNameKeyCache.put(setEn[4], new String[] {setLoc[4], setLoc[3]});\n\
+    \               }\n             }\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/tz/DefaultNameProvider:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@String[][] zoneStringsEn=DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings();
+      @TO@ IfStatement@@InfixExpression:byNameKeyCache == null '
+    - '---INS ArrayType@@String[][] @TO@ VariableDeclarationStatement@@String[][]
+      zoneStringsEn=DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings(); '
+    - '------INS SimpleType@@String @TO@ ArrayType@@String[][] '
+    - '---INS VariableDeclarationFragment@@zoneStringsEn=DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings()
+      @TO@ VariableDeclarationStatement@@String[][] zoneStringsEn=DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings(); '
+    - '------INS SimpleName@@zoneStringsEn @TO@ VariableDeclarationFragment@@zoneStringsEn=DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings() '
+    - '------INS MethodInvocation@@DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings()
+      @TO@ VariableDeclarationFragment@@zoneStringsEn=DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings() '
+    - '---------INS SimpleName@@Name:DateTimeUtils @TO@ MethodInvocation@@DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings() '
+    - '---------INS MethodInvocation@@MethodName:getDateFormatSymbols:[Locale.ENGLISH]
+      @TO@ MethodInvocation@@DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings() '
+    - '------------INS QualifiedName@@Locale.ENGLISH @TO@ MethodInvocation@@MethodName:getDateFormatSymbols:[Locale.ENGLISH] '
+    - '---------------INS SimpleName@@Locale @TO@ QualifiedName@@Locale.ENGLISH '
+    - '---------------INS SimpleName@@ENGLISH @TO@ QualifiedName@@Locale.ENGLISH '
+    - '---------INS SimpleName@@MethodName:getZoneStrings:[] @TO@ MethodInvocation@@DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@String[] setEn=null; @TO@ IfStatement@@InfixExpression:byNameKeyCache
+      == null '
+    - '---INS ArrayType@@String[] @TO@ VariableDeclarationStatement@@String[] setEn=null; '
+    - '------INS SimpleType@@String @TO@ ArrayType@@String[] '
+    - '---INS VariableDeclarationFragment@@setEn=null @TO@ VariableDeclarationStatement@@String[]
+      setEn=null; '
+    - '------INS SimpleName@@setEn @TO@ VariableDeclarationFragment@@setEn=null '
+    - '------INS NullLiteral@@null @TO@ VariableDeclarationFragment@@setEn=null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS EnhancedForStatement@@String[] strings, SimpleName:zoneStringsEn @TO@ IfStatement@@InfixExpression:byNameKeyCache
+      == null '
+    - '---INS SingleVariableDeclaration@@String[] strings @TO@ EnhancedForStatement@@String[]
+      strings, SimpleName:zoneStringsEn '
+    - '------INS ArrayType@@String[] @TO@ SingleVariableDeclaration@@String[] strings '
+    - '---------INS SimpleType@@String @TO@ ArrayType@@String[] '
+    - '------INS SimpleName@@strings @TO@ SingleVariableDeclaration@@String[] strings '
+    - '---INS SimpleName@@zoneStringsEn @TO@ EnhancedForStatement@@String[] strings,
+      SimpleName:zoneStringsEn '
+    - '---INS IfStatement@@InfixExpression:strings != null && strings.length == 5
+      && id.equals(strings[0]) @TO@ EnhancedForStatement@@String[] strings, SimpleName:zoneStringsEn '
+    - '------INS InfixExpression@@strings != null && strings.length == 5 && id.equals(strings[0])
+      @TO@ IfStatement@@InfixExpression:strings != null && strings.length == 5 &&
+      id.equals(strings[0]) '
+    - '---------INS InfixExpression@@strings != null && strings.length == 5 @TO@ InfixExpression@@strings
+      != null && strings.length == 5 && id.equals(strings[0]) '
+    - '------------INS InfixExpression@@strings != null @TO@ InfixExpression@@strings
+      != null && strings.length == 5 '
+    - '---------------INS SimpleName@@strings @TO@ InfixExpression@@strings != null '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@strings != null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@strings != null '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@strings != null && strings.length
+      == 5 '
+    - '------------INS InfixExpression@@strings.length == 5 @TO@ InfixExpression@@strings
+      != null && strings.length == 5 '
+    - '---------------INS QualifiedName@@strings.length @TO@ InfixExpression@@strings.length
+      == 5 '
+    - '------------------INS SimpleName@@strings @TO@ QualifiedName@@strings.length '
+    - '------------------INS SimpleName@@length @TO@ QualifiedName@@strings.length '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@strings.length == 5 '
+    - '---------------INS NumberLiteral@@5 @TO@ InfixExpression@@strings.length ==
+      5 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@strings != null && strings.length
+      == 5 && id.equals(strings[0]) '
+    - '---------INS MethodInvocation@@id.equals(strings[0]) @TO@ InfixExpression@@strings
+      != null && strings.length == 5 && id.equals(strings[0]) '
+    - '------------INS SimpleName@@Name:id @TO@ MethodInvocation@@id.equals(strings[0]) '
+    - '------------INS SimpleName@@MethodName:equals:[strings[0]] @TO@ MethodInvocation@@id.equals(strings[0]) '
+    - '---------------INS ArrayAccess@@strings[0] @TO@ SimpleName@@MethodName:equals:[strings[0]] '
+    - '------------------INS SimpleName@@strings @TO@ ArrayAccess@@strings[0] '
+    - '------------------INS NumberLiteral@@0 @TO@ ArrayAccess@@strings[0] '
+    - '------INS ExpressionStatement@@Assignment:setEn=strings @TO@ IfStatement@@InfixExpression:strings
+      != null && strings.length == 5 && id.equals(strings[0]) '
+    - '---------INS Assignment@@setEn=strings @TO@ ExpressionStatement@@Assignment:setEn=strings '
+    - '------------INS SimpleName@@setEn @TO@ Assignment@@setEn=strings '
+    - '------------INS Operator@@= @TO@ Assignment@@setEn=strings '
+    - '------------INS SimpleName@@strings @TO@ Assignment@@setEn=strings '
+    - '------INS BreakStatement@@ @TO@ IfStatement@@InfixExpression:strings != null
+      && strings.length == 5 && id.equals(strings[0]) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:strings != null && strings.length == 5 &&
+      id.equals(strings[0]) @TO@ InfixExpression:setEn != null && setLoc != null '
+    - '---UPD ExpressionStatement@@MethodInvocation:byNameKeyCache.put(setLoc[2],new
+      String[]{setLoc[2],setLoc[1]}) @TO@ MethodInvocation:byNameKeyCache.put(setEn[2],new
+      String[]{setLoc[2],setLoc[1]}) '
+    - '------UPD MethodInvocation@@byNameKeyCache.put(setLoc[2],new String[]{setLoc[2],setLoc[1]})
+      @TO@ byNameKeyCache.put(setEn[2],new String[]{setLoc[2],setLoc[1]}) '
+    - '---------UPD SimpleName@@MethodName:put:[setLoc[2], new String[]{setLoc[2],setLoc[1]}]
+      @TO@ MethodName:put:[setEn[2], new String[]{setLoc[2],setLoc[1]}] '
+    - '------------UPD ArrayAccess@@setLoc[2] @TO@ setEn[2] '
+    - '---------------UPD SimpleName@@setLoc @TO@ setEn '
+    - '---UPD IfStatement@@MethodInvocation:setLoc[2].equals(setLoc[4]) @TO@ MethodInvocation:setEn[2].equals(setEn[4]) '
+    - '------UPD MethodInvocation@@setLoc[2].equals(setLoc[4]) @TO@ setEn[2].equals(setEn[4]) '
+    - '---------UPD ArrayAccess@@setLoc[2] @TO@ setEn[2] '
+    - '------------UPD SimpleName@@setLoc @TO@ setEn '
+    - '---------UPD SimpleName@@MethodName:equals:[setLoc[4]] @TO@ MethodName:equals:[setEn[4]] '
+    - '------------UPD ArrayAccess@@setLoc[4] @TO@ setEn[4] '
+    - '---------------UPD SimpleName@@setLoc @TO@ setEn '
+    - '------MOV ExpressionStatement@@MethodInvocation:byNameKeyCache.put(setLoc[4]
+      + "-Summer",new String[]{setLoc[4],setLoc[3]}) @TO@ IfStatement@@MethodInvocation:setLoc[2].equals(setLoc[4]) '
+    - '------UPD ExpressionStatement@@MethodInvocation:byNameKeyCache.put(setLoc[4]
+      + "-Summer",new String[]{setLoc[4],setLoc[3]}) @TO@ MethodInvocation:byNameKeyCache.put(setEn[4],new
+      String[]{setLoc[4],setLoc[3]}) '
+    - '---------UPD MethodInvocation@@byNameKeyCache.put(setLoc[4] + "-Summer",new
+      String[]{setLoc[4],setLoc[3]}) @TO@ byNameKeyCache.put(setEn[4],new String[]{setLoc[4],setLoc[3]}) '
+    - '------------UPD SimpleName@@MethodName:put:[setLoc[4] + "-Summer", new String[]{setLoc[4],setLoc[3]}]
+      @TO@ MethodName:put:[setEn[4], new String[]{setLoc[4],setLoc[3]}] '
+    - '---------------DEL InfixExpression@@setLoc[4] + "-Summer" '
+    - '------------------DEL ArrayAccess@@setLoc[4] '
+    - '------------------DEL Operator@@+ '
+    - '------------------DEL StringLiteral@@"-Summer" '
+    - '---------------INS ArrayAccess@@setEn[4] @TO@ SimpleName@@MethodName:put:[setLoc[4]
+      + "-Summer", new String[]{setLoc[4],setLoc[3]}] '
+    - '------------------MOV SimpleName@@setLoc @TO@ ArrayAccess@@setEn[4] '
+    - '------------------MOV NumberLiteral@@4 @TO@ ArrayAccess@@setEn[4] '
+    - '------UPD ExpressionStatement@@MethodInvocation:byNameKeyCache.put(setLoc[4],new
+      String[]{setLoc[4],setLoc[3]}) @TO@ MethodInvocation:byNameKeyCache.put(setEn[4]
+      + "-Summer",new String[]{setLoc[4],setLoc[3]}) '
+    - '---------UPD MethodInvocation@@byNameKeyCache.put(setLoc[4],new String[]{setLoc[4],setLoc[3]})
+      @TO@ byNameKeyCache.put(setEn[4] + "-Summer",new String[]{setLoc[4],setLoc[3]}) '
+    - '------------UPD SimpleName@@MethodName:put:[setLoc[4], new String[]{setLoc[4],setLoc[3]}]
+      @TO@ MethodName:put:[setEn[4] + "-Summer", new String[]{setLoc[4],setLoc[3]}] '
+    - '---------------DEL ArrayAccess@@setLoc[4] '
+    - '---------------INS InfixExpression@@setEn[4] + "-Summer" @TO@ SimpleName@@MethodName:put:[setLoc[4],
+      new String[]{setLoc[4],setLoc[3]}] '
+    - '------------------INS ArrayAccess@@setEn[4] @TO@ InfixExpression@@setEn[4]
+      + "-Summer" '
+    - '---------------------MOV SimpleName@@setLoc @TO@ ArrayAccess@@setEn[4] '
+    - '---------------------MOV NumberLiteral@@4 @TO@ ArrayAccess@@setEn[4] '
+    - '------------------INS Operator@@+ @TO@ InfixExpression@@setEn[4] + "-Summer" '
+    - '------------------INS StringLiteral@@"-Summer" @TO@ InfixExpression@@setEn[4]
+      + "-Summer" '
+    - '---INS InfixExpression@@setEn != null && setLoc != null @TO@ IfStatement@@InfixExpression:strings
+      != null && strings.length == 5 && id.equals(strings[0]) '
+    - '------INS InfixExpression@@setEn != null @TO@ InfixExpression@@setEn != null
+      && setLoc != null '
+    - '---------INS SimpleName@@setEn @TO@ InfixExpression@@setEn != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@setEn != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@setEn != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@setEn != null && setLoc != null '
+    - '------INS InfixExpression@@setLoc != null @TO@ InfixExpression@@setEn != null
+      && setLoc != null '
+    - '---------INS SimpleName@@setLoc @TO@ InfixExpression@@setLoc != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@setLoc != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@setLoc != null '
+    - '---DEL BreakStatement@@ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:strings != null && strings.length == 5 &&
+      id.equals(strings[0]) @TO@ IfStatement@@InfixExpression:byNameKeyCache == null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:strings != null && strings.length == 5 &&
+      id.equals(strings[0]) @TO@ EnhancedForStatement@@String[] strings, SimpleName:zoneStringsLoc '
+    - '---MOV InfixExpression@@strings != null && strings.length == 5 && id.equals(strings[0])
+      @TO@ IfStatement@@InfixExpression:strings != null && strings.length == 5 &&
+      id.equals(strings[0]) '
+    - '---MOV ExpressionStatement@@Assignment:setLoc=strings @TO@ IfStatement@@InfixExpression:strings
+      != null && strings.length == 5 && id.equals(strings[0]) '
+    - '---INS BreakStatement@@ @TO@ IfStatement@@InfixExpression:strings != null &&
+      strings.length == 5 && id.equals(strings[0]) '
+  repair_actions_cnt: 6
+13 purify_repair_actions:
+  biggest_depth: 10
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/tz/DefaultNameProvider:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:byNameKeyCache == null '
+    - '---DEL InfixExpression@@byNameKeyCache == null '
+    - '------DEL SimpleName@@byNameKeyCache '
+    - '------DEL Operator@@== '
+    - '------DEL NullLiteral@@null '
+    - '---DEL EnhancedForStatement@@String[] strings, SimpleName:zoneStringsLoc '
+    - '------DEL SimpleName@@zoneStringsLoc '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:strings != null && strings.length == 5 &&
+      id.equals(strings[0]) @TO@ InfixExpression:byNameKeyCache == null '
+    - '---INS InfixExpression@@byNameKeyCache == null @TO@ IfStatement@@InfixExpression:strings
+      != null && strings.length == 5 && id.equals(strings[0]) '
+    - '------INS SimpleName@@byNameKeyCache @TO@ InfixExpression@@byNameKeyCache ==
+      null '
+    - '------INS Operator@@== @TO@ InfixExpression@@byNameKeyCache == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@byNameKeyCache == null '
+    - '---MOV ExpressionStatement@@MethodInvocation:byIdCache.put(id,byNameKeyCache=createCache())
+      @TO@ IfStatement@@InfixExpression:strings != null && strings.length == 5 &&
+      id.equals(strings[0]) '
+    - '---INS VariableDeclarationStatement@@String[][] zoneStringsEn=DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings();
+      @TO@ IfStatement@@InfixExpression:strings != null && strings.length == 5 &&
+      id.equals(strings[0]) '
+    - '------INS ArrayType@@String[][] @TO@ VariableDeclarationStatement@@String[][]
+      zoneStringsEn=DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings(); '
+    - '---------INS SimpleType@@String @TO@ ArrayType@@String[][] '
+    - '------INS VariableDeclarationFragment@@zoneStringsEn=DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings()
+      @TO@ VariableDeclarationStatement@@String[][] zoneStringsEn=DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings(); '
+    - '---------INS SimpleName@@zoneStringsEn @TO@ VariableDeclarationFragment@@zoneStringsEn=DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings() '
+    - '---------INS MethodInvocation@@DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings()
+      @TO@ VariableDeclarationFragment@@zoneStringsEn=DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings() '
+    - '------------INS SimpleName@@Name:DateTimeUtils @TO@ MethodInvocation@@DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings() '
+    - '------------INS MethodInvocation@@MethodName:getDateFormatSymbols:[Locale.ENGLISH]
+      @TO@ MethodInvocation@@DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings() '
+    - '---------------INS QualifiedName@@Locale.ENGLISH @TO@ MethodInvocation@@MethodName:getDateFormatSymbols:[Locale.ENGLISH] '
+    - '------------------INS SimpleName@@Locale @TO@ QualifiedName@@Locale.ENGLISH '
+    - '------------------INS SimpleName@@ENGLISH @TO@ QualifiedName@@Locale.ENGLISH '
+    - '------------INS SimpleName@@MethodName:getZoneStrings:[] @TO@ MethodInvocation@@DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings() '
+    - '---MOV VariableDeclarationStatement@@String[][] zoneStringsLoc=DateTimeUtils.getDateFormatSymbols(locale).getZoneStrings();
+      @TO@ IfStatement@@InfixExpression:strings != null && strings.length == 5 &&
+      id.equals(strings[0]) '
+    - '---MOV VariableDeclarationStatement@@String[] setLoc=null; @TO@ IfStatement@@InfixExpression:strings
+      != null && strings.length == 5 && id.equals(strings[0]) '
+    - '---INS VariableDeclarationStatement@@String[] setEn=null; @TO@ IfStatement@@InfixExpression:strings
+      != null && strings.length == 5 && id.equals(strings[0]) '
+    - '------INS ArrayType@@String[] @TO@ VariableDeclarationStatement@@String[] setEn=null; '
+    - '---------INS SimpleType@@String @TO@ ArrayType@@String[] '
+    - '------INS VariableDeclarationFragment@@setEn=null @TO@ VariableDeclarationStatement@@String[]
+      setEn=null; '
+    - '---------INS SimpleName@@setEn @TO@ VariableDeclarationFragment@@setEn=null '
+    - '---------INS NullLiteral@@null @TO@ VariableDeclarationFragment@@setEn=null '
+    - '---INS EnhancedForStatement@@String[] strings, SimpleName:zoneStringsEn @TO@
+      IfStatement@@InfixExpression:strings != null && strings.length == 5 && id.equals(strings[0]) '
+    - '------INS SingleVariableDeclaration@@String[] strings @TO@ EnhancedForStatement@@String[]
+      strings, SimpleName:zoneStringsEn '
+    - '---------INS ArrayType@@String[] @TO@ SingleVariableDeclaration@@String[] strings '
+    - '------------INS SimpleType@@String @TO@ ArrayType@@String[] '
+    - '---------INS SimpleName@@strings @TO@ SingleVariableDeclaration@@String[] strings '
+    - '------INS SimpleName@@zoneStringsEn @TO@ EnhancedForStatement@@String[] strings,
+      SimpleName:zoneStringsEn '
+    - '------INS IfStatement@@InfixExpression:strings != null && strings.length ==
+      5 && id.equals(strings[0]) @TO@ EnhancedForStatement@@String[] strings, SimpleName:zoneStringsEn '
+    - '---------INS InfixExpression@@strings != null && strings.length == 5 && id.equals(strings[0])
+      @TO@ IfStatement@@InfixExpression:strings != null && strings.length == 5 &&
+      id.equals(strings[0]) '
+    - '------------INS InfixExpression@@strings != null && strings.length == 5 @TO@
+      InfixExpression@@strings != null && strings.length == 5 && id.equals(strings[0]) '
+    - '---------------INS InfixExpression@@strings != null @TO@ InfixExpression@@strings
+      != null && strings.length == 5 '
+    - '------------------INS SimpleName@@strings @TO@ InfixExpression@@strings !=
+      null '
+    - '------------------INS Operator@@!= @TO@ InfixExpression@@strings != null '
+    - '------------------INS NullLiteral@@null @TO@ InfixExpression@@strings != null '
+    - '---------------INS Operator@@&& @TO@ InfixExpression@@strings != null && strings.length
+      == 5 '
+    - '---------------INS InfixExpression@@strings.length == 5 @TO@ InfixExpression@@strings
+      != null && strings.length == 5 '
+    - '------------------INS QualifiedName@@strings.length @TO@ InfixExpression@@strings.length
+      == 5 '
+    - '---------------------INS SimpleName@@strings @TO@ QualifiedName@@strings.length '
+    - '---------------------INS SimpleName@@length @TO@ QualifiedName@@strings.length '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@strings.length ==
+      5 '
+    - '------------------INS NumberLiteral@@5 @TO@ InfixExpression@@strings.length
+      == 5 '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@strings != null && strings.length
+      == 5 && id.equals(strings[0]) '
+    - '------------INS MethodInvocation@@id.equals(strings[0]) @TO@ InfixExpression@@strings
+      != null && strings.length == 5 && id.equals(strings[0]) '
+    - '---------------INS SimpleName@@Name:id @TO@ MethodInvocation@@id.equals(strings[0]) '
+    - '---------------INS SimpleName@@MethodName:equals:[strings[0]] @TO@ MethodInvocation@@id.equals(strings[0]) '
+    - '------------------INS ArrayAccess@@strings[0] @TO@ SimpleName@@MethodName:equals:[strings[0]] '
+    - '---------------------INS SimpleName@@strings @TO@ ArrayAccess@@strings[0] '
+    - '---------------------INS NumberLiteral@@0 @TO@ ArrayAccess@@strings[0] '
+    - '---------INS ExpressionStatement@@Assignment:setEn=strings @TO@ IfStatement@@InfixExpression:strings
+      != null && strings.length == 5 && id.equals(strings[0]) '
+    - '------------INS Assignment@@setEn=strings @TO@ ExpressionStatement@@Assignment:setEn=strings '
+    - '---------------INS SimpleName@@setEn @TO@ Assignment@@setEn=strings '
+    - '---------------INS Operator@@= @TO@ Assignment@@setEn=strings '
+    - '---------------INS SimpleName@@strings @TO@ Assignment@@setEn=strings '
+    - '---INS EnhancedForStatement@@String[] strings, SimpleName:zoneStringsLoc @TO@
+      IfStatement@@InfixExpression:strings != null && strings.length == 5 && id.equals(strings[0]) '
+    - '------MOV SingleVariableDeclaration@@String[] strings @TO@ EnhancedForStatement@@String[]
+      strings, SimpleName:zoneStringsLoc '
+    - '------INS SimpleName@@zoneStringsLoc @TO@ EnhancedForStatement@@String[] strings,
+      SimpleName:zoneStringsLoc '
+    - '------INS IfStatement@@InfixExpression:strings != null && strings.length ==
+      5 && id.equals(strings[0]) @TO@ EnhancedForStatement@@String[] strings, SimpleName:zoneStringsLoc '
+    - '---------MOV InfixExpression@@strings != null && strings.length == 5 && id.equals(strings[0])
+      @TO@ IfStatement@@InfixExpression:strings != null && strings.length == 5 &&
+      id.equals(strings[0]) '
+    - '---------MOV ExpressionStatement@@Assignment:setLoc=strings @TO@ IfStatement@@InfixExpression:strings
+      != null && strings.length == 5 && id.equals(strings[0]) '
+    - '---UPD IfStatement@@MethodInvocation:setLoc[2].equals(setLoc[4]) @TO@ InfixExpression:setEn
+      != null && setLoc != null '
+    - '------UPD MethodInvocation@@setLoc[2].equals(setLoc[4]) @TO@ setEn[2].equals(setEn[4]) '
+    - '---------UPD ArrayAccess@@setLoc[2] @TO@ setEn[2] '
+    - '------------UPD SimpleName@@setLoc @TO@ setEn '
+    - '---------UPD SimpleName@@MethodName:equals:[setLoc[4]] @TO@ MethodName:equals:[setEn[4]] '
+    - '------------UPD ArrayAccess@@setLoc[4] @TO@ setEn[4] '
+    - '---------------UPD SimpleName@@setLoc @TO@ setEn '
+    - '------INS InfixExpression@@setEn != null && setLoc != null @TO@ IfStatement@@MethodInvocation:setLoc[2].equals(setLoc[4]) '
+    - '---------INS InfixExpression@@setEn != null @TO@ InfixExpression@@setEn !=
+      null && setLoc != null '
+    - '------------INS SimpleName@@setEn @TO@ InfixExpression@@setEn != null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@setEn != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@setEn != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@setEn != null && setLoc !=
+      null '
+    - '---------INS InfixExpression@@setLoc != null @TO@ InfixExpression@@setEn !=
+      null && setLoc != null '
+    - '------------INS SimpleName@@setLoc @TO@ InfixExpression@@setLoc != null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@setLoc != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@setLoc != null '
+    - '------INS ExpressionStatement@@MethodInvocation:byNameKeyCache.put(setEn[2],new
+      String[]{setLoc[2],setLoc[1]}) @TO@ IfStatement@@MethodInvocation:setLoc[2].equals(setLoc[4]) '
+    - '---------INS MethodInvocation@@byNameKeyCache.put(setEn[2],new String[]{setLoc[2],setLoc[1]})
+      @TO@ ExpressionStatement@@MethodInvocation:byNameKeyCache.put(setEn[2],new String[]{setLoc[2],setLoc[1]}) '
+    - '------------INS SimpleName@@Name:byNameKeyCache @TO@ MethodInvocation@@byNameKeyCache.put(setEn[2],new
+      String[]{setLoc[2],setLoc[1]}) '
+    - '------------INS SimpleName@@MethodName:put:[setEn[2], new String[]{setLoc[2],setLoc[1]}]
+      @TO@ MethodInvocation@@byNameKeyCache.put(setEn[2],new String[]{setLoc[2],setLoc[1]}) '
+    - '---------------INS ArrayAccess@@setEn[2] @TO@ SimpleName@@MethodName:put:[setEn[2],
+      new String[]{setLoc[2],setLoc[1]}] '
+    - '------------------INS SimpleName@@setEn @TO@ ArrayAccess@@setEn[2] '
+    - '------------------INS NumberLiteral@@2 @TO@ ArrayAccess@@setEn[2] '
+    - '---------------INS ArrayCreation@@new String[]{setLoc[2],setLoc[1]} @TO@ SimpleName@@MethodName:put:[setEn[2],
+      new String[]{setLoc[2],setLoc[1]}] '
+    - '------------------INS ArrayType@@String[] @TO@ ArrayCreation@@new String[]{setLoc[2],setLoc[1]} '
+    - '---------------------INS SimpleType@@String @TO@ ArrayType@@String[] '
+    - '------------------INS ArrayInitializer@@{setLoc[2],setLoc[1]} @TO@ ArrayCreation@@new
+      String[]{setLoc[2],setLoc[1]} '
+    - '---------------------INS ArrayAccess@@setLoc[2] @TO@ ArrayInitializer@@{setLoc[2],setLoc[1]} '
+    - '------------------------INS SimpleName@@setLoc @TO@ ArrayAccess@@setLoc[2] '
+    - '------------------------INS NumberLiteral@@2 @TO@ ArrayAccess@@setLoc[2] '
+    - '---------------------INS ArrayAccess@@setLoc[1] @TO@ ArrayInitializer@@{setLoc[2],setLoc[1]} '
+    - '------------------------INS SimpleName@@setLoc @TO@ ArrayAccess@@setLoc[1] '
+    - '------------------------INS NumberLiteral@@1 @TO@ ArrayAccess@@setLoc[1] '
+    - '------INS IfStatement@@MethodInvocation:setEn[2].equals(setEn[4]) @TO@ IfStatement@@MethodInvocation:setLoc[2].equals(setLoc[4]) '
+    - '---------MOV MethodInvocation@@setLoc[2].equals(setLoc[4]) @TO@ IfStatement@@MethodInvocation:setEn[2].equals(setEn[4]) '
+    - '---------MOV ExpressionStatement@@MethodInvocation:byNameKeyCache.put(setLoc[4],new
+      String[]{setLoc[4],setLoc[3]}) @TO@ IfStatement@@MethodInvocation:setEn[2].equals(setEn[4]) '
+    - '---------INS ExpressionStatement@@MethodInvocation:byNameKeyCache.put(setEn[4],new
+      String[]{setLoc[4],setLoc[3]}) @TO@ IfStatement@@MethodInvocation:setEn[2].equals(setEn[4]) '
+    - '------------INS MethodInvocation@@byNameKeyCache.put(setEn[4],new String[]{setLoc[4],setLoc[3]})
+      @TO@ ExpressionStatement@@MethodInvocation:byNameKeyCache.put(setEn[4],new String[]{setLoc[4],setLoc[3]}) '
+    - '---------------INS SimpleName@@Name:byNameKeyCache @TO@ MethodInvocation@@byNameKeyCache.put(setEn[4],new
+      String[]{setLoc[4],setLoc[3]}) '
+    - '---------------INS SimpleName@@MethodName:put:[setEn[4], new String[]{setLoc[4],setLoc[3]}]
+      @TO@ MethodInvocation@@byNameKeyCache.put(setEn[4],new String[]{setLoc[4],setLoc[3]}) '
+    - '------------------INS ArrayAccess@@setEn[4] @TO@ SimpleName@@MethodName:put:[setEn[4],
+      new String[]{setLoc[4],setLoc[3]}] '
+    - '---------------------INS SimpleName@@setEn @TO@ ArrayAccess@@setEn[4] '
+    - '---------------------INS NumberLiteral@@4 @TO@ ArrayAccess@@setEn[4] '
+    - '------------------INS ArrayCreation@@new String[]{setLoc[4],setLoc[3]} @TO@
+      SimpleName@@MethodName:put:[setEn[4], new String[]{setLoc[4],setLoc[3]}] '
+    - '---------------------INS ArrayType@@String[] @TO@ ArrayCreation@@new String[]{setLoc[4],setLoc[3]} '
+    - '------------------------INS SimpleType@@String @TO@ ArrayType@@String[] '
+    - '---------------------INS ArrayInitializer@@{setLoc[4],setLoc[3]} @TO@ ArrayCreation@@new
+      String[]{setLoc[4],setLoc[3]} '
+    - '------------------------INS ArrayAccess@@setLoc[4] @TO@ ArrayInitializer@@{setLoc[4],setLoc[3]} '
+    - '---------------------------INS SimpleName@@setLoc @TO@ ArrayAccess@@setLoc[4] '
+    - '---------------------------INS NumberLiteral@@4 @TO@ ArrayAccess@@setLoc[4] '
+    - '------------------------INS ArrayAccess@@setLoc[3] @TO@ ArrayInitializer@@{setLoc[4],setLoc[3]} '
+    - '---------------------------INS SimpleName@@setLoc @TO@ ArrayAccess@@setLoc[3] '
+    - '---------------------------INS NumberLiteral@@3 @TO@ ArrayAccess@@setLoc[3] '
+    - '---DEL BreakStatement@@ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:strings != null && strings.length == 5 &&
+      id.equals(strings[0]) @TO@ MethodDeclaration@@private, synchronized, @@String[],
+      MethodName:getNameSet, @@Argus:Locale+locale+String+id+String+nameKey+ '
+  repair_actions_cnt: 3

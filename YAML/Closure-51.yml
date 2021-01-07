@@ -1,0 +1,108 @@
+1 bug_id: Closure-51
+2 src folder:
+  name of src folder: src
+  number of files: 421
+  number of java files: 407
+  number of src classes: 1328
+  number of test classes: 218
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CodePrinterTest#testIssue582
+  failing tests:
+  - com.google.javascript.jscomp.CodePrinterTest
+  number of all test cases: 7287
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.003
+  purification via delta debugging: 166.794
+  repair actions extraction: 0.923
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CodePrinterTest#testIssue582: 1380
+  fixed:
+    com.google.javascript.jscomp.CodePrinterTest#testIssue582: 1375
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_51/src/com/google/javascript/jscomp/CodeConsumer.java\t\
+    2020-10-23 06:34:12.245607190 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_51/purify/patch/com/google/javascript/jscomp/CodeConsumer.java\t\
+    2020-10-23 06:34:12.245607190 -0400\n@@ -238,7 +238,7 @@\n       add(\" \");\n\
+    \     }\n \n-    if ((long) x == x) {\n+    if ((long) x == x && !isNegativeZero(x))\
+    \ {\n       long value = (long) x;\n       long mantissa = value;\n       int\
+    \ exp = 0;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_51/src/com/google/javascript/jscomp/CodeConsumer.java\t\
+    2020-10-23 06:37:27.015245128 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_51/purify/purified/com/google/javascript/jscomp/CodeConsumer.java\t\
+    2020-10-23 06:37:27.015245128 -0400\n@@ -238,7 +238,7 @@\n       add(\" \");\n\
+    \     }\n \n-    if ((long) x == x) {\n+    if ((long) x == x && !isNegativeZero(x))\
+    \ {\n       long value = (long) x;\n       long mantissa = value;\n       int\
+    \ exp = 0;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CodeConsumer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:(long)x == x @TO@ InfixExpression:(long)x
+      == x && !isNegativeZero(x) '
+    - '---INS InfixExpression@@(long)x == x && !isNegativeZero(x) @TO@ IfStatement@@InfixExpression:(long)x
+      == x '
+    - '------MOV InfixExpression@@(long)x == x @TO@ InfixExpression@@(long)x == x
+      && !isNegativeZero(x) '
+    - '------INS Operator@@&& @TO@ InfixExpression@@(long)x == x && !isNegativeZero(x) '
+    - '------INS PrefixExpression@@!isNegativeZero(x) @TO@ InfixExpression@@(long)x
+      == x && !isNegativeZero(x) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!isNegativeZero(x) '
+    - '---------INS MethodInvocation@@isNegativeZero(x) @TO@ PrefixExpression@@!isNegativeZero(x) '
+    - '------------INS SimpleName@@MethodName:isNegativeZero:[x] @TO@ MethodInvocation@@isNegativeZero(x) '
+    - '---------------INS SimpleName@@x @TO@ SimpleName@@MethodName:isNegativeZero:[x] '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CodeConsumer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:(long)x == x @TO@ InfixExpression:(long)x
+      == x && !isNegativeZero(x) '
+    - '---INS InfixExpression@@(long)x == x && !isNegativeZero(x) @TO@ IfStatement@@InfixExpression:(long)x
+      == x '
+    - '------MOV InfixExpression@@(long)x == x @TO@ InfixExpression@@(long)x == x
+      && !isNegativeZero(x) '
+    - '------INS Operator@@&& @TO@ InfixExpression@@(long)x == x && !isNegativeZero(x) '
+    - '------INS PrefixExpression@@!isNegativeZero(x) @TO@ InfixExpression@@(long)x
+      == x && !isNegativeZero(x) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!isNegativeZero(x) '
+    - '---------INS MethodInvocation@@isNegativeZero(x) @TO@ PrefixExpression@@!isNegativeZero(x) '
+    - '------------INS SimpleName@@MethodName:isNegativeZero:[x] @TO@ MethodInvocation@@isNegativeZero(x) '
+    - '---------------INS SimpleName@@x @TO@ SimpleName@@MethodName:isNegativeZero:[x] '
+  files_cnt: '1'
+  repair_actions_cnt: 1

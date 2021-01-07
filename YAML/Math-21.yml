@@ -1,0 +1,373 @@
+1 bug_id: Math-21
+2 src folder:
+  name of src folder: java
+  number of files: 655
+  number of java files: 654
+  number of src classes: 859
+  number of test classes: 326
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.linear.RectangularCholeskyDecompositionTest#testFullRank
+  - org.apache.commons.math3.linear.RectangularCholeskyDecompositionTest#testMath789
+  failing tests:
+  - org.apache.commons.math3.linear.RectangularCholeskyDecompositionTest
+  number of all test cases: 4168
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.005
+  purification via delta debugging: 1006.126
+  repair actions extraction: 0.781
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.linear.RectangularCholeskyDecompositionTest#testFullRank: 207
+    org.apache.commons.math3.linear.RectangularCholeskyDecompositionTest#testMath789: 212
+  fixed:
+    org.apache.commons.math3.linear.RectangularCholeskyDecompositionTest#testFullRank: 210
+    org.apache.commons.math3.linear.RectangularCholeskyDecompositionTest#testMath789: 215
+6 reduced lines:
+  by all: 8
+  by coverage: 0
+  by delta debugging: 8
+  covAdd: 13
+  covDel: 10
+  cov_patch_lines: 23
+  delta_patch_lines: 15
+  oriAdd: 13
+  oriDel: 10
+  ori_patch_lines: 23
+  purAdd: 11
+  purDel: 4
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 6
+  original: 6
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 37
+  failFail: 15
+  passed: 5
+  total: 57
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_21/src/main/java/org/apache/commons/math3/linear/RectangularCholeskyDecomposition.java\t\
+    2020-10-21 05:44:29.180277352 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_21/purify/patch/org/apache/commons/math3/linear/RectangularCholeskyDecomposition.java\t\
+    2020-10-21 05:44:29.180277352 -0400\n@@ -66,7 +66,6 @@\n         final double[][]\
+    \ c = matrix.getData();\n         final double[][] b = new double[order][order];\n\
+    \ \n-        int[] swap  = new int[order];\n         int[] index = new int[order];\n\
+    \         for (int i = 0; i < order; ++i) {\n             index[i] = i;\n@@ -76,21\
+    \ +75,24 @@\n         for (boolean loop = true; loop;) {\n \n             // find\
+    \ maximal diagonal element\n-            swap[r] = r;\n+            int swapR\
+    \ = r;\n             for (int i = r + 1; i < order; ++i) {\n                 int\
+    \ ii  = index[i];\n-                int isi = index[swap[i]];\n-             \
+    \   if (c[ii][ii] > c[isi][isi]) {\n-                    swap[r] = i;\n+     \
+    \           int isr = index[swapR];\n+                if (c[ii][ii] > c[isr][isr])\
+    \ {\n+                    swapR = i;\n                 }\n             }\n \n\
+    \ \n             // swap elements\n-            if (swap[r] != r) {\n-       \
+    \         int tmp = index[r];\n-                index[r] = index[swap[r]];\n-\
+    \                index[swap[r]] = tmp;\n+            if (swapR != r) {\n+    \
+    \            final int tmpIndex    = index[r];\n+                index[r]    \
+    \          = index[swapR];\n+                index[swapR]          = tmpIndex;\n\
+    +                final double[] tmpRow = b[r];\n+                b[r]        \
+    \          = b[swapR];\n+                b[swapR]              = tmpRow;\n   \
+    \          }\n \n             // check diagonal element\n@@ -121,11 +123,12 @@\n\
+    \                 final double sqrt = FastMath.sqrt(c[ir][ir]);\n            \
+    \     b[r][r] = sqrt;\n                 final double inverse  = 1 / sqrt;\n+ \
+    \               final double inverse2 = 1 / c[ir][ir];\n                 for (int\
+    \ i = r + 1; i < order; ++i) {\n                     final int ii = index[i];\n\
+    \                     final double e = inverse * c[ii][ir];\n                \
+    \     b[i][r] = e;\n-                    c[ii][ii] -= e * e;\n+              \
+    \      c[ii][ii] -= c[ii][ir] * c[ii][ir] * inverse2;\n                     for\
+    \ (int j = r + 1; j < i; ++j) {\n                         final int ij = index[j];\n\
+    \                         final double f = c[ii][ij] - e * b[j][r];"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_21/src/main/java/org/apache/commons/math3/linear/RectangularCholeskyDecomposition.java\t\
+    2020-10-21 06:01:32.805907783 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_21/purify/purified/org/apache/commons/math3/linear/RectangularCholeskyDecomposition.java\t\
+    2020-10-21 06:01:32.805907783 -0400\n@@ -77,20 +77,27 @@\n \n             // find\
+    \ maximal diagonal element\n             swap[r] = r;\n+            int swapR\
+    \ = r;\n             for (int i = r + 1; i < order; ++i) {\n                 int\
+    \ ii  = index[i];\n                 int isi = index[swap[i]];\n-             \
+    \   if (c[ii][ii] > c[isi][isi]) {\n                     swap[r] = i;\n+     \
+    \           int isr = index[swapR];\n+                if (c[ii][ii] > c[isr][isr])\
+    \ {\n+                    swapR = i;\n                 }\n             }\n \n\
+    \ \n             // swap elements\n-            if (swap[r] != r) {\n        \
+    \         int tmp = index[r];\n-                index[r] = index[swap[r]];\n-\
+    \                index[swap[r]] = tmp;\n+            if (swapR != r) {\n+    \
+    \            final int tmpIndex    = index[r];\n+                index[r]    \
+    \          = index[swapR];\n+                index[swapR]          = tmpIndex;\n\
+    +                final double[] tmpRow = b[r];\n+                b[r]        \
+    \          = b[swapR];\n+                b[swapR]              = tmpRow;\n   \
+    \          }\n \n             // check diagonal element"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/linear/RectangularCholeskyDecomposition:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@int[] swap=new int[order]; '
+    - '---DEL ArrayType@@int[] '
+    - '------DEL PrimitiveType@@int '
+    - '---DEL VariableDeclarationFragment@@swap=new int[order] '
+    - '------DEL SimpleName@@swap '
+    - '------DEL ArrayCreation@@new int[order] '
+    - '---------DEL ArrayType@@int[] '
+    - '------------DEL PrimitiveType@@int '
+    - '---------DEL SimpleName@@order '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int swapR=r; @TO@ ForStatement@@[boolean
+      loop=true];loop; [] '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int swapR=r; '
+    - '---INS VariableDeclarationFragment@@swapR=r @TO@ VariableDeclarationStatement@@int
+      swapR=r; '
+    - '------INS SimpleName@@swapR @TO@ VariableDeclarationFragment@@swapR=r '
+    - '------INS SimpleName@@r @TO@ VariableDeclarationFragment@@swapR=r '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:swap[r]=r '
+    - '---DEL Assignment@@swap[r]=r '
+    - '------DEL ArrayAccess@@swap[r] '
+    - '---------DEL SimpleName@@swap '
+    - '---------DEL SimpleName@@r '
+    - '------DEL Operator@@= '
+    - '------DEL SimpleName@@r '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int isi=index[swap[i]]; @TO@ int isr=index[swapR]; '
+    - '---UPD VariableDeclarationFragment@@isi=index[swap[i]] @TO@ isr=index[swapR] '
+    - '------UPD SimpleName@@isi @TO@ isr '
+    - '------UPD ArrayAccess@@index[swap[i]] @TO@ index[swapR] '
+    - '---------MOV SimpleName@@swap @TO@ ArrayAccess@@index[swap[i]] '
+    - '---------DEL ArrayAccess@@swap[i] '
+    - '------------DEL SimpleName@@i '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:c[ii][ii] > c[isi][isi] @TO@ InfixExpression:c[ii][ii]
+      > c[isr][isr] '
+    - '---UPD InfixExpression@@c[ii][ii] > c[isi][isi] @TO@ c[ii][ii] > c[isr][isr] '
+    - '------UPD ArrayAccess@@c[isi][isi] @TO@ c[isr][isr] '
+    - '---------UPD ArrayAccess@@c[isi] @TO@ c[isr] '
+    - '------------UPD SimpleName@@isi @TO@ isr '
+    - '---------UPD SimpleName@@isi @TO@ isr '
+    - '---UPD ExpressionStatement@@Assignment:swap[r]=i @TO@ Assignment:swapR=i '
+    - '------UPD Assignment@@swap[r]=i @TO@ swapR=i '
+    - '---------INS SimpleName@@swapR @TO@ Assignment@@swap[r]=i '
+    - '---------DEL ArrayAccess@@swap[r] '
+    - '------------DEL SimpleName@@swap '
+    - '------------DEL SimpleName@@r '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:swap[r] != r @TO@ InfixExpression:swapR !=
+      r '
+    - '---UPD InfixExpression@@swap[r] != r @TO@ swapR != r '
+    - '------INS SimpleName@@swapR @TO@ InfixExpression@@swap[r] != r '
+    - '------DEL ArrayAccess@@swap[r] '
+    - '---------DEL SimpleName@@swap '
+    - '---------DEL SimpleName@@r '
+    - '---UPD VariableDeclarationStatement@@int tmp=index[r]; @TO@ final int tmpIndex=index[r]; '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@int tmp=index[r]; '
+    - '------UPD VariableDeclarationFragment@@tmp=index[r] @TO@ tmpIndex=index[r] '
+    - '---------UPD SimpleName@@tmp @TO@ tmpIndex '
+    - '---UPD ExpressionStatement@@Assignment:index[r]=index[swap[r]] @TO@ Assignment:index[r]=index[swapR] '
+    - '------UPD Assignment@@index[r]=index[swap[r]] @TO@ index[r]=index[swapR] '
+    - '---------UPD ArrayAccess@@index[swap[r]] @TO@ index[swapR] '
+    - '------------MOV SimpleName@@swap @TO@ ArrayAccess@@index[swap[r]] '
+    - '------------DEL ArrayAccess@@swap[r] '
+    - '---------------DEL SimpleName@@r '
+    - '---UPD ExpressionStatement@@Assignment:index[swap[r]]=tmp @TO@ Assignment:index[swapR]=tmpIndex '
+    - '------UPD Assignment@@index[swap[r]]=tmp @TO@ index[swapR]=tmpIndex '
+    - '---------UPD ArrayAccess@@index[swap[r]] @TO@ index[swapR] '
+    - '------------MOV SimpleName@@swap @TO@ ArrayAccess@@index[swap[r]] '
+    - '------------DEL ArrayAccess@@swap[r] '
+    - '---------------DEL SimpleName@@r '
+    - '---------UPD SimpleName@@tmp @TO@ tmpIndex '
+    - '---INS VariableDeclarationStatement@@final double[] tmpRow=b[r]; @TO@ IfStatement@@InfixExpression:swap[r]
+      != r '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double[]
+      tmpRow=b[r]; '
+    - '------INS ArrayType@@double[] @TO@ VariableDeclarationStatement@@final double[]
+      tmpRow=b[r]; '
+    - '---------INS PrimitiveType@@double @TO@ ArrayType@@double[] '
+    - '------INS VariableDeclarationFragment@@tmpRow=b[r] @TO@ VariableDeclarationStatement@@final
+      double[] tmpRow=b[r]; '
+    - '---------INS SimpleName@@tmpRow @TO@ VariableDeclarationFragment@@tmpRow=b[r] '
+    - '---------INS ArrayAccess@@b[r] @TO@ VariableDeclarationFragment@@tmpRow=b[r] '
+    - '------------INS SimpleName@@b @TO@ ArrayAccess@@b[r] '
+    - '------------INS SimpleName@@r @TO@ ArrayAccess@@b[r] '
+    - '---INS ExpressionStatement@@Assignment:b[r]=b[swapR] @TO@ IfStatement@@InfixExpression:swap[r]
+      != r '
+    - '------INS Assignment@@b[r]=b[swapR] @TO@ ExpressionStatement@@Assignment:b[r]=b[swapR] '
+    - '---------INS ArrayAccess@@b[r] @TO@ Assignment@@b[r]=b[swapR] '
+    - '------------INS SimpleName@@b @TO@ ArrayAccess@@b[r] '
+    - '------------INS SimpleName@@r @TO@ ArrayAccess@@b[r] '
+    - '---------INS Operator@@= @TO@ Assignment@@b[r]=b[swapR] '
+    - '---------INS ArrayAccess@@b[swapR] @TO@ Assignment@@b[r]=b[swapR] '
+    - '------------INS SimpleName@@b @TO@ ArrayAccess@@b[swapR] '
+    - '------------INS SimpleName@@swapR @TO@ ArrayAccess@@b[swapR] '
+    - '---INS ExpressionStatement@@Assignment:b[swapR]=tmpRow @TO@ IfStatement@@InfixExpression:swap[r]
+      != r '
+    - '------INS Assignment@@b[swapR]=tmpRow @TO@ ExpressionStatement@@Assignment:b[swapR]=tmpRow '
+    - '---------INS ArrayAccess@@b[swapR] @TO@ Assignment@@b[swapR]=tmpRow '
+    - '------------INS SimpleName@@b @TO@ ArrayAccess@@b[swapR] '
+    - '------------INS SimpleName@@swapR @TO@ ArrayAccess@@b[swapR] '
+    - '---------INS Operator@@= @TO@ Assignment@@b[swapR]=tmpRow '
+    - '---------INS SimpleName@@tmpRow @TO@ Assignment@@b[swapR]=tmpRow '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double inverse2=1 / c[ir][ir]; @TO@
+      IfStatement@@InfixExpression:c[ir][ir] < small '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double inverse2=1
+      / c[ir][ir]; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      inverse2=1 / c[ir][ir]; '
+    - '---INS VariableDeclarationFragment@@inverse2=1 / c[ir][ir] @TO@ VariableDeclarationStatement@@final
+      double inverse2=1 / c[ir][ir]; '
+    - '------INS SimpleName@@inverse2 @TO@ VariableDeclarationFragment@@inverse2=1
+      / c[ir][ir] '
+    - '------INS InfixExpression@@1 / c[ir][ir] @TO@ VariableDeclarationFragment@@inverse2=1
+      / c[ir][ir] '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@1 / c[ir][ir] '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@1 / c[ir][ir] '
+    - '---------INS ArrayAccess@@c[ir][ir] @TO@ InfixExpression@@1 / c[ir][ir] '
+    - '------------INS ArrayAccess@@c[ir] @TO@ ArrayAccess@@c[ir][ir] '
+    - '---------------INS SimpleName@@c @TO@ ArrayAccess@@c[ir] '
+    - '---------------INS SimpleName@@ir @TO@ ArrayAccess@@c[ir] '
+    - '------------INS SimpleName@@ir @TO@ ArrayAccess@@c[ir][ir] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:c[ii][ii]-=e * e @TO@ Assignment:c[ii][ii]-=c[ii][ir]
+      * c[ii][ir] * inverse2 '
+    - '---UPD Assignment@@c[ii][ii]-=e * e @TO@ c[ii][ii]-=c[ii][ir] * c[ii][ir] *
+      inverse2 '
+    - '------UPD InfixExpression@@e * e @TO@ c[ii][ir] * c[ii][ir] * inverse2 '
+    - '---------DEL SimpleName@@e '
+    - '---------DEL SimpleName@@e '
+    - '---------INS ArrayAccess@@c[ii][ir] @TO@ InfixExpression@@e * e '
+    - '------------INS ArrayAccess@@c[ii] @TO@ ArrayAccess@@c[ii][ir] '
+    - '---------------INS SimpleName@@c @TO@ ArrayAccess@@c[ii] '
+    - '---------------INS SimpleName@@ii @TO@ ArrayAccess@@c[ii] '
+    - '------------INS SimpleName@@ir @TO@ ArrayAccess@@c[ii][ir] '
+    - '---------INS ArrayAccess@@c[ii][ir] @TO@ InfixExpression@@e * e '
+    - '------------INS ArrayAccess@@c[ii] @TO@ ArrayAccess@@c[ii][ir] '
+    - '---------------INS SimpleName@@c @TO@ ArrayAccess@@c[ii] '
+    - '---------------INS SimpleName@@ii @TO@ ArrayAccess@@c[ii] '
+    - '------------INS SimpleName@@ir @TO@ ArrayAccess@@c[ii][ir] '
+    - '---------INS SimpleName@@inverse2 @TO@ InfixExpression@@e * e '
+  repair_actions_cnt: 8
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/linear/RectangularCholeskyDecomposition:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int swapR=r; @TO@ ForStatement@@[boolean
+      loop=true];loop; [] '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int swapR=r; '
+    - '---INS VariableDeclarationFragment@@swapR=r @TO@ VariableDeclarationStatement@@int
+      swapR=r; '
+    - '------INS SimpleName@@swapR @TO@ VariableDeclarationFragment@@swapR=r '
+    - '------INS SimpleName@@r @TO@ VariableDeclarationFragment@@swapR=r '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:c[ii][ii] > c[isi][isi] @TO@ InfixExpression:c[ii][ii]
+      > c[isr][isr] '
+    - '---UPD InfixExpression@@c[ii][ii] > c[isi][isi] @TO@ c[ii][ii] > c[isr][isr] '
+    - '------UPD ArrayAccess@@c[isi][isi] @TO@ c[isr][isr] '
+    - '---------UPD ArrayAccess@@c[isi] @TO@ c[isr] '
+    - '------------UPD SimpleName@@isi @TO@ isr '
+    - '---------UPD SimpleName@@isi @TO@ isr '
+    - '---INS ExpressionStatement@@Assignment:swapR=i @TO@ IfStatement@@InfixExpression:c[ii][ii]
+      > c[isi][isi] '
+    - '------INS Assignment@@swapR=i @TO@ ExpressionStatement@@Assignment:swapR=i '
+    - '---------INS SimpleName@@swapR @TO@ Assignment@@swapR=i '
+    - '---------INS Operator@@= @TO@ Assignment@@swapR=i '
+    - '---------INS SimpleName@@i @TO@ Assignment@@swapR=i '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:swap[r]=i @TO@ ForStatement@@[int i=r +
+      1];i < order; [++i] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int isr=index[swapR]; @TO@ ForStatement@@[int
+      i=r + 1];i < order; [++i] '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int isr=index[swapR]; '
+    - '---INS VariableDeclarationFragment@@isr=index[swapR] @TO@ VariableDeclarationStatement@@int
+      isr=index[swapR]; '
+    - '------INS SimpleName@@isr @TO@ VariableDeclarationFragment@@isr=index[swapR] '
+    - '------INS ArrayAccess@@index[swapR] @TO@ VariableDeclarationFragment@@isr=index[swapR] '
+    - '---------INS SimpleName@@index @TO@ ArrayAccess@@index[swapR] '
+    - '---------INS SimpleName@@swapR @TO@ ArrayAccess@@index[swapR] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:swap[r] != r @TO@ InfixExpression:swapR !=
+      r '
+    - '---UPD InfixExpression@@swap[r] != r @TO@ swapR != r '
+    - '------DEL ArrayAccess@@swap[r] '
+    - '---------DEL SimpleName@@swap '
+    - '---------DEL SimpleName@@r '
+    - '------INS SimpleName@@swapR @TO@ InfixExpression@@swap[r] != r '
+    - '---UPD ExpressionStatement@@Assignment:index[r]=index[swap[r]] @TO@ Assignment:index[r]=index[swapR] '
+    - '------UPD Assignment@@index[r]=index[swap[r]] @TO@ index[r]=index[swapR] '
+    - '---------UPD ArrayAccess@@index[swap[r]] @TO@ index[swapR] '
+    - '------------MOV SimpleName@@swap @TO@ ArrayAccess@@index[swap[r]] '
+    - '------------DEL ArrayAccess@@swap[r] '
+    - '---------------DEL SimpleName@@r '
+    - '---UPD ExpressionStatement@@Assignment:index[swap[r]]=tmp @TO@ Assignment:index[swapR]=tmpIndex '
+    - '------UPD Assignment@@index[swap[r]]=tmp @TO@ index[swapR]=tmpIndex '
+    - '---------UPD ArrayAccess@@index[swap[r]] @TO@ index[swapR] '
+    - '------------MOV SimpleName@@swap @TO@ ArrayAccess@@index[swap[r]] '
+    - '------------DEL ArrayAccess@@swap[r] '
+    - '---------------DEL SimpleName@@r '
+    - '---------UPD SimpleName@@tmp @TO@ tmpIndex '
+    - '---INS VariableDeclarationStatement@@final int tmpIndex=index[r]; @TO@ IfStatement@@InfixExpression:swap[r]
+      != r '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final int tmpIndex=index[r]; '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@final int tmpIndex=index[r]; '
+    - '------INS VariableDeclarationFragment@@tmpIndex=index[r] @TO@ VariableDeclarationStatement@@final
+      int tmpIndex=index[r]; '
+    - '---------INS SimpleName@@tmpIndex @TO@ VariableDeclarationFragment@@tmpIndex=index[r] '
+    - '---------INS ArrayAccess@@index[r] @TO@ VariableDeclarationFragment@@tmpIndex=index[r] '
+    - '------------INS SimpleName@@index @TO@ ArrayAccess@@index[r] '
+    - '------------INS SimpleName@@r @TO@ ArrayAccess@@index[r] '
+    - '---INS VariableDeclarationStatement@@final double[] tmpRow=b[r]; @TO@ IfStatement@@InfixExpression:swap[r]
+      != r '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double[]
+      tmpRow=b[r]; '
+    - '------INS ArrayType@@double[] @TO@ VariableDeclarationStatement@@final double[]
+      tmpRow=b[r]; '
+    - '---------INS PrimitiveType@@double @TO@ ArrayType@@double[] '
+    - '------INS VariableDeclarationFragment@@tmpRow=b[r] @TO@ VariableDeclarationStatement@@final
+      double[] tmpRow=b[r]; '
+    - '---------INS SimpleName@@tmpRow @TO@ VariableDeclarationFragment@@tmpRow=b[r] '
+    - '---------INS ArrayAccess@@b[r] @TO@ VariableDeclarationFragment@@tmpRow=b[r] '
+    - '------------INS SimpleName@@b @TO@ ArrayAccess@@b[r] '
+    - '------------INS SimpleName@@r @TO@ ArrayAccess@@b[r] '
+    - '---INS ExpressionStatement@@Assignment:b[r]=b[swapR] @TO@ IfStatement@@InfixExpression:swap[r]
+      != r '
+    - '------INS Assignment@@b[r]=b[swapR] @TO@ ExpressionStatement@@Assignment:b[r]=b[swapR] '
+    - '---------INS ArrayAccess@@b[r] @TO@ Assignment@@b[r]=b[swapR] '
+    - '------------INS SimpleName@@b @TO@ ArrayAccess@@b[r] '
+    - '------------INS SimpleName@@r @TO@ ArrayAccess@@b[r] '
+    - '---------INS Operator@@= @TO@ Assignment@@b[r]=b[swapR] '
+    - '---------INS ArrayAccess@@b[swapR] @TO@ Assignment@@b[r]=b[swapR] '
+    - '------------INS SimpleName@@b @TO@ ArrayAccess@@b[swapR] '
+    - '------------INS SimpleName@@swapR @TO@ ArrayAccess@@b[swapR] '
+    - '---INS ExpressionStatement@@Assignment:b[swapR]=tmpRow @TO@ IfStatement@@InfixExpression:swap[r]
+      != r '
+    - '------INS Assignment@@b[swapR]=tmpRow @TO@ ExpressionStatement@@Assignment:b[swapR]=tmpRow '
+    - '---------INS ArrayAccess@@b[swapR] @TO@ Assignment@@b[swapR]=tmpRow '
+    - '------------INS SimpleName@@b @TO@ ArrayAccess@@b[swapR] '
+    - '------------INS SimpleName@@swapR @TO@ ArrayAccess@@b[swapR] '
+    - '---------INS Operator@@= @TO@ Assignment@@b[swapR]=tmpRow '
+    - '---------INS SimpleName@@tmpRow @TO@ Assignment@@b[swapR]=tmpRow '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@int tmp=index[r]; @TO@ ForStatement@@[boolean
+      loop=true];loop; [] '
+  repair_actions_cnt: 6

@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_72/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java	2020-10-21 13:18:21.364156635 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_72/purify/purified/org/apache/commons/math/analysis/solvers/BrentSolver.java	2020-10-21 13:18:21.364156635 -0400
+@@ -113,6 +113,7 @@
+         double yMin = f.value(min);
+         if (Math.abs(yMin) <= functionValueAccuracy) {
+             setResult(yMin, 0);
++            setResult(min, 0);
+             return result;
+         }
+ 
+@@ -125,6 +126,7 @@
+         double yMax = f.value(max);
+         if (Math.abs(yMax) <= functionValueAccuracy) {
+             setResult(yMax, 0);
++            setResult(max, 0);
+             return result;
+         }
+ 

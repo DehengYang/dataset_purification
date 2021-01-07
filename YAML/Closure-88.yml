@@ -1,0 +1,210 @@
+1 bug_id: Closure-88
+2 src folder:
+  name of src folder: src
+  number of files: 369
+  number of java files: 357
+  number of src classes: 1155
+  number of test classes: 184
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CommandLineRunnerTest#testIssue297
+  - com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297e
+  - com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297d
+  - com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297f
+  - com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297a
+  - com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297c
+  - com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297b
+  failing tests:
+  - com.google.javascript.jscomp.CommandLineRunnerTest
+  - com.google.javascript.jscomp.DeadAssignmentsEliminationTest
+  number of all test cases: 6322
+  number of failing test cases: 7
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.582
+  purification via delta debugging: 337.779
+  repair actions extraction: 1.064
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testIssue297: 6808
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297a: 3112
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297b: 3080
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297c: 3044
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297d: 3021
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297e: 3018
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297f: 3017
+  fixed:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testIssue297: 6718
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297a: 3001
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297b: 3005
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297c: 2971
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297d: 2949
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297e: 2946
+    com.google.javascript.jscomp.DeadAssignmentsEliminationTest#testIssue297f: 2945
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 6
+  covDel: 0
+  cov_patch_lines: 6
+  delta_patch_lines: 5
+  oriAdd: 6
+  oriDel: 0
+  ori_patch_lines: 6
+  purAdd: 5
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 8
+  failFail: 2
+  passed: 1
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_88/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java\t\
+    2020-10-23 11:32:28.407692445 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_88/purify/patch/com/google/javascript/jscomp/DeadAssignmentsElimination.java\t\
+    2020-10-23 11:32:28.407692445 -0400\n@@ -324,9 +324,15 @@\n       Node n, String\
+    \ variable) {\n     if (NodeUtil.isName(n) && variable.equals(n.getString()))\
+    \ {\n       if (NodeUtil.isLhs(n, n.getParent())) {\n+        Preconditions.checkState(n.getParent().getType()\
+    \ == Token.ASSIGN);\n         // The expression to which the assignment is made\
+    \ is evaluated before\n         // the RHS is evaluated (normal left to right\
+    \ evaluation) but the KILL\n         // occurs after the RHS is evaluated.\n+\
+    \        Node rhs = n.getNext();\n+        VariableLiveness state = isVariableReadBeforeKill(rhs,\
+    \ variable);\n+        if (state == VariableLiveness.READ) {\n+          return\
+    \ state;\n+        }\n         return VariableLiveness.KILL;\n       } else {\n\
+    \         return VariableLiveness.READ;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_88/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java\t\
+    2020-10-23 11:38:36.758352992 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_88/purify/purified/com/google/javascript/jscomp/DeadAssignmentsElimination.java\t\
+    2020-10-23 11:38:36.746352646 -0400\n@@ -327,6 +327,11 @@\n         // The expression\
+    \ to which the assignment is made is evaluated before\n         // the RHS is\
+    \ evaluated (normal left to right evaluation) but the KILL\n         // occurs\
+    \ after the RHS is evaluated.\n+        Node rhs = n.getNext();\n+        VariableLiveness\
+    \ state = isVariableReadBeforeKill(rhs, variable);\n+        if (state == VariableLiveness.READ)\
+    \ {\n+          return state;\n+        }\n         return VariableLiveness.KILL;\n\
+    \       } else {\n         return VariableLiveness.READ;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/DeadAssignmentsElimination:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:Preconditions.checkState(n.getParent().getType()
+      == Token.ASSIGN) @TO@ IfStatement@@MethodInvocation:NodeUtil.isLhs(n,n.getParent()) '
+    - '---INS MethodInvocation@@Preconditions.checkState(n.getParent().getType() ==
+      Token.ASSIGN) @TO@ ExpressionStatement@@MethodInvocation:Preconditions.checkState(n.getParent().getType()
+      == Token.ASSIGN) '
+    - '------INS SimpleName@@Name:Preconditions @TO@ MethodInvocation@@Preconditions.checkState(n.getParent().getType()
+      == Token.ASSIGN) '
+    - '------INS SimpleName@@MethodName:checkState:[n.getParent().getType() == Token.ASSIGN]
+      @TO@ MethodInvocation@@Preconditions.checkState(n.getParent().getType() == Token.ASSIGN) '
+    - '---------INS InfixExpression@@n.getParent().getType() == Token.ASSIGN @TO@
+      SimpleName@@MethodName:checkState:[n.getParent().getType() == Token.ASSIGN] '
+    - '------------INS MethodInvocation@@n.getParent().getType() @TO@ InfixExpression@@n.getParent().getType()
+      == Token.ASSIGN '
+    - '---------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getParent().getType() '
+    - '---------------INS MethodInvocation@@MethodName:getParent:[] @TO@ MethodInvocation@@n.getParent().getType() '
+    - '---------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@n.getParent().getType() '
+    - '------------INS Operator@@== @TO@ InfixExpression@@n.getParent().getType()
+      == Token.ASSIGN '
+    - '------------INS QualifiedName@@Token.ASSIGN @TO@ InfixExpression@@n.getParent().getType()
+      == Token.ASSIGN '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.ASSIGN '
+    - '---------------INS SimpleName@@ASSIGN @TO@ QualifiedName@@Token.ASSIGN '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Node rhs=n.getNext(); @TO@ IfStatement@@MethodInvocation:NodeUtil.isLhs(n,n.getParent()) '
+    - '---INS SimpleType@@Node @TO@ VariableDeclarationStatement@@Node rhs=n.getNext(); '
+    - '---INS VariableDeclarationFragment@@rhs=n.getNext() @TO@ VariableDeclarationStatement@@Node
+      rhs=n.getNext(); '
+    - '------INS SimpleName@@rhs @TO@ VariableDeclarationFragment@@rhs=n.getNext() '
+    - '------INS MethodInvocation@@n.getNext() @TO@ VariableDeclarationFragment@@rhs=n.getNext() '
+    - '---------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext() '
+    - '---------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@VariableLiveness state=isVariableReadBeforeKill(rhs,variable);
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isLhs(n,n.getParent()) '
+    - '---INS SimpleType@@VariableLiveness @TO@ VariableDeclarationStatement@@VariableLiveness
+      state=isVariableReadBeforeKill(rhs,variable); '
+    - '---INS VariableDeclarationFragment@@state=isVariableReadBeforeKill(rhs,variable)
+      @TO@ VariableDeclarationStatement@@VariableLiveness state=isVariableReadBeforeKill(rhs,variable); '
+    - '------INS SimpleName@@state @TO@ VariableDeclarationFragment@@state=isVariableReadBeforeKill(rhs,variable) '
+    - '------INS MethodInvocation@@isVariableReadBeforeKill(rhs,variable) @TO@ VariableDeclarationFragment@@state=isVariableReadBeforeKill(rhs,variable) '
+    - '---------INS SimpleName@@MethodName:isVariableReadBeforeKill:[rhs, variable]
+      @TO@ MethodInvocation@@isVariableReadBeforeKill(rhs,variable) '
+    - '------------INS SimpleName@@rhs @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[rhs,
+      variable] '
+    - '------------INS SimpleName@@variable @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[rhs,
+      variable] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:state == VariableLiveness.READ @TO@ IfStatement@@MethodInvocation:NodeUtil.isLhs(n,n.getParent()) '
+    - '---INS InfixExpression@@state == VariableLiveness.READ @TO@ IfStatement@@InfixExpression:state
+      == VariableLiveness.READ '
+    - '------INS SimpleName@@state @TO@ InfixExpression@@state == VariableLiveness.READ '
+    - '------INS Operator@@== @TO@ InfixExpression@@state == VariableLiveness.READ '
+    - '------INS QualifiedName@@VariableLiveness.READ @TO@ InfixExpression@@state
+      == VariableLiveness.READ '
+    - '---------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.READ '
+    - '---------INS SimpleName@@READ @TO@ QualifiedName@@VariableLiveness.READ '
+    - '---INS ReturnStatement@@SimpleName:state @TO@ IfStatement@@InfixExpression:state
+      == VariableLiveness.READ '
+    - '------INS SimpleName@@state @TO@ ReturnStatement@@SimpleName:state '
+  files_cnt: '1'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/DeadAssignmentsElimination:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Node rhs=n.getNext(); @TO@ IfStatement@@MethodInvocation:NodeUtil.isLhs(n,n.getParent()) '
+    - '---INS SimpleType@@Node @TO@ VariableDeclarationStatement@@Node rhs=n.getNext(); '
+    - '---INS VariableDeclarationFragment@@rhs=n.getNext() @TO@ VariableDeclarationStatement@@Node
+      rhs=n.getNext(); '
+    - '------INS SimpleName@@rhs @TO@ VariableDeclarationFragment@@rhs=n.getNext() '
+    - '------INS MethodInvocation@@n.getNext() @TO@ VariableDeclarationFragment@@rhs=n.getNext() '
+    - '---------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getNext() '
+    - '---------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@n.getNext() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@VariableLiveness state=isVariableReadBeforeKill(rhs,variable);
+      @TO@ IfStatement@@MethodInvocation:NodeUtil.isLhs(n,n.getParent()) '
+    - '---INS SimpleType@@VariableLiveness @TO@ VariableDeclarationStatement@@VariableLiveness
+      state=isVariableReadBeforeKill(rhs,variable); '
+    - '---INS VariableDeclarationFragment@@state=isVariableReadBeforeKill(rhs,variable)
+      @TO@ VariableDeclarationStatement@@VariableLiveness state=isVariableReadBeforeKill(rhs,variable); '
+    - '------INS SimpleName@@state @TO@ VariableDeclarationFragment@@state=isVariableReadBeforeKill(rhs,variable) '
+    - '------INS MethodInvocation@@isVariableReadBeforeKill(rhs,variable) @TO@ VariableDeclarationFragment@@state=isVariableReadBeforeKill(rhs,variable) '
+    - '---------INS SimpleName@@MethodName:isVariableReadBeforeKill:[rhs, variable]
+      @TO@ MethodInvocation@@isVariableReadBeforeKill(rhs,variable) '
+    - '------------INS SimpleName@@rhs @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[rhs,
+      variable] '
+    - '------------INS SimpleName@@variable @TO@ SimpleName@@MethodName:isVariableReadBeforeKill:[rhs,
+      variable] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:state == VariableLiveness.READ @TO@ IfStatement@@MethodInvocation:NodeUtil.isLhs(n,n.getParent()) '
+    - '---INS InfixExpression@@state == VariableLiveness.READ @TO@ IfStatement@@InfixExpression:state
+      == VariableLiveness.READ '
+    - '------INS SimpleName@@state @TO@ InfixExpression@@state == VariableLiveness.READ '
+    - '------INS Operator@@== @TO@ InfixExpression@@state == VariableLiveness.READ '
+    - '------INS QualifiedName@@VariableLiveness.READ @TO@ InfixExpression@@state
+      == VariableLiveness.READ '
+    - '---------INS SimpleName@@VariableLiveness @TO@ QualifiedName@@VariableLiveness.READ '
+    - '---------INS SimpleName@@READ @TO@ QualifiedName@@VariableLiveness.READ '
+    - '---INS ReturnStatement@@SimpleName:state @TO@ IfStatement@@InfixExpression:state
+      == VariableLiveness.READ '
+    - '------INS SimpleName@@state @TO@ ReturnStatement@@SimpleName:state '
+  files_cnt: '1'
+  repair_actions_cnt: 3

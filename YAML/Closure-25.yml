@@ -1,0 +1,157 @@
+1 bug_id: Closure-25
+2 src folder:
+  name of src folder: src
+  number of files: 418
+  number of java files: 402
+  number of src classes: 1347
+  number of test classes: 223
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeInferenceTest#testBackwardsInferenceNew
+  failing tests:
+  - com.google.javascript.jscomp.TypeInferenceTest
+  number of all test cases: 7523
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.253
+  purification via delta debugging: 596.997
+  repair actions extraction: 2.705
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeInferenceTest#testBackwardsInferenceNew: 3942
+  fixed:
+    com.google.javascript.jscomp.TypeInferenceTest#testBackwardsInferenceNew: 4073
+6 reduced lines:
+  by all: 4
+  by coverage: 0
+  by delta debugging: 4
+  covAdd: 2
+  covDel: 4
+  cov_patch_lines: 6
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 4
+  ori_patch_lines: 6
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  cov: 4
+  original: 4
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 6
+  passed: 2
+  total: 8
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_25/src/com/google/javascript/jscomp/TypeInference.java\t\
+    2020-10-21 20:52:15.507267019 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_25/purify/patch/com/google/javascript/jscomp/TypeInference.java\t\
+    2020-10-21 20:52:15.507267019 -0400\n@@ -1033,9 +1033,9 @@\n   }\n \n   private\
+    \ FlowScope traverseNew(Node n, FlowScope scope) {\n+    scope = traverseChildren(n,\
+    \ scope);\n \n     Node constructor = n.getFirstChild();\n-    scope = traverse(constructor,\
+    \ scope);\n     JSType constructorType = constructor.getJSType();\n     JSType\
+    \ type = null;\n     if (constructorType != null) {\n@@ -1052,13 +1052,11 @@\n\
+    \         }\n         if (ct != null && ct.isConstructor()) {\n           type\
+    \ = ct.getInstanceType();\n+          backwardsInferenceFromCallSite(n, ct);\n\
+    \         }\n       }\n     }\n     n.setJSType(type);\n-    for (Node arg = constructor.getNext();\
+    \ arg != null; arg = arg.getNext()) {\n-      scope = traverse(arg, scope);\n\
+    -    }\n     return scope;\n   }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_25/src/com/google/javascript/jscomp/TypeInference.java\t\
+    2020-10-21 21:02:48.081546116 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_25/purify/purified/com/google/javascript/jscomp/TypeInference.java\t\
+    2020-10-21 21:02:48.081546116 -0400\n@@ -1033,6 +1033,7 @@\n   }\n \n   private\
+    \ FlowScope traverseNew(Node n, FlowScope scope) {\n+    scope = traverseChildren(n,\
+    \ scope);\n \n     Node constructor = n.getFirstChild();\n     scope = traverse(constructor,\
+    \ scope);\n@@ -1052,6 +1053,7 @@\n         }\n         if (ct != null && ct.isConstructor())\
+    \ {\n           type = ct.getInstanceType();\n+          backwardsInferenceFromCallSite(n,\
+    \ ct);\n         }\n       }\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeInference:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:scope=traverseChildren(n,scope) @TO@ MethodDeclaration@@private,
+      @@FlowScope, MethodName:traverseNew, @@Argus:Node+n+FlowScope+scope+ '
+    - '---MOV Assignment@@scope=traverse(arg,scope) @TO@ ExpressionStatement@@Assignment:scope=traverseChildren(n,scope) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:scope=traverse(constructor,scope) '
+    - '---DEL Assignment@@scope=traverse(constructor,scope) '
+    - '------DEL SimpleName@@scope '
+    - '------DEL Operator@@= '
+    - '------DEL MethodInvocation@@traverse(constructor,scope) '
+    - '---------DEL SimpleName@@MethodName:traverse:[constructor, scope] '
+    - '------------DEL SimpleName@@constructor '
+    - '------------DEL SimpleName@@scope '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:backwardsInferenceFromCallSite(n,ct)
+      @TO@ IfStatement@@InfixExpression:ct != null && ct.isConstructor() '
+    - '---INS MethodInvocation@@backwardsInferenceFromCallSite(n,ct) @TO@ ExpressionStatement@@MethodInvocation:backwardsInferenceFromCallSite(n,ct) '
+    - '------INS SimpleName@@MethodName:backwardsInferenceFromCallSite:[n, ct] @TO@
+      MethodInvocation@@backwardsInferenceFromCallSite(n,ct) '
+    - '---------INS SimpleName@@n @TO@ SimpleName@@MethodName:backwardsInferenceFromCallSite:[n,
+      ct] '
+    - '---------INS SimpleName@@ct @TO@ SimpleName@@MethodName:backwardsInferenceFromCallSite:[n,
+      ct] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ForStatement@@[Node arg=constructor.getNext()];arg != null; [arg=arg.getNext()] '
+    - '---DEL VariableDeclarationExpression@@Node arg=constructor.getNext() '
+    - '------DEL SimpleType@@Node '
+    - '------DEL VariableDeclarationFragment@@arg=constructor.getNext() '
+    - '---------DEL SimpleName@@arg '
+    - '---------DEL MethodInvocation@@constructor.getNext() '
+    - '------------DEL SimpleName@@Name:constructor '
+    - '------------DEL SimpleName@@MethodName:getNext:[] '
+    - '---DEL InfixExpression@@arg != null '
+    - '------DEL SimpleName@@arg '
+    - '------DEL Operator@@!= '
+    - '------DEL NullLiteral@@null '
+    - '---DEL Assignment@@arg=arg.getNext() '
+    - '------DEL SimpleName@@arg '
+    - '------DEL Operator@@= '
+    - '------DEL MethodInvocation@@arg.getNext() '
+    - '---------DEL SimpleName@@Name:arg '
+    - '---------DEL SimpleName@@MethodName:getNext:[] '
+    - '---DEL ExpressionStatement@@Assignment:scope=traverse(arg,scope) '
+  files_cnt: '1'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeInference:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:scope=traverseChildren(n,scope) @TO@ MethodDeclaration@@private,
+      @@FlowScope, MethodName:traverseNew, @@Argus:Node+n+FlowScope+scope+ '
+    - '---INS Assignment@@scope=traverseChildren(n,scope) @TO@ ExpressionStatement@@Assignment:scope=traverseChildren(n,scope) '
+    - '------INS SimpleName@@scope @TO@ Assignment@@scope=traverseChildren(n,scope) '
+    - '------INS Operator@@= @TO@ Assignment@@scope=traverseChildren(n,scope) '
+    - '------INS MethodInvocation@@traverseChildren(n,scope) @TO@ Assignment@@scope=traverseChildren(n,scope) '
+    - '---------INS SimpleName@@MethodName:traverseChildren:[n, scope] @TO@ MethodInvocation@@traverseChildren(n,scope) '
+    - '------------INS SimpleName@@n @TO@ SimpleName@@MethodName:traverseChildren:[n,
+      scope] '
+    - '------------INS SimpleName@@scope @TO@ SimpleName@@MethodName:traverseChildren:[n,
+      scope] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:backwardsInferenceFromCallSite(n,ct)
+      @TO@ IfStatement@@InfixExpression:ct != null && ct.isConstructor() '
+    - '---INS MethodInvocation@@backwardsInferenceFromCallSite(n,ct) @TO@ ExpressionStatement@@MethodInvocation:backwardsInferenceFromCallSite(n,ct) '
+    - '------INS SimpleName@@MethodName:backwardsInferenceFromCallSite:[n, ct] @TO@
+      MethodInvocation@@backwardsInferenceFromCallSite(n,ct) '
+    - '---------INS SimpleName@@n @TO@ SimpleName@@MethodName:backwardsInferenceFromCallSite:[n,
+      ct] '
+    - '---------INS SimpleName@@ct @TO@ SimpleName@@MethodName:backwardsInferenceFromCallSite:[n,
+      ct] '
+  files_cnt: '1'
+  repair_actions_cnt: 2

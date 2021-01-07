@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_9/src/main/java/org/apache/commons/math3/geometry/euclidean/threed/Line.java	2020-10-21 04:54:42.921895022 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_9/purify/purified/org/apache/commons/math3/geometry/euclidean/threed/Line.java	2020-10-21 04:54:42.921895022 -0400
+@@ -84,7 +84,8 @@
+      * @return a new instance, with reversed direction
+      */
+     public Line revert() {
+-        final Line reverted = new Line(zero, zero.subtract(direction));
++        final Line reverted = new Line(this);
++        reverted.direction = reverted.direction.negate();
+         return reverted;
+     }
+ 

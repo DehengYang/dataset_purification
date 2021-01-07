@@ -1,0 +1,22 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_18/src/main/java/org/joda/time/chrono/GJChronology.java	2020-10-22 00:25:10.128752144 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_18/purify/purified/org/joda/time/chrono/GJChronology.java	2020-10-22 00:25:10.124752028 -0400
+@@ -361,9 +361,19 @@
+ 
+         // Assume date is Gregorian.
+         long instant;
++        try {
+             instant = iGregorianChronology.getDateTimeMillis
+                 (year, monthOfYear, dayOfMonth,
+                  hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
++        } catch (IllegalFieldValueException ex) {
++            if (monthOfYear != 2 || dayOfMonth != 29) {
++            }
++            instant = iGregorianChronology.getDateTimeMillis
++                (year, monthOfYear, 28,
++                 hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
++            if (instant >= iCutoverMillis) {
++            }
++        }
+         if (instant < iCutoverMillis) {
+             // Maybe it's Julian.
+             instant = iJulianChronology.getDateTimeMillis

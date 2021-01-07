@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_57/src/java/org/apache/commons/lang/LocaleUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_57/fixed-version/src/java/org/apache/commons/lang/LocaleUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_57/src/java/org/apache/commons/lang/LocaleUtils.java	2020-03-01 00:12:03.049786219 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_57/fixed-version/src/java/org/apache/commons/lang/LocaleUtils.java	2020-03-01 00:12:06.481947929 -0800
+@@ -220,7 +220,7 @@
+      * @return true if the locale is a known locale
+      */
+     public static boolean isAvailableLocale(Locale locale) {
+-        return cAvailableLocaleSet.contains(locale);
++        return availableLocaleList().contains(locale);
+     }
+ 
+     //-----------------------------------------------------------------------

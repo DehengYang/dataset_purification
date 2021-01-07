@@ -1,0 +1,29 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_23/source/org/jfree/chart/renderer/category/MinMaxCategoryRenderer.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_23/fixed-version/source/org/jfree/chart/renderer/category/MinMaxCategoryRenderer.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_23/source/org/jfree/chart/renderer/category/MinMaxCategoryRenderer.java	2020-03-01 00:05:07.330199116 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_23/fixed-version/source/org/jfree/chart/renderer/category/MinMaxCategoryRenderer.java	2020-03-01 00:05:10.806362899 -0800
+@@ -432,6 +432,25 @@
+      *
+      * @since 1.0.7
+      */
++    public boolean equals(Object obj) {
++        if (obj == this) {
++            return true;
++        }
++        if (!(obj instanceof MinMaxCategoryRenderer)) {
++            return false;
++        }
++        MinMaxCategoryRenderer that = (MinMaxCategoryRenderer) obj;
++        if (this.plotLines != that.plotLines) {
++            return false;
++        }
++        if (!PaintUtilities.equal(this.groupPaint, that.groupPaint)) {
++            return false;
++        }
++        if (!this.groupStroke.equals(that.groupStroke)) {
++            return false;
++        }
++        return super.equals(obj);
++    }
+ 
+     /**
+      * Returns an icon.

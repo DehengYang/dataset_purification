@@ -1,0 +1,272 @@
+1 bug_id: Closure-15
+2 src folder:
+  name of src folder: src
+  number of files: 419
+  number of java files: 403
+  number of src classes: 1360
+  number of test classes: 224
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testSimpleForIn
+  failing tests:
+  - com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest
+  number of all test cases: 7595
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 4.0
+  purification via coverage: 1.566
+  purification via delta debugging: 254.732
+  repair actions extraction: 1.75
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testSimpleForIn: 4122
+  fixed:
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testSimpleForIn: 4041
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_15/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java\t\
+    2020-10-21 19:57:29.516380013 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_15/purify/patch/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java\t\
+    2020-10-21 19:57:29.516380013 -0400\n@@ -99,6 +99,9 @@\n           return true;\n\
+    \         }\n \n+        if (n.isDelProp()) {\n+          return true;\n+    \
+    \    }\n \n         for (Node c = n.getFirstChild(); c != null; c = c.getNext())\
+    \ {\n           if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_15/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java\t\
+    2020-10-21 20:02:37.017247452 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_15/purify/purified/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java\t\
+    2020-10-21 20:02:37.017247452 -0400\n@@ -99,6 +99,9 @@\n           return true;\n\
+    \         }\n \n+        if (n.isDelProp()) {\n+          return true;\n+    \
+    \    }\n \n         for (Node c = n.getFirstChild(); c != null; c = c.getNext())\
+    \ {\n           if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/FlowSensitiveInlineVariables:
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD FieldDeclaration@@private, static, final, Predicate<Node>, [SIDE_EFFECT_PREDICATE=new
+      Predicate<Node>()
+    - '  @Override public boolean apply(  Node n)'
+    - '    if (n == null) '
+    - '      return false'
+    - '    '
+    - '    if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    if (n.isNew() && NodeUtil.constructorCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    for (Node c=n.getFirstChild(); c != null; c=c.getNext()) '
+    - '      if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) '
+    - '        return true'
+    - '      '
+    - '    '
+    - '    return false'
+    - '  '
+    - ''
+    - '] @TO@ private, static, final, Predicate<Node>, [SIDE_EFFECT_PREDICATE=new
+      Predicate<Node>()'
+    - '  @Override public boolean apply(  Node n)'
+    - '    if (n == null) '
+    - '      return false'
+    - '    '
+    - '    if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    if (n.isNew() && NodeUtil.constructorCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    if (n.isDelProp()) '
+    - '      return true'
+    - '    '
+    - '    for (Node c=n.getFirstChild(); c != null; c=c.getNext()) '
+    - '      if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) '
+    - '        return true'
+    - '      '
+    - '    '
+    - '    return false'
+    - '  '
+    - ''
+    - '] '
+    - '---UPD VariableDeclarationFragment@@SIDE_EFFECT_PREDICATE=new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node n)'
+    - '    if (n == null) '
+    - '      return false'
+    - '    '
+    - '    if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    if (n.isNew() && NodeUtil.constructorCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    for (Node c=n.getFirstChild(); c != null; c=c.getNext()) '
+    - '      if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) '
+    - '        return true'
+    - '      '
+    - '    '
+    - '    return false'
+    - '  '
+    - ''
+    - ' @TO@ SIDE_EFFECT_PREDICATE=new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node n)'
+    - '    if (n == null) '
+    - '      return false'
+    - '    '
+    - '    if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    if (n.isNew() && NodeUtil.constructorCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    if (n.isDelProp()) '
+    - '      return true'
+    - '    '
+    - '    for (Node c=n.getFirstChild(); c != null; c=c.getNext()) '
+    - '      if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) '
+    - '        return true'
+    - '      '
+    - '    '
+    - '    return false'
+    - '  '
+    - ''
+    - ' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:n.isDelProp() @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:apply, @@Argus:Node+n+ '
+    - '---INS MethodInvocation@@n.isDelProp() @TO@ IfStatement@@MethodInvocation:n.isDelProp() '
+    - '------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.isDelProp() '
+    - '------INS SimpleName@@MethodName:isDelProp:[] @TO@ MethodInvocation@@n.isDelProp() '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@MethodInvocation:n.isDelProp() '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/FlowSensitiveInlineVariables:
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD FieldDeclaration@@private, static, final, Predicate<Node>, [SIDE_EFFECT_PREDICATE=new
+      Predicate<Node>()
+    - '  @Override public boolean apply(  Node n)'
+    - '    if (n == null) '
+    - '      return false'
+    - '    '
+    - '    if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    if (n.isNew() && NodeUtil.constructorCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    for (Node c=n.getFirstChild(); c != null; c=c.getNext()) '
+    - '      if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) '
+    - '        return true'
+    - '      '
+    - '    '
+    - '    return false'
+    - '  '
+    - ''
+    - '] @TO@ private, static, final, Predicate<Node>, [SIDE_EFFECT_PREDICATE=new
+      Predicate<Node>()'
+    - '  @Override public boolean apply(  Node n)'
+    - '    if (n == null) '
+    - '      return false'
+    - '    '
+    - '    if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    if (n.isNew() && NodeUtil.constructorCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    if (n.isDelProp()) '
+    - '      return true'
+    - '    '
+    - '    for (Node c=n.getFirstChild(); c != null; c=c.getNext()) '
+    - '      if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) '
+    - '        return true'
+    - '      '
+    - '    '
+    - '    return false'
+    - '  '
+    - ''
+    - '] '
+    - '---UPD VariableDeclarationFragment@@SIDE_EFFECT_PREDICATE=new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node n)'
+    - '    if (n == null) '
+    - '      return false'
+    - '    '
+    - '    if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    if (n.isNew() && NodeUtil.constructorCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    for (Node c=n.getFirstChild(); c != null; c=c.getNext()) '
+    - '      if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) '
+    - '        return true'
+    - '      '
+    - '    '
+    - '    return false'
+    - '  '
+    - ''
+    - ' @TO@ SIDE_EFFECT_PREDICATE=new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node n)'
+    - '    if (n == null) '
+    - '      return false'
+    - '    '
+    - '    if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    if (n.isNew() && NodeUtil.constructorCallHasSideEffects(n)) '
+    - '      return true'
+    - '    '
+    - '    if (n.isDelProp()) '
+    - '      return true'
+    - '    '
+    - '    for (Node c=n.getFirstChild(); c != null; c=c.getNext()) '
+    - '      if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) '
+    - '        return true'
+    - '      '
+    - '    '
+    - '    return false'
+    - '  '
+    - ''
+    - ' '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:n.isDelProp() @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:apply, @@Argus:Node+n+ '
+    - '---INS MethodInvocation@@n.isDelProp() @TO@ IfStatement@@MethodInvocation:n.isDelProp() '
+    - '------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.isDelProp() '
+    - '------INS SimpleName@@MethodName:isDelProp:[] @TO@ MethodInvocation@@n.isDelProp() '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@MethodInvocation:n.isDelProp() '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  files_cnt: '1'
+  repair_actions_cnt: 2

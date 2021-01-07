@@ -1,0 +1,106 @@
+1 bug_id: Time-4
+2 src folder:
+  name of src folder: java
+  number of files: 186
+  number of java files: 157
+  number of src classes: 232
+  number of test classes: 124
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestPartial_Basics#testWith3
+  failing tests:
+  - org.joda.time.TestPartial_Basics
+  number of all test cases: 4016
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.003
+  purification via delta debugging: 47.944
+  repair actions extraction: 1.294
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestPartial_Basics#testWith3: 1752
+  fixed:
+    org.joda.time.TestPartial_Basics#testWith3: 1946
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_4/src/main/java/org/joda/time/Partial.java\t\
+    2020-10-20 19:01:32.093701964 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_4/purify/patch/org/joda/time/Partial.java\t\
+    2020-10-20 19:01:32.093701964 -0400\n@@ -461,7 +461,7 @@\n             System.arraycopy(iValues,\
+    \ i, newValues, i + 1, newValues.length - i - 1);\n             // use public\
+    \ constructor to ensure full validation\n             // this isn't overly efficient,\
+    \ but is safe\n-            Partial newPartial = new Partial(iChronology, newTypes,\
+    \ newValues);\n+            Partial newPartial = new Partial(newTypes, newValues,\
+    \ iChronology);\n             iChronology.validate(newPartial, newValues);\n \
+    \            return newPartial;\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_4/src/main/java/org/joda/time/Partial.java\t\
+    2020-10-20 19:02:36.995577404 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_4/purify/purified/org/joda/time/Partial.java\t\
+    2020-10-20 19:02:36.995577404 -0400\n@@ -461,7 +461,7 @@\n             System.arraycopy(iValues,\
+    \ i, newValues, i + 1, newValues.length - i - 1);\n             // use public\
+    \ constructor to ensure full validation\n             // this isn't overly efficient,\
+    \ but is safe\n-            Partial newPartial = new Partial(iChronology, newTypes,\
+    \ newValues);\n+            Partial newPartial = new Partial(newTypes, newValues,\
+    \ iChronology);\n             iChronology.validate(newPartial, newValues);\n \
+    \            return newPartial;\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/Partial:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Partial newPartial=new Partial(iChronology,newTypes,newValues);
+      @TO@ Partial newPartial=new Partial(newTypes,newValues,iChronology); '
+    - '---UPD VariableDeclarationFragment@@newPartial=new Partial(iChronology,newTypes,newValues)
+      @TO@ newPartial=new Partial(newTypes,newValues,iChronology) '
+    - '------UPD ClassInstanceCreation@@Partial[iChronology, newTypes, newValues]
+      @TO@ Partial[newTypes, newValues, iChronology] '
+    - '---------DEL SimpleName@@iChronology '
+    - '---------INS SimpleName@@iChronology @TO@ ClassInstanceCreation@@Partial[iChronology,
+      newTypes, newValues] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/Partial:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Partial newPartial=new Partial(iChronology,newTypes,newValues);
+      @TO@ Partial newPartial=new Partial(newTypes,newValues,iChronology); '
+    - '---UPD VariableDeclarationFragment@@newPartial=new Partial(iChronology,newTypes,newValues)
+      @TO@ newPartial=new Partial(newTypes,newValues,iChronology) '
+    - '------UPD ClassInstanceCreation@@Partial[iChronology, newTypes, newValues]
+      @TO@ Partial[newTypes, newValues, iChronology] '
+    - '---------DEL SimpleName@@iChronology '
+    - '---------INS SimpleName@@iChronology @TO@ ClassInstanceCreation@@Partial[iChronology,
+      newTypes, newValues] '
+  repair_actions_cnt: 1

@@ -1,0 +1,16 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_26/source/org/jfree/chart/axis/Axis.java	2020-10-22 01:05:31.322767565 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_26/purify/purified/org/jfree/chart/axis/Axis.java	2020-10-22 01:05:31.322767565 -0400
+@@ -1189,11 +1189,13 @@
+         }
+         if (plotState != null && hotspot != null) {
+             ChartRenderingInfo owner = plotState.getOwner();
++            if (owner != null) {
+                 EntityCollection entities = owner.getEntityCollection();
+                 if (entities != null) {
+                     entities.add(new AxisLabelEntity(this, hotspot, 
+                             this.labelToolTip, this.labelURL));
+                 }
++            }
+         }
+         return state;
+ 

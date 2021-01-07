@@ -1,0 +1,122 @@
+1 bug_id: Closure-128
+2 src folder:
+  name of src folder: src
+  number of files: 430
+  number of java files: 414
+  number of src classes: 1382
+  number of test classes: 227
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CodePrinterTest#testIssue942
+  failing tests:
+  - com.google.javascript.jscomp.CodePrinterTest
+  number of all test cases: 7996
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.179
+  purification via delta debugging: 577.944
+  repair actions extraction: 1.747
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CodePrinterTest#testIssue942: 1572
+  fixed:
+    com.google.javascript.jscomp.CodePrinterTest#testIssue942: 1544
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 4
+  covDel: 1
+  cov_patch_lines: 5
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 1
+  ori_patch_lines: 5
+  purAdd: 3
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 2
+  failCompile: 8
+  failFail: 1
+  passed: 0
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_128/src/com/google/javascript/jscomp/CodeGenerator.java\t\
+    2020-10-23 17:36:51.380675095 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_128/purify/patch/com/google/javascript/jscomp/CodeGenerator.java\t\
+    2020-10-23 17:36:51.380675095 -0400\n@@ -782,13 +782,16 @@\n \n   static boolean\
+    \ isSimpleNumber(String s) {\n     int len = s.length();\n+    if (len == 0) {\n\
+    +      return false;\n+    }\n     for (int index = 0; index < len; index++) {\n\
+    \       char c = s.charAt(index);\n       if (c < '0' || c > '9') {\n        \
+    \ return false;\n       }\n     }\n-    return len > 0 && s.charAt(0) != '0';\n\
+    +    return len == 1 || s.charAt(0) != '0';\n   }\n \n   static double getSimpleNumber(String\
+    \ s) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_128/src/com/google/javascript/jscomp/CodeGenerator.java\t\
+    2020-10-23 17:46:58.110238452 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_128/purify/purified/com/google/javascript/jscomp/CodeGenerator.java\t\
+    2020-10-23 17:46:58.110238452 -0400\n@@ -782,13 +782,15 @@\n \n   static boolean\
+    \ isSimpleNumber(String s) {\n     int len = s.length();\n+    if (len == 0) {\n\
+    +    }\n     for (int index = 0; index < len; index++) {\n       char c = s.charAt(index);\n\
+    \       if (c < '0' || c > '9') {\n         return false;\n       }\n     }\n\
+    -    return len > 0 && s.charAt(0) != '0';\n+    return len == 1 || s.charAt(0)\
+    \ != '0';\n   }\n \n   static double getSimpleNumber(String s) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CodeGenerator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:len == 0 @TO@ MethodDeclaration@@static, @@boolean,
+      MethodName:isSimpleNumber, @@Argus:String+s+ '
+    - '---INS InfixExpression@@len == 0 @TO@ IfStatement@@InfixExpression:len == 0 '
+    - '------INS SimpleName@@len @TO@ InfixExpression@@len == 0 '
+    - '------INS Operator@@== @TO@ InfixExpression@@len == 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@len == 0 '
+    - '---INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:len
+      == 0 '
+    - '------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@InfixExpression:len > 0 && s.charAt(0) != ''0'' @TO@ InfixExpression:len
+      == 1 || s.charAt(0) != ''0'' '
+    - '---UPD InfixExpression@@len > 0 && s.charAt(0) != ''0'' @TO@ len == 1 || s.charAt(0)
+      != ''0'' '
+    - '------UPD InfixExpression@@len > 0 @TO@ len == 1 '
+    - '---------UPD Operator@@> @TO@ == '
+    - '---------UPD NumberLiteral@@0 @TO@ 1 '
+    - '------UPD Operator@@&& @TO@ || '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CodeGenerator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:len == 0 @TO@ MethodDeclaration@@static, @@boolean,
+      MethodName:isSimpleNumber, @@Argus:String+s+ '
+    - '---INS InfixExpression@@len == 0 @TO@ IfStatement@@InfixExpression:len == 0 '
+    - '------INS SimpleName@@len @TO@ InfixExpression@@len == 0 '
+    - '------INS Operator@@== @TO@ InfixExpression@@len == 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@len == 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@InfixExpression:len > 0 && s.charAt(0) != ''0'' @TO@ InfixExpression:len
+      == 1 || s.charAt(0) != ''0'' '
+    - '---UPD InfixExpression@@len > 0 && s.charAt(0) != ''0'' @TO@ len == 1 || s.charAt(0)
+      != ''0'' '
+    - '------UPD InfixExpression@@len > 0 @TO@ len == 1 '
+    - '---------UPD Operator@@> @TO@ == '
+    - '---------UPD NumberLiteral@@0 @TO@ 1 '
+    - '------UPD Operator@@&& @TO@ || '
+  files_cnt: '1'
+  repair_actions_cnt: 2

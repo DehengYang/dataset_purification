@@ -1,0 +1,192 @@
+1 bug_id: Closure-48
+2 src folder:
+  name of src folder: src
+  number of files: 407
+  number of java files: 393
+  number of src classes: 1317
+  number of test classes: 219
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testIssue586
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 7210
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.59
+  purification via delta debugging: 986.512
+  repair actions extraction: 2.337
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue586: 4726
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue586: 4832
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 7
+  covDel: 4
+  cov_patch_lines: 11
+  delta_patch_lines: 10
+  oriAdd: 7
+  oriDel: 4
+  ori_patch_lines: 11
+  purAdd: 6
+  purDel: 4
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 5
+  failCompile: 18
+  failFail: 2
+  passed: 0
+  total: 25
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_48/src/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 04:42:40.832055513 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_48/purify/patch/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 04:42:40.828055397 -0400\n@@ -1518,11 +1518,14 @@\n             ||\
+    \ FunctionTypeBuilder.isFunctionTypeDeclaration(info));\n       }\n \n-      if\
+    \ (inferred) {\n+      if (inferred && rhsValue != null && rhsValue.isFunction())\
+    \ {\n         // Determining declaration for #2\n-        inferred = !(rhsValue\
+    \ != null &&\n-            rhsValue.isFunction() &&\n-            (info != null\
+    \ || !scope.isDeclared(qName, false)));\n+        if (info != null) {\n+     \
+    \     inferred = false;\n+        } else if (!scope.isDeclared(qName, false) &&\n\
+    +                   n.isUnscopedQualifiedName()) {\n+          inferred = false;\n\
+    +        }\n       }\n \n       if (!inferred) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_48/src/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 04:59:38.053439841 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_48/purify/purified/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 04:59:38.053439841 -0400\n@@ -1518,11 +1518,13 @@\n             ||\
+    \ FunctionTypeBuilder.isFunctionTypeDeclaration(info));\n       }\n \n-      if\
+    \ (inferred) {\n+      if (inferred && rhsValue != null && rhsValue.isFunction())\
+    \ {\n         // Determining declaration for #2\n-        inferred = !(rhsValue\
+    \ != null &&\n-            rhsValue.isFunction() &&\n-            (info != null\
+    \ || !scope.isDeclared(qName, false)));\n+        if (info != null) {\n+     \
+    \   } else if (!scope.isDeclared(qName, false) &&\n+                   n.isUnscopedQualifiedName())\
+    \ {\n+          inferred = false;\n+        }\n       }\n \n       if (!inferred)\
+    \ {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypedScopeCreator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@SimpleName:inferred @TO@ InfixExpression:inferred && rhsValue
+      != null && rhsValue.isFunction() '
+    - '---INS InfixExpression@@inferred && rhsValue != null && rhsValue.isFunction()
+      @TO@ IfStatement@@SimpleName:inferred '
+    - '------INS InfixExpression@@inferred && rhsValue != null @TO@ InfixExpression@@inferred
+      && rhsValue != null && rhsValue.isFunction() '
+    - '---------INS SimpleName@@inferred @TO@ InfixExpression@@inferred && rhsValue
+      != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@inferred && rhsValue != null '
+    - '---------MOV InfixExpression@@rhsValue != null @TO@ InfixExpression@@inferred
+      && rhsValue != null '
+    - '------MOV Operator@@&& @TO@ InfixExpression@@inferred && rhsValue != null &&
+      rhsValue.isFunction() '
+    - '------MOV MethodInvocation@@rhsValue.isFunction() @TO@ InfixExpression@@inferred
+      && rhsValue != null && rhsValue.isFunction() '
+    - '---DEL SimpleName@@inferred '
+    - '---DEL ExpressionStatement@@Assignment:inferred=!(rhsValue != null && rhsValue.isFunction()
+      && (info != null || !scope.isDeclared(qName,false))) '
+    - '------DEL Assignment@@inferred=!(rhsValue != null && rhsValue.isFunction()
+      && (info != null || !scope.isDeclared(qName,false))) '
+    - '---------DEL SimpleName@@inferred '
+    - '---------DEL Operator@@= '
+    - '---------DEL PrefixExpression@@!(rhsValue != null && rhsValue.isFunction()
+      && (info != null || !scope.isDeclared(qName,false))) '
+    - '------------DEL Operator@@! '
+    - '------------DEL ParenthesizedExpression@@(rhsValue != null && rhsValue.isFunction()
+      && (info != null || !scope.isDeclared(qName,false))) '
+    - '---------------DEL InfixExpression@@rhsValue != null && rhsValue.isFunction()
+      && (info != null || !scope.isDeclared(qName,false)) '
+    - '------------------DEL InfixExpression@@rhsValue != null && rhsValue.isFunction() '
+    - '------------------DEL ParenthesizedExpression@@(info != null || !scope.isDeclared(qName,false)) '
+    - '---INS IfStatement@@InfixExpression:info != null @TO@ IfStatement@@SimpleName:inferred '
+    - '------INS InfixExpression@@info != null @TO@ IfStatement@@InfixExpression:info
+      != null '
+    - '---------INS SimpleName@@info @TO@ InfixExpression@@info != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@info != null '
+    - '---------MOV Operator@@&& @TO@ InfixExpression@@info != null '
+    - '------INS ExpressionStatement@@Assignment:inferred=false @TO@ IfStatement@@InfixExpression:info
+      != null '
+    - '---------INS Assignment@@inferred=false @TO@ ExpressionStatement@@Assignment:inferred=false '
+    - '------------INS SimpleName@@inferred @TO@ Assignment@@inferred=false '
+    - '------------INS Operator@@= @TO@ Assignment@@inferred=false '
+    - '------------INS BooleanLiteral@@false @TO@ Assignment@@inferred=false '
+    - '------INS IfStatement@@InfixExpression:!scope.isDeclared(qName,false) && n.isUnscopedQualifiedName()
+      @TO@ IfStatement@@InfixExpression:info != null '
+    - '---------MOV InfixExpression@@info != null || !scope.isDeclared(qName,false)
+      @TO@ IfStatement@@InfixExpression:!scope.isDeclared(qName,false) && n.isUnscopedQualifiedName() '
+    - '---------INS ExpressionStatement@@Assignment:inferred=false @TO@ IfStatement@@InfixExpression:!scope.isDeclared(qName,false)
+      && n.isUnscopedQualifiedName() '
+    - '------------INS Assignment@@inferred=false @TO@ ExpressionStatement@@Assignment:inferred=false '
+    - '---------------INS SimpleName@@inferred @TO@ Assignment@@inferred=false '
+    - '---------------INS Operator@@= @TO@ Assignment@@inferred=false '
+    - '---------------INS BooleanLiteral@@false @TO@ Assignment@@inferred=false '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypedScopeCreator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@SimpleName:inferred @TO@ InfixExpression:inferred && rhsValue
+      != null && rhsValue.isFunction() '
+    - '---INS InfixExpression@@inferred && rhsValue != null && rhsValue.isFunction()
+      @TO@ IfStatement@@SimpleName:inferred '
+    - '------INS InfixExpression@@inferred && rhsValue != null @TO@ InfixExpression@@inferred
+      && rhsValue != null && rhsValue.isFunction() '
+    - '---------INS SimpleName@@inferred @TO@ InfixExpression@@inferred && rhsValue
+      != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@inferred && rhsValue != null '
+    - '---------MOV InfixExpression@@rhsValue != null @TO@ InfixExpression@@inferred
+      && rhsValue != null '
+    - '------MOV Operator@@&& @TO@ InfixExpression@@inferred && rhsValue != null &&
+      rhsValue.isFunction() '
+    - '------MOV MethodInvocation@@rhsValue.isFunction() @TO@ InfixExpression@@inferred
+      && rhsValue != null && rhsValue.isFunction() '
+    - '---DEL SimpleName@@inferred '
+    - '---DEL ExpressionStatement@@Assignment:inferred=!(rhsValue != null && rhsValue.isFunction()
+      && (info != null || !scope.isDeclared(qName,false))) '
+    - '------DEL Assignment@@inferred=!(rhsValue != null && rhsValue.isFunction()
+      && (info != null || !scope.isDeclared(qName,false))) '
+    - '---------DEL SimpleName@@inferred '
+    - '---------DEL Operator@@= '
+    - '---------DEL PrefixExpression@@!(rhsValue != null && rhsValue.isFunction()
+      && (info != null || !scope.isDeclared(qName,false))) '
+    - '------------DEL Operator@@! '
+    - '------------DEL ParenthesizedExpression@@(rhsValue != null && rhsValue.isFunction()
+      && (info != null || !scope.isDeclared(qName,false))) '
+    - '---------------DEL InfixExpression@@rhsValue != null && rhsValue.isFunction()
+      && (info != null || !scope.isDeclared(qName,false)) '
+    - '------------------DEL InfixExpression@@rhsValue != null && rhsValue.isFunction() '
+    - '------------------DEL ParenthesizedExpression@@(info != null || !scope.isDeclared(qName,false)) '
+    - '---INS IfStatement@@InfixExpression:info != null @TO@ IfStatement@@SimpleName:inferred '
+    - '------INS InfixExpression@@info != null @TO@ IfStatement@@InfixExpression:info
+      != null '
+    - '---------INS SimpleName@@info @TO@ InfixExpression@@info != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@info != null '
+    - '---------MOV Operator@@&& @TO@ InfixExpression@@info != null '
+    - '------INS IfStatement@@InfixExpression:!scope.isDeclared(qName,false) && n.isUnscopedQualifiedName()
+      @TO@ IfStatement@@InfixExpression:info != null '
+    - '---------MOV InfixExpression@@info != null || !scope.isDeclared(qName,false)
+      @TO@ IfStatement@@InfixExpression:!scope.isDeclared(qName,false) && n.isUnscopedQualifiedName() '
+    - '---------INS ExpressionStatement@@Assignment:inferred=false @TO@ IfStatement@@InfixExpression:!scope.isDeclared(qName,false)
+      && n.isUnscopedQualifiedName() '
+    - '------------INS Assignment@@inferred=false @TO@ ExpressionStatement@@Assignment:inferred=false '
+    - '---------------INS SimpleName@@inferred @TO@ Assignment@@inferred=false '
+    - '---------------INS Operator@@= @TO@ Assignment@@inferred=false '
+    - '---------------INS BooleanLiteral@@false @TO@ Assignment@@inferred=false '
+  files_cnt: '1'
+  repair_actions_cnt: 1

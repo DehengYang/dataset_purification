@@ -1,0 +1,206 @@
+1 bug_id: Math-6
+2 src folder:
+  name of src folder: java
+  number of files: 769
+  number of java files: 768
+  number of src classes: 1040
+  number of test classes: 385
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest#testMaximize2
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest#testMaximize1
+  - org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizerTest#testTrivial
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testAckley
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testDiffPow
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest#testMinimize1
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest#testMinimize2
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testEllipse
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testRastrigin
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest#testMaximize2
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest#testMaximize1
+  - org.apache.commons.math3.optim.nonlinear.vector.jacobian.LevenbergMarquardtOptimizerTest#testGetIterations
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testElliRotated
+  - org.apache.commons.math3.optim.nonlinear.vector.jacobian.GaussNewtonOptimizerTest#testGetIterations
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testDiagonalRosen
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testCigarWithBoundaries
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testTablet
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest#testMinimize1
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest#testMinimize2
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.PowellOptimizerTest#testSumSinc
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testConstrainedRosen
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testTwoAxes
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testRosen
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testCigar
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testSsDiffPow
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testSphere
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testCigTab
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testMaximize
+  failing tests:
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest
+  - org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizerTest
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest
+  - org.apache.commons.math3.optim.nonlinear.vector.jacobian.LevenbergMarquardtOptimizerTest
+  - org.apache.commons.math3.optim.nonlinear.vector.jacobian.GaussNewtonOptimizerTest
+  - org.apache.commons.math3.optim.nonlinear.scalar.noderiv.PowellOptimizerTest
+  number of all test cases: 4985
+  number of failing test cases: 28
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 4.0
+  purification via coverage: 1.374
+  purification via delta debugging: 5902.0088
+  repair actions extraction: 3.12
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizerTest#testTrivial: 495
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testAckley: 1215
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testCigTab: 1214
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testCigar: 1214
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testCigarWithBoundaries: 1209
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testConstrainedRosen: 1210
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testDiagonalRosen: 860
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testDiffPow: 1215
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testElliRotated: 1215
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testEllipse: 1215
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testMaximize: 1215
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testRastrigin: 1214
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testRosen: 1215
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testSphere: 1214
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testSsDiffPow: 1218
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testTablet: 1215
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testTwoAxes: 1216
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.PowellOptimizerTest#testSumSinc: 568
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest#testMaximize1: 310
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest#testMaximize2: 312
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest#testMinimize1: 314
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest#testMinimize2: 314
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest#testMaximize1: 334
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest#testMaximize2: 338
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest#testMinimize1: 334
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest#testMinimize2: 338
+    org.apache.commons.math3.optim.nonlinear.vector.jacobian.GaussNewtonOptimizerTest#testGetIterations: 541
+    org.apache.commons.math3.optim.nonlinear.vector.jacobian.LevenbergMarquardtOptimizerTest#testGetIterations: 702
+  fixed:
+    org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizerTest#testTrivial: 496
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testAckley: 1219
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testCigTab: 1218
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testCigar: 1218
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testCigarWithBoundaries: 1213
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testConstrainedRosen: 1214
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testDiagonalRosen: 863
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testDiffPow: 1219
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testElliRotated: 1219
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testEllipse: 1219
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testMaximize: 1220
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testRastrigin: 1218
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testRosen: 1219
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testSphere: 1218
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testSsDiffPow: 1222
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testTablet: 1219
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizerTest#testTwoAxes: 1220
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.PowellOptimizerTest#testSumSinc: 569
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest#testMaximize1: 312
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest#testMaximize2: 314
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest#testMinimize1: 316
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerMultiDirectionalTest#testMinimize2: 316
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest#testMaximize1: 336
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest#testMaximize2: 340
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest#testMinimize1: 336
+    org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizerNelderMeadTest#testMinimize2: 340
+    org.apache.commons.math3.optim.nonlinear.vector.jacobian.GaussNewtonOptimizerTest#testGetIterations: 542
+    org.apache.commons.math3.optim.nonlinear.vector.jacobian.LevenbergMarquardtOptimizerTest#testGetIterations: 703
+6 reduced lines:
+  by all: 18
+  by coverage: 0
+  by delta debugging: 18
+  covAdd: 14
+  covDel: 16
+  cov_patch_lines: 30
+  delta_patch_lines: 12
+  oriAdd: 14
+  oriDel: 16
+  ori_patch_lines: 30
+  purAdd: 9
+  purDel: 3
+7 reduced chunks:
+  by all: 8
+  by coverage: 0
+  by delta debugging: 8
+  cov: 17
+  original: 17
+  purifiy: 9
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 78
+  failFail: 50
+  passed: 11
+  total: 139
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_6/src/main/java/org/apache/commons/math3/optim/nonlinear/vector/jacobian/GaussNewtonOptimizer.java\t\
+    2020-10-22 02:59:54.057166575 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_6/purify/patch/org/apache/commons/math3/optim/nonlinear/vector/jacobian/GaussNewtonOptimizer.java\t\
+    2020-10-22 02:59:54.057166575 -0400\n@@ -103,9 +103,8 @@\n \n         // iterate\
+    \ until convergence is reached\n         PointVectorValuePair current = null;\n\
+    -        int iter = 0;\n         for (boolean converged = false; !converged;)\
+    \ {\n-            ++iter;\n+            incrementIterationCount();\n \n      \
+    \       // evaluate the objective function and its jacobian\n             PointVectorValuePair\
+    \ previous = current;\n@@ -157,7 +156,7 @@\n \n             // Check convergence.\n\
+    \             if (previous != null) {\n-                converged = checker.converged(iter,\
+    \ previous, current);\n+                converged = checker.converged(getIterations(),\
+    \ previous, current);\n                 if (converged) {\n                   \
+    \  setCost(computeCost(currentResiduals));\n                     return current;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_6/src/main/java/org/apache/commons/math3/optim/nonlinear/vector/jacobian/GaussNewtonOptimizer.java\t\
+    2020-10-22 04:39:06.373103961 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_6/purify/purified/org/apache/commons/math3/optim/nonlinear/vector/jacobian/GaussNewtonOptimizer.java\t\
+    2020-10-22 04:39:06.373103961 -0400\n@@ -106,6 +106,7 @@\n         int iter =\
+    \ 0;\n         for (boolean converged = false; !converged;) {\n             ++iter;\n\
+    +            incrementIterationCount();\n \n             // evaluate the objective\
+    \ function and its jacobian\n             PointVectorValuePair previous = current;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '7'
+  files_cnt: '7'
+  ? org/apache/commons/math3/optim/BaseOptimizer, org/apache/commons/math3/optim/nonlinear/scalar/gradient/NonLinearConjugateGradientOptimizer,
+    org/apache/commons/math3/optim/nonlinear/scalar/noderiv/CMAESOptimizer, org/apache/commons/math3/optim/nonlinear/scalar/noderiv/PowellOptimizer,
+    org/apache/commons/math3/optim/nonlinear/scalar/noderiv/SimplexOptimizer, org/apache/commons/math3/optim/nonlinear/vector/jacobian/GaussNewtonOptimizer,
+    org/apache/commons/math3/optim/nonlinear/vector/jacobian/LevenbergMarquardtOptimizer
+  : - !yamlable/myyaml.Action
+      lines:
+      - 'DEL VariableDeclarationStatement@@int iter=0; '
+      - '---DEL PrimitiveType@@int '
+      - '---DEL VariableDeclarationFragment@@iter=0 '
+      - '------DEL SimpleName@@iter '
+      - '------DEL NumberLiteral@@0 '
+    - !yamlable/myyaml.Action
+      lines:
+      - 'UPD ExpressionStatement@@PrefixExpression:++iter @TO@ MethodInvocation:incrementIterationCount() '
+      - '---INS MethodInvocation@@MethodName:incrementIterationCount:[] @TO@ ExpressionStatement@@PrefixExpression:++iter '
+      - '---DEL PrefixExpression@@++iter '
+      - '------DEL Operator@@++ '
+      - '------DEL SimpleName@@iter '
+    - !yamlable/myyaml.Action
+      lines:
+      - 'UPD IfStatement@@MethodInvocation:checker.converged(iter,previous,current)
+        @TO@ MethodInvocation:checker.converged(getIterations(),previous,current) '
+      - '---UPD MethodInvocation@@checker.converged(iter,previous,current) @TO@ checker.converged(getIterations(),previous,current) '
+      - '------UPD SimpleName@@MethodName:converged:[iter, previous, current] @TO@
+        MethodName:converged:[getIterations(), previous, current] '
+      - '---------INS MethodInvocation@@MethodName:getIterations:[] @TO@ SimpleName@@MethodName:converged:[iter,
+        previous, current] '
+      - '---------DEL SimpleName@@iter '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '7'
+  files_cnt: '7'
+  ? org/apache/commons/math3/optim/BaseOptimizer, org/apache/commons/math3/optim/nonlinear/scalar/gradient/NonLinearConjugateGradientOptimizer,
+    org/apache/commons/math3/optim/nonlinear/scalar/noderiv/CMAESOptimizer, org/apache/commons/math3/optim/nonlinear/scalar/noderiv/PowellOptimizer,
+    org/apache/commons/math3/optim/nonlinear/scalar/noderiv/SimplexOptimizer, org/apache/commons/math3/optim/nonlinear/vector/jacobian/GaussNewtonOptimizer,
+    org/apache/commons/math3/optim/nonlinear/vector/jacobian/LevenbergMarquardtOptimizer
+  : - !yamlable/myyaml.Action
+      lines:
+      - 'INS ExpressionStatement@@MethodInvocation:incrementIterationCount() @TO@
+        WhileStatement@@BooleanLiteral:true '
+      - '---INS MethodInvocation@@MethodName:incrementIterationCount:[] @TO@ ExpressionStatement@@MethodInvocation:incrementIterationCount() '
+  repair_actions_cnt: 1

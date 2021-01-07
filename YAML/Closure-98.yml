@@ -1,0 +1,400 @@
+1 bug_id: Closure-98
+2 src folder:
+  name of src folder: src
+  number of files: 341
+  number of java files: 330
+  number of src classes: 1047
+  number of test classes: 171
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.InlineVariablesTest#testNoInlineAliasesInLoop
+  failing tests:
+  - com.google.javascript.jscomp.InlineVariablesTest
+  number of all test cases: 5696
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 9.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.957
+  purification via delta debugging: 800.6
+  repair actions extraction: 0.96
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.InlineVariablesTest#testNoInlineAliasesInLoop: 3014
+  fixed:
+    com.google.javascript.jscomp.InlineVariablesTest#testNoInlineAliasesInLoop: 2899
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 19
+  covDel: 0
+  cov_patch_lines: 19
+  delta_patch_lines: 18
+  oriAdd: 19
+  oriDel: 0
+  ori_patch_lines: 19
+  purAdd: 18
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 5
+  original: 5
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 3
+  failCompile: 55
+  failFail: 4
+  passed: 1
+  total: 63
+9 sibling repair actions:
+- 1 2 0.9122486288848263
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_98/src/com/google/javascript/jscomp/ReferenceCollectingCallback.java\t\
+    2020-10-23 12:33:15.993280300 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_98/purify/patch/com/google/javascript/jscomp/ReferenceCollectingCallback.java\t\
+    2020-10-23 12:33:15.993280300 -0400\n@@ -358,6 +358,14 @@\n       }\n \n     \
+    \  // Make sure this assignment is not in a loop.\n+      for (BasicBlock block\
+    \ = ref.getBasicBlock();\n+           block != null; block = block.getParent())\
+    \ {\n+        if (block.isFunction) {\n+          break;\n+        } else if (block.isLoop)\
+    \ {\n+          return false;\n+        }\n+      }\n \n       return true;\n\
+    \     }\n@@ -542,10 +550,12 @@\n     /**\n      * Whether this block denotes a\
+    \ function scope.\n      */\n+    private final boolean isFunction;\n \n     /**\n\
+    \      * Whether this block denotes a loop.\n      */\n+    private final boolean\
+    \ isLoop;\n \n     /**\n      * Creates a new block.\n@@ -558,7 +568,16 @@\n \
+    \      // only named functions may be hoisted.\n       this.isHoisted = NodeUtil.isHoistedFunctionDeclaration(root);\n\
+    \ \n+      this.isFunction = root.getType() == Token.FUNCTION;\n \n+      if (root.getParent()\
+    \ != null) {\n+        int pType = root.getParent().getType();\n+        this.isLoop\
+    \ = pType == Token.DO ||\n+            pType == Token.WHILE ||\n+            pType\
+    \ == Token.FOR;\n+      } else {\n+        this.isLoop = false;\n+      }\n  \
+    \   }\n \n     BasicBlock getParent() {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_98/src/com/google/javascript/jscomp/ReferenceCollectingCallback.java\t\
+    2020-10-23 12:47:00.813156859 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_98/purify/purified/com/google/javascript/jscomp/ReferenceCollectingCallback.java\t\
+    2020-10-23 12:47:00.813156859 -0400\n@@ -358,6 +358,14 @@\n       }\n \n     \
+    \  // Make sure this assignment is not in a loop.\n+      for (BasicBlock block\
+    \ = ref.getBasicBlock();\n+           block != null; block = block.getParent())\
+    \ {\n+        if (block.isFunction) {\n+          break;\n+        } else if (block.isLoop)\
+    \ {\n+          return false;\n+        }\n+      }\n \n       return true;\n\
+    \     }\n@@ -542,10 +550,12 @@\n     /**\n      * Whether this block denotes a\
+    \ function scope.\n      */\n+    private final boolean isFunction;\n \n     /**\n\
+    \      * Whether this block denotes a loop.\n      */\n+    private final boolean\
+    \ isLoop;\n \n     /**\n      * Creates a new block.\n@@ -558,7 +568,15 @@\n \
+    \      // only named functions may be hoisted.\n       this.isHoisted = NodeUtil.isHoistedFunctionDeclaration(root);\n\
+    \ \n+      this.isFunction = root.getType() == Token.FUNCTION;\n \n+      if (root.getParent()\
+    \ != null) {\n+        int pType = root.getParent().getType();\n+        this.isLoop\
+    \ = pType == Token.DO ||\n+            pType == Token.FOR;\n+      } else {\n\
+    +        this.isLoop = false;\n+      }\n     }\n \n     BasicBlock getParent()\
+    \ {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ReferenceCollectingCallback:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[BasicBlock block=ref.getBasicBlock()];block != null; [block=block.getParent()]
+      @TO@ MethodDeclaration@@@@boolean, MethodName:isAssignedOnceInLifetime, @@Argus:null '
+    - '---INS VariableDeclarationExpression@@BasicBlock block=ref.getBasicBlock()
+      @TO@ ForStatement@@[BasicBlock block=ref.getBasicBlock()];block != null; [block=block.getParent()] '
+    - '------INS SimpleType@@BasicBlock @TO@ VariableDeclarationExpression@@BasicBlock
+      block=ref.getBasicBlock() '
+    - '------INS VariableDeclarationFragment@@block=ref.getBasicBlock() @TO@ VariableDeclarationExpression@@BasicBlock
+      block=ref.getBasicBlock() '
+    - '---------INS SimpleName@@block @TO@ VariableDeclarationFragment@@block=ref.getBasicBlock() '
+    - '---------INS MethodInvocation@@ref.getBasicBlock() @TO@ VariableDeclarationFragment@@block=ref.getBasicBlock() '
+    - '------------INS SimpleName@@Name:ref @TO@ MethodInvocation@@ref.getBasicBlock() '
+    - '------------INS SimpleName@@MethodName:getBasicBlock:[] @TO@ MethodInvocation@@ref.getBasicBlock() '
+    - '---INS InfixExpression@@block != null @TO@ ForStatement@@[BasicBlock block=ref.getBasicBlock()];block
+      != null; [block=block.getParent()] '
+    - '------INS SimpleName@@block @TO@ InfixExpression@@block != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@block != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@block != null '
+    - '---INS Assignment@@block=block.getParent() @TO@ ForStatement@@[BasicBlock block=ref.getBasicBlock()];block
+      != null; [block=block.getParent()] '
+    - '------INS SimpleName@@block @TO@ Assignment@@block=block.getParent() '
+    - '------INS Operator@@= @TO@ Assignment@@block=block.getParent() '
+    - '------INS MethodInvocation@@block.getParent() @TO@ Assignment@@block=block.getParent() '
+    - '---------INS SimpleName@@Name:block @TO@ MethodInvocation@@block.getParent() '
+    - '---------INS SimpleName@@MethodName:getParent:[] @TO@ MethodInvocation@@block.getParent() '
+    - '---INS IfStatement@@QualifiedName:block.isFunction @TO@ ForStatement@@[BasicBlock
+      block=ref.getBasicBlock()];block != null; [block=block.getParent()] '
+    - '------INS QualifiedName@@block.isFunction @TO@ IfStatement@@QualifiedName:block.isFunction '
+    - '---------INS SimpleName@@block @TO@ QualifiedName@@block.isFunction '
+    - '---------INS SimpleName@@isFunction @TO@ QualifiedName@@block.isFunction '
+    - '------INS BreakStatement@@ @TO@ IfStatement@@QualifiedName:block.isFunction '
+    - '------INS IfStatement@@QualifiedName:block.isLoop @TO@ IfStatement@@QualifiedName:block.isFunction '
+    - '---------INS QualifiedName@@block.isLoop @TO@ IfStatement@@QualifiedName:block.isLoop '
+    - '------------INS SimpleName@@block @TO@ QualifiedName@@block.isLoop '
+    - '------------INS SimpleName@@isLoop @TO@ QualifiedName@@block.isLoop '
+    - '---------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@QualifiedName:block.isLoop '
+    - '------------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, final, boolean, [isFunction] @TO@ TypeDeclaration@@[static,
+      final]BasicBlock,  '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, final, boolean, [isFunction] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, final, boolean, [isFunction] '
+    - '---INS PrimitiveType@@boolean @TO@ FieldDeclaration@@private, final, boolean,
+      [isFunction] '
+    - '---INS VariableDeclarationFragment@@isFunction @TO@ FieldDeclaration@@private,
+      final, boolean, [isFunction] '
+    - '------INS SimpleName@@isFunction @TO@ VariableDeclarationFragment@@isFunction '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, final, boolean, [isLoop] @TO@ TypeDeclaration@@[static,
+      final]BasicBlock,  '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, final, boolean, [isLoop] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, final, boolean, [isLoop] '
+    - '---INS PrimitiveType@@boolean @TO@ FieldDeclaration@@private, final, boolean,
+      [isLoop] '
+    - '---INS VariableDeclarationFragment@@isLoop @TO@ FieldDeclaration@@private,
+      final, boolean, [isLoop] '
+    - '------INS SimpleName@@isLoop @TO@ VariableDeclarationFragment@@isLoop '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:this.isFunction=root.getType() == Token.FUNCTION
+      @TO@ MethodDeclaration@@@@=CONSTRUCTOR=, MethodName:BasicBlock, @@Argus:BasicBlock+parent+Node+root+ '
+    - '---INS Assignment@@this.isFunction=root.getType() == Token.FUNCTION @TO@ ExpressionStatement@@Assignment:this.isFunction=root.getType()
+      == Token.FUNCTION '
+    - '------INS FieldAccess@@this.isFunction @TO@ Assignment@@this.isFunction=root.getType()
+      == Token.FUNCTION '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.isFunction '
+    - '---------INS SimpleName@@isFunction @TO@ FieldAccess@@this.isFunction '
+    - '------INS Operator@@= @TO@ Assignment@@this.isFunction=root.getType() == Token.FUNCTION '
+    - '------INS InfixExpression@@root.getType() == Token.FUNCTION @TO@ Assignment@@this.isFunction=root.getType()
+      == Token.FUNCTION '
+    - '---------INS MethodInvocation@@root.getType() @TO@ InfixExpression@@root.getType()
+      == Token.FUNCTION '
+    - '------------INS SimpleName@@Name:root @TO@ MethodInvocation@@root.getType() '
+    - '------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@root.getType() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@root.getType() == Token.FUNCTION '
+    - '---------INS QualifiedName@@Token.FUNCTION @TO@ InfixExpression@@root.getType()
+      == Token.FUNCTION '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.FUNCTION '
+    - '------------INS SimpleName@@FUNCTION @TO@ QualifiedName@@Token.FUNCTION '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:root.getParent() != null @TO@ MethodDeclaration@@@@=CONSTRUCTOR=,
+      MethodName:BasicBlock, @@Argus:BasicBlock+parent+Node+root+ '
+    - '---INS InfixExpression@@root.getParent() != null @TO@ IfStatement@@InfixExpression:root.getParent()
+      != null '
+    - '------INS MethodInvocation@@root.getParent() @TO@ InfixExpression@@root.getParent()
+      != null '
+    - '---------INS SimpleName@@Name:root @TO@ MethodInvocation@@root.getParent() '
+    - '---------INS SimpleName@@MethodName:getParent:[] @TO@ MethodInvocation@@root.getParent() '
+    - '------INS Operator@@!= @TO@ InfixExpression@@root.getParent() != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@root.getParent() != null '
+    - '---INS VariableDeclarationStatement@@int pType=root.getParent().getType();
+      @TO@ IfStatement@@InfixExpression:root.getParent() != null '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int pType=root.getParent().getType(); '
+    - '------INS VariableDeclarationFragment@@pType=root.getParent().getType() @TO@
+      VariableDeclarationStatement@@int pType=root.getParent().getType(); '
+    - '---------INS SimpleName@@pType @TO@ VariableDeclarationFragment@@pType=root.getParent().getType() '
+    - '---------INS MethodInvocation@@root.getParent().getType() @TO@ VariableDeclarationFragment@@pType=root.getParent().getType() '
+    - '------------INS SimpleName@@Name:root @TO@ MethodInvocation@@root.getParent().getType() '
+    - '------------INS MethodInvocation@@MethodName:getParent:[] @TO@ MethodInvocation@@root.getParent().getType() '
+    - '------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@root.getParent().getType() '
+    - '---INS ExpressionStatement@@Assignment:this.isLoop=pType == Token.DO || pType
+      == Token.WHILE || pType == Token.FOR @TO@ IfStatement@@InfixExpression:root.getParent()
+      != null '
+    - '------INS Assignment@@this.isLoop=pType == Token.DO || pType == Token.WHILE
+      || pType == Token.FOR @TO@ ExpressionStatement@@Assignment:this.isLoop=pType
+      == Token.DO || pType == Token.WHILE || pType == Token.FOR '
+    - '---------INS FieldAccess@@this.isLoop @TO@ Assignment@@this.isLoop=pType ==
+      Token.DO || pType == Token.WHILE || pType == Token.FOR '
+    - '------------INS ThisExpression@@this @TO@ FieldAccess@@this.isLoop '
+    - '------------INS SimpleName@@isLoop @TO@ FieldAccess@@this.isLoop '
+    - '---------INS Operator@@= @TO@ Assignment@@this.isLoop=pType == Token.DO ||
+      pType == Token.WHILE || pType == Token.FOR '
+    - '---------INS InfixExpression@@pType == Token.DO || pType == Token.WHILE ||
+      pType == Token.FOR @TO@ Assignment@@this.isLoop=pType == Token.DO || pType ==
+      Token.WHILE || pType == Token.FOR '
+    - '------------INS InfixExpression@@pType == Token.DO || pType == Token.WHILE
+      @TO@ InfixExpression@@pType == Token.DO || pType == Token.WHILE || pType ==
+      Token.FOR '
+    - '---------------INS InfixExpression@@pType == Token.DO @TO@ InfixExpression@@pType
+      == Token.DO || pType == Token.WHILE '
+    - '------------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.DO '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@pType == Token.DO '
+    - '------------------INS QualifiedName@@Token.DO @TO@ InfixExpression@@pType ==
+      Token.DO '
+    - '---------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.DO '
+    - '---------------------INS SimpleName@@DO @TO@ QualifiedName@@Token.DO '
+    - '---------------INS Operator@@|| @TO@ InfixExpression@@pType == Token.DO ||
+      pType == Token.WHILE '
+    - '---------------INS InfixExpression@@pType == Token.WHILE @TO@ InfixExpression@@pType
+      == Token.DO || pType == Token.WHILE '
+    - '------------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.WHILE '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@pType == Token.WHILE '
+    - '------------------INS QualifiedName@@Token.WHILE @TO@ InfixExpression@@pType
+      == Token.WHILE '
+    - '---------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.WHILE '
+    - '---------------------INS SimpleName@@WHILE @TO@ QualifiedName@@Token.WHILE '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@pType == Token.DO || pType
+      == Token.WHILE || pType == Token.FOR '
+    - '------------INS InfixExpression@@pType == Token.FOR @TO@ InfixExpression@@pType
+      == Token.DO || pType == Token.WHILE || pType == Token.FOR '
+    - '---------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.FOR '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@pType == Token.FOR '
+    - '---------------INS QualifiedName@@Token.FOR @TO@ InfixExpression@@pType ==
+      Token.FOR '
+    - '------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.FOR '
+    - '------------------INS SimpleName@@FOR @TO@ QualifiedName@@Token.FOR '
+    - '---INS ExpressionStatement@@Assignment:this.isLoop=false @TO@ IfStatement@@InfixExpression:root.getParent()
+      != null '
+    - '------INS Assignment@@this.isLoop=false @TO@ ExpressionStatement@@Assignment:this.isLoop=false '
+    - '---------INS FieldAccess@@this.isLoop @TO@ Assignment@@this.isLoop=false '
+    - '------------INS ThisExpression@@this @TO@ FieldAccess@@this.isLoop '
+    - '------------INS SimpleName@@isLoop @TO@ FieldAccess@@this.isLoop '
+    - '---------INS Operator@@= @TO@ Assignment@@this.isLoop=false '
+    - '---------INS BooleanLiteral@@false @TO@ Assignment@@this.isLoop=false '
+  files_cnt: '1'
+  repair_actions_cnt: 5
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ReferenceCollectingCallback:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[BasicBlock block=ref.getBasicBlock()];block != null; [block=block.getParent()]
+      @TO@ MethodDeclaration@@@@boolean, MethodName:isAssignedOnceInLifetime, @@Argus:null '
+    - '---INS VariableDeclarationExpression@@BasicBlock block=ref.getBasicBlock()
+      @TO@ ForStatement@@[BasicBlock block=ref.getBasicBlock()];block != null; [block=block.getParent()] '
+    - '------INS SimpleType@@BasicBlock @TO@ VariableDeclarationExpression@@BasicBlock
+      block=ref.getBasicBlock() '
+    - '------INS VariableDeclarationFragment@@block=ref.getBasicBlock() @TO@ VariableDeclarationExpression@@BasicBlock
+      block=ref.getBasicBlock() '
+    - '---------INS SimpleName@@block @TO@ VariableDeclarationFragment@@block=ref.getBasicBlock() '
+    - '---------INS MethodInvocation@@ref.getBasicBlock() @TO@ VariableDeclarationFragment@@block=ref.getBasicBlock() '
+    - '------------INS SimpleName@@Name:ref @TO@ MethodInvocation@@ref.getBasicBlock() '
+    - '------------INS SimpleName@@MethodName:getBasicBlock:[] @TO@ MethodInvocation@@ref.getBasicBlock() '
+    - '---INS InfixExpression@@block != null @TO@ ForStatement@@[BasicBlock block=ref.getBasicBlock()];block
+      != null; [block=block.getParent()] '
+    - '------INS SimpleName@@block @TO@ InfixExpression@@block != null '
+    - '------INS Operator@@!= @TO@ InfixExpression@@block != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@block != null '
+    - '---INS Assignment@@block=block.getParent() @TO@ ForStatement@@[BasicBlock block=ref.getBasicBlock()];block
+      != null; [block=block.getParent()] '
+    - '------INS SimpleName@@block @TO@ Assignment@@block=block.getParent() '
+    - '------INS Operator@@= @TO@ Assignment@@block=block.getParent() '
+    - '------INS MethodInvocation@@block.getParent() @TO@ Assignment@@block=block.getParent() '
+    - '---------INS SimpleName@@Name:block @TO@ MethodInvocation@@block.getParent() '
+    - '---------INS SimpleName@@MethodName:getParent:[] @TO@ MethodInvocation@@block.getParent() '
+    - '---INS IfStatement@@QualifiedName:block.isFunction @TO@ ForStatement@@[BasicBlock
+      block=ref.getBasicBlock()];block != null; [block=block.getParent()] '
+    - '------INS QualifiedName@@block.isFunction @TO@ IfStatement@@QualifiedName:block.isFunction '
+    - '---------INS SimpleName@@block @TO@ QualifiedName@@block.isFunction '
+    - '---------INS SimpleName@@isFunction @TO@ QualifiedName@@block.isFunction '
+    - '------INS BreakStatement@@ @TO@ IfStatement@@QualifiedName:block.isFunction '
+    - '------INS IfStatement@@QualifiedName:block.isLoop @TO@ IfStatement@@QualifiedName:block.isFunction '
+    - '---------INS QualifiedName@@block.isLoop @TO@ IfStatement@@QualifiedName:block.isLoop '
+    - '------------INS SimpleName@@block @TO@ QualifiedName@@block.isLoop '
+    - '------------INS SimpleName@@isLoop @TO@ QualifiedName@@block.isLoop '
+    - '---------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@QualifiedName:block.isLoop '
+    - '------------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, final, boolean, [isFunction] @TO@ TypeDeclaration@@[static,
+      final]BasicBlock,  '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, final, boolean, [isFunction] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, final, boolean, [isFunction] '
+    - '---INS PrimitiveType@@boolean @TO@ FieldDeclaration@@private, final, boolean,
+      [isFunction] '
+    - '---INS VariableDeclarationFragment@@isFunction @TO@ FieldDeclaration@@private,
+      final, boolean, [isFunction] '
+    - '------INS SimpleName@@isFunction @TO@ VariableDeclarationFragment@@isFunction '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, final, boolean, [isLoop] @TO@ TypeDeclaration@@[static,
+      final]BasicBlock,  '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, final, boolean, [isLoop] '
+    - '---INS Modifier@@final @TO@ FieldDeclaration@@private, final, boolean, [isLoop] '
+    - '---INS PrimitiveType@@boolean @TO@ FieldDeclaration@@private, final, boolean,
+      [isLoop] '
+    - '---INS VariableDeclarationFragment@@isLoop @TO@ FieldDeclaration@@private,
+      final, boolean, [isLoop] '
+    - '------INS SimpleName@@isLoop @TO@ VariableDeclarationFragment@@isLoop '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:this.isFunction=root.getType() == Token.FUNCTION
+      @TO@ MethodDeclaration@@@@=CONSTRUCTOR=, MethodName:BasicBlock, @@Argus:BasicBlock+parent+Node+root+ '
+    - '---INS Assignment@@this.isFunction=root.getType() == Token.FUNCTION @TO@ ExpressionStatement@@Assignment:this.isFunction=root.getType()
+      == Token.FUNCTION '
+    - '------INS FieldAccess@@this.isFunction @TO@ Assignment@@this.isFunction=root.getType()
+      == Token.FUNCTION '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.isFunction '
+    - '---------INS SimpleName@@isFunction @TO@ FieldAccess@@this.isFunction '
+    - '------INS Operator@@= @TO@ Assignment@@this.isFunction=root.getType() == Token.FUNCTION '
+    - '------INS InfixExpression@@root.getType() == Token.FUNCTION @TO@ Assignment@@this.isFunction=root.getType()
+      == Token.FUNCTION '
+    - '---------INS MethodInvocation@@root.getType() @TO@ InfixExpression@@root.getType()
+      == Token.FUNCTION '
+    - '------------INS SimpleName@@Name:root @TO@ MethodInvocation@@root.getType() '
+    - '------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@root.getType() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@root.getType() == Token.FUNCTION '
+    - '---------INS QualifiedName@@Token.FUNCTION @TO@ InfixExpression@@root.getType()
+      == Token.FUNCTION '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.FUNCTION '
+    - '------------INS SimpleName@@FUNCTION @TO@ QualifiedName@@Token.FUNCTION '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:root.getParent() != null @TO@ MethodDeclaration@@@@=CONSTRUCTOR=,
+      MethodName:BasicBlock, @@Argus:BasicBlock+parent+Node+root+ '
+    - '---INS InfixExpression@@root.getParent() != null @TO@ IfStatement@@InfixExpression:root.getParent()
+      != null '
+    - '------INS MethodInvocation@@root.getParent() @TO@ InfixExpression@@root.getParent()
+      != null '
+    - '---------INS SimpleName@@Name:root @TO@ MethodInvocation@@root.getParent() '
+    - '---------INS SimpleName@@MethodName:getParent:[] @TO@ MethodInvocation@@root.getParent() '
+    - '------INS Operator@@!= @TO@ InfixExpression@@root.getParent() != null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@root.getParent() != null '
+    - '---INS VariableDeclarationStatement@@int pType=root.getParent().getType();
+      @TO@ IfStatement@@InfixExpression:root.getParent() != null '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int pType=root.getParent().getType(); '
+    - '------INS VariableDeclarationFragment@@pType=root.getParent().getType() @TO@
+      VariableDeclarationStatement@@int pType=root.getParent().getType(); '
+    - '---------INS SimpleName@@pType @TO@ VariableDeclarationFragment@@pType=root.getParent().getType() '
+    - '---------INS MethodInvocation@@root.getParent().getType() @TO@ VariableDeclarationFragment@@pType=root.getParent().getType() '
+    - '------------INS SimpleName@@Name:root @TO@ MethodInvocation@@root.getParent().getType() '
+    - '------------INS MethodInvocation@@MethodName:getParent:[] @TO@ MethodInvocation@@root.getParent().getType() '
+    - '------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@root.getParent().getType() '
+    - '---INS ExpressionStatement@@Assignment:this.isLoop=pType == Token.DO || pType
+      == Token.FOR @TO@ IfStatement@@InfixExpression:root.getParent() != null '
+    - '------INS Assignment@@this.isLoop=pType == Token.DO || pType == Token.FOR @TO@
+      ExpressionStatement@@Assignment:this.isLoop=pType == Token.DO || pType == Token.FOR '
+    - '---------INS FieldAccess@@this.isLoop @TO@ Assignment@@this.isLoop=pType ==
+      Token.DO || pType == Token.FOR '
+    - '------------INS ThisExpression@@this @TO@ FieldAccess@@this.isLoop '
+    - '------------INS SimpleName@@isLoop @TO@ FieldAccess@@this.isLoop '
+    - '---------INS Operator@@= @TO@ Assignment@@this.isLoop=pType == Token.DO ||
+      pType == Token.FOR '
+    - '---------INS InfixExpression@@pType == Token.DO || pType == Token.FOR @TO@
+      Assignment@@this.isLoop=pType == Token.DO || pType == Token.FOR '
+    - '------------INS InfixExpression@@pType == Token.DO @TO@ InfixExpression@@pType
+      == Token.DO || pType == Token.FOR '
+    - '---------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.DO '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@pType == Token.DO '
+    - '---------------INS QualifiedName@@Token.DO @TO@ InfixExpression@@pType == Token.DO '
+    - '------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.DO '
+    - '------------------INS SimpleName@@DO @TO@ QualifiedName@@Token.DO '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@pType == Token.DO || pType
+      == Token.FOR '
+    - '------------INS InfixExpression@@pType == Token.FOR @TO@ InfixExpression@@pType
+      == Token.DO || pType == Token.FOR '
+    - '---------------INS SimpleName@@pType @TO@ InfixExpression@@pType == Token.FOR '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@pType == Token.FOR '
+    - '---------------INS QualifiedName@@Token.FOR @TO@ InfixExpression@@pType ==
+      Token.FOR '
+    - '------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.FOR '
+    - '------------------INS SimpleName@@FOR @TO@ QualifiedName@@Token.FOR '
+    - '---INS ExpressionStatement@@Assignment:this.isLoop=false @TO@ IfStatement@@InfixExpression:root.getParent()
+      != null '
+    - '------INS Assignment@@this.isLoop=false @TO@ ExpressionStatement@@Assignment:this.isLoop=false '
+    - '---------INS FieldAccess@@this.isLoop @TO@ Assignment@@this.isLoop=false '
+    - '------------INS ThisExpression@@this @TO@ FieldAccess@@this.isLoop '
+    - '------------INS SimpleName@@isLoop @TO@ FieldAccess@@this.isLoop '
+    - '---------INS Operator@@= @TO@ Assignment@@this.isLoop=false '
+    - '---------INS BooleanLiteral@@false @TO@ Assignment@@this.isLoop=false '
+  files_cnt: '1'
+  repair_actions_cnt: 5

@@ -1,0 +1,23 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_11/src/org/mockito/internal/creation/DelegatingMethod.java	2020-10-23 22:23:42.798946498 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_11/purify/assertBeforeMut/org/mockito/internal/creation/DelegatingMethod.java	2020-10-23 22:23:42.798946498 -0400
+@@ -52,11 +52,19 @@
+      */
+     @Override
+     public boolean equals(Object o) {
++        if (this == o) {
++            return true;
++        }
++        if (o instanceof DelegatingMethod) {
++            DelegatingMethod that = (DelegatingMethod) o;
++            return method.equals(that.method);
++        } else {
+             return method.equals(o);
++        }
+     }
+ 
+     @Override
+     public int hashCode() {
+-        return 1;
++        return method.hashCode();
+     }
+ }

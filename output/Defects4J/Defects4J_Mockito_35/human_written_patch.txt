@@ -1,0 +1,30 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_35/src/org/mockito/Matchers.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_35/fixed-version/src/org/mockito/Matchers.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_35/src/org/mockito/Matchers.java	2020-03-01 00:39:06.174265473 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_35/fixed-version/src/org/mockito/Matchers.java	2020-03-01 00:39:08.766387611 -0800
+@@ -359,7 +359,7 @@
+      * @return <code>null</code>.
+      */
+     public static <T> T isA(Class<T> clazz) {
+-        return reportMatcher(new InstanceOf(clazz)).<T>returnNull();
++        return reportMatcher(new InstanceOf(clazz)).<T>returnFor(clazz);
+     }
+ 
+     /**
+@@ -476,7 +476,7 @@
+      * @return <code>null</code>.
+      */
+     public static <T> T eq(T value) {
+-        return reportMatcher(new Equals(value)).<T>returnNull();
++        return (T) reportMatcher(new Equals(value)).<T>returnFor((Class) value.getClass());
+     }  
+ 
+     /**
+@@ -513,7 +513,7 @@
+      * @return <code>null</code>.
+      */
+     public static <T> T same(T value) {
+-        return reportMatcher(new Same(value)).<T>returnNull();
++        return (T) reportMatcher(new Same(value)).<T>returnFor((Class) value.getClass());
+     }
+ 
+     /**

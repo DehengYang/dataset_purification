@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_123/src/com/google/javascript/jscomp/CodeGenerator.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_123/fixed-version/src/com/google/javascript/jscomp/CodeGenerator.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_123/src/com/google/javascript/jscomp/CodeGenerator.java	2020-03-01 00:34:16.184601428 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_123/fixed-version/src/com/google/javascript/jscomp/CodeGenerator.java	2020-03-01 00:34:19.228744866 -0800
+@@ -282,7 +282,7 @@
+       case Token.HOOK: {
+         Preconditions.checkState(childCount == 3);
+         int p = NodeUtil.precedence(type);
+-        Context rhsContext = Context.OTHER;
++        Context rhsContext = getContextForNoInOperator(context);
+         addExpr(first, p + 1, context);
+         cc.addOp("?", true);
+         addExpr(first.getNext(), 1, rhsContext);

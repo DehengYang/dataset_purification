@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_52/src/com/google/javascript/jscomp/CodeGenerator.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_52/fixed-version/src/com/google/javascript/jscomp/CodeGenerator.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_52/src/com/google/javascript/jscomp/CodeGenerator.java	2020-03-01 00:28:40.160768242 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_52/fixed-version/src/com/google/javascript/jscomp/CodeGenerator.java	2020-03-01 00:28:42.188863805 -0800
+@@ -742,7 +742,7 @@
+         return false;
+       }
+     }
+-    return len > 0;
++    return len > 0 && s.charAt(0) != '0';
+   }
+ 
+   static double getSimpleNumber(String s) {

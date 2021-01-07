@@ -1,0 +1,86 @@
+1 bug_id: Math-75
+2 src folder:
+  name of src folder: java
+  number of files: 435
+  number of java files: 398
+  number of src classes: 542
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.stat.FrequencyTest#testPcts
+  failing tests:
+  - org.apache.commons.math.stat.FrequencyTest
+  number of all test cases: 2135
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 49.54
+  repair actions extraction: 1.067
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.stat.FrequencyTest#testPcts: 53
+  fixed:
+    org.apache.commons.math.stat.FrequencyTest#testPcts: 69
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_75/src/main/java/org/apache/commons/math/stat/Frequency.java\t\
+    2020-10-21 13:21:43.582003340 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_75/purify/patch/org/apache/commons/math/stat/Frequency.java\t\
+    2020-10-21 13:21:43.582003340 -0400\n@@ -300,7 +300,7 @@\n      */\n     @Deprecated\n\
+    \     public double getPct(Object v) {\n-        return getCumPct((Comparable<?>)\
+    \ v);\n+        return getPct((Comparable<?>) v);\n     }\n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_75/src/main/java/org/apache/commons/math/stat/Frequency.java\t\
+    2020-10-21 13:22:47.155841462 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_75/purify/purified/org/apache/commons/math/stat/Frequency.java\t\
+    2020-10-21 13:22:47.155841462 -0400\n@@ -300,7 +300,7 @@\n      */\n     @Deprecated\n\
+    \     public double getPct(Object v) {\n-        return getCumPct((Comparable<?>)\
+    \ v);\n+        return getPct((Comparable<?>) v);\n     }\n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/Frequency:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:getCumPct((Comparable<?>)v) @TO@ MethodInvocation:getPct((Comparable<?>)v) '
+    - '---UPD MethodInvocation@@getCumPct((Comparable<?>)v) @TO@ getPct((Comparable<?>)v) '
+    - '------UPD SimpleName@@MethodName:getCumPct:[(Comparable<?>)v] @TO@ MethodName:getPct:[(Comparable<?>)v] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/Frequency:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:getCumPct((Comparable<?>)v) @TO@ MethodInvocation:getPct((Comparable<?>)v) '
+    - '---UPD MethodInvocation@@getCumPct((Comparable<?>)v) @TO@ getPct((Comparable<?>)v) '
+    - '------UPD SimpleName@@MethodName:getCumPct:[(Comparable<?>)v] @TO@ MethodName:getPct:[(Comparable<?>)v] '
+  repair_actions_cnt: 1

@@ -1,0 +1,897 @@
+1 bug_id: Mockito-6
+2 src folder:
+  name of src folder: src
+  number of files: 365
+  number of java files: 327
+  number of src classes: 388
+  number of test classes: 282
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.matchers.MatchersTest#anyStringMatcher
+  - org.mockitousage.matchers.NewMatchersTest#shouldAllowAnySet
+  - org.mockitousage.matchers.AnyXMatchersAcceptNullsTest#shouldNotAcceptNullInAllAnyPrimitiveWrapperMatchers
+  - org.mockitousage.matchers.NewMatchersTest#shouldAllowAnyCollection
+  - org.mockitousage.matchers.NewMatchersTest#shouldAllowAnyList
+  - org.mockitousage.matchers.AnyXMatchersAcceptNullsTest#shouldNotAcceptNullInAnyXMatchers
+  - org.mockitousage.matchers.NewMatchersTest#shouldAllowAnyMap
+  failing tests:
+  - org.mockitousage.matchers.MatchersTest
+  - org.mockitousage.matchers.NewMatchersTest
+  - org.mockitousage.matchers.AnyXMatchersAcceptNullsTest
+  number of all test cases: 1381
+  number of failing test cases: 7
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 6.0
+  purification via coverage: 1.306
+  purification via delta debugging: 5859.0059
+  repair actions extraction: 1.529
+5 stmts covered by failing cases:
+  buggy:
+    org.mockitousage.matchers.AnyXMatchersAcceptNullsTest#shouldNotAcceptNullInAllAnyPrimitiveWrapperMatchers: 875
+    org.mockitousage.matchers.AnyXMatchersAcceptNullsTest#shouldNotAcceptNullInAnyXMatchers: 876
+    org.mockitousage.matchers.MatchersTest#anyStringMatcher: 864
+    org.mockitousage.matchers.NewMatchersTest#shouldAllowAnyCollection: 864
+    org.mockitousage.matchers.NewMatchersTest#shouldAllowAnyList: 864
+    org.mockitousage.matchers.NewMatchersTest#shouldAllowAnyMap: 864
+    org.mockitousage.matchers.NewMatchersTest#shouldAllowAnySet: 869
+  fixed:
+    org.mockitousage.matchers.AnyXMatchersAcceptNullsTest#shouldNotAcceptNullInAllAnyPrimitiveWrapperMatchers: 851
+    org.mockitousage.matchers.AnyXMatchersAcceptNullsTest#shouldNotAcceptNullInAnyXMatchers: 852
+    org.mockitousage.matchers.MatchersTest#anyStringMatcher: 869
+    org.mockitousage.matchers.NewMatchersTest#shouldAllowAnyCollection: 987
+    org.mockitousage.matchers.NewMatchersTest#shouldAllowAnyList: 983
+    org.mockitousage.matchers.NewMatchersTest#shouldAllowAnyMap: 983
+    org.mockitousage.matchers.NewMatchersTest#shouldAllowAnySet: 983
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 20
+  covDel: 20
+  cov_patch_lines: 40
+  delta_patch_lines: 40
+  oriAdd: 20
+  oriDel: 20
+  ori_patch_lines: 40
+  purAdd: 20
+  purDel: 20
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 20
+  original: 20
+  purifiy: 20
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 99
+  passed: 2
+  total: 101
+9 sibling repair actions:
+- 0 1 0.9394618834080718
+- 0 2 0.9100877192982456
+- 0 3 0.918141592920354
+- 0 4 0.9304932735426009
+- 0 5 0.8270089285714286
+- 0 6 0.8888888888888888
+- 0 7 0.9263392857142857
+- 0 13 0.918141592920354
+- 0 14 0.9304932735426009
+- 0 16 0.9367945823927766
+- 0 18 0.9367945823927766
+- 0 20 0.9148471615720524
+- 1 2 0.9242761692650334
+- 1 3 0.950561797752809
+- 1 4 0.9635535307517085
+- 1 5 0.9591836734693877
+- 1 6 0.963882618510158
+- 1 7 0.9591836734693877
+- 1 13 0.9325842696629213
+- 1 14 0.9453302961275627
+- 1 16 0.9518348623853211
+- 1 18 0.9518348623853211
+- 1 20 0.9201773835920177
+- 2 3 0.9296703296703297
+- 2 4 0.9242761692650334
+- 2 5 0.9201773835920177
+- 2 6 0.8830022075055187
+- 2 7 0.9201773835920177
+- 2 13 0.9120879120879121
+- 2 14 0.9242761692650334
+- 2 16 0.9304932735426009
+- 2 18 0.9304932735426009
+- 2 20 0.9088937093275488
+- 3 4 0.9595505617977528
+- 3 5 0.9463087248322147
+- 3 6 0.9420935412026726
+- 3 7 0.9463087248322147
+- 3 13 0.9201773835920177
+- 3 14 0.9325842696629213
+- 3 16 0.9389140271493213
+- 3 18 0.9389140271493213
+- 3 20 0.9080962800875274
+- 4 5 0.9591836734693877
+- 4 6 0.9548532731376975
+- 4 7 0.9591836734693877
+- 4 13 0.950561797752809
+- 4 14 0.9544419134396356
+- 4 16 0.9518348623853211
+- 4 18 0.9518348623853211
+- 4 20 0.8891352549889135
+- 5 6 0.950561797752809
+- 5 7 0.963882618510158
+- 5 13 0.9284116331096197
+- 5 14 0.9501133786848073
+- 5 16 0.95662100456621
+- 5 18 0.9474885844748858
+- 5 20 0.9161147902869757
+- 6 7 0.950561797752809
+- 6 13 0.8930957683741648
+- 6 14 0.9051918735891648
+- 6 16 0.9113636363636364
+- 6 18 0.9113636363636364
+- 6 20 0.8813186813186813
+- 7 13 0.9373601789709173
+- 7 14 0.9501133786848073
+- 7 16 0.9657534246575342
+- 7 18 0.9474885844748858
+- 7 20 0.9161147902869757
+- 8 10 0.9615384615384616
+- 13 14 0.9325842696629213
+- 13 16 0.9524886877828054
+- 13 18 0.9389140271493213
+- 13 20 0.9080962800875274
+- 14 16 0.9655963302752294
+- 14 18 0.9518348623853211
+- 14 20 0.9379157427937915
+- 15 17 0.9557522123893806
+- 15 21 0.9348837209302325
+- 16 18 0.9584295612009238
+- 16 20 0.9308035714285714
+- 18 20 0.9263392857142857
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_6/src/org/mockito/Matchers.java\t\
+    2020-10-24 15:50:50.051029935 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_6/purify/patch/org/mockito/Matchers.java\t\
+    2020-10-24 15:50:50.051029935 -0400\n@@ -119,7 +119,7 @@\n      * @return <code>false</code>.\n\
+    \      */\n     public static boolean anyBoolean() {\n-        return reportMatcher(Any.ANY).returnFalse();\n\
+    +        return reportMatcher(new InstanceOf(Boolean.class)).returnFalse();\n\
+    \     }\n \n     /**\n@@ -134,7 +134,7 @@\n      * @return <code>0</code>.\n \
+    \     */\n     public static byte anyByte() {\n-        return reportMatcher(Any.ANY).returnZero();\n\
+    +        return reportMatcher(new InstanceOf(Byte.class)).returnZero();\n    \
+    \ }\n \n     /**\n@@ -149,7 +149,7 @@\n      * @return <code>0</code>.\n     \
+    \ */\n     public static char anyChar() {\n-        return reportMatcher(Any.ANY).returnChar();\n\
+    +        return reportMatcher(new InstanceOf(Character.class)).returnChar();\n\
+    \     }\n \n     /**\n@@ -164,7 +164,7 @@\n      * @return <code>0</code>.\n \
+    \     */\n     public static int anyInt() {\n-        return reportMatcher(Any.ANY).returnZero();\n\
+    +        return reportMatcher(new InstanceOf(Integer.class)).returnZero();\n \
+    \    }\n \n     /**\n@@ -179,7 +179,7 @@\n      * @return <code>0</code>.\n  \
+    \    */\n     public static long anyLong() {\n-        return reportMatcher(Any.ANY).returnZero();\n\
+    +        return reportMatcher(new InstanceOf(Long.class)).returnZero();\n    \
+    \ }\n \n     /**\n@@ -194,7 +194,7 @@\n      * @return <code>0</code>.\n     \
+    \ */\n     public static float anyFloat() {\n-        return reportMatcher(Any.ANY).returnZero();\n\
+    +        return reportMatcher(new InstanceOf(Float.class)).returnZero();\n   \
+    \  }\n \n     /**\n@@ -209,7 +209,7 @@\n      * @return <code>0</code>.\n    \
+    \  */\n     public static double anyDouble() {\n-        return reportMatcher(Any.ANY).returnZero();\n\
+    +        return reportMatcher(new InstanceOf(Double.class)).returnZero();\n  \
+    \   }\n \n     /**\n@@ -224,7 +224,7 @@\n      * @return <code>0</code>.\n   \
+    \   */\n     public static short anyShort() {\n-        return reportMatcher(Any.ANY).returnZero();\n\
+    +        return reportMatcher(new InstanceOf(Short.class)).returnZero();\n   \
+    \  }\n \n     /**\n@@ -241,7 +241,7 @@\n      * @return <code>null</code>.\n \
+    \     */\n     public static <T> T anyObject() {\n-        return (T) reportMatcher(Any.ANY).returnNull();\n\
+    +        return (T) reportMatcher(new InstanceOf(Object.class)).returnNull();\n\
+    \     }\n \n     /**\n@@ -289,7 +289,7 @@\n      * @return <code>null</code>.\n\
+    \      */\n     public static <T> T any(Class<T> clazz) {\n-        return (T)\
+    \ reportMatcher(Any.ANY).returnFor(clazz);\n+        return (T) reportMatcher(new\
+    \ InstanceOf(clazz)).returnFor(clazz);\n     }\n     \n     /**\n@@ -306,7 +306,7\
+    \ @@\n      * @return <code>null</code>.\n      */\n     public static <T> T any()\
+    \ {\n-        return (T) anyObject();\n+        return (T) reportMatcher(Any.ANY).returnNull();\n\
+    \     }\n \n     /**\n@@ -321,7 +321,7 @@\n      * @return empty String (\"\"\
+    )\n      */\n     public static String anyString() {\n-        return reportMatcher(Any.ANY).returnString();\n\
+    +        return reportMatcher(new InstanceOf(String.class)).returnString();\n\
+    \     }\n     \n     /**\n@@ -336,7 +336,7 @@\n      * @return empty List.\n \
+    \     */\n     public static List anyList() {\n-        return reportMatcher(Any.ANY).returnList();\n\
+    +        return reportMatcher(new InstanceOf(List.class)).returnList();\n    \
+    \ }    \n     \n     /**\n@@ -355,7 +355,7 @@\n      * @return empty List.\n \
+    \     */\n     public static <T> List<T> anyListOf(Class<T> clazz) {\n-      \
+    \  return (List) reportMatcher(Any.ANY).returnList();\n+        return anyList();\n\
+    \     }    \n     \n     /**\n@@ -370,7 +370,7 @@\n      * @return empty Set\n\
+    \      */\n     public static Set anySet() {\n-        return reportMatcher(Any.ANY).returnSet();\n\
+    +        return reportMatcher(new InstanceOf(Set.class)).returnSet();\n     }\n\
+    \     \n     /**\n@@ -389,7 +389,7 @@\n      * @return empty Set\n      */\n \
+    \    public static <T> Set<T> anySetOf(Class<T> clazz) {\n-        return (Set)\
+    \ reportMatcher(Any.ANY).returnSet();\n+        return anySet();\n     }\n \n\
+    \     /**\n@@ -404,7 +404,7 @@\n      * @return empty Map.\n      */\n     public\
+    \ static Map anyMap() {\n-        return reportMatcher(Any.ANY).returnMap();\n\
+    +        return reportMatcher(new InstanceOf(Map.class)).returnMap();\n     }\n\
+    \ \n     /**\n@@ -424,7 +424,7 @@\n      * @return empty Map.\n      */\n    \
+    \ public static <K, V>  Map<K, V> anyMapOf(Class<K> keyClazz, Class<V> valueClazz)\
+    \ {\n-        return reportMatcher(Any.ANY).returnMap();\n+        return anyMap();\n\
+    \     }\n     \n     /**\n@@ -439,7 +439,7 @@\n      * @return empty Collection.\n\
+    \      */\n     public static Collection anyCollection() {\n-        return reportMatcher(Any.ANY).returnList();\n\
+    +        return reportMatcher(new InstanceOf(Collection.class)).returnList();\n\
+    \     }    \n     \n     /**\n@@ -458,7 +458,7 @@\n      * @return empty Collection.\n\
+    \      */\n     public static <T> Collection<T> anyCollectionOf(Class<T> clazz)\
+    \ {\n-        return (Collection) reportMatcher(Any.ANY).returnList();\n+    \
+    \    return anyCollection();\n     }    \n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_6/src/org/mockito/Matchers.java\t\
+    2020-10-24 17:29:32.707543193 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_6/purify/purified/org/mockito/Matchers.java\t\
+    2020-10-24 17:29:32.707543193 -0400\n@@ -119,7 +119,7 @@\n      * @return <code>false</code>.\n\
+    \      */\n     public static boolean anyBoolean() {\n-        return reportMatcher(Any.ANY).returnFalse();\n\
+    +        return reportMatcher(new InstanceOf(Boolean.class)).returnFalse();\n\
+    \     }\n \n     /**\n@@ -134,7 +134,7 @@\n      * @return <code>0</code>.\n \
+    \     */\n     public static byte anyByte() {\n-        return reportMatcher(Any.ANY).returnZero();\n\
+    +        return reportMatcher(new InstanceOf(Byte.class)).returnZero();\n    \
+    \ }\n \n     /**\n@@ -149,7 +149,7 @@\n      * @return <code>0</code>.\n     \
+    \ */\n     public static char anyChar() {\n-        return reportMatcher(Any.ANY).returnChar();\n\
+    +        return reportMatcher(new InstanceOf(Character.class)).returnChar();\n\
+    \     }\n \n     /**\n@@ -164,7 +164,7 @@\n      * @return <code>0</code>.\n \
+    \     */\n     public static int anyInt() {\n-        return reportMatcher(Any.ANY).returnZero();\n\
+    +        return reportMatcher(new InstanceOf(Integer.class)).returnZero();\n \
+    \    }\n \n     /**\n@@ -179,7 +179,7 @@\n      * @return <code>0</code>.\n  \
+    \    */\n     public static long anyLong() {\n-        return reportMatcher(Any.ANY).returnZero();\n\
+    +        return reportMatcher(new InstanceOf(Long.class)).returnZero();\n    \
+    \ }\n \n     /**\n@@ -194,7 +194,7 @@\n      * @return <code>0</code>.\n     \
+    \ */\n     public static float anyFloat() {\n-        return reportMatcher(Any.ANY).returnZero();\n\
+    +        return reportMatcher(new InstanceOf(Float.class)).returnZero();\n   \
+    \  }\n \n     /**\n@@ -209,7 +209,7 @@\n      * @return <code>0</code>.\n    \
+    \  */\n     public static double anyDouble() {\n-        return reportMatcher(Any.ANY).returnZero();\n\
+    +        return reportMatcher(new InstanceOf(Double.class)).returnZero();\n  \
+    \   }\n \n     /**\n@@ -224,7 +224,7 @@\n      * @return <code>0</code>.\n   \
+    \   */\n     public static short anyShort() {\n-        return reportMatcher(Any.ANY).returnZero();\n\
+    +        return reportMatcher(new InstanceOf(Short.class)).returnZero();\n   \
+    \  }\n \n     /**\n@@ -241,7 +241,7 @@\n      * @return <code>null</code>.\n \
+    \     */\n     public static <T> T anyObject() {\n-        return (T) reportMatcher(Any.ANY).returnNull();\n\
+    +        return (T) reportMatcher(new InstanceOf(Object.class)).returnNull();\n\
+    \     }\n \n     /**\n@@ -289,7 +289,7 @@\n      * @return <code>null</code>.\n\
+    \      */\n     public static <T> T any(Class<T> clazz) {\n-        return (T)\
+    \ reportMatcher(Any.ANY).returnFor(clazz);\n+        return (T) reportMatcher(new\
+    \ InstanceOf(clazz)).returnFor(clazz);\n     }\n     \n     /**\n@@ -306,7 +306,7\
+    \ @@\n      * @return <code>null</code>.\n      */\n     public static <T> T any()\
+    \ {\n-        return (T) anyObject();\n+        return (T) reportMatcher(Any.ANY).returnNull();\n\
+    \     }\n \n     /**\n@@ -321,7 +321,7 @@\n      * @return empty String (\"\"\
+    )\n      */\n     public static String anyString() {\n-        return reportMatcher(Any.ANY).returnString();\n\
+    +        return reportMatcher(new InstanceOf(String.class)).returnString();\n\
+    \     }\n     \n     /**\n@@ -336,7 +336,7 @@\n      * @return empty List.\n \
+    \     */\n     public static List anyList() {\n-        return reportMatcher(Any.ANY).returnList();\n\
+    +        return reportMatcher(new InstanceOf(List.class)).returnList();\n    \
+    \ }    \n     \n     /**\n@@ -355,7 +355,7 @@\n      * @return empty List.\n \
+    \     */\n     public static <T> List<T> anyListOf(Class<T> clazz) {\n-      \
+    \  return (List) reportMatcher(Any.ANY).returnList();\n+        return anyList();\n\
+    \     }    \n     \n     /**\n@@ -370,7 +370,7 @@\n      * @return empty Set\n\
+    \      */\n     public static Set anySet() {\n-        return reportMatcher(Any.ANY).returnSet();\n\
+    +        return reportMatcher(new InstanceOf(Set.class)).returnSet();\n     }\n\
+    \     \n     /**\n@@ -389,7 +389,7 @@\n      * @return empty Set\n      */\n \
+    \    public static <T> Set<T> anySetOf(Class<T> clazz) {\n-        return (Set)\
+    \ reportMatcher(Any.ANY).returnSet();\n+        return anySet();\n     }\n \n\
+    \     /**\n@@ -404,7 +404,7 @@\n      * @return empty Map.\n      */\n     public\
+    \ static Map anyMap() {\n-        return reportMatcher(Any.ANY).returnMap();\n\
+    +        return reportMatcher(new InstanceOf(Map.class)).returnMap();\n     }\n\
+    \ \n     /**\n@@ -424,7 +424,7 @@\n      * @return empty Map.\n      */\n    \
+    \ public static <K, V>  Map<K, V> anyMapOf(Class<K> keyClazz, Class<V> valueClazz)\
+    \ {\n-        return reportMatcher(Any.ANY).returnMap();\n+        return anyMap();\n\
+    \     }\n     \n     /**\n@@ -439,7 +439,7 @@\n      * @return empty Collection.\n\
+    \      */\n     public static Collection anyCollection() {\n-        return reportMatcher(Any.ANY).returnList();\n\
+    +        return reportMatcher(new InstanceOf(Collection.class)).returnList();\n\
+    \     }    \n     \n     /**\n@@ -458,7 +458,7 @@\n      * @return empty Collection.\n\
+    \      */\n     public static <T> Collection<T> anyCollectionOf(Class<T> clazz)\
+    \ {\n-        return (Collection) reportMatcher(Any.ANY).returnList();\n+    \
+    \    return anyCollection();\n     }    \n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/Matchers:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnFalse()
+      @TO@ MethodInvocation:reportMatcher(new InstanceOf(Boolean.class)).returnFalse() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnFalse() @TO@ reportMatcher(new
+      InstanceOf(Boolean.class)).returnFalse() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Boolean.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Boolean.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Boolean.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Boolean.class] '
+    - '------------INS TypeLiteral@@Boolean.class @TO@ ClassInstanceCreation@@InstanceOf[Boolean.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnZero() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Byte.class)).returnZero() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnZero() @TO@ reportMatcher(new
+      InstanceOf(Byte.class)).returnZero() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Byte.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Byte.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Byte.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Byte.class] '
+    - '------------INS TypeLiteral@@Byte.class @TO@ ClassInstanceCreation@@InstanceOf[Byte.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnChar() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Character.class)).returnChar() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnChar() @TO@ reportMatcher(new
+      InstanceOf(Character.class)).returnChar() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Character.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Character.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Character.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Character.class] '
+    - '------------INS TypeLiteral@@Character.class @TO@ ClassInstanceCreation@@InstanceOf[Character.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnZero() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Integer.class)).returnZero() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnZero() @TO@ reportMatcher(new
+      InstanceOf(Integer.class)).returnZero() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Integer.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Integer.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Integer.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Integer.class] '
+    - '------------INS TypeLiteral@@Integer.class @TO@ ClassInstanceCreation@@InstanceOf[Integer.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnZero() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Long.class)).returnZero() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnZero() @TO@ reportMatcher(new
+      InstanceOf(Long.class)).returnZero() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Long.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Long.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Long.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Long.class] '
+    - '------------INS TypeLiteral@@Long.class @TO@ ClassInstanceCreation@@InstanceOf[Long.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnZero() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Float.class)).returnZero() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnZero() @TO@ reportMatcher(new
+      InstanceOf(Float.class)).returnZero() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Float.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Float.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Float.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Float.class] '
+    - '------------INS TypeLiteral@@Float.class @TO@ ClassInstanceCreation@@InstanceOf[Float.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnZero() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Double.class)).returnZero() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnZero() @TO@ reportMatcher(new
+      InstanceOf(Double.class)).returnZero() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Double.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Double.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Double.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Double.class] '
+    - '------------INS TypeLiteral@@Double.class @TO@ ClassInstanceCreation@@InstanceOf[Double.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnZero() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Short.class)).returnZero() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnZero() @TO@ reportMatcher(new
+      InstanceOf(Short.class)).returnZero() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Short.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Short.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Short.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Short.class] '
+    - '------------INS TypeLiteral@@Short.class @TO@ ClassInstanceCreation@@InstanceOf[Short.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV MethodDeclaration@@public, static, @@T, T, MethodName:anyObject, @@Argus:null
+      @TO@ TypeDeclaration@@[@SuppressWarnings("unchecked"), public]Matchers,  '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, static, @@T, T, MethodName:anyObject, @@Argus:null
+      @TO@ public, static, @@T, T, MethodName:any, @@Argus:null '
+    - '---UPD SimpleName@@MethodName:anyObject @TO@ MethodName:any '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV MethodDeclaration@@public, static, @@T, T, MethodName:anyVararg, @@Argus:null
+      @TO@ TypeDeclaration@@[@SuppressWarnings("unchecked"), public]Matchers,  '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, static, @@T, T, MethodName:any, @@Argus:Class<T>+clazz+
+      @TO@ public, static, @@T, T, MethodName:anyObject, @@Argus:null '
+    - '---UPD SimpleName@@MethodName:any @TO@ MethodName:anyObject '
+    - '---UPD ReturnStatement@@CastExpression:(T)reportMatcher(Any.ANY).returnFor(clazz)
+      @TO@ CastExpression:(T)reportMatcher(new InstanceOf(Object.class)).returnNull() '
+    - '------UPD CastExpression@@(T)reportMatcher(Any.ANY).returnFor(clazz) @TO@ (T)reportMatcher(new
+      InstanceOf(Object.class)).returnNull() '
+    - '---------UPD MethodInvocation@@reportMatcher(Any.ANY).returnFor(clazz) @TO@
+      reportMatcher(new InstanceOf(Object.class)).returnNull() '
+    - '------------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Object.class)] '
+    - '---------------INS ClassInstanceCreation@@InstanceOf[Object.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Object.class] '
+    - '------------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Object.class] '
+    - '------------------INS TypeLiteral@@Object.class @TO@ ClassInstanceCreation@@InstanceOf[Object.class] '
+    - '---------------DEL QualifiedName@@Any.ANY '
+    - '------------------DEL SimpleName@@Any '
+    - '------------------DEL SimpleName@@ANY '
+    - '------------UPD SimpleName@@MethodName:returnFor:[clazz] @TO@ MethodName:returnNull:[] '
+    - '---------------DEL SimpleName@@clazz '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, static, @@T, T, MethodName:any, @@Argus:null
+      @TO@ public, static, @@T, T, MethodName:any, @@Argus:Class<T>+clazz+ '
+    - '---MOV SingleVariableDeclaration@@Class<T> clazz @TO@ MethodDeclaration@@public,
+      static, @@T, T, MethodName:any, @@Argus:null '
+    - '---UPD ReturnStatement@@CastExpression:(T)anyObject() @TO@ CastExpression:(T)reportMatcher(new
+      InstanceOf(clazz)).returnFor(clazz) '
+    - '------UPD CastExpression@@(T)anyObject() @TO@ (T)reportMatcher(new InstanceOf(clazz)).returnFor(clazz) '
+    - '---------INS MethodInvocation@@reportMatcher(new InstanceOf(clazz)).returnFor(clazz)
+      @TO@ CastExpression@@(T)anyObject() '
+    - '------------INS MethodInvocation@@MethodName:reportMatcher:[new InstanceOf(clazz)]
+      @TO@ MethodInvocation@@reportMatcher(new InstanceOf(clazz)).returnFor(clazz) '
+    - '---------------INS ClassInstanceCreation@@InstanceOf[clazz] @TO@ MethodInvocation@@MethodName:reportMatcher:[new
+      InstanceOf(clazz)] '
+    - '------------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[clazz] '
+    - '------------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[clazz] '
+    - '------------------INS SimpleName@@clazz @TO@ ClassInstanceCreation@@InstanceOf[clazz] '
+    - '------------INS SimpleName@@MethodName:returnFor:[clazz] @TO@ MethodInvocation@@reportMatcher(new
+      InstanceOf(clazz)).returnFor(clazz) '
+    - '---------------INS SimpleName@@clazz @TO@ SimpleName@@MethodName:returnFor:[clazz] '
+    - '---------DEL MethodInvocation@@MethodName:anyObject:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnString()
+      @TO@ MethodInvocation:reportMatcher(new InstanceOf(String.class)).returnString() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnString() @TO@ reportMatcher(new
+      InstanceOf(String.class)).returnString() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(String.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[String.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[String.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[String.class] '
+    - '------------INS TypeLiteral@@String.class @TO@ ClassInstanceCreation@@InstanceOf[String.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnList() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(List.class)).returnList() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnList() @TO@ reportMatcher(new
+      InstanceOf(List.class)).returnList() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(List.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[List.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[List.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[List.class] '
+    - '------------INS TypeLiteral@@List.class @TO@ ClassInstanceCreation@@InstanceOf[List.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@CastExpression:(List)reportMatcher(Any.ANY).returnList()
+      @TO@ MethodInvocation:anyList() '
+    - '---INS MethodInvocation@@MethodName:anyList:[] @TO@ ReturnStatement@@CastExpression:(List)reportMatcher(Any.ANY).returnList() '
+    - '---DEL CastExpression@@(List)reportMatcher(Any.ANY).returnList() '
+    - '------DEL SimpleType@@List '
+    - '------DEL MethodInvocation@@reportMatcher(Any.ANY).returnList() '
+    - '---------DEL MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------DEL QualifiedName@@Any.ANY '
+    - '---------------DEL SimpleName@@Any '
+    - '---------------DEL SimpleName@@ANY '
+    - '---------DEL SimpleName@@MethodName:returnList:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnSet() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Set.class)).returnSet() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnSet() @TO@ reportMatcher(new
+      InstanceOf(Set.class)).returnSet() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Set.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Set.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Set.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Set.class] '
+    - '------------INS TypeLiteral@@Set.class @TO@ ClassInstanceCreation@@InstanceOf[Set.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@CastExpression:(Set)reportMatcher(Any.ANY).returnSet()
+      @TO@ MethodInvocation:anySet() '
+    - '---INS MethodInvocation@@MethodName:anySet:[] @TO@ ReturnStatement@@CastExpression:(Set)reportMatcher(Any.ANY).returnSet() '
+    - '---DEL CastExpression@@(Set)reportMatcher(Any.ANY).returnSet() '
+    - '------DEL SimpleType@@Set '
+    - '------DEL MethodInvocation@@reportMatcher(Any.ANY).returnSet() '
+    - '---------DEL MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------DEL QualifiedName@@Any.ANY '
+    - '---------------DEL SimpleName@@Any '
+    - '---------------DEL SimpleName@@ANY '
+    - '---------DEL SimpleName@@MethodName:returnSet:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnMap() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Map.class)).returnMap() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnMap() @TO@ reportMatcher(new
+      InstanceOf(Map.class)).returnMap() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Map.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Map.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Map.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Map.class] '
+    - '------------INS TypeLiteral@@Map.class @TO@ ClassInstanceCreation@@InstanceOf[Map.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnMap() @TO@
+      MethodInvocation:anyMap() '
+    - '---INS MethodInvocation@@MethodName:anyMap:[] @TO@ ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnMap() '
+    - '---DEL MethodInvocation@@reportMatcher(Any.ANY).returnMap() '
+    - '------DEL MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+    - '------DEL SimpleName@@MethodName:returnMap:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnList() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Collection.class)).returnList() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnList() @TO@ reportMatcher(new
+      InstanceOf(Collection.class)).returnList() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Collection.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Collection.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Collection.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Collection.class] '
+    - '------------INS TypeLiteral@@Collection.class @TO@ ClassInstanceCreation@@InstanceOf[Collection.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@CastExpression:(Collection)reportMatcher(Any.ANY).returnList()
+      @TO@ MethodInvocation:anyCollection() '
+    - '---INS MethodInvocation@@MethodName:anyCollection:[] @TO@ ReturnStatement@@CastExpression:(Collection)reportMatcher(Any.ANY).returnList() '
+    - '---DEL CastExpression@@(Collection)reportMatcher(Any.ANY).returnList() '
+    - '------DEL SimpleType@@Collection '
+    - '------DEL MethodInvocation@@reportMatcher(Any.ANY).returnList() '
+    - '---------DEL MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------DEL QualifiedName@@Any.ANY '
+    - '---------------DEL SimpleName@@Any '
+    - '---------------DEL SimpleName@@ANY '
+    - '---------DEL SimpleName@@MethodName:returnList:[] '
+  repair_actions_cnt: 22
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/Matchers:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnFalse()
+      @TO@ MethodInvocation:reportMatcher(new InstanceOf(Boolean.class)).returnFalse() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnFalse() @TO@ reportMatcher(new
+      InstanceOf(Boolean.class)).returnFalse() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Boolean.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Boolean.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Boolean.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Boolean.class] '
+    - '------------INS TypeLiteral@@Boolean.class @TO@ ClassInstanceCreation@@InstanceOf[Boolean.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnZero() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Byte.class)).returnZero() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnZero() @TO@ reportMatcher(new
+      InstanceOf(Byte.class)).returnZero() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Byte.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Byte.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Byte.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Byte.class] '
+    - '------------INS TypeLiteral@@Byte.class @TO@ ClassInstanceCreation@@InstanceOf[Byte.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnChar() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Character.class)).returnChar() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnChar() @TO@ reportMatcher(new
+      InstanceOf(Character.class)).returnChar() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Character.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Character.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Character.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Character.class] '
+    - '------------INS TypeLiteral@@Character.class @TO@ ClassInstanceCreation@@InstanceOf[Character.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnZero() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Integer.class)).returnZero() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnZero() @TO@ reportMatcher(new
+      InstanceOf(Integer.class)).returnZero() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Integer.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Integer.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Integer.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Integer.class] '
+    - '------------INS TypeLiteral@@Integer.class @TO@ ClassInstanceCreation@@InstanceOf[Integer.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnZero() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Long.class)).returnZero() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnZero() @TO@ reportMatcher(new
+      InstanceOf(Long.class)).returnZero() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Long.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Long.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Long.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Long.class] '
+    - '------------INS TypeLiteral@@Long.class @TO@ ClassInstanceCreation@@InstanceOf[Long.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnZero() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Float.class)).returnZero() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnZero() @TO@ reportMatcher(new
+      InstanceOf(Float.class)).returnZero() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Float.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Float.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Float.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Float.class] '
+    - '------------INS TypeLiteral@@Float.class @TO@ ClassInstanceCreation@@InstanceOf[Float.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnZero() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Double.class)).returnZero() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnZero() @TO@ reportMatcher(new
+      InstanceOf(Double.class)).returnZero() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Double.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Double.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Double.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Double.class] '
+    - '------------INS TypeLiteral@@Double.class @TO@ ClassInstanceCreation@@InstanceOf[Double.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnZero() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Short.class)).returnZero() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnZero() @TO@ reportMatcher(new
+      InstanceOf(Short.class)).returnZero() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Short.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Short.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Short.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Short.class] '
+    - '------------INS TypeLiteral@@Short.class @TO@ ClassInstanceCreation@@InstanceOf[Short.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV MethodDeclaration@@public, static, @@T, T, MethodName:anyObject, @@Argus:null
+      @TO@ TypeDeclaration@@[@SuppressWarnings("unchecked"), public]Matchers,  '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, static, @@T, T, MethodName:anyObject, @@Argus:null
+      @TO@ public, static, @@T, T, MethodName:any, @@Argus:null '
+    - '---UPD SimpleName@@MethodName:anyObject @TO@ MethodName:any '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV MethodDeclaration@@public, static, @@T, T, MethodName:anyVararg, @@Argus:null
+      @TO@ TypeDeclaration@@[@SuppressWarnings("unchecked"), public]Matchers,  '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, static, @@T, T, MethodName:any, @@Argus:Class<T>+clazz+
+      @TO@ public, static, @@T, T, MethodName:anyObject, @@Argus:null '
+    - '---UPD SimpleName@@MethodName:any @TO@ MethodName:anyObject '
+    - '---UPD ReturnStatement@@CastExpression:(T)reportMatcher(Any.ANY).returnFor(clazz)
+      @TO@ CastExpression:(T)reportMatcher(new InstanceOf(Object.class)).returnNull() '
+    - '------UPD CastExpression@@(T)reportMatcher(Any.ANY).returnFor(clazz) @TO@ (T)reportMatcher(new
+      InstanceOf(Object.class)).returnNull() '
+    - '---------UPD MethodInvocation@@reportMatcher(Any.ANY).returnFor(clazz) @TO@
+      reportMatcher(new InstanceOf(Object.class)).returnNull() '
+    - '------------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Object.class)] '
+    - '---------------INS ClassInstanceCreation@@InstanceOf[Object.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Object.class] '
+    - '------------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Object.class] '
+    - '------------------INS TypeLiteral@@Object.class @TO@ ClassInstanceCreation@@InstanceOf[Object.class] '
+    - '---------------DEL QualifiedName@@Any.ANY '
+    - '------------------DEL SimpleName@@Any '
+    - '------------------DEL SimpleName@@ANY '
+    - '------------UPD SimpleName@@MethodName:returnFor:[clazz] @TO@ MethodName:returnNull:[] '
+    - '---------------DEL SimpleName@@clazz '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, static, @@T, T, MethodName:any, @@Argus:null
+      @TO@ public, static, @@T, T, MethodName:any, @@Argus:Class<T>+clazz+ '
+    - '---MOV SingleVariableDeclaration@@Class<T> clazz @TO@ MethodDeclaration@@public,
+      static, @@T, T, MethodName:any, @@Argus:null '
+    - '---UPD ReturnStatement@@CastExpression:(T)anyObject() @TO@ CastExpression:(T)reportMatcher(new
+      InstanceOf(clazz)).returnFor(clazz) '
+    - '------UPD CastExpression@@(T)anyObject() @TO@ (T)reportMatcher(new InstanceOf(clazz)).returnFor(clazz) '
+    - '---------INS MethodInvocation@@reportMatcher(new InstanceOf(clazz)).returnFor(clazz)
+      @TO@ CastExpression@@(T)anyObject() '
+    - '------------INS MethodInvocation@@MethodName:reportMatcher:[new InstanceOf(clazz)]
+      @TO@ MethodInvocation@@reportMatcher(new InstanceOf(clazz)).returnFor(clazz) '
+    - '---------------INS ClassInstanceCreation@@InstanceOf[clazz] @TO@ MethodInvocation@@MethodName:reportMatcher:[new
+      InstanceOf(clazz)] '
+    - '------------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[clazz] '
+    - '------------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[clazz] '
+    - '------------------INS SimpleName@@clazz @TO@ ClassInstanceCreation@@InstanceOf[clazz] '
+    - '------------INS SimpleName@@MethodName:returnFor:[clazz] @TO@ MethodInvocation@@reportMatcher(new
+      InstanceOf(clazz)).returnFor(clazz) '
+    - '---------------INS SimpleName@@clazz @TO@ SimpleName@@MethodName:returnFor:[clazz] '
+    - '---------DEL MethodInvocation@@MethodName:anyObject:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnString()
+      @TO@ MethodInvocation:reportMatcher(new InstanceOf(String.class)).returnString() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnString() @TO@ reportMatcher(new
+      InstanceOf(String.class)).returnString() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(String.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[String.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[String.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[String.class] '
+    - '------------INS TypeLiteral@@String.class @TO@ ClassInstanceCreation@@InstanceOf[String.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnList() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(List.class)).returnList() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnList() @TO@ reportMatcher(new
+      InstanceOf(List.class)).returnList() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(List.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[List.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[List.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[List.class] '
+    - '------------INS TypeLiteral@@List.class @TO@ ClassInstanceCreation@@InstanceOf[List.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@CastExpression:(List)reportMatcher(Any.ANY).returnList()
+      @TO@ MethodInvocation:anyList() '
+    - '---INS MethodInvocation@@MethodName:anyList:[] @TO@ ReturnStatement@@CastExpression:(List)reportMatcher(Any.ANY).returnList() '
+    - '---DEL CastExpression@@(List)reportMatcher(Any.ANY).returnList() '
+    - '------DEL SimpleType@@List '
+    - '------DEL MethodInvocation@@reportMatcher(Any.ANY).returnList() '
+    - '---------DEL MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------DEL QualifiedName@@Any.ANY '
+    - '---------------DEL SimpleName@@Any '
+    - '---------------DEL SimpleName@@ANY '
+    - '---------DEL SimpleName@@MethodName:returnList:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnSet() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Set.class)).returnSet() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnSet() @TO@ reportMatcher(new
+      InstanceOf(Set.class)).returnSet() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Set.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Set.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Set.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Set.class] '
+    - '------------INS TypeLiteral@@Set.class @TO@ ClassInstanceCreation@@InstanceOf[Set.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@CastExpression:(Set)reportMatcher(Any.ANY).returnSet()
+      @TO@ MethodInvocation:anySet() '
+    - '---INS MethodInvocation@@MethodName:anySet:[] @TO@ ReturnStatement@@CastExpression:(Set)reportMatcher(Any.ANY).returnSet() '
+    - '---DEL CastExpression@@(Set)reportMatcher(Any.ANY).returnSet() '
+    - '------DEL SimpleType@@Set '
+    - '------DEL MethodInvocation@@reportMatcher(Any.ANY).returnSet() '
+    - '---------DEL MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------DEL QualifiedName@@Any.ANY '
+    - '---------------DEL SimpleName@@Any '
+    - '---------------DEL SimpleName@@ANY '
+    - '---------DEL SimpleName@@MethodName:returnSet:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnMap() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Map.class)).returnMap() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnMap() @TO@ reportMatcher(new
+      InstanceOf(Map.class)).returnMap() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Map.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Map.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Map.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Map.class] '
+    - '------------INS TypeLiteral@@Map.class @TO@ ClassInstanceCreation@@InstanceOf[Map.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnMap() @TO@
+      MethodInvocation:anyMap() '
+    - '---INS MethodInvocation@@MethodName:anyMap:[] @TO@ ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnMap() '
+    - '---DEL MethodInvocation@@reportMatcher(Any.ANY).returnMap() '
+    - '------DEL MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+    - '------DEL SimpleName@@MethodName:returnMap:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(Any.ANY).returnList() @TO@
+      MethodInvocation:reportMatcher(new InstanceOf(Collection.class)).returnList() '
+    - '---UPD MethodInvocation@@reportMatcher(Any.ANY).returnList() @TO@ reportMatcher(new
+      InstanceOf(Collection.class)).returnList() '
+    - '------UPD MethodInvocation@@MethodName:reportMatcher:[Any.ANY] @TO@ MethodName:reportMatcher:[new
+      InstanceOf(Collection.class)] '
+    - '---------INS ClassInstanceCreation@@InstanceOf[Collection.class] @TO@ MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------INS New@@new @TO@ ClassInstanceCreation@@InstanceOf[Collection.class] '
+    - '------------INS SimpleType@@InstanceOf @TO@ ClassInstanceCreation@@InstanceOf[Collection.class] '
+    - '------------INS TypeLiteral@@Collection.class @TO@ ClassInstanceCreation@@InstanceOf[Collection.class] '
+    - '---------DEL QualifiedName@@Any.ANY '
+    - '------------DEL SimpleName@@Any '
+    - '------------DEL SimpleName@@ANY '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@CastExpression:(Collection)reportMatcher(Any.ANY).returnList()
+      @TO@ MethodInvocation:anyCollection() '
+    - '---INS MethodInvocation@@MethodName:anyCollection:[] @TO@ ReturnStatement@@CastExpression:(Collection)reportMatcher(Any.ANY).returnList() '
+    - '---DEL CastExpression@@(Collection)reportMatcher(Any.ANY).returnList() '
+    - '------DEL SimpleType@@Collection '
+    - '------DEL MethodInvocation@@reportMatcher(Any.ANY).returnList() '
+    - '---------DEL MethodInvocation@@MethodName:reportMatcher:[Any.ANY] '
+    - '------------DEL QualifiedName@@Any.ANY '
+    - '---------------DEL SimpleName@@Any '
+    - '---------------DEL SimpleName@@ANY '
+    - '---------DEL SimpleName@@MethodName:returnList:[] '
+  repair_actions_cnt: 22

@@ -1,0 +1,98 @@
+1 bug_id: Lang-59
+2 src folder:
+  name of src folder: java
+  number of files: 87
+  number of java files: 77
+  number of src classes: 124
+  number of test classes: 89
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.text.StrBuilderAppendInsertTest#testLang299
+  failing tests:
+  - org.apache.commons.lang.text.StrBuilderAppendInsertTest
+  number of all test cases: 1687
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 35.376
+  repair actions extraction: 4.318
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.text.StrBuilderAppendInsertTest#testLang299: 12
+  fixed:
+    org.apache.commons.lang.text.StrBuilderAppendInsertTest#testLang299: 15
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_59/src/java/org/apache/commons/lang/text/StrBuilder.java\t\
+    2020-10-21 04:05:04.699864799 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_59/purify/patch/org/apache/commons/lang/text/StrBuilder.java\t\
+    2020-10-21 04:05:04.699864799 -0400\n@@ -881,7 +881,7 @@\n             String\
+    \ str = (obj == null ? getNullText() : obj.toString());\n             int strLen\
+    \ = str.length();\n             if (strLen >= width) {\n-                str.getChars(0,\
+    \ strLen, buffer, size);\n+                str.getChars(0, width, buffer, size);\n\
+    \             } else {\n                 int padLen = width - strLen;\n      \
+    \           str.getChars(0, strLen, buffer, size);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_59/src/java/org/apache/commons/lang/text/StrBuilder.java\t\
+    2020-10-21 04:05:55.085319856 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_59/purify/purified/org/apache/commons/lang/text/StrBuilder.java\t\
+    2020-10-21 04:05:55.085319856 -0400\n@@ -881,7 +881,7 @@\n             String\
+    \ str = (obj == null ? getNullText() : obj.toString());\n             int strLen\
+    \ = str.length();\n             if (strLen >= width) {\n-                str.getChars(0,\
+    \ strLen, buffer, size);\n+                str.getChars(0, width, buffer, size);\n\
+    \             } else {\n                 int padLen = width - strLen;\n      \
+    \           str.getChars(0, strLen, buffer, size);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/text/StrBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:str.getChars(0,strLen,buffer,size)
+      @TO@ MethodInvocation:str.getChars(0,width,buffer,size) '
+    - '---UPD MethodInvocation@@str.getChars(0,strLen,buffer,size) @TO@ str.getChars(0,width,buffer,size) '
+    - '------UPD SimpleName@@MethodName:getChars:[0, strLen, buffer, size] @TO@ MethodName:getChars:[0,
+      width, buffer, size] '
+    - '---------UPD SimpleName@@strLen @TO@ width '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/text/StrBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:str.getChars(0,strLen,buffer,size)
+      @TO@ MethodInvocation:str.getChars(0,width,buffer,size) '
+    - '---UPD MethodInvocation@@str.getChars(0,strLen,buffer,size) @TO@ str.getChars(0,width,buffer,size) '
+    - '------UPD SimpleName@@MethodName:getChars:[0, strLen, buffer, size] @TO@ MethodName:getChars:[0,
+      width, buffer, size] '
+    - '---------UPD SimpleName@@strLen @TO@ width '
+  repair_actions_cnt: 1

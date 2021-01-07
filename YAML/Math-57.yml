@@ -1,0 +1,90 @@
+1 bug_id: Math-57
+2 src folder:
+  name of src folder: java
+  number of files: 538
+  number of java files: 498
+  number of src classes: 640
+  number of test classes: 254
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.stat.clustering.KMeansPlusPlusClustererTest#testSmallDistances
+  failing tests:
+  - org.apache.commons.math.stat.clustering.KMeansPlusPlusClustererTest
+  number of all test cases: 2384
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 78.497
+  repair actions extraction: 1.054
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.stat.clustering.KMeansPlusPlusClustererTest#testSmallDistances: 363
+  fixed:
+    org.apache.commons.math.stat.clustering.KMeansPlusPlusClustererTest#testSmallDistances: 364
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_57/src/main/java/org/apache/commons/math/stat/clustering/KMeansPlusPlusClusterer.java\t\
+    2020-10-21 12:36:42.115898332 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_57/purify/patch/org/apache/commons/math/stat/clustering/KMeansPlusPlusClusterer.java\t\
+    2020-10-21 12:36:42.115898332 -0400\n@@ -172,7 +172,7 @@\n         while (resultSet.size()\
+    \ < k) {\n             // For each data point x, compute D(x), the distance between\
+    \ x and\n             // the nearest center that has already been chosen.\n- \
+    \           int sum = 0;\n+            double sum = 0;\n             for (int\
+    \ i = 0; i < pointSet.size(); i++) {\n                 final T p = pointSet.get(i);\n\
+    \                 final Cluster<T> nearest = getNearestCluster(resultSet, p);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_57/src/main/java/org/apache/commons/math/stat/clustering/KMeansPlusPlusClusterer.java\t\
+    2020-10-21 12:38:20.218734928 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_57/purify/purified/org/apache/commons/math/stat/clustering/KMeansPlusPlusClusterer.java\t\
+    2020-10-21 12:38:20.218734928 -0400\n@@ -172,7 +172,7 @@\n         while (resultSet.size()\
+    \ < k) {\n             // For each data point x, compute D(x), the distance between\
+    \ x and\n             // the nearest center that has already been chosen.\n- \
+    \           int sum = 0;\n+            double sum = 0;\n             for (int\
+    \ i = 0; i < pointSet.size(); i++) {\n                 final T p = pointSet.get(i);\n\
+    \                 final Cluster<T> nearest = getNearestCluster(resultSet, p);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/clustering/KMeansPlusPlusClusterer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int sum=0; @TO@ double sum=0; '
+    - '---UPD PrimitiveType@@int @TO@ double '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/stat/clustering/KMeansPlusPlusClusterer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@int sum=0; @TO@ double sum=0; '
+    - '---UPD PrimitiveType@@int @TO@ double '
+  repair_actions_cnt: 1

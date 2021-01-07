@@ -1,0 +1,27 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_64/src/com/google/javascript/jscomp/Compiler.java	2020-10-23 08:08:05.836697188 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_64/purify/purified/com/google/javascript/jscomp/Compiler.java	2020-10-23 08:08:05.836697188 -0400
+@@ -1429,7 +1429,7 @@
+ 
+         // if LanguageMode is ECMASCRIPT5_STRICT, only print 'use strict'
+         // for the first input file
+-        String code = toSource(root, sourceMap);
++        String code = toSource(root, sourceMap, inputSeqNum == 0);
+         if (!code.isEmpty()) {
+           cb.append(code);
+ 
+@@ -1464,13 +1464,13 @@
+   /**
+    * Generates JavaScript source code for an AST.
+    */
+-  private String toSource(Node n, SourceMap sourceMap) {
++  private String toSource(Node n, SourceMap sourceMap, boolean firstOutput) {
+     CodePrinter.Builder builder = new CodePrinter.Builder(n);
+     builder.setPrettyPrint(options.prettyPrint);
+     builder.setLineBreak(options.lineBreak);
+     builder.setSourceMap(sourceMap);
+     builder.setSourceMapDetailLevel(options.sourceMapDetailLevel);
+-    builder.setTagAsStrict(
++    builder.setTagAsStrict(firstOutput &&
+         options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT);
+     builder.setLineLengthThreshold(options.lineLengthThreshold);
+ 

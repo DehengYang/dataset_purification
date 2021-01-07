@@ -1,0 +1,162 @@
+1 bug_id: Math-77
+2 src folder:
+  name of src folder: java
+  number of files: 434
+  number of java files: 397
+  number of src classes: 541
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.linear.ArrayRealVectorTest#testBasicFunctions
+  - org.apache.commons.math.linear.SparseRealVectorTest#testBasicFunctions
+  failing tests:
+  - org.apache.commons.math.linear.ArrayRealVectorTest
+  - org.apache.commons.math.linear.SparseRealVectorTest
+  number of all test cases: 2129
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.047
+  purification via delta debugging: 214.058
+  repair actions extraction: 2.309
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.linear.ArrayRealVectorTest#testBasicFunctions: 35
+    org.apache.commons.math.linear.SparseRealVectorTest#testBasicFunctions: 99
+  fixed:
+    org.apache.commons.math.linear.ArrayRealVectorTest#testBasicFunctions: 214
+    org.apache.commons.math.linear.SparseRealVectorTest#testBasicFunctions: 442
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 1
+  covDel: 10
+  cov_patch_lines: 11
+  delta_patch_lines: 10
+  oriAdd: 1
+  oriDel: 10
+  ori_patch_lines: 11
+  purAdd: 1
+  purDel: 9
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 2
+  original: 2
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 19
+  failFail: 7
+  passed: 1
+  total: 27
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_77/src/main/java/org/apache/commons/math/linear/OpenMapRealVector.java\t\
+    2020-10-21 13:24:22.694603766 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_77/purify/patch/org/apache/commons/math/linear/OpenMapRealVector.java\t\
+    2020-10-21 13:24:22.694603766 -0400\n@@ -495,15 +495,6 @@\n         return max;\n\
+    \     }\n \n-    public double getLInfNorm() {\n-        double max = 0;\n-  \
+    \      Iterator iter = entries.iterator();\n-        while (iter.hasNext()) {\n\
+    -            iter.advance();\n-            max += iter.value();\n-        }\n\
+    -        return max;\n-    }\n     /**\n      * Optimized method to compute LInfDistance.\n\
+    \      * @param v The vector to compute from"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_77/src/main/java/org/apache/commons/math/linear/OpenMapRealVector.java\t\
+    2020-10-21 13:28:14.053293058 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_77/purify/purified/org/apache/commons/math/linear/OpenMapRealVector.java\t\
+    2020-10-21 13:28:14.049292942 -0400\n@@ -495,15 +495,7 @@\n         return max;\n\
+    \     }\n \n-    public double getLInfNorm() {\n         double max = 0;\n-  \
+    \      Iterator iter = entries.iterator();\n-        while (iter.hasNext()) {\n\
+    -            iter.advance();\n-            max += iter.value();\n-        }\n\
+    -        return max;\n-    }\n     /**\n      * Optimized method to compute LInfDistance.\n\
+    \      * @param v The vector to compute from"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/apache/commons/math/linear/ArrayRealVector, org/apache/commons/math/linear/OpenMapRealVector:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL MethodDeclaration@@public, @@double, MethodName:getLInfNorm, @@Argus:null '
+    - '---DEL Modifier@@public '
+    - '---DEL PrimitiveType@@double '
+    - '---DEL SimpleName@@MethodName:getLInfNorm '
+    - '---DEL VariableDeclarationStatement@@double max=0; '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL VariableDeclarationFragment@@max=0 '
+    - '---------DEL SimpleName@@max '
+    - '---------DEL NumberLiteral@@0 '
+    - '---DEL VariableDeclarationStatement@@Iterator iter=entries.iterator(); '
+    - '------DEL SimpleType@@Iterator '
+    - '------DEL VariableDeclarationFragment@@iter=entries.iterator() '
+    - '---------DEL SimpleName@@iter '
+    - '---------DEL MethodInvocation@@entries.iterator() '
+    - '------------DEL SimpleName@@Name:entries '
+    - '------------DEL SimpleName@@MethodName:iterator:[] '
+    - '---DEL WhileStatement@@MethodInvocation:iter.hasNext() '
+    - '------DEL MethodInvocation@@iter.hasNext() '
+    - '---------DEL SimpleName@@Name:iter '
+    - '---------DEL SimpleName@@MethodName:hasNext:[] '
+    - '------DEL ExpressionStatement@@MethodInvocation:iter.advance() '
+    - '---------DEL MethodInvocation@@iter.advance() '
+    - '------------DEL SimpleName@@Name:iter '
+    - '------------DEL SimpleName@@MethodName:advance:[] '
+    - '------DEL ExpressionStatement@@Assignment:max+=iter.value() '
+    - '---------DEL Assignment@@max+=iter.value() '
+    - '------------DEL SimpleName@@max '
+    - '------------DEL Operator@@+= '
+    - '------------DEL MethodInvocation@@iter.value() '
+    - '---------------DEL SimpleName@@Name:iter '
+    - '---------------DEL SimpleName@@MethodName:value:[] '
+    - '---DEL ReturnStatement@@SimpleName:max '
+    - '------DEL SimpleName@@max '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/apache/commons/math/linear/ArrayRealVector, org/apache/commons/math/linear/OpenMapRealVector:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL MethodDeclaration@@public, @@double, MethodName:getLInfNorm, @@Argus:null '
+    - '---DEL Modifier@@public '
+    - '---DEL PrimitiveType@@double '
+    - '---DEL SimpleName@@MethodName:getLInfNorm '
+    - '---DEL VariableDeclarationStatement@@double max=0; '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL VariableDeclarationFragment@@max=0 '
+    - '---DEL VariableDeclarationStatement@@Iterator iter=entries.iterator(); '
+    - '------DEL SimpleType@@Iterator '
+    - '------DEL VariableDeclarationFragment@@iter=entries.iterator() '
+    - '---------DEL SimpleName@@iter '
+    - '---------DEL MethodInvocation@@entries.iterator() '
+    - '------------DEL SimpleName@@Name:entries '
+    - '------------DEL SimpleName@@MethodName:iterator:[] '
+    - '---DEL WhileStatement@@MethodInvocation:iter.hasNext() '
+    - '------DEL MethodInvocation@@iter.hasNext() '
+    - '---------DEL SimpleName@@Name:iter '
+    - '---------DEL SimpleName@@MethodName:hasNext:[] '
+    - '------DEL ExpressionStatement@@MethodInvocation:iter.advance() '
+    - '---------DEL MethodInvocation@@iter.advance() '
+    - '------------DEL SimpleName@@Name:iter '
+    - '------------DEL SimpleName@@MethodName:advance:[] '
+    - '------DEL ExpressionStatement@@Assignment:max+=iter.value() '
+    - '---------DEL Assignment@@max+=iter.value() '
+    - '------------DEL SimpleName@@max '
+    - '------------DEL Operator@@+= '
+    - '------------DEL MethodInvocation@@iter.value() '
+    - '---------------DEL SimpleName@@Name:iter '
+    - '---------------DEL SimpleName@@MethodName:value:[] '
+    - '---DEL ReturnStatement@@SimpleName:max '
+    - '------DEL SimpleName@@max '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@double, [max=0] @TO@ TypeDeclaration@@[public]OpenMapRealVector,
+      AbstractRealVector[SparseRealVector, Serializable] '
+    - '---INS PrimitiveType@@double @TO@ FieldDeclaration@@double, [max=0] '
+    - '---INS VariableDeclarationFragment@@max=0 @TO@ FieldDeclaration@@double, [max=0] '
+    - '------MOV SimpleName@@max @TO@ VariableDeclarationFragment@@max=0 '
+    - '------MOV NumberLiteral@@0 @TO@ VariableDeclarationFragment@@max=0 '
+  repair_actions_cnt: 1

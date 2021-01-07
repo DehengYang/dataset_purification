@@ -1,0 +1,128 @@
+1 bug_id: Mockito-16
+2 src folder:
+  name of src folder: src
+  number of files: 235
+  number of java files: 199
+  number of src classes: 224
+  number of test classes: 174
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.bugs.StubbingMocksThatAreConfiguredToReturnMocksTest#shouldAllowStubbingMocksConfiguredWithRETURNS_MOCKS
+  failing tests:
+  - org.mockitousage.bugs.StubbingMocksThatAreConfiguredToReturnMocksTest
+  number of all test cases: 0
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.899
+  purification via delta debugging: 218.869
+  repair actions extraction: 1.209
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 5
+  covDel: 4
+  cov_patch_lines: 9
+  delta_patch_lines: 9
+  oriAdd: 5
+  oriDel: 4
+  ori_patch_lines: 9
+  purAdd: 5
+  purDel: 4
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 5
+  original: 5
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 23
+  passed: 0
+  total: 23
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_16/src/org/mockito/internal/MockitoCore.java\t\
+    2020-10-24 11:52:01.016739514 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_16/purify/patch/org/mockito/internal/MockitoCore.java\t\
+    2020-10-24 11:52:01.016739514 -0400\n@@ -29,10 +29,11 @@\n     private final MockUtil\
+    \ mockUtil = new MockUtil();\n     private final MockingProgress mockingProgress\
+    \ = new ThreadSafeMockingProgress();\n     \n-    public <T> T mock(Class<T> classToMock,\
+    \ MockSettings mockSettings, boolean shouldResetOngoingStubbing) { return mock(classToMock,\
+    \ mockSettings); }\n-    public <T> T mock(Class<T> classToMock, MockSettings\
+    \ mockSettings) {\n+    public <T> T mock(Class<T> classToMock, MockSettings mockSettings,\
+    \ boolean shouldResetOngoingStubbing) {\n         mockingProgress.validateState();\n\
+    +        if (shouldResetOngoingStubbing) {\n             mockingProgress.resetOngoingStubbing();\n\
+    +        }\n         return mockUtil.createMock(classToMock, (MockSettingsImpl)\
+    \ mockSettings);\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_16/src/org/mockito/internal/MockitoCore.java\t\
+    2020-10-24 11:55:56.126148405 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_16/purify/purified/org/mockito/internal/MockitoCore.java\t\
+    2020-10-24 11:55:56.126148405 -0400\n@@ -29,10 +29,11 @@\n     private final MockUtil\
+    \ mockUtil = new MockUtil();\n     private final MockingProgress mockingProgress\
+    \ = new ThreadSafeMockingProgress();\n     \n-    public <T> T mock(Class<T> classToMock,\
+    \ MockSettings mockSettings, boolean shouldResetOngoingStubbing) { return mock(classToMock,\
+    \ mockSettings); }\n-    public <T> T mock(Class<T> classToMock, MockSettings\
+    \ mockSettings) {\n+    public <T> T mock(Class<T> classToMock, MockSettings mockSettings,\
+    \ boolean shouldResetOngoingStubbing) {\n         mockingProgress.validateState();\n\
+    +        if (shouldResetOngoingStubbing) {\n             mockingProgress.resetOngoingStubbing();\n\
+    +        }\n         return mockUtil.createMock(classToMock, (MockSettingsImpl)\
+    \ mockSettings);\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/mockito/internal/MockitoCore, org/mockito/Mockito:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:MOCKITO_CORE.mock(classToMock,mockSettings)
+      @TO@ MethodInvocation:MOCKITO_CORE.mock(classToMock,mockSettings,true) '
+    - '---UPD MethodInvocation@@MOCKITO_CORE.mock(classToMock,mockSettings) @TO@ MOCKITO_CORE.mock(classToMock,mockSettings,true) '
+    - '------UPD SimpleName@@MethodName:mock:[classToMock, mockSettings] @TO@ MethodName:mock:[classToMock,
+      mockSettings, true] '
+    - '---------INS BooleanLiteral@@true @TO@ SimpleName@@MethodName:mock:[classToMock,
+      mockSettings] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:MOCKITO_CORE.mock((Class<T>)object.getClass(),withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS))
+      @TO@ MethodInvocation:MOCKITO_CORE.mock((Class<T>)object.getClass(),withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS),true) '
+    - '---UPD MethodInvocation@@MOCKITO_CORE.mock((Class<T>)object.getClass(),withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS))
+      @TO@ MOCKITO_CORE.mock((Class<T>)object.getClass(),withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS),true) '
+    - '------UPD SimpleName@@MethodName:mock:[(Class<T>)object.getClass(), withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS)]
+      @TO@ MethodName:mock:[(Class<T>)object.getClass(), withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS),
+      true] '
+    - '---------INS BooleanLiteral@@true @TO@ SimpleName@@MethodName:mock:[(Class<T>)object.getClass(),
+      withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS)] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/mockito/internal/MockitoCore, org/mockito/Mockito:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:MOCKITO_CORE.mock(classToMock,mockSettings)
+      @TO@ MethodInvocation:MOCKITO_CORE.mock(classToMock,mockSettings,true) '
+    - '---UPD MethodInvocation@@MOCKITO_CORE.mock(classToMock,mockSettings) @TO@ MOCKITO_CORE.mock(classToMock,mockSettings,true) '
+    - '------UPD SimpleName@@MethodName:mock:[classToMock, mockSettings] @TO@ MethodName:mock:[classToMock,
+      mockSettings, true] '
+    - '---------INS BooleanLiteral@@true @TO@ SimpleName@@MethodName:mock:[classToMock,
+      mockSettings] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:MOCKITO_CORE.mock((Class<T>)object.getClass(),withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS))
+      @TO@ MethodInvocation:MOCKITO_CORE.mock((Class<T>)object.getClass(),withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS),true) '
+    - '---UPD MethodInvocation@@MOCKITO_CORE.mock((Class<T>)object.getClass(),withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS))
+      @TO@ MOCKITO_CORE.mock((Class<T>)object.getClass(),withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS),true) '
+    - '------UPD SimpleName@@MethodName:mock:[(Class<T>)object.getClass(), withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS)]
+      @TO@ MethodName:mock:[(Class<T>)object.getClass(), withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS),
+      true] '
+    - '---------INS BooleanLiteral@@true @TO@ SimpleName@@MethodName:mock:[(Class<T>)object.getClass(),
+      withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS)] '
+  repair_actions_cnt: 2

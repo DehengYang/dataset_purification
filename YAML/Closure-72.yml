@@ -1,0 +1,110 @@
+1 bug_id: Closure-72
+2 src folder:
+  name of src folder: src
+  number of files: 396
+  number of java files: 383
+  number of src classes: 1238
+  number of test classes: 203
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions31
+  failing tests:
+  - com.google.javascript.jscomp.InlineFunctionsTest
+  number of all test cases: 6964
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.485
+  purification via delta debugging: 189.37
+  repair actions extraction: 1.408
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions31: 3543
+  fixed:
+    com.google.javascript.jscomp.InlineFunctionsTest#testInlineFunctions31: 3529
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 1
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 3
+  oriDel: 1
+  ori_patch_lines: 4
+  purAdd: 3
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 2
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_72/src/com/google/javascript/jscomp/FunctionToBlockMutator.java\t\
+    2020-10-23 08:47:55.901888719 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_72/purify/patch/com/google/javascript/jscomp/FunctionToBlockMutator.java\t\
+    2020-10-23 08:47:55.901888719 -0400\n@@ -149,6 +149,8 @@\n                 \"\
+    inline_\",\n                 isCallInLoop)));\n     // Make label names unique\
+    \ to this instance.\n+    new RenameLabels(compiler, new LabelNameSupplier(idSupplier),\
+    \ false)\n+        .process(null, fnNode);\n   }\n \n   static class LabelNameSupplier\
+    \ implements Supplier<String> {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_72/src/com/google/javascript/jscomp/FunctionToBlockMutator.java\t\
+    2020-10-23 08:51:31.804138405 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_72/purify/purified/com/google/javascript/jscomp/FunctionToBlockMutator.java\t\
+    2020-10-23 08:51:31.804138405 -0400\n@@ -149,6 +149,8 @@\n                 \"\
+    inline_\",\n                 isCallInLoop)));\n     // Make label names unique\
+    \ to this instance.\n+    new RenameLabels(compiler, new LabelNameSupplier(idSupplier),\
+    \ false)\n+        .process(null, fnNode);\n   }\n \n   static class LabelNameSupplier\
+    \ implements Supplier<String> {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '2'
+  com/google/javascript/jscomp/FunctionToBlockMutator, com/google/javascript/jscomp/RenameLabels:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@QualifiedName:li.referenced @TO@ InfixExpression:li.referenced
+      || !removeUnused '
+    - '---INS InfixExpression@@li.referenced || !removeUnused @TO@ IfStatement@@QualifiedName:li.referenced '
+    - '------INS QualifiedName@@li.referenced @TO@ InfixExpression@@li.referenced
+      || !removeUnused '
+    - '---------MOV SimpleName@@li @TO@ QualifiedName@@li.referenced '
+    - '---------MOV SimpleName@@referenced @TO@ QualifiedName@@li.referenced '
+    - '------INS Operator@@|| @TO@ InfixExpression@@li.referenced || !removeUnused '
+    - '------INS PrefixExpression@@!removeUnused @TO@ InfixExpression@@li.referenced
+      || !removeUnused '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!removeUnused '
+    - '---------INS SimpleName@@removeUnused @TO@ PrefixExpression@@!removeUnused '
+    - '---DEL QualifiedName@@li.referenced '
+  files_cnt: '2'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '2'
+  com/google/javascript/jscomp/FunctionToBlockMutator, com/google/javascript/jscomp/RenameLabels:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@QualifiedName:li.referenced @TO@ InfixExpression:li.referenced
+      || !removeUnused '
+    - '---INS InfixExpression@@li.referenced || !removeUnused @TO@ IfStatement@@QualifiedName:li.referenced '
+    - '------INS QualifiedName@@li.referenced @TO@ InfixExpression@@li.referenced
+      || !removeUnused '
+    - '---------MOV SimpleName@@li @TO@ QualifiedName@@li.referenced '
+    - '---------MOV SimpleName@@referenced @TO@ QualifiedName@@li.referenced '
+    - '------INS Operator@@|| @TO@ InfixExpression@@li.referenced || !removeUnused '
+    - '------INS PrefixExpression@@!removeUnused @TO@ InfixExpression@@li.referenced
+      || !removeUnused '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!removeUnused '
+    - '---------INS SimpleName@@removeUnused @TO@ PrefixExpression@@!removeUnused '
+    - '---DEL QualifiedName@@li.referenced '
+  files_cnt: '2'
+  repair_actions_cnt: 1

@@ -1,0 +1,187 @@
+1 bug_id: Lang-62
+2 src folder:
+  name of src folder: java
+  number of files: 87
+  number of java files: 77
+  number of src classes: 124
+  number of test classes: 89
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.EntitiesTest#testNumberOverflow
+  failing tests:
+  - org.apache.commons.lang.EntitiesTest
+  number of all test cases: 1681
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 1.244
+  purification via delta debugging: 137.821
+  repair actions extraction: 1.655
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.EntitiesTest#testNumberOverflow: 101
+  fixed:
+    org.apache.commons.lang.EntitiesTest#testNumberOverflow: 142
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 8
+  covDel: 0
+  cov_patch_lines: 8
+  delta_patch_lines: 7
+  oriAdd: 8
+  oriDel: 0
+  ori_patch_lines: 8
+  purAdd: 7
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 4
+  original: 4
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 12
+  failFail: 7
+  passed: 1
+  total: 21
+9 sibling repair actions:
+- 0 2 1.0
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_62/src/java/org/apache/commons/lang/Entities.java\t\
+    2020-10-22 02:51:10.402033354 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_62/purify/patch/org/apache/commons/lang/Entities.java\t\
+    2020-10-22 02:51:10.402033354 -0400\n@@ -847,6 +847,9 @@\n                   \
+    \          } else {\n                                 entityValue = Integer.parseInt(entityName.substring(1));\n\
+    \                             }\n+                            if (entityValue\
+    \ > 0xFFFF) {\n+                                entityValue = -1;\n+         \
+    \                   }\n                         } catch (NumberFormatException\
+    \ ex) {\n                             entityValue = -1;\n                    \
+    \     }\n@@ -917,12 +920,17 @@\n                                     case 'X'\
+    \ :\n                                     case 'x' : {\n                     \
+    \                    entityValue = Integer.parseInt(entityContent.substring(2),\
+    \ 16);\n+                                        break;\n                    \
+    \                 }\n                                     default : {\n      \
+    \                                   entityValue = Integer.parseInt(entityContent.substring(1),\
+    \ 10);\n                                     }\n                             \
+    \    }\n+                                if (entityValue > 0xFFFF) {\n+      \
+    \                              entityValue = -1;\n+                          \
+    \      }\n                             } catch (NumberFormatException e) {\n+\
+    \                                entityValue = -1;\n                         \
+    \    }\n                         }\n                     } else { //escaped value\
+    \ content is an entity name"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_62/src/java/org/apache/commons/lang/Entities.java\t\
+    2020-10-22 02:53:39.074329813 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_62/purify/purified/org/apache/commons/lang/Entities.java\t\
+    2020-10-22 02:53:39.070329698 -0400\n@@ -847,6 +847,9 @@\n                   \
+    \          } else {\n                                 entityValue = Integer.parseInt(entityName.substring(1));\n\
+    \                             }\n+                            if (entityValue\
+    \ > 0xFFFF) {\n+                                entityValue = -1;\n+         \
+    \                   }\n                         } catch (NumberFormatException\
+    \ ex) {\n                             entityValue = -1;\n                    \
+    \     }\n@@ -917,11 +920,15 @@\n                                     case 'X'\
+    \ :\n                                     case 'x' : {\n                     \
+    \                    entityValue = Integer.parseInt(entityContent.substring(2),\
+    \ 16);\n+                                        break;\n                    \
+    \                 }\n                                     default : {\n      \
+    \                                   entityValue = Integer.parseInt(entityContent.substring(1),\
+    \ 10);\n                                     }\n                             \
+    \    }\n+                                if (entityValue > 0xFFFF) {\n+      \
+    \                              entityValue = -1;\n+                          \
+    \      }\n                             } catch (NumberFormatException e) {\n \
+    \                            }\n                         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/Entities:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:entityValue > 0xFFFF @TO@ TryStatement@@try:[] '
+    - '---INS InfixExpression@@entityValue > 0xFFFF @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS SimpleName@@entityValue @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '------INS Operator@@> @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '------INS NumberLiteral@@0xFFFF @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '---INS ExpressionStatement@@Assignment:entityValue=-1 @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS Assignment@@entityValue=-1 @TO@ ExpressionStatement@@Assignment:entityValue=-1 '
+    - '---------INS SimpleName@@entityValue @TO@ Assignment@@entityValue=-1 '
+    - '---------INS Operator@@= @TO@ Assignment@@entityValue=-1 '
+    - '---------INS PrefixExpression@@-1 @TO@ Assignment@@entityValue=-1 '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS BreakStatement@@ @TO@ Block@@Block '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:entityValue > 0xFFFF @TO@ TryStatement@@try:[] '
+    - '---INS InfixExpression@@entityValue > 0xFFFF @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS SimpleName@@entityValue @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '------INS Operator@@> @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '------INS NumberLiteral@@0xFFFF @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '---INS ExpressionStatement@@Assignment:entityValue=-1 @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS Assignment@@entityValue=-1 @TO@ ExpressionStatement@@Assignment:entityValue=-1 '
+    - '---------INS SimpleName@@entityValue @TO@ Assignment@@entityValue=-1 '
+    - '---------INS Operator@@= @TO@ Assignment@@entityValue=-1 '
+    - '---------INS PrefixExpression@@-1 @TO@ Assignment@@entityValue=-1 '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:entityValue=-1 @TO@ CatchClause@@NumberFormatException
+      e '
+    - '---INS Assignment@@entityValue=-1 @TO@ ExpressionStatement@@Assignment:entityValue=-1 '
+    - '------INS SimpleName@@entityValue @TO@ Assignment@@entityValue=-1 '
+    - '------INS Operator@@= @TO@ Assignment@@entityValue=-1 '
+    - '------INS PrefixExpression@@-1 @TO@ Assignment@@entityValue=-1 '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/Entities:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:entityValue > 0xFFFF @TO@ TryStatement@@try:[] '
+    - '---INS InfixExpression@@entityValue > 0xFFFF @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS SimpleName@@entityValue @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '------INS Operator@@> @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '------INS NumberLiteral@@0xFFFF @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '---INS ExpressionStatement@@Assignment:entityValue=-1 @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS Assignment@@entityValue=-1 @TO@ ExpressionStatement@@Assignment:entityValue=-1 '
+    - '---------INS SimpleName@@entityValue @TO@ Assignment@@entityValue=-1 '
+    - '---------INS Operator@@= @TO@ Assignment@@entityValue=-1 '
+    - '---------INS PrefixExpression@@-1 @TO@ Assignment@@entityValue=-1 '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS BreakStatement@@ @TO@ Block@@Block '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:entityValue > 0xFFFF @TO@ TryStatement@@try:[] '
+    - '---INS InfixExpression@@entityValue > 0xFFFF @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS SimpleName@@entityValue @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '------INS Operator@@> @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '------INS NumberLiteral@@0xFFFF @TO@ InfixExpression@@entityValue > 0xFFFF '
+    - '---INS ExpressionStatement@@Assignment:entityValue=-1 @TO@ IfStatement@@InfixExpression:entityValue
+      > 0xFFFF '
+    - '------INS Assignment@@entityValue=-1 @TO@ ExpressionStatement@@Assignment:entityValue=-1 '
+    - '---------INS SimpleName@@entityValue @TO@ Assignment@@entityValue=-1 '
+    - '---------INS Operator@@= @TO@ Assignment@@entityValue=-1 '
+    - '---------INS PrefixExpression@@-1 @TO@ Assignment@@entityValue=-1 '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  repair_actions_cnt: 3

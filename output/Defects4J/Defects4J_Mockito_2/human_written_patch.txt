@@ -1,0 +1,28 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_2/src/org/mockito/internal/util/Timer.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_2/fixed-version/src/org/mockito/internal/util/Timer.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_2/src/org/mockito/internal/util/Timer.java	2020-03-01 00:35:30.916122712 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_2/fixed-version/src/org/mockito/internal/util/Timer.java	2020-03-01 00:35:34.732302527 -0800
+@@ -1,5 +1,6 @@
+ package org.mockito.internal.util;
+ 
++import org.mockito.exceptions.Reporter;
+ 
+ public class Timer {
+ 
+@@ -7,6 +8,7 @@
+     private long startTime = -1;
+ 
+     public Timer(long durationMillis) {
++        validateInput(durationMillis);
+         this.durationMillis = durationMillis;
+     }
+ 
+@@ -25,4 +27,9 @@
+         startTime = System.currentTimeMillis();
+     }
+ 
++    private void validateInput(long durationMillis) {
++        if (durationMillis < 0) {
++            new Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis);
++        }
++    }
+ }

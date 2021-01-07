@@ -1,0 +1,115 @@
+1 bug_id: Closure-101
+2 src folder:
+  name of src folder: src
+  number of files: 322
+  number of java files: 312
+  number of src classes: 999
+  number of test classes: 158
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CommandLineRunnerTest#testProcessClosurePrimitives
+  failing tests:
+  - com.google.javascript.jscomp.CommandLineRunnerTest
+  number of all test cases: 4551
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.422
+  purification via delta debugging: 175.837
+  repair actions extraction: 1.228
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testProcessClosurePrimitives: 5243
+  fixed:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testProcessClosurePrimitives: 5193
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 1
+  covDel: 3
+  cov_patch_lines: 4
+  delta_patch_lines: 3
+  oriAdd: 1
+  oriDel: 3
+  ori_patch_lines: 4
+  purAdd: 1
+  purDel: 2
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 2
+  original: 2
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 5
+  failFail: 1
+  passed: 1
+  total: 7
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_101/src/com/google/javascript/jscomp/CommandLineRunner.java\t\
+    2020-10-23 12:59:30.514863487 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_101/purify/patch/com/google/javascript/jscomp/CommandLineRunner.java\t\
+    2020-10-23 12:59:30.514863487 -0400\n@@ -430,10 +430,8 @@\n     for (FormattingOption\
+    \ formattingOption : flags.formatting) {\n       formattingOption.applyToOptions(options);\n\
+    \     }\n-    if (flags.process_closure_primitives) {\n-      options.closurePass\
+    \ = true;\n-    }\n \n+    options.closurePass = flags.process_closure_primitives;\n\
+    \     initOptionsFromFlags(options);\n     return options;\n   }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_101/src/com/google/javascript/jscomp/CommandLineRunner.java\t\
+    2020-10-23 13:02:51.644692230 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_101/purify/purified/com/google/javascript/jscomp/CommandLineRunner.java\t\
+    2020-10-23 13:02:51.644692230 -0400\n@@ -430,10 +430,9 @@\n     for (FormattingOption\
+    \ formattingOption : flags.formatting) {\n       formattingOption.applyToOptions(options);\n\
+    \     }\n-    if (flags.process_closure_primitives) {\n       options.closurePass\
+    \ = true;\n-    }\n \n+    options.closurePass = flags.process_closure_primitives;\n\
+    \     initOptionsFromFlags(options);\n     return options;\n   }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CommandLineRunner:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@QualifiedName:flags.process_closure_primitives '
+    - '---DEL QualifiedName@@flags.process_closure_primitives '
+    - '------DEL SimpleName@@flags '
+    - '------DEL SimpleName@@process_closure_primitives '
+    - '---DEL ExpressionStatement@@Assignment:options.closurePass=true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:options.closurePass=flags.process_closure_primitives
+      @TO@ MethodDeclaration@@protected, @@CompilerOptions, MethodName:createOptions,
+      @@Argus:null '
+    - '---MOV Assignment@@options.closurePass=true @TO@ ExpressionStatement@@Assignment:options.closurePass=flags.process_closure_primitives '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CommandLineRunner:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@QualifiedName:flags.process_closure_primitives '
+    - '---DEL QualifiedName@@flags.process_closure_primitives '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:options.closurePass=flags.process_closure_primitives
+      @TO@ MethodDeclaration@@protected, @@CompilerOptions, MethodName:createOptions,
+      @@Argus:null '
+    - '---INS Assignment@@options.closurePass=flags.process_closure_primitives @TO@
+      ExpressionStatement@@Assignment:options.closurePass=flags.process_closure_primitives '
+    - '------INS QualifiedName@@options.closurePass @TO@ Assignment@@options.closurePass=flags.process_closure_primitives '
+    - '---------INS SimpleName@@options @TO@ QualifiedName@@options.closurePass '
+    - '---------INS SimpleName@@closurePass @TO@ QualifiedName@@options.closurePass '
+    - '------INS Operator@@= @TO@ Assignment@@options.closurePass=flags.process_closure_primitives '
+    - '------INS QualifiedName@@flags.process_closure_primitives @TO@ Assignment@@options.closurePass=flags.process_closure_primitives '
+    - '---------MOV SimpleName@@flags @TO@ QualifiedName@@flags.process_closure_primitives '
+    - '---------MOV SimpleName@@process_closure_primitives @TO@ QualifiedName@@flags.process_closure_primitives '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:options.closurePass=true @TO@ MethodDeclaration@@protected,
+      @@CompilerOptions, MethodName:createOptions, @@Argus:null '
+  files_cnt: '1'
+  repair_actions_cnt: 3

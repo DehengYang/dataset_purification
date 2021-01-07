@@ -1,0 +1,15 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_61/src/com/google/javascript/jscomp/NodeUtil.java	2020-10-23 07:53:18.411001471 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_61/purify/purified/com/google/javascript/jscomp/NodeUtil.java	2020-10-23 07:53:18.407001355 -0400
+@@ -955,6 +955,12 @@
+       }
+ 
+       // Functions in the "Math" namespace have no side effects.
++      if (nameNode.getFirstChild().getType() == Token.NAME) {
++        String namespaceName = nameNode.getFirstChild().getString();
++        if (namespaceName.equals("Math")) {
++          return false;
++        }
++      }
+ 
+       if (compiler != null && !compiler.hasRegExpGlobalReferences()) {
+         if (nameNode.getFirstChild().getType() == Token.REGEXP

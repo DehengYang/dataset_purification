@@ -1,0 +1,107 @@
+1 bug_id: Closure-106
+2 src folder:
+  name of src folder: src
+  number of files: 305
+  number of java files: 298
+  number of src classes: 912
+  number of test classes: 118
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CheckSideEffectsTest#testJSDocComments
+  - com.google.javascript.jscomp.CollapsePropertiesTest#testCrashInCommaOperator
+  - com.google.javascript.jscomp.CollapsePropertiesTest#testCrashInNestedAssign
+  - com.google.javascript.jscomp.CollapsePropertiesTest#testTwinReferenceCancelsChildCollapsing
+  failing tests:
+  - com.google.javascript.jscomp.CheckSideEffectsTest
+  - com.google.javascript.jscomp.CollapsePropertiesTest
+  number of all test cases: 2595
+  number of failing test cases: 4
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.878
+  purification via delta debugging: 167.092
+  repair actions extraction: 1.758
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CheckSideEffectsTest#testJSDocComments: 1914
+    com.google.javascript.jscomp.CollapsePropertiesTest#testCrashInCommaOperator: 2358
+    com.google.javascript.jscomp.CollapsePropertiesTest#testCrashInNestedAssign: 2819
+    com.google.javascript.jscomp.CollapsePropertiesTest#testTwinReferenceCancelsChildCollapsing: 2866
+  fixed:
+    com.google.javascript.jscomp.CheckSideEffectsTest#testJSDocComments: 2195
+    com.google.javascript.jscomp.CollapsePropertiesTest#testCrashInCommaOperator: 2653
+    com.google.javascript.jscomp.CollapsePropertiesTest#testCrashInNestedAssign: 2710
+    com.google.javascript.jscomp.CollapsePropertiesTest#testTwinReferenceCancelsChildCollapsing: 2731
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 4
+  covDel: 2
+  cov_patch_lines: 6
+  delta_patch_lines: 5
+  oriAdd: 4
+  oriDel: 2
+  ori_patch_lines: 6
+  purAdd: 3
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 8
+  failFail: 2
+  passed: 1
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_106/src/com/google/javascript/jscomp/GlobalNamespace.java\t\
+    2020-10-23 13:21:50.169669559 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_106/purify/patch/com/google/javascript/jscomp/GlobalNamespace.java\t\
+    2020-10-23 13:21:50.169669559 -0400\n@@ -904,6 +904,10 @@\n       // Don't try\
+    \ to collapse if the one global set is a twin reference.\n       // We could theoretically\
+    \ handle this case in CollapseProperties, but\n       // it's probably not worth\
+    \ the effort.\n+      Preconditions.checkNotNull(declaration);\n+      if (declaration.getTwin()\
+    \ != null) {\n+        return false;\n+      }\n \n       if (isClassOrEnum) {\n\
+    \         return true;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_106/src/com/google/javascript/jscomp/GlobalNamespace.java\t\
+    2020-10-23 13:24:59.203144000 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_106/purify/purified/com/google/javascript/jscomp/GlobalNamespace.java\t\
+    2020-10-23 13:24:59.199143885 -0400\n@@ -904,6 +904,9 @@\n       // Don't try\
+    \ to collapse if the one global set is a twin reference.\n       // We could theoretically\
+    \ handle this case in CollapseProperties, but\n       // it's probably not worth\
+    \ the effort.\n+      if (declaration.getTwin() != null) {\n+        return false;\n\
+    +      }\n \n       if (isClassOrEnum) {\n         return true;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '2'
+  com/google/javascript/jscomp/GlobalNamespace, com/google/javascript/rhino/JSDocInfoBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@SimpleName:parseDocumentation '
+    - '---DEL SimpleName@@parseDocumentation '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:populated=true @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:recordBlockDescription, @@Argus:String+description+ '
+  files_cnt: '2'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '2'
+  com/google/javascript/jscomp/GlobalNamespace, com/google/javascript/rhino/JSDocInfoBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@SimpleName:parseDocumentation '
+    - '---DEL SimpleName@@parseDocumentation '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:populated=true @TO@ MethodDeclaration@@public,
+      @@boolean, MethodName:recordBlockDescription, @@Argus:String+description+ '
+  files_cnt: '2'
+  repair_actions_cnt: 2

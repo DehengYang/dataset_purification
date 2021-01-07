@@ -1,0 +1,172 @@
+1 bug_id: Lang-9
+2 src folder:
+  name of src folder: java
+  number of files: 119
+  number of java files: 106
+  number of src classes: 169
+  number of test classes: 109
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.time.FastDateParserTest#testLANG_832
+  - org.apache.commons.lang3.time.FastDateFormat_ParserTest#testLANG_832
+  failing tests:
+  - org.apache.commons.lang3.time.FastDateParserTest
+  - org.apache.commons.lang3.time.FastDateFormat_ParserTest
+  number of all test cases: 2204
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.866
+  purification via delta debugging: 77.623
+  repair actions extraction: 1.724
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.time.FastDateFormat_ParserTest#testLANG_832: 204
+    org.apache.commons.lang3.time.FastDateParserTest#testLANG_832: 96
+  fixed:
+    org.apache.commons.lang3.time.FastDateFormat_ParserTest#testLANG_832: 206
+    org.apache.commons.lang3.time.FastDateParserTest#testLANG_832: 97
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_9/src/main/java/org/apache/commons/lang3/time/FastDateParser.java\t\
+    2020-10-22 01:34:01.092204568 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_9/purify/patch/org/apache/commons/lang3/time/FastDateParser.java\t\
+    2020-10-22 01:34:01.088204452 -0400\n@@ -141,6 +141,9 @@\n             currentFormatField=\
+    \ nextFormatField;\n             currentStrategy= nextStrategy;\n         }\n\
+    +        if (patternMatcher.regionStart() != patternMatcher.regionEnd()) {\n+\
+    \            throw new IllegalArgumentException(\"Failed to parse \\\"\"+pattern+\"\
+    \\\" ; gave up at index \"+patternMatcher.regionStart());\n+        }\n      \
+    \   if(currentStrategy.addRegex(this, regex)) {\n             collector.add(currentStrategy);\n\
+    \         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_9/src/main/java/org/apache/commons/lang3/time/FastDateParser.java\t\
+    2020-10-22 01:35:32.950860586 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_9/purify/purified/org/apache/commons/lang3/time/FastDateParser.java\t\
+    2020-10-22 01:35:32.946860470 -0400\n@@ -141,6 +141,9 @@\n             currentFormatField=\
+    \ nextFormatField;\n             currentStrategy= nextStrategy;\n         }\n\
+    +        if (patternMatcher.regionStart() != patternMatcher.regionEnd()) {\n+\
+    \            throw new IllegalArgumentException(\"Failed to parse \\\"\"+pattern+\"\
+    \\\" ; gave up at index \"+patternMatcher.regionStart());\n+        }\n      \
+    \   if(currentStrategy.addRegex(this, regex)) {\n             collector.add(currentStrategy);\n\
+    \         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/time/FastDateParser:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:patternMatcher.regionStart() != patternMatcher.regionEnd()
+      @TO@ MethodDeclaration@@private, @@void, MethodName:init, @@Argus:null '
+    - '---INS InfixExpression@@patternMatcher.regionStart() != patternMatcher.regionEnd()
+      @TO@ IfStatement@@InfixExpression:patternMatcher.regionStart() != patternMatcher.regionEnd() '
+    - '------INS MethodInvocation@@patternMatcher.regionStart() @TO@ InfixExpression@@patternMatcher.regionStart()
+      != patternMatcher.regionEnd() '
+    - '---------INS SimpleName@@Name:patternMatcher @TO@ MethodInvocation@@patternMatcher.regionStart() '
+    - '---------INS SimpleName@@MethodName:regionStart:[] @TO@ MethodInvocation@@patternMatcher.regionStart() '
+    - '------INS Operator@@!= @TO@ InfixExpression@@patternMatcher.regionStart() !=
+      patternMatcher.regionEnd() '
+    - '------INS MethodInvocation@@patternMatcher.regionEnd() @TO@ InfixExpression@@patternMatcher.regionStart()
+      != patternMatcher.regionEnd() '
+    - '---------INS SimpleName@@Name:patternMatcher @TO@ MethodInvocation@@patternMatcher.regionEnd() '
+    - '---------INS SimpleName@@MethodName:regionEnd:[] @TO@ MethodInvocation@@patternMatcher.regionEnd() '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart())
+      @TO@ IfStatement@@InfixExpression:patternMatcher.regionStart() != patternMatcher.regionEnd() '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Failed to parse
+      \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart()] @TO@
+      ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Failed to
+      parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart()) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart()] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart()] '
+    - '---------INS InfixExpression@@"Failed to parse \"" + pattern + "\" ; gave up
+      at index "+ patternMatcher.regionStart() @TO@ ClassInstanceCreation@@IllegalArgumentException["Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart()] '
+    - '------------INS StringLiteral@@"Failed to parse \"" @TO@ InfixExpression@@"Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart() '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Failed to parse \"" + pattern
+      + "\" ; gave up at index "+ patternMatcher.regionStart() '
+    - '------------INS SimpleName@@pattern @TO@ InfixExpression@@"Failed to parse
+      \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart() '
+    - '------------INS StringLiteral@@"\" ; gave up at index " @TO@ InfixExpression@@"Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart() '
+    - '------------INS MethodInvocation@@patternMatcher.regionStart() @TO@ InfixExpression@@"Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart() '
+    - '---------------INS SimpleName@@Name:patternMatcher @TO@ MethodInvocation@@patternMatcher.regionStart() '
+    - '---------------INS SimpleName@@MethodName:regionStart:[] @TO@ MethodInvocation@@patternMatcher.regionStart() '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/time/FastDateParser:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:patternMatcher.regionStart() != patternMatcher.regionEnd()
+      @TO@ MethodDeclaration@@private, @@void, MethodName:init, @@Argus:null '
+    - '---INS InfixExpression@@patternMatcher.regionStart() != patternMatcher.regionEnd()
+      @TO@ IfStatement@@InfixExpression:patternMatcher.regionStart() != patternMatcher.regionEnd() '
+    - '------INS MethodInvocation@@patternMatcher.regionStart() @TO@ InfixExpression@@patternMatcher.regionStart()
+      != patternMatcher.regionEnd() '
+    - '---------INS SimpleName@@Name:patternMatcher @TO@ MethodInvocation@@patternMatcher.regionStart() '
+    - '---------INS SimpleName@@MethodName:regionStart:[] @TO@ MethodInvocation@@patternMatcher.regionStart() '
+    - '------INS Operator@@!= @TO@ InfixExpression@@patternMatcher.regionStart() !=
+      patternMatcher.regionEnd() '
+    - '------INS MethodInvocation@@patternMatcher.regionEnd() @TO@ InfixExpression@@patternMatcher.regionStart()
+      != patternMatcher.regionEnd() '
+    - '---------INS SimpleName@@Name:patternMatcher @TO@ MethodInvocation@@patternMatcher.regionEnd() '
+    - '---------INS SimpleName@@MethodName:regionEnd:[] @TO@ MethodInvocation@@patternMatcher.regionEnd() '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart())
+      @TO@ IfStatement@@InfixExpression:patternMatcher.regionStart() != patternMatcher.regionEnd() '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Failed to parse
+      \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart()] @TO@
+      ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Failed to
+      parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart()) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart()] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart()] '
+    - '---------INS InfixExpression@@"Failed to parse \"" + pattern + "\" ; gave up
+      at index "+ patternMatcher.regionStart() @TO@ ClassInstanceCreation@@IllegalArgumentException["Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart()] '
+    - '------------INS StringLiteral@@"Failed to parse \"" @TO@ InfixExpression@@"Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart() '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Failed to parse \"" + pattern
+      + "\" ; gave up at index "+ patternMatcher.regionStart() '
+    - '------------INS SimpleName@@pattern @TO@ InfixExpression@@"Failed to parse
+      \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart() '
+    - '------------INS StringLiteral@@"\" ; gave up at index " @TO@ InfixExpression@@"Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart() '
+    - '------------INS MethodInvocation@@patternMatcher.regionStart() @TO@ InfixExpression@@"Failed
+      to parse \"" + pattern + "\" ; gave up at index "+ patternMatcher.regionStart() '
+    - '---------------INS SimpleName@@Name:patternMatcher @TO@ MethodInvocation@@patternMatcher.regionStart() '
+    - '---------------INS SimpleName@@MethodName:regionStart:[] @TO@ MethodInvocation@@patternMatcher.regionStart() '
+  repair_actions_cnt: 1

@@ -1,0 +1,19 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_6/source/org/jfree/chart/util/ShapeList.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_6/fixed-version/source/org/jfree/chart/util/ShapeList.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_6/source/org/jfree/chart/util/ShapeList.java	2020-03-01 00:03:07.928573379 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_6/fixed-version/source/org/jfree/chart/util/ShapeList.java	2020-03-01 00:03:11.312732827 -0800
+@@ -108,7 +108,14 @@
+         if (!(obj instanceof ShapeList)) {
+             return false;
+         }
+-        return super.equals(obj);
++        ShapeList that = (ShapeList) obj;
++        int listSize = size();
++        for (int i = 0; i < listSize; i++) {
++           if (!ShapeUtilities.equal((Shape) get(i), (Shape) that.get(i))) {
++               return false;
++           }
++        }
++        return true;
+ 
+     }
+ 

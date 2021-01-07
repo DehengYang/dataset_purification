@@ -1,0 +1,246 @@
+1 bug_id: Math-54
+2 src folder:
+  name of src folder: java
+  number of files: 542
+  number of java files: 502
+  number of src classes: 641
+  number of test classes: 259
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.dfp.DfpTest#testIssue567
+  failing tests:
+  - org.apache.commons.math.dfp.DfpTest
+  number of all test cases: 2421
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.246
+  purification via delta debugging: 139.345
+  repair actions extraction: 2.364
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.dfp.DfpTest#testIssue567: 694
+  fixed:
+    org.apache.commons.math.dfp.DfpTest#testIssue567: 934
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 7
+  covDel: 1
+  cov_patch_lines: 8
+  delta_patch_lines: 8
+  oriAdd: 7
+  oriDel: 1
+  ori_patch_lines: 8
+  purAdd: 7
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 11
+  failFail: 3
+  passed: 0
+  total: 14
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_54/src/main/java/org/apache/commons/math/dfp/Dfp.java\t\
+    2020-10-21 12:14:30.849401405 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_54/purify/patch/org/apache/commons/math/dfp/Dfp.java\t\
+    2020-10-21 12:14:30.845401289 -0400\n@@ -270,6 +270,9 @@\n             // Zero\
+    \ or sub-normal\n             if (x == 0) {\n                 // make sure 0 has\
+    \ the right sign\n+                if ((bits & 0x8000000000000000L) != 0) {\n\
+    +                    sign = -1;\n+                }\n                 return;\n\
+    \             }\n \n@@ -2316,7 +2319,10 @@\n \n         Dfp y = this;\n      \
+    \   boolean negate = false;\n-        if (lessThan(getZero())) {\n+        int\
+    \ cmp0 = compare(this, getZero());\n+        if (cmp0 == 0) {\n+            return\
+    \ sign < 0 ? -0.0 : +0.0;\n+        } else if (cmp0 < 0) {\n             y = negate();\n\
+    \             negate = true;\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_54/src/main/java/org/apache/commons/math/dfp/Dfp.java\t\
+    2020-10-21 12:17:12.806084988 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_54/purify/purified/org/apache/commons/math/dfp/Dfp.java\t\
+    2020-10-21 12:17:12.806084988 -0400\n@@ -270,6 +270,9 @@\n             // Zero\
+    \ or sub-normal\n             if (x == 0) {\n                 // make sure 0 has\
+    \ the right sign\n+                if ((bits & 0x8000000000000000L) != 0) {\n\
+    +                    sign = -1;\n+                }\n                 return;\n\
+    \             }\n \n@@ -2316,7 +2319,10 @@\n \n         Dfp y = this;\n      \
+    \   boolean negate = false;\n-        if (lessThan(getZero())) {\n+        int\
+    \ cmp0 = compare(this, getZero());\n+        if (cmp0 == 0) {\n+            return\
+    \ sign < 0 ? -0.0 : +0.0;\n+        } else if (cmp0 < 0) {\n             y = negate();\n\
+    \             negate = true;\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/dfp/Dfp:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:(bits & 0x8000000000000000L) != 0 @TO@ IfStatement@@InfixExpression:x
+      == 0 '
+    - '---INS InfixExpression@@(bits & 0x8000000000000000L) != 0 @TO@ IfStatement@@InfixExpression:(bits
+      & 0x8000000000000000L) != 0 '
+    - '------INS ParenthesizedExpression@@(bits & 0x8000000000000000L) @TO@ InfixExpression@@(bits
+      & 0x8000000000000000L) != 0 '
+    - '---------INS InfixExpression@@bits & 0x8000000000000000L @TO@ ParenthesizedExpression@@(bits
+      & 0x8000000000000000L) '
+    - '------------INS SimpleName@@bits @TO@ InfixExpression@@bits & 0x8000000000000000L '
+    - '------------INS Operator@@& @TO@ InfixExpression@@bits & 0x8000000000000000L '
+    - '------------INS NumberLiteral@@0x8000000000000000L @TO@ InfixExpression@@bits
+      & 0x8000000000000000L '
+    - '------INS Operator@@!= @TO@ InfixExpression@@(bits & 0x8000000000000000L) !=
+      0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@(bits & 0x8000000000000000L)
+      != 0 '
+    - '---INS ExpressionStatement@@Assignment:sign=-1 @TO@ IfStatement@@InfixExpression:(bits
+      & 0x8000000000000000L) != 0 '
+    - '------INS Assignment@@sign=-1 @TO@ ExpressionStatement@@Assignment:sign=-1 '
+    - '---------INS SimpleName@@sign @TO@ Assignment@@sign=-1 '
+    - '---------INS Operator@@= @TO@ Assignment@@sign=-1 '
+    - '---------INS PrefixExpression@@-1 @TO@ Assignment@@sign=-1 '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@MethodInvocation:lessThan(getZero()) @TO@ InfixExpression:cmp0
+      < 0 '
+    - '---DEL MethodInvocation@@lessThan(getZero()) '
+    - '------DEL SimpleName@@MethodName:lessThan:[getZero()] '
+    - '---------DEL MethodInvocation@@MethodName:getZero:[] '
+    - '---INS InfixExpression@@cmp0 < 0 @TO@ IfStatement@@MethodInvocation:lessThan(getZero()) '
+    - '------INS SimpleName@@cmp0 @TO@ InfixExpression@@cmp0 < 0 '
+    - '------INS Operator@@< @TO@ InfixExpression@@cmp0 < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@cmp0 < 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int cmp0=compare(this,getZero()); @TO@ MethodDeclaration@@public,
+      @@double, MethodName:toDouble, @@Argus:null '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int cmp0=compare(this,getZero()); '
+    - '---INS VariableDeclarationFragment@@cmp0=compare(this,getZero()) @TO@ VariableDeclarationStatement@@int
+      cmp0=compare(this,getZero()); '
+    - '------INS SimpleName@@cmp0 @TO@ VariableDeclarationFragment@@cmp0=compare(this,getZero()) '
+    - '------INS MethodInvocation@@compare(this,getZero()) @TO@ VariableDeclarationFragment@@cmp0=compare(this,getZero()) '
+    - '---------INS SimpleName@@MethodName:compare:[this, getZero()] @TO@ MethodInvocation@@compare(this,getZero()) '
+    - '------------INS ThisExpression@@this @TO@ SimpleName@@MethodName:compare:[this,
+      getZero()] '
+    - '------------INS MethodInvocation@@MethodName:getZero:[] @TO@ SimpleName@@MethodName:compare:[this,
+      getZero()] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:cmp0 == 0 @TO@ MethodDeclaration@@public,
+      @@double, MethodName:toDouble, @@Argus:null '
+    - '---MOV IfStatement@@MethodInvocation:lessThan(getZero()) @TO@ IfStatement@@InfixExpression:cmp0
+      == 0 '
+    - '---INS InfixExpression@@cmp0 == 0 @TO@ IfStatement@@InfixExpression:cmp0 ==
+      0 '
+    - '------INS SimpleName@@cmp0 @TO@ InfixExpression@@cmp0 == 0 '
+    - '------INS Operator@@== @TO@ InfixExpression@@cmp0 == 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@cmp0 == 0 '
+    - '---INS ReturnStatement@@ConditionalExpression:sign < 0 ? -0.0 : +0.0 @TO@ IfStatement@@InfixExpression:cmp0
+      == 0 '
+    - '------INS ConditionalExpression@@sign < 0 ? -0.0 : +0.0 @TO@ ReturnStatement@@ConditionalExpression:sign
+      < 0 ? -0.0 : +0.0 '
+    - '---------INS InfixExpression@@sign < 0 @TO@ ConditionalExpression@@sign < 0
+      ? -0.0 : +0.0 '
+    - '------------INS SimpleName@@sign @TO@ InfixExpression@@sign < 0 '
+    - '------------INS Operator@@< @TO@ InfixExpression@@sign < 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@sign < 0 '
+    - '---------INS PrefixExpression@@-0.0 @TO@ ConditionalExpression@@sign < 0 ?
+      -0.0 : +0.0 '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-0.0 '
+    - '------------INS NumberLiteral@@0.0 @TO@ PrefixExpression@@-0.0 '
+    - '---------INS PrefixExpression@@+0.0 @TO@ ConditionalExpression@@sign < 0 ?
+      -0.0 : +0.0 '
+    - '------------INS Operator@@+ @TO@ PrefixExpression@@+0.0 '
+    - '------------INS NumberLiteral@@0.0 @TO@ PrefixExpression@@+0.0 '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/dfp/Dfp:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:(bits & 0x8000000000000000L) != 0 @TO@ IfStatement@@InfixExpression:x
+      == 0 '
+    - '---INS InfixExpression@@(bits & 0x8000000000000000L) != 0 @TO@ IfStatement@@InfixExpression:(bits
+      & 0x8000000000000000L) != 0 '
+    - '------INS ParenthesizedExpression@@(bits & 0x8000000000000000L) @TO@ InfixExpression@@(bits
+      & 0x8000000000000000L) != 0 '
+    - '---------INS InfixExpression@@bits & 0x8000000000000000L @TO@ ParenthesizedExpression@@(bits
+      & 0x8000000000000000L) '
+    - '------------INS SimpleName@@bits @TO@ InfixExpression@@bits & 0x8000000000000000L '
+    - '------------INS Operator@@& @TO@ InfixExpression@@bits & 0x8000000000000000L '
+    - '------------INS NumberLiteral@@0x8000000000000000L @TO@ InfixExpression@@bits
+      & 0x8000000000000000L '
+    - '------INS Operator@@!= @TO@ InfixExpression@@(bits & 0x8000000000000000L) !=
+      0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@(bits & 0x8000000000000000L)
+      != 0 '
+    - '---INS ExpressionStatement@@Assignment:sign=-1 @TO@ IfStatement@@InfixExpression:(bits
+      & 0x8000000000000000L) != 0 '
+    - '------INS Assignment@@sign=-1 @TO@ ExpressionStatement@@Assignment:sign=-1 '
+    - '---------INS SimpleName@@sign @TO@ Assignment@@sign=-1 '
+    - '---------INS Operator@@= @TO@ Assignment@@sign=-1 '
+    - '---------INS PrefixExpression@@-1 @TO@ Assignment@@sign=-1 '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@MethodInvocation:lessThan(getZero()) @TO@ InfixExpression:cmp0
+      < 0 '
+    - '---DEL MethodInvocation@@lessThan(getZero()) '
+    - '------DEL SimpleName@@MethodName:lessThan:[getZero()] '
+    - '---------DEL MethodInvocation@@MethodName:getZero:[] '
+    - '---INS InfixExpression@@cmp0 < 0 @TO@ IfStatement@@MethodInvocation:lessThan(getZero()) '
+    - '------INS SimpleName@@cmp0 @TO@ InfixExpression@@cmp0 < 0 '
+    - '------INS Operator@@< @TO@ InfixExpression@@cmp0 < 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@cmp0 < 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int cmp0=compare(this,getZero()); @TO@ MethodDeclaration@@public,
+      @@double, MethodName:toDouble, @@Argus:null '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int cmp0=compare(this,getZero()); '
+    - '---INS VariableDeclarationFragment@@cmp0=compare(this,getZero()) @TO@ VariableDeclarationStatement@@int
+      cmp0=compare(this,getZero()); '
+    - '------INS SimpleName@@cmp0 @TO@ VariableDeclarationFragment@@cmp0=compare(this,getZero()) '
+    - '------INS MethodInvocation@@compare(this,getZero()) @TO@ VariableDeclarationFragment@@cmp0=compare(this,getZero()) '
+    - '---------INS SimpleName@@MethodName:compare:[this, getZero()] @TO@ MethodInvocation@@compare(this,getZero()) '
+    - '------------INS ThisExpression@@this @TO@ SimpleName@@MethodName:compare:[this,
+      getZero()] '
+    - '------------INS MethodInvocation@@MethodName:getZero:[] @TO@ SimpleName@@MethodName:compare:[this,
+      getZero()] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:cmp0 == 0 @TO@ MethodDeclaration@@public,
+      @@double, MethodName:toDouble, @@Argus:null '
+    - '---MOV IfStatement@@MethodInvocation:lessThan(getZero()) @TO@ IfStatement@@InfixExpression:cmp0
+      == 0 '
+    - '---INS InfixExpression@@cmp0 == 0 @TO@ IfStatement@@InfixExpression:cmp0 ==
+      0 '
+    - '------INS SimpleName@@cmp0 @TO@ InfixExpression@@cmp0 == 0 '
+    - '------INS Operator@@== @TO@ InfixExpression@@cmp0 == 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@cmp0 == 0 '
+    - '---INS ReturnStatement@@ConditionalExpression:sign < 0 ? -0.0 : +0.0 @TO@ IfStatement@@InfixExpression:cmp0
+      == 0 '
+    - '------INS ConditionalExpression@@sign < 0 ? -0.0 : +0.0 @TO@ ReturnStatement@@ConditionalExpression:sign
+      < 0 ? -0.0 : +0.0 '
+    - '---------INS InfixExpression@@sign < 0 @TO@ ConditionalExpression@@sign < 0
+      ? -0.0 : +0.0 '
+    - '------------INS SimpleName@@sign @TO@ InfixExpression@@sign < 0 '
+    - '------------INS Operator@@< @TO@ InfixExpression@@sign < 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@sign < 0 '
+    - '---------INS PrefixExpression@@-0.0 @TO@ ConditionalExpression@@sign < 0 ?
+      -0.0 : +0.0 '
+    - '------------INS Operator@@- @TO@ PrefixExpression@@-0.0 '
+    - '------------INS NumberLiteral@@0.0 @TO@ PrefixExpression@@-0.0 '
+    - '---------INS PrefixExpression@@+0.0 @TO@ ConditionalExpression@@sign < 0 ?
+      -0.0 : +0.0 '
+    - '------------INS Operator@@+ @TO@ PrefixExpression@@+0.0 '
+    - '------------INS NumberLiteral@@0.0 @TO@ PrefixExpression@@+0.0 '
+  repair_actions_cnt: 4

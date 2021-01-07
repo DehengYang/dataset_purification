@@ -1,0 +1,186 @@
+1 bug_id: Mockito-35
+2 src folder:
+  name of src folder: src
+  number of files: 227
+  number of java files: 191
+  number of src classes: 216
+  number of test classes: 163
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.bugs.NPEWithCertainMatchersTest#shouldNotThrowNPEWhenIntegerPassedToSame
+  - org.mockitousage.bugs.NPEWithCertainMatchersTest#shouldNotThrowNPEWhenIntPassed
+  - org.mockitousage.bugs.NPEWithCertainMatchersTest#shouldNotThrowNPEWhenIntegerPassedToEq
+  - org.mockitousage.bugs.NPEWithCertainMatchersTest#shouldNotThrowNPEWhenIntegerPassed
+  failing tests:
+  - org.mockitousage.bugs.NPEWithCertainMatchersTest
+  number of all test cases: 0
+  number of failing test cases: 4
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.94
+  purification via delta debugging: 350.764
+  repair actions extraction: 0.905
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 3
+  cov_patch_lines: 6
+  delta_patch_lines: 6
+  oriAdd: 3
+  oriDel: 3
+  ori_patch_lines: 6
+  purAdd: 3
+  purDel: 3
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 12
+  passed: 0
+  total: 12
+9 sibling repair actions:
+- 1 2 0.9665551839464883
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_35/src/org/mockito/Matchers.java\t\
+    2020-10-24 20:47:22.649224168 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_35/purify/patch/org/mockito/Matchers.java\t\
+    2020-10-24 20:47:22.649224168 -0400\n@@ -359,7 +359,7 @@\n      * @return <code>null</code>.\n\
+    \      */\n     public static <T> T isA(Class<T> clazz) {\n-        return reportMatcher(new\
+    \ InstanceOf(clazz)).<T>returnNull();\n+        return reportMatcher(new InstanceOf(clazz)).<T>returnFor(clazz);\n\
+    \     }\n \n     /**\n@@ -476,7 +476,7 @@\n      * @return <code>null</code>.\n\
+    \      */\n     public static <T> T eq(T value) {\n-        return reportMatcher(new\
+    \ Equals(value)).<T>returnNull();\n+        return (T) reportMatcher(new Equals(value)).<T>returnFor((Class)\
+    \ value.getClass());\n     }  \n \n     /**\n@@ -513,7 +513,7 @@\n      * @return\
+    \ <code>null</code>.\n      */\n     public static <T> T same(T value) {\n-  \
+    \      return reportMatcher(new Same(value)).<T>returnNull();\n+        return\
+    \ (T) reportMatcher(new Same(value)).<T>returnFor((Class) value.getClass());\n\
+    \     }\n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_35/src/org/mockito/Matchers.java\t\
+    2020-10-24 20:53:29.395833455 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_35/purify/purified/org/mockito/Matchers.java\t\
+    2020-10-24 20:53:29.395833455 -0400\n@@ -359,7 +359,7 @@\n      * @return <code>null</code>.\n\
+    \      */\n     public static <T> T isA(Class<T> clazz) {\n-        return reportMatcher(new\
+    \ InstanceOf(clazz)).<T>returnNull();\n+        return reportMatcher(new InstanceOf(clazz)).<T>returnFor(clazz);\n\
+    \     }\n \n     /**\n@@ -476,7 +476,7 @@\n      * @return <code>null</code>.\n\
+    \      */\n     public static <T> T eq(T value) {\n-        return reportMatcher(new\
+    \ Equals(value)).<T>returnNull();\n+        return (T) reportMatcher(new Equals(value)).<T>returnFor((Class)\
+    \ value.getClass());\n     }  \n \n     /**\n@@ -513,7 +513,7 @@\n      * @return\
+    \ <code>null</code>.\n      */\n     public static <T> T same(T value) {\n-  \
+    \      return reportMatcher(new Same(value)).<T>returnNull();\n+        return\
+    \ (T) reportMatcher(new Same(value)).<T>returnFor((Class) value.getClass());\n\
+    \     }\n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/Matchers:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(new InstanceOf(clazz)).<T>returnNull()
+      @TO@ MethodInvocation:reportMatcher(new InstanceOf(clazz)).<T>returnFor(clazz) '
+    - '---UPD MethodInvocation@@reportMatcher(new InstanceOf(clazz)).<T>returnNull()
+      @TO@ reportMatcher(new InstanceOf(clazz)).<T>returnFor(clazz) '
+    - '------UPD SimpleName@@MethodName:returnNull:[] @TO@ MethodName:returnFor:[clazz] '
+    - '---------INS SimpleName@@clazz @TO@ SimpleName@@MethodName:returnNull:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(new Equals(value)).<T>returnNull()
+      @TO@ CastExpression:(T)reportMatcher(new Equals(value)).<T>returnFor((Class)value.getClass()) '
+    - '---INS CastExpression@@(T)reportMatcher(new Equals(value)).<T>returnFor((Class)value.getClass())
+      @TO@ ReturnStatement@@MethodInvocation:reportMatcher(new Equals(value)).<T>returnNull() '
+    - '------INS SimpleType@@T @TO@ CastExpression@@(T)reportMatcher(new Equals(value)).<T>returnFor((Class)value.getClass()) '
+    - '------MOV MethodInvocation@@reportMatcher(new Equals(value)).<T>returnNull()
+      @TO@ CastExpression@@(T)reportMatcher(new Equals(value)).<T>returnFor((Class)value.getClass()) '
+    - '---UPD MethodInvocation@@reportMatcher(new Equals(value)).<T>returnNull() @TO@
+      reportMatcher(new Equals(value)).<T>returnFor((Class)value.getClass()) '
+    - '------INS SimpleName@@MethodName:returnFor:[(Class)value.getClass()] @TO@ MethodInvocation@@reportMatcher(new
+      Equals(value)).<T>returnNull() '
+    - '---------INS CastExpression@@(Class)value.getClass() @TO@ SimpleName@@MethodName:returnFor:[(Class)value.getClass()] '
+    - '------------INS SimpleType@@Class @TO@ CastExpression@@(Class)value.getClass() '
+    - '------------INS MethodInvocation@@value.getClass() @TO@ CastExpression@@(Class)value.getClass() '
+    - '---------------INS SimpleName@@Name:value @TO@ MethodInvocation@@value.getClass() '
+    - '---------------MOV SimpleName@@MethodName:returnNull:[] @TO@ MethodInvocation@@value.getClass() '
+    - '------UPD SimpleName@@MethodName:returnNull:[] @TO@ MethodName:getClass:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(new Same(value)).<T>returnNull()
+      @TO@ CastExpression:(T)reportMatcher(new Same(value)).<T>returnFor((Class)value.getClass()) '
+    - '---INS CastExpression@@(T)reportMatcher(new Same(value)).<T>returnFor((Class)value.getClass())
+      @TO@ ReturnStatement@@MethodInvocation:reportMatcher(new Same(value)).<T>returnNull() '
+    - '------INS SimpleType@@T @TO@ CastExpression@@(T)reportMatcher(new Same(value)).<T>returnFor((Class)value.getClass()) '
+    - '------MOV MethodInvocation@@reportMatcher(new Same(value)).<T>returnNull()
+      @TO@ CastExpression@@(T)reportMatcher(new Same(value)).<T>returnFor((Class)value.getClass()) '
+    - '---UPD MethodInvocation@@reportMatcher(new Same(value)).<T>returnNull() @TO@
+      reportMatcher(new Same(value)).<T>returnFor((Class)value.getClass()) '
+    - '------INS SimpleName@@MethodName:returnFor:[(Class)value.getClass()] @TO@ MethodInvocation@@reportMatcher(new
+      Same(value)).<T>returnNull() '
+    - '---------INS CastExpression@@(Class)value.getClass() @TO@ SimpleName@@MethodName:returnFor:[(Class)value.getClass()] '
+    - '------------INS SimpleType@@Class @TO@ CastExpression@@(Class)value.getClass() '
+    - '------------INS MethodInvocation@@value.getClass() @TO@ CastExpression@@(Class)value.getClass() '
+    - '---------------INS SimpleName@@Name:value @TO@ MethodInvocation@@value.getClass() '
+    - '---------------MOV SimpleName@@MethodName:returnNull:[] @TO@ MethodInvocation@@value.getClass() '
+    - '------UPD SimpleName@@MethodName:returnNull:[] @TO@ MethodName:getClass:[] '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/Matchers:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(new InstanceOf(clazz)).<T>returnNull()
+      @TO@ MethodInvocation:reportMatcher(new InstanceOf(clazz)).<T>returnFor(clazz) '
+    - '---UPD MethodInvocation@@reportMatcher(new InstanceOf(clazz)).<T>returnNull()
+      @TO@ reportMatcher(new InstanceOf(clazz)).<T>returnFor(clazz) '
+    - '------UPD SimpleName@@MethodName:returnNull:[] @TO@ MethodName:returnFor:[clazz] '
+    - '---------INS SimpleName@@clazz @TO@ SimpleName@@MethodName:returnNull:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(new Equals(value)).<T>returnNull()
+      @TO@ CastExpression:(T)reportMatcher(new Equals(value)).<T>returnFor((Class)value.getClass()) '
+    - '---INS CastExpression@@(T)reportMatcher(new Equals(value)).<T>returnFor((Class)value.getClass())
+      @TO@ ReturnStatement@@MethodInvocation:reportMatcher(new Equals(value)).<T>returnNull() '
+    - '------INS SimpleType@@T @TO@ CastExpression@@(T)reportMatcher(new Equals(value)).<T>returnFor((Class)value.getClass()) '
+    - '------MOV MethodInvocation@@reportMatcher(new Equals(value)).<T>returnNull()
+      @TO@ CastExpression@@(T)reportMatcher(new Equals(value)).<T>returnFor((Class)value.getClass()) '
+    - '---UPD MethodInvocation@@reportMatcher(new Equals(value)).<T>returnNull() @TO@
+      reportMatcher(new Equals(value)).<T>returnFor((Class)value.getClass()) '
+    - '------INS SimpleName@@MethodName:returnFor:[(Class)value.getClass()] @TO@ MethodInvocation@@reportMatcher(new
+      Equals(value)).<T>returnNull() '
+    - '---------INS CastExpression@@(Class)value.getClass() @TO@ SimpleName@@MethodName:returnFor:[(Class)value.getClass()] '
+    - '------------INS SimpleType@@Class @TO@ CastExpression@@(Class)value.getClass() '
+    - '------------INS MethodInvocation@@value.getClass() @TO@ CastExpression@@(Class)value.getClass() '
+    - '---------------INS SimpleName@@Name:value @TO@ MethodInvocation@@value.getClass() '
+    - '---------------MOV SimpleName@@MethodName:returnNull:[] @TO@ MethodInvocation@@value.getClass() '
+    - '------UPD SimpleName@@MethodName:returnNull:[] @TO@ MethodName:getClass:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:reportMatcher(new Same(value)).<T>returnNull()
+      @TO@ CastExpression:(T)reportMatcher(new Same(value)).<T>returnFor((Class)value.getClass()) '
+    - '---INS CastExpression@@(T)reportMatcher(new Same(value)).<T>returnFor((Class)value.getClass())
+      @TO@ ReturnStatement@@MethodInvocation:reportMatcher(new Same(value)).<T>returnNull() '
+    - '------INS SimpleType@@T @TO@ CastExpression@@(T)reportMatcher(new Same(value)).<T>returnFor((Class)value.getClass()) '
+    - '------MOV MethodInvocation@@reportMatcher(new Same(value)).<T>returnNull()
+      @TO@ CastExpression@@(T)reportMatcher(new Same(value)).<T>returnFor((Class)value.getClass()) '
+    - '---UPD MethodInvocation@@reportMatcher(new Same(value)).<T>returnNull() @TO@
+      reportMatcher(new Same(value)).<T>returnFor((Class)value.getClass()) '
+    - '------INS SimpleName@@MethodName:returnFor:[(Class)value.getClass()] @TO@ MethodInvocation@@reportMatcher(new
+      Same(value)).<T>returnNull() '
+    - '---------INS CastExpression@@(Class)value.getClass() @TO@ SimpleName@@MethodName:returnFor:[(Class)value.getClass()] '
+    - '------------INS SimpleType@@Class @TO@ CastExpression@@(Class)value.getClass() '
+    - '------------INS MethodInvocation@@value.getClass() @TO@ CastExpression@@(Class)value.getClass() '
+    - '---------------INS SimpleName@@Name:value @TO@ MethodInvocation@@value.getClass() '
+    - '---------------MOV SimpleName@@MethodName:returnNull:[] @TO@ MethodInvocation@@value.getClass() '
+    - '------UPD SimpleName@@MethodName:returnNull:[] @TO@ MethodName:getClass:[] '
+  repair_actions_cnt: 3

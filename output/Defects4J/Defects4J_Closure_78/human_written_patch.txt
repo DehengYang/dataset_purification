@@ -1,0 +1,18 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_78/src/com/google/javascript/jscomp/PeepholeFoldConstants.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_78/fixed-version/src/com/google/javascript/jscomp/PeepholeFoldConstants.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_78/src/com/google/javascript/jscomp/PeepholeFoldConstants.java	2020-03-01 00:30:25.129714305 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_78/fixed-version/src/com/google/javascript/jscomp/PeepholeFoldConstants.java	2020-03-01 00:30:27.137808925 -0800
+@@ -708,14 +708,12 @@
+         break;
+       case Token.MOD:
+         if (rval == 0) {
+-          error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
+           return null;
+         }
+         result = lval % rval;
+         break;
+       case Token.DIV:
+         if (rval == 0) {
+-          error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
+           return null;
+         }
+         result = lval / rval;

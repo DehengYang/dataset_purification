@@ -1,0 +1,144 @@
+1 bug_id: Math-8
+2 src folder:
+  name of src folder: java
+  number of files: 760
+  number of java files: 759
+  number of src classes: 1021
+  number of test classes: 380
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.distribution.DiscreteRealDistributionTest#testIssue942
+  failing tests:
+  - org.apache.commons.math3.distribution.DiscreteRealDistributionTest
+  number of all test cases: 4893
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.397
+  purification via delta debugging: 248.733
+  repair actions extraction: 0.788
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.distribution.DiscreteRealDistributionTest#testIssue942: 125
+  fixed:
+    org.apache.commons.math3.distribution.DiscreteRealDistributionTest#testIssue942: 126
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 5
+  failFail: 1
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_8/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java\t\
+    2020-10-21 04:45:04.341179278 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_8/purify/patch/org/apache/commons/math3/distribution/DiscreteDistribution.java\t\
+    2020-10-21 04:45:04.341179278 -0400\n@@ -178,13 +178,13 @@\n      * @throws NotStrictlyPositiveException\
+    \ if {@code sampleSize} is not\n      * positive.\n      */\n-    public T[] sample(int\
+    \ sampleSize) throws NotStrictlyPositiveException {\n+    public Object[] sample(int\
+    \ sampleSize) throws NotStrictlyPositiveException {\n         if (sampleSize <=\
+    \ 0) {\n             throw new NotStrictlyPositiveException(LocalizedFormats.NUMBER_OF_SAMPLES,\n\
+    \                     sampleSize);\n         }\n \n-        final T[]out = (T[])\
+    \ java.lang.reflect.Array.newInstance(singletons.get(0).getClass(), sampleSize);\n\
+    +        final Object[] out = new Object[sampleSize];\n \n         for (int i\
+    \ = 0; i < sampleSize; i++) {\n             out[i] = sample();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_8/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java\t\
+    2020-10-21 04:49:33.136944959 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_8/purify/purified/org/apache/commons/math3/distribution/DiscreteDistribution.java\t\
+    2020-10-21 04:49:33.132944844 -0400\n@@ -178,13 +178,13 @@\n      * @throws NotStrictlyPositiveException\
+    \ if {@code sampleSize} is not\n      * positive.\n      */\n-    public T[] sample(int\
+    \ sampleSize) throws NotStrictlyPositiveException {\n+    public Object[] sample(int\
+    \ sampleSize) throws NotStrictlyPositiveException {\n         if (sampleSize <=\
+    \ 0) {\n             throw new NotStrictlyPositiveException(LocalizedFormats.NUMBER_OF_SAMPLES,\n\
+    \                     sampleSize);\n         }\n \n-        final T[]out = (T[])\
+    \ java.lang.reflect.Array.newInstance(singletons.get(0).getClass(), sampleSize);\n\
+    +        final Object[] out = new Object[sampleSize];\n \n         for (int i\
+    \ = 0; i < sampleSize; i++) {\n             out[i] = sample();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/distribution/DiscreteDistribution:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, @@T[], MethodName:sample, @@Argus:int+sampleSize+NotStrictlyPositiveException,  @TO@
+      public, @@Object[], MethodName:sample, @@Argus:int+sampleSize+NotStrictlyPositiveException,  '
+    - '---UPD ArrayType@@T[] @TO@ Object[] '
+    - '------UPD SimpleType@@T @TO@ Object '
+    - '---UPD VariableDeclarationStatement@@final T[] out=(T[])java.lang.reflect.Array.newInstance(singletons.get(0).getClass(),sampleSize);
+      @TO@ final Object[] out=new Object[sampleSize]; '
+    - '------UPD ArrayType@@T[] @TO@ Object[] '
+    - '---------UPD SimpleType@@T @TO@ Object '
+    - '------UPD VariableDeclarationFragment@@out=(T[])java.lang.reflect.Array.newInstance(singletons.get(0).getClass(),sampleSize)
+      @TO@ out=new Object[sampleSize] '
+    - '---------DEL CastExpression@@(T[])java.lang.reflect.Array.newInstance(singletons.get(0).getClass(),sampleSize) '
+    - '------------DEL ArrayType@@T[] '
+    - '------------DEL MethodInvocation@@java.lang.reflect.Array.newInstance(singletons.get(0).getClass(),sampleSize) '
+    - '---------------DEL QualifiedName@@Name:java.lang.reflect.Array '
+    - '---------------DEL SimpleName@@MethodName:newInstance:[singletons.get(0).getClass(),
+      sampleSize] '
+    - '------------------DEL MethodInvocation@@singletons.get(0).getClass() '
+    - '---------------------DEL SimpleName@@Name:singletons '
+    - '---------------------DEL MethodInvocation@@MethodName:get:[0] '
+    - '------------------------DEL NumberLiteral@@0 '
+    - '---------------------DEL SimpleName@@MethodName:getClass:[] '
+    - '------------------DEL SimpleName@@sampleSize '
+    - '---------INS ArrayCreation@@new Object[sampleSize] @TO@ VariableDeclarationFragment@@out=(T[])java.lang.reflect.Array.newInstance(singletons.get(0).getClass(),sampleSize) '
+    - '------------INS ArrayType@@Object[] @TO@ ArrayCreation@@new Object[sampleSize] '
+    - '---------------MOV SimpleType@@T @TO@ ArrayType@@Object[] '
+    - '------------INS SimpleName@@sampleSize @TO@ ArrayCreation@@new Object[sampleSize] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/distribution/DiscreteDistribution:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@public, @@T[], MethodName:sample, @@Argus:int+sampleSize+NotStrictlyPositiveException,  @TO@
+      public, @@Object[], MethodName:sample, @@Argus:int+sampleSize+NotStrictlyPositiveException,  '
+    - '---UPD ArrayType@@T[] @TO@ Object[] '
+    - '------UPD SimpleType@@T @TO@ Object '
+    - '---UPD VariableDeclarationStatement@@final T[] out=(T[])java.lang.reflect.Array.newInstance(singletons.get(0).getClass(),sampleSize);
+      @TO@ final Object[] out=new Object[sampleSize]; '
+    - '------UPD ArrayType@@T[] @TO@ Object[] '
+    - '---------UPD SimpleType@@T @TO@ Object '
+    - '------UPD VariableDeclarationFragment@@out=(T[])java.lang.reflect.Array.newInstance(singletons.get(0).getClass(),sampleSize)
+      @TO@ out=new Object[sampleSize] '
+    - '---------DEL CastExpression@@(T[])java.lang.reflect.Array.newInstance(singletons.get(0).getClass(),sampleSize) '
+    - '------------DEL ArrayType@@T[] '
+    - '------------DEL MethodInvocation@@java.lang.reflect.Array.newInstance(singletons.get(0).getClass(),sampleSize) '
+    - '---------------DEL QualifiedName@@Name:java.lang.reflect.Array '
+    - '---------------DEL SimpleName@@MethodName:newInstance:[singletons.get(0).getClass(),
+      sampleSize] '
+    - '------------------DEL MethodInvocation@@singletons.get(0).getClass() '
+    - '---------------------DEL SimpleName@@Name:singletons '
+    - '---------------------DEL MethodInvocation@@MethodName:get:[0] '
+    - '------------------------DEL NumberLiteral@@0 '
+    - '---------------------DEL SimpleName@@MethodName:getClass:[] '
+    - '------------------DEL SimpleName@@sampleSize '
+    - '---------INS ArrayCreation@@new Object[sampleSize] @TO@ VariableDeclarationFragment@@out=(T[])java.lang.reflect.Array.newInstance(singletons.get(0).getClass(),sampleSize) '
+    - '------------INS ArrayType@@Object[] @TO@ ArrayCreation@@new Object[sampleSize] '
+    - '---------------MOV SimpleType@@T @TO@ ArrayType@@Object[] '
+    - '------------INS SimpleName@@sampleSize @TO@ ArrayCreation@@new Object[sampleSize] '
+  repair_actions_cnt: 1

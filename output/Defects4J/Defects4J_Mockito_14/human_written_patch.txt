@@ -1,0 +1,43 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_14/src/org/mockito/internal/MockHandler.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_14/fixed-version/src/org/mockito/internal/MockHandler.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_14/src/org/mockito/internal/MockHandler.java	2020-03-01 00:36:53.528015309 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_14/fixed-version/src/org/mockito/internal/MockHandler.java	2020-03-01 00:36:56.032133301 -0800
+@@ -17,6 +17,7 @@
+ import org.mockito.internal.stubbing.OngoingStubbingImpl;
+ import org.mockito.internal.stubbing.StubbedInvocationMatcher;
+ import org.mockito.internal.stubbing.VoidMethodStubbableImpl;
++import org.mockito.internal.verification.MockAwareVerificationMode;
+ import org.mockito.internal.verification.VerificationDataImpl;
+ import org.mockito.stubbing.Answer;
+ import org.mockito.stubbing.VoidMethodStubbable;
+@@ -73,9 +74,11 @@
+         if (verificationMode != null) {
+             //We need to check if verification was started on the correct mock 
+             // - see VerifyingWithAnExtraCallToADifferentMockTest
++            if (verificationMode instanceof MockAwareVerificationMode && ((MockAwareVerificationMode) verificationMode).getMock() == invocation.getMock()) {
+                 VerificationDataImpl data = new VerificationDataImpl(invocationContainerImpl.getInvocations(), invocationMatcher);            
+                 verificationMode.verify(data);
+                 return null;
++            }
+         }
+         
+         invocationContainerImpl.setInvocationForPotentialStubbing(invocationMatcher);
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_14/src/org/mockito/internal/MockitoCore.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_14/fixed-version/src/org/mockito/internal/MockitoCore.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_14/src/org/mockito/internal/MockitoCore.java	2020-03-01 00:36:53.508014367 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_14/fixed-version/src/org/mockito/internal/MockitoCore.java	2020-03-01 00:36:56.032133301 -0800
+@@ -20,6 +20,7 @@
+ import org.mockito.internal.stubbing.OngoingStubbingImpl;
+ import org.mockito.internal.stubbing.StubberImpl;
+ import org.mockito.internal.util.MockUtil;
++import org.mockito.internal.verification.MockAwareVerificationMode;
+ import org.mockito.internal.verification.VerificationDataImpl;
+ import org.mockito.internal.verification.VerificationModeFactory;
+ import org.mockito.internal.verification.api.InOrderContext;
+@@ -70,7 +71,7 @@
+         } else if (!mockUtil.isMock(mock)) {
+             reporter.notAMockPassedToVerify();
+         }
+-        mockingProgress.verificationStarted(mode);
++        mockingProgress.verificationStarted(new MockAwareVerificationMode(mock, mode));
+         return mock;
+     }
+     

@@ -1,0 +1,144 @@
+1 bug_id: Math-73
+2 src folder:
+  name of src folder: java
+  number of files: 436
+  number of java files: 399
+  number of src classes: 544
+  number of test classes: 222
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.analysis.solvers.BrentSolverTest#testBadEndpoints
+  failing tests:
+  - org.apache.commons.math.analysis.solvers.BrentSolverTest
+  number of all test cases: 2140
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.53
+  purification via delta debugging: 46.963
+  repair actions extraction: 0.849
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.analysis.solvers.BrentSolverTest#testBadEndpoints: 92
+  fixed:
+    org.apache.commons.math.analysis.solvers.BrentSolverTest#testBadEndpoints: 48
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 0
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_73/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java\t\
+    2020-10-21 13:18:59.669264140 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_73/purify/patch/org/apache/commons/math/analysis/solvers/BrentSolver.java\t\
+    2020-10-21 13:18:59.669264140 -0400\n@@ -133,6 +133,10 @@\n             return\
+    \ solve(f, initial, yInitial, max, yMax, initial, yInitial);\n         }\n \n\
+    +        if (yMin * yMax > 0) {\n+            throw MathRuntimeException.createIllegalArgumentException(\n\
+    +                  NON_BRACKETING_MESSAGE, min, max, yMin, yMax);\n+        }\n\
+    \ \n         // full Brent algorithm starting with provided initial guess\n  \
+    \       return solve(f, min, yMin, max, yMax, initial, yInitial);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_73/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java\t\
+    2020-10-21 13:20:01.827061298 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_73/purify/purified/org/apache/commons/math/analysis/solvers/BrentSolver.java\t\
+    2020-10-21 13:20:01.823061183 -0400\n@@ -133,6 +133,10 @@\n             return\
+    \ solve(f, initial, yInitial, max, yMax, initial, yInitial);\n         }\n \n\
+    +        if (yMin * yMax > 0) {\n+            throw MathRuntimeException.createIllegalArgumentException(\n\
+    +                  NON_BRACKETING_MESSAGE, min, max, yMin, yMax);\n+        }\n\
+    \ \n         // full Brent algorithm starting with provided initial guess\n  \
+    \       return solve(f, min, yMin, max, yMax, initial, yInitial);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/solvers/BrentSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:yMin * yMax > 0 @TO@ MethodDeclaration@@public,
+      @@double, MethodName:solve, @@Argus:UnivariateRealFunction+f+double+min+double+max+double+initial+MaxIterationsExceededException,
+      FunctionEvaluationException,  '
+    - '---INS InfixExpression@@yMin * yMax > 0 @TO@ IfStatement@@InfixExpression:yMin
+      * yMax > 0 '
+    - '------INS InfixExpression@@yMin * yMax @TO@ InfixExpression@@yMin * yMax >
+      0 '
+    - '---------INS SimpleName@@yMin @TO@ InfixExpression@@yMin * yMax '
+    - '---------INS Operator@@* @TO@ InfixExpression@@yMin * yMax '
+    - '---------INS SimpleName@@yMax @TO@ InfixExpression@@yMin * yMax '
+    - '------INS Operator@@> @TO@ InfixExpression@@yMin * yMax > 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@yMin * yMax > 0 '
+    - '---INS ThrowStatement@@MethodInvocation:MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE,min,max,yMin,yMax)
+      @TO@ IfStatement@@InfixExpression:yMin * yMax > 0 '
+    - '------INS MethodInvocation@@MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE,min,max,yMin,yMax)
+      @TO@ ThrowStatement@@MethodInvocation:MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE,min,max,yMin,yMax) '
+    - '---------INS SimpleName@@Name:MathRuntimeException @TO@ MethodInvocation@@MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE,min,max,yMin,yMax) '
+    - '---------INS SimpleName@@MethodName:createIllegalArgumentException:[NON_BRACKETING_MESSAGE,
+      min, max, yMin, yMax] @TO@ MethodInvocation@@MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE,min,max,yMin,yMax) '
+    - '------------INS SimpleName@@NON_BRACKETING_MESSAGE @TO@ SimpleName@@MethodName:createIllegalArgumentException:[NON_BRACKETING_MESSAGE,
+      min, max, yMin, yMax] '
+    - '------------INS SimpleName@@min @TO@ SimpleName@@MethodName:createIllegalArgumentException:[NON_BRACKETING_MESSAGE,
+      min, max, yMin, yMax] '
+    - '------------INS SimpleName@@max @TO@ SimpleName@@MethodName:createIllegalArgumentException:[NON_BRACKETING_MESSAGE,
+      min, max, yMin, yMax] '
+    - '------------INS SimpleName@@yMin @TO@ SimpleName@@MethodName:createIllegalArgumentException:[NON_BRACKETING_MESSAGE,
+      min, max, yMin, yMax] '
+    - '------------INS SimpleName@@yMax @TO@ SimpleName@@MethodName:createIllegalArgumentException:[NON_BRACKETING_MESSAGE,
+      min, max, yMin, yMax] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/solvers/BrentSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:yMin * yMax > 0 @TO@ MethodDeclaration@@public,
+      @@double, MethodName:solve, @@Argus:UnivariateRealFunction+f+double+min+double+max+double+initial+MaxIterationsExceededException,
+      FunctionEvaluationException,  '
+    - '---INS InfixExpression@@yMin * yMax > 0 @TO@ IfStatement@@InfixExpression:yMin
+      * yMax > 0 '
+    - '------INS InfixExpression@@yMin * yMax @TO@ InfixExpression@@yMin * yMax >
+      0 '
+    - '---------INS SimpleName@@yMin @TO@ InfixExpression@@yMin * yMax '
+    - '---------INS Operator@@* @TO@ InfixExpression@@yMin * yMax '
+    - '---------INS SimpleName@@yMax @TO@ InfixExpression@@yMin * yMax '
+    - '------INS Operator@@> @TO@ InfixExpression@@yMin * yMax > 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@yMin * yMax > 0 '
+    - '---INS ThrowStatement@@MethodInvocation:MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE,min,max,yMin,yMax)
+      @TO@ IfStatement@@InfixExpression:yMin * yMax > 0 '
+    - '------INS MethodInvocation@@MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE,min,max,yMin,yMax)
+      @TO@ ThrowStatement@@MethodInvocation:MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE,min,max,yMin,yMax) '
+    - '---------INS SimpleName@@Name:MathRuntimeException @TO@ MethodInvocation@@MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE,min,max,yMin,yMax) '
+    - '---------INS SimpleName@@MethodName:createIllegalArgumentException:[NON_BRACKETING_MESSAGE,
+      min, max, yMin, yMax] @TO@ MethodInvocation@@MathRuntimeException.createIllegalArgumentException(NON_BRACKETING_MESSAGE,min,max,yMin,yMax) '
+    - '------------INS SimpleName@@NON_BRACKETING_MESSAGE @TO@ SimpleName@@MethodName:createIllegalArgumentException:[NON_BRACKETING_MESSAGE,
+      min, max, yMin, yMax] '
+    - '------------INS SimpleName@@min @TO@ SimpleName@@MethodName:createIllegalArgumentException:[NON_BRACKETING_MESSAGE,
+      min, max, yMin, yMax] '
+    - '------------INS SimpleName@@max @TO@ SimpleName@@MethodName:createIllegalArgumentException:[NON_BRACKETING_MESSAGE,
+      min, max, yMin, yMax] '
+    - '------------INS SimpleName@@yMin @TO@ SimpleName@@MethodName:createIllegalArgumentException:[NON_BRACKETING_MESSAGE,
+      min, max, yMin, yMax] '
+    - '------------INS SimpleName@@yMax @TO@ SimpleName@@MethodName:createIllegalArgumentException:[NON_BRACKETING_MESSAGE,
+      min, max, yMin, yMax] '
+  repair_actions_cnt: 1

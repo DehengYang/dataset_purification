@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_61/src/java/org/apache/commons/lang/text/StrBuilder.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_61/fixed-version/src/java/org/apache/commons/lang/text/StrBuilder.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_61/src/java/org/apache/commons/lang/text/StrBuilder.java	2020-03-01 00:12:30.675087818 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_61/fixed-version/src/java/org/apache/commons/lang/text/StrBuilder.java	2020-03-01 00:12:34.103249340 -0800
+@@ -1773,7 +1773,7 @@
+             return -1;
+         }
+         char[] thisBuf = buffer;
+-        int len = thisBuf.length - strLen;
++        int len = size - strLen + 1;
+         outer:
+         for (int i = startIndex; i < len; i++) {
+             for (int j = 0; j < strLen; j++) {

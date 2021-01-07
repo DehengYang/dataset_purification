@@ -1,0 +1,173 @@
+1 bug_id: Mockito-2
+2 src folder:
+  name of src folder: src
+  number of files: 366
+  number of java files: 328
+  number of src classes: 389
+  number of test classes: 285
+3 test (cases):
+  failing test cases:
+  - org.mockito.internal.util.TimerTest#should_throw_friendly_reminder_exception_when_duration_is_negative
+  - org.mockito.verification.NegativeDurationTest#should_throw_exception_when_duration_is_negative_for_timeout_method
+  - org.mockito.verification.NegativeDurationTest#should_throw_exception_when_duration_is_negative_for_after_method
+  failing tests:
+  - org.mockito.internal.util.TimerTest
+  - org.mockito.verification.NegativeDurationTest
+  number of all test cases: 1410
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.325
+  purification via delta debugging: 550.847
+  repair actions extraction: 0.634
+5 stmts covered by failing cases:
+  buggy:
+    org.mockito.internal.util.TimerTest#should_throw_friendly_reminder_exception_when_duration_is_negative: 230
+    org.mockito.verification.NegativeDurationTest#should_throw_exception_when_duration_is_negative_for_after_method: 99
+    org.mockito.verification.NegativeDurationTest#should_throw_exception_when_duration_is_negative_for_timeout_method: 99
+  fixed:
+    org.mockito.internal.util.TimerTest#should_throw_friendly_reminder_exception_when_duration_is_negative: 259
+    org.mockito.verification.NegativeDurationTest#should_throw_exception_when_duration_is_negative_for_after_method: 129
+    org.mockito.verification.NegativeDurationTest#should_throw_exception_when_duration_is_negative_for_timeout_method: 129
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 7
+  covDel: 0
+  cov_patch_lines: 7
+  delta_patch_lines: 7
+  oriAdd: 7
+  oriDel: 0
+  ori_patch_lines: 7
+  purAdd: 7
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 11
+  failFail: 2
+  passed: 0
+  total: 13
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_2/src/org/mockito/internal/util/Timer.java\t\
+    2020-10-23 18:28:54.815126288 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_2/purify/patch/org/mockito/internal/util/Timer.java\t\
+    2020-10-23 18:28:54.815126288 -0400\n@@ -1,5 +1,6 @@\n package org.mockito.internal.util;\n\
+    \ \n+import org.mockito.exceptions.Reporter;\n \n public class Timer {\n \n@@\
+    \ -7,6 +8,7 @@\n     private long startTime = -1;\n \n     public Timer(long durationMillis)\
+    \ {\n+        validateInput(durationMillis);\n         this.durationMillis = durationMillis;\n\
+    \     }\n \n@@ -25,4 +27,9 @@\n         startTime = System.currentTimeMillis();\n\
+    \     }\n \n+    private void validateInput(long durationMillis) {\n+        if\
+    \ (durationMillis < 0) {\n+            new Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis);\n\
+    +        }\n+    }\n }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_2/src/org/mockito/internal/util/Timer.java\t\
+    2020-10-23 18:38:38.324044953 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_2/purify/purified/org/mockito/internal/util/Timer.java\t\
+    2020-10-23 18:38:38.324044953 -0400\n@@ -1,5 +1,6 @@\n package org.mockito.internal.util;\n\
+    \ \n+import org.mockito.exceptions.Reporter;\n \n public class Timer {\n \n@@\
+    \ -7,6 +8,7 @@\n     private long startTime = -1;\n \n     public Timer(long durationMillis)\
+    \ {\n+        validateInput(durationMillis);\n         this.durationMillis = durationMillis;\n\
+    \     }\n \n@@ -25,4 +27,9 @@\n         startTime = System.currentTimeMillis();\n\
+    \     }\n \n+    private void validateInput(long durationMillis) {\n+        if\
+    \ (durationMillis < 0) {\n+            new Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis);\n\
+    +        }\n+    }\n }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/util/Timer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:validateInput(durationMillis) @TO@
+      MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:Timer, @@Argus:long+durationMillis+ '
+    - '---INS MethodInvocation@@validateInput(durationMillis) @TO@ ExpressionStatement@@MethodInvocation:validateInput(durationMillis) '
+    - '------INS SimpleName@@MethodName:validateInput:[durationMillis] @TO@ MethodInvocation@@validateInput(durationMillis) '
+    - '---------INS SimpleName@@durationMillis @TO@ SimpleName@@MethodName:validateInput:[durationMillis] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@void, MethodName:validateInput, @@Argus:long+durationMillis+
+      @TO@ TypeDeclaration@@[public]Timer,  '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@void, MethodName:validateInput,
+      @@Argus:long+durationMillis+ '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@private, @@void, MethodName:validateInput,
+      @@Argus:long+durationMillis+ '
+    - '---INS SimpleName@@MethodName:validateInput @TO@ MethodDeclaration@@private,
+      @@void, MethodName:validateInput, @@Argus:long+durationMillis+ '
+    - '---INS SingleVariableDeclaration@@long durationMillis @TO@ MethodDeclaration@@private,
+      @@void, MethodName:validateInput, @@Argus:long+durationMillis+ '
+    - '------INS PrimitiveType@@long @TO@ SingleVariableDeclaration@@long durationMillis '
+    - '------INS SimpleName@@durationMillis @TO@ SingleVariableDeclaration@@long durationMillis '
+    - '---INS IfStatement@@InfixExpression:durationMillis < 0 @TO@ MethodDeclaration@@private,
+      @@void, MethodName:validateInput, @@Argus:long+durationMillis+ '
+    - '------INS InfixExpression@@durationMillis < 0 @TO@ IfStatement@@InfixExpression:durationMillis
+      < 0 '
+    - '---------INS SimpleName@@durationMillis @TO@ InfixExpression@@durationMillis
+      < 0 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@durationMillis < 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@durationMillis < 0 '
+    - '------INS ExpressionStatement@@MethodInvocation:new Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis)
+      @TO@ IfStatement@@InfixExpression:durationMillis < 0 '
+    - '---------INS MethodInvocation@@new Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis)
+      @TO@ ExpressionStatement@@MethodInvocation:new Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis) '
+    - '------------INS ClassInstanceCreation@@Reporter[] @TO@ MethodInvocation@@new
+      Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis) '
+    - '---------------INS New@@new @TO@ ClassInstanceCreation@@Reporter[] '
+    - '---------------INS SimpleType@@Reporter @TO@ ClassInstanceCreation@@Reporter[] '
+    - '------------INS SimpleName@@MethodName:cannotCreateTimerWithNegativeDurationTime:[durationMillis]
+      @TO@ MethodInvocation@@new Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis) '
+    - '---------------INS SimpleName@@durationMillis @TO@ SimpleName@@MethodName:cannotCreateTimerWithNegativeDurationTime:[durationMillis] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/util/Timer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:validateInput(durationMillis) @TO@
+      MethodDeclaration@@public, @@=CONSTRUCTOR=, MethodName:Timer, @@Argus:long+durationMillis+ '
+    - '---INS MethodInvocation@@validateInput(durationMillis) @TO@ ExpressionStatement@@MethodInvocation:validateInput(durationMillis) '
+    - '------INS SimpleName@@MethodName:validateInput:[durationMillis] @TO@ MethodInvocation@@validateInput(durationMillis) '
+    - '---------INS SimpleName@@durationMillis @TO@ SimpleName@@MethodName:validateInput:[durationMillis] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@void, MethodName:validateInput, @@Argus:long+durationMillis+
+      @TO@ TypeDeclaration@@[public]Timer,  '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@void, MethodName:validateInput,
+      @@Argus:long+durationMillis+ '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@private, @@void, MethodName:validateInput,
+      @@Argus:long+durationMillis+ '
+    - '---INS SimpleName@@MethodName:validateInput @TO@ MethodDeclaration@@private,
+      @@void, MethodName:validateInput, @@Argus:long+durationMillis+ '
+    - '---INS SingleVariableDeclaration@@long durationMillis @TO@ MethodDeclaration@@private,
+      @@void, MethodName:validateInput, @@Argus:long+durationMillis+ '
+    - '------INS PrimitiveType@@long @TO@ SingleVariableDeclaration@@long durationMillis '
+    - '------INS SimpleName@@durationMillis @TO@ SingleVariableDeclaration@@long durationMillis '
+    - '---INS IfStatement@@InfixExpression:durationMillis < 0 @TO@ MethodDeclaration@@private,
+      @@void, MethodName:validateInput, @@Argus:long+durationMillis+ '
+    - '------INS InfixExpression@@durationMillis < 0 @TO@ IfStatement@@InfixExpression:durationMillis
+      < 0 '
+    - '---------INS SimpleName@@durationMillis @TO@ InfixExpression@@durationMillis
+      < 0 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@durationMillis < 0 '
+    - '---------INS NumberLiteral@@0 @TO@ InfixExpression@@durationMillis < 0 '
+    - '------INS ExpressionStatement@@MethodInvocation:new Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis)
+      @TO@ IfStatement@@InfixExpression:durationMillis < 0 '
+    - '---------INS MethodInvocation@@new Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis)
+      @TO@ ExpressionStatement@@MethodInvocation:new Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis) '
+    - '------------INS ClassInstanceCreation@@Reporter[] @TO@ MethodInvocation@@new
+      Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis) '
+    - '---------------INS New@@new @TO@ ClassInstanceCreation@@Reporter[] '
+    - '---------------INS SimpleType@@Reporter @TO@ ClassInstanceCreation@@Reporter[] '
+    - '------------INS SimpleName@@MethodName:cannotCreateTimerWithNegativeDurationTime:[durationMillis]
+      @TO@ MethodInvocation@@new Reporter().cannotCreateTimerWithNegativeDurationTime(durationMillis) '
+    - '---------------INS SimpleName@@durationMillis @TO@ SimpleName@@MethodName:cannotCreateTimerWithNegativeDurationTime:[durationMillis] '
+  repair_actions_cnt: 2

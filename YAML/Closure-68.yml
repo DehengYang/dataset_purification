@@ -1,0 +1,108 @@
+1 bug_id: Closure-68
+2 src folder:
+  name of src folder: src
+  number of files: 404
+  number of java files: 391
+  number of src classes: 1272
+  number of test classes: 208
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testIssue477
+  failing tests:
+  - com.google.javascript.jscomp.parsing.JsDocInfoParserTest
+  number of all test cases: 7064
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 9.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.914
+  purification via delta debugging: 342.649
+  repair actions extraction: 2.665
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testIssue477: 1074
+  fixed:
+    com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testIssue477: 1076
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 3
+  covDel: 1
+  cov_patch_lines: 4
+  delta_patch_lines: 1
+  oriAdd: 3
+  oriDel: 1
+  ori_patch_lines: 4
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  cov: 4
+  original: 4
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 2
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_68/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java\t\
+    2020-10-23 08:21:22.815772589 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_68/purify/patch/com/google/javascript/jscomp/parsing/JsDocInfoParser.java\t\
+    2020-10-23 08:21:22.815772589 -0400\n@@ -865,9 +865,9 @@\n                   \
+    \      }\n                         break;\n                     }\n+         \
+    \         }\n \n                   token = eatTokensUntilEOL();\n-           \
+    \       }\n                   continue retry;\n               }\n            \
+    \ }\n@@ -1706,6 +1706,7 @@\n       }\n     }\n \n+    restoreLookAhead(token);\n\
+    \     return reportGenericTypeSyntaxWarning();\n   }\n \n@@ -1758,6 +1759,7 @@\n\
+    \     // NOTE(nicksantos): We're not implementing generics at the moment, so\n\
+    \     // just throw out TypeParameters.\n     if (token != JsDocToken.LP) {\n\
+    +      restoreLookAhead(token);\n       return reportTypeSyntaxWarning(\"msg.jsdoc.missing.lp\"\
+    );\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_68/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java\t\
+    2020-10-23 08:27:33.046491521 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_68/purify/purified/com/google/javascript/jscomp/parsing/JsDocInfoParser.java\t\
+    2020-10-23 08:27:33.046491521 -0400\n@@ -1758,6 +1758,7 @@\n     // NOTE(nicksantos):\
+    \ We're not implementing generics at the moment, so\n     // just throw out TypeParameters.\n\
+    \     if (token != JsDocToken.LP) {\n+      restoreLookAhead(token);\n       return\
+    \ reportTypeSyntaxWarning(\"msg.jsdoc.missing.lp\");\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/JsDocInfoParser:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:token=eatTokensUntilEOL() @TO@ SwitchStatement@@SimpleName:annotation '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:restoreLookAhead(token) @TO@ MethodDeclaration@@private,
+      @@Node, MethodName:parseBasicTypeExpression, @@Argus:JsDocToken+token+ '
+    - '---INS MethodInvocation@@restoreLookAhead(token) @TO@ ExpressionStatement@@MethodInvocation:restoreLookAhead(token) '
+    - '------INS SimpleName@@MethodName:restoreLookAhead:[token] @TO@ MethodInvocation@@restoreLookAhead(token) '
+    - '---------INS SimpleName@@token @TO@ SimpleName@@MethodName:restoreLookAhead:[token] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:restoreLookAhead(token) @TO@ IfStatement@@InfixExpression:token
+      != JsDocToken.LP '
+    - '---INS MethodInvocation@@restoreLookAhead(token) @TO@ ExpressionStatement@@MethodInvocation:restoreLookAhead(token) '
+    - '------INS SimpleName@@MethodName:restoreLookAhead:[token] @TO@ MethodInvocation@@restoreLookAhead(token) '
+    - '---------INS SimpleName@@token @TO@ SimpleName@@MethodName:restoreLookAhead:[token] '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/JsDocInfoParser:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:restoreLookAhead(token) @TO@ IfStatement@@InfixExpression:token
+      != JsDocToken.LP '
+    - '---INS MethodInvocation@@restoreLookAhead(token) @TO@ ExpressionStatement@@MethodInvocation:restoreLookAhead(token) '
+    - '------INS SimpleName@@MethodName:restoreLookAhead:[token] @TO@ MethodInvocation@@restoreLookAhead(token) '
+    - '---------INS SimpleName@@token @TO@ SimpleName@@MethodName:restoreLookAhead:[token] '
+  files_cnt: '1'
+  repair_actions_cnt: 1

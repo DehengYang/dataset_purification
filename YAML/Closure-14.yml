@@ -1,0 +1,109 @@
+1 bug_id: Closure-14
+2 src folder:
+  name of src folder: src
+  number of files: 419
+  number of java files: 403
+  number of src classes: 1360
+  number of test classes: 224
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.ControlFlowAnalysisTest#testDeepNestedBreakwithFinally
+  - com.google.javascript.jscomp.ControlFlowAnalysisTest#testDeepNestedFinally
+  - com.google.javascript.jscomp.CheckMissingReturnTest#testIssue779
+  failing tests:
+  - com.google.javascript.jscomp.ControlFlowAnalysisTest
+  - com.google.javascript.jscomp.CheckMissingReturnTest
+  number of all test cases: 7601
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.015
+  purification via delta debugging: 299.027
+  repair actions extraction: 3.933
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CheckMissingReturnTest#testIssue779: 4817
+    com.google.javascript.jscomp.ControlFlowAnalysisTest#testDeepNestedBreakwithFinally: 1512
+    com.google.javascript.jscomp.ControlFlowAnalysisTest#testDeepNestedFinally: 1504
+  fixed:
+    com.google.javascript.jscomp.CheckMissingReturnTest#testIssue779: 5154
+    com.google.javascript.jscomp.ControlFlowAnalysisTest#testDeepNestedBreakwithFinally: 1513
+    com.google.javascript.jscomp.ControlFlowAnalysisTest#testDeepNestedFinally: 1503
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_14/src/com/google/javascript/jscomp/ControlFlowAnalysis.java\t\
+    2020-10-21 19:49:07.937915482 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_14/purify/patch/com/google/javascript/jscomp/ControlFlowAnalysis.java\t\
+    2020-10-21 19:49:07.937915482 -0400\n@@ -764,7 +764,7 @@\n         } else if (parent.getLastChild()\
+    \ == node){\n           if (cfa != null) {\n             for (Node finallyNode\
+    \ : cfa.finallyMap.get(parent)) {\n-              cfa.createEdge(fromNode, Branch.UNCOND,\
+    \ finallyNode);\n+              cfa.createEdge(fromNode, Branch.ON_EX, finallyNode);\n\
+    \             }\n           }\n           return computeFollowNode(fromNode, parent,\
+    \ cfa);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_14/src/com/google/javascript/jscomp/ControlFlowAnalysis.java\t\
+    2020-10-21 19:54:48.723743073 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_14/purify/purified/com/google/javascript/jscomp/ControlFlowAnalysis.java\t\
+    2020-10-21 19:54:48.715742842 -0400\n@@ -764,7 +764,7 @@\n         } else if (parent.getLastChild()\
+    \ == node){\n           if (cfa != null) {\n             for (Node finallyNode\
+    \ : cfa.finallyMap.get(parent)) {\n-              cfa.createEdge(fromNode, Branch.UNCOND,\
+    \ finallyNode);\n+              cfa.createEdge(fromNode, Branch.ON_EX, finallyNode);\n\
+    \             }\n           }\n           return computeFollowNode(fromNode, parent,\
+    \ cfa);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ControlFlowAnalysis:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:cfa.createEdge(fromNode,Branch.UNCOND,finallyNode)
+      @TO@ MethodInvocation:cfa.createEdge(fromNode,Branch.ON_EX,finallyNode) '
+    - '---UPD MethodInvocation@@cfa.createEdge(fromNode,Branch.UNCOND,finallyNode)
+      @TO@ cfa.createEdge(fromNode,Branch.ON_EX,finallyNode) '
+    - '------UPD SimpleName@@MethodName:createEdge:[fromNode, Branch.UNCOND, finallyNode]
+      @TO@ MethodName:createEdge:[fromNode, Branch.ON_EX, finallyNode] '
+    - '---------UPD QualifiedName@@Branch.UNCOND @TO@ Branch.ON_EX '
+    - '------------UPD SimpleName@@UNCOND @TO@ ON_EX '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ControlFlowAnalysis:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:cfa.createEdge(fromNode,Branch.UNCOND,finallyNode)
+      @TO@ MethodInvocation:cfa.createEdge(fromNode,Branch.ON_EX,finallyNode) '
+    - '---UPD MethodInvocation@@cfa.createEdge(fromNode,Branch.UNCOND,finallyNode)
+      @TO@ cfa.createEdge(fromNode,Branch.ON_EX,finallyNode) '
+    - '------UPD SimpleName@@MethodName:createEdge:[fromNode, Branch.UNCOND, finallyNode]
+      @TO@ MethodName:createEdge:[fromNode, Branch.ON_EX, finallyNode] '
+    - '---------UPD QualifiedName@@Branch.UNCOND @TO@ Branch.ON_EX '
+    - '------------UPD SimpleName@@UNCOND @TO@ ON_EX '
+  files_cnt: '1'
+  repair_actions_cnt: 1

@@ -1,0 +1,116 @@
+1 bug_id: Closure-113
+2 src folder:
+  name of src folder: src
+  number of files: 444
+  number of java files: 428
+  number of src classes: 1428
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.VarCheckTest#testNoUndeclaredVarWhenUsingClosurePass
+  failing tests:
+  - com.google.javascript.jscomp.VarCheckTest
+  number of all test cases: 8321
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.001
+  purification via delta debugging: 211.621
+  repair actions extraction: 1.931
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.VarCheckTest#testNoUndeclaredVarWhenUsingClosurePass: 3015
+  fixed:
+    com.google.javascript.jscomp.VarCheckTest#testNoUndeclaredVarWhenUsingClosurePass: 2957
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_113/src/com/google/javascript/jscomp/ProcessClosurePrimitives.java\t\
+    2020-10-23 15:06:58.196315712 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_113/purify/patch/com/google/javascript/jscomp/ProcessClosurePrimitives.java\t\
+    2020-10-23 15:06:58.192315596 -0400\n@@ -326,7 +326,7 @@\n       // the checks\
+    \ for broken requires turned off. In these cases, we\n       // allow broken requires\
+    \ to be preserved by the first run to\n       // let them be caught in the subsequent\
+    \ run.\n-      if (provided != null) {\n+      if (provided != null || requiresLevel.isOn())\
+    \ {\n         parent.detachFromParent();\n         compiler.reportCodeChange();\n\
+    \       }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_113/src/com/google/javascript/jscomp/ProcessClosurePrimitives.java\t\
+    2020-10-23 15:10:58.891280956 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_113/purify/purified/com/google/javascript/jscomp/ProcessClosurePrimitives.java\t\
+    2020-10-23 15:10:58.891280956 -0400\n@@ -326,7 +326,7 @@\n       // the checks\
+    \ for broken requires turned off. In these cases, we\n       // allow broken requires\
+    \ to be preserved by the first run to\n       // let them be caught in the subsequent\
+    \ run.\n-      if (provided != null) {\n+      if (provided != null || requiresLevel.isOn())\
+    \ {\n         parent.detachFromParent();\n         compiler.reportCodeChange();\n\
+    \       }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ProcessClosurePrimitives:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:provided != null @TO@ InfixExpression:provided
+      != null || requiresLevel.isOn() '
+    - '---INS InfixExpression@@provided != null || requiresLevel.isOn() @TO@ IfStatement@@InfixExpression:provided
+      != null '
+    - '------INS InfixExpression@@provided != null @TO@ InfixExpression@@provided
+      != null || requiresLevel.isOn() '
+    - '---------MOV SimpleName@@provided @TO@ InfixExpression@@provided != null '
+    - '---------MOV Operator@@!= @TO@ InfixExpression@@provided != null '
+    - '---------MOV NullLiteral@@null @TO@ InfixExpression@@provided != null '
+    - '------INS Operator@@|| @TO@ InfixExpression@@provided != null || requiresLevel.isOn() '
+    - '------INS MethodInvocation@@requiresLevel.isOn() @TO@ InfixExpression@@provided
+      != null || requiresLevel.isOn() '
+    - '---------INS SimpleName@@Name:requiresLevel @TO@ MethodInvocation@@requiresLevel.isOn() '
+    - '---------INS SimpleName@@MethodName:isOn:[] @TO@ MethodInvocation@@requiresLevel.isOn() '
+    - '---DEL InfixExpression@@provided != null '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ProcessClosurePrimitives:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:provided != null @TO@ InfixExpression:provided
+      != null || requiresLevel.isOn() '
+    - '---INS InfixExpression@@provided != null || requiresLevel.isOn() @TO@ IfStatement@@InfixExpression:provided
+      != null '
+    - '------INS InfixExpression@@provided != null @TO@ InfixExpression@@provided
+      != null || requiresLevel.isOn() '
+    - '---------MOV SimpleName@@provided @TO@ InfixExpression@@provided != null '
+    - '---------MOV Operator@@!= @TO@ InfixExpression@@provided != null '
+    - '---------MOV NullLiteral@@null @TO@ InfixExpression@@provided != null '
+    - '------INS Operator@@|| @TO@ InfixExpression@@provided != null || requiresLevel.isOn() '
+    - '------INS MethodInvocation@@requiresLevel.isOn() @TO@ InfixExpression@@provided
+      != null || requiresLevel.isOn() '
+    - '---------INS SimpleName@@Name:requiresLevel @TO@ MethodInvocation@@requiresLevel.isOn() '
+    - '---------INS SimpleName@@MethodName:isOn:[] @TO@ MethodInvocation@@requiresLevel.isOn() '
+    - '---DEL InfixExpression@@provided != null '
+  files_cnt: '1'
+  repair_actions_cnt: 1

@@ -1,0 +1,10 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_38/src/org/mockito/internal/verification/argumentmatching/ArgumentMatchingTool.java	2020-10-24 21:06:46.674924603 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_38/purify/purified/org/mockito/internal/verification/argumentmatching/ArgumentMatchingTool.java	2020-10-24 21:06:46.674924603 -0400
+@@ -45,6 +45,6 @@
+     }
+ 
+     private boolean toStringEquals(Matcher m, Object arg) {
+-        return StringDescription.toString(m).equals(arg.toString());
++        return StringDescription.toString(m).equals(arg == null? "null" : arg.toString());
+     }
+ }

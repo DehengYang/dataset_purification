@@ -1,0 +1,327 @@
+1 bug_id: Closure-85
+2 src folder:
+  name of src folder: src
+  number of files: 370
+  number of java files: 358
+  number of src classes: 1163
+  number of test classes: 188
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue311
+  - com.google.javascript.jscomp.UnreachableCodeEliminationTest#testCascadedRemovalOfUnlessUnconditonalJumps
+  failing tests:
+  - com.google.javascript.jscomp.UnreachableCodeEliminationTest
+  number of all test cases: 6470
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.174
+  purification via delta debugging: 1481.173
+  repair actions extraction: 0.769
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testCascadedRemovalOfUnlessUnconditonalJumps: 2710
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue311: 2652
+  fixed:
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testCascadedRemovalOfUnlessUnconditonalJumps: 2869
+    com.google.javascript.jscomp.UnreachableCodeEliminationTest#testIssue311: 3015
+6 reduced lines:
+  by all: 6
+  by coverage: 0
+  by delta debugging: 6
+  covAdd: 8
+  covDel: 14
+  cov_patch_lines: 22
+  delta_patch_lines: 16
+  oriAdd: 8
+  oriDel: 14
+  ori_patch_lines: 22
+  purAdd: 8
+  purDel: 8
+7 reduced chunks:
+  by all: -4
+  by coverage: 0
+  by delta debugging: -4
+  cov: 4
+  original: 4
+  purifiy: 8
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 62
+  failFail: 4
+  passed: 3
+  total: 69
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_85/src/com/google/javascript/jscomp/UnreachableCodeElimination.java\t\
+    2020-10-23 10:52:09.205673026 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_85/purify/patch/com/google/javascript/jscomp/UnreachableCodeElimination.java\t\
+    2020-10-23 10:52:09.205673026 -0400\n@@ -150,20 +150,7 @@\n       return n;\n\
+    \     }\n \n-    if (n.getParent() == null) {\n-      List<DiGraphEdge<Node,Branch>>\
+    \ outEdges = gNode.getOutEdges();\n-      if (outEdges.size() == 1) {\n-     \
+    \   return tryRemoveUnconditionalBranching(outEdges.get(0).getDestination().getValue());\n\
+    -      }\n-    }\n     switch (n.getType()) {\n-      case Token.BLOCK:\n-   \
+    \     if (n.hasChildren()) {\n-          Node first = n.getFirstChild();\n-  \
+    \        return tryRemoveUnconditionalBranching(first);\n-        } else {\n-\
+    \          return tryRemoveUnconditionalBranching(ControlFlowAnalysis.computeFollowNode(n));\n\
+    -        }\n       case Token.RETURN:\n         if (n.hasChildren()) {\n     \
+    \      break;\n@@ -180,7 +167,7 @@\n             (n.getNext() == null || n.getNext().getType()\
+    \ == Token.FUNCTION)) {\n \n           Preconditions.checkState(outEdges.get(0).getValue()\
+    \ == Branch.UNCOND);\n-          Node fallThrough = tryRemoveUnconditionalBranching(computeFollowing(n));\n\
+    +          Node fallThrough = computeFollowing(n);\n           Node nextCfgNode\
+    \ = outEdges.get(0).getDestination().getValue();\n           if (nextCfgNode ==\
+    \ fallThrough) {\n             removeDeadExprStatementSafely(n);\n@@ -193,6 +180,13\
+    \ @@\n \n   private Node computeFollowing(Node n) {\n     Node next = ControlFlowAnalysis.computeFollowNode(n);\n\
+    +    while (next != null && next.getType() == Token.BLOCK) {\n+      if (next.hasChildren())\
+    \ {\n+        next = next.getFirstChild();\n+      } else {\n+        next = computeFollowing(next);\n\
+    +      }\n+    }\n     return next;\n   }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_85/src/com/google/javascript/jscomp/UnreachableCodeElimination.java\t\
+    2020-10-23 11:17:19.449381930 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_85/purify/purified/com/google/javascript/jscomp/UnreachableCodeElimination.java\t\
+    2020-10-23 11:17:19.449381930 -0400\n@@ -150,20 +150,13 @@\n       return n;\n\
+    \     }\n \n-    if (n.getParent() == null) {\n       List<DiGraphEdge<Node,Branch>>\
+    \ outEdges = gNode.getOutEdges();\n-      if (outEdges.size() == 1) {\n      \
+    \   return tryRemoveUnconditionalBranching(outEdges.get(0).getDestination().getValue());\n\
+    -      }\n-    }\n     switch (n.getType()) {\n       case Token.BLOCK:\n-   \
+    \     if (n.hasChildren()) {\n           Node first = n.getFirstChild();\n   \
+    \        return tryRemoveUnconditionalBranching(first);\n-        } else {\n \
+    \          return tryRemoveUnconditionalBranching(ControlFlowAnalysis.computeFollowNode(n));\n\
+    -        }\n       case Token.RETURN:\n         if (n.hasChildren()) {\n     \
+    \      break;\n@@ -180,7 +173,7 @@\n             (n.getNext() == null || n.getNext().getType()\
+    \ == Token.FUNCTION)) {\n \n           Preconditions.checkState(outEdges.get(0).getValue()\
+    \ == Branch.UNCOND);\n-          Node fallThrough = tryRemoveUnconditionalBranching(computeFollowing(n));\n\
+    +          Node fallThrough = computeFollowing(n);\n           Node nextCfgNode\
+    \ = outEdges.get(0).getDestination().getValue();\n           if (nextCfgNode ==\
+    \ fallThrough) {\n             removeDeadExprStatementSafely(n);\n@@ -193,6 +186,13\
+    \ @@\n \n   private Node computeFollowing(Node n) {\n     Node next = ControlFlowAnalysis.computeFollowNode(n);\n\
+    +    while (next != null && next.getType() == Token.BLOCK) {\n+      if (next.hasChildren())\
+    \ {\n+        next = next.getFirstChild();\n+      } else {\n+        next = computeFollowing(next);\n\
+    +      }\n+    }\n     return next;\n   }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/UnreachableCodeElimination:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:n.getParent() == null '
+    - '---DEL InfixExpression@@n.getParent() == null '
+    - '------DEL MethodInvocation@@n.getParent() '
+    - '---------DEL SimpleName@@Name:n '
+    - '---------DEL SimpleName@@MethodName:getParent:[] '
+    - '------DEL Operator@@== '
+    - '------DEL NullLiteral@@null '
+    - '---DEL VariableDeclarationStatement@@List<DiGraphEdge<Node,Branch>> outEdges=gNode.getOutEdges(); '
+    - '------DEL ParameterizedType@@List<DiGraphEdge<Node,Branch>> '
+    - '---------DEL SimpleType@@List '
+    - '---------DEL ParameterizedType@@DiGraphEdge<Node,Branch> '
+    - '------------DEL SimpleType@@DiGraphEdge '
+    - '------------DEL SimpleType@@Node '
+    - '------------DEL SimpleType@@Branch '
+    - '------DEL VariableDeclarationFragment@@outEdges=gNode.getOutEdges() '
+    - '---------DEL SimpleName@@outEdges '
+    - '---------DEL MethodInvocation@@gNode.getOutEdges() '
+    - '------------DEL SimpleName@@Name:gNode '
+    - '------------DEL SimpleName@@MethodName:getOutEdges:[] '
+    - '---DEL IfStatement@@InfixExpression:outEdges.size() == 1 '
+    - '------DEL InfixExpression@@outEdges.size() == 1 '
+    - '---------DEL MethodInvocation@@outEdges.size() '
+    - '------------DEL SimpleName@@Name:outEdges '
+    - '------------DEL SimpleName@@MethodName:size:[] '
+    - '---------DEL Operator@@== '
+    - '---------DEL NumberLiteral@@1 '
+    - '------DEL ReturnStatement@@MethodInvocation:tryRemoveUnconditionalBranching(outEdges.get(0).getDestination().getValue()) '
+    - '---------DEL MethodInvocation@@tryRemoveUnconditionalBranching(outEdges.get(0).getDestination().getValue()) '
+    - '------------DEL SimpleName@@MethodName:tryRemoveUnconditionalBranching:[outEdges.get(0).getDestination().getValue()] '
+    - '---------------DEL MethodInvocation@@outEdges.get(0).getDestination().getValue() '
+    - '------------------DEL SimpleName@@Name:outEdges '
+    - '------------------DEL MethodInvocation@@MethodName:get:[0] '
+    - '---------------------DEL NumberLiteral@@0 '
+    - '------------------DEL MethodInvocation@@MethodName:getDestination:[] '
+    - '------------------DEL SimpleName@@MethodName:getValue:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL SwitchCase@@QualifiedName:Token.BLOCK '
+    - '---DEL QualifiedName@@Token.BLOCK '
+    - '------DEL SimpleName@@Token '
+    - '------DEL SimpleName@@BLOCK '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:n.hasChildren() '
+    - '---DEL MethodInvocation@@n.hasChildren() '
+    - '------DEL SimpleName@@Name:n '
+    - '------DEL SimpleName@@MethodName:hasChildren:[] '
+    - '---DEL VariableDeclarationStatement@@Node first=n.getFirstChild(); '
+    - '------DEL SimpleType@@Node '
+    - '------DEL VariableDeclarationFragment@@first=n.getFirstChild() '
+    - '---------DEL SimpleName@@first '
+    - '---------DEL MethodInvocation@@n.getFirstChild() '
+    - '------------DEL SimpleName@@Name:n '
+    - '------------DEL SimpleName@@MethodName:getFirstChild:[] '
+    - '---DEL ReturnStatement@@MethodInvocation:tryRemoveUnconditionalBranching(first) '
+    - '------DEL MethodInvocation@@tryRemoveUnconditionalBranching(first) '
+    - '---------DEL SimpleName@@MethodName:tryRemoveUnconditionalBranching:[first] '
+    - '------------DEL SimpleName@@first '
+    - '---DEL ReturnStatement@@MethodInvocation:tryRemoveUnconditionalBranching(ControlFlowAnalysis.computeFollowNode(n)) '
+    - '------DEL MethodInvocation@@tryRemoveUnconditionalBranching(ControlFlowAnalysis.computeFollowNode(n)) '
+    - '---------DEL SimpleName@@MethodName:tryRemoveUnconditionalBranching:[ControlFlowAnalysis.computeFollowNode(n)] '
+    - '------------DEL MethodInvocation@@ControlFlowAnalysis.computeFollowNode(n) '
+    - '---------------DEL SimpleName@@Name:ControlFlowAnalysis '
+    - '---------------DEL SimpleName@@MethodName:computeFollowNode:[n] '
+    - '------------------DEL SimpleName@@n '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS WhileStatement@@InfixExpression:next != null && next.getType() == Token.BLOCK
+      @TO@ MethodDeclaration@@private, @@Node, MethodName:computeFollowing, @@Argus:Node+n+ '
+    - '---INS InfixExpression@@next != null && next.getType() == Token.BLOCK @TO@
+      WhileStatement@@InfixExpression:next != null && next.getType() == Token.BLOCK '
+    - '------INS InfixExpression@@next != null @TO@ InfixExpression@@next != null
+      && next.getType() == Token.BLOCK '
+    - '---------INS SimpleName@@next @TO@ InfixExpression@@next != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@next != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@next != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@next != null && next.getType()
+      == Token.BLOCK '
+    - '------INS InfixExpression@@next.getType() == Token.BLOCK @TO@ InfixExpression@@next
+      != null && next.getType() == Token.BLOCK '
+    - '---------INS MethodInvocation@@next.getType() @TO@ InfixExpression@@next.getType()
+      == Token.BLOCK '
+    - '------------INS SimpleName@@Name:next @TO@ MethodInvocation@@next.getType() '
+    - '------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@next.getType() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@next.getType() == Token.BLOCK '
+    - '---------INS QualifiedName@@Token.BLOCK @TO@ InfixExpression@@next.getType()
+      == Token.BLOCK '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.BLOCK '
+    - '------------INS SimpleName@@BLOCK @TO@ QualifiedName@@Token.BLOCK '
+    - '---INS IfStatement@@MethodInvocation:next.hasChildren() @TO@ WhileStatement@@InfixExpression:next
+      != null && next.getType() == Token.BLOCK '
+    - '------INS MethodInvocation@@next.hasChildren() @TO@ IfStatement@@MethodInvocation:next.hasChildren() '
+    - '---------INS SimpleName@@Name:next @TO@ MethodInvocation@@next.hasChildren() '
+    - '---------INS SimpleName@@MethodName:hasChildren:[] @TO@ MethodInvocation@@next.hasChildren() '
+    - '------INS ExpressionStatement@@Assignment:next=next.getFirstChild() @TO@ IfStatement@@MethodInvocation:next.hasChildren() '
+    - '---------INS Assignment@@next=next.getFirstChild() @TO@ ExpressionStatement@@Assignment:next=next.getFirstChild() '
+    - '------------INS SimpleName@@next @TO@ Assignment@@next=next.getFirstChild() '
+    - '------------INS Operator@@= @TO@ Assignment@@next=next.getFirstChild() '
+    - '------------INS MethodInvocation@@next.getFirstChild() @TO@ Assignment@@next=next.getFirstChild() '
+    - '---------------INS SimpleName@@Name:next @TO@ MethodInvocation@@next.getFirstChild() '
+    - '---------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@next.getFirstChild() '
+    - '------INS ExpressionStatement@@Assignment:next=computeFollowing(next) @TO@
+      IfStatement@@MethodInvocation:next.hasChildren() '
+    - '---------INS Assignment@@next=computeFollowing(next) @TO@ ExpressionStatement@@Assignment:next=computeFollowing(next) '
+    - '------------INS SimpleName@@next @TO@ Assignment@@next=computeFollowing(next) '
+    - '------------INS Operator@@= @TO@ Assignment@@next=computeFollowing(next) '
+    - '------------INS MethodInvocation@@computeFollowing(next) @TO@ Assignment@@next=computeFollowing(next) '
+    - '---------------INS SimpleName@@MethodName:computeFollowing:[next] @TO@ MethodInvocation@@computeFollowing(next) '
+    - '------------------INS SimpleName@@next @TO@ SimpleName@@MethodName:computeFollowing:[next] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Node fallThrough=tryRemoveUnconditionalBranching(computeFollowing(n));
+      @TO@ Node fallThrough=computeFollowing(n); '
+    - '---UPD VariableDeclarationFragment@@fallThrough=tryRemoveUnconditionalBranching(computeFollowing(n))
+      @TO@ fallThrough=computeFollowing(n) '
+    - '------DEL MethodInvocation@@tryRemoveUnconditionalBranching(computeFollowing(n)) '
+    - '---------DEL SimpleName@@MethodName:tryRemoveUnconditionalBranching:[computeFollowing(n)] '
+    - '------MOV MethodInvocation@@computeFollowing(n) @TO@ VariableDeclarationFragment@@fallThrough=tryRemoveUnconditionalBranching(computeFollowing(n)) '
+  files_cnt: '1'
+  repair_actions_cnt: 5
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/UnreachableCodeElimination:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:n.getParent() == null '
+    - '---DEL InfixExpression@@n.getParent() == null '
+    - '------DEL MethodInvocation@@n.getParent() '
+    - '---------DEL SimpleName@@Name:n '
+    - '---------DEL SimpleName@@MethodName:getParent:[] '
+    - '------DEL Operator@@== '
+    - '------DEL NullLiteral@@null '
+    - '---DEL IfStatement@@InfixExpression:outEdges.size() == 1 '
+    - '------DEL InfixExpression@@outEdges.size() == 1 '
+    - '---------DEL MethodInvocation@@outEdges.size() '
+    - '------------DEL SimpleName@@Name:outEdges '
+    - '------------DEL SimpleName@@MethodName:size:[] '
+    - '---------DEL Operator@@== '
+    - '---------DEL NumberLiteral@@1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@List<DiGraphEdge<Node,Branch>> outEdges=gNode.getOutEdges();
+      @TO@ MethodDeclaration@@private, @@Node, MethodName:tryRemoveUnconditionalBranching,
+      @@Argus:Node+n+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ReturnStatement@@MethodInvocation:tryRemoveUnconditionalBranching(outEdges.get(0).getDestination().getValue())
+      @TO@ MethodDeclaration@@private, @@Node, MethodName:tryRemoveUnconditionalBranching,
+      @@Argus:Node+n+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:n.hasChildren() '
+    - '---DEL MethodInvocation@@n.hasChildren() '
+    - '------DEL SimpleName@@Name:n '
+    - '------DEL SimpleName@@MethodName:hasChildren:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@Node first=n.getFirstChild(); @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ReturnStatement@@MethodInvocation:tryRemoveUnconditionalBranching(first)
+      @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ReturnStatement@@MethodInvocation:tryRemoveUnconditionalBranching(ControlFlowAnalysis.computeFollowNode(n))
+      @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Node fallThrough=tryRemoveUnconditionalBranching(computeFollowing(n));
+      @TO@ Node fallThrough=computeFollowing(n); '
+    - '---UPD VariableDeclarationFragment@@fallThrough=tryRemoveUnconditionalBranching(computeFollowing(n))
+      @TO@ fallThrough=computeFollowing(n) '
+    - '------DEL MethodInvocation@@tryRemoveUnconditionalBranching(computeFollowing(n)) '
+    - '---------DEL SimpleName@@MethodName:tryRemoveUnconditionalBranching:[computeFollowing(n)] '
+    - '------MOV MethodInvocation@@computeFollowing(n) @TO@ VariableDeclarationFragment@@fallThrough=tryRemoveUnconditionalBranching(computeFollowing(n)) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS WhileStatement@@InfixExpression:next != null && next.getType() == Token.BLOCK
+      @TO@ MethodDeclaration@@private, @@Node, MethodName:computeFollowing, @@Argus:Node+n+ '
+    - '---INS InfixExpression@@next != null && next.getType() == Token.BLOCK @TO@
+      WhileStatement@@InfixExpression:next != null && next.getType() == Token.BLOCK '
+    - '------INS InfixExpression@@next != null @TO@ InfixExpression@@next != null
+      && next.getType() == Token.BLOCK '
+    - '---------INS SimpleName@@next @TO@ InfixExpression@@next != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@next != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@next != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@next != null && next.getType()
+      == Token.BLOCK '
+    - '------INS InfixExpression@@next.getType() == Token.BLOCK @TO@ InfixExpression@@next
+      != null && next.getType() == Token.BLOCK '
+    - '---------INS MethodInvocation@@next.getType() @TO@ InfixExpression@@next.getType()
+      == Token.BLOCK '
+    - '------------INS SimpleName@@Name:next @TO@ MethodInvocation@@next.getType() '
+    - '------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@next.getType() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@next.getType() == Token.BLOCK '
+    - '---------INS QualifiedName@@Token.BLOCK @TO@ InfixExpression@@next.getType()
+      == Token.BLOCK '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.BLOCK '
+    - '------------INS SimpleName@@BLOCK @TO@ QualifiedName@@Token.BLOCK '
+    - '---INS IfStatement@@MethodInvocation:next.hasChildren() @TO@ WhileStatement@@InfixExpression:next
+      != null && next.getType() == Token.BLOCK '
+    - '------INS MethodInvocation@@next.hasChildren() @TO@ IfStatement@@MethodInvocation:next.hasChildren() '
+    - '---------INS SimpleName@@Name:next @TO@ MethodInvocation@@next.hasChildren() '
+    - '---------INS SimpleName@@MethodName:hasChildren:[] @TO@ MethodInvocation@@next.hasChildren() '
+    - '------INS ExpressionStatement@@Assignment:next=next.getFirstChild() @TO@ IfStatement@@MethodInvocation:next.hasChildren() '
+    - '---------INS Assignment@@next=next.getFirstChild() @TO@ ExpressionStatement@@Assignment:next=next.getFirstChild() '
+    - '------------INS SimpleName@@next @TO@ Assignment@@next=next.getFirstChild() '
+    - '------------INS Operator@@= @TO@ Assignment@@next=next.getFirstChild() '
+    - '------------INS MethodInvocation@@next.getFirstChild() @TO@ Assignment@@next=next.getFirstChild() '
+    - '---------------INS SimpleName@@Name:next @TO@ MethodInvocation@@next.getFirstChild() '
+    - '---------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@next.getFirstChild() '
+    - '------INS ExpressionStatement@@Assignment:next=computeFollowing(next) @TO@
+      IfStatement@@MethodInvocation:next.hasChildren() '
+    - '---------INS Assignment@@next=computeFollowing(next) @TO@ ExpressionStatement@@Assignment:next=computeFollowing(next) '
+    - '------------INS SimpleName@@next @TO@ Assignment@@next=computeFollowing(next) '
+    - '------------INS Operator@@= @TO@ Assignment@@next=computeFollowing(next) '
+    - '------------INS MethodInvocation@@computeFollowing(next) @TO@ Assignment@@next=computeFollowing(next) '
+    - '---------------INS SimpleName@@MethodName:computeFollowing:[next] @TO@ MethodInvocation@@computeFollowing(next) '
+    - '------------------INS SimpleName@@next @TO@ SimpleName@@MethodName:computeFollowing:[next] '
+  files_cnt: '1'
+  repair_actions_cnt: 9

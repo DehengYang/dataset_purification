@@ -1,0 +1,306 @@
+1 bug_id: Lang-63
+2 src folder:
+  name of src folder: java
+  number of files: 87
+  number of java files: 77
+  number of src classes: 124
+  number of test classes: 89
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.time.DurationFormatUtilsTest#testJiraLang281
+  failing tests:
+  - org.apache.commons.lang.time.DurationFormatUtilsTest
+  number of all test cases: 1671
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 1.02
+  purification via delta debugging: 133.29
+  repair actions extraction: 1.333
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.time.DurationFormatUtilsTest#testJiraLang281: 115
+  fixed:
+    org.apache.commons.lang.time.DurationFormatUtilsTest#testJiraLang281: 108
+6 reduced lines:
+  by all: 22
+  by coverage: 0
+  by delta debugging: 22
+  covAdd: 3
+  covDel: 20
+  cov_patch_lines: 23
+  delta_patch_lines: 1
+  oriAdd: 3
+  oriDel: 20
+  ori_patch_lines: 23
+  purAdd: 0
+  purDel: 1
+7 reduced chunks:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  cov: 4
+  original: 4
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 1
+  failFail: 1
+  passed: 5
+  total: 7
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_63/src/java/org/apache/commons/lang/time/DurationFormatUtils.java\t\
+    2020-10-21 04:09:00.082662409 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_63/purify/patch/org/apache/commons/lang/time/DurationFormatUtils.java\t\
+    2020-10-21 04:09:00.082662409 -0400\n@@ -303,25 +303,20 @@\n             days\
+    \ -= 1;\n         }\n         while (days < 0) {\n-            days += 31;\n+\
+    \            end.add(Calendar.MONTH, -1);\n+            days += end.getActualMaximum(Calendar.DAY_OF_MONTH);\n\
+    \ //days += 31; // TODO: Need tests to show this is bad and the new code is good.\n\
+    \ // HEN: It's a tricky subject. Jan 15th to March 10th. If I count days-first\
+    \ it is \n // 1 month and 26 days, but if I count month-first then it is 1 month\
+    \ and 23 days.\n // Also it's contextual - if asked for no M in the format then\
+    \ I should probably \n // be doing no calculating here.\n             months -=\
+    \ 1;\n+            end.add(Calendar.MONTH, 1);\n         }\n         while (months\
+    \ < 0) {\n             months += 12;\n             years -= 1;\n         }\n-\
+    \        milliseconds -= reduceAndCorrect(start, end, Calendar.MILLISECOND, milliseconds);\n\
+    -        seconds -= reduceAndCorrect(start, end, Calendar.SECOND, seconds);\n\
+    -        minutes -= reduceAndCorrect(start, end, Calendar.MINUTE, minutes);\n\
+    -        hours -= reduceAndCorrect(start, end, Calendar.HOUR_OF_DAY, hours);\n\
+    -        days -= reduceAndCorrect(start, end, Calendar.DAY_OF_MONTH, days);\n\
+    -        months -= reduceAndCorrect(start, end, Calendar.MONTH, months);\n-  \
+    \      years -= reduceAndCorrect(start, end, Calendar.YEAR, years);\n \n     \
+    \    // This next block of code adds in values that \n         // aren't requested.\
+    \ This allows the user to ask for the \n@@ -429,18 +424,6 @@\n         }\n   \
+    \      return buffer.toString();\n     }\n-    static int reduceAndCorrect(Calendar\
+    \ start, Calendar end, int field, int difference) {\n-        end.add( field,\
+    \ -1 * difference );\n-        int endValue = end.get(field);\n-        int startValue\
+    \ = start.get(field);\n-        if (endValue < startValue) {\n-            int\
+    \ newdiff = startValue - endValue;\n-            end.add( field, newdiff );\n\
+    -            return newdiff;\n-        } else {\n-            return 0;\n-   \
+    \     }\n-    }\n \n     static final Object y = \"y\";\n     static final Object\
+    \ M = \"M\";"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_63/src/java/org/apache/commons/lang/time/DurationFormatUtils.java\t\
+    2020-10-21 04:11:24.118822156 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_63/purify/purified/org/apache/commons/lang/time/DurationFormatUtils.java\t\
+    2020-10-21 04:11:24.118822156 -0400\n@@ -320,7 +320,6 @@\n         minutes -=\
+    \ reduceAndCorrect(start, end, Calendar.MINUTE, minutes);\n         hours -= reduceAndCorrect(start,\
+    \ end, Calendar.HOUR_OF_DAY, hours);\n         days -= reduceAndCorrect(start,\
+    \ end, Calendar.DAY_OF_MONTH, days);\n-        months -= reduceAndCorrect(start,\
+    \ end, Calendar.MONTH, months);\n         years -= reduceAndCorrect(start, end,\
+    \ Calendar.YEAR, years);\n \n         // This next block of code adds in values\
+    \ that"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/time/DurationFormatUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS WhileStatement@@InfixExpression:days < 0 @TO@ MethodDeclaration@@public,
+      static, @@String, MethodName:formatPeriod, @@Argus:long+startMillis+long+endMillis+String+format+boolean+padWithZeros+TimeZone+timezone+ '
+    - '---MOV InfixExpression@@days < 0 @TO@ WhileStatement@@InfixExpression:days
+      < 0 '
+    - '---INS ExpressionStatement@@MethodInvocation:end.add(Calendar.MONTH,-1) @TO@
+      WhileStatement@@InfixExpression:days < 0 '
+    - '------INS MethodInvocation@@end.add(Calendar.MONTH,-1) @TO@ ExpressionStatement@@MethodInvocation:end.add(Calendar.MONTH,-1) '
+    - '---------INS SimpleName@@Name:end @TO@ MethodInvocation@@end.add(Calendar.MONTH,-1) '
+    - '---------INS SimpleName@@MethodName:add:[Calendar.MONTH, -1] @TO@ MethodInvocation@@end.add(Calendar.MONTH,-1) '
+    - '------------INS PrefixExpression@@-1 @TO@ SimpleName@@MethodName:add:[Calendar.MONTH,
+      -1] '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+    - '------------MOV QualifiedName@@Calendar.MINUTE @TO@ SimpleName@@MethodName:add:[Calendar.MONTH,
+      -1] '
+    - '---INS ExpressionStatement@@Assignment:days+=end.getActualMaximum(Calendar.DAY_OF_MONTH)
+      @TO@ WhileStatement@@InfixExpression:days < 0 '
+    - '------MOV Assignment@@days-=reduceAndCorrect(start,end,Calendar.DAY_OF_MONTH,days)
+      @TO@ ExpressionStatement@@Assignment:days+=end.getActualMaximum(Calendar.DAY_OF_MONTH) '
+    - '---MOV ExpressionStatement@@Assignment:months-=1 @TO@ WhileStatement@@InfixExpression:days
+      < 0 '
+    - '---INS ExpressionStatement@@MethodInvocation:end.add(Calendar.MONTH,1) @TO@
+      WhileStatement@@InfixExpression:days < 0 '
+    - '------INS MethodInvocation@@end.add(Calendar.MONTH,1) @TO@ ExpressionStatement@@MethodInvocation:end.add(Calendar.MONTH,1) '
+    - '---------INS SimpleName@@Name:end @TO@ MethodInvocation@@end.add(Calendar.MONTH,1) '
+    - '---------MOV SimpleName@@MethodName:reduceAndCorrect:[start, end, Calendar.MONTH,
+      months] @TO@ MethodInvocation@@end.add(Calendar.MONTH,1) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL WhileStatement@@InfixExpression:days < 0 '
+    - '---DEL ExpressionStatement@@Assignment:days+=31 '
+    - '------DEL Assignment@@days+=31 '
+    - '---------DEL SimpleName@@days '
+    - '---------DEL Operator@@+= '
+    - '---------DEL NumberLiteral@@31 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:milliseconds-=reduceAndCorrect(start,end,Calendar.MILLISECOND,milliseconds) '
+    - '---DEL Assignment@@milliseconds-=reduceAndCorrect(start,end,Calendar.MILLISECOND,milliseconds) '
+    - '------DEL SimpleName@@milliseconds '
+    - '------DEL Operator@@-= '
+    - '------DEL MethodInvocation@@reduceAndCorrect(start,end,Calendar.MILLISECOND,milliseconds) '
+    - '---------DEL SimpleName@@MethodName:reduceAndCorrect:[start, end, Calendar.MILLISECOND,
+      milliseconds] '
+    - '------------DEL SimpleName@@start '
+    - '------------DEL SimpleName@@end '
+    - '------------DEL QualifiedName@@Calendar.MILLISECOND '
+    - '---------------DEL SimpleName@@Calendar '
+    - '---------------DEL SimpleName@@MILLISECOND '
+    - '------------DEL SimpleName@@milliseconds '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:seconds-=reduceAndCorrect(start,end,Calendar.SECOND,seconds) '
+    - '---DEL Assignment@@seconds-=reduceAndCorrect(start,end,Calendar.SECOND,seconds) '
+    - '------DEL SimpleName@@seconds '
+    - '------DEL Operator@@-= '
+    - '------DEL MethodInvocation@@reduceAndCorrect(start,end,Calendar.SECOND,seconds) '
+    - '---------DEL SimpleName@@MethodName:reduceAndCorrect:[start, end, Calendar.SECOND,
+      seconds] '
+    - '------------DEL SimpleName@@start '
+    - '------------DEL SimpleName@@end '
+    - '------------DEL QualifiedName@@Calendar.SECOND '
+    - '---------------DEL SimpleName@@Calendar '
+    - '---------------DEL SimpleName@@SECOND '
+    - '------------DEL SimpleName@@seconds '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:minutes-=reduceAndCorrect(start,end,Calendar.MINUTE,minutes) '
+    - '---DEL Assignment@@minutes-=reduceAndCorrect(start,end,Calendar.MINUTE,minutes) '
+    - '------DEL SimpleName@@minutes '
+    - '------DEL Operator@@-= '
+    - '------DEL MethodInvocation@@reduceAndCorrect(start,end,Calendar.MINUTE,minutes) '
+    - '---------DEL SimpleName@@MethodName:reduceAndCorrect:[start, end, Calendar.MINUTE,
+      minutes] '
+    - '------------DEL SimpleName@@start '
+    - '------------DEL SimpleName@@end '
+    - '------------DEL SimpleName@@minutes '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:hours-=reduceAndCorrect(start,end,Calendar.HOUR_OF_DAY,hours) '
+    - '---DEL Assignment@@hours-=reduceAndCorrect(start,end,Calendar.HOUR_OF_DAY,hours) '
+    - '------DEL SimpleName@@hours '
+    - '------DEL Operator@@-= '
+    - '------DEL MethodInvocation@@reduceAndCorrect(start,end,Calendar.HOUR_OF_DAY,hours) '
+    - '---------DEL SimpleName@@MethodName:reduceAndCorrect:[start, end, Calendar.HOUR_OF_DAY,
+      hours] '
+    - '------------DEL SimpleName@@start '
+    - '------------DEL SimpleName@@end '
+    - '------------DEL QualifiedName@@Calendar.HOUR_OF_DAY '
+    - '---------------DEL SimpleName@@Calendar '
+    - '---------------DEL SimpleName@@HOUR_OF_DAY '
+    - '------------DEL SimpleName@@hours '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:days-=reduceAndCorrect(start,end,Calendar.DAY_OF_MONTH,days) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:months-=reduceAndCorrect(start,end,Calendar.MONTH,months) '
+    - '---DEL Assignment@@months-=reduceAndCorrect(start,end,Calendar.MONTH,months) '
+    - '------DEL SimpleName@@months '
+    - '------DEL Operator@@-= '
+    - '------DEL MethodInvocation@@reduceAndCorrect(start,end,Calendar.MONTH,months) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:years-=reduceAndCorrect(start,end,Calendar.YEAR,years) '
+    - '---DEL Assignment@@years-=reduceAndCorrect(start,end,Calendar.YEAR,years) '
+    - '------DEL SimpleName@@years '
+    - '------DEL Operator@@-= '
+    - '------DEL MethodInvocation@@reduceAndCorrect(start,end,Calendar.YEAR,years) '
+    - '---------DEL SimpleName@@MethodName:reduceAndCorrect:[start, end, Calendar.YEAR,
+      years] '
+    - '------------DEL SimpleName@@start '
+    - '------------DEL SimpleName@@end '
+    - '------------DEL QualifiedName@@Calendar.YEAR '
+    - '---------------DEL SimpleName@@Calendar '
+    - '---------------DEL SimpleName@@YEAR '
+    - '------------DEL SimpleName@@years '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL MethodDeclaration@@static, @@int, MethodName:reduceAndCorrect, @@Argus:Calendar+start+Calendar+end+int+field+int+difference+ '
+    - '---DEL Modifier@@static '
+    - '---DEL PrimitiveType@@int '
+    - '---DEL SimpleName@@MethodName:reduceAndCorrect '
+    - '---DEL SingleVariableDeclaration@@Calendar start '
+    - '------DEL SimpleType@@Calendar '
+    - '------DEL SimpleName@@start '
+    - '---DEL SingleVariableDeclaration@@Calendar end '
+    - '------DEL SimpleType@@Calendar '
+    - '------DEL SimpleName@@end '
+    - '---DEL SingleVariableDeclaration@@int field '
+    - '------DEL PrimitiveType@@int '
+    - '------DEL SimpleName@@field '
+    - '---DEL SingleVariableDeclaration@@int difference '
+    - '------DEL PrimitiveType@@int '
+    - '------DEL SimpleName@@difference '
+    - '---DEL ExpressionStatement@@MethodInvocation:end.add(field,-1 * difference) '
+    - '------DEL MethodInvocation@@end.add(field,-1 * difference) '
+    - '---------DEL SimpleName@@Name:end '
+    - '---------DEL SimpleName@@MethodName:add:[field, -1 * difference] '
+    - '------------DEL SimpleName@@field '
+    - '------------DEL InfixExpression@@-1 * difference '
+    - '---------------DEL PrefixExpression@@-1 '
+    - '------------------DEL Operator@@- '
+    - '------------------DEL NumberLiteral@@1 '
+    - '---------------DEL Operator@@* '
+    - '---------------DEL SimpleName@@difference '
+    - '---DEL VariableDeclarationStatement@@int endValue=end.get(field); '
+    - '------DEL PrimitiveType@@int '
+    - '------DEL VariableDeclarationFragment@@endValue=end.get(field) '
+    - '---------DEL SimpleName@@endValue '
+    - '---------DEL MethodInvocation@@end.get(field) '
+    - '------------DEL SimpleName@@Name:end '
+    - '------------DEL SimpleName@@MethodName:get:[field] '
+    - '---------------DEL SimpleName@@field '
+    - '---DEL VariableDeclarationStatement@@int startValue=start.get(field); '
+    - '------DEL PrimitiveType@@int '
+    - '------DEL VariableDeclarationFragment@@startValue=start.get(field) '
+    - '---------DEL SimpleName@@startValue '
+    - '---------DEL MethodInvocation@@start.get(field) '
+    - '------------DEL SimpleName@@Name:start '
+    - '------------DEL SimpleName@@MethodName:get:[field] '
+    - '---------------DEL SimpleName@@field '
+    - '---DEL IfStatement@@InfixExpression:endValue < startValue '
+    - '------DEL InfixExpression@@endValue < startValue '
+    - '---------DEL SimpleName@@endValue '
+    - '---------DEL Operator@@< '
+    - '---------DEL SimpleName@@startValue '
+    - '------DEL VariableDeclarationStatement@@int newdiff=startValue - endValue; '
+    - '---------DEL PrimitiveType@@int '
+    - '---------DEL VariableDeclarationFragment@@newdiff=startValue - endValue '
+    - '------------DEL SimpleName@@newdiff '
+    - '------------DEL InfixExpression@@startValue - endValue '
+    - '---------------DEL SimpleName@@startValue '
+    - '---------------DEL Operator@@- '
+    - '---------------DEL SimpleName@@endValue '
+    - '------DEL ExpressionStatement@@MethodInvocation:end.add(field,newdiff) '
+    - '---------DEL MethodInvocation@@end.add(field,newdiff) '
+    - '------------DEL SimpleName@@Name:end '
+    - '------------DEL SimpleName@@MethodName:add:[field, newdiff] '
+    - '---------------DEL SimpleName@@field '
+    - '---------------DEL SimpleName@@newdiff '
+    - '------DEL ReturnStatement@@SimpleName:newdiff '
+    - '---------DEL SimpleName@@newdiff '
+    - '------DEL ReturnStatement@@NumberLiteral:0 '
+    - '---------DEL NumberLiteral@@0 '
+  repair_actions_cnt: 10
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/time/DurationFormatUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:months-=reduceAndCorrect(start,end,Calendar.MONTH,months) '
+    - '---DEL Assignment@@months-=reduceAndCorrect(start,end,Calendar.MONTH,months) '
+    - '------DEL SimpleName@@months '
+    - '------DEL Operator@@-= '
+    - '------DEL MethodInvocation@@reduceAndCorrect(start,end,Calendar.MONTH,months) '
+    - '---------DEL SimpleName@@MethodName:reduceAndCorrect:[start, end, Calendar.MONTH,
+      months] '
+    - '------------DEL SimpleName@@start '
+    - '------------DEL SimpleName@@end '
+    - '------------DEL QualifiedName@@Calendar.MONTH '
+    - '---------------DEL SimpleName@@Calendar '
+    - '---------------DEL SimpleName@@MONTH '
+    - '------------DEL SimpleName@@months '
+  repair_actions_cnt: 1

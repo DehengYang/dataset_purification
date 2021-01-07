@@ -1,0 +1,118 @@
+1 bug_id: Math-3
+2 src folder:
+  name of src folder: java
+  number of files: 796
+  number of java files: 795
+  number of src classes: 1072
+  number of test classes: 401
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.util.MathArraysTest#testLinearCombinationWithSingleElementArray
+  failing tests:
+  - org.apache.commons.math3.util.MathArraysTest
+  number of all test cases: 5110
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.848
+  purification via delta debugging: 166.344
+  repair actions extraction: 3.194
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.util.MathArraysTest#testLinearCombinationWithSingleElementArray: 18
+  fixed:
+    org.apache.commons.math3.util.MathArraysTest#testLinearCombinationWithSingleElementArray: 4
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_3/src/main/java/org/apache/commons/math3/util/MathArrays.java\t\
+    2020-10-21 04:26:24.956841773 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_3/purify/patch/org/apache/commons/math3/util/MathArrays.java\t\
+    2020-10-21 04:26:24.952841658 -0400\n@@ -818,7 +818,10 @@\n             throw\
+    \ new DimensionMismatchException(len, b.length);\n         }\n \n+        if (len\
+    \ == 1) {\n             // Revert to scalar multiplication.\n+            return\
+    \ a[0] * b[0];\n+        }\n \n         final double[] prodHigh = new double[len];\n\
+    \         double prodLowSum = 0;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_3/src/main/java/org/apache/commons/math3/util/MathArrays.java\t\
+    2020-10-21 04:29:33.902299746 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_3/purify/purified/org/apache/commons/math3/util/MathArrays.java\t\
+    2020-10-21 04:29:33.902299746 -0400\n@@ -818,7 +818,10 @@\n             throw\
+    \ new DimensionMismatchException(len, b.length);\n         }\n \n+        if (len\
+    \ == 1) {\n             // Revert to scalar multiplication.\n+            return\
+    \ a[0] * b[0];\n+        }\n \n         final double[] prodHigh = new double[len];\n\
+    \         double prodLowSum = 0;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/util/MathArrays:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:len == 1 @TO@ MethodDeclaration@@public, static,
+      @@double, MethodName:linearCombination, @@Argus:double[]+a+double[]+b+DimensionMismatchException,  '
+    - '---INS InfixExpression@@len == 1 @TO@ IfStatement@@InfixExpression:len == 1 '
+    - '------INS SimpleName@@len @TO@ InfixExpression@@len == 1 '
+    - '------INS Operator@@== @TO@ InfixExpression@@len == 1 '
+    - '------INS NumberLiteral@@1 @TO@ InfixExpression@@len == 1 '
+    - '---INS ReturnStatement@@InfixExpression:a[0] * b[0] @TO@ IfStatement@@InfixExpression:len
+      == 1 '
+    - '------INS InfixExpression@@a[0] * b[0] @TO@ ReturnStatement@@InfixExpression:a[0]
+      * b[0] '
+    - '---------INS ArrayAccess@@a[0] @TO@ InfixExpression@@a[0] * b[0] '
+    - '------------INS SimpleName@@a @TO@ ArrayAccess@@a[0] '
+    - '------------INS NumberLiteral@@0 @TO@ ArrayAccess@@a[0] '
+    - '---------INS Operator@@* @TO@ InfixExpression@@a[0] * b[0] '
+    - '---------INS ArrayAccess@@b[0] @TO@ InfixExpression@@a[0] * b[0] '
+    - '------------INS SimpleName@@b @TO@ ArrayAccess@@b[0] '
+    - '------------INS NumberLiteral@@0 @TO@ ArrayAccess@@b[0] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/util/MathArrays:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:len == 1 @TO@ MethodDeclaration@@public, static,
+      @@double, MethodName:linearCombination, @@Argus:double[]+a+double[]+b+DimensionMismatchException,  '
+    - '---INS InfixExpression@@len == 1 @TO@ IfStatement@@InfixExpression:len == 1 '
+    - '------INS SimpleName@@len @TO@ InfixExpression@@len == 1 '
+    - '------INS Operator@@== @TO@ InfixExpression@@len == 1 '
+    - '------INS NumberLiteral@@1 @TO@ InfixExpression@@len == 1 '
+    - '---INS ReturnStatement@@InfixExpression:a[0] * b[0] @TO@ IfStatement@@InfixExpression:len
+      == 1 '
+    - '------INS InfixExpression@@a[0] * b[0] @TO@ ReturnStatement@@InfixExpression:a[0]
+      * b[0] '
+    - '---------INS ArrayAccess@@a[0] @TO@ InfixExpression@@a[0] * b[0] '
+    - '------------INS SimpleName@@a @TO@ ArrayAccess@@a[0] '
+    - '------------INS NumberLiteral@@0 @TO@ ArrayAccess@@a[0] '
+    - '---------INS Operator@@* @TO@ InfixExpression@@a[0] * b[0] '
+    - '---------INS ArrayAccess@@b[0] @TO@ InfixExpression@@a[0] * b[0] '
+    - '------------INS SimpleName@@b @TO@ ArrayAccess@@b[0] '
+    - '------------INS NumberLiteral@@0 @TO@ ArrayAccess@@b[0] '
+  repair_actions_cnt: 1

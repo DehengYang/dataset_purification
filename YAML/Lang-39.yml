@@ -1,0 +1,140 @@
+1 bug_id: Lang-39
+2 src folder:
+  name of src folder: java
+  number of files: 90
+  number of java files: 79
+  number of src classes: 123
+  number of test classes: 84
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.StringUtilsTest#testReplace_StringStringArrayStringArray
+  failing tests:
+  - org.apache.commons.lang3.StringUtilsTest
+  number of all test cases: 1618
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 9.0
+  purification via coverage: 1.385
+  purification via delta debugging: 38.244
+  repair actions extraction: 3.056
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.StringUtilsTest#testReplace_StringStringArrayStringArray: 51
+  fixed:
+    org.apache.commons.lang3.StringUtilsTest#testReplace_StringStringArrayStringArray: 54
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_39/src/java/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 01:33:38.737574969 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_39/purify/patch/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 01:33:38.729574738 -0400\n@@ -3673,6 +3673,9 @@\n \n         // count\
+    \ the replacement text elements that are larger than their corresponding text\
+    \ being replaced\n         for (int i = 0; i < searchList.length; i++) {\n+  \
+    \          if (searchList[i] == null || replacementList[i] == null) {\n+     \
+    \           continue;\n+            }\n             int greater = replacementList[i].length()\
+    \ - searchList[i].length();\n             if (greater > 0) {\n               \
+    \  increase += 3 * greater; // assume 3 matches"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_39/src/java/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 01:34:29.899050169 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_39/purify/purified/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 01:34:29.895050053 -0400\n@@ -3673,6 +3673,9 @@\n \n         // count\
+    \ the replacement text elements that are larger than their corresponding text\
+    \ being replaced\n         for (int i = 0; i < searchList.length; i++) {\n+  \
+    \          if (searchList[i] == null || replacementList[i] == null) {\n+     \
+    \           continue;\n+            }\n             int greater = replacementList[i].length()\
+    \ - searchList[i].length();\n             if (greater > 0) {\n               \
+    \  increase += 3 * greater; // assume 3 matches"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/StringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:searchList[i] == null || replacementList[i]
+      == null @TO@ ForStatement@@[int i=0];i < searchList.length; [i++] '
+    - '---INS InfixExpression@@searchList[i] == null || replacementList[i] == null
+      @TO@ IfStatement@@InfixExpression:searchList[i] == null || replacementList[i]
+      == null '
+    - '------INS InfixExpression@@searchList[i] == null @TO@ InfixExpression@@searchList[i]
+      == null || replacementList[i] == null '
+    - '---------INS ArrayAccess@@searchList[i] @TO@ InfixExpression@@searchList[i]
+      == null '
+    - '------------INS SimpleName@@searchList @TO@ ArrayAccess@@searchList[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@searchList[i] '
+    - '---------INS Operator@@== @TO@ InfixExpression@@searchList[i] == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@searchList[i] == null '
+    - '------INS Operator@@|| @TO@ InfixExpression@@searchList[i] == null || replacementList[i]
+      == null '
+    - '------INS InfixExpression@@replacementList[i] == null @TO@ InfixExpression@@searchList[i]
+      == null || replacementList[i] == null '
+    - '---------INS ArrayAccess@@replacementList[i] @TO@ InfixExpression@@replacementList[i]
+      == null '
+    - '------------INS SimpleName@@replacementList @TO@ ArrayAccess@@replacementList[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@replacementList[i] '
+    - '---------INS Operator@@== @TO@ InfixExpression@@replacementList[i] == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@replacementList[i] ==
+      null '
+    - '---INS ContinueStatement@@ @TO@ IfStatement@@InfixExpression:searchList[i]
+      == null || replacementList[i] == null '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/StringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:searchList[i] == null || replacementList[i]
+      == null @TO@ ForStatement@@[int i=0];i < searchList.length; [i++] '
+    - '---INS InfixExpression@@searchList[i] == null || replacementList[i] == null
+      @TO@ IfStatement@@InfixExpression:searchList[i] == null || replacementList[i]
+      == null '
+    - '------INS InfixExpression@@searchList[i] == null @TO@ InfixExpression@@searchList[i]
+      == null || replacementList[i] == null '
+    - '---------INS ArrayAccess@@searchList[i] @TO@ InfixExpression@@searchList[i]
+      == null '
+    - '------------INS SimpleName@@searchList @TO@ ArrayAccess@@searchList[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@searchList[i] '
+    - '---------INS Operator@@== @TO@ InfixExpression@@searchList[i] == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@searchList[i] == null '
+    - '------INS Operator@@|| @TO@ InfixExpression@@searchList[i] == null || replacementList[i]
+      == null '
+    - '------INS InfixExpression@@replacementList[i] == null @TO@ InfixExpression@@searchList[i]
+      == null || replacementList[i] == null '
+    - '---------INS ArrayAccess@@replacementList[i] @TO@ InfixExpression@@replacementList[i]
+      == null '
+    - '------------INS SimpleName@@replacementList @TO@ ArrayAccess@@replacementList[i] '
+    - '------------INS SimpleName@@i @TO@ ArrayAccess@@replacementList[i] '
+    - '---------INS Operator@@== @TO@ InfixExpression@@replacementList[i] == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@replacementList[i] ==
+      null '
+    - '---INS ContinueStatement@@ @TO@ IfStatement@@InfixExpression:searchList[i]
+      == null || replacementList[i] == null '
+  repair_actions_cnt: 1

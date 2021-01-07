@@ -1,0 +1,109 @@
+1 bug_id: Closure-75
+2 src folder:
+  name of src folder: src
+  number of files: 390
+  number of java files: 377
+  number of src classes: 1203
+  number of test classes: 197
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.PeepholeFoldConstantsTest#testIEString
+  failing tests:
+  - com.google.javascript.jscomp.PeepholeFoldConstantsTest
+  number of all test cases: 6855
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.327
+  purification via delta debugging: 301.3
+  repair actions extraction: 2.57
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testIEString: 2394
+  fixed:
+    com.google.javascript.jscomp.PeepholeFoldConstantsTest#testIEString: 2250
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 4
+  covDel: 1
+  cov_patch_lines: 5
+  delta_patch_lines: 3
+  oriAdd: 4
+  oriDel: 1
+  ori_patch_lines: 5
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 3
+  original: 3
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 2
+  passed: 1
+  total: 9
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_75/src/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 09:08:35.061761113 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_75/purify/patch/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 09:08:35.061761113 -0400\n@@ -310,7 +310,10 @@\n   }\n \n   static\
+    \ Double getStringNumberValue(String rawJsString) {\n+    if (rawJsString.contains(\"\
+    \\u000b\")) {\n       // vertical tab is not always whitespace\n+      return\
+    \ null;\n+    }\n \n     String s = trimJsWhiteSpace(rawJsString);\n     // return\
+    \ ScriptRuntime.toNumber(s);\n@@ -372,7 +375,7 @@\n   static TernaryValue isStrWhiteSpaceChar(int\
+    \ c) {\n     switch (c) {\n       case '\\u000B': // <VT>\n-        return TernaryValue.TRUE;\n\
+    +        return TernaryValue.UNKNOWN;  // IE says \"no\", EcmaScript says \"yes\"\
+    \n       case ' ': // <SP>\n       case '\\n': // <LF>\n       case '\\r': //\
+    \ <CR>"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_75/src/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 09:14:03.411264678 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_75/purify/purified/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 09:14:03.411264678 -0400\n@@ -310,7 +310,10 @@\n   }\n \n   static\
+    \ Double getStringNumberValue(String rawJsString) {\n+    if (rawJsString.contains(\"\
+    \\u000b\")) {\n       // vertical tab is not always whitespace\n+      return\
+    \ null;\n+    }\n \n     String s = trimJsWhiteSpace(rawJsString);\n     // return\
+    \ ScriptRuntime.toNumber(s);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NodeUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:rawJsString.contains("\u000b") @TO@ MethodDeclaration@@static,
+      @@Double, MethodName:getStringNumberValue, @@Argus:String+rawJsString+ '
+    - '---INS MethodInvocation@@rawJsString.contains("\u000b") @TO@ IfStatement@@MethodInvocation:rawJsString.contains("\u000b") '
+    - '------INS SimpleName@@Name:rawJsString @TO@ MethodInvocation@@rawJsString.contains("\u000b") '
+    - '------INS SimpleName@@MethodName:contains:["\u000b"] @TO@ MethodInvocation@@rawJsString.contains("\u000b") '
+    - '---------INS StringLiteral@@"\u000b" @TO@ SimpleName@@MethodName:contains:["\u000b"] '
+    - '---INS ReturnStatement@@NullLiteral:null @TO@ IfStatement@@MethodInvocation:rawJsString.contains("\u000b") '
+    - '------INS NullLiteral@@null @TO@ ReturnStatement@@NullLiteral:null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@QualifiedName:TernaryValue.TRUE @TO@ QualifiedName:TernaryValue.UNKNOWN '
+    - '---UPD QualifiedName@@TernaryValue.TRUE @TO@ TernaryValue.UNKNOWN '
+    - '------UPD SimpleName@@TRUE @TO@ UNKNOWN '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NodeUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:rawJsString.contains("\u000b") @TO@ MethodDeclaration@@static,
+      @@Double, MethodName:getStringNumberValue, @@Argus:String+rawJsString+ '
+    - '---INS MethodInvocation@@rawJsString.contains("\u000b") @TO@ IfStatement@@MethodInvocation:rawJsString.contains("\u000b") '
+    - '------INS SimpleName@@Name:rawJsString @TO@ MethodInvocation@@rawJsString.contains("\u000b") '
+    - '------INS SimpleName@@MethodName:contains:["\u000b"] @TO@ MethodInvocation@@rawJsString.contains("\u000b") '
+    - '---------INS StringLiteral@@"\u000b" @TO@ SimpleName@@MethodName:contains:["\u000b"] '
+    - '---INS ReturnStatement@@NullLiteral:null @TO@ IfStatement@@MethodInvocation:rawJsString.contains("\u000b") '
+    - '------INS NullLiteral@@null @TO@ ReturnStatement@@NullLiteral:null '
+  files_cnt: '1'
+  repair_actions_cnt: 1

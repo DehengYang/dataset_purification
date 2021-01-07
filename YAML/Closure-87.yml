@@ -1,0 +1,287 @@
+1 bug_id: Closure-87
+2 src folder:
+  name of src folder: src
+  number of files: 369
+  number of java files: 357
+  number of src classes: 1155
+  number of test classes: 184
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest#testIssue291
+  failing tests:
+  - com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest
+  number of all test cases: 6329
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.254
+  purification via delta debugging: 525.176
+  repair actions extraction: 1.67
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest#testIssue291: 2599
+  fixed:
+    com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest#testIssue291: 2629
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 13
+  covDel: 1
+  cov_patch_lines: 14
+  delta_patch_lines: 11
+  oriAdd: 13
+  oriDel: 1
+  ori_patch_lines: 14
+  purAdd: 11
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 37
+  failFail: 4
+  passed: 2
+  total: 43
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_87/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java\t\
+    2020-10-23 11:22:15.361947929 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_87/purify/patch/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java\t\
+    2020-10-23 11:22:15.361947929 -0400\n@@ -520,17 +520,29 @@\n     if (n.getType()\
+    \ == Token.BLOCK) {\n       if (n.hasOneChild()) {\n         Node maybeExpr =\
+    \ n.getFirstChild();\n+        if (maybeExpr.getType() == Token.EXPR_RESULT) {\n\
+    \           // IE has a bug where event handlers behave differently when\n   \
+    \        // their return value is used vs. when their return value is in\n   \
+    \        // an EXPR_RESULT. It's pretty freaking weird. See:\n           // http://code.google.com/p/closure-compiler/issues/detail?id=291\n\
+    \           // We try to detect this case, and not fold EXPR_RESULTs\n       \
+    \    // into other expressions.\n+          if (maybeExpr.getFirstChild().getType()\
+    \ == Token.CALL) {\n+            Node calledFn = maybeExpr.getFirstChild().getFirstChild();\n\
+    \ \n             // We only have to worry about methods with an implicit 'this'\n\
+    \             // param, or this doesn't happen.\n+            if (calledFn.getType()\
+    \ == Token.GETELEM) {\n+              return false;\n+            } else if (calledFn.getType()\
+    \ == Token.GETPROP &&\n+                       calledFn.getLastChild().getString().startsWith(\"\
+    on\")) {\n+              return false;\n+            }\n+          }\n \n-   \
+    \       return NodeUtil.isExpressionNode(maybeExpr);\n+          return true;\n\
+    +        }\n+        return false;\n       }\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_87/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java\t\
+    2020-10-23 11:31:26.021886826 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_87/purify/purified/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java\t\
+    2020-10-23 11:31:26.021886826 -0400\n@@ -520,17 +520,28 @@\n     if (n.getType()\
+    \ == Token.BLOCK) {\n       if (n.hasOneChild()) {\n         Node maybeExpr =\
+    \ n.getFirstChild();\n+        if (maybeExpr.getType() == Token.EXPR_RESULT) {\n\
+    \           // IE has a bug where event handlers behave differently when\n   \
+    \        // their return value is used vs. when their return value is in\n   \
+    \        // an EXPR_RESULT. It's pretty freaking weird. See:\n           // http://code.google.com/p/closure-compiler/issues/detail?id=291\n\
+    \           // We try to detect this case, and not fold EXPR_RESULTs\n       \
+    \    // into other expressions.\n+          if (maybeExpr.getFirstChild().getType()\
+    \ == Token.CALL) {\n+            Node calledFn = maybeExpr.getFirstChild().getFirstChild();\n\
+    \ \n             // We only have to worry about methods with an implicit 'this'\n\
+    \             // param, or this doesn't happen.\n+            if (calledFn.getType()\
+    \ == Token.GETELEM) {\n+              return false;\n+            } else if (calledFn.getType()\
+    \ == Token.GETPROP &&\n+                       calledFn.getLastChild().getString().startsWith(\"\
+    on\")) {\n+              return false;\n+            }\n+          }\n \n    \
+    \       return NodeUtil.isExpressionNode(maybeExpr);\n+        }\n       }\n \
+    \    }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:maybeExpr.getType() == Token.EXPR_RESULT @TO@
+      IfStatement@@MethodInvocation:n.hasOneChild() '
+    - '---INS InfixExpression@@maybeExpr.getType() == Token.EXPR_RESULT @TO@ IfStatement@@InfixExpression:maybeExpr.getType()
+      == Token.EXPR_RESULT '
+    - '------INS MethodInvocation@@maybeExpr.getType() @TO@ InfixExpression@@maybeExpr.getType()
+      == Token.EXPR_RESULT '
+    - '---------MOV SimpleName@@Name:NodeUtil @TO@ MethodInvocation@@maybeExpr.getType() '
+    - '---------MOV SimpleName@@MethodName:isExpressionNode:[maybeExpr] @TO@ MethodInvocation@@maybeExpr.getType() '
+    - '------INS Operator@@== @TO@ InfixExpression@@maybeExpr.getType() == Token.EXPR_RESULT '
+    - '------INS QualifiedName@@Token.EXPR_RESULT @TO@ InfixExpression@@maybeExpr.getType()
+      == Token.EXPR_RESULT '
+    - '---------INS SimpleName@@Token @TO@ QualifiedName@@Token.EXPR_RESULT '
+    - '---------INS SimpleName@@EXPR_RESULT @TO@ QualifiedName@@Token.EXPR_RESULT '
+    - '---INS IfStatement@@InfixExpression:maybeExpr.getFirstChild().getType() ==
+      Token.CALL @TO@ IfStatement@@InfixExpression:maybeExpr.getType() == Token.EXPR_RESULT '
+    - '------INS InfixExpression@@maybeExpr.getFirstChild().getType() == Token.CALL
+      @TO@ IfStatement@@InfixExpression:maybeExpr.getFirstChild().getType() == Token.CALL '
+    - '---------INS MethodInvocation@@maybeExpr.getFirstChild().getType() @TO@ InfixExpression@@maybeExpr.getFirstChild().getType()
+      == Token.CALL '
+    - '------------INS SimpleName@@Name:maybeExpr @TO@ MethodInvocation@@maybeExpr.getFirstChild().getType() '
+    - '------------INS MethodInvocation@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@maybeExpr.getFirstChild().getType() '
+    - '------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@maybeExpr.getFirstChild().getType() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@maybeExpr.getFirstChild().getType()
+      == Token.CALL '
+    - '---------INS QualifiedName@@Token.CALL @TO@ InfixExpression@@maybeExpr.getFirstChild().getType()
+      == Token.CALL '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.CALL '
+    - '------------INS SimpleName@@CALL @TO@ QualifiedName@@Token.CALL '
+    - '------INS VariableDeclarationStatement@@Node calledFn=maybeExpr.getFirstChild().getFirstChild();
+      @TO@ IfStatement@@InfixExpression:maybeExpr.getFirstChild().getType() == Token.CALL '
+    - '---------INS SimpleType@@Node @TO@ VariableDeclarationStatement@@Node calledFn=maybeExpr.getFirstChild().getFirstChild(); '
+    - '---------INS VariableDeclarationFragment@@calledFn=maybeExpr.getFirstChild().getFirstChild()
+      @TO@ VariableDeclarationStatement@@Node calledFn=maybeExpr.getFirstChild().getFirstChild(); '
+    - '------------INS SimpleName@@calledFn @TO@ VariableDeclarationFragment@@calledFn=maybeExpr.getFirstChild().getFirstChild() '
+    - '------------INS MethodInvocation@@maybeExpr.getFirstChild().getFirstChild()
+      @TO@ VariableDeclarationFragment@@calledFn=maybeExpr.getFirstChild().getFirstChild() '
+    - '---------------INS SimpleName@@Name:maybeExpr @TO@ MethodInvocation@@maybeExpr.getFirstChild().getFirstChild() '
+    - '---------------INS MethodInvocation@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@maybeExpr.getFirstChild().getFirstChild() '
+    - '---------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@maybeExpr.getFirstChild().getFirstChild() '
+    - '------INS IfStatement@@InfixExpression:calledFn.getType() == Token.GETELEM
+      @TO@ IfStatement@@InfixExpression:maybeExpr.getFirstChild().getType() == Token.CALL '
+    - '---------INS InfixExpression@@calledFn.getType() == Token.GETELEM @TO@ IfStatement@@InfixExpression:calledFn.getType()
+      == Token.GETELEM '
+    - '------------INS MethodInvocation@@calledFn.getType() @TO@ InfixExpression@@calledFn.getType()
+      == Token.GETELEM '
+    - '---------------INS SimpleName@@Name:calledFn @TO@ MethodInvocation@@calledFn.getType() '
+    - '---------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@calledFn.getType() '
+    - '------------INS Operator@@== @TO@ InfixExpression@@calledFn.getType() == Token.GETELEM '
+    - '------------INS QualifiedName@@Token.GETELEM @TO@ InfixExpression@@calledFn.getType()
+      == Token.GETELEM '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETELEM '
+    - '---------------INS SimpleName@@GETELEM @TO@ QualifiedName@@Token.GETELEM '
+    - '---------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:calledFn.getType()
+      == Token.GETELEM '
+    - '------------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---------INS IfStatement@@InfixExpression:calledFn.getType() == Token.GETPROP
+      && calledFn.getLastChild().getString().startsWith("on") @TO@ IfStatement@@InfixExpression:calledFn.getType()
+      == Token.GETELEM '
+    - '------------INS InfixExpression@@calledFn.getType() == Token.GETPROP && calledFn.getLastChild().getString().startsWith("on")
+      @TO@ IfStatement@@InfixExpression:calledFn.getType() == Token.GETPROP && calledFn.getLastChild().getString().startsWith("on") '
+    - '---------------INS InfixExpression@@calledFn.getType() == Token.GETPROP @TO@
+      InfixExpression@@calledFn.getType() == Token.GETPROP && calledFn.getLastChild().getString().startsWith("on") '
+    - '------------------INS MethodInvocation@@calledFn.getType() @TO@ InfixExpression@@calledFn.getType()
+      == Token.GETPROP '
+    - '---------------------INS SimpleName@@Name:calledFn @TO@ MethodInvocation@@calledFn.getType() '
+    - '---------------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@calledFn.getType() '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@calledFn.getType()
+      == Token.GETPROP '
+    - '------------------INS QualifiedName@@Token.GETPROP @TO@ InfixExpression@@calledFn.getType()
+      == Token.GETPROP '
+    - '---------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETPROP '
+    - '---------------------INS SimpleName@@GETPROP @TO@ QualifiedName@@Token.GETPROP '
+    - '---------------INS Operator@@&& @TO@ InfixExpression@@calledFn.getType() ==
+      Token.GETPROP && calledFn.getLastChild().getString().startsWith("on") '
+    - '---------------INS MethodInvocation@@calledFn.getLastChild().getString().startsWith("on")
+      @TO@ InfixExpression@@calledFn.getType() == Token.GETPROP && calledFn.getLastChild().getString().startsWith("on") '
+    - '------------------INS SimpleName@@Name:calledFn @TO@ MethodInvocation@@calledFn.getLastChild().getString().startsWith("on") '
+    - '------------------INS MethodInvocation@@MethodName:getLastChild:[] @TO@ MethodInvocation@@calledFn.getLastChild().getString().startsWith("on") '
+    - '------------------INS MethodInvocation@@MethodName:getString:[] @TO@ MethodInvocation@@calledFn.getLastChild().getString().startsWith("on") '
+    - '------------------INS SimpleName@@MethodName:startsWith:["on"] @TO@ MethodInvocation@@calledFn.getLastChild().getString().startsWith("on") '
+    - '---------------------INS StringLiteral@@"on" @TO@ SimpleName@@MethodName:startsWith:["on"] '
+    - '------------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:calledFn.getType()
+      == Token.GETPROP && calledFn.getLastChild().getString().startsWith("on") '
+    - '---------------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:maybeExpr.getType()
+      == Token.EXPR_RESULT '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@MethodInvocation:NodeUtil.isExpressionNode(maybeExpr) '
+    - '---DEL MethodInvocation@@NodeUtil.isExpressionNode(maybeExpr) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@MethodInvocation:n.hasOneChild() '
+    - '---INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:maybeExpr.getType() == Token.EXPR_RESULT @TO@
+      IfStatement@@MethodInvocation:n.hasOneChild() '
+    - '---INS InfixExpression@@maybeExpr.getType() == Token.EXPR_RESULT @TO@ IfStatement@@InfixExpression:maybeExpr.getType()
+      == Token.EXPR_RESULT '
+    - '------INS MethodInvocation@@maybeExpr.getType() @TO@ InfixExpression@@maybeExpr.getType()
+      == Token.EXPR_RESULT '
+    - '---------INS SimpleName@@Name:maybeExpr @TO@ MethodInvocation@@maybeExpr.getType() '
+    - '---------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@maybeExpr.getType() '
+    - '------INS Operator@@== @TO@ InfixExpression@@maybeExpr.getType() == Token.EXPR_RESULT '
+    - '------INS QualifiedName@@Token.EXPR_RESULT @TO@ InfixExpression@@maybeExpr.getType()
+      == Token.EXPR_RESULT '
+    - '---------INS SimpleName@@Token @TO@ QualifiedName@@Token.EXPR_RESULT '
+    - '---------INS SimpleName@@EXPR_RESULT @TO@ QualifiedName@@Token.EXPR_RESULT '
+    - '---INS IfStatement@@InfixExpression:maybeExpr.getFirstChild().getType() ==
+      Token.CALL @TO@ IfStatement@@InfixExpression:maybeExpr.getType() == Token.EXPR_RESULT '
+    - '------INS InfixExpression@@maybeExpr.getFirstChild().getType() == Token.CALL
+      @TO@ IfStatement@@InfixExpression:maybeExpr.getFirstChild().getType() == Token.CALL '
+    - '---------INS MethodInvocation@@maybeExpr.getFirstChild().getType() @TO@ InfixExpression@@maybeExpr.getFirstChild().getType()
+      == Token.CALL '
+    - '------------INS SimpleName@@Name:maybeExpr @TO@ MethodInvocation@@maybeExpr.getFirstChild().getType() '
+    - '------------INS MethodInvocation@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@maybeExpr.getFirstChild().getType() '
+    - '------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@maybeExpr.getFirstChild().getType() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@maybeExpr.getFirstChild().getType()
+      == Token.CALL '
+    - '---------INS QualifiedName@@Token.CALL @TO@ InfixExpression@@maybeExpr.getFirstChild().getType()
+      == Token.CALL '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.CALL '
+    - '------------INS SimpleName@@CALL @TO@ QualifiedName@@Token.CALL '
+    - '------INS VariableDeclarationStatement@@Node calledFn=maybeExpr.getFirstChild().getFirstChild();
+      @TO@ IfStatement@@InfixExpression:maybeExpr.getFirstChild().getType() == Token.CALL '
+    - '---------INS SimpleType@@Node @TO@ VariableDeclarationStatement@@Node calledFn=maybeExpr.getFirstChild().getFirstChild(); '
+    - '---------INS VariableDeclarationFragment@@calledFn=maybeExpr.getFirstChild().getFirstChild()
+      @TO@ VariableDeclarationStatement@@Node calledFn=maybeExpr.getFirstChild().getFirstChild(); '
+    - '------------INS SimpleName@@calledFn @TO@ VariableDeclarationFragment@@calledFn=maybeExpr.getFirstChild().getFirstChild() '
+    - '------------INS MethodInvocation@@maybeExpr.getFirstChild().getFirstChild()
+      @TO@ VariableDeclarationFragment@@calledFn=maybeExpr.getFirstChild().getFirstChild() '
+    - '---------------INS SimpleName@@Name:maybeExpr @TO@ MethodInvocation@@maybeExpr.getFirstChild().getFirstChild() '
+    - '---------------INS MethodInvocation@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@maybeExpr.getFirstChild().getFirstChild() '
+    - '---------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@maybeExpr.getFirstChild().getFirstChild() '
+    - '------INS IfStatement@@InfixExpression:calledFn.getType() == Token.GETELEM
+      @TO@ IfStatement@@InfixExpression:maybeExpr.getFirstChild().getType() == Token.CALL '
+    - '---------INS InfixExpression@@calledFn.getType() == Token.GETELEM @TO@ IfStatement@@InfixExpression:calledFn.getType()
+      == Token.GETELEM '
+    - '------------INS MethodInvocation@@calledFn.getType() @TO@ InfixExpression@@calledFn.getType()
+      == Token.GETELEM '
+    - '---------------INS SimpleName@@Name:calledFn @TO@ MethodInvocation@@calledFn.getType() '
+    - '---------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@calledFn.getType() '
+    - '------------INS Operator@@== @TO@ InfixExpression@@calledFn.getType() == Token.GETELEM '
+    - '------------INS QualifiedName@@Token.GETELEM @TO@ InfixExpression@@calledFn.getType()
+      == Token.GETELEM '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETELEM '
+    - '---------------INS SimpleName@@GETELEM @TO@ QualifiedName@@Token.GETELEM '
+    - '---------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:calledFn.getType()
+      == Token.GETELEM '
+    - '------------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---------INS IfStatement@@InfixExpression:calledFn.getType() == Token.GETPROP
+      && calledFn.getLastChild().getString().startsWith("on") @TO@ IfStatement@@InfixExpression:calledFn.getType()
+      == Token.GETELEM '
+    - '------------INS InfixExpression@@calledFn.getType() == Token.GETPROP && calledFn.getLastChild().getString().startsWith("on")
+      @TO@ IfStatement@@InfixExpression:calledFn.getType() == Token.GETPROP && calledFn.getLastChild().getString().startsWith("on") '
+    - '---------------INS InfixExpression@@calledFn.getType() == Token.GETPROP @TO@
+      InfixExpression@@calledFn.getType() == Token.GETPROP && calledFn.getLastChild().getString().startsWith("on") '
+    - '------------------INS MethodInvocation@@calledFn.getType() @TO@ InfixExpression@@calledFn.getType()
+      == Token.GETPROP '
+    - '---------------------INS SimpleName@@Name:calledFn @TO@ MethodInvocation@@calledFn.getType() '
+    - '---------------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@calledFn.getType() '
+    - '------------------INS Operator@@== @TO@ InfixExpression@@calledFn.getType()
+      == Token.GETPROP '
+    - '------------------INS QualifiedName@@Token.GETPROP @TO@ InfixExpression@@calledFn.getType()
+      == Token.GETPROP '
+    - '---------------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETPROP '
+    - '---------------------INS SimpleName@@GETPROP @TO@ QualifiedName@@Token.GETPROP '
+    - '---------------INS Operator@@&& @TO@ InfixExpression@@calledFn.getType() ==
+      Token.GETPROP && calledFn.getLastChild().getString().startsWith("on") '
+    - '---------------INS MethodInvocation@@calledFn.getLastChild().getString().startsWith("on")
+      @TO@ InfixExpression@@calledFn.getType() == Token.GETPROP && calledFn.getLastChild().getString().startsWith("on") '
+    - '------------------INS SimpleName@@Name:calledFn @TO@ MethodInvocation@@calledFn.getLastChild().getString().startsWith("on") '
+    - '------------------INS MethodInvocation@@MethodName:getLastChild:[] @TO@ MethodInvocation@@calledFn.getLastChild().getString().startsWith("on") '
+    - '------------------INS MethodInvocation@@MethodName:getString:[] @TO@ MethodInvocation@@calledFn.getLastChild().getString().startsWith("on") '
+    - '------------------INS SimpleName@@MethodName:startsWith:["on"] @TO@ MethodInvocation@@calledFn.getLastChild().getString().startsWith("on") '
+    - '---------------------INS StringLiteral@@"on" @TO@ SimpleName@@MethodName:startsWith:["on"] '
+    - '------------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:calledFn.getType()
+      == Token.GETPROP && calledFn.getLastChild().getString().startsWith("on") '
+    - '---------------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---MOV ReturnStatement@@MethodInvocation:NodeUtil.isExpressionNode(maybeExpr)
+      @TO@ IfStatement@@InfixExpression:maybeExpr.getType() == Token.EXPR_RESULT '
+  files_cnt: '1'
+  repair_actions_cnt: 1

@@ -1,0 +1,228 @@
+1 bug_id: Time-25
+2 src folder:
+  name of src folder: java
+  number of files: 182
+  number of java files: 156
+  number of src classes: 226
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestDateTimeZoneCutover#test_getOffsetFromLocal_Moscow_Autumn
+  - org.joda.time.TestDateTimeZoneCutover#test_DateTime_constructor_Moscow_Autumn
+  - org.joda.time.TestDateTimeZoneCutover#test_getOffsetFromLocal_Moscow_Autumn_overlap_mins
+  failing tests:
+  - org.joda.time.TestDateTimeZoneCutover
+  number of all test cases: 3852
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.926
+  purification via delta debugging: 178.907
+  repair actions extraction: 2.01
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestDateTimeZoneCutover#test_DateTime_constructor_Moscow_Autumn: 1416
+    org.joda.time.TestDateTimeZoneCutover#test_getOffsetFromLocal_Moscow_Autumn: 1424
+    org.joda.time.TestDateTimeZoneCutover#test_getOffsetFromLocal_Moscow_Autumn_overlap_mins: 1418
+  fixed:
+    org.joda.time.TestDateTimeZoneCutover#test_DateTime_constructor_Moscow_Autumn: 1460
+    org.joda.time.TestDateTimeZoneCutover#test_getOffsetFromLocal_Moscow_Autumn: 1495
+    org.joda.time.TestDateTimeZoneCutover#test_getOffsetFromLocal_Moscow_Autumn_overlap_mins: 1463
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 9
+  covDel: 0
+  cov_patch_lines: 9
+  delta_patch_lines: 9
+  oriAdd: 9
+  oriDel: 0
+  ori_patch_lines: 9
+  purAdd: 9
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 19
+  failFail: 4
+  passed: 0
+  total: 23
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_25/src/main/java/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 23:27:52.755611402 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_25/purify/patch/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 23:27:52.755611402 -0400\n@@ -896,6 +896,15 @@\n                  \
+    \   return offsetLocal;\n                 }\n             }\n+        } else if\
+    \ (offsetLocal > 0) {\n+            long prev = previousTransition(instantAdjusted);\n\
+    +            if (prev < instantAdjusted) {\n+                int offsetPrev =\
+    \ getOffset(prev);\n+                int diff = offsetPrev - offsetLocal;\n+ \
+    \               if (instantAdjusted - prev <= diff) {\n+                    return\
+    \ offsetPrev;\n+                }\n+            }\n         }\n         return\
+    \ offsetAdjusted;\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_25/src/main/java/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 23:31:08.765275649 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_25/purify/purified/org/joda/time/DateTimeZone.java\t\
+    2020-10-20 23:31:08.753275302 -0400\n@@ -896,6 +896,15 @@\n                  \
+    \   return offsetLocal;\n                 }\n             }\n+        } else if\
+    \ (offsetLocal > 0) {\n+            long prev = previousTransition(instantAdjusted);\n\
+    +            if (prev < instantAdjusted) {\n+                int offsetPrev =\
+    \ getOffset(prev);\n+                int diff = offsetPrev - offsetLocal;\n+ \
+    \               if (instantAdjusted - prev <= diff) {\n+                    return\
+    \ offsetPrev;\n+                }\n+            }\n         }\n         return\
+    \ offsetAdjusted;\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/DateTimeZone:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:offsetLocal > 0 @TO@ IfStatement@@InfixExpression:offsetLocal
+      != offsetAdjusted '
+    - '---INS InfixExpression@@offsetLocal > 0 @TO@ IfStatement@@InfixExpression:offsetLocal
+      > 0 '
+    - '------INS SimpleName@@offsetLocal @TO@ InfixExpression@@offsetLocal > 0 '
+    - '------INS Operator@@> @TO@ InfixExpression@@offsetLocal > 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@offsetLocal > 0 '
+    - '---INS VariableDeclarationStatement@@long prev=previousTransition(instantAdjusted);
+      @TO@ IfStatement@@InfixExpression:offsetLocal > 0 '
+    - '------INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long prev=previousTransition(instantAdjusted); '
+    - '------INS VariableDeclarationFragment@@prev=previousTransition(instantAdjusted)
+      @TO@ VariableDeclarationStatement@@long prev=previousTransition(instantAdjusted); '
+    - '---------INS SimpleName@@prev @TO@ VariableDeclarationFragment@@prev=previousTransition(instantAdjusted) '
+    - '---------INS MethodInvocation@@previousTransition(instantAdjusted) @TO@ VariableDeclarationFragment@@prev=previousTransition(instantAdjusted) '
+    - '------------INS SimpleName@@MethodName:previousTransition:[instantAdjusted]
+      @TO@ MethodInvocation@@previousTransition(instantAdjusted) '
+    - '---------------INS SimpleName@@instantAdjusted @TO@ SimpleName@@MethodName:previousTransition:[instantAdjusted] '
+    - '---INS IfStatement@@InfixExpression:prev < instantAdjusted @TO@ IfStatement@@InfixExpression:offsetLocal
+      > 0 '
+    - '------INS InfixExpression@@prev < instantAdjusted @TO@ IfStatement@@InfixExpression:prev
+      < instantAdjusted '
+    - '---------INS SimpleName@@prev @TO@ InfixExpression@@prev < instantAdjusted '
+    - '---------INS Operator@@< @TO@ InfixExpression@@prev < instantAdjusted '
+    - '---------INS SimpleName@@instantAdjusted @TO@ InfixExpression@@prev < instantAdjusted '
+    - '------INS VariableDeclarationStatement@@int offsetPrev=getOffset(prev); @TO@
+      IfStatement@@InfixExpression:prev < instantAdjusted '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int offsetPrev=getOffset(prev); '
+    - '---------INS VariableDeclarationFragment@@offsetPrev=getOffset(prev) @TO@ VariableDeclarationStatement@@int
+      offsetPrev=getOffset(prev); '
+    - '------------INS SimpleName@@offsetPrev @TO@ VariableDeclarationFragment@@offsetPrev=getOffset(prev) '
+    - '------------INS MethodInvocation@@getOffset(prev) @TO@ VariableDeclarationFragment@@offsetPrev=getOffset(prev) '
+    - '---------------INS SimpleName@@MethodName:getOffset:[prev] @TO@ MethodInvocation@@getOffset(prev) '
+    - '------------------INS SimpleName@@prev @TO@ SimpleName@@MethodName:getOffset:[prev] '
+    - '------INS VariableDeclarationStatement@@int diff=offsetPrev - offsetLocal;
+      @TO@ IfStatement@@InfixExpression:prev < instantAdjusted '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int diff=offsetPrev
+      - offsetLocal; '
+    - '---------INS VariableDeclarationFragment@@diff=offsetPrev - offsetLocal @TO@
+      VariableDeclarationStatement@@int diff=offsetPrev - offsetLocal; '
+    - '------------INS SimpleName@@diff @TO@ VariableDeclarationFragment@@diff=offsetPrev
+      - offsetLocal '
+    - '------------INS InfixExpression@@offsetPrev - offsetLocal @TO@ VariableDeclarationFragment@@diff=offsetPrev
+      - offsetLocal '
+    - '---------------INS SimpleName@@offsetPrev @TO@ InfixExpression@@offsetPrev
+      - offsetLocal '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@offsetPrev - offsetLocal '
+    - '---------------INS SimpleName@@offsetLocal @TO@ InfixExpression@@offsetPrev
+      - offsetLocal '
+    - '------INS IfStatement@@InfixExpression:instantAdjusted - prev <= diff @TO@
+      IfStatement@@InfixExpression:prev < instantAdjusted '
+    - '---------INS InfixExpression@@instantAdjusted - prev <= diff @TO@ IfStatement@@InfixExpression:instantAdjusted
+      - prev <= diff '
+    - '------------INS InfixExpression@@instantAdjusted - prev @TO@ InfixExpression@@instantAdjusted
+      - prev <= diff '
+    - '---------------INS SimpleName@@instantAdjusted @TO@ InfixExpression@@instantAdjusted
+      - prev '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@instantAdjusted - prev '
+    - '---------------INS SimpleName@@prev @TO@ InfixExpression@@instantAdjusted -
+      prev '
+    - '------------INS Operator@@<= @TO@ InfixExpression@@instantAdjusted - prev <=
+      diff '
+    - '------------INS SimpleName@@diff @TO@ InfixExpression@@instantAdjusted - prev
+      <= diff '
+    - '---------INS ReturnStatement@@SimpleName:offsetPrev @TO@ IfStatement@@InfixExpression:instantAdjusted
+      - prev <= diff '
+    - '------------INS SimpleName@@offsetPrev @TO@ ReturnStatement@@SimpleName:offsetPrev '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/DateTimeZone:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:offsetLocal > 0 @TO@ IfStatement@@InfixExpression:offsetLocal
+      != offsetAdjusted '
+    - '---INS InfixExpression@@offsetLocal > 0 @TO@ IfStatement@@InfixExpression:offsetLocal
+      > 0 '
+    - '------INS SimpleName@@offsetLocal @TO@ InfixExpression@@offsetLocal > 0 '
+    - '------INS Operator@@> @TO@ InfixExpression@@offsetLocal > 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@offsetLocal > 0 '
+    - '---INS VariableDeclarationStatement@@long prev=previousTransition(instantAdjusted);
+      @TO@ IfStatement@@InfixExpression:offsetLocal > 0 '
+    - '------INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long prev=previousTransition(instantAdjusted); '
+    - '------INS VariableDeclarationFragment@@prev=previousTransition(instantAdjusted)
+      @TO@ VariableDeclarationStatement@@long prev=previousTransition(instantAdjusted); '
+    - '---------INS SimpleName@@prev @TO@ VariableDeclarationFragment@@prev=previousTransition(instantAdjusted) '
+    - '---------INS MethodInvocation@@previousTransition(instantAdjusted) @TO@ VariableDeclarationFragment@@prev=previousTransition(instantAdjusted) '
+    - '------------INS SimpleName@@MethodName:previousTransition:[instantAdjusted]
+      @TO@ MethodInvocation@@previousTransition(instantAdjusted) '
+    - '---------------INS SimpleName@@instantAdjusted @TO@ SimpleName@@MethodName:previousTransition:[instantAdjusted] '
+    - '---INS IfStatement@@InfixExpression:prev < instantAdjusted @TO@ IfStatement@@InfixExpression:offsetLocal
+      > 0 '
+    - '------INS InfixExpression@@prev < instantAdjusted @TO@ IfStatement@@InfixExpression:prev
+      < instantAdjusted '
+    - '---------INS SimpleName@@prev @TO@ InfixExpression@@prev < instantAdjusted '
+    - '---------INS Operator@@< @TO@ InfixExpression@@prev < instantAdjusted '
+    - '---------INS SimpleName@@instantAdjusted @TO@ InfixExpression@@prev < instantAdjusted '
+    - '------INS VariableDeclarationStatement@@int offsetPrev=getOffset(prev); @TO@
+      IfStatement@@InfixExpression:prev < instantAdjusted '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int offsetPrev=getOffset(prev); '
+    - '---------INS VariableDeclarationFragment@@offsetPrev=getOffset(prev) @TO@ VariableDeclarationStatement@@int
+      offsetPrev=getOffset(prev); '
+    - '------------INS SimpleName@@offsetPrev @TO@ VariableDeclarationFragment@@offsetPrev=getOffset(prev) '
+    - '------------INS MethodInvocation@@getOffset(prev) @TO@ VariableDeclarationFragment@@offsetPrev=getOffset(prev) '
+    - '---------------INS SimpleName@@MethodName:getOffset:[prev] @TO@ MethodInvocation@@getOffset(prev) '
+    - '------------------INS SimpleName@@prev @TO@ SimpleName@@MethodName:getOffset:[prev] '
+    - '------INS VariableDeclarationStatement@@int diff=offsetPrev - offsetLocal;
+      @TO@ IfStatement@@InfixExpression:prev < instantAdjusted '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int diff=offsetPrev
+      - offsetLocal; '
+    - '---------INS VariableDeclarationFragment@@diff=offsetPrev - offsetLocal @TO@
+      VariableDeclarationStatement@@int diff=offsetPrev - offsetLocal; '
+    - '------------INS SimpleName@@diff @TO@ VariableDeclarationFragment@@diff=offsetPrev
+      - offsetLocal '
+    - '------------INS InfixExpression@@offsetPrev - offsetLocal @TO@ VariableDeclarationFragment@@diff=offsetPrev
+      - offsetLocal '
+    - '---------------INS SimpleName@@offsetPrev @TO@ InfixExpression@@offsetPrev
+      - offsetLocal '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@offsetPrev - offsetLocal '
+    - '---------------INS SimpleName@@offsetLocal @TO@ InfixExpression@@offsetPrev
+      - offsetLocal '
+    - '------INS IfStatement@@InfixExpression:instantAdjusted - prev <= diff @TO@
+      IfStatement@@InfixExpression:prev < instantAdjusted '
+    - '---------INS InfixExpression@@instantAdjusted - prev <= diff @TO@ IfStatement@@InfixExpression:instantAdjusted
+      - prev <= diff '
+    - '------------INS InfixExpression@@instantAdjusted - prev @TO@ InfixExpression@@instantAdjusted
+      - prev <= diff '
+    - '---------------INS SimpleName@@instantAdjusted @TO@ InfixExpression@@instantAdjusted
+      - prev '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@instantAdjusted - prev '
+    - '---------------INS SimpleName@@prev @TO@ InfixExpression@@instantAdjusted -
+      prev '
+    - '------------INS Operator@@<= @TO@ InfixExpression@@instantAdjusted - prev <=
+      diff '
+    - '------------INS SimpleName@@diff @TO@ InfixExpression@@instantAdjusted - prev
+      <= diff '
+    - '---------INS ReturnStatement@@SimpleName:offsetPrev @TO@ IfStatement@@InfixExpression:instantAdjusted
+      - prev <= diff '
+    - '------------INS SimpleName@@offsetPrev @TO@ ReturnStatement@@SimpleName:offsetPrev '
+  repair_actions_cnt: 1

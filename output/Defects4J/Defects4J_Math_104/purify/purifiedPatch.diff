@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_104/src/java/org/apache/commons/math/special/Gamma.java	2020-10-21 14:25:34.420747510 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_104/purify/purified/org/apache/commons/math/special/Gamma.java	2020-10-21 14:25:34.420747510 -0400
+@@ -34,7 +34,7 @@
+     private static final long serialVersionUID = -6587513359895466954L;
+ 
+     /** Maximum allowed numerical error. */
+-    private static final double DEFAULT_EPSILON = 10e-9;
++    private static final double DEFAULT_EPSILON = 10e-15;
+ 
+     /** Lanczos coefficients */
+     private static double[] lanczos =

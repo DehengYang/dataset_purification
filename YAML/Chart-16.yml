@@ -1,0 +1,194 @@
+1 bug_id: Chart-16
+2 src folder:
+  name of src folder: source
+  number of files: 650
+  number of java files: 577
+  number of src classes: 603
+  number of test classes: 325
+3 test (cases):
+  failing test cases:
+  - org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetSeriesIndex
+  - org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testCloning2
+  - org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetColumnCount
+  - org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetRowCount
+  - org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetRowIndex
+  - org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetColumnIndex
+  - org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testSetCategoryKeys
+  - org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetCategoryIndex
+  failing tests:
+  - org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests
+  number of all test cases: 1788
+  number of failing test cases: 8
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.002
+  purification via delta debugging: 241.839
+  repair actions extraction: 1.16
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testCloning2: 43
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetCategoryIndex: 39
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetColumnCount: 38
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetColumnIndex: 41
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetRowCount: 38
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetRowIndex: 40
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetSeriesIndex: 39
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testSetCategoryKeys: 43
+  fixed:
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testCloning2: 69
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetCategoryIndex: 41
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetColumnCount: 39
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetColumnIndex: 43
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetRowCount: 39
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetRowIndex: 42
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testGetSeriesIndex: 41
+    org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests#testSetCategoryKeys: 63
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 3
+  covDel: 3
+  cov_patch_lines: 6
+  delta_patch_lines: 4
+  oriAdd: 3
+  oriDel: 3
+  ori_patch_lines: 6
+  purAdd: 3
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 6
+  passed: 2
+  total: 10
+9 sibling repair actions:
+- 0 1 0.9324324324324325
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_16/source/org/jfree/data/category/DefaultIntervalCategoryDataset.java\t\
+    2020-10-21 00:13:08.790072195 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_16/purify/patch/org/jfree/data/category/DefaultIntervalCategoryDataset.java\t\
+    2020-10-21 00:13:08.790072195 -0400\n@@ -204,8 +204,8 @@\n \n             }\n\
+    \             else {\n-                this.seriesKeys = null;\n-            \
+    \    this.categoryKeys = null;\n+                this.seriesKeys = new Comparable[0];\n\
+    +                this.categoryKeys = new Comparable[0];\n             }\n    \
+    \     }\n \n@@ -335,7 +335,7 @@\n         if (categoryKeys == null) {\n      \
+    \       throw new IllegalArgumentException(\"Null 'categoryKeys' argument.\");\n\
+    \         }\n-        if (categoryKeys.length != this.startData[0].length) {\n\
+    +        if (categoryKeys.length != getCategoryCount()) {\n             throw\
+    \ new IllegalArgumentException(\n                     \"The number of categories\
+    \ does not match the data.\");\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_16/source/org/jfree/data/category/DefaultIntervalCategoryDataset.java\t\
+    2020-10-21 00:17:27.349541120 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_16/purify/purified/org/jfree/data/category/DefaultIntervalCategoryDataset.java\t\
+    2020-10-21 00:17:27.349541120 -0400\n@@ -206,6 +206,8 @@\n             else {\n\
+    \                 this.seriesKeys = null;\n                 this.categoryKeys\
+    \ = null;\n+                this.seriesKeys = new Comparable[0];\n+          \
+    \      this.categoryKeys = new Comparable[0];\n             }\n         }\n \n\
+    @@ -335,7 +337,7 @@\n         if (categoryKeys == null) {\n             throw\
+    \ new IllegalArgumentException(\"Null 'categoryKeys' argument.\");\n         }\n\
+    -        if (categoryKeys.length != this.startData[0].length) {\n+        if (categoryKeys.length\
+    \ != getCategoryCount()) {\n             throw new IllegalArgumentException(\n\
+    \                     \"The number of categories does not match the data.\");\n\
+    \         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/category/DefaultIntervalCategoryDataset:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:this.seriesKeys=null @TO@ Assignment:this.seriesKeys=new
+      Comparable[0] '
+    - '---UPD Assignment@@this.seriesKeys=null @TO@ this.seriesKeys=new Comparable[0] '
+    - '------INS ArrayCreation@@new Comparable[0] @TO@ Assignment@@this.seriesKeys=null '
+    - '---------INS ArrayType@@Comparable[] @TO@ ArrayCreation@@new Comparable[0] '
+    - '------------INS SimpleType@@Comparable @TO@ ArrayType@@Comparable[] '
+    - '---------INS NumberLiteral@@0 @TO@ ArrayCreation@@new Comparable[0] '
+    - '------DEL NullLiteral@@null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:this.categoryKeys=null @TO@ Assignment:this.categoryKeys=new
+      Comparable[0] '
+    - '---UPD Assignment@@this.categoryKeys=null @TO@ this.categoryKeys=new Comparable[0] '
+    - '------INS ArrayCreation@@new Comparable[0] @TO@ Assignment@@this.categoryKeys=null '
+    - '---------INS ArrayType@@Comparable[] @TO@ ArrayCreation@@new Comparable[0] '
+    - '------------INS SimpleType@@Comparable @TO@ ArrayType@@Comparable[] '
+    - '---------INS NumberLiteral@@0 @TO@ ArrayCreation@@new Comparable[0] '
+    - '------DEL NullLiteral@@null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:categoryKeys.length != this.startData[0].length
+      @TO@ InfixExpression:categoryKeys.length != getCategoryCount() '
+    - '---UPD InfixExpression@@categoryKeys.length != this.startData[0].length @TO@
+      categoryKeys.length != getCategoryCount() '
+    - '------INS MethodInvocation@@MethodName:getCategoryCount:[] @TO@ InfixExpression@@categoryKeys.length
+      != this.startData[0].length '
+    - '------DEL FieldAccess@@this.startData[0].length '
+    - '---------DEL ArrayAccess@@this.startData[0] '
+    - '------------DEL FieldAccess@@this.startData '
+    - '---------------DEL ThisExpression@@this '
+    - '---------------DEL SimpleName@@startData '
+    - '------------DEL NumberLiteral@@0 '
+    - '---------DEL SimpleName@@length '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/category/DefaultIntervalCategoryDataset:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:this.seriesKeys=new Comparable[0] @TO@
+      IfStatement@@InfixExpression:seriesCount > 0 '
+    - '---INS Assignment@@this.seriesKeys=new Comparable[0] @TO@ ExpressionStatement@@Assignment:this.seriesKeys=new
+      Comparable[0] '
+    - '------INS FieldAccess@@this.seriesKeys @TO@ Assignment@@this.seriesKeys=new
+      Comparable[0] '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.seriesKeys '
+    - '---------INS SimpleName@@seriesKeys @TO@ FieldAccess@@this.seriesKeys '
+    - '------INS Operator@@= @TO@ Assignment@@this.seriesKeys=new Comparable[0] '
+    - '------INS ArrayCreation@@new Comparable[0] @TO@ Assignment@@this.seriesKeys=new
+      Comparable[0] '
+    - '---------INS ArrayType@@Comparable[] @TO@ ArrayCreation@@new Comparable[0] '
+    - '------------INS SimpleType@@Comparable @TO@ ArrayType@@Comparable[] '
+    - '---------INS NumberLiteral@@0 @TO@ ArrayCreation@@new Comparable[0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:this.categoryKeys=new Comparable[0] @TO@
+      IfStatement@@InfixExpression:seriesCount > 0 '
+    - '---INS Assignment@@this.categoryKeys=new Comparable[0] @TO@ ExpressionStatement@@Assignment:this.categoryKeys=new
+      Comparable[0] '
+    - '------INS FieldAccess@@this.categoryKeys @TO@ Assignment@@this.categoryKeys=new
+      Comparable[0] '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.categoryKeys '
+    - '---------INS SimpleName@@categoryKeys @TO@ FieldAccess@@this.categoryKeys '
+    - '------INS Operator@@= @TO@ Assignment@@this.categoryKeys=new Comparable[0] '
+    - '------INS ArrayCreation@@new Comparable[0] @TO@ Assignment@@this.categoryKeys=new
+      Comparable[0] '
+    - '---------INS ArrayType@@Comparable[] @TO@ ArrayCreation@@new Comparable[0] '
+    - '------------INS SimpleType@@Comparable @TO@ ArrayType@@Comparable[] '
+    - '---------INS NumberLiteral@@0 @TO@ ArrayCreation@@new Comparable[0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:categoryKeys.length != this.startData[0].length
+      @TO@ InfixExpression:categoryKeys.length != getCategoryCount() '
+    - '---UPD InfixExpression@@categoryKeys.length != this.startData[0].length @TO@
+      categoryKeys.length != getCategoryCount() '
+    - '------INS MethodInvocation@@MethodName:getCategoryCount:[] @TO@ InfixExpression@@categoryKeys.length
+      != this.startData[0].length '
+    - '------DEL FieldAccess@@this.startData[0].length '
+    - '---------DEL ArrayAccess@@this.startData[0] '
+    - '------------DEL FieldAccess@@this.startData '
+    - '---------------DEL ThisExpression@@this '
+    - '---------------DEL SimpleName@@startData '
+    - '------------DEL NumberLiteral@@0 '
+    - '---------DEL SimpleName@@length '
+  repair_actions_cnt: 3

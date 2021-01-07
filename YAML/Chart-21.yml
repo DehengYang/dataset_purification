@@ -1,0 +1,657 @@
+1 bug_id: Chart-21
+2 src folder:
+  name of src folder: source
+  number of files: 630
+  number of java files: 558
+  number of src classes: 582
+  number of test classes: 306
+3 test (cases):
+  failing test cases:
+  - org.jfree.data.statistics.junit.DefaultBoxAndWhiskerCategoryDatasetTests#testGetRangeBounds
+  failing tests:
+  - org.jfree.data.statistics.junit.DefaultBoxAndWhiskerCategoryDatasetTests
+  number of all test cases: 1655
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.415
+  purification via delta debugging: 942.399
+  repair actions extraction: 1.299
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.data.statistics.junit.DefaultBoxAndWhiskerCategoryDatasetTests#testGetRangeBounds: 146
+  fixed:
+    org.jfree.data.statistics.junit.DefaultBoxAndWhiskerCategoryDatasetTests#testGetRangeBounds: 195
+6 reduced lines:
+  by all: 11
+  by coverage: 0
+  by delta debugging: 11
+  covAdd: 39
+  covDel: 0
+  cov_patch_lines: 39
+  delta_patch_lines: 28
+  oriAdd: 39
+  oriDel: 0
+  ori_patch_lines: 39
+  purAdd: 28
+  purDel: 0
+7 reduced chunks:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  cov: 4
+  original: 4
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 105
+  failFail: 6
+  passed: 5
+  total: 116
+9 sibling repair actions:
+- 0 1 0.8117154811715481
+- 0 2 0.9915966386554622
+- 0 3 0.8117154811715481
+- 0 4 0.7761806981519507
+- 0 5 0.7761806981519507
+- 1 2 0.7405857740585774
+- 1 3 0.9916666666666667
+- 1 4 0.7239263803680982
+- 1 5 0.7239263803680982
+- 2 3 0.8117154811715481
+- 2 4 0.7761806981519507
+- 2 5 0.7761806981519507
+- 3 4 0.7239263803680982
+- 3 5 0.7239263803680982
+- 4 5 0.9919678714859438
+- 6 7 0.9435382685069009
+- 6 8 0.8644501278772379
+- 6 9 0.7427854454203262
+- 7 9 0.9753694581280788
+- 8 9 0.9435382685069009
+- 10 11 0.8908145580589255
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_21/source/org/jfree/data/statistics/DefaultBoxAndWhiskerCategoryDataset.java\t\
+    2020-10-22 00:40:50.603951011 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_21/purify/patch/org/jfree/data/statistics/DefaultBoxAndWhiskerCategoryDataset.java\t\
+    2020-10-22 00:40:50.603951011 -0400\n@@ -154,6 +154,7 @@\n                 &&\
+    \ this.minimumRangeValueColumn == c))  {\n             updateBounds();\n     \
+    \    }\n+        else {\n         \n             double minval = Double.NaN;\n\
+    \             if (item.getMinOutlier() != null) {\n@@ -185,6 +186,7 @@\n     \
+    \            this.minimumRangeValueRow = r;\n                 this.minimumRangeValueColumn\
+    \ = c;\n             }\n+        }\n         \n         this.rangeBounds = new\
+    \ Range(this.minimumRangeValue,\n               this.maximumRangeValue);\n@@ -738,7\
+    \ +740,44 @@\n      */\n     private void updateBounds() {\n         this.minimumRangeValue\
+    \ = Double.NaN;\n+        this.minimumRangeValueRow = -1;\n+        this.minimumRangeValueColumn\
+    \ = -1;\n         this.maximumRangeValue = Double.NaN;\n+        this.maximumRangeValueRow\
+    \ = -1;\n+        this.maximumRangeValueColumn = -1;\n+        int rowCount =\
+    \ getRowCount();\n+        int columnCount = getColumnCount();\n+        for (int\
+    \ r = 0; r < rowCount; r++) {\n+            for (int c = 0; c < columnCount; c++)\
+    \ {\n+                BoxAndWhiskerItem item = getItem(r, c);\n+             \
+    \   if (item != null) {\n+                    Number min = item.getMinOutlier();\n\
+    +                    if (min != null) {\n+                        double minv\
+    \ = min.doubleValue();\n+                        if (!Double.isNaN(minv)) {\n\
+    +                            if (minv < this.minimumRangeValue || Double.isNaN(\n\
+    +                                    this.minimumRangeValue)) {\n+           \
+    \                     this.minimumRangeValue = minv;\n+                      \
+    \          this.minimumRangeValueRow = r;\n+                                this.minimumRangeValueColumn\
+    \ = c;\n+                            }\n+                        }\n+        \
+    \            }\n+                    Number max = item.getMaxOutlier();\n+   \
+    \                 if (max != null) {\n+                        double maxv = max.doubleValue();\n\
+    +                        if (!Double.isNaN(maxv)) {\n+                       \
+    \     if (maxv > this.maximumRangeValue || Double.isNaN(\n+                  \
+    \                  this.maximumRangeValue)) {\n+                             \
+    \   this.maximumRangeValue = maxv;\n+                                this.maximumRangeValueRow\
+    \ = r;\n+                                this.maximumRangeValueColumn = c;\n+\
+    \                            }\n+                        }\n+                \
+    \    }\n+                }\n+            }\n+        }\n     }\n     \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_21/source/org/jfree/data/statistics/DefaultBoxAndWhiskerCategoryDataset.java\t\
+    2020-10-22 00:56:49.971692892 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_21/purify/purified/org/jfree/data/statistics/DefaultBoxAndWhiskerCategoryDataset.java\t\
+    2020-10-22 00:56:49.967692777 -0400\n@@ -739,6 +739,34 @@\n     private void updateBounds()\
+    \ {\n         this.minimumRangeValue = Double.NaN;\n         this.maximumRangeValue\
+    \ = Double.NaN;\n+        int rowCount = getRowCount();\n+        int columnCount\
+    \ = getColumnCount();\n+        for (int r = 0; r < rowCount; r++) {\n+      \
+    \      for (int c = 0; c < columnCount; c++) {\n+                BoxAndWhiskerItem\
+    \ item = getItem(r, c);\n+                if (item != null) {\n+             \
+    \       Number min = item.getMinOutlier();\n+                    if (min != null)\
+    \ {\n+                        double minv = min.doubleValue();\n+            \
+    \            if (!Double.isNaN(minv)) {\n+                            if (minv\
+    \ < this.minimumRangeValue || Double.isNaN(\n+                               \
+    \     this.minimumRangeValue)) {\n+                                this.minimumRangeValue\
+    \ = minv;\n+                            }\n+                        }\n+     \
+    \               }\n+                    Number max = item.getMaxOutlier();\n+\
+    \                    if (max != null) {\n+                        double maxv\
+    \ = max.doubleValue();\n+                        if (!Double.isNaN(maxv)) {\n\
+    +                            if (maxv > this.maximumRangeValue || Double.isNaN(\n\
+    +                                    this.maximumRangeValue)) {\n+           \
+    \                 }\n+                        }\n+                    }\n+   \
+    \             }\n+            }\n+        }\n     }\n     \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 11
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/statistics/DefaultBoxAndWhiskerCategoryDataset:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@double minval=Double.NaN; @TO@ IfStatement@@InfixExpression:(this.maximumRangeValueRow
+      == r && this.maximumRangeValueColumn == c) || (this.minimumRangeValueRow ==
+      r && this.minimumRangeValueColumn == c) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:item.getMinOutlier() != null @TO@ IfStatement@@InfixExpression:(this.maximumRangeValueRow
+      == r && this.maximumRangeValueColumn == c) || (this.minimumRangeValueRow ==
+      r && this.minimumRangeValueColumn == c) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@double maxval=Double.NaN; @TO@ IfStatement@@InfixExpression:(this.maximumRangeValueRow
+      == r && this.maximumRangeValueColumn == c) || (this.minimumRangeValueRow ==
+      r && this.minimumRangeValueColumn == c) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:item.getMaxOutlier() != null @TO@ IfStatement@@InfixExpression:(this.maximumRangeValueRow
+      == r && this.maximumRangeValueColumn == c) || (this.minimumRangeValueRow ==
+      r && this.minimumRangeValueColumn == c) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@MethodInvocation:Double.isNaN(this.maximumRangeValue) @TO@
+      IfStatement@@InfixExpression:(this.maximumRangeValueRow == r && this.maximumRangeValueColumn
+      == c) || (this.minimumRangeValueRow == r && this.minimumRangeValueColumn ==
+      c) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@MethodInvocation:Double.isNaN(this.minimumRangeValue) @TO@
+      IfStatement@@InfixExpression:(this.maximumRangeValueRow == r && this.maximumRangeValueColumn
+      == c) || (this.minimumRangeValueRow == r && this.minimumRangeValueColumn ==
+      c) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:this.minimumRangeValueRow=-1 @TO@ MethodDeclaration@@private,
+      @@void, MethodName:updateBounds, @@Argus:null '
+    - '---INS Assignment@@this.minimumRangeValueRow=-1 @TO@ ExpressionStatement@@Assignment:this.minimumRangeValueRow=-1 '
+    - '------INS FieldAccess@@this.minimumRangeValueRow @TO@ Assignment@@this.minimumRangeValueRow=-1 '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.minimumRangeValueRow '
+    - '---------INS SimpleName@@minimumRangeValueRow @TO@ FieldAccess@@this.minimumRangeValueRow '
+    - '------INS Operator@@= @TO@ Assignment@@this.minimumRangeValueRow=-1 '
+    - '------INS PrefixExpression@@-1 @TO@ Assignment@@this.minimumRangeValueRow=-1 '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:this.minimumRangeValueColumn=-1 @TO@ MethodDeclaration@@private,
+      @@void, MethodName:updateBounds, @@Argus:null '
+    - '---INS Assignment@@this.minimumRangeValueColumn=-1 @TO@ ExpressionStatement@@Assignment:this.minimumRangeValueColumn=-1 '
+    - '------INS FieldAccess@@this.minimumRangeValueColumn @TO@ Assignment@@this.minimumRangeValueColumn=-1 '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.minimumRangeValueColumn '
+    - '---------INS SimpleName@@minimumRangeValueColumn @TO@ FieldAccess@@this.minimumRangeValueColumn '
+    - '------INS Operator@@= @TO@ Assignment@@this.minimumRangeValueColumn=-1 '
+    - '------INS PrefixExpression@@-1 @TO@ Assignment@@this.minimumRangeValueColumn=-1 '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:this.maximumRangeValueRow=-1 @TO@ MethodDeclaration@@private,
+      @@void, MethodName:updateBounds, @@Argus:null '
+    - '---INS Assignment@@this.maximumRangeValueRow=-1 @TO@ ExpressionStatement@@Assignment:this.maximumRangeValueRow=-1 '
+    - '------INS FieldAccess@@this.maximumRangeValueRow @TO@ Assignment@@this.maximumRangeValueRow=-1 '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.maximumRangeValueRow '
+    - '---------INS SimpleName@@maximumRangeValueRow @TO@ FieldAccess@@this.maximumRangeValueRow '
+    - '------INS Operator@@= @TO@ Assignment@@this.maximumRangeValueRow=-1 '
+    - '------INS PrefixExpression@@-1 @TO@ Assignment@@this.maximumRangeValueRow=-1 '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:this.maximumRangeValueColumn=-1 @TO@ MethodDeclaration@@private,
+      @@void, MethodName:updateBounds, @@Argus:null '
+    - '---INS Assignment@@this.maximumRangeValueColumn=-1 @TO@ ExpressionStatement@@Assignment:this.maximumRangeValueColumn=-1 '
+    - '------INS FieldAccess@@this.maximumRangeValueColumn @TO@ Assignment@@this.maximumRangeValueColumn=-1 '
+    - '---------INS ThisExpression@@this @TO@ FieldAccess@@this.maximumRangeValueColumn '
+    - '---------INS SimpleName@@maximumRangeValueColumn @TO@ FieldAccess@@this.maximumRangeValueColumn '
+    - '------INS Operator@@= @TO@ Assignment@@this.maximumRangeValueColumn=-1 '
+    - '------INS PrefixExpression@@-1 @TO@ Assignment@@this.maximumRangeValueColumn=-1 '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int rowCount=getRowCount(); @TO@ MethodDeclaration@@private,
+      @@void, MethodName:updateBounds, @@Argus:null '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int rowCount=getRowCount(); '
+    - '---INS VariableDeclarationFragment@@rowCount=getRowCount() @TO@ VariableDeclarationStatement@@int
+      rowCount=getRowCount(); '
+    - '------INS SimpleName@@rowCount @TO@ VariableDeclarationFragment@@rowCount=getRowCount() '
+    - '------INS MethodInvocation@@MethodName:getRowCount:[] @TO@ VariableDeclarationFragment@@rowCount=getRowCount() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int columnCount=getColumnCount(); @TO@ MethodDeclaration@@private,
+      @@void, MethodName:updateBounds, @@Argus:null '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int columnCount=getColumnCount(); '
+    - '---INS VariableDeclarationFragment@@columnCount=getColumnCount() @TO@ VariableDeclarationStatement@@int
+      columnCount=getColumnCount(); '
+    - '------INS SimpleName@@columnCount @TO@ VariableDeclarationFragment@@columnCount=getColumnCount() '
+    - '------INS MethodInvocation@@MethodName:getColumnCount:[] @TO@ VariableDeclarationFragment@@columnCount=getColumnCount() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int r=0];r < rowCount; [r++] @TO@ MethodDeclaration@@private,
+      @@void, MethodName:updateBounds, @@Argus:null '
+    - '---INS VariableDeclarationExpression@@int r=0 @TO@ ForStatement@@[int r=0];r
+      < rowCount; [r++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int r=0 '
+    - '------INS VariableDeclarationFragment@@r=0 @TO@ VariableDeclarationExpression@@int
+      r=0 '
+    - '---------INS SimpleName@@r @TO@ VariableDeclarationFragment@@r=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@r=0 '
+    - '---INS InfixExpression@@r < rowCount @TO@ ForStatement@@[int r=0];r < rowCount;
+      [r++] '
+    - '------INS SimpleName@@r @TO@ InfixExpression@@r < rowCount '
+    - '------INS Operator@@< @TO@ InfixExpression@@r < rowCount '
+    - '------INS SimpleName@@rowCount @TO@ InfixExpression@@r < rowCount '
+    - '---INS PostfixExpression@@r++ @TO@ ForStatement@@[int r=0];r < rowCount; [r++] '
+    - '------INS SimpleName@@r @TO@ PostfixExpression@@r++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@r++ '
+    - '---INS ForStatement@@[int c=0];c < columnCount; [c++] @TO@ ForStatement@@[int
+      r=0];r < rowCount; [r++] '
+    - '------INS VariableDeclarationExpression@@int c=0 @TO@ ForStatement@@[int c=0];c
+      < columnCount; [c++] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int c=0 '
+    - '---------INS VariableDeclarationFragment@@c=0 @TO@ VariableDeclarationExpression@@int
+      c=0 '
+    - '------------INS SimpleName@@c @TO@ VariableDeclarationFragment@@c=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@c=0 '
+    - '------INS InfixExpression@@c < columnCount @TO@ ForStatement@@[int c=0];c <
+      columnCount; [c++] '
+    - '---------INS SimpleName@@c @TO@ InfixExpression@@c < columnCount '
+    - '---------INS Operator@@< @TO@ InfixExpression@@c < columnCount '
+    - '---------INS SimpleName@@columnCount @TO@ InfixExpression@@c < columnCount '
+    - '------INS PostfixExpression@@c++ @TO@ ForStatement@@[int c=0];c < columnCount;
+      [c++] '
+    - '---------INS SimpleName@@c @TO@ PostfixExpression@@c++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@c++ '
+    - '------INS VariableDeclarationStatement@@BoxAndWhiskerItem item=getItem(r,c);
+      @TO@ ForStatement@@[int c=0];c < columnCount; [c++] '
+    - '---------INS SimpleType@@BoxAndWhiskerItem @TO@ VariableDeclarationStatement@@BoxAndWhiskerItem
+      item=getItem(r,c); '
+    - '---------INS VariableDeclarationFragment@@item=getItem(r,c) @TO@ VariableDeclarationStatement@@BoxAndWhiskerItem
+      item=getItem(r,c); '
+    - '------------INS SimpleName@@item @TO@ VariableDeclarationFragment@@item=getItem(r,c) '
+    - '------------INS MethodInvocation@@getItem(r,c) @TO@ VariableDeclarationFragment@@item=getItem(r,c) '
+    - '---------------INS SimpleName@@MethodName:getItem:[r, c] @TO@ MethodInvocation@@getItem(r,c) '
+    - '------------------INS SimpleName@@r @TO@ SimpleName@@MethodName:getItem:[r,
+      c] '
+    - '------------------INS SimpleName@@c @TO@ SimpleName@@MethodName:getItem:[r,
+      c] '
+    - '------INS IfStatement@@InfixExpression:item != null @TO@ ForStatement@@[int
+      c=0];c < columnCount; [c++] '
+    - '---------INS InfixExpression@@item != null @TO@ IfStatement@@InfixExpression:item
+      != null '
+    - '------------INS SimpleName@@item @TO@ InfixExpression@@item != null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@item != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@item != null '
+    - '---------INS VariableDeclarationStatement@@Number min=item.getMinOutlier();
+      @TO@ IfStatement@@InfixExpression:item != null '
+    - '------------INS SimpleType@@Number @TO@ VariableDeclarationStatement@@Number
+      min=item.getMinOutlier(); '
+    - '------------INS VariableDeclarationFragment@@min=item.getMinOutlier() @TO@
+      VariableDeclarationStatement@@Number min=item.getMinOutlier(); '
+    - '---------------INS SimpleName@@min @TO@ VariableDeclarationFragment@@min=item.getMinOutlier() '
+    - '---------------INS MethodInvocation@@item.getMinOutlier() @TO@ VariableDeclarationFragment@@min=item.getMinOutlier() '
+    - '------------------INS SimpleName@@Name:item @TO@ MethodInvocation@@item.getMinOutlier() '
+    - '------------------INS SimpleName@@MethodName:getMinOutlier:[] @TO@ MethodInvocation@@item.getMinOutlier() '
+    - '---------INS IfStatement@@InfixExpression:min != null @TO@ IfStatement@@InfixExpression:item
+      != null '
+    - '------------INS InfixExpression@@min != null @TO@ IfStatement@@InfixExpression:min
+      != null '
+    - '---------------INS SimpleName@@min @TO@ InfixExpression@@min != null '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@min != null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@min != null '
+    - '------------INS VariableDeclarationStatement@@double minv=min.doubleValue();
+      @TO@ IfStatement@@InfixExpression:min != null '
+    - '---------------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double
+      minv=min.doubleValue(); '
+    - '---------------INS VariableDeclarationFragment@@minv=min.doubleValue() @TO@
+      VariableDeclarationStatement@@double minv=min.doubleValue(); '
+    - '------------------INS SimpleName@@minv @TO@ VariableDeclarationFragment@@minv=min.doubleValue() '
+    - '------------------INS MethodInvocation@@min.doubleValue() @TO@ VariableDeclarationFragment@@minv=min.doubleValue() '
+    - '---------------------INS SimpleName@@Name:min @TO@ MethodInvocation@@min.doubleValue() '
+    - '---------------------INS SimpleName@@MethodName:doubleValue:[] @TO@ MethodInvocation@@min.doubleValue() '
+    - '------------INS IfStatement@@PrefixExpression:!Double.isNaN(minv) @TO@ IfStatement@@InfixExpression:min
+      != null '
+    - '---------------INS PrefixExpression@@!Double.isNaN(minv) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(minv) '
+    - '------------------INS Operator@@! @TO@ PrefixExpression@@!Double.isNaN(minv) '
+    - '------------------INS MethodInvocation@@Double.isNaN(minv) @TO@ PrefixExpression@@!Double.isNaN(minv) '
+    - '---------------------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(minv) '
+    - '---------------------INS SimpleName@@MethodName:isNaN:[minv] @TO@ MethodInvocation@@Double.isNaN(minv) '
+    - '------------------------INS SimpleName@@minv @TO@ SimpleName@@MethodName:isNaN:[minv] '
+    - '---------------INS IfStatement@@InfixExpression:minv < this.minimumRangeValue
+      || Double.isNaN(this.minimumRangeValue) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(minv) '
+    - '------------------INS InfixExpression@@minv < this.minimumRangeValue || Double.isNaN(this.minimumRangeValue)
+      @TO@ IfStatement@@InfixExpression:minv < this.minimumRangeValue || Double.isNaN(this.minimumRangeValue) '
+    - '---------------------INS InfixExpression@@minv < this.minimumRangeValue @TO@
+      InfixExpression@@minv < this.minimumRangeValue || Double.isNaN(this.minimumRangeValue) '
+    - '------------------------INS SimpleName@@minv @TO@ InfixExpression@@minv < this.minimumRangeValue '
+    - '------------------------INS Operator@@< @TO@ InfixExpression@@minv < this.minimumRangeValue '
+    - '------------------------INS FieldAccess@@this.minimumRangeValue @TO@ InfixExpression@@minv
+      < this.minimumRangeValue '
+    - '---------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.minimumRangeValue '
+    - '---------------------------INS SimpleName@@minimumRangeValue @TO@ FieldAccess@@this.minimumRangeValue '
+    - '---------------------INS Operator@@|| @TO@ InfixExpression@@minv < this.minimumRangeValue
+      || Double.isNaN(this.minimumRangeValue) '
+    - '---------------------INS MethodInvocation@@Double.isNaN(this.minimumRangeValue)
+      @TO@ InfixExpression@@minv < this.minimumRangeValue || Double.isNaN(this.minimumRangeValue) '
+    - '------------------------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(this.minimumRangeValue) '
+    - '------------------------INS SimpleName@@MethodName:isNaN:[this.minimumRangeValue]
+      @TO@ MethodInvocation@@Double.isNaN(this.minimumRangeValue) '
+    - '---------------------------INS FieldAccess@@this.minimumRangeValue @TO@ SimpleName@@MethodName:isNaN:[this.minimumRangeValue] '
+    - '------------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.minimumRangeValue '
+    - '------------------------------INS SimpleName@@minimumRangeValue @TO@ FieldAccess@@this.minimumRangeValue '
+    - '------------------INS ExpressionStatement@@Assignment:this.minimumRangeValue=minv
+      @TO@ IfStatement@@InfixExpression:minv < this.minimumRangeValue || Double.isNaN(this.minimumRangeValue) '
+    - '---------------------INS Assignment@@this.minimumRangeValue=minv @TO@ ExpressionStatement@@Assignment:this.minimumRangeValue=minv '
+    - '------------------------INS FieldAccess@@this.minimumRangeValue @TO@ Assignment@@this.minimumRangeValue=minv '
+    - '---------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.minimumRangeValue '
+    - '---------------------------INS SimpleName@@minimumRangeValue @TO@ FieldAccess@@this.minimumRangeValue '
+    - '------------------------INS Operator@@= @TO@ Assignment@@this.minimumRangeValue=minv '
+    - '------------------------INS SimpleName@@minv @TO@ Assignment@@this.minimumRangeValue=minv '
+    - '------------------INS ExpressionStatement@@Assignment:this.minimumRangeValueRow=r
+      @TO@ IfStatement@@InfixExpression:minv < this.minimumRangeValue || Double.isNaN(this.minimumRangeValue) '
+    - '---------------------INS Assignment@@this.minimumRangeValueRow=r @TO@ ExpressionStatement@@Assignment:this.minimumRangeValueRow=r '
+    - '------------------------INS FieldAccess@@this.minimumRangeValueRow @TO@ Assignment@@this.minimumRangeValueRow=r '
+    - '---------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.minimumRangeValueRow '
+    - '---------------------------INS SimpleName@@minimumRangeValueRow @TO@ FieldAccess@@this.minimumRangeValueRow '
+    - '------------------------INS Operator@@= @TO@ Assignment@@this.minimumRangeValueRow=r '
+    - '------------------------INS SimpleName@@r @TO@ Assignment@@this.minimumRangeValueRow=r '
+    - '------------------INS ExpressionStatement@@Assignment:this.minimumRangeValueColumn=c
+      @TO@ IfStatement@@InfixExpression:minv < this.minimumRangeValue || Double.isNaN(this.minimumRangeValue) '
+    - '---------------------INS Assignment@@this.minimumRangeValueColumn=c @TO@ ExpressionStatement@@Assignment:this.minimumRangeValueColumn=c '
+    - '------------------------INS FieldAccess@@this.minimumRangeValueColumn @TO@
+      Assignment@@this.minimumRangeValueColumn=c '
+    - '---------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.minimumRangeValueColumn '
+    - '---------------------------INS SimpleName@@minimumRangeValueColumn @TO@ FieldAccess@@this.minimumRangeValueColumn '
+    - '------------------------INS Operator@@= @TO@ Assignment@@this.minimumRangeValueColumn=c '
+    - '------------------------INS SimpleName@@c @TO@ Assignment@@this.minimumRangeValueColumn=c '
+    - '---------INS VariableDeclarationStatement@@Number max=item.getMaxOutlier();
+      @TO@ IfStatement@@InfixExpression:item != null '
+    - '------------INS SimpleType@@Number @TO@ VariableDeclarationStatement@@Number
+      max=item.getMaxOutlier(); '
+    - '------------INS VariableDeclarationFragment@@max=item.getMaxOutlier() @TO@
+      VariableDeclarationStatement@@Number max=item.getMaxOutlier(); '
+    - '---------------INS SimpleName@@max @TO@ VariableDeclarationFragment@@max=item.getMaxOutlier() '
+    - '---------------INS MethodInvocation@@item.getMaxOutlier() @TO@ VariableDeclarationFragment@@max=item.getMaxOutlier() '
+    - '------------------INS SimpleName@@Name:item @TO@ MethodInvocation@@item.getMaxOutlier() '
+    - '------------------INS SimpleName@@MethodName:getMaxOutlier:[] @TO@ MethodInvocation@@item.getMaxOutlier() '
+    - '---------INS IfStatement@@InfixExpression:max != null @TO@ IfStatement@@InfixExpression:item
+      != null '
+    - '------------INS InfixExpression@@max != null @TO@ IfStatement@@InfixExpression:max
+      != null '
+    - '---------------INS SimpleName@@max @TO@ InfixExpression@@max != null '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@max != null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@max != null '
+    - '------------INS VariableDeclarationStatement@@double maxv=max.doubleValue();
+      @TO@ IfStatement@@InfixExpression:max != null '
+    - '---------------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double
+      maxv=max.doubleValue(); '
+    - '---------------INS VariableDeclarationFragment@@maxv=max.doubleValue() @TO@
+      VariableDeclarationStatement@@double maxv=max.doubleValue(); '
+    - '------------------INS SimpleName@@maxv @TO@ VariableDeclarationFragment@@maxv=max.doubleValue() '
+    - '------------------INS MethodInvocation@@max.doubleValue() @TO@ VariableDeclarationFragment@@maxv=max.doubleValue() '
+    - '---------------------INS SimpleName@@Name:max @TO@ MethodInvocation@@max.doubleValue() '
+    - '---------------------INS SimpleName@@MethodName:doubleValue:[] @TO@ MethodInvocation@@max.doubleValue() '
+    - '------------INS IfStatement@@PrefixExpression:!Double.isNaN(maxv) @TO@ IfStatement@@InfixExpression:max
+      != null '
+    - '---------------INS PrefixExpression@@!Double.isNaN(maxv) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(maxv) '
+    - '------------------INS Operator@@! @TO@ PrefixExpression@@!Double.isNaN(maxv) '
+    - '------------------INS MethodInvocation@@Double.isNaN(maxv) @TO@ PrefixExpression@@!Double.isNaN(maxv) '
+    - '---------------------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(maxv) '
+    - '---------------------INS SimpleName@@MethodName:isNaN:[maxv] @TO@ MethodInvocation@@Double.isNaN(maxv) '
+    - '------------------------INS SimpleName@@maxv @TO@ SimpleName@@MethodName:isNaN:[maxv] '
+    - '---------------INS IfStatement@@InfixExpression:maxv > this.maximumRangeValue
+      || Double.isNaN(this.maximumRangeValue) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(maxv) '
+    - '------------------INS InfixExpression@@maxv > this.maximumRangeValue || Double.isNaN(this.maximumRangeValue)
+      @TO@ IfStatement@@InfixExpression:maxv > this.maximumRangeValue || Double.isNaN(this.maximumRangeValue) '
+    - '---------------------INS InfixExpression@@maxv > this.maximumRangeValue @TO@
+      InfixExpression@@maxv > this.maximumRangeValue || Double.isNaN(this.maximumRangeValue) '
+    - '------------------------INS SimpleName@@maxv @TO@ InfixExpression@@maxv > this.maximumRangeValue '
+    - '------------------------INS Operator@@> @TO@ InfixExpression@@maxv > this.maximumRangeValue '
+    - '------------------------INS FieldAccess@@this.maximumRangeValue @TO@ InfixExpression@@maxv
+      > this.maximumRangeValue '
+    - '---------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.maximumRangeValue '
+    - '---------------------------INS SimpleName@@maximumRangeValue @TO@ FieldAccess@@this.maximumRangeValue '
+    - '---------------------INS Operator@@|| @TO@ InfixExpression@@maxv > this.maximumRangeValue
+      || Double.isNaN(this.maximumRangeValue) '
+    - '---------------------INS MethodInvocation@@Double.isNaN(this.maximumRangeValue)
+      @TO@ InfixExpression@@maxv > this.maximumRangeValue || Double.isNaN(this.maximumRangeValue) '
+    - '------------------------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(this.maximumRangeValue) '
+    - '------------------------INS SimpleName@@MethodName:isNaN:[this.maximumRangeValue]
+      @TO@ MethodInvocation@@Double.isNaN(this.maximumRangeValue) '
+    - '---------------------------INS FieldAccess@@this.maximumRangeValue @TO@ SimpleName@@MethodName:isNaN:[this.maximumRangeValue] '
+    - '------------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.maximumRangeValue '
+    - '------------------------------INS SimpleName@@maximumRangeValue @TO@ FieldAccess@@this.maximumRangeValue '
+    - '------------------INS ExpressionStatement@@Assignment:this.maximumRangeValue=maxv
+      @TO@ IfStatement@@InfixExpression:maxv > this.maximumRangeValue || Double.isNaN(this.maximumRangeValue) '
+    - '---------------------INS Assignment@@this.maximumRangeValue=maxv @TO@ ExpressionStatement@@Assignment:this.maximumRangeValue=maxv '
+    - '------------------------INS FieldAccess@@this.maximumRangeValue @TO@ Assignment@@this.maximumRangeValue=maxv '
+    - '---------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.maximumRangeValue '
+    - '---------------------------INS SimpleName@@maximumRangeValue @TO@ FieldAccess@@this.maximumRangeValue '
+    - '------------------------INS Operator@@= @TO@ Assignment@@this.maximumRangeValue=maxv '
+    - '------------------------INS SimpleName@@maxv @TO@ Assignment@@this.maximumRangeValue=maxv '
+    - '------------------INS ExpressionStatement@@Assignment:this.maximumRangeValueRow=r
+      @TO@ IfStatement@@InfixExpression:maxv > this.maximumRangeValue || Double.isNaN(this.maximumRangeValue) '
+    - '---------------------INS Assignment@@this.maximumRangeValueRow=r @TO@ ExpressionStatement@@Assignment:this.maximumRangeValueRow=r '
+    - '------------------------INS FieldAccess@@this.maximumRangeValueRow @TO@ Assignment@@this.maximumRangeValueRow=r '
+    - '---------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.maximumRangeValueRow '
+    - '---------------------------INS SimpleName@@maximumRangeValueRow @TO@ FieldAccess@@this.maximumRangeValueRow '
+    - '------------------------INS Operator@@= @TO@ Assignment@@this.maximumRangeValueRow=r '
+    - '------------------------INS SimpleName@@r @TO@ Assignment@@this.maximumRangeValueRow=r '
+    - '------------------INS ExpressionStatement@@Assignment:this.maximumRangeValueColumn=c
+      @TO@ IfStatement@@InfixExpression:maxv > this.maximumRangeValue || Double.isNaN(this.maximumRangeValue) '
+    - '---------------------INS Assignment@@this.maximumRangeValueColumn=c @TO@ ExpressionStatement@@Assignment:this.maximumRangeValueColumn=c '
+    - '------------------------INS FieldAccess@@this.maximumRangeValueColumn @TO@
+      Assignment@@this.maximumRangeValueColumn=c '
+    - '---------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.maximumRangeValueColumn '
+    - '---------------------------INS SimpleName@@maximumRangeValueColumn @TO@ FieldAccess@@this.maximumRangeValueColumn '
+    - '------------------------INS Operator@@= @TO@ Assignment@@this.maximumRangeValueColumn=c '
+    - '------------------------INS SimpleName@@c @TO@ Assignment@@this.maximumRangeValueColumn=c '
+  repair_actions_cnt: 13
+13 purify_repair_actions:
+  biggest_depth: 11
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/statistics/DefaultBoxAndWhiskerCategoryDataset:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int rowCount=getRowCount(); @TO@ MethodDeclaration@@private,
+      @@void, MethodName:updateBounds, @@Argus:null '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int rowCount=getRowCount(); '
+    - '---INS VariableDeclarationFragment@@rowCount=getRowCount() @TO@ VariableDeclarationStatement@@int
+      rowCount=getRowCount(); '
+    - '------INS SimpleName@@rowCount @TO@ VariableDeclarationFragment@@rowCount=getRowCount() '
+    - '------INS MethodInvocation@@MethodName:getRowCount:[] @TO@ VariableDeclarationFragment@@rowCount=getRowCount() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int columnCount=getColumnCount(); @TO@ MethodDeclaration@@private,
+      @@void, MethodName:updateBounds, @@Argus:null '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int columnCount=getColumnCount(); '
+    - '---INS VariableDeclarationFragment@@columnCount=getColumnCount() @TO@ VariableDeclarationStatement@@int
+      columnCount=getColumnCount(); '
+    - '------INS SimpleName@@columnCount @TO@ VariableDeclarationFragment@@columnCount=getColumnCount() '
+    - '------INS MethodInvocation@@MethodName:getColumnCount:[] @TO@ VariableDeclarationFragment@@columnCount=getColumnCount() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int r=0];r < rowCount; [r++] @TO@ MethodDeclaration@@private,
+      @@void, MethodName:updateBounds, @@Argus:null '
+    - '---INS VariableDeclarationExpression@@int r=0 @TO@ ForStatement@@[int r=0];r
+      < rowCount; [r++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int r=0 '
+    - '------INS VariableDeclarationFragment@@r=0 @TO@ VariableDeclarationExpression@@int
+      r=0 '
+    - '---------INS SimpleName@@r @TO@ VariableDeclarationFragment@@r=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@r=0 '
+    - '---INS InfixExpression@@r < rowCount @TO@ ForStatement@@[int r=0];r < rowCount;
+      [r++] '
+    - '------INS SimpleName@@r @TO@ InfixExpression@@r < rowCount '
+    - '------INS Operator@@< @TO@ InfixExpression@@r < rowCount '
+    - '------INS SimpleName@@rowCount @TO@ InfixExpression@@r < rowCount '
+    - '---INS PostfixExpression@@r++ @TO@ ForStatement@@[int r=0];r < rowCount; [r++] '
+    - '------INS SimpleName@@r @TO@ PostfixExpression@@r++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@r++ '
+    - '---INS ForStatement@@[int c=0];c < columnCount; [c++] @TO@ ForStatement@@[int
+      r=0];r < rowCount; [r++] '
+    - '------INS VariableDeclarationExpression@@int c=0 @TO@ ForStatement@@[int c=0];c
+      < columnCount; [c++] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int c=0 '
+    - '---------INS VariableDeclarationFragment@@c=0 @TO@ VariableDeclarationExpression@@int
+      c=0 '
+    - '------------INS SimpleName@@c @TO@ VariableDeclarationFragment@@c=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@c=0 '
+    - '------INS InfixExpression@@c < columnCount @TO@ ForStatement@@[int c=0];c <
+      columnCount; [c++] '
+    - '---------INS SimpleName@@c @TO@ InfixExpression@@c < columnCount '
+    - '---------INS Operator@@< @TO@ InfixExpression@@c < columnCount '
+    - '---------INS SimpleName@@columnCount @TO@ InfixExpression@@c < columnCount '
+    - '------INS PostfixExpression@@c++ @TO@ ForStatement@@[int c=0];c < columnCount;
+      [c++] '
+    - '---------INS SimpleName@@c @TO@ PostfixExpression@@c++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@c++ '
+    - '------INS VariableDeclarationStatement@@BoxAndWhiskerItem item=getItem(r,c);
+      @TO@ ForStatement@@[int c=0];c < columnCount; [c++] '
+    - '---------INS SimpleType@@BoxAndWhiskerItem @TO@ VariableDeclarationStatement@@BoxAndWhiskerItem
+      item=getItem(r,c); '
+    - '---------INS VariableDeclarationFragment@@item=getItem(r,c) @TO@ VariableDeclarationStatement@@BoxAndWhiskerItem
+      item=getItem(r,c); '
+    - '------------INS SimpleName@@item @TO@ VariableDeclarationFragment@@item=getItem(r,c) '
+    - '------------INS MethodInvocation@@getItem(r,c) @TO@ VariableDeclarationFragment@@item=getItem(r,c) '
+    - '---------------INS SimpleName@@MethodName:getItem:[r, c] @TO@ MethodInvocation@@getItem(r,c) '
+    - '------------------INS SimpleName@@r @TO@ SimpleName@@MethodName:getItem:[r,
+      c] '
+    - '------------------INS SimpleName@@c @TO@ SimpleName@@MethodName:getItem:[r,
+      c] '
+    - '------INS IfStatement@@InfixExpression:item != null @TO@ ForStatement@@[int
+      c=0];c < columnCount; [c++] '
+    - '---------INS InfixExpression@@item != null @TO@ IfStatement@@InfixExpression:item
+      != null '
+    - '------------INS SimpleName@@item @TO@ InfixExpression@@item != null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@item != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@item != null '
+    - '---------INS VariableDeclarationStatement@@Number min=item.getMinOutlier();
+      @TO@ IfStatement@@InfixExpression:item != null '
+    - '------------INS SimpleType@@Number @TO@ VariableDeclarationStatement@@Number
+      min=item.getMinOutlier(); '
+    - '------------INS VariableDeclarationFragment@@min=item.getMinOutlier() @TO@
+      VariableDeclarationStatement@@Number min=item.getMinOutlier(); '
+    - '---------------INS SimpleName@@min @TO@ VariableDeclarationFragment@@min=item.getMinOutlier() '
+    - '---------------INS MethodInvocation@@item.getMinOutlier() @TO@ VariableDeclarationFragment@@min=item.getMinOutlier() '
+    - '------------------INS SimpleName@@Name:item @TO@ MethodInvocation@@item.getMinOutlier() '
+    - '------------------INS SimpleName@@MethodName:getMinOutlier:[] @TO@ MethodInvocation@@item.getMinOutlier() '
+    - '---------INS IfStatement@@InfixExpression:min != null @TO@ IfStatement@@InfixExpression:item
+      != null '
+    - '------------INS InfixExpression@@min != null @TO@ IfStatement@@InfixExpression:min
+      != null '
+    - '---------------INS SimpleName@@min @TO@ InfixExpression@@min != null '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@min != null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@min != null '
+    - '------------INS VariableDeclarationStatement@@double minv=min.doubleValue();
+      @TO@ IfStatement@@InfixExpression:min != null '
+    - '---------------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double
+      minv=min.doubleValue(); '
+    - '---------------INS VariableDeclarationFragment@@minv=min.doubleValue() @TO@
+      VariableDeclarationStatement@@double minv=min.doubleValue(); '
+    - '------------------INS SimpleName@@minv @TO@ VariableDeclarationFragment@@minv=min.doubleValue() '
+    - '------------------INS MethodInvocation@@min.doubleValue() @TO@ VariableDeclarationFragment@@minv=min.doubleValue() '
+    - '---------------------INS SimpleName@@Name:min @TO@ MethodInvocation@@min.doubleValue() '
+    - '---------------------INS SimpleName@@MethodName:doubleValue:[] @TO@ MethodInvocation@@min.doubleValue() '
+    - '------------INS IfStatement@@PrefixExpression:!Double.isNaN(minv) @TO@ IfStatement@@InfixExpression:min
+      != null '
+    - '---------------INS PrefixExpression@@!Double.isNaN(minv) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(minv) '
+    - '------------------INS Operator@@! @TO@ PrefixExpression@@!Double.isNaN(minv) '
+    - '------------------INS MethodInvocation@@Double.isNaN(minv) @TO@ PrefixExpression@@!Double.isNaN(minv) '
+    - '---------------------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(minv) '
+    - '---------------------INS SimpleName@@MethodName:isNaN:[minv] @TO@ MethodInvocation@@Double.isNaN(minv) '
+    - '------------------------INS SimpleName@@minv @TO@ SimpleName@@MethodName:isNaN:[minv] '
+    - '---------------INS IfStatement@@InfixExpression:minv < this.minimumRangeValue
+      || Double.isNaN(this.minimumRangeValue) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(minv) '
+    - '------------------INS InfixExpression@@minv < this.minimumRangeValue || Double.isNaN(this.minimumRangeValue)
+      @TO@ IfStatement@@InfixExpression:minv < this.minimumRangeValue || Double.isNaN(this.minimumRangeValue) '
+    - '---------------------INS InfixExpression@@minv < this.minimumRangeValue @TO@
+      InfixExpression@@minv < this.minimumRangeValue || Double.isNaN(this.minimumRangeValue) '
+    - '------------------------INS SimpleName@@minv @TO@ InfixExpression@@minv < this.minimumRangeValue '
+    - '------------------------INS Operator@@< @TO@ InfixExpression@@minv < this.minimumRangeValue '
+    - '------------------------INS FieldAccess@@this.minimumRangeValue @TO@ InfixExpression@@minv
+      < this.minimumRangeValue '
+    - '---------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.minimumRangeValue '
+    - '---------------------------INS SimpleName@@minimumRangeValue @TO@ FieldAccess@@this.minimumRangeValue '
+    - '---------------------INS Operator@@|| @TO@ InfixExpression@@minv < this.minimumRangeValue
+      || Double.isNaN(this.minimumRangeValue) '
+    - '---------------------INS MethodInvocation@@Double.isNaN(this.minimumRangeValue)
+      @TO@ InfixExpression@@minv < this.minimumRangeValue || Double.isNaN(this.minimumRangeValue) '
+    - '------------------------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(this.minimumRangeValue) '
+    - '------------------------INS SimpleName@@MethodName:isNaN:[this.minimumRangeValue]
+      @TO@ MethodInvocation@@Double.isNaN(this.minimumRangeValue) '
+    - '---------------------------INS FieldAccess@@this.minimumRangeValue @TO@ SimpleName@@MethodName:isNaN:[this.minimumRangeValue] '
+    - '------------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.minimumRangeValue '
+    - '------------------------------INS SimpleName@@minimumRangeValue @TO@ FieldAccess@@this.minimumRangeValue '
+    - '------------------INS ExpressionStatement@@Assignment:this.minimumRangeValue=minv
+      @TO@ IfStatement@@InfixExpression:minv < this.minimumRangeValue || Double.isNaN(this.minimumRangeValue) '
+    - '---------------------INS Assignment@@this.minimumRangeValue=minv @TO@ ExpressionStatement@@Assignment:this.minimumRangeValue=minv '
+    - '------------------------INS FieldAccess@@this.minimumRangeValue @TO@ Assignment@@this.minimumRangeValue=minv '
+    - '---------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.minimumRangeValue '
+    - '---------------------------INS SimpleName@@minimumRangeValue @TO@ FieldAccess@@this.minimumRangeValue '
+    - '------------------------INS Operator@@= @TO@ Assignment@@this.minimumRangeValue=minv '
+    - '------------------------INS SimpleName@@minv @TO@ Assignment@@this.minimumRangeValue=minv '
+    - '---------INS VariableDeclarationStatement@@Number max=item.getMaxOutlier();
+      @TO@ IfStatement@@InfixExpression:item != null '
+    - '------------INS SimpleType@@Number @TO@ VariableDeclarationStatement@@Number
+      max=item.getMaxOutlier(); '
+    - '------------INS VariableDeclarationFragment@@max=item.getMaxOutlier() @TO@
+      VariableDeclarationStatement@@Number max=item.getMaxOutlier(); '
+    - '---------------INS SimpleName@@max @TO@ VariableDeclarationFragment@@max=item.getMaxOutlier() '
+    - '---------------INS MethodInvocation@@item.getMaxOutlier() @TO@ VariableDeclarationFragment@@max=item.getMaxOutlier() '
+    - '------------------INS SimpleName@@Name:item @TO@ MethodInvocation@@item.getMaxOutlier() '
+    - '------------------INS SimpleName@@MethodName:getMaxOutlier:[] @TO@ MethodInvocation@@item.getMaxOutlier() '
+    - '---------INS IfStatement@@InfixExpression:max != null @TO@ IfStatement@@InfixExpression:item
+      != null '
+    - '------------INS InfixExpression@@max != null @TO@ IfStatement@@InfixExpression:max
+      != null '
+    - '---------------INS SimpleName@@max @TO@ InfixExpression@@max != null '
+    - '---------------INS Operator@@!= @TO@ InfixExpression@@max != null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@max != null '
+    - '------------INS VariableDeclarationStatement@@double maxv=max.doubleValue();
+      @TO@ IfStatement@@InfixExpression:max != null '
+    - '---------------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double
+      maxv=max.doubleValue(); '
+    - '---------------INS VariableDeclarationFragment@@maxv=max.doubleValue() @TO@
+      VariableDeclarationStatement@@double maxv=max.doubleValue(); '
+    - '------------------INS SimpleName@@maxv @TO@ VariableDeclarationFragment@@maxv=max.doubleValue() '
+    - '------------------INS MethodInvocation@@max.doubleValue() @TO@ VariableDeclarationFragment@@maxv=max.doubleValue() '
+    - '---------------------INS SimpleName@@Name:max @TO@ MethodInvocation@@max.doubleValue() '
+    - '---------------------INS SimpleName@@MethodName:doubleValue:[] @TO@ MethodInvocation@@max.doubleValue() '
+    - '------------INS IfStatement@@PrefixExpression:!Double.isNaN(maxv) @TO@ IfStatement@@InfixExpression:max
+      != null '
+    - '---------------INS PrefixExpression@@!Double.isNaN(maxv) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(maxv) '
+    - '------------------INS Operator@@! @TO@ PrefixExpression@@!Double.isNaN(maxv) '
+    - '------------------INS MethodInvocation@@Double.isNaN(maxv) @TO@ PrefixExpression@@!Double.isNaN(maxv) '
+    - '---------------------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(maxv) '
+    - '---------------------INS SimpleName@@MethodName:isNaN:[maxv] @TO@ MethodInvocation@@Double.isNaN(maxv) '
+    - '------------------------INS SimpleName@@maxv @TO@ SimpleName@@MethodName:isNaN:[maxv] '
+    - '---------------INS IfStatement@@InfixExpression:maxv > this.maximumRangeValue
+      || Double.isNaN(this.maximumRangeValue) @TO@ IfStatement@@PrefixExpression:!Double.isNaN(maxv) '
+    - '------------------INS InfixExpression@@maxv > this.maximumRangeValue || Double.isNaN(this.maximumRangeValue)
+      @TO@ IfStatement@@InfixExpression:maxv > this.maximumRangeValue || Double.isNaN(this.maximumRangeValue) '
+    - '---------------------INS InfixExpression@@maxv > this.maximumRangeValue @TO@
+      InfixExpression@@maxv > this.maximumRangeValue || Double.isNaN(this.maximumRangeValue) '
+    - '------------------------INS SimpleName@@maxv @TO@ InfixExpression@@maxv > this.maximumRangeValue '
+    - '------------------------INS Operator@@> @TO@ InfixExpression@@maxv > this.maximumRangeValue '
+    - '------------------------INS FieldAccess@@this.maximumRangeValue @TO@ InfixExpression@@maxv
+      > this.maximumRangeValue '
+    - '---------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.maximumRangeValue '
+    - '---------------------------INS SimpleName@@maximumRangeValue @TO@ FieldAccess@@this.maximumRangeValue '
+    - '---------------------INS Operator@@|| @TO@ InfixExpression@@maxv > this.maximumRangeValue
+      || Double.isNaN(this.maximumRangeValue) '
+    - '---------------------INS MethodInvocation@@Double.isNaN(this.maximumRangeValue)
+      @TO@ InfixExpression@@maxv > this.maximumRangeValue || Double.isNaN(this.maximumRangeValue) '
+    - '------------------------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(this.maximumRangeValue) '
+    - '------------------------INS SimpleName@@MethodName:isNaN:[this.maximumRangeValue]
+      @TO@ MethodInvocation@@Double.isNaN(this.maximumRangeValue) '
+    - '---------------------------INS FieldAccess@@this.maximumRangeValue @TO@ SimpleName@@MethodName:isNaN:[this.maximumRangeValue] '
+    - '------------------------------INS ThisExpression@@this @TO@ FieldAccess@@this.maximumRangeValue '
+    - '------------------------------INS SimpleName@@maximumRangeValue @TO@ FieldAccess@@this.maximumRangeValue '
+  repair_actions_cnt: 3

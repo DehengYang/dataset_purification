@@ -1,0 +1,166 @@
+1 bug_id: Math-14
+2 src folder:
+  name of src folder: java
+  number of files: 752
+  number of java files: 751
+  number of src classes: 1012
+  number of test classes: 370
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.fitting.PolynomialFitterTest#testLargeSample
+  failing tests:
+  - org.apache.commons.math3.fitting.PolynomialFitterTest
+  number of all test cases: 4576
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 9.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.511
+  purification via delta debugging: 332.366
+  repair actions extraction: 1.006
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.fitting.PolynomialFitterTest#testLargeSample: 165
+  fixed:
+    org.apache.commons.math3.fitting.PolynomialFitterTest#testLargeSample: 771
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 10
+  covDel: 4
+  cov_patch_lines: 14
+  delta_patch_lines: 14
+  oriAdd: 10
+  oriDel: 4
+  ori_patch_lines: 14
+  purAdd: 10
+  purDel: 4
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 26
+  failFail: 2
+  passed: 0
+  total: 28
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_14/src/main/java/org/apache/commons/math3/optim/nonlinear/vector/jacobian/AbstractLeastSquaresOptimizer.java\t\
+    2020-10-21 05:16:10.443139121 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_14/purify/patch/org/apache/commons/math3/optim/nonlinear/vector/jacobian/AbstractLeastSquaresOptimizer.java\t\
+    2020-10-21 05:16:10.443139121 -0400\n@@ -264,7 +264,16 @@\n      * @return the\
+    \ square-root of the weight matrix.\n      */\n     private RealMatrix squareRoot(RealMatrix\
+    \ m) {\n+        if (m instanceof DiagonalMatrix) {\n+            final int dim\
+    \ = m.getRowDimension();\n+            final RealMatrix sqrtM = new DiagonalMatrix(dim);\n\
+    +            for (int i = 0; i < dim; i++) {\n+                sqrtM.setEntry(i,\
+    \ i, FastMath.sqrt(m.getEntry(i, i)));\n+            }\n+            return sqrtM;\n\
+    +        } else {\n             final EigenDecomposition dec = new EigenDecomposition(m);\n\
+    \             return dec.getSquareRoot();\n+        }\n     }\n }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_14/src/main/java/org/apache/commons/math3/optim/nonlinear/vector/jacobian/AbstractLeastSquaresOptimizer.java\t\
+    2020-10-21 05:22:04.437380142 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_14/purify/purified/org/apache/commons/math3/optim/nonlinear/vector/jacobian/AbstractLeastSquaresOptimizer.java\t\
+    2020-10-21 05:22:04.437380142 -0400\n@@ -264,7 +264,16 @@\n      * @return the\
+    \ square-root of the weight matrix.\n      */\n     private RealMatrix squareRoot(RealMatrix\
+    \ m) {\n+        if (m instanceof DiagonalMatrix) {\n+            final int dim\
+    \ = m.getRowDimension();\n+            final RealMatrix sqrtM = new DiagonalMatrix(dim);\n\
+    +            for (int i = 0; i < dim; i++) {\n+                sqrtM.setEntry(i,\
+    \ i, FastMath.sqrt(m.getEntry(i, i)));\n+            }\n+            return sqrtM;\n\
+    +        } else {\n             final EigenDecomposition dec = new EigenDecomposition(m);\n\
+    \             return dec.getSquareRoot();\n+        }\n     }\n }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '2'
+  files_cnt: '2'
+  ? org/apache/commons/math3/optim/nonlinear/vector/jacobian/AbstractLeastSquaresOptimizer,
+    org/apache/commons/math3/optim/nonlinear/vector/Weight
+  : - !yamlable/myyaml.Action
+      lines:
+      - 'UPD ExpressionStatement@@Assignment:weightMatrix=org.apache.commons.math3.linear.MatrixUtils.createRealMatrix(dim,dim)
+        @TO@ Assignment:weightMatrix=new DiagonalMatrix(weight) '
+      - '---UPD Assignment@@weightMatrix=org.apache.commons.math3.linear.MatrixUtils.createRealMatrix(dim,dim)
+        @TO@ weightMatrix=new DiagonalMatrix(weight) '
+      - '------INS ClassInstanceCreation@@DiagonalMatrix[weight] @TO@ Assignment@@weightMatrix=org.apache.commons.math3.linear.MatrixUtils.createRealMatrix(dim,dim) '
+      - '---------INS New@@new @TO@ ClassInstanceCreation@@DiagonalMatrix[weight] '
+      - '---------INS SimpleType@@DiagonalMatrix @TO@ ClassInstanceCreation@@DiagonalMatrix[weight] '
+      - '---------INS SimpleName@@weight @TO@ ClassInstanceCreation@@DiagonalMatrix[weight] '
+      - '------DEL MethodInvocation@@org.apache.commons.math3.linear.MatrixUtils.createRealMatrix(dim,dim) '
+      - '---------DEL QualifiedName@@Name:org.apache.commons.math3.linear.MatrixUtils '
+      - '---------DEL SimpleName@@MethodName:createRealMatrix:[dim, dim] '
+      - '------------DEL SimpleName@@dim '
+      - '------------DEL SimpleName@@dim '
+    - !yamlable/myyaml.Action
+      lines:
+      - 'DEL ForStatement@@[int i=0];i < dim; [i++] '
+      - '---DEL VariableDeclarationExpression@@int i=0 '
+      - '------DEL PrimitiveType@@int '
+      - '------DEL VariableDeclarationFragment@@i=0 '
+      - '---------DEL SimpleName@@i '
+      - '---------DEL NumberLiteral@@0 '
+      - '---DEL InfixExpression@@i < dim '
+      - '------DEL SimpleName@@i '
+      - '------DEL Operator@@< '
+      - '------DEL SimpleName@@dim '
+      - '---DEL PostfixExpression@@i++ '
+      - '------DEL SimpleName@@i '
+      - '------DEL Operator@@++ '
+      - '---DEL ExpressionStatement@@MethodInvocation:weightMatrix.setEntry(i,i,weight[i]) '
+      - '------DEL MethodInvocation@@weightMatrix.setEntry(i,i,weight[i]) '
+      - '---------DEL SimpleName@@Name:weightMatrix '
+      - '---------DEL SimpleName@@MethodName:setEntry:[i, i, weight[i]] '
+      - '------------DEL SimpleName@@i '
+      - '------------DEL SimpleName@@i '
+      - '------------DEL ArrayAccess@@weight[i] '
+      - '---------------DEL SimpleName@@weight '
+      - '---------------DEL SimpleName@@i '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '2'
+  files_cnt: '2'
+  ? org/apache/commons/math3/optim/nonlinear/vector/jacobian/AbstractLeastSquaresOptimizer,
+    org/apache/commons/math3/optim/nonlinear/vector/Weight
+  : - !yamlable/myyaml.Action
+      lines:
+      - 'UPD ExpressionStatement@@Assignment:weightMatrix=org.apache.commons.math3.linear.MatrixUtils.createRealMatrix(dim,dim)
+        @TO@ Assignment:weightMatrix=new DiagonalMatrix(weight) '
+      - '---UPD Assignment@@weightMatrix=org.apache.commons.math3.linear.MatrixUtils.createRealMatrix(dim,dim)
+        @TO@ weightMatrix=new DiagonalMatrix(weight) '
+      - '------INS ClassInstanceCreation@@DiagonalMatrix[weight] @TO@ Assignment@@weightMatrix=org.apache.commons.math3.linear.MatrixUtils.createRealMatrix(dim,dim) '
+      - '---------INS New@@new @TO@ ClassInstanceCreation@@DiagonalMatrix[weight] '
+      - '---------INS SimpleType@@DiagonalMatrix @TO@ ClassInstanceCreation@@DiagonalMatrix[weight] '
+      - '---------INS SimpleName@@weight @TO@ ClassInstanceCreation@@DiagonalMatrix[weight] '
+      - '------DEL MethodInvocation@@org.apache.commons.math3.linear.MatrixUtils.createRealMatrix(dim,dim) '
+      - '---------DEL QualifiedName@@Name:org.apache.commons.math3.linear.MatrixUtils '
+      - '---------DEL SimpleName@@MethodName:createRealMatrix:[dim, dim] '
+      - '------------DEL SimpleName@@dim '
+      - '------------DEL SimpleName@@dim '
+    - !yamlable/myyaml.Action
+      lines:
+      - 'DEL ForStatement@@[int i=0];i < dim; [i++] '
+      - '---DEL VariableDeclarationExpression@@int i=0 '
+      - '------DEL PrimitiveType@@int '
+      - '------DEL VariableDeclarationFragment@@i=0 '
+      - '---------DEL SimpleName@@i '
+      - '---------DEL NumberLiteral@@0 '
+      - '---DEL InfixExpression@@i < dim '
+      - '------DEL SimpleName@@i '
+      - '------DEL Operator@@< '
+      - '------DEL SimpleName@@dim '
+      - '---DEL PostfixExpression@@i++ '
+      - '------DEL SimpleName@@i '
+      - '------DEL Operator@@++ '
+      - '---DEL ExpressionStatement@@MethodInvocation:weightMatrix.setEntry(i,i,weight[i]) '
+      - '------DEL MethodInvocation@@weightMatrix.setEntry(i,i,weight[i]) '
+      - '---------DEL SimpleName@@Name:weightMatrix '
+      - '---------DEL SimpleName@@MethodName:setEntry:[i, i, weight[i]] '
+      - '------------DEL SimpleName@@i '
+      - '------------DEL SimpleName@@i '
+      - '------------DEL ArrayAccess@@weight[i] '
+      - '---------------DEL SimpleName@@weight '
+      - '---------------DEL SimpleName@@i '
+  repair_actions_cnt: 2

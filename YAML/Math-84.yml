@@ -1,0 +1,194 @@
+1 bug_id: Math-84
+2 src folder:
+  name of src folder: java
+  number of files: 425
+  number of java files: 388
+  number of src classes: 477
+  number of test classes: 215
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.direct.MultiDirectionalTest#testMinimizeMaximize
+  - org.apache.commons.math.optimization.direct.MultiDirectionalTest#testMath283
+  failing tests:
+  - org.apache.commons.math.optimization.direct.MultiDirectionalTest
+  number of all test cases: 2054
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.564
+  purification via delta debugging: 209.739
+  repair actions extraction: 0.566
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.direct.MultiDirectionalTest#testMath283: 124
+    org.apache.commons.math.optimization.direct.MultiDirectionalTest#testMinimizeMaximize: 119
+  fixed:
+    org.apache.commons.math.optimization.direct.MultiDirectionalTest#testMath283: 120
+    org.apache.commons.math.optimization.direct.MultiDirectionalTest#testMinimizeMaximize: 128
+6 reduced lines:
+  by all: 7
+  by coverage: 0
+  by delta debugging: 7
+  covAdd: 9
+  covDel: 0
+  cov_patch_lines: 9
+  delta_patch_lines: 2
+  oriAdd: 9
+  oriDel: 0
+  ori_patch_lines: 9
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 3
+  original: 3
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 11
+  failFail: 0
+  passed: 4
+  total: 15
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_84/src/main/java/org/apache/commons/math/optimization/direct/MultiDirectional.java\t\
+    2020-10-23 03:38:02.079843937 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_84/purify/patch/org/apache/commons/math/optimization/direct/MultiDirectional.java\t\
+    2020-10-23 03:38:02.079843937 -0400\n@@ -61,6 +61,7 @@\n     protected void iterateSimplex(final\
+    \ Comparator<RealPointValuePair> comparator)\n         throws FunctionEvaluationException,\
+    \ OptimizationException, IllegalArgumentException {\n \n+        final RealConvergenceChecker\
+    \ checker = getConvergenceChecker();\n         while (true) {\n \n           \
+    \  incrementIterationsCounter();\n@@ -89,8 +90,16 @@\n             final RealPointValuePair\
+    \ contracted = evaluateNewSimplex(original, gamma, comparator);\n            \
+    \ if (comparator.compare(contracted, best) < 0) {\n                 // accept\
+    \ the contracted simplex\n+                return;\n+            }\n \n      \
+    \       // check convergence\n+            final int iter = getIterations();\n\
+    +            boolean converged = true;\n+            for (int i = 0; i < simplex.length;\
+    \ ++i) {\n+                converged &= checker.converged(iter, original[i], simplex[i]);\n\
+    +            }\n+            if (converged) {\n                 return;\n    \
+    \         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_84/src/main/java/org/apache/commons/math/optimization/direct/MultiDirectional.java\t\
+    2020-10-23 03:41:45.358303131 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_84/purify/purified/org/apache/commons/math/optimization/direct/MultiDirectional.java\t\
+    2020-10-23 03:41:45.358303131 -0400\n@@ -89,8 +89,10 @@\n             final RealPointValuePair\
+    \ contracted = evaluateNewSimplex(original, gamma, comparator);\n            \
+    \ if (comparator.compare(contracted, best) < 0) {\n                 // accept\
+    \ the contracted simplex\n+            }\n \n             // check convergence\n\
+    +            for (int i = 0; i < simplex.length; ++i) {\n                 return;\n\
+    \             }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/direct/MultiDirectional:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final RealConvergenceChecker checker=getConvergenceChecker();
+      @TO@ MethodDeclaration@@protected, @@void, MethodName:iterateSimplex, @@Argus:Comparator<RealPointValuePair>+comparator+FunctionEvaluationException,
+      OptimizationException, IllegalArgumentException,  '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final RealConvergenceChecker
+      checker=getConvergenceChecker(); '
+    - '---INS SimpleType@@RealConvergenceChecker @TO@ VariableDeclarationStatement@@final
+      RealConvergenceChecker checker=getConvergenceChecker(); '
+    - '---INS VariableDeclarationFragment@@checker=getConvergenceChecker() @TO@ VariableDeclarationStatement@@final
+      RealConvergenceChecker checker=getConvergenceChecker(); '
+    - '------INS SimpleName@@checker @TO@ VariableDeclarationFragment@@checker=getConvergenceChecker() '
+    - '------INS MethodInvocation@@MethodName:getConvergenceChecker:[] @TO@ VariableDeclarationFragment@@checker=getConvergenceChecker() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final int iter=getIterations(); @TO@ WhileStatement@@BooleanLiteral:true '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final int iter=getIterations(); '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@final int iter=getIterations(); '
+    - '---INS VariableDeclarationFragment@@iter=getIterations() @TO@ VariableDeclarationStatement@@final
+      int iter=getIterations(); '
+    - '------INS SimpleName@@iter @TO@ VariableDeclarationFragment@@iter=getIterations() '
+    - '------INS MethodInvocation@@MethodName:getIterations:[] @TO@ VariableDeclarationFragment@@iter=getIterations() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean converged=true; @TO@ WhileStatement@@BooleanLiteral:true '
+    - '---INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean converged=true; '
+    - '---INS VariableDeclarationFragment@@converged=true @TO@ VariableDeclarationStatement@@boolean
+      converged=true; '
+    - '------INS SimpleName@@converged @TO@ VariableDeclarationFragment@@converged=true '
+    - '------INS BooleanLiteral@@true @TO@ VariableDeclarationFragment@@converged=true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < simplex.length; [++i] @TO@ WhileStatement@@BooleanLiteral:true '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < simplex.length; [++i] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < simplex.length @TO@ ForStatement@@[int i=0];i <
+      simplex.length; [++i] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < simplex.length '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < simplex.length '
+    - '------INS QualifiedName@@simplex.length @TO@ InfixExpression@@i < simplex.length '
+    - '---------INS SimpleName@@simplex @TO@ QualifiedName@@simplex.length '
+    - '---------INS SimpleName@@length @TO@ QualifiedName@@simplex.length '
+    - '---INS PrefixExpression@@++i @TO@ ForStatement@@[int i=0];i < simplex.length;
+      [++i] '
+    - '------INS Operator@@++ @TO@ PrefixExpression@@++i '
+    - '------INS SimpleName@@i @TO@ PrefixExpression@@++i '
+    - '---INS ExpressionStatement@@Assignment:converged&=checker.converged(iter,original[i],simplex[i])
+      @TO@ ForStatement@@[int i=0];i < simplex.length; [++i] '
+    - '------INS Assignment@@converged&=checker.converged(iter,original[i],simplex[i])
+      @TO@ ExpressionStatement@@Assignment:converged&=checker.converged(iter,original[i],simplex[i]) '
+    - '---------INS SimpleName@@converged @TO@ Assignment@@converged&=checker.converged(iter,original[i],simplex[i]) '
+    - '---------INS Operator@@&= @TO@ Assignment@@converged&=checker.converged(iter,original[i],simplex[i]) '
+    - '---------INS MethodInvocation@@checker.converged(iter,original[i],simplex[i])
+      @TO@ Assignment@@converged&=checker.converged(iter,original[i],simplex[i]) '
+    - '------------INS SimpleName@@Name:checker @TO@ MethodInvocation@@checker.converged(iter,original[i],simplex[i]) '
+    - '------------INS SimpleName@@MethodName:converged:[iter, original[i], simplex[i]]
+      @TO@ MethodInvocation@@checker.converged(iter,original[i],simplex[i]) '
+    - '---------------INS SimpleName@@iter @TO@ SimpleName@@MethodName:converged:[iter,
+      original[i], simplex[i]] '
+    - '---------------INS ArrayAccess@@original[i] @TO@ SimpleName@@MethodName:converged:[iter,
+      original[i], simplex[i]] '
+    - '------------------INS SimpleName@@original @TO@ ArrayAccess@@original[i] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@original[i] '
+    - '---------------INS ArrayAccess@@simplex[i] @TO@ SimpleName@@MethodName:converged:[iter,
+      original[i], simplex[i]] '
+    - '------------------INS SimpleName@@simplex @TO@ ArrayAccess@@simplex[i] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@simplex[i] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:converged @TO@ WhileStatement@@BooleanLiteral:true '
+    - '---INS SimpleName@@converged @TO@ IfStatement@@SimpleName:converged '
+    - '---INS ReturnStatement@@ @TO@ IfStatement@@SimpleName:converged '
+  repair_actions_cnt: 5
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/direct/MultiDirectional:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < simplex.length; [++i] @TO@ WhileStatement@@BooleanLiteral:true '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < simplex.length; [++i] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < simplex.length @TO@ ForStatement@@[int i=0];i <
+      simplex.length; [++i] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < simplex.length '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < simplex.length '
+    - '------INS QualifiedName@@simplex.length @TO@ InfixExpression@@i < simplex.length '
+    - '---------INS SimpleName@@simplex @TO@ QualifiedName@@simplex.length '
+    - '---------INS SimpleName@@length @TO@ QualifiedName@@simplex.length '
+    - '---INS PrefixExpression@@++i @TO@ ForStatement@@[int i=0];i < simplex.length;
+      [++i] '
+    - '------INS Operator@@++ @TO@ PrefixExpression@@++i '
+    - '------INS SimpleName@@i @TO@ PrefixExpression@@++i '
+    - '---INS ReturnStatement@@ @TO@ ForStatement@@[int i=0];i < simplex.length; [++i] '
+  repair_actions_cnt: 2

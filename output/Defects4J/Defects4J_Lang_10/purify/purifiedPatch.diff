@@ -1,0 +1,16 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_10/src/main/java/org/apache/commons/lang3/time/FastDateParser.java	2020-10-22 01:43:46.781138038 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_10/purify/purified/org/apache/commons/lang3/time/FastDateParser.java	2020-10-22 01:43:46.781138038 -0400
+@@ -304,13 +304,8 @@
+         boolean wasWhite= false;
+         for(int i= 0; i<value.length(); ++i) {
+             char c= value.charAt(i);
+-            if(Character.isWhitespace(c)) {
+-                if(!wasWhite) {
+                     wasWhite= true;
+-                    regex.append("\\s*+");
+-                }
+                 continue;
+-            }
+             wasWhite= false;
+             switch(c) {
+             case '\'':

@@ -1,0 +1,182 @@
+1 bug_id: Closure-24
+2 src folder:
+  name of src folder: src
+  number of files: 418
+  number of java files: 402
+  number of src classes: 1347
+  number of test classes: 223
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.ScopedAliasesTest#testNonAliasLocal
+  failing tests:
+  - com.google.javascript.jscomp.ScopedAliasesTest
+  number of all test cases: 7526
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.953
+  purification via delta debugging: 531.778
+  repair actions extraction: 1.168
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.ScopedAliasesTest#testNonAliasLocal: 2846
+  fixed:
+    com.google.javascript.jscomp.ScopedAliasesTest#testNonAliasLocal: 2756
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 3
+  cov_patch_lines: 7
+  delta_patch_lines: 7
+  oriAdd: 4
+  oriDel: 3
+  ori_patch_lines: 7
+  purAdd: 4
+  purDel: 3
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 2
+  failCompile: 11
+  failFail: 0
+  passed: 0
+  total: 13
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_24/src/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-22 10:09:07.485803274 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_24/purify/patch/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-22 10:09:07.485803274 -0400\n@@ -275,8 +275,8 @@\n         Node n = v.getNode();\n\
+    \         int type = n.getType();\n         Node parent = n.getParent();\n-  \
+    \      if (parent.isVar()) {\n-          if (n.hasChildren() && n.getFirstChild().isQualifiedName())\
+    \ {\n+        if (parent.isVar() &&\n+            n.hasChildren() && n.getFirstChild().isQualifiedName())\
+    \ {\n           String name = n.getString();\n           Var aliasVar = scope.getVar(name);\n\
+    \           aliases.put(name, aliasVar);\n@@ -284,15 +284,16 @@\n           String\
+    \ qualifiedName =\n               aliasVar.getInitialValue().getQualifiedName();\n\
+    \           transformation.addAlias(name, qualifiedName);\n+        } else if\
+    \ (v.isBleedingFunction()) {\n           // Bleeding functions already get a BAD_PARAMETERS\
+    \ error, so just\n           // do nothing.\n+        } else if (parent.getType()\
+    \ == Token.LP) {\n           // Parameters of the scope function also get a BAD_PARAMETERS\n\
+    \           // error.\n         } else {\n           // TODO(robbyw): Support\
+    \ using locals for private variables.\n           report(t, n, GOOG_SCOPE_NON_ALIAS_LOCAL,\
+    \ n.getString());\n         }\n-        }\n       }\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_24/src/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-22 10:18:30.198077674 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_24/purify/purified/com/google/javascript/jscomp/ScopedAliases.java\t\
+    2020-10-22 10:18:30.198077674 -0400\n@@ -275,8 +275,8 @@\n         Node n = v.getNode();\n\
+    \         int type = n.getType();\n         Node parent = n.getParent();\n-  \
+    \      if (parent.isVar()) {\n-          if (n.hasChildren() && n.getFirstChild().isQualifiedName())\
+    \ {\n+        if (parent.isVar() &&\n+            n.hasChildren() && n.getFirstChild().isQualifiedName())\
+    \ {\n           String name = n.getString();\n           Var aliasVar = scope.getVar(name);\n\
+    \           aliases.put(name, aliasVar);\n@@ -284,15 +284,16 @@\n           String\
+    \ qualifiedName =\n               aliasVar.getInitialValue().getQualifiedName();\n\
+    \           transformation.addAlias(name, qualifiedName);\n+        } else if\
+    \ (v.isBleedingFunction()) {\n           // Bleeding functions already get a BAD_PARAMETERS\
+    \ error, so just\n           // do nothing.\n+        } else if (parent.getType()\
+    \ == Token.LP) {\n           // Parameters of the scope function also get a BAD_PARAMETERS\n\
+    \           // error.\n         } else {\n           // TODO(robbyw): Support\
+    \ using locals for private variables.\n           report(t, n, GOOG_SCOPE_NON_ALIAS_LOCAL,\
+    \ n.getString());\n         }\n-        }\n       }\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ScopedAliases:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:parent.isVar() '
+    - '---DEL MethodInvocation@@parent.isVar() '
+    - '------DEL SimpleName@@Name:parent '
+    - '------DEL SimpleName@@MethodName:isVar:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:n.hasChildren() && n.getFirstChild().isQualifiedName()
+      @TO@ InfixExpression:parent.isVar() && n.hasChildren() && n.getFirstChild().isQualifiedName() '
+    - '---UPD InfixExpression@@n.hasChildren() && n.getFirstChild().isQualifiedName()
+      @TO@ parent.isVar() && n.hasChildren() && n.getFirstChild().isQualifiedName() '
+    - '------INS MethodInvocation@@n.hasChildren() @TO@ InfixExpression@@n.hasChildren()
+      && n.getFirstChild().isQualifiedName() '
+    - '---------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.hasChildren() '
+    - '---------INS SimpleName@@MethodName:hasChildren:[] @TO@ MethodInvocation@@n.hasChildren() '
+    - '------UPD MethodInvocation@@n.hasChildren() @TO@ parent.isVar() '
+    - '---------UPD SimpleName@@Name:n @TO@ Name:parent '
+    - '---------UPD SimpleName@@MethodName:hasChildren:[] @TO@ MethodName:isVar:[] '
+    - '---INS IfStatement@@MethodInvocation:v.isBleedingFunction() @TO@ IfStatement@@InfixExpression:n.hasChildren()
+      && n.getFirstChild().isQualifiedName() '
+    - '------INS MethodInvocation@@v.isBleedingFunction() @TO@ IfStatement@@MethodInvocation:v.isBleedingFunction() '
+    - '---------INS SimpleName@@Name:v @TO@ MethodInvocation@@v.isBleedingFunction() '
+    - '---------INS SimpleName@@MethodName:isBleedingFunction:[] @TO@ MethodInvocation@@v.isBleedingFunction() '
+    - '------INS IfStatement@@InfixExpression:parent.getType() == Token.LP @TO@ IfStatement@@MethodInvocation:v.isBleedingFunction() '
+    - '---------INS InfixExpression@@parent.getType() == Token.LP @TO@ IfStatement@@InfixExpression:parent.getType()
+      == Token.LP '
+    - '------------INS MethodInvocation@@parent.getType() @TO@ InfixExpression@@parent.getType()
+      == Token.LP '
+    - '---------------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.getType() '
+    - '---------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@parent.getType() '
+    - '------------INS Operator@@== @TO@ InfixExpression@@parent.getType() == Token.LP '
+    - '------------INS QualifiedName@@Token.LP @TO@ InfixExpression@@parent.getType()
+      == Token.LP '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.LP '
+    - '---------------INS SimpleName@@LP @TO@ QualifiedName@@Token.LP '
+    - '---------MOV ExpressionStatement@@MethodInvocation:report(t,n,GOOG_SCOPE_NON_ALIAS_LOCAL,n.getString())
+      @TO@ IfStatement@@InfixExpression:parent.getType() == Token.LP '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:n.hasChildren() && n.getFirstChild().isQualifiedName()
+      @TO@ EnhancedForStatement@@Var v, MethodInvocation:scope.getVarIterable() '
+  files_cnt: '1'
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ScopedAliases:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:parent.isVar() '
+    - '---DEL MethodInvocation@@parent.isVar() '
+    - '------DEL SimpleName@@Name:parent '
+    - '------DEL SimpleName@@MethodName:isVar:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:n.hasChildren() && n.getFirstChild().isQualifiedName()
+      @TO@ InfixExpression:parent.isVar() && n.hasChildren() && n.getFirstChild().isQualifiedName() '
+    - '---UPD InfixExpression@@n.hasChildren() && n.getFirstChild().isQualifiedName()
+      @TO@ parent.isVar() && n.hasChildren() && n.getFirstChild().isQualifiedName() '
+    - '------INS MethodInvocation@@n.hasChildren() @TO@ InfixExpression@@n.hasChildren()
+      && n.getFirstChild().isQualifiedName() '
+    - '---------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.hasChildren() '
+    - '---------INS SimpleName@@MethodName:hasChildren:[] @TO@ MethodInvocation@@n.hasChildren() '
+    - '------UPD MethodInvocation@@n.hasChildren() @TO@ parent.isVar() '
+    - '---------UPD SimpleName@@Name:n @TO@ Name:parent '
+    - '---------UPD SimpleName@@MethodName:hasChildren:[] @TO@ MethodName:isVar:[] '
+    - '---INS IfStatement@@MethodInvocation:v.isBleedingFunction() @TO@ IfStatement@@InfixExpression:n.hasChildren()
+      && n.getFirstChild().isQualifiedName() '
+    - '------INS MethodInvocation@@v.isBleedingFunction() @TO@ IfStatement@@MethodInvocation:v.isBleedingFunction() '
+    - '---------INS SimpleName@@Name:v @TO@ MethodInvocation@@v.isBleedingFunction() '
+    - '---------INS SimpleName@@MethodName:isBleedingFunction:[] @TO@ MethodInvocation@@v.isBleedingFunction() '
+    - '------INS IfStatement@@InfixExpression:parent.getType() == Token.LP @TO@ IfStatement@@MethodInvocation:v.isBleedingFunction() '
+    - '---------INS InfixExpression@@parent.getType() == Token.LP @TO@ IfStatement@@InfixExpression:parent.getType()
+      == Token.LP '
+    - '------------INS MethodInvocation@@parent.getType() @TO@ InfixExpression@@parent.getType()
+      == Token.LP '
+    - '---------------INS SimpleName@@Name:parent @TO@ MethodInvocation@@parent.getType() '
+    - '---------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@parent.getType() '
+    - '------------INS Operator@@== @TO@ InfixExpression@@parent.getType() == Token.LP '
+    - '------------INS QualifiedName@@Token.LP @TO@ InfixExpression@@parent.getType()
+      == Token.LP '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.LP '
+    - '---------------INS SimpleName@@LP @TO@ QualifiedName@@Token.LP '
+    - '---------MOV ExpressionStatement@@MethodInvocation:report(t,n,GOOG_SCOPE_NON_ALIAS_LOCAL,n.getString())
+      @TO@ IfStatement@@InfixExpression:parent.getType() == Token.LP '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:n.hasChildren() && n.getFirstChild().isQualifiedName()
+      @TO@ EnhancedForStatement@@Var v, MethodInvocation:scope.getVarIterable() '
+  files_cnt: '1'
+  repair_actions_cnt: 3

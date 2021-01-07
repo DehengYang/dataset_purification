@@ -1,0 +1,122 @@
+1 bug_id: Lang-56
+2 src folder:
+  name of src folder: java
+  number of files: 87
+  number of java files: 77
+  number of src classes: 124
+  number of test classes: 89
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.time.FastDateFormatTest#testLang303
+  failing tests:
+  - org.apache.commons.lang.time.FastDateFormatTest
+  number of all test cases: 1691
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 8.0
+  purification via coverage: 1.573
+  purification via delta debugging: 83.72
+  repair actions extraction: 1.73
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.time.FastDateFormatTest#testLang303: 163
+  fixed:
+    org.apache.commons.lang.time.FastDateFormatTest#testLang303: 138
+6 reduced lines:
+  by all: 6
+  by coverage: 0
+  by delta debugging: 6
+  covAdd: 6
+  covDel: 2
+  cov_patch_lines: 8
+  delta_patch_lines: 2
+  oriAdd: 6
+  oriDel: 2
+  ori_patch_lines: 8
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  cov: 3
+  original: 3
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 2
+  passed: 2
+  total: 6
+9 sibling repair actions:
+- 0 1 0.7768595041322314
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_56/src/java/org/apache/commons/lang/time/FastDateFormat.java\t\
+    2020-10-21 04:00:37.356144541 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_56/purify/patch/org/apache/commons/lang/time/FastDateFormat.java\t\
+    2020-10-21 04:00:37.356144541 -0400\n@@ -137,11 +137,11 @@\n     /**\n      *\
+    \ The parsed rules.\n      */\n-    private Rule[] mRules;\n+    private transient\
+    \ Rule[] mRules;\n     /**\n      * The estimated maximum length.\n      */\n\
+    -    private int mMaxLengthEstimate;\n+    private transient int mMaxLengthEstimate;\n\
+    \ \n     //-----------------------------------------------------------------------\n\
+    \     /**\n@@ -1019,6 +1019,10 @@\n \n     // Serializing\n     //-----------------------------------------------------------------------\n\
+    +    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException\
+    \ {\n+        in.defaultReadObject();\n+        init();\n+    }\n     \n     //\
+    \ Rules\n     //-----------------------------------------------------------------------"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_56/src/java/org/apache/commons/lang/time/FastDateFormat.java\t\
+    2020-10-21 04:02:12.594894768 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_56/purify/purified/org/apache/commons/lang/time/FastDateFormat.java\t\
+    2020-10-21 04:02:12.590894653 -0400\n@@ -137,7 +137,7 @@\n     /**\n      * The\
+    \ parsed rules.\n      */\n-    private Rule[] mRules;\n+    private transient\
+    \ Rule[] mRules;\n     /**\n      * The estimated maximum length.\n      */"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/time/FastDateFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD FieldDeclaration@@private, Rule[], [mRules] @TO@ private, transient, Rule[],
+      [mRules] '
+    - '---INS Modifier@@transient @TO@ FieldDeclaration@@private, Rule[], [mRules] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD FieldDeclaration@@private, int, [mMaxLengthEstimate] @TO@ private, transient,
+      int, [mMaxLengthEstimate] '
+    - '---INS Modifier@@transient @TO@ FieldDeclaration@@private, int, [mMaxLengthEstimate] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@void, MethodName:readObject, @@Argus:ObjectInputStream+in+IOException,
+      ClassNotFoundException,  @TO@ TypeDeclaration@@[public]FastDateFormat, Format '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@void, MethodName:readObject,
+      @@Argus:ObjectInputStream+in+IOException, ClassNotFoundException,  '
+    - '---INS PrimitiveType@@void @TO@ MethodDeclaration@@private, @@void, MethodName:readObject,
+      @@Argus:ObjectInputStream+in+IOException, ClassNotFoundException,  '
+    - '---INS SimpleName@@MethodName:readObject @TO@ MethodDeclaration@@private, @@void,
+      MethodName:readObject, @@Argus:ObjectInputStream+in+IOException, ClassNotFoundException,  '
+    - '---INS SingleVariableDeclaration@@ObjectInputStream in @TO@ MethodDeclaration@@private,
+      @@void, MethodName:readObject, @@Argus:ObjectInputStream+in+IOException, ClassNotFoundException,  '
+    - '------INS SimpleType@@ObjectInputStream @TO@ SingleVariableDeclaration@@ObjectInputStream
+      in '
+    - '------INS SimpleName@@in @TO@ SingleVariableDeclaration@@ObjectInputStream
+      in '
+    - '---INS ExpressionStatement@@MethodInvocation:in.defaultReadObject() @TO@ MethodDeclaration@@private,
+      @@void, MethodName:readObject, @@Argus:ObjectInputStream+in+IOException, ClassNotFoundException,  '
+    - '------INS MethodInvocation@@in.defaultReadObject() @TO@ ExpressionStatement@@MethodInvocation:in.defaultReadObject() '
+    - '---------INS SimpleName@@Name:in @TO@ MethodInvocation@@in.defaultReadObject() '
+    - '---------INS SimpleName@@MethodName:defaultReadObject:[] @TO@ MethodInvocation@@in.defaultReadObject() '
+    - '---INS ExpressionStatement@@MethodInvocation:init() @TO@ MethodDeclaration@@private,
+      @@void, MethodName:readObject, @@Argus:ObjectInputStream+in+IOException, ClassNotFoundException,  '
+    - '------INS MethodInvocation@@MethodName:init:[] @TO@ ExpressionStatement@@MethodInvocation:init() '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/time/FastDateFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD FieldDeclaration@@private, Rule[], [mRules] @TO@ private, transient, Rule[],
+      [mRules] '
+    - '---INS Modifier@@transient @TO@ FieldDeclaration@@private, Rule[], [mRules] '
+  repair_actions_cnt: 1

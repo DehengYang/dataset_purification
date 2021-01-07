@@ -1,0 +1,35 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_34/src/com/google/javascript/jscomp/CodeGenerator.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_34/fixed-version/src/com/google/javascript/jscomp/CodeGenerator.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_34/src/com/google/javascript/jscomp/CodeGenerator.java	2020-03-01 00:27:28.245379637 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_34/fixed-version/src/com/google/javascript/jscomp/CodeGenerator.java	2020-03-01 00:27:30.261474634 -0800
+@@ -119,9 +119,7 @@
+         cc.addOp(opstr, true);
+         addExpr(last, p, rhsContext);
+       } else {
+-        addExpr(first, p, context);
+-        cc.addOp(opstr, true);
+-        addExpr(last, p + 1, rhsContext);
++        unrollBinaryOperator(n, type, opstr, context, rhsContext, p, p + 1);
+       }
+       return;
+     }
+@@ -751,7 +749,7 @@
+     Node current = firstNonOperator;
+     do {
+       current = current.getParent();
+-      cc.listSeparator();
++      cc.addOp(opStr, true);
+       addExpr(current.getFirstChild().getNext(), rightPrecedence, rhsContext);
+     } while (current != n);
+   }
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_34/src/com/google/javascript/jscomp/CodePrinter.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_34/fixed-version/src/com/google/javascript/jscomp/CodePrinter.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_34/src/com/google/javascript/jscomp/CodePrinter.java	2020-03-01 00:27:28.209377940 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_34/fixed-version/src/com/google/javascript/jscomp/CodePrinter.java	2020-03-01 00:27:30.261474634 -0800
+@@ -331,7 +331,7 @@
+     @Override
+     void appendOp(String op, boolean binOp) {
+       if (binOp) {
+-        if (getLastChar() != ' ') {
++        if (getLastChar() != ' ' && op.charAt(0) != ',') {
+           append(" ");
+         }
+         append(op);

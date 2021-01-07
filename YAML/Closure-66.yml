@@ -1,0 +1,97 @@
+1 bug_id: Closure-66
+2 src folder:
+  name of src folder: src
+  number of files: 404
+  number of java files: 391
+  number of src classes: 1272
+  number of test classes: 208
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testGetTypedPercent5
+  - com.google.javascript.jscomp.TypeCheckTest#testGetTypedPercent6
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 7078
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.789
+  purification via delta debugging: 169.319
+  repair actions extraction: 2.239
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testGetTypedPercent5: 3344
+    com.google.javascript.jscomp.TypeCheckTest#testGetTypedPercent6: 2915
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testGetTypedPercent5: 3345
+    com.google.javascript.jscomp.TypeCheckTest#testGetTypedPercent6: 2916
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 0
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 0
+  ori_patch_lines: 2
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_66/src/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-23 08:13:19.913791193 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_66/purify/patch/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-23 08:13:19.913791193 -0400\n@@ -513,7 +513,9 @@\n         // Object literal\
+    \ keys are handled with OBJECTLIT\n         if (!NodeUtil.isObjectLitKey(n, n.getParent()))\
+    \ {\n           ensureTyped(t, n, STRING_TYPE);\n+        } else {\n         \
+    \  // Object literal keys are not typeable\n+          typeable = false;\n   \
+    \      }\n         break;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_66/src/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-23 08:16:40.271591891 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_66/purify/purified/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-23 08:16:40.267591775 -0400\n@@ -513,7 +513,9 @@\n         // Object literal\
+    \ keys are handled with OBJECTLIT\n         if (!NodeUtil.isObjectLitKey(n, n.getParent()))\
+    \ {\n           ensureTyped(t, n, STRING_TYPE);\n+        } else {\n         \
+    \  // Object literal keys are not typeable\n+          typeable = false;\n   \
+    \      }\n         break;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeCheck:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:typeable=false @TO@ IfStatement@@PrefixExpression:!NodeUtil.isObjectLitKey(n,n.getParent()) '
+    - '---INS Assignment@@typeable=false @TO@ ExpressionStatement@@Assignment:typeable=false '
+    - '------INS SimpleName@@typeable @TO@ Assignment@@typeable=false '
+    - '------INS Operator@@= @TO@ Assignment@@typeable=false '
+    - '------INS BooleanLiteral@@false @TO@ Assignment@@typeable=false '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeCheck:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:typeable=false @TO@ IfStatement@@PrefixExpression:!NodeUtil.isObjectLitKey(n,n.getParent()) '
+    - '---INS Assignment@@typeable=false @TO@ ExpressionStatement@@Assignment:typeable=false '
+    - '------INS SimpleName@@typeable @TO@ Assignment@@typeable=false '
+    - '------INS Operator@@= @TO@ Assignment@@typeable=false '
+    - '------INS BooleanLiteral@@false @TO@ Assignment@@typeable=false '
+  files_cnt: '1'
+  repair_actions_cnt: 1

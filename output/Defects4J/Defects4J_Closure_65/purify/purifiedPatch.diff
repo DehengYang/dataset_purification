@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_65/src/com/google/javascript/jscomp/CodeGenerator.java	2020-10-23 08:12:11.415807955 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_65/purify/purified/com/google/javascript/jscomp/CodeGenerator.java	2020-10-23 08:12:11.415807955 -0400
+@@ -1012,7 +1012,7 @@
+     for (int i = 0; i < s.length(); i++) {
+       char c = s.charAt(i);
+       switch (c) {
+-        case '\0': sb.append("\\0"); break;
++        case '\0': sb.append("\\000"); break;
+         case '\n': sb.append("\\n"); break;
+         case '\r': sb.append("\\r"); break;
+         case '\t': sb.append("\\t"); break;

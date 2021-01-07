@@ -1,0 +1,13 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_14/src/main/java/org/apache/commons/lang3/StringUtils.java	2020-10-21 00:54:12.281227862 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_14/purify/assertBeforeMut/org/apache/commons/lang3/StringUtils.java	2020-10-21 00:54:12.277227746 -0400
+@@ -785,7 +785,10 @@
+         if (cs1 == null || cs2 == null) {
+             return false;
+         }
++        if (cs1 instanceof String && cs2 instanceof String) {
+             return cs1.equals(cs2);
++        }
++        return CharSequenceUtils.regionMatches(cs1, false, 0, cs2, 0, Math.max(cs1.length(), cs2.length()));
+     }
+ 
+     /**

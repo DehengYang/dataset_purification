@@ -1,0 +1,151 @@
+1 bug_id: Lang-10
+2 src folder:
+  name of src folder: java
+  number of files: 119
+  number of java files: 106
+  number of src classes: 169
+  number of test classes: 109
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.time.FastDateParserTest#testLANG_831
+  - org.apache.commons.lang3.time.FastDateFormat_ParserTest#testLANG_831
+  failing tests:
+  - org.apache.commons.lang3.time.FastDateParserTest
+  - org.apache.commons.lang3.time.FastDateFormat_ParserTest
+  number of all test cases: 2202
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 2.051
+  purification via delta debugging: 429.925
+  repair actions extraction: 1.579
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.time.FastDateFormat_ParserTest#testLANG_831: 260
+    org.apache.commons.lang3.time.FastDateParserTest#testLANG_831: 146
+  fixed:
+    org.apache.commons.lang3.time.FastDateFormat_ParserTest#testLANG_831: 240
+    org.apache.commons.lang3.time.FastDateParserTest#testLANG_831: 125
+6 reduced lines:
+  by all: 4
+  by coverage: 0
+  by delta debugging: 4
+  covAdd: 0
+  covDel: 9
+  cov_patch_lines: 9
+  delta_patch_lines: 5
+  oriAdd: 0
+  oriDel: 9
+  ori_patch_lines: 9
+  purAdd: 0
+  purDel: 5
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 2
+  original: 2
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 3
+  failCompile: 23
+  failFail: 0
+  passed: 3
+  total: 29
+9 sibling repair actions:
+- 0 2 0.7015706806282722
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_10/src/main/java/org/apache/commons/lang3/time/FastDateParser.java\t\
+    2020-10-22 01:36:21.308258795 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_10/purify/patch/org/apache/commons/lang3/time/FastDateParser.java\t\
+    2020-10-22 01:36:21.308258795 -0400\n@@ -301,17 +301,8 @@\n      * @return The\
+    \ <code>StringBuilder</code>\n      */\n     private static StringBuilder escapeRegex(StringBuilder\
+    \ regex, String value, boolean unquote) {\n-        boolean wasWhite= false;\n\
+    \         for(int i= 0; i<value.length(); ++i) {\n             char c= value.charAt(i);\n\
+    -            if(Character.isWhitespace(c)) {\n-                if(!wasWhite) {\n\
+    -                    wasWhite= true;\n-                    regex.append(\"\\\\\
+    s*+\");\n-                }\n-                continue;\n-            }\n-   \
+    \         wasWhite= false;\n             switch(c) {\n             case '\\'':\n\
+    \                 if(unquote) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_10/src/main/java/org/apache/commons/lang3/time/FastDateParser.java\t\
+    2020-10-22 01:43:46.781138038 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_10/purify/purified/org/apache/commons/lang3/time/FastDateParser.java\t\
+    2020-10-22 01:43:46.781138038 -0400\n@@ -304,13 +304,8 @@\n         boolean wasWhite=\
+    \ false;\n         for(int i= 0; i<value.length(); ++i) {\n             char c=\
+    \ value.charAt(i);\n-            if(Character.isWhitespace(c)) {\n-          \
+    \      if(!wasWhite) {\n                     wasWhite= true;\n-              \
+    \      regex.append(\"\\\\s*+\");\n-                }\n                 continue;\n\
+    -            }\n             wasWhite= false;\n             switch(c) {\n    \
+    \         case '\\'':"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/time/FastDateParser:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@boolean wasWhite=false; '
+    - '---DEL PrimitiveType@@boolean '
+    - '---DEL VariableDeclarationFragment@@wasWhite=false '
+    - '------DEL SimpleName@@wasWhite '
+    - '------DEL BooleanLiteral@@false '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:Character.isWhitespace(c) '
+    - '---DEL MethodInvocation@@Character.isWhitespace(c) '
+    - '------DEL SimpleName@@Name:Character '
+    - '------DEL SimpleName@@MethodName:isWhitespace:[c] '
+    - '---------DEL SimpleName@@c '
+    - '---DEL IfStatement@@PrefixExpression:!wasWhite '
+    - '------DEL PrefixExpression@@!wasWhite '
+    - '---------DEL Operator@@! '
+    - '---------DEL SimpleName@@wasWhite '
+    - '------DEL ExpressionStatement@@Assignment:wasWhite=true '
+    - '---------DEL Assignment@@wasWhite=true '
+    - '------------DEL SimpleName@@wasWhite '
+    - '------------DEL Operator@@= '
+    - '------------DEL BooleanLiteral@@true '
+    - '------DEL ExpressionStatement@@MethodInvocation:regex.append("\\s*+") '
+    - '---------DEL MethodInvocation@@regex.append("\\s*+") '
+    - '------------DEL SimpleName@@Name:regex '
+    - '------------DEL SimpleName@@MethodName:append:["\\s*+"] '
+    - '---------------DEL StringLiteral@@"\\s*+" '
+    - '---DEL ContinueStatement@@ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:wasWhite=false '
+    - '---DEL Assignment@@wasWhite=false '
+    - '------DEL SimpleName@@wasWhite '
+    - '------DEL Operator@@= '
+    - '------DEL BooleanLiteral@@false '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/time/FastDateParser:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:Character.isWhitespace(c) '
+    - '---DEL MethodInvocation@@Character.isWhitespace(c) '
+    - '------DEL SimpleName@@Name:Character '
+    - '------DEL SimpleName@@MethodName:isWhitespace:[c] '
+    - '---------DEL SimpleName@@c '
+    - '---DEL IfStatement@@PrefixExpression:!wasWhite '
+    - '------DEL PrefixExpression@@!wasWhite '
+    - '---------DEL Operator@@! '
+    - '---------DEL SimpleName@@wasWhite '
+    - '------DEL ExpressionStatement@@MethodInvocation:regex.append("\\s*+") '
+    - '---------DEL MethodInvocation@@regex.append("\\s*+") '
+    - '------------DEL SimpleName@@Name:regex '
+    - '------------DEL SimpleName@@MethodName:append:["\\s*+"] '
+    - '---------------DEL StringLiteral@@"\\s*+" '
+    - '---DEL ContinueStatement@@ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ContinueStatement@@ @TO@ ForStatement@@[int i=0];i < value.length(); [++i] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:wasWhite=true @TO@ ForStatement@@[int i=0];i
+      < value.length(); [++i] '
+  repair_actions_cnt: 3

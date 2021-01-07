@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_16/src/main/java/org/joda/time/format/DateTimeFormatter.java	2020-10-20 22:46:29.307835734 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_16/purify/purified/org/joda/time/format/DateTimeFormatter.java	2020-10-20 22:46:29.307835734 -0400
+@@ -706,7 +706,7 @@
+         chrono = selectChronology(chrono);
+         
+         DateTimeParserBucket bucket = new DateTimeParserBucket(
+-            instantLocal, chrono, iLocale, iPivotYear, iDefaultYear);
++            instantLocal, chrono, iLocale, iPivotYear, chrono.year().get(instantLocal));
+         int newPos = parser.parseInto(bucket, text, position);
+         instant.setMillis(bucket.computeMillis(false, text));
+         if (iOffsetParsed && bucket.getOffsetInteger() != null) {

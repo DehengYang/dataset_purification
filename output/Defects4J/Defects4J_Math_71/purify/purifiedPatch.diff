@@ -1,0 +1,22 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_71/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java	2020-10-21 13:16:05.540229619 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_71/purify/purified/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java	2020-10-21 13:16:05.540229619 -0400
+@@ -297,6 +297,8 @@
+                   // it is so small (much probably exactly 0 due to limited accuracy)
+                   // that the code above would fail handling it.
+                   // So we set up an artificial 0 size step by copying states
++                  System.arraycopy(y, 0, yTmp, 0, y0.length);
++                  stepSize = 0;
+                   loop     = false;
+               } else {
+                   // reject the step to match exactly the next switch time
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_71/src/main/java/org/apache/commons/math/ode/nonstiff/RungeKuttaIntegrator.java	2020-10-21 13:16:05.544229734 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_71/purify/purified/org/apache/commons/math/ode/nonstiff/RungeKuttaIntegrator.java	2020-10-21 13:16:05.544229734 -0400
+@@ -177,6 +177,8 @@
+                 // it is so small (much probably exactly 0 due to limited accuracy)
+                 // that the code above would fail handling it.
+                 // So we set up an artificial 0 size step by copying states
++                System.arraycopy(y, 0, yTmp, 0, y0.length);
++                stepSize = 0;
+                 loop     = false;
+             } else {
+                 // reject the step to match exactly the next switch time

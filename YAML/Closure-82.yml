@@ -1,0 +1,138 @@
+1 bug_id: Closure-82
+2 src folder:
+  name of src folder: src
+  number of files: 371
+  number of java files: 359
+  number of src classes: 1142
+  number of test classes: 188
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.rhino.jstype.FunctionTypeTest#testEmptyFunctionTypes
+  - com.google.javascript.jscomp.TypeCheckTest#testIssue301
+  failing tests:
+  - com.google.javascript.rhino.jstype.FunctionTypeTest
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 6573
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.334
+  purification via delta debugging: 181.29
+  repair actions extraction: 1.33
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue301: 4355
+    com.google.javascript.rhino.jstype.FunctionTypeTest#testEmptyFunctionTypes: 684
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testIssue301: 4446
+    com.google.javascript.rhino.jstype.FunctionTypeTest#testEmptyFunctionTypes: 684
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 1
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 3
+  oriDel: 1
+  ori_patch_lines: 4
+  purAdd: 3
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 0
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_82/src/com/google/javascript/rhino/jstype/JSType.java\t\
+    2020-10-23 10:17:21.557231459 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_82/purify/patch/com/google/javascript/rhino/jstype/JSType.java\t\
+    2020-10-23 10:17:21.553231343 -0400\n@@ -160,7 +160,9 @@\n   }\n \n   public final\
+    \ boolean isEmptyType() {\n-    return isNoType() || isNoObjectType() || isNoResolvedType();\n\
+    +    return isNoType() || isNoObjectType() || isNoResolvedType() ||\n+       \
+    \ (registry.getNativeFunctionType(\n+             JSTypeNative.LEAST_FUNCTION_TYPE)\
+    \ == this);\n   }\n \n   public boolean isNumberObjectType() {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_82/src/com/google/javascript/rhino/jstype/JSType.java\t\
+    2020-10-23 10:21:03.479655957 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_82/purify/purified/com/google/javascript/rhino/jstype/JSType.java\t\
+    2020-10-23 10:21:03.475655842 -0400\n@@ -160,7 +160,9 @@\n   }\n \n   public final\
+    \ boolean isEmptyType() {\n-    return isNoType() || isNoObjectType() || isNoResolvedType();\n\
+    +    return isNoType() || isNoObjectType() || isNoResolvedType() ||\n+       \
+    \ (registry.getNativeFunctionType(\n+             JSTypeNative.LEAST_FUNCTION_TYPE)\
+    \ == this);\n   }\n \n   public boolean isNumberObjectType() {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/rhino/jstype/JSType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@InfixExpression:isNoType() || isNoObjectType() || isNoResolvedType()
+      @TO@ InfixExpression:isNoType() || isNoObjectType() || isNoResolvedType()||
+      (registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE) == this) '
+    - '---UPD InfixExpression@@isNoType() || isNoObjectType() || isNoResolvedType()
+      @TO@ isNoType() || isNoObjectType() || isNoResolvedType()|| (registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this) '
+    - '------INS ParenthesizedExpression@@(registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this) @TO@ InfixExpression@@isNoType() || isNoObjectType() || isNoResolvedType() '
+    - '---------INS InfixExpression@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this @TO@ ParenthesizedExpression@@(registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this) '
+    - '------------INS MethodInvocation@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      @TO@ InfixExpression@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this '
+    - '---------------INS SimpleName@@Name:registry @TO@ MethodInvocation@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE) '
+    - '---------------INS SimpleName@@MethodName:getNativeFunctionType:[JSTypeNative.LEAST_FUNCTION_TYPE]
+      @TO@ MethodInvocation@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE) '
+    - '------------------INS QualifiedName@@JSTypeNative.LEAST_FUNCTION_TYPE @TO@
+      SimpleName@@MethodName:getNativeFunctionType:[JSTypeNative.LEAST_FUNCTION_TYPE] '
+    - '---------------------INS SimpleName@@JSTypeNative @TO@ QualifiedName@@JSTypeNative.LEAST_FUNCTION_TYPE '
+    - '---------------------INS SimpleName@@LEAST_FUNCTION_TYPE @TO@ QualifiedName@@JSTypeNative.LEAST_FUNCTION_TYPE '
+    - '------------INS Operator@@== @TO@ InfixExpression@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this '
+    - '------------INS ThisExpression@@this @TO@ InfixExpression@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/rhino/jstype/JSType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@InfixExpression:isNoType() || isNoObjectType() || isNoResolvedType()
+      @TO@ InfixExpression:isNoType() || isNoObjectType() || isNoResolvedType()||
+      (registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE) == this) '
+    - '---UPD InfixExpression@@isNoType() || isNoObjectType() || isNoResolvedType()
+      @TO@ isNoType() || isNoObjectType() || isNoResolvedType()|| (registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this) '
+    - '------INS ParenthesizedExpression@@(registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this) @TO@ InfixExpression@@isNoType() || isNoObjectType() || isNoResolvedType() '
+    - '---------INS InfixExpression@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this @TO@ ParenthesizedExpression@@(registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this) '
+    - '------------INS MethodInvocation@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      @TO@ InfixExpression@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this '
+    - '---------------INS SimpleName@@Name:registry @TO@ MethodInvocation@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE) '
+    - '---------------INS SimpleName@@MethodName:getNativeFunctionType:[JSTypeNative.LEAST_FUNCTION_TYPE]
+      @TO@ MethodInvocation@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE) '
+    - '------------------INS QualifiedName@@JSTypeNative.LEAST_FUNCTION_TYPE @TO@
+      SimpleName@@MethodName:getNativeFunctionType:[JSTypeNative.LEAST_FUNCTION_TYPE] '
+    - '---------------------INS SimpleName@@JSTypeNative @TO@ QualifiedName@@JSTypeNative.LEAST_FUNCTION_TYPE '
+    - '---------------------INS SimpleName@@LEAST_FUNCTION_TYPE @TO@ QualifiedName@@JSTypeNative.LEAST_FUNCTION_TYPE '
+    - '------------INS Operator@@== @TO@ InfixExpression@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this '
+    - '------------INS ThisExpression@@this @TO@ InfixExpression@@registry.getNativeFunctionType(JSTypeNative.LEAST_FUNCTION_TYPE)
+      == this '
+  files_cnt: '1'
+  repair_actions_cnt: 1

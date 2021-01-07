@@ -1,0 +1,10 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_25/src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java	2020-10-21 01:12:43.313315430 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_25/purify/purified/org/apache/commons/lang3/text/translate/EntityArrays.java	2020-10-21 01:12:43.313315430 -0400
+@@ -97,7 +97,6 @@
+         {"\u00E2", "&aacute;"}, // � - lowercase a, acute accent
+         {"\u00E3", "&acirc;"}, // � - lowercase a, circumflex accent
+         {"\u00E4", "&atilde;"}, // � - lowercase a, tilde
+-        {"\u00E5", "&auml;"}, // � - lowercase a, umlaut
+         {"\u00E5", "&aring;"}, // � - lowercase a, ring
+         {"\u00E6", "&aelig;"}, // � - lowercase ae
+         {"\u00E7", "&ccedil;"}, // � - lowercase c, cedilla

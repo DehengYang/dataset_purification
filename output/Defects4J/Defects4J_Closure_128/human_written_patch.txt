@@ -1,0 +1,21 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_128/src/com/google/javascript/jscomp/CodeGenerator.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_128/fixed-version/src/com/google/javascript/jscomp/CodeGenerator.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_128/src/com/google/javascript/jscomp/CodeGenerator.java	2020-03-01 00:34:46.194015446 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_128/fixed-version/src/com/google/javascript/jscomp/CodeGenerator.java	2020-03-01 00:34:49.170155679 -0800
+@@ -782,13 +782,16 @@
+ 
+   static boolean isSimpleNumber(String s) {
+     int len = s.length();
++    if (len == 0) {
++      return false;
++    }
+     for (int index = 0; index < len; index++) {
+       char c = s.charAt(index);
+       if (c < '0' || c > '9') {
+         return false;
+       }
+     }
+-    return len > 0 && s.charAt(0) != '0';
++    return len == 1 || s.charAt(0) != '0';
+   }
+ 
+   static double getSimpleNumber(String s) {

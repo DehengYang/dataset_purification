@@ -1,0 +1,162 @@
+1 bug_id: Closure-132
+2 src folder:
+  name of src folder: src
+  number of files: 430
+  number of java files: 414
+  number of src classes: 1379
+  number of test classes: 226
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest#testIssue925
+  failing tests:
+  - com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest
+  number of all test cases: 7966
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.606
+  purification via delta debugging: 401.117
+  repair actions extraction: 2.558
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest#testIssue925: 3153
+  fixed:
+    com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest#testIssue925: 3118
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 3
+  covDel: 1
+  cov_patch_lines: 4
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 1
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 0
+  passed: 1
+  total: 7
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_132/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java\t\
+    2020-10-23 18:11:09.200258116 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_132/purify/patch/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java\t\
+    2020-10-23 18:11:09.200258116 -0400\n@@ -779,7 +779,9 @@\n               // evaluates\
+    \ LHS before cond]\n               // NOTE - there are some circumstances where\
+    \ we can\n               // proceed even if there are side effects...\n-     \
+    \         !mayEffectMutableState(lhs)) {\n+              !mayEffectMutableState(lhs)\
+    \ &&\n+              (!mayHaveSideEffects(cond) ||\n+                  (thenOp.isAssign()\
+    \ && thenOp.getFirstChild().isName()))) {\n \n             n.removeChild(cond);\n\
+    \             Node assignName = thenOp.removeFirstChild();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_132/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java\t\
+    2020-10-23 18:18:20.356742191 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_132/purify/purified/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java\t\
+    2020-10-23 18:18:20.356742191 -0400\n@@ -779,7 +779,8 @@\n               // evaluates\
+    \ LHS before cond]\n               // NOTE - there are some circumstances where\
+    \ we can\n               // proceed even if there are side effects...\n-     \
+    \         !mayEffectMutableState(lhs)) {\n+              (!mayHaveSideEffects(cond)\
+    \ ||\n+                  (thenOp.isAssign() && thenOp.getFirstChild().isName())))\
+    \ {\n \n             n.removeChild(cond);\n             Node assignName = thenOp.removeFirstChild();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:areNodesEqualForInlining(lhs,elseOp.getFirstChild())
+      && !mayEffectMutableState(lhs) @TO@ InfixExpression:areNodesEqualForInlining(lhs,elseOp.getFirstChild())
+      && !mayEffectMutableState(lhs) && (!mayHaveSideEffects(cond) || (thenOp.isAssign()
+      && thenOp.getFirstChild().isName())) '
+    - '---UPD InfixExpression@@areNodesEqualForInlining(lhs,elseOp.getFirstChild())
+      && !mayEffectMutableState(lhs) @TO@ areNodesEqualForInlining(lhs,elseOp.getFirstChild())
+      && !mayEffectMutableState(lhs) && (!mayHaveSideEffects(cond) || (thenOp.isAssign()
+      && thenOp.getFirstChild().isName())) '
+    - '------INS ParenthesizedExpression@@(!mayHaveSideEffects(cond) || (thenOp.isAssign()
+      && thenOp.getFirstChild().isName())) @TO@ InfixExpression@@areNodesEqualForInlining(lhs,elseOp.getFirstChild())
+      && !mayEffectMutableState(lhs) '
+    - '---------INS InfixExpression@@!mayHaveSideEffects(cond) || (thenOp.isAssign()
+      && thenOp.getFirstChild().isName()) @TO@ ParenthesizedExpression@@(!mayHaveSideEffects(cond)
+      || (thenOp.isAssign() && thenOp.getFirstChild().isName())) '
+    - '------------INS PrefixExpression@@!mayHaveSideEffects(cond) @TO@ InfixExpression@@!mayHaveSideEffects(cond)
+      || (thenOp.isAssign() && thenOp.getFirstChild().isName()) '
+    - '---------------INS Operator@@! @TO@ PrefixExpression@@!mayHaveSideEffects(cond) '
+    - '---------------INS MethodInvocation@@mayHaveSideEffects(cond) @TO@ PrefixExpression@@!mayHaveSideEffects(cond) '
+    - '------------------INS SimpleName@@MethodName:mayHaveSideEffects:[cond] @TO@
+      MethodInvocation@@mayHaveSideEffects(cond) '
+    - '---------------------INS SimpleName@@cond @TO@ SimpleName@@MethodName:mayHaveSideEffects:[cond] '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@!mayHaveSideEffects(cond)
+      || (thenOp.isAssign() && thenOp.getFirstChild().isName()) '
+    - '------------INS ParenthesizedExpression@@(thenOp.isAssign() && thenOp.getFirstChild().isName())
+      @TO@ InfixExpression@@!mayHaveSideEffects(cond) || (thenOp.isAssign() && thenOp.getFirstChild().isName()) '
+    - '---------------INS InfixExpression@@thenOp.isAssign() && thenOp.getFirstChild().isName()
+      @TO@ ParenthesizedExpression@@(thenOp.isAssign() && thenOp.getFirstChild().isName()) '
+    - '------------------INS MethodInvocation@@thenOp.isAssign() @TO@ InfixExpression@@thenOp.isAssign()
+      && thenOp.getFirstChild().isName() '
+    - '---------------------INS SimpleName@@Name:thenOp @TO@ MethodInvocation@@thenOp.isAssign() '
+    - '---------------------INS SimpleName@@MethodName:isAssign:[] @TO@ MethodInvocation@@thenOp.isAssign() '
+    - '------------------INS Operator@@&& @TO@ InfixExpression@@thenOp.isAssign()
+      && thenOp.getFirstChild().isName() '
+    - '------------------INS MethodInvocation@@thenOp.getFirstChild().isName() @TO@
+      InfixExpression@@thenOp.isAssign() && thenOp.getFirstChild().isName() '
+    - '---------------------INS SimpleName@@Name:thenOp @TO@ MethodInvocation@@thenOp.getFirstChild().isName() '
+    - '---------------------INS MethodInvocation@@MethodName:getFirstChild:[] @TO@
+      MethodInvocation@@thenOp.getFirstChild().isName() '
+    - '---------------------INS SimpleName@@MethodName:isName:[] @TO@ MethodInvocation@@thenOp.getFirstChild().isName() '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:areNodesEqualForInlining(lhs,elseOp.getFirstChild())
+      && !mayEffectMutableState(lhs) @TO@ InfixExpression:areNodesEqualForInlining(lhs,elseOp.getFirstChild())
+      && (!mayHaveSideEffects(cond) || (thenOp.isAssign() && thenOp.getFirstChild().isName())) '
+    - '---UPD InfixExpression@@areNodesEqualForInlining(lhs,elseOp.getFirstChild())
+      && !mayEffectMutableState(lhs) @TO@ areNodesEqualForInlining(lhs,elseOp.getFirstChild())
+      && (!mayHaveSideEffects(cond) || (thenOp.isAssign() && thenOp.getFirstChild().isName())) '
+    - '------INS ParenthesizedExpression@@(!mayHaveSideEffects(cond) || (thenOp.isAssign()
+      && thenOp.getFirstChild().isName())) @TO@ InfixExpression@@areNodesEqualForInlining(lhs,elseOp.getFirstChild())
+      && !mayEffectMutableState(lhs) '
+    - '---------INS InfixExpression@@!mayHaveSideEffects(cond) || (thenOp.isAssign()
+      && thenOp.getFirstChild().isName()) @TO@ ParenthesizedExpression@@(!mayHaveSideEffects(cond)
+      || (thenOp.isAssign() && thenOp.getFirstChild().isName())) '
+    - '------------MOV PrefixExpression@@!mayEffectMutableState(lhs) @TO@ InfixExpression@@!mayHaveSideEffects(cond)
+      || (thenOp.isAssign() && thenOp.getFirstChild().isName()) '
+    - '------------INS Operator@@|| @TO@ InfixExpression@@!mayHaveSideEffects(cond)
+      || (thenOp.isAssign() && thenOp.getFirstChild().isName()) '
+    - '------------INS ParenthesizedExpression@@(thenOp.isAssign() && thenOp.getFirstChild().isName())
+      @TO@ InfixExpression@@!mayHaveSideEffects(cond) || (thenOp.isAssign() && thenOp.getFirstChild().isName()) '
+    - '---------------INS InfixExpression@@thenOp.isAssign() && thenOp.getFirstChild().isName()
+      @TO@ ParenthesizedExpression@@(thenOp.isAssign() && thenOp.getFirstChild().isName()) '
+    - '------------------INS MethodInvocation@@thenOp.isAssign() @TO@ InfixExpression@@thenOp.isAssign()
+      && thenOp.getFirstChild().isName() '
+    - '---------------------INS SimpleName@@Name:thenOp @TO@ MethodInvocation@@thenOp.isAssign() '
+    - '---------------------INS SimpleName@@MethodName:isAssign:[] @TO@ MethodInvocation@@thenOp.isAssign() '
+    - '------------------INS Operator@@&& @TO@ InfixExpression@@thenOp.isAssign()
+      && thenOp.getFirstChild().isName() '
+    - '------------------INS MethodInvocation@@thenOp.getFirstChild().isName() @TO@
+      InfixExpression@@thenOp.isAssign() && thenOp.getFirstChild().isName() '
+    - '---------------------INS SimpleName@@Name:thenOp @TO@ MethodInvocation@@thenOp.getFirstChild().isName() '
+    - '---------------------INS MethodInvocation@@MethodName:getFirstChild:[] @TO@
+      MethodInvocation@@thenOp.getFirstChild().isName() '
+    - '---------------------INS SimpleName@@MethodName:isName:[] @TO@ MethodInvocation@@thenOp.getFirstChild().isName() '
+    - '------UPD PrefixExpression@@!mayEffectMutableState(lhs) @TO@ !mayHaveSideEffects(cond) '
+    - '---------UPD MethodInvocation@@mayEffectMutableState(lhs) @TO@ mayHaveSideEffects(cond) '
+    - '------------UPD SimpleName@@MethodName:mayEffectMutableState:[lhs] @TO@ MethodName:mayHaveSideEffects:[cond] '
+    - '---------------UPD SimpleName@@lhs @TO@ cond '
+  files_cnt: '1'
+  repair_actions_cnt: 1

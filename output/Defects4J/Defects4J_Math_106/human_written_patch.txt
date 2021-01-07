@@ -1,0 +1,27 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_106/src/java/org/apache/commons/math/fraction/ProperFractionFormat.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_106/fixed-version/src/java/org/apache/commons/math/fraction/ProperFractionFormat.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_106/src/java/org/apache/commons/math/fraction/ProperFractionFormat.java	2020-03-01 00:24:45.701720676 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_106/fixed-version/src/java/org/apache/commons/math/fraction/ProperFractionFormat.java	2020-03-01 00:24:48.137835464 -0800
+@@ -162,7 +162,11 @@
+             return null;
+         }
+         
++        if (num.intValue() < 0) {
+             // minus signs should be leading, invalid expression
++            pos.setIndex(initialIndex);
++            return null;
++        }
+ 
+         // parse '/'
+         int startIndex = pos.getIndex();
+@@ -197,7 +201,11 @@
+             return null;
+         }
+         
++        if (den.intValue() < 0) {
+             // minus signs must be leading, invalid
++            pos.setIndex(initialIndex);
++            return null;
++        }
+ 
+         int w = whole.intValue();
+         int n = num.intValue();

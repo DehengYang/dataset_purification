@@ -1,0 +1,117 @@
+1 bug_id: Closure-37
+2 src folder:
+  name of src folder: src
+  number of files: 411
+  number of java files: 397
+  number of src classes: 1329
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.IntegrationTest#testIncompleteFunction
+  failing tests:
+  - com.google.javascript.jscomp.IntegrationTest
+  number of all test cases: 7409
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.349
+  purification via delta debugging: 409.789
+  repair actions extraction: 2.119
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.IntegrationTest#testIncompleteFunction: 2319
+  fixed:
+    com.google.javascript.jscomp.IntegrationTest#testIncompleteFunction: 4401
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 5
+  covDel: 1
+  cov_patch_lines: 6
+  delta_patch_lines: 5
+  oriAdd: 5
+  oriDel: 1
+  ori_patch_lines: 6
+  purAdd: 4
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 13
+  failFail: 1
+  passed: 1
+  total: 15
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_37/src/com/google/javascript/jscomp/NodeTraversal.java\t\
+    2020-10-22 11:54:43.053047486 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_37/purify/patch/com/google/javascript/jscomp/NodeTraversal.java\t\
+    2020-10-22 11:54:43.053047486 -0400\n@@ -538,7 +538,7 @@\n \n     // Body\n  \
+    \   Preconditions.checkState(body.getNext() == null &&\n-            body.isBlock());\n\
+    +            body.isBlock(), body);\n     traverseBranch(body, n);\n \n     popScope();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_37/src/com/google/javascript/jscomp/NodeTraversal.java\t\
+    2020-10-22 12:02:03.953797903 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_37/purify/purified/com/google/javascript/jscomp/NodeTraversal.java\t\
+    2020-10-22 12:02:03.953797903 -0400\n@@ -538,7 +538,7 @@\n \n     // Body\n  \
+    \   Preconditions.checkState(body.getNext() == null &&\n-            body.isBlock());\n\
+    +            body.isBlock(), body);\n     traverseBranch(body, n);\n \n     popScope();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '2'
+  com/google/javascript/jscomp/NodeTraversal, com/google/javascript/jscomp/parsing/IRFactory:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!bodyNode.isBlock() @TO@ MethodDeclaration@@@@Node,
+      MethodName:processFunctionNode, @@Argus:FunctionNode+functionNode+ '
+    - '---INS PrefixExpression@@!bodyNode.isBlock() @TO@ IfStatement@@PrefixExpression:!bodyNode.isBlock() '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!bodyNode.isBlock() '
+    - '------INS MethodInvocation@@bodyNode.isBlock() @TO@ PrefixExpression@@!bodyNode.isBlock() '
+    - '---------INS SimpleName@@Name:bodyNode @TO@ MethodInvocation@@bodyNode.isBlock() '
+    - '---------INS SimpleName@@MethodName:isBlock:[] @TO@ MethodInvocation@@bodyNode.isBlock() '
+    - '---INS ExpressionStatement@@MethodInvocation:Preconditions.checkState(config.isIdeMode)
+      @TO@ IfStatement@@PrefixExpression:!bodyNode.isBlock() '
+    - '------INS MethodInvocation@@Preconditions.checkState(config.isIdeMode) @TO@
+      ExpressionStatement@@MethodInvocation:Preconditions.checkState(config.isIdeMode) '
+    - '---------INS SimpleName@@Name:Preconditions @TO@ MethodInvocation@@Preconditions.checkState(config.isIdeMode) '
+    - '---------INS SimpleName@@MethodName:checkState:[config.isIdeMode] @TO@ MethodInvocation@@Preconditions.checkState(config.isIdeMode) '
+    - '------------INS QualifiedName@@config.isIdeMode @TO@ SimpleName@@MethodName:checkState:[config.isIdeMode] '
+    - '---------------INS SimpleName@@config @TO@ QualifiedName@@config.isIdeMode '
+    - '---------------INS SimpleName@@isIdeMode @TO@ QualifiedName@@config.isIdeMode '
+    - '---INS ExpressionStatement@@Assignment:bodyNode=IR.block() @TO@ IfStatement@@PrefixExpression:!bodyNode.isBlock() '
+    - '------INS Assignment@@bodyNode=IR.block() @TO@ ExpressionStatement@@Assignment:bodyNode=IR.block() '
+    - '---------INS SimpleName@@bodyNode @TO@ Assignment@@bodyNode=IR.block() '
+    - '---------INS Operator@@= @TO@ Assignment@@bodyNode=IR.block() '
+    - '---------INS MethodInvocation@@IR.block() @TO@ Assignment@@bodyNode=IR.block() '
+    - '------------INS SimpleName@@Name:IR @TO@ MethodInvocation@@IR.block() '
+    - '------------INS SimpleName@@MethodName:block:[] @TO@ MethodInvocation@@IR.block() '
+  files_cnt: '2'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '2'
+  com/google/javascript/jscomp/NodeTraversal, com/google/javascript/jscomp/parsing/IRFactory:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!bodyNode.isBlock() @TO@ MethodDeclaration@@@@Node,
+      MethodName:processFunctionNode, @@Argus:FunctionNode+functionNode+ '
+    - '---INS PrefixExpression@@!bodyNode.isBlock() @TO@ IfStatement@@PrefixExpression:!bodyNode.isBlock() '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!bodyNode.isBlock() '
+    - '------INS MethodInvocation@@bodyNode.isBlock() @TO@ PrefixExpression@@!bodyNode.isBlock() '
+    - '---------INS SimpleName@@Name:bodyNode @TO@ MethodInvocation@@bodyNode.isBlock() '
+    - '---------INS SimpleName@@MethodName:isBlock:[] @TO@ MethodInvocation@@bodyNode.isBlock() '
+    - '---INS ExpressionStatement@@Assignment:bodyNode=IR.block() @TO@ IfStatement@@PrefixExpression:!bodyNode.isBlock() '
+    - '------INS Assignment@@bodyNode=IR.block() @TO@ ExpressionStatement@@Assignment:bodyNode=IR.block() '
+    - '---------INS SimpleName@@bodyNode @TO@ Assignment@@bodyNode=IR.block() '
+    - '---------INS Operator@@= @TO@ Assignment@@bodyNode=IR.block() '
+    - '---------INS MethodInvocation@@IR.block() @TO@ Assignment@@bodyNode=IR.block() '
+    - '------------INS SimpleName@@Name:IR @TO@ MethodInvocation@@IR.block() '
+    - '------------INS SimpleName@@MethodName:block:[] @TO@ MethodInvocation@@IR.block() '
+  files_cnt: '2'
+  repair_actions_cnt: 1

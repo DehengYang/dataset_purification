@@ -1,0 +1,14 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_22/src/main/java/org/apache/commons/lang3/math/Fraction.java	2020-10-21 01:06:14.442084949 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_22/purify/assertBeforeMut/org/apache/commons/lang3/math/Fraction.java	2020-10-21 01:06:14.442084949 -0400
+@@ -580,8 +580,10 @@
+      */
+     private static int greatestCommonDivisor(int u, int v) {
+         // From Commons Math:
++        if ((u == 0) || (v == 0)) {
++        }
+         //if either operand is abs 1, return 1:
+-        if (Math.abs(u) <= 1 || Math.abs(v) <= 1) {
++        if (Math.abs(u) == 1 || Math.abs(v) == 1) {
+             return 1;
+         }
+         // keep u and v negative, as negative integers range down to

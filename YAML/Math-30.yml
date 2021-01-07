@@ -1,0 +1,90 @@
+1 bug_id: Math-30
+2 src folder:
+  name of src folder: java
+  number of files: 623
+  number of java files: 622
+  number of src classes: 841
+  number of test classes: 309
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.stat.inference.MannWhitneyUTestTest#testBigDataSet
+  failing tests:
+  - org.apache.commons.math3.stat.inference.MannWhitneyUTestTest
+  number of all test cases: 3729
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.002
+  purification via delta debugging: 104.033
+  repair actions extraction: 0.719
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.stat.inference.MannWhitneyUTestTest#testBigDataSet: 347
+  fixed:
+    org.apache.commons.math3.stat.inference.MannWhitneyUTestTest#testBigDataSet: 370
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_30/src/main/java/org/apache/commons/math3/stat/inference/MannWhitneyUTest.java\t\
+    2020-10-21 10:31:58.159475734 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_30/purify/patch/org/apache/commons/math3/stat/inference/MannWhitneyUTest.java\t\
+    2020-10-21 10:31:58.159475734 -0400\n@@ -170,7 +170,7 @@\n                   \
+    \                           final int n2)\n         throws ConvergenceException,\
+    \ MaxCountExceededException {\n \n-        final int n1n2prod = n1 * n2;\n+  \
+    \      final double n1n2prod = n1 * n2;\n \n         // http://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U#Normal_approximation\n\
+    \         final double EU = n1n2prod / 2.0;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_30/src/main/java/org/apache/commons/math3/stat/inference/MannWhitneyUTest.java\t\
+    2020-10-21 10:33:58.774968880 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_30/purify/purified/org/apache/commons/math3/stat/inference/MannWhitneyUTest.java\t\
+    2020-10-21 10:33:58.774968880 -0400\n@@ -170,7 +170,7 @@\n                   \
+    \                           final int n2)\n         throws ConvergenceException,\
+    \ MaxCountExceededException {\n \n-        final int n1n2prod = n1 * n2;\n+  \
+    \      final double n1n2prod = n1 * n2;\n \n         // http://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U#Normal_approximation\n\
+    \         final double EU = n1n2prod / 2.0;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/stat/inference/MannWhitneyUTest:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final int n1n2prod=n1 * n2; @TO@ final double
+      n1n2prod=n1 * n2; '
+    - '---UPD PrimitiveType@@int @TO@ double '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 2
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/stat/inference/MannWhitneyUTest:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final int n1n2prod=n1 * n2; @TO@ final double
+      n1n2prod=n1 * n2; '
+    - '---UPD PrimitiveType@@int @TO@ double '
+  repair_actions_cnt: 1

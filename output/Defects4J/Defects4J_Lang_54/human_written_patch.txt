@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_54/src/java/org/apache/commons/lang/LocaleUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_54/fixed-version/src/java/org/apache/commons/lang/LocaleUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_54/src/java/org/apache/commons/lang/LocaleUtils.java	2020-03-01 00:11:42.356811245 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_54/fixed-version/src/java/org/apache/commons/lang/LocaleUtils.java	2020-03-01 00:11:45.796973332 -0800
+@@ -111,6 +111,9 @@
+                 throw new IllegalArgumentException("Invalid locale format: " + str);
+             }
+             char ch3 = str.charAt(3);
++            if (ch3 == '_') {
++                return new Locale(str.substring(0, 2), "", str.substring(4));
++            }
+             char ch4 = str.charAt(4);
+             if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+                 throw new IllegalArgumentException("Invalid locale format: " + str);

@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_1/src/com/google/javascript/jscomp/RemoveUnusedVars.java	2020-10-22 08:56:10.151179440 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_1/purify/assertBeforeMut/com/google/javascript/jscomp/RemoveUnusedVars.java	2020-10-22 08:56:10.151179440 -0400
+@@ -376,6 +376,9 @@
+     // is removing globals, then it's OK to remove unused function args.
+     //
+     // See http://code.google.com/p/closure-compiler/issues/detail?id=253
++    if (!removeGlobals) {
++      return;
++    }
+ 
+     Node function = fnScope.getRootNode();
+ 

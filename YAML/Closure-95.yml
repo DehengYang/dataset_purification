@@ -1,0 +1,230 @@
+1 bug_id: Closure-95
+2 src folder:
+  name of src folder: src
+  number of files: 354
+  number of java files: 343
+  number of src classes: 1121
+  number of test classes: 184
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testQualifiedNameInference5
+  - com.google.javascript.jscomp.TypedScopeCreatorTest#testGlobalQualifiedNameInLocalScope
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  - com.google.javascript.jscomp.TypedScopeCreatorTest
+  number of all test cases: 6111
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.261
+  purification via delta debugging: 170.077
+  repair actions extraction: 2.675
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testQualifiedNameInference5: 4436
+    com.google.javascript.jscomp.TypedScopeCreatorTest#testGlobalQualifiedNameInLocalScope: 4196
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testQualifiedNameInference5: 4567
+    com.google.javascript.jscomp.TypedScopeCreatorTest#testGlobalQualifiedNameInLocalScope: 4232
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 7
+  covDel: 0
+  cov_patch_lines: 7
+  delta_patch_lines: 7
+  oriAdd: 7
+  oriDel: 0
+  ori_patch_lines: 7
+  purAdd: 7
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 12
+  failFail: 1
+  passed: 0
+  total: 13
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_95/src/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 12:20:43.471496168 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_95/purify/patch/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 12:20:43.467496052 -0400\n@@ -896,9 +896,16 @@\n       // scope where\
+    \ the root object appears. This helps out people\n       // who declare \"global\"\
+    \ names in an anonymous namespace.\n       Scope scopeToDeclareIn = scope;\n+\
+    \      if (n.getType() == Token.GETPROP && !scope.isGlobal() &&\n+          isQnameRootedInGlobalScope(n))\
+    \ {\n+        Scope globalScope = scope.getGlobalScope();\n \n         // don't\
+    \ try to declare in the global scope if there's\n         // already a symbol\
+    \ there with this name.\n+        if (!globalScope.isDeclared(variableName, false))\
+    \ {\n+          scopeToDeclareIn = scope.getGlobalScope();\n+        }\n+    \
+    \  }\n \n       // declared in closest scope?\n       if (scopeToDeclareIn.isDeclared(variableName,\
+    \ false)) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_95/src/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 12:24:01.285222915 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_95/purify/purified/com/google/javascript/jscomp/TypedScopeCreator.java\t\
+    2020-10-23 12:24:01.285222915 -0400\n@@ -896,9 +896,16 @@\n       // scope where\
+    \ the root object appears. This helps out people\n       // who declare \"global\"\
+    \ names in an anonymous namespace.\n       Scope scopeToDeclareIn = scope;\n+\
+    \      if (n.getType() == Token.GETPROP && !scope.isGlobal() &&\n+          isQnameRootedInGlobalScope(n))\
+    \ {\n+        Scope globalScope = scope.getGlobalScope();\n \n         // don't\
+    \ try to declare in the global scope if there's\n         // already a symbol\
+    \ there with this name.\n+        if (!globalScope.isDeclared(variableName, false))\
+    \ {\n+          scopeToDeclareIn = scope.getGlobalScope();\n+        }\n+    \
+    \  }\n \n       // declared in closest scope?\n       if (scopeToDeclareIn.isDeclared(variableName,\
+    \ false)) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypedScopeCreator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n.getType() == Token.GETPROP && !scope.isGlobal()
+      && isQnameRootedInGlobalScope(n) @TO@ MethodDeclaration@@@@void, MethodName:defineSlot,
+      @@Argus:Node+n+Node+parent+JSType+type+boolean+inferred+ '
+    - '---INS InfixExpression@@n.getType() == Token.GETPROP && !scope.isGlobal() &&
+      isQnameRootedInGlobalScope(n) @TO@ IfStatement@@InfixExpression:n.getType()
+      == Token.GETPROP && !scope.isGlobal() && isQnameRootedInGlobalScope(n) '
+    - '------INS InfixExpression@@n.getType() == Token.GETPROP && !scope.isGlobal()
+      @TO@ InfixExpression@@n.getType() == Token.GETPROP && !scope.isGlobal() && isQnameRootedInGlobalScope(n) '
+    - '---------INS InfixExpression@@n.getType() == Token.GETPROP @TO@ InfixExpression@@n.getType()
+      == Token.GETPROP && !scope.isGlobal() '
+    - '------------INS MethodInvocation@@n.getType() @TO@ InfixExpression@@n.getType()
+      == Token.GETPROP '
+    - '---------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getType() '
+    - '---------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@n.getType() '
+    - '------------INS Operator@@== @TO@ InfixExpression@@n.getType() == Token.GETPROP '
+    - '------------INS QualifiedName@@Token.GETPROP @TO@ InfixExpression@@n.getType()
+      == Token.GETPROP '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETPROP '
+    - '---------------INS SimpleName@@GETPROP @TO@ QualifiedName@@Token.GETPROP '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@n.getType() == Token.GETPROP
+      && !scope.isGlobal() '
+    - '---------INS PrefixExpression@@!scope.isGlobal() @TO@ InfixExpression@@n.getType()
+      == Token.GETPROP && !scope.isGlobal() '
+    - '------------INS Operator@@! @TO@ PrefixExpression@@!scope.isGlobal() '
+    - '------------INS MethodInvocation@@scope.isGlobal() @TO@ PrefixExpression@@!scope.isGlobal() '
+    - '---------------INS SimpleName@@Name:scope @TO@ MethodInvocation@@scope.isGlobal() '
+    - '---------------INS SimpleName@@MethodName:isGlobal:[] @TO@ MethodInvocation@@scope.isGlobal() '
+    - '------INS Operator@@&& @TO@ InfixExpression@@n.getType() == Token.GETPROP &&
+      !scope.isGlobal() && isQnameRootedInGlobalScope(n) '
+    - '------INS MethodInvocation@@isQnameRootedInGlobalScope(n) @TO@ InfixExpression@@n.getType()
+      == Token.GETPROP && !scope.isGlobal() && isQnameRootedInGlobalScope(n) '
+    - '---------INS SimpleName@@MethodName:isQnameRootedInGlobalScope:[n] @TO@ MethodInvocation@@isQnameRootedInGlobalScope(n) '
+    - '------------INS SimpleName@@n @TO@ SimpleName@@MethodName:isQnameRootedInGlobalScope:[n] '
+    - '---INS VariableDeclarationStatement@@Scope globalScope=scope.getGlobalScope();
+      @TO@ IfStatement@@InfixExpression:n.getType() == Token.GETPROP && !scope.isGlobal()
+      && isQnameRootedInGlobalScope(n) '
+    - '------INS SimpleType@@Scope @TO@ VariableDeclarationStatement@@Scope globalScope=scope.getGlobalScope(); '
+    - '------INS VariableDeclarationFragment@@globalScope=scope.getGlobalScope() @TO@
+      VariableDeclarationStatement@@Scope globalScope=scope.getGlobalScope(); '
+    - '---------INS SimpleName@@globalScope @TO@ VariableDeclarationFragment@@globalScope=scope.getGlobalScope() '
+    - '---------INS MethodInvocation@@scope.getGlobalScope() @TO@ VariableDeclarationFragment@@globalScope=scope.getGlobalScope() '
+    - '------------INS SimpleName@@Name:scope @TO@ MethodInvocation@@scope.getGlobalScope() '
+    - '------------INS SimpleName@@MethodName:getGlobalScope:[] @TO@ MethodInvocation@@scope.getGlobalScope() '
+    - '---INS IfStatement@@PrefixExpression:!globalScope.isDeclared(variableName,false)
+      @TO@ IfStatement@@InfixExpression:n.getType() == Token.GETPROP && !scope.isGlobal()
+      && isQnameRootedInGlobalScope(n) '
+    - '------INS PrefixExpression@@!globalScope.isDeclared(variableName,false) @TO@
+      IfStatement@@PrefixExpression:!globalScope.isDeclared(variableName,false) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!globalScope.isDeclared(variableName,false) '
+    - '---------INS MethodInvocation@@globalScope.isDeclared(variableName,false) @TO@
+      PrefixExpression@@!globalScope.isDeclared(variableName,false) '
+    - '------------INS SimpleName@@Name:globalScope @TO@ MethodInvocation@@globalScope.isDeclared(variableName,false) '
+    - '------------INS SimpleName@@MethodName:isDeclared:[variableName, false] @TO@
+      MethodInvocation@@globalScope.isDeclared(variableName,false) '
+    - '---------------INS SimpleName@@variableName @TO@ SimpleName@@MethodName:isDeclared:[variableName,
+      false] '
+    - '---------------INS BooleanLiteral@@false @TO@ SimpleName@@MethodName:isDeclared:[variableName,
+      false] '
+    - '------INS ExpressionStatement@@Assignment:scopeToDeclareIn=scope.getGlobalScope()
+      @TO@ IfStatement@@PrefixExpression:!globalScope.isDeclared(variableName,false) '
+    - '---------INS Assignment@@scopeToDeclareIn=scope.getGlobalScope() @TO@ ExpressionStatement@@Assignment:scopeToDeclareIn=scope.getGlobalScope() '
+    - '------------INS SimpleName@@scopeToDeclareIn @TO@ Assignment@@scopeToDeclareIn=scope.getGlobalScope() '
+    - '------------INS Operator@@= @TO@ Assignment@@scopeToDeclareIn=scope.getGlobalScope() '
+    - '------------INS MethodInvocation@@scope.getGlobalScope() @TO@ Assignment@@scopeToDeclareIn=scope.getGlobalScope() '
+    - '---------------INS SimpleName@@Name:scope @TO@ MethodInvocation@@scope.getGlobalScope() '
+    - '---------------INS SimpleName@@MethodName:getGlobalScope:[] @TO@ MethodInvocation@@scope.getGlobalScope() '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypedScopeCreator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:n.getType() == Token.GETPROP && !scope.isGlobal()
+      && isQnameRootedInGlobalScope(n) @TO@ MethodDeclaration@@@@void, MethodName:defineSlot,
+      @@Argus:Node+n+Node+parent+JSType+type+boolean+inferred+ '
+    - '---INS InfixExpression@@n.getType() == Token.GETPROP && !scope.isGlobal() &&
+      isQnameRootedInGlobalScope(n) @TO@ IfStatement@@InfixExpression:n.getType()
+      == Token.GETPROP && !scope.isGlobal() && isQnameRootedInGlobalScope(n) '
+    - '------INS InfixExpression@@n.getType() == Token.GETPROP && !scope.isGlobal()
+      @TO@ InfixExpression@@n.getType() == Token.GETPROP && !scope.isGlobal() && isQnameRootedInGlobalScope(n) '
+    - '---------INS InfixExpression@@n.getType() == Token.GETPROP @TO@ InfixExpression@@n.getType()
+      == Token.GETPROP && !scope.isGlobal() '
+    - '------------INS MethodInvocation@@n.getType() @TO@ InfixExpression@@n.getType()
+      == Token.GETPROP '
+    - '---------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getType() '
+    - '---------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@n.getType() '
+    - '------------INS Operator@@== @TO@ InfixExpression@@n.getType() == Token.GETPROP '
+    - '------------INS QualifiedName@@Token.GETPROP @TO@ InfixExpression@@n.getType()
+      == Token.GETPROP '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.GETPROP '
+    - '---------------INS SimpleName@@GETPROP @TO@ QualifiedName@@Token.GETPROP '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@n.getType() == Token.GETPROP
+      && !scope.isGlobal() '
+    - '---------INS PrefixExpression@@!scope.isGlobal() @TO@ InfixExpression@@n.getType()
+      == Token.GETPROP && !scope.isGlobal() '
+    - '------------INS Operator@@! @TO@ PrefixExpression@@!scope.isGlobal() '
+    - '------------INS MethodInvocation@@scope.isGlobal() @TO@ PrefixExpression@@!scope.isGlobal() '
+    - '---------------INS SimpleName@@Name:scope @TO@ MethodInvocation@@scope.isGlobal() '
+    - '---------------INS SimpleName@@MethodName:isGlobal:[] @TO@ MethodInvocation@@scope.isGlobal() '
+    - '------INS Operator@@&& @TO@ InfixExpression@@n.getType() == Token.GETPROP &&
+      !scope.isGlobal() && isQnameRootedInGlobalScope(n) '
+    - '------INS MethodInvocation@@isQnameRootedInGlobalScope(n) @TO@ InfixExpression@@n.getType()
+      == Token.GETPROP && !scope.isGlobal() && isQnameRootedInGlobalScope(n) '
+    - '---------INS SimpleName@@MethodName:isQnameRootedInGlobalScope:[n] @TO@ MethodInvocation@@isQnameRootedInGlobalScope(n) '
+    - '------------INS SimpleName@@n @TO@ SimpleName@@MethodName:isQnameRootedInGlobalScope:[n] '
+    - '---INS VariableDeclarationStatement@@Scope globalScope=scope.getGlobalScope();
+      @TO@ IfStatement@@InfixExpression:n.getType() == Token.GETPROP && !scope.isGlobal()
+      && isQnameRootedInGlobalScope(n) '
+    - '------INS SimpleType@@Scope @TO@ VariableDeclarationStatement@@Scope globalScope=scope.getGlobalScope(); '
+    - '------INS VariableDeclarationFragment@@globalScope=scope.getGlobalScope() @TO@
+      VariableDeclarationStatement@@Scope globalScope=scope.getGlobalScope(); '
+    - '---------INS SimpleName@@globalScope @TO@ VariableDeclarationFragment@@globalScope=scope.getGlobalScope() '
+    - '---------INS MethodInvocation@@scope.getGlobalScope() @TO@ VariableDeclarationFragment@@globalScope=scope.getGlobalScope() '
+    - '------------INS SimpleName@@Name:scope @TO@ MethodInvocation@@scope.getGlobalScope() '
+    - '------------INS SimpleName@@MethodName:getGlobalScope:[] @TO@ MethodInvocation@@scope.getGlobalScope() '
+    - '---INS IfStatement@@PrefixExpression:!globalScope.isDeclared(variableName,false)
+      @TO@ IfStatement@@InfixExpression:n.getType() == Token.GETPROP && !scope.isGlobal()
+      && isQnameRootedInGlobalScope(n) '
+    - '------INS PrefixExpression@@!globalScope.isDeclared(variableName,false) @TO@
+      IfStatement@@PrefixExpression:!globalScope.isDeclared(variableName,false) '
+    - '---------INS Operator@@! @TO@ PrefixExpression@@!globalScope.isDeclared(variableName,false) '
+    - '---------INS MethodInvocation@@globalScope.isDeclared(variableName,false) @TO@
+      PrefixExpression@@!globalScope.isDeclared(variableName,false) '
+    - '------------INS SimpleName@@Name:globalScope @TO@ MethodInvocation@@globalScope.isDeclared(variableName,false) '
+    - '------------INS SimpleName@@MethodName:isDeclared:[variableName, false] @TO@
+      MethodInvocation@@globalScope.isDeclared(variableName,false) '
+    - '---------------INS SimpleName@@variableName @TO@ SimpleName@@MethodName:isDeclared:[variableName,
+      false] '
+    - '---------------INS BooleanLiteral@@false @TO@ SimpleName@@MethodName:isDeclared:[variableName,
+      false] '
+    - '------INS ExpressionStatement@@Assignment:scopeToDeclareIn=scope.getGlobalScope()
+      @TO@ IfStatement@@PrefixExpression:!globalScope.isDeclared(variableName,false) '
+    - '---------INS Assignment@@scopeToDeclareIn=scope.getGlobalScope() @TO@ ExpressionStatement@@Assignment:scopeToDeclareIn=scope.getGlobalScope() '
+    - '------------INS SimpleName@@scopeToDeclareIn @TO@ Assignment@@scopeToDeclareIn=scope.getGlobalScope() '
+    - '------------INS Operator@@= @TO@ Assignment@@scopeToDeclareIn=scope.getGlobalScope() '
+    - '------------INS MethodInvocation@@scope.getGlobalScope() @TO@ Assignment@@scopeToDeclareIn=scope.getGlobalScope() '
+    - '---------------INS SimpleName@@Name:scope @TO@ MethodInvocation@@scope.getGlobalScope() '
+    - '---------------INS SimpleName@@MethodName:getGlobalScope:[] @TO@ MethodInvocation@@scope.getGlobalScope() '
+  files_cnt: '1'
+  repair_actions_cnt: 1

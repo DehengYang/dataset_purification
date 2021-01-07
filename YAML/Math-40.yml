@@ -1,0 +1,399 @@
+1 bug_id: Math-40
+2 src folder:
+  name of src folder: java
+  number of files: 622
+  number of java files: 621
+  number of src classes: 848
+  number of test classes: 294
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.analysis.solvers.BracketingNthOrderBrentSolverTest#testIssue716
+  failing tests:
+  - org.apache.commons.math.analysis.solvers.BracketingNthOrderBrentSolverTest
+  number of all test cases: 3200
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.063
+  purification via delta debugging: 680.143
+  repair actions extraction: 1.073
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.analysis.solvers.BracketingNthOrderBrentSolverTest#testIssue716: 523
+  fixed:
+    org.apache.commons.math.analysis.solvers.BracketingNthOrderBrentSolverTest#testIssue716: 182
+6 reduced lines:
+  by all: 6
+  by coverage: 1
+  by delta debugging: 5
+  covAdd: 8
+  covDel: 1
+  cov_patch_lines: 9
+  delta_patch_lines: 4
+  oriAdd: 8
+  oriDel: 2
+  ori_patch_lines: 10
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 14
+  failFail: 2
+  passed: 3
+  total: 19
+9 sibling repair actions:
+- 0 5 0.9852774631936579
+- 1 4 0.9027667984189723
+- 2 7 0.9919137466307277
+- 3 6 0.9261744966442953
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_40/src/main/java/org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver.java\t\
+    2020-10-21 11:13:52.992214223 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_40/purify/patch/org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver.java\t\
+    2020-10-21 11:13:52.988214108 -0400\n@@ -232,10 +232,16 @@\n             double\
+    \ targetY;\n             if (agingA >= MAXIMAL_AGING) {\n                 // we\
+    \ keep updating the high bracket, try to compensate this\n-                targetY\
+    \ = -REDUCTION_FACTOR * yB;\n+                final int p = agingA - MAXIMAL_AGING;\n\
+    +                final double weightA = (1 << p) - 1;\n+                final\
+    \ double weightB = p + 1;\n+                targetY = (weightA * yA - weightB\
+    \ * REDUCTION_FACTOR * yB) / (weightA + weightB);\n             } else if (agingB\
+    \ >= MAXIMAL_AGING) {\n                 // we keep updating the low bracket, try\
+    \ to compensate this\n-                targetY = -REDUCTION_FACTOR * yA;\n+  \
+    \              final int p = agingB - MAXIMAL_AGING;\n+                final double\
+    \ weightA = p + 1;\n+                final double weightB = (1 << p) - 1;\n+ \
+    \               targetY = (weightB * yB - weightA * REDUCTION_FACTOR * yA) / (weightA\
+    \ + weightB);\n             } else {\n                 // bracketing is balanced,\
+    \ try to find the root itself\n                 targetY = 0;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_40/src/main/java/org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver.java\t\
+    2020-10-21 11:25:43.796762135 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_40/purify/purified/org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver.java\t\
+    2020-10-21 11:25:43.796762135 -0400\n@@ -233,6 +233,10 @@\n             if (agingA\
+    \ >= MAXIMAL_AGING) {\n                 // we keep updating the high bracket,\
+    \ try to compensate this\n                 targetY = -REDUCTION_FACTOR * yB;\n\
+    +                final int p = agingA - MAXIMAL_AGING;\n+                final\
+    \ double weightA = (1 << p) - 1;\n+                final double weightB = p +\
+    \ 1;\n+                targetY = (weightA * yA - weightB * REDUCTION_FACTOR *\
+    \ yB) / (weightA + weightB);\n             } else if (agingB >= MAXIMAL_AGING)\
+    \ {\n                 // we keep updating the low bracket, try to compensate this\n\
+    \                 targetY = -REDUCTION_FACTOR * yA;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final int p=agingA - MAXIMAL_AGING; @TO@
+      IfStatement@@InfixExpression:agingA >= MAXIMAL_AGING '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final int p=agingA
+      - MAXIMAL_AGING; '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@final int p=agingA
+      - MAXIMAL_AGING; '
+    - '---INS VariableDeclarationFragment@@p=agingA - MAXIMAL_AGING @TO@ VariableDeclarationStatement@@final
+      int p=agingA - MAXIMAL_AGING; '
+    - '------INS SimpleName@@p @TO@ VariableDeclarationFragment@@p=agingA - MAXIMAL_AGING '
+    - '------INS InfixExpression@@agingA - MAXIMAL_AGING @TO@ VariableDeclarationFragment@@p=agingA
+      - MAXIMAL_AGING '
+    - '---------INS SimpleName@@agingA @TO@ InfixExpression@@agingA - MAXIMAL_AGING '
+    - '---------INS Operator@@- @TO@ InfixExpression@@agingA - MAXIMAL_AGING '
+    - '---------INS SimpleName@@MAXIMAL_AGING @TO@ InfixExpression@@agingA - MAXIMAL_AGING '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:targetY=-REDUCTION_FACTOR * yB @TO@ Assignment:targetY=(weightA
+      * yA - weightB * REDUCTION_FACTOR * yB) / (weightA + weightB) '
+    - '---UPD Assignment@@targetY=-REDUCTION_FACTOR * yB @TO@ targetY=(weightA * yA
+      - weightB * REDUCTION_FACTOR * yB) / (weightA + weightB) '
+    - '------DEL InfixExpression@@-REDUCTION_FACTOR * yB '
+    - '---------DEL PrefixExpression@@-REDUCTION_FACTOR '
+    - '------------DEL Operator@@- '
+    - '------------DEL SimpleName@@REDUCTION_FACTOR '
+    - '------INS InfixExpression@@(weightA * yA - weightB * REDUCTION_FACTOR * yB)
+      / (weightA + weightB) @TO@ Assignment@@targetY=-REDUCTION_FACTOR * yB '
+    - '---------INS ParenthesizedExpression@@(weightA * yA - weightB * REDUCTION_FACTOR
+      * yB) @TO@ InfixExpression@@(weightA * yA - weightB * REDUCTION_FACTOR * yB)
+      / (weightA + weightB) '
+    - '------------INS InfixExpression@@weightA * yA - weightB * REDUCTION_FACTOR
+      * yB @TO@ ParenthesizedExpression@@(weightA * yA - weightB * REDUCTION_FACTOR
+      * yB) '
+    - '---------------INS InfixExpression@@weightA * yA @TO@ InfixExpression@@weightA
+      * yA - weightB * REDUCTION_FACTOR * yB '
+    - '------------------INS SimpleName@@weightA @TO@ InfixExpression@@weightA * yA '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@weightA * yA '
+    - '------------------INS SimpleName@@yA @TO@ InfixExpression@@weightA * yA '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@weightA * yA - weightB
+      * REDUCTION_FACTOR * yB '
+    - '---------------INS InfixExpression@@weightB * REDUCTION_FACTOR * yB @TO@ InfixExpression@@weightA
+      * yA - weightB * REDUCTION_FACTOR * yB '
+    - '------------------MOV Operator@@* @TO@ InfixExpression@@weightB * REDUCTION_FACTOR
+      * yB '
+    - '------------------MOV SimpleName@@yB @TO@ InfixExpression@@weightB * REDUCTION_FACTOR
+      * yB '
+    - '------------------INS SimpleName@@weightB @TO@ InfixExpression@@weightB * REDUCTION_FACTOR
+      * yB '
+    - '------------------INS SimpleName@@REDUCTION_FACTOR @TO@ InfixExpression@@weightB
+      * REDUCTION_FACTOR * yB '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@(weightA * yA - weightB * REDUCTION_FACTOR
+      * yB) / (weightA + weightB) '
+    - '---------INS ParenthesizedExpression@@(weightA + weightB) @TO@ InfixExpression@@(weightA
+      * yA - weightB * REDUCTION_FACTOR * yB) / (weightA + weightB) '
+    - '------------INS InfixExpression@@weightA + weightB @TO@ ParenthesizedExpression@@(weightA
+      + weightB) '
+    - '---------------INS SimpleName@@weightA @TO@ InfixExpression@@weightA + weightB '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@weightA + weightB '
+    - '---------------INS SimpleName@@weightB @TO@ InfixExpression@@weightA + weightB '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double weightA=(1 << p) - 1; @TO@ IfStatement@@InfixExpression:agingA
+      >= MAXIMAL_AGING '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double weightA=(1
+      << p) - 1; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      weightA=(1 << p) - 1; '
+    - '---INS VariableDeclarationFragment@@weightA=(1 << p) - 1 @TO@ VariableDeclarationStatement@@final
+      double weightA=(1 << p) - 1; '
+    - '------INS SimpleName@@weightA @TO@ VariableDeclarationFragment@@weightA=(1
+      << p) - 1 '
+    - '------INS InfixExpression@@(1 << p) - 1 @TO@ VariableDeclarationFragment@@weightA=(1
+      << p) - 1 '
+    - '---------INS ParenthesizedExpression@@(1 << p) @TO@ InfixExpression@@(1 <<
+      p) - 1 '
+    - '------------INS InfixExpression@@1 << p @TO@ ParenthesizedExpression@@(1 <<
+      p) '
+    - '---------------INS NumberLiteral@@1 @TO@ InfixExpression@@1 << p '
+    - '---------------INS Operator@@<< @TO@ InfixExpression@@1 << p '
+    - '---------------INS SimpleName@@p @TO@ InfixExpression@@1 << p '
+    - '---------INS Operator@@- @TO@ InfixExpression@@(1 << p) - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@(1 << p) - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double weightB=p + 1; @TO@ IfStatement@@InfixExpression:agingA
+      >= MAXIMAL_AGING '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double weightB=p
+      + 1; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      weightB=p + 1; '
+    - '---INS VariableDeclarationFragment@@weightB=p + 1 @TO@ VariableDeclarationStatement@@final
+      double weightB=p + 1; '
+    - '------INS SimpleName@@weightB @TO@ VariableDeclarationFragment@@weightB=p +
+      1 '
+    - '------INS InfixExpression@@p + 1 @TO@ VariableDeclarationFragment@@weightB=p
+      + 1 '
+    - '---------INS SimpleName@@p @TO@ InfixExpression@@p + 1 '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@p + 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@p + 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:targetY=-REDUCTION_FACTOR * yA @TO@ Assignment:targetY=(weightB
+      * yB - weightA * REDUCTION_FACTOR * yA) / (weightA + weightB) '
+    - '---UPD Assignment@@targetY=-REDUCTION_FACTOR * yA @TO@ targetY=(weightB * yB
+      - weightA * REDUCTION_FACTOR * yA) / (weightA + weightB) '
+    - '------DEL InfixExpression@@-REDUCTION_FACTOR * yA '
+    - '---------DEL PrefixExpression@@-REDUCTION_FACTOR '
+    - '------------DEL Operator@@- '
+    - '------------DEL SimpleName@@REDUCTION_FACTOR '
+    - '------INS InfixExpression@@(weightB * yB - weightA * REDUCTION_FACTOR * yA)
+      / (weightA + weightB) @TO@ Assignment@@targetY=-REDUCTION_FACTOR * yA '
+    - '---------INS ParenthesizedExpression@@(weightB * yB - weightA * REDUCTION_FACTOR
+      * yA) @TO@ InfixExpression@@(weightB * yB - weightA * REDUCTION_FACTOR * yA)
+      / (weightA + weightB) '
+    - '------------INS InfixExpression@@weightB * yB - weightA * REDUCTION_FACTOR
+      * yA @TO@ ParenthesizedExpression@@(weightB * yB - weightA * REDUCTION_FACTOR
+      * yA) '
+    - '---------------INS InfixExpression@@weightB * yB @TO@ InfixExpression@@weightB
+      * yB - weightA * REDUCTION_FACTOR * yA '
+    - '------------------INS SimpleName@@weightB @TO@ InfixExpression@@weightB * yB '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@weightB * yB '
+    - '------------------INS SimpleName@@yB @TO@ InfixExpression@@weightB * yB '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@weightB * yB - weightA
+      * REDUCTION_FACTOR * yA '
+    - '---------------INS InfixExpression@@weightA * REDUCTION_FACTOR * yA @TO@ InfixExpression@@weightB
+      * yB - weightA * REDUCTION_FACTOR * yA '
+    - '------------------MOV Operator@@* @TO@ InfixExpression@@weightA * REDUCTION_FACTOR
+      * yA '
+    - '------------------MOV SimpleName@@yA @TO@ InfixExpression@@weightA * REDUCTION_FACTOR
+      * yA '
+    - '------------------INS SimpleName@@weightA @TO@ InfixExpression@@weightA * REDUCTION_FACTOR
+      * yA '
+    - '------------------INS SimpleName@@REDUCTION_FACTOR @TO@ InfixExpression@@weightA
+      * REDUCTION_FACTOR * yA '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@(weightB * yB - weightA * REDUCTION_FACTOR
+      * yA) / (weightA + weightB) '
+    - '---------INS ParenthesizedExpression@@(weightA + weightB) @TO@ InfixExpression@@(weightB
+      * yB - weightA * REDUCTION_FACTOR * yA) / (weightA + weightB) '
+    - '------------INS InfixExpression@@weightA + weightB @TO@ ParenthesizedExpression@@(weightA
+      + weightB) '
+    - '---------------INS SimpleName@@weightA @TO@ InfixExpression@@weightA + weightB '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@weightA + weightB '
+    - '---------------INS SimpleName@@weightB @TO@ InfixExpression@@weightA + weightB '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final int p=agingB - MAXIMAL_AGING; @TO@
+      IfStatement@@InfixExpression:agingB >= MAXIMAL_AGING '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final int p=agingB
+      - MAXIMAL_AGING; '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@final int p=agingB
+      - MAXIMAL_AGING; '
+    - '---INS VariableDeclarationFragment@@p=agingB - MAXIMAL_AGING @TO@ VariableDeclarationStatement@@final
+      int p=agingB - MAXIMAL_AGING; '
+    - '------INS SimpleName@@p @TO@ VariableDeclarationFragment@@p=agingB - MAXIMAL_AGING '
+    - '------INS InfixExpression@@agingB - MAXIMAL_AGING @TO@ VariableDeclarationFragment@@p=agingB
+      - MAXIMAL_AGING '
+    - '---------INS SimpleName@@agingB @TO@ InfixExpression@@agingB - MAXIMAL_AGING '
+    - '---------INS Operator@@- @TO@ InfixExpression@@agingB - MAXIMAL_AGING '
+    - '---------INS SimpleName@@MAXIMAL_AGING @TO@ InfixExpression@@agingB - MAXIMAL_AGING '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double weightA=p + 1; @TO@ IfStatement@@InfixExpression:agingB
+      >= MAXIMAL_AGING '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double weightA=p
+      + 1; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      weightA=p + 1; '
+    - '---INS VariableDeclarationFragment@@weightA=p + 1 @TO@ VariableDeclarationStatement@@final
+      double weightA=p + 1; '
+    - '------INS SimpleName@@weightA @TO@ VariableDeclarationFragment@@weightA=p +
+      1 '
+    - '------INS InfixExpression@@p + 1 @TO@ VariableDeclarationFragment@@weightA=p
+      + 1 '
+    - '---------INS SimpleName@@p @TO@ InfixExpression@@p + 1 '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@p + 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@p + 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double weightB=(1 << p) - 1; @TO@ IfStatement@@InfixExpression:agingB
+      >= MAXIMAL_AGING '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double weightB=(1
+      << p) - 1; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      weightB=(1 << p) - 1; '
+    - '---INS VariableDeclarationFragment@@weightB=(1 << p) - 1 @TO@ VariableDeclarationStatement@@final
+      double weightB=(1 << p) - 1; '
+    - '------INS SimpleName@@weightB @TO@ VariableDeclarationFragment@@weightB=(1
+      << p) - 1 '
+    - '------INS InfixExpression@@(1 << p) - 1 @TO@ VariableDeclarationFragment@@weightB=(1
+      << p) - 1 '
+    - '---------INS ParenthesizedExpression@@(1 << p) @TO@ InfixExpression@@(1 <<
+      p) - 1 '
+    - '------------INS InfixExpression@@1 << p @TO@ ParenthesizedExpression@@(1 <<
+      p) '
+    - '---------------INS NumberLiteral@@1 @TO@ InfixExpression@@1 << p '
+    - '---------------INS Operator@@<< @TO@ InfixExpression@@1 << p '
+    - '---------------INS SimpleName@@p @TO@ InfixExpression@@1 << p '
+    - '---------INS Operator@@- @TO@ InfixExpression@@(1 << p) - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@(1 << p) - 1 '
+  repair_actions_cnt: 8
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final int p=agingA - MAXIMAL_AGING; @TO@
+      IfStatement@@InfixExpression:agingA >= MAXIMAL_AGING '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final int p=agingA
+      - MAXIMAL_AGING; '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@final int p=agingA
+      - MAXIMAL_AGING; '
+    - '---INS VariableDeclarationFragment@@p=agingA - MAXIMAL_AGING @TO@ VariableDeclarationStatement@@final
+      int p=agingA - MAXIMAL_AGING; '
+    - '------INS SimpleName@@p @TO@ VariableDeclarationFragment@@p=agingA - MAXIMAL_AGING '
+    - '------INS InfixExpression@@agingA - MAXIMAL_AGING @TO@ VariableDeclarationFragment@@p=agingA
+      - MAXIMAL_AGING '
+    - '---------INS SimpleName@@agingA @TO@ InfixExpression@@agingA - MAXIMAL_AGING '
+    - '---------INS Operator@@- @TO@ InfixExpression@@agingA - MAXIMAL_AGING '
+    - '---------INS SimpleName@@MAXIMAL_AGING @TO@ InfixExpression@@agingA - MAXIMAL_AGING '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double weightA=(1 << p) - 1; @TO@ IfStatement@@InfixExpression:agingA
+      >= MAXIMAL_AGING '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double weightA=(1
+      << p) - 1; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      weightA=(1 << p) - 1; '
+    - '---INS VariableDeclarationFragment@@weightA=(1 << p) - 1 @TO@ VariableDeclarationStatement@@final
+      double weightA=(1 << p) - 1; '
+    - '------INS SimpleName@@weightA @TO@ VariableDeclarationFragment@@weightA=(1
+      << p) - 1 '
+    - '------INS InfixExpression@@(1 << p) - 1 @TO@ VariableDeclarationFragment@@weightA=(1
+      << p) - 1 '
+    - '---------INS ParenthesizedExpression@@(1 << p) @TO@ InfixExpression@@(1 <<
+      p) - 1 '
+    - '------------INS InfixExpression@@1 << p @TO@ ParenthesizedExpression@@(1 <<
+      p) '
+    - '---------------INS NumberLiteral@@1 @TO@ InfixExpression@@1 << p '
+    - '---------------INS Operator@@<< @TO@ InfixExpression@@1 << p '
+    - '---------------INS SimpleName@@p @TO@ InfixExpression@@1 << p '
+    - '---------INS Operator@@- @TO@ InfixExpression@@(1 << p) - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@(1 << p) - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double weightB=p + 1; @TO@ IfStatement@@InfixExpression:agingA
+      >= MAXIMAL_AGING '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double weightB=p
+      + 1; '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      weightB=p + 1; '
+    - '---INS VariableDeclarationFragment@@weightB=p + 1 @TO@ VariableDeclarationStatement@@final
+      double weightB=p + 1; '
+    - '------INS SimpleName@@weightB @TO@ VariableDeclarationFragment@@weightB=p +
+      1 '
+    - '------INS InfixExpression@@p + 1 @TO@ VariableDeclarationFragment@@weightB=p
+      + 1 '
+    - '---------INS SimpleName@@p @TO@ InfixExpression@@p + 1 '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@p + 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@p + 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:targetY=(weightA * yA - weightB * REDUCTION_FACTOR
+      * yB) / (weightA + weightB) @TO@ IfStatement@@InfixExpression:agingA >= MAXIMAL_AGING '
+    - '---INS Assignment@@targetY=(weightA * yA - weightB * REDUCTION_FACTOR * yB)
+      / (weightA + weightB) @TO@ ExpressionStatement@@Assignment:targetY=(weightA
+      * yA - weightB * REDUCTION_FACTOR * yB) / (weightA + weightB) '
+    - '------INS SimpleName@@targetY @TO@ Assignment@@targetY=(weightA * yA - weightB
+      * REDUCTION_FACTOR * yB) / (weightA + weightB) '
+    - '------INS Operator@@= @TO@ Assignment@@targetY=(weightA * yA - weightB * REDUCTION_FACTOR
+      * yB) / (weightA + weightB) '
+    - '------INS InfixExpression@@(weightA * yA - weightB * REDUCTION_FACTOR * yB)
+      / (weightA + weightB) @TO@ Assignment@@targetY=(weightA * yA - weightB * REDUCTION_FACTOR
+      * yB) / (weightA + weightB) '
+    - '---------INS ParenthesizedExpression@@(weightA * yA - weightB * REDUCTION_FACTOR
+      * yB) @TO@ InfixExpression@@(weightA * yA - weightB * REDUCTION_FACTOR * yB)
+      / (weightA + weightB) '
+    - '------------INS InfixExpression@@weightA * yA - weightB * REDUCTION_FACTOR
+      * yB @TO@ ParenthesizedExpression@@(weightA * yA - weightB * REDUCTION_FACTOR
+      * yB) '
+    - '---------------INS InfixExpression@@weightA * yA @TO@ InfixExpression@@weightA
+      * yA - weightB * REDUCTION_FACTOR * yB '
+    - '------------------INS SimpleName@@weightA @TO@ InfixExpression@@weightA * yA '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@weightA * yA '
+    - '------------------INS SimpleName@@yA @TO@ InfixExpression@@weightA * yA '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@weightA * yA - weightB
+      * REDUCTION_FACTOR * yB '
+    - '---------------INS InfixExpression@@weightB * REDUCTION_FACTOR * yB @TO@ InfixExpression@@weightA
+      * yA - weightB * REDUCTION_FACTOR * yB '
+    - '------------------INS SimpleName@@weightB @TO@ InfixExpression@@weightB * REDUCTION_FACTOR
+      * yB '
+    - '------------------INS Operator@@* @TO@ InfixExpression@@weightB * REDUCTION_FACTOR
+      * yB '
+    - '------------------INS SimpleName@@REDUCTION_FACTOR @TO@ InfixExpression@@weightB
+      * REDUCTION_FACTOR * yB '
+    - '------------------INS SimpleName@@yB @TO@ InfixExpression@@weightB * REDUCTION_FACTOR
+      * yB '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@(weightA * yA - weightB * REDUCTION_FACTOR
+      * yB) / (weightA + weightB) '
+    - '---------INS ParenthesizedExpression@@(weightA + weightB) @TO@ InfixExpression@@(weightA
+      * yA - weightB * REDUCTION_FACTOR * yB) / (weightA + weightB) '
+    - '------------INS InfixExpression@@weightA + weightB @TO@ ParenthesizedExpression@@(weightA
+      + weightB) '
+    - '---------------INS SimpleName@@weightA @TO@ InfixExpression@@weightA + weightB '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@weightA + weightB '
+    - '---------------INS SimpleName@@weightB @TO@ InfixExpression@@weightA + weightB '
+  repair_actions_cnt: 4

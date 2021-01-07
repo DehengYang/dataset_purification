@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_55/src/java/org/apache/commons/lang/time/StopWatch.java	2020-10-21 03:59:42.418558121 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_55/purify/assertBeforeMut/org/apache/commons/lang/time/StopWatch.java	2020-10-21 03:59:42.418558121 -0400
+@@ -115,7 +115,9 @@
+         if(this.runningState != STATE_RUNNING && this.runningState != STATE_SUSPENDED) {
+             throw new IllegalStateException("Stopwatch is not running. ");
+         }
++        if(this.runningState == STATE_RUNNING) {
+             stopTime = System.currentTimeMillis();
++        }
+         this.runningState = STATE_STOPPED;
+     }
+ 

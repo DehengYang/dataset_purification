@@ -1,0 +1,11 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_107/src/com/google/javascript/jscomp/CommandLineRunner.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_107/fixed-version/src/com/google/javascript/jscomp/CommandLineRunner.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_107/src/com/google/javascript/jscomp/CommandLineRunner.java	2020-03-01 00:32:40.204078906 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_107/fixed-version/src/com/google/javascript/jscomp/CommandLineRunner.java	2020-03-01 00:32:43.244222154 -0800
+@@ -859,6 +859,7 @@
+       // so we might as well inline it. But shut off the i18n warnings,
+       // because the user didn't really ask for i18n.
+       options.messageBundle = new EmptyMessageBundle();
++      options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS, CheckLevel.OFF);
+     }
+ 
+     return options;

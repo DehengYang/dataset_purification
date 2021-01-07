@@ -1,0 +1,118 @@
+1 bug_id: Math-94
+2 src folder:
+  name of src folder: java
+  number of files: 297
+  number of java files: 272
+  number of src classes: 313
+  number of test classes: 159
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.util.MathUtilsTest#testGcd
+  failing tests:
+  - org.apache.commons.math.util.MathUtilsTest
+  number of all test cases: 1500
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 33.132
+  repair actions extraction: 2.132
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.util.MathUtilsTest#testGcd: 21
+  fixed:
+    org.apache.commons.math.util.MathUtilsTest#testGcd: 21
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_94/src/java/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 14:06:57.340468616 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_94/purify/patch/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 14:06:57.340468616 -0400\n@@ -409,7 +409,7 @@\n      * @since 1.1\n\
+    \      */\n     public static int gcd(int u, int v) {\n-        if (u * v == 0)\
+    \ {\n+        if ((u == 0) || (v == 0)) {\n             return (Math.abs(u) +\
+    \ Math.abs(v));\n         }\n         // keep u and v negative, as negative integers\
+    \ range down to"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_94/src/java/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 14:07:43.501803092 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_94/purify/purified/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 14:07:43.501803092 -0400\n@@ -409,7 +409,7 @@\n      * @since 1.1\n\
+    \      */\n     public static int gcd(int u, int v) {\n-        if (u * v == 0)\
+    \ {\n+        if ((u == 0) || (v == 0)) {\n             return (Math.abs(u) +\
+    \ Math.abs(v));\n         }\n         // keep u and v negative, as negative integers\
+    \ range down to"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/MathUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:u * v == 0 @TO@ InfixExpression:(u == 0) ||
+      (v == 0) '
+    - '---UPD InfixExpression@@u * v == 0 @TO@ (u == 0) || (v == 0) '
+    - '------INS ParenthesizedExpression@@(u == 0) @TO@ InfixExpression@@u * v ==
+      0 '
+    - '---------INS InfixExpression@@u == 0 @TO@ ParenthesizedExpression@@(u == 0) '
+    - '------------MOV SimpleName@@u @TO@ InfixExpression@@u == 0 '
+    - '------------MOV Operator@@* @TO@ InfixExpression@@u == 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@u == 0 '
+    - '------DEL InfixExpression@@u * v '
+    - '------INS Operator@@|| @TO@ InfixExpression@@u * v == 0 '
+    - '------INS ParenthesizedExpression@@(v == 0) @TO@ InfixExpression@@u * v ==
+      0 '
+    - '---------INS InfixExpression@@v == 0 @TO@ ParenthesizedExpression@@(v == 0) '
+    - '------------MOV SimpleName@@v @TO@ InfixExpression@@v == 0 '
+    - '------------MOV Operator@@== @TO@ InfixExpression@@v == 0 '
+    - '------------MOV NumberLiteral@@0 @TO@ InfixExpression@@v == 0 '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/MathUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:u * v == 0 @TO@ InfixExpression:(u == 0) ||
+      (v == 0) '
+    - '---UPD InfixExpression@@u * v == 0 @TO@ (u == 0) || (v == 0) '
+    - '------INS ParenthesizedExpression@@(u == 0) @TO@ InfixExpression@@u * v ==
+      0 '
+    - '---------INS InfixExpression@@u == 0 @TO@ ParenthesizedExpression@@(u == 0) '
+    - '------------MOV SimpleName@@u @TO@ InfixExpression@@u == 0 '
+    - '------------MOV Operator@@* @TO@ InfixExpression@@u == 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@u == 0 '
+    - '------DEL InfixExpression@@u * v '
+    - '------INS Operator@@|| @TO@ InfixExpression@@u * v == 0 '
+    - '------INS ParenthesizedExpression@@(v == 0) @TO@ InfixExpression@@u * v ==
+      0 '
+    - '---------INS InfixExpression@@v == 0 @TO@ ParenthesizedExpression@@(v == 0) '
+    - '------------MOV SimpleName@@v @TO@ InfixExpression@@v == 0 '
+    - '------------MOV Operator@@== @TO@ InfixExpression@@v == 0 '
+    - '------------MOV NumberLiteral@@0 @TO@ InfixExpression@@v == 0 '
+  repair_actions_cnt: 1

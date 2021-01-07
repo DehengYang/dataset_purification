@@ -1,0 +1,27 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_108/src/com/google/javascript/jscomp/ScopedAliases.java	2020-10-23 13:41:54.720549588 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_108/purify/purified/com/google/javascript/jscomp/ScopedAliases.java	2020-10-23 13:41:54.720549588 -0400
+@@ -256,6 +256,7 @@
+     private final Map<String, Var> aliases = Maps.newHashMap();
+ 
+     // Also temporary and cleared for each scope.
++    private final Set<Node> injectedDecls = Sets.newHashSet();
+ 
+     // Suppose you create an alias.
+     // var x = goog.x;
+@@ -429,6 +430,7 @@
+             } else {
+               grandparent.addChildBefore(newDecl, varNode);
+             }
++            injectedDecls.add(newDecl.getFirstChild());
+           }
+ 
+           // Rewrite "var name = EXPR;" to "var name = $jscomp.scope.name;"
+@@ -578,7 +580,7 @@
+         // When we inject declarations, we duplicate jsdoc. Make sure
+         // we only process that jsdoc once.
+         JSDocInfo info = n.getJSDocInfo();
+-        if (info != null) {
++        if (info != null && !injectedDecls.contains(n)) {
+           for (Node node : info.getTypeNodes()) {
+             fixTypeNode(node);
+           }

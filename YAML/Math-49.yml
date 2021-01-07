@@ -1,0 +1,159 @@
+1 bug_id: Math-49
+2 src folder:
+  name of src folder: java
+  number of files: 614
+  number of java files: 567
+  number of src classes: 745
+  number of test classes: 275
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.linear.SparseRealVectorTest#testConcurrentModification
+  failing tests:
+  - org.apache.commons.math.linear.SparseRealVectorTest
+  number of all test cases: 2955
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.029
+  purification via delta debugging: 233.231
+  repair actions extraction: 1.982
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.linear.SparseRealVectorTest#testConcurrentModification: 730
+  fixed:
+    org.apache.commons.math.linear.SparseRealVectorTest#testConcurrentModification: 451
+6 reduced lines:
+  by all: 5
+  by coverage: 0
+  by delta debugging: 5
+  covAdd: 4
+  covDel: 4
+  cov_patch_lines: 8
+  delta_patch_lines: 3
+  oriAdd: 4
+  oriDel: 4
+  ori_patch_lines: 8
+  purAdd: 2
+  purDel: 1
+7 reduced chunks:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  cov: 4
+  original: 4
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 2
+  passed: 1
+  total: 7
+9 sibling repair actions:
+- 0 1 1.0
+- 0 2 1.0
+- 0 3 1.0
+- 1 2 1.0
+- 1 3 1.0
+- 2 3 1.0
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_49/src/main/java/org/apache/commons/math/linear/OpenMapRealVector.java\t\
+    2020-10-22 07:18:19.901287757 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_49/purify/patch/org/apache/commons/math/linear/OpenMapRealVector.java\t\
+    2020-10-22 07:18:19.897287641 -0400\n@@ -342,7 +342,7 @@\n     public OpenMapRealVector\
+    \ ebeDivide(RealVector v) {\n         checkVectorDimensions(v.getDimension());\n\
+    \         OpenMapRealVector res = new OpenMapRealVector(this);\n-        Iterator\
+    \ iter = res.entries.iterator();\n+        Iterator iter = entries.iterator();\n\
+    \         while (iter.hasNext()) {\n             iter.advance();\n           \
+    \  res.setEntry(iter.key(), iter.value() / v.getEntry(iter.key()));\n@@ -355,7\
+    \ +355,7 @@\n     public OpenMapRealVector ebeDivide(double[] v) {\n         checkVectorDimensions(v.length);\n\
+    \         OpenMapRealVector res = new OpenMapRealVector(this);\n-        Iterator\
+    \ iter = res.entries.iterator();\n+        Iterator iter = entries.iterator();\n\
+    \         while (iter.hasNext()) {\n             iter.advance();\n           \
+    \  res.setEntry(iter.key(), iter.value() / v[iter.key()]);\n@@ -367,7 +367,7 @@\n\
+    \     public OpenMapRealVector ebeMultiply(RealVector v) {\n         checkVectorDimensions(v.getDimension());\n\
+    \         OpenMapRealVector res = new OpenMapRealVector(this);\n-        Iterator\
+    \ iter = res.entries.iterator();\n+        Iterator iter = entries.iterator();\n\
+    \         while (iter.hasNext()) {\n             iter.advance();\n           \
+    \  res.setEntry(iter.key(), iter.value() * v.getEntry(iter.key()));\n@@ -380,7\
+    \ +380,7 @@\n     public OpenMapRealVector ebeMultiply(double[] v) {\n       \
+    \  checkVectorDimensions(v.length);\n         OpenMapRealVector res = new OpenMapRealVector(this);\n\
+    -        Iterator iter = res.entries.iterator();\n+        Iterator iter = entries.iterator();\n\
+    \         while (iter.hasNext()) {\n             iter.advance();\n           \
+    \  res.setEntry(iter.key(), iter.value() * v[iter.key()]);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_49/src/main/java/org/apache/commons/math/linear/OpenMapRealVector.java\t\
+    2020-10-22 07:22:34.504656048 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_49/purify/purified/org/apache/commons/math/linear/OpenMapRealVector.java\t\
+    2020-10-22 07:22:34.504656048 -0400\n@@ -367,7 +367,7 @@\n     public OpenMapRealVector\
+    \ ebeMultiply(RealVector v) {\n         checkVectorDimensions(v.getDimension());\n\
+    \         OpenMapRealVector res = new OpenMapRealVector(this);\n-        Iterator\
+    \ iter = res.entries.iterator();\n+        Iterator iter = entries.iterator();\n\
+    \         while (iter.hasNext()) {\n             iter.advance();\n           \
+    \  res.setEntry(iter.key(), iter.value() * v.getEntry(iter.key()));\n@@ -381,6\
+    \ +381,7 @@\n         checkVectorDimensions(v.length);\n         OpenMapRealVector\
+    \ res = new OpenMapRealVector(this);\n         Iterator iter = res.entries.iterator();\n\
+    +        Iterator iter = entries.iterator();\n         while (iter.hasNext())\
+    \ {\n             iter.advance();\n             res.setEntry(iter.key(), iter.value()\
+    \ * v[iter.key()]);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/linear/OpenMapRealVector:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Iterator iter=res.entries.iterator(); @TO@
+      Iterator iter=entries.iterator(); '
+    - '---UPD VariableDeclarationFragment@@iter=res.entries.iterator() @TO@ iter=entries.iterator() '
+    - '------UPD MethodInvocation@@res.entries.iterator() @TO@ entries.iterator() '
+    - '---------INS SimpleName@@Name:entries @TO@ MethodInvocation@@res.entries.iterator() '
+    - '---------DEL QualifiedName@@Name:res.entries '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Iterator iter=res.entries.iterator(); @TO@
+      Iterator iter=entries.iterator(); '
+    - '---UPD VariableDeclarationFragment@@iter=res.entries.iterator() @TO@ iter=entries.iterator() '
+    - '------UPD MethodInvocation@@res.entries.iterator() @TO@ entries.iterator() '
+    - '---------INS SimpleName@@Name:entries @TO@ MethodInvocation@@res.entries.iterator() '
+    - '---------DEL QualifiedName@@Name:res.entries '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Iterator iter=res.entries.iterator(); @TO@
+      Iterator iter=entries.iterator(); '
+    - '---UPD VariableDeclarationFragment@@iter=res.entries.iterator() @TO@ iter=entries.iterator() '
+    - '------UPD MethodInvocation@@res.entries.iterator() @TO@ entries.iterator() '
+    - '---------INS SimpleName@@Name:entries @TO@ MethodInvocation@@res.entries.iterator() '
+    - '---------DEL QualifiedName@@Name:res.entries '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Iterator iter=res.entries.iterator(); @TO@
+      Iterator iter=entries.iterator(); '
+    - '---UPD VariableDeclarationFragment@@iter=res.entries.iterator() @TO@ iter=entries.iterator() '
+    - '------UPD MethodInvocation@@res.entries.iterator() @TO@ entries.iterator() '
+    - '---------INS SimpleName@@Name:entries @TO@ MethodInvocation@@res.entries.iterator() '
+    - '---------DEL QualifiedName@@Name:res.entries '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/linear/OpenMapRealVector:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Iterator iter=res.entries.iterator(); @TO@
+      Iterator iter=entries.iterator(); '
+    - '---UPD VariableDeclarationFragment@@iter=res.entries.iterator() @TO@ iter=entries.iterator() '
+    - '------UPD MethodInvocation@@res.entries.iterator() @TO@ entries.iterator() '
+    - '---------INS SimpleName@@Name:entries @TO@ MethodInvocation@@res.entries.iterator() '
+    - '---------DEL QualifiedName@@Name:res.entries '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Iterator iter=entries.iterator(); @TO@ MethodDeclaration@@public,
+      @@OpenMapRealVector, MethodName:ebeMultiply, @@Argus:double[]+v+ '
+    - '---INS SimpleType@@Iterator @TO@ VariableDeclarationStatement@@Iterator iter=entries.iterator(); '
+    - '---INS VariableDeclarationFragment@@iter=entries.iterator() @TO@ VariableDeclarationStatement@@Iterator
+      iter=entries.iterator(); '
+    - '------INS SimpleName@@iter @TO@ VariableDeclarationFragment@@iter=entries.iterator() '
+    - '------INS MethodInvocation@@entries.iterator() @TO@ VariableDeclarationFragment@@iter=entries.iterator() '
+    - '---------INS SimpleName@@Name:entries @TO@ MethodInvocation@@entries.iterator() '
+    - '---------INS SimpleName@@MethodName:iterator:[] @TO@ MethodInvocation@@entries.iterator() '
+  repair_actions_cnt: 2

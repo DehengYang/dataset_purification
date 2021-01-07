@@ -1,0 +1,10 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_9/src/com/google/javascript/jscomp/ProcessCommonJSModules.java	2020-10-21 17:27:47.349752349 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_9/purify/purified/com/google/javascript/jscomp/ProcessCommonJSModules.java	2020-10-21 17:27:47.349752349 -0400
+@@ -116,6 +116,7 @@
+   private String normalizeSourceName(String filename) {
+     // The DOS command shell will normalize "/" to "\", so we have to
+     // wrestle it back.
++    filename = filename.replace("\\", "/");
+ 
+     if (filename.indexOf(filenamePrefix) == 0) {
+       filename = filename.substring(filenamePrefix.length());

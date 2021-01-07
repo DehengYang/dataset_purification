@@ -1,0 +1,47 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_85/src/com/google/javascript/jscomp/UnreachableCodeElimination.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_85/fixed-version/src/com/google/javascript/jscomp/UnreachableCodeElimination.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_85/src/com/google/javascript/jscomp/UnreachableCodeElimination.java	2020-03-01 00:30:53.171035591 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_85/fixed-version/src/com/google/javascript/jscomp/UnreachableCodeElimination.java	2020-03-01 00:30:55.155129080 -0800
+@@ -150,20 +150,7 @@
+       return n;
+     }
+ 
+-    if (n.getParent() == null) {
+-      List<DiGraphEdge<Node,Branch>> outEdges = gNode.getOutEdges();
+-      if (outEdges.size() == 1) {
+-        return tryRemoveUnconditionalBranching(outEdges.get(0).getDestination().getValue());
+-      }
+-    }
+     switch (n.getType()) {
+-      case Token.BLOCK:
+-        if (n.hasChildren()) {
+-          Node first = n.getFirstChild();
+-          return tryRemoveUnconditionalBranching(first);
+-        } else {
+-          return tryRemoveUnconditionalBranching(ControlFlowAnalysis.computeFollowNode(n));
+-        }
+       case Token.RETURN:
+         if (n.hasChildren()) {
+           break;
+@@ -180,7 +167,7 @@
+             (n.getNext() == null || n.getNext().getType() == Token.FUNCTION)) {
+ 
+           Preconditions.checkState(outEdges.get(0).getValue() == Branch.UNCOND);
+-          Node fallThrough = tryRemoveUnconditionalBranching(computeFollowing(n));
++          Node fallThrough = computeFollowing(n);
+           Node nextCfgNode = outEdges.get(0).getDestination().getValue();
+           if (nextCfgNode == fallThrough) {
+             removeDeadExprStatementSafely(n);
+@@ -193,6 +180,13 @@
+ 
+   private Node computeFollowing(Node n) {
+     Node next = ControlFlowAnalysis.computeFollowNode(n);
++    while (next != null && next.getType() == Token.BLOCK) {
++      if (next.hasChildren()) {
++        next = next.getFirstChild();
++      } else {
++        next = computeFollowing(next);
++      }
++    }
+     return next;
+   }
+ 

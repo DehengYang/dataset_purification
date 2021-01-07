@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_69/src/main/java/org/apache/commons/math/stat/correlation/PearsonsCorrelation.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_69/fixed-version/src/main/java/org/apache/commons/math/stat/correlation/PearsonsCorrelation.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_69/src/main/java/org/apache/commons/math/stat/correlation/PearsonsCorrelation.java	2020-03-01 00:20:49.190576384 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_69/fixed-version/src/main/java/org/apache/commons/math/stat/correlation/PearsonsCorrelation.java	2020-03-01 00:20:52.806746776 -0800
+@@ -168,7 +168,7 @@
+                 } else {
+                     double r = correlationMatrix.getEntry(i, j);
+                     double t = Math.abs(r * Math.sqrt((nObs - 2)/(1 - r * r)));
+-                    out[i][j] = 2 * (1 - tDistribution.cumulativeProbability(t));
++                    out[i][j] = 2 * tDistribution.cumulativeProbability(-t);
+                 }
+             }
+         }

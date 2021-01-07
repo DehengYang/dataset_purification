@@ -1,0 +1,124 @@
+1 bug_id: Mockito-38
+2 src folder:
+  name of src folder: src
+  number of files: 205
+  number of java files: 169
+  number of src classes: 192
+  number of test classes: 141
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.bugs.ActualInvocationHasNullArgumentNPEBugTest#shouldAllowPassingNullArgument
+  - org.mockito.internal.verification.argumentmatching.ArgumentMatchingToolTest#shouldWorkFineWhenGivenArgIsNull
+  failing tests:
+  - org.mockitousage.bugs.ActualInvocationHasNullArgumentNPEBugTest
+  - org.mockito.internal.verification.argumentmatching.ArgumentMatchingToolTest
+  number of all test cases: 0
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.371
+  purification via delta debugging: 148.395
+  repair actions extraction: 0.745
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_38/src/org/mockito/internal/verification/argumentmatching/ArgumentMatchingTool.java\t\
+    2020-10-24 21:04:03.822209650 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_38/purify/patch/org/mockito/internal/verification/argumentmatching/ArgumentMatchingTool.java\t\
+    2020-10-24 21:04:03.822209650 -0400\n@@ -45,6 +45,6 @@\n     }\n \n     private\
+    \ boolean toStringEquals(Matcher m, Object arg) {\n-        return StringDescription.toString(m).equals(arg.toString());\n\
+    +        return StringDescription.toString(m).equals(arg == null? \"null\" : arg.toString());\n\
+    \     }\n }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_38/src/org/mockito/internal/verification/argumentmatching/ArgumentMatchingTool.java\t\
+    2020-10-24 21:06:46.674924603 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_38/purify/purified/org/mockito/internal/verification/argumentmatching/ArgumentMatchingTool.java\t\
+    2020-10-24 21:06:46.674924603 -0400\n@@ -45,6 +45,6 @@\n     }\n \n     private\
+    \ boolean toStringEquals(Matcher m, Object arg) {\n-        return StringDescription.toString(m).equals(arg.toString());\n\
+    +        return StringDescription.toString(m).equals(arg == null? \"null\" : arg.toString());\n\
+    \     }\n }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/verification/argumentmatching/ArgumentMatchingTool:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:StringDescription.toString(m).equals(arg.toString())
+      @TO@ MethodInvocation:StringDescription.toString(m).equals(arg == null ? "null"
+      : arg.toString()) '
+    - '---UPD MethodInvocation@@StringDescription.toString(m).equals(arg.toString())
+      @TO@ StringDescription.toString(m).equals(arg == null ? "null" : arg.toString()) '
+    - '------UPD SimpleName@@MethodName:equals:[arg.toString()] @TO@ MethodName:equals:[arg
+      == null ? "null" : arg.toString()] '
+    - '---------INS ConditionalExpression@@arg == null ? "null" : arg.toString() @TO@
+      SimpleName@@MethodName:equals:[arg.toString()] '
+    - '------------INS InfixExpression@@arg == null @TO@ ConditionalExpression@@arg
+      == null ? "null" : arg.toString() '
+    - '---------------INS SimpleName@@arg @TO@ InfixExpression@@arg == null '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@arg == null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@arg == null '
+    - '------------INS StringLiteral@@"null" @TO@ ConditionalExpression@@arg == null
+      ? "null" : arg.toString() '
+    - '------------INS MethodInvocation@@arg.toString() @TO@ ConditionalExpression@@arg
+      == null ? "null" : arg.toString() '
+    - '---------------MOV SimpleName@@Name:arg @TO@ MethodInvocation@@arg.toString() '
+    - '---------------MOV SimpleName@@MethodName:toString:[] @TO@ MethodInvocation@@arg.toString() '
+    - '---------DEL MethodInvocation@@arg.toString() '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/verification/argumentmatching/ArgumentMatchingTool:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:StringDescription.toString(m).equals(arg.toString())
+      @TO@ MethodInvocation:StringDescription.toString(m).equals(arg == null ? "null"
+      : arg.toString()) '
+    - '---UPD MethodInvocation@@StringDescription.toString(m).equals(arg.toString())
+      @TO@ StringDescription.toString(m).equals(arg == null ? "null" : arg.toString()) '
+    - '------UPD SimpleName@@MethodName:equals:[arg.toString()] @TO@ MethodName:equals:[arg
+      == null ? "null" : arg.toString()] '
+    - '---------INS ConditionalExpression@@arg == null ? "null" : arg.toString() @TO@
+      SimpleName@@MethodName:equals:[arg.toString()] '
+    - '------------INS InfixExpression@@arg == null @TO@ ConditionalExpression@@arg
+      == null ? "null" : arg.toString() '
+    - '---------------INS SimpleName@@arg @TO@ InfixExpression@@arg == null '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@arg == null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@arg == null '
+    - '------------INS StringLiteral@@"null" @TO@ ConditionalExpression@@arg == null
+      ? "null" : arg.toString() '
+    - '------------INS MethodInvocation@@arg.toString() @TO@ ConditionalExpression@@arg
+      == null ? "null" : arg.toString() '
+    - '---------------MOV SimpleName@@Name:arg @TO@ MethodInvocation@@arg.toString() '
+    - '---------------MOV SimpleName@@MethodName:toString:[] @TO@ MethodInvocation@@arg.toString() '
+    - '---------DEL MethodInvocation@@arg.toString() '
+  repair_actions_cnt: 1

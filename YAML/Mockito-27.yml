@@ -1,0 +1,148 @@
+1 bug_id: Mockito-27
+2 src folder:
+  name of src folder: src
+  number of files: 292
+  number of java files: 255
+  number of src classes: 294
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.bugs.ListenersLostOnResetMockTest#listener
+  failing tests:
+  - org.mockitousage.bugs.ListenersLostOnResetMockTest
+  number of all test cases: 0
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.581
+  purification via delta debugging: 250.873
+  repair actions extraction: 0.848
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 2
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 1
+  oriDel: 2
+  ori_patch_lines: 3
+  purAdd: 1
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 1
+  total: 3
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_27/src/org/mockito/internal/util/MockUtil.java\t\
+    2020-10-24 19:59:20.118201596 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_27/purify/patch/org/mockito/internal/util/MockUtil.java\t\
+    2020-10-24 19:59:20.118201596 -0400\n@@ -61,8 +61,7 @@\n \n     public <T> void\
+    \ resetMock(T mock) {\n         MockHandlerInterface<T> oldMockHandler = getMockHandler(mock);\n\
+    -        MockHandler<T> newMockHandler = new MockHandler<T>(oldMockHandler);\n\
+    -        MethodInterceptorFilter newFilter = new MethodInterceptorFilter(newMockHandler,\
+    \ (MockSettingsImpl) org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS));\n\
+    +        MethodInterceptorFilter newFilter = newMethodInterceptorFilter(oldMockHandler.getMockSettings());\n\
+    \         ((Factory) mock).setCallback(0, newFilter);\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_27/src/org/mockito/internal/util/MockUtil.java\t\
+    2020-10-24 20:03:48.173913539 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_27/purify/purified/org/mockito/internal/util/MockUtil.java\t\
+    2020-10-24 20:03:48.173913539 -0400\n@@ -61,8 +61,7 @@\n \n     public <T> void\
+    \ resetMock(T mock) {\n         MockHandlerInterface<T> oldMockHandler = getMockHandler(mock);\n\
+    -        MockHandler<T> newMockHandler = new MockHandler<T>(oldMockHandler);\n\
+    -        MethodInterceptorFilter newFilter = new MethodInterceptorFilter(newMockHandler,\
+    \ (MockSettingsImpl) org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS));\n\
+    +        MethodInterceptorFilter newFilter = newMethodInterceptorFilter(oldMockHandler.getMockSettings());\n\
+    \         ((Factory) mock).setCallback(0, newFilter);\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/util/MockUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@MockHandler<T> newMockHandler=new MockHandler<T>(oldMockHandler); '
+    - '---DEL ParameterizedType@@MockHandler<T> '
+    - '------DEL SimpleType@@MockHandler '
+    - '------DEL SimpleType@@T '
+    - '---DEL VariableDeclarationFragment@@newMockHandler=new MockHandler<T>(oldMockHandler) '
+    - '------DEL SimpleName@@newMockHandler '
+    - '------DEL ClassInstanceCreation@@MockHandler<T>[oldMockHandler] '
+    - '---------DEL New@@new '
+    - '---------DEL ParameterizedType@@MockHandler<T> '
+    - '------------DEL SimpleType@@MockHandler '
+    - '------------DEL SimpleType@@T '
+    - '---------DEL SimpleName@@oldMockHandler '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@MethodInterceptorFilter newFilter=new MethodInterceptorFilter(newMockHandler,(MockSettingsImpl)org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS));
+      @TO@ MethodInterceptorFilter newFilter=newMethodInterceptorFilter(oldMockHandler.getMockSettings()); '
+    - '---UPD VariableDeclarationFragment@@newFilter=new MethodInterceptorFilter(newMockHandler,(MockSettingsImpl)org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS))
+      @TO@ newFilter=newMethodInterceptorFilter(oldMockHandler.getMockSettings()) '
+    - '------INS MethodInvocation@@newMethodInterceptorFilter(oldMockHandler.getMockSettings())
+      @TO@ VariableDeclarationFragment@@newFilter=new MethodInterceptorFilter(newMockHandler,(MockSettingsImpl)org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS)) '
+    - '---------MOV SimpleName@@MethodName:defaultAnswer:[org.mockito.Mockito.RETURNS_DEFAULTS]
+      @TO@ MethodInvocation@@newMethodInterceptorFilter(oldMockHandler.getMockSettings()) '
+    - '------DEL ClassInstanceCreation@@MethodInterceptorFilter[newMockHandler, (MockSettingsImpl)org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS)] '
+    - '---------DEL New@@new '
+    - '---------DEL SimpleType@@MethodInterceptorFilter '
+    - '---------DEL SimpleName@@newMockHandler '
+    - '---------DEL CastExpression@@(MockSettingsImpl)org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS) '
+    - '------------DEL SimpleType@@MockSettingsImpl '
+    - '------------DEL MethodInvocation@@org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS) '
+    - '---------------DEL QualifiedName@@Name:org.mockito.Mockito '
+    - '---------------DEL MethodInvocation@@MethodName:withSettings:[] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/util/MockUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@MockHandler<T> newMockHandler=new MockHandler<T>(oldMockHandler); '
+    - '---DEL ParameterizedType@@MockHandler<T> '
+    - '------DEL SimpleType@@MockHandler '
+    - '------DEL SimpleType@@T '
+    - '---DEL VariableDeclarationFragment@@newMockHandler=new MockHandler<T>(oldMockHandler) '
+    - '------DEL SimpleName@@newMockHandler '
+    - '------DEL ClassInstanceCreation@@MockHandler<T>[oldMockHandler] '
+    - '---------DEL New@@new '
+    - '---------DEL ParameterizedType@@MockHandler<T> '
+    - '------------DEL SimpleType@@MockHandler '
+    - '------------DEL SimpleType@@T '
+    - '---------DEL SimpleName@@oldMockHandler '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@MethodInterceptorFilter newFilter=new MethodInterceptorFilter(newMockHandler,(MockSettingsImpl)org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS));
+      @TO@ MethodInterceptorFilter newFilter=newMethodInterceptorFilter(oldMockHandler.getMockSettings()); '
+    - '---UPD VariableDeclarationFragment@@newFilter=new MethodInterceptorFilter(newMockHandler,(MockSettingsImpl)org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS))
+      @TO@ newFilter=newMethodInterceptorFilter(oldMockHandler.getMockSettings()) '
+    - '------INS MethodInvocation@@newMethodInterceptorFilter(oldMockHandler.getMockSettings())
+      @TO@ VariableDeclarationFragment@@newFilter=new MethodInterceptorFilter(newMockHandler,(MockSettingsImpl)org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS)) '
+    - '---------MOV SimpleName@@MethodName:defaultAnswer:[org.mockito.Mockito.RETURNS_DEFAULTS]
+      @TO@ MethodInvocation@@newMethodInterceptorFilter(oldMockHandler.getMockSettings()) '
+    - '------DEL ClassInstanceCreation@@MethodInterceptorFilter[newMockHandler, (MockSettingsImpl)org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS)] '
+    - '---------DEL New@@new '
+    - '---------DEL SimpleType@@MethodInterceptorFilter '
+    - '---------DEL SimpleName@@newMockHandler '
+    - '---------DEL CastExpression@@(MockSettingsImpl)org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS) '
+    - '------------DEL SimpleType@@MockSettingsImpl '
+    - '------------DEL MethodInvocation@@org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS) '
+    - '---------------DEL QualifiedName@@Name:org.mockito.Mockito '
+    - '---------------DEL MethodInvocation@@MethodName:withSettings:[] '
+  repair_actions_cnt: 2

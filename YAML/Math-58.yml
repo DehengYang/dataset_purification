@@ -1,0 +1,98 @@
+1 bug_id: Math-58
+2 src folder:
+  name of src folder: java
+  number of files: 537
+  number of java files: 497
+  number of src classes: 634
+  number of test classes: 253
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.fitting.GaussianFitterTest#testMath519
+  failing tests:
+  - org.apache.commons.math.optimization.fitting.GaussianFitterTest
+  number of all test cases: 2355
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.0
+  purification via delta debugging: 81.122
+  repair actions extraction: 0.858
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.fitting.GaussianFitterTest#testMath519: 1181
+  fixed:
+    org.apache.commons.math.optimization.fitting.GaussianFitterTest#testMath519: 1187
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_58/src/main/java/org/apache/commons/math/optimization/fitting/GaussianFitter.java\t\
+    2020-10-21 12:39:03.976000154 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_58/purify/patch/org/apache/commons/math/optimization/fitting/GaussianFitter.java\t\
+    2020-10-21 12:39:03.976000154 -0400\n@@ -118,7 +118,7 @@\n      */\n     public\
+    \ double[] fit() {\n         final double[] guess = (new ParameterGuesser(getObservations())).guess();\n\
+    -        return fit(new Gaussian.Parametric(), guess);\n+        return fit(guess);\n\
+    \     }\n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_58/src/main/java/org/apache/commons/math/optimization/fitting/GaussianFitter.java\t\
+    2020-10-21 12:40:43.958891137 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_58/purify/purified/org/apache/commons/math/optimization/fitting/GaussianFitter.java\t\
+    2020-10-21 12:40:43.958891137 -0400\n@@ -118,7 +118,7 @@\n      */\n     public\
+    \ double[] fit() {\n         final double[] guess = (new ParameterGuesser(getObservations())).guess();\n\
+    -        return fit(new Gaussian.Parametric(), guess);\n+        return fit(guess);\n\
+    \     }\n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/fitting/GaussianFitter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:fit(new Gaussian.Parametric(),guess)
+      @TO@ MethodInvocation:fit(guess) '
+    - '---UPD MethodInvocation@@fit(new Gaussian.Parametric(),guess) @TO@ fit(guess) '
+    - '------UPD SimpleName@@MethodName:fit:[new Gaussian.Parametric(), guess] @TO@
+      MethodName:fit:[guess] '
+    - '---------DEL ClassInstanceCreation@@Gaussian.Parametric[] '
+    - '------------DEL New@@new '
+    - '------------DEL SimpleType@@Gaussian.Parametric '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/fitting/GaussianFitter:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:fit(new Gaussian.Parametric(),guess)
+      @TO@ MethodInvocation:fit(guess) '
+    - '---UPD MethodInvocation@@fit(new Gaussian.Parametric(),guess) @TO@ fit(guess) '
+    - '------UPD SimpleName@@MethodName:fit:[new Gaussian.Parametric(), guess] @TO@
+      MethodName:fit:[guess] '
+    - '---------DEL ClassInstanceCreation@@Gaussian.Parametric[] '
+    - '------------DEL New@@new '
+    - '------------DEL SimpleType@@Gaussian.Parametric '
+  repair_actions_cnt: 1

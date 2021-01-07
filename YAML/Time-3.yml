@@ -1,0 +1,339 @@
+1 bug_id: Time-3
+2 src folder:
+  name of src folder: java
+  number of files: 186
+  number of java files: 157
+  number of src classes: 232
+  number of test classes: 124
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestMutableDateTime_Adds#testAddMonths_int_dstOverlapWinter_addZero
+  - org.joda.time.TestMutableDateTime_Adds#testAdd_DurationFieldType_int_dstOverlapWinter_addZero
+  - org.joda.time.TestMutableDateTime_Adds#testAddYears_int_dstOverlapWinter_addZero
+  - org.joda.time.TestMutableDateTime_Adds#testAddWeeks_int_dstOverlapWinter_addZero
+  - org.joda.time.TestMutableDateTime_Adds#testAddDays_int_dstOverlapWinter_addZero
+  failing tests:
+  - org.joda.time.TestMutableDateTime_Adds
+  number of all test cases: 4040
+  number of failing test cases: 5
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 2.0
+  purification via coverage: 2.432
+  purification via delta debugging: 387.646
+  repair actions extraction: 1.947
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestMutableDateTime_Adds#testAddDays_int_dstOverlapWinter_addZero: 1842
+    org.joda.time.TestMutableDateTime_Adds#testAddMonths_int_dstOverlapWinter_addZero: 1844
+    org.joda.time.TestMutableDateTime_Adds#testAddWeeks_int_dstOverlapWinter_addZero: 1842
+    org.joda.time.TestMutableDateTime_Adds#testAddYears_int_dstOverlapWinter_addZero: 1844
+    org.joda.time.TestMutableDateTime_Adds#testAdd_DurationFieldType_int_dstOverlapWinter_addZero: 1848
+  fixed:
+    org.joda.time.TestMutableDateTime_Adds#testAddDays_int_dstOverlapWinter_addZero: 1839
+    org.joda.time.TestMutableDateTime_Adds#testAddMonths_int_dstOverlapWinter_addZero: 1839
+    org.joda.time.TestMutableDateTime_Adds#testAddWeeks_int_dstOverlapWinter_addZero: 1839
+    org.joda.time.TestMutableDateTime_Adds#testAddYears_int_dstOverlapWinter_addZero: 1839
+    org.joda.time.TestMutableDateTime_Adds#testAdd_DurationFieldType_int_dstOverlapWinter_addZero: 1840
+6 reduced lines:
+  by all: 10
+  by coverage: 8
+  by delta debugging: 2
+  covAdd: 12
+  covDel: 0
+  cov_patch_lines: 12
+  delta_patch_lines: 10
+  oriAdd: 20
+  oriDel: 0
+  ori_patch_lines: 20
+  purAdd: 10
+  purDel: 0
+7 reduced chunks:
+  by all: 10
+  by coverage: 8
+  by delta debugging: 2
+  cov: 12
+  original: 20
+  purifiy: 10
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 22
+  failFail: 8
+  passed: 1
+  total: 31
+9 sibling repair actions:
+- 1 2 0.9552772808586762
+- 1 3 0.9001848428835489
+- 1 4 0.9102803738317757
+- 1 5 0.9206049149338374
+- 1 6 0.9327102803738317
+- 1 7 0.8903107861060329
+- 1 8 0.8903107861060329
+- 1 9 0.9001848428835489
+- 2 3 0.8619469026548673
+- 2 4 0.9570661896243292
+- 2 5 0.8806509945750453
+- 2 6 0.8926654740608229
+- 2 7 0.8528896672504378
+- 2 8 0.8528896672504378
+- 2 9 0.8619469026548673
+- 3 4 0.9001848428835489
+- 3 5 0.9102803738317757
+- 3 6 0.9001848428835489
+- 3 7 0.9023508137432188
+- 3 8 0.8806509945750453
+- 3 9 0.9122486288848263
+- 4 5 0.9206049149338374
+- 4 6 0.9102803738317757
+- 4 7 0.8903107861060329
+- 4 8 0.8903107861060329
+- 4 9 0.9001848428835489
+- 5 6 0.9206049149338374
+- 5 7 0.9001848428835489
+- 5 8 0.9001848428835489
+- 5 9 0.9102803738317757
+- 6 7 0.8903107861060329
+- 8 9 0.8806509945750453
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_3/src/main/java/org/joda/time/MutableDateTime.java\t\
+    2020-10-20 18:53:50.052350951 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_3/purify/patch/org/joda/time/MutableDateTime.java\t\
+    2020-10-20 18:53:50.048350836 -0400\n@@ -636,7 +636,9 @@\n         if (type ==\
+    \ null) {\n             throw new IllegalArgumentException(\"Field must not be\
+    \ null\");\n         }\n+        if (amount != 0) {\n             setMillis(type.getField(getChronology()).add(getMillis(),\
+    \ amount));\n+        }\n     }\n \n     //-----------------------------------------------------------------------\n\
+    @@ -657,7 +659,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addYears(final int years) {\n+        if\
+    \ (years != 0) {\n             setMillis(getChronology().years().add(getMillis(),\
+    \ years));\n+        }\n     }\n \n     //-----------------------------------------------------------------------\n\
+    @@ -678,7 +682,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addWeekyears(final int weekyears) {\n+ \
+    \       if (weekyears != 0) {\n             setMillis(getChronology().weekyears().add(getMillis(),\
+    \ weekyears));\n+        }\n     }\n \n     //-----------------------------------------------------------------------\n\
+    @@ -699,7 +705,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addMonths(final int months) {\n+       \
+    \ if (months != 0) {\n             setMillis(getChronology().months().add(getMillis(),\
+    \ months));\n+        }\n     }\n \n     //-----------------------------------------------------------------------\n\
+    @@ -720,7 +728,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addWeeks(final int weeks) {\n+        if\
+    \ (weeks != 0) {\n             setMillis(getChronology().weeks().add(getMillis(),\
+    \ weeks));\n+        }\n     }\n \n     //-----------------------------------------------------------------------\n\
+    @@ -761,7 +771,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addDays(final int days) {\n+        if (days\
+    \ != 0) {\n             setMillis(getChronology().days().add(getMillis(), days));\n\
+    +        }\n     }\n \n     //-----------------------------------------------------------------------\n\
+    @@ -782,7 +794,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addHours(final int hours) {\n+        if\
+    \ (hours != 0) {\n             setMillis(getChronology().hours().add(getMillis(),\
+    \ hours));\n+        }\n     }\n     \n     //-----------------------------------------------------------------------\n\
+    @@ -813,7 +827,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addMinutes(final int minutes) {\n+     \
+    \   if (minutes != 0) {\n             setMillis(getChronology().minutes().add(getMillis(),\
+    \ minutes));\n+        }\n     }\n \n     //-----------------------------------------------------------------------\n\
+    @@ -844,7 +860,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addSeconds(final int seconds) {\n+     \
+    \   if (seconds != 0) {\n             setMillis(getChronology().seconds().add(getMillis(),\
+    \ seconds));\n+        }\n     }\n \n     //-----------------------------------------------------------------------\n\
+    @@ -877,7 +895,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addMillis(final int millis) {\n+       \
+    \ if (millis != 0) {\n             setMillis(getChronology().millis().add(getMillis(),\
+    \ millis));\n+        }\n     }\n \n     //-----------------------------------------------------------------------"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_3/src/main/java/org/joda/time/MutableDateTime.java\t\
+    2020-10-20 19:00:43.332292936 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_3/purify/purified/org/joda/time/MutableDateTime.java\t\
+    2020-10-20 19:00:43.328292820 -0400\n@@ -636,7 +636,9 @@\n         if (type ==\
+    \ null) {\n             throw new IllegalArgumentException(\"Field must not be\
+    \ null\");\n         }\n+        if (amount != 0) {\n             setMillis(type.getField(getChronology()).add(getMillis(),\
+    \ amount));\n+        }\n     }\n \n     //-----------------------------------------------------------------------\n\
+    @@ -657,7 +659,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addYears(final int years) {\n+        if\
+    \ (years != 0) {\n             setMillis(getChronology().years().add(getMillis(),\
+    \ years));\n+        }\n     }\n \n     //-----------------------------------------------------------------------\n\
+    @@ -699,7 +703,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addMonths(final int months) {\n+       \
+    \ if (months != 0) {\n             setMillis(getChronology().months().add(getMillis(),\
+    \ months));\n+        }\n     }\n \n     //-----------------------------------------------------------------------\n\
+    @@ -720,7 +726,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addWeeks(final int weeks) {\n+        if\
+    \ (weeks != 0) {\n             setMillis(getChronology().weeks().add(getMillis(),\
+    \ weeks));\n+        }\n     }\n \n     //-----------------------------------------------------------------------\n\
+    @@ -761,7 +769,9 @@\n      * @throws IllegalArgumentException if the value is\
+    \ invalid\n      */\n     public void addDays(final int days) {\n+        if (days\
+    \ != 0) {\n             setMillis(getChronology().days().add(getMillis(), days));\n\
+    +        }\n     }\n \n     //-----------------------------------------------------------------------"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/MutableDateTime:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:amount != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:add, @@Argus:DurationFieldType+type+int+amount+ '
+    - '---INS InfixExpression@@amount != 0 @TO@ IfStatement@@InfixExpression:amount
+      != 0 '
+    - '------INS SimpleName@@amount @TO@ InfixExpression@@amount != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@amount != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@amount != 0 '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(type.getField(getChronology()).add(getMillis(),amount))
+      @TO@ IfStatement@@InfixExpression:amount != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:years != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addYears, @@Argus:int+years+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().years().add(getMillis(),years))
+      @TO@ IfStatement@@InfixExpression:years != 0 '
+    - '---INS InfixExpression@@years != 0 @TO@ IfStatement@@InfixExpression:years
+      != 0 '
+    - '------INS SimpleName@@years @TO@ InfixExpression@@years != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@years != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@years != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:weekyears != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addWeekyears, @@Argus:int+weekyears+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().weekyears().add(getMillis(),weekyears))
+      @TO@ IfStatement@@InfixExpression:weekyears != 0 '
+    - '---INS InfixExpression@@weekyears != 0 @TO@ IfStatement@@InfixExpression:weekyears
+      != 0 '
+    - '------INS SimpleName@@weekyears @TO@ InfixExpression@@weekyears != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@weekyears != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@weekyears != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:months != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addMonths, @@Argus:int+months+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().months().add(getMillis(),months))
+      @TO@ IfStatement@@InfixExpression:months != 0 '
+    - '---INS InfixExpression@@months != 0 @TO@ IfStatement@@InfixExpression:months
+      != 0 '
+    - '------INS SimpleName@@months @TO@ InfixExpression@@months != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@months != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@months != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:weeks != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addWeeks, @@Argus:int+weeks+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().weeks().add(getMillis(),weeks))
+      @TO@ IfStatement@@InfixExpression:weeks != 0 '
+    - '---INS InfixExpression@@weeks != 0 @TO@ IfStatement@@InfixExpression:weeks
+      != 0 '
+    - '------INS SimpleName@@weeks @TO@ InfixExpression@@weeks != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@weeks != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@weeks != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:days != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addDays, @@Argus:int+days+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().days().add(getMillis(),days))
+      @TO@ IfStatement@@InfixExpression:days != 0 '
+    - '---INS InfixExpression@@days != 0 @TO@ IfStatement@@InfixExpression:days !=
+      0 '
+    - '------INS SimpleName@@days @TO@ InfixExpression@@days != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@days != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@days != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:hours != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addHours, @@Argus:int+hours+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().hours().add(getMillis(),hours))
+      @TO@ IfStatement@@InfixExpression:hours != 0 '
+    - '---INS InfixExpression@@hours != 0 @TO@ IfStatement@@InfixExpression:hours
+      != 0 '
+    - '------INS SimpleName@@hours @TO@ InfixExpression@@hours != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@hours != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@hours != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:minutes != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addMinutes, @@Argus:int+minutes+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().minutes().add(getMillis(),minutes))
+      @TO@ IfStatement@@InfixExpression:minutes != 0 '
+    - '---INS InfixExpression@@minutes != 0 @TO@ IfStatement@@InfixExpression:minutes
+      != 0 '
+    - '------INS SimpleName@@minutes @TO@ InfixExpression@@minutes != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@minutes != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@minutes != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:seconds != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addSeconds, @@Argus:int+seconds+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().seconds().add(getMillis(),seconds))
+      @TO@ IfStatement@@InfixExpression:seconds != 0 '
+    - '---INS InfixExpression@@seconds != 0 @TO@ IfStatement@@InfixExpression:seconds
+      != 0 '
+    - '------INS SimpleName@@seconds @TO@ InfixExpression@@seconds != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@seconds != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@seconds != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:millis != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addMillis, @@Argus:int+millis+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().millis().add(getMillis(),millis))
+      @TO@ IfStatement@@InfixExpression:millis != 0 '
+    - '---INS InfixExpression@@millis != 0 @TO@ IfStatement@@InfixExpression:millis
+      != 0 '
+    - '------INS SimpleName@@millis @TO@ InfixExpression@@millis != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@millis != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@millis != 0 '
+  repair_actions_cnt: 10
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/MutableDateTime:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:amount != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:add, @@Argus:DurationFieldType+type+int+amount+ '
+    - '---INS InfixExpression@@amount != 0 @TO@ IfStatement@@InfixExpression:amount
+      != 0 '
+    - '------INS SimpleName@@amount @TO@ InfixExpression@@amount != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@amount != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@amount != 0 '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(type.getField(getChronology()).add(getMillis(),amount))
+      @TO@ IfStatement@@InfixExpression:amount != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:years != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addYears, @@Argus:int+years+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().years().add(getMillis(),years))
+      @TO@ IfStatement@@InfixExpression:years != 0 '
+    - '---INS InfixExpression@@years != 0 @TO@ IfStatement@@InfixExpression:years
+      != 0 '
+    - '------INS SimpleName@@years @TO@ InfixExpression@@years != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@years != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@years != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:months != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addMonths, @@Argus:int+months+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().months().add(getMillis(),months))
+      @TO@ IfStatement@@InfixExpression:months != 0 '
+    - '---INS InfixExpression@@months != 0 @TO@ IfStatement@@InfixExpression:months
+      != 0 '
+    - '------INS SimpleName@@months @TO@ InfixExpression@@months != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@months != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@months != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:weeks != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addWeeks, @@Argus:int+weeks+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().weeks().add(getMillis(),weeks))
+      @TO@ IfStatement@@InfixExpression:weeks != 0 '
+    - '---INS InfixExpression@@weeks != 0 @TO@ IfStatement@@InfixExpression:weeks
+      != 0 '
+    - '------INS SimpleName@@weeks @TO@ InfixExpression@@weeks != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@weeks != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@weeks != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:days != 0 @TO@ MethodDeclaration@@public,
+      @@void, MethodName:addDays, @@Argus:int+days+ '
+    - '---MOV ExpressionStatement@@MethodInvocation:setMillis(getChronology().days().add(getMillis(),days))
+      @TO@ IfStatement@@InfixExpression:days != 0 '
+    - '---INS InfixExpression@@days != 0 @TO@ IfStatement@@InfixExpression:days !=
+      0 '
+    - '------INS SimpleName@@days @TO@ InfixExpression@@days != 0 '
+    - '------INS Operator@@!= @TO@ InfixExpression@@days != 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@days != 0 '
+  repair_actions_cnt: 5

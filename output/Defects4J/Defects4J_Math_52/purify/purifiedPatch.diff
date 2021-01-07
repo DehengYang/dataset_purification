@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_52/src/main/java/org/apache/commons/math/geometry/euclidean/threed/Rotation.java	2020-10-21 12:11:22.779962693 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_52/purify/purified/org/apache/commons/math/geometry/euclidean/threed/Rotation.java	2020-10-21 12:11:22.775962578 -0400
+@@ -341,7 +341,8 @@
+   Vector3D k     = v1Su1.crossProduct(v2Su2);
+   Vector3D u3    = u1.crossProduct(u2);
+   double c       = k.dotProduct(u3);
+-  if (c == 0) {
++  final double inPlaneThreshold = 0.001;
++  if (c <= inPlaneThreshold * k.getNorm() * u3.getNorm()) {
+     // the (q1, q2, q3) vector is close to the (u1, u2) plane
+     // we try other vectors
+     Vector3D v3 = Vector3D.crossProduct(v1, v2);

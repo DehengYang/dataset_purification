@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_5/src/com/google/javascript/jscomp/InlineObjectLiterals.java	2020-10-21 16:45:28.460624629 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_5/purify/assertBeforeMut/com/google/javascript/jscomp/InlineObjectLiterals.java	2020-10-21 16:45:28.460624629 -0400
+@@ -173,6 +173,9 @@
+ 
+           // Deleting a property has different semantics from deleting
+           // a variable, so deleted properties should not be inlined.
++          if (gramps.isDelProp()) {
++            return false;
++          }
+ 
+           // NOTE(nicksantos): This pass's object-splitting algorithm has
+           // a blind spot. It assumes that if a property isn't defined on an

@@ -1,0 +1,623 @@
+1 bug_id: Math-31
+2 src folder:
+  name of src folder: java
+  number of files: 621
+  number of java files: 620
+  number of src classes: 838
+  number of test classes: 307
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.distribution.FDistributionTest#testMath785
+  - org.apache.commons.math3.distribution.BinomialDistributionTest#testMath718
+  failing tests:
+  - org.apache.commons.math3.distribution.FDistributionTest
+  - org.apache.commons.math3.distribution.BinomialDistributionTest
+  number of all test cases: 3603
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.111
+  purification via delta debugging: 3737.2461
+  repair actions extraction: 1.435
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.distribution.BinomialDistributionTest#testMath718: 703
+    org.apache.commons.math3.distribution.FDistributionTest#testMath785: 789
+  fixed:
+    org.apache.commons.math3.distribution.BinomialDistributionTest#testMath718: 354
+    org.apache.commons.math3.distribution.FDistributionTest#testMath785: 492
+6 reduced lines:
+  by all: 22
+  by coverage: 0
+  by delta debugging: 22
+  covAdd: 13
+  covDel: 33
+  cov_patch_lines: 46
+  delta_patch_lines: 24
+  oriAdd: 13
+  oriDel: 33
+  ori_patch_lines: 46
+  purAdd: 11
+  purDel: 13
+7 reduced chunks:
+  by all: -6
+  by coverage: 0
+  by delta debugging: -6
+  cov: 4
+  original: 4
+  purifiy: 10
+8 mutants by delta debugging:
+  failAll: 3
+  failCompile: 204
+  failFail: 7
+  passed: 15
+  total: 229
+9 sibling repair actions:
+- 0 1 0.9666666666666667
+- 12 15 0.9121621621621622
+- 14 16 0.8888888888888888
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_31/src/main/java/org/apache/commons/math3/util/ContinuedFraction.java\t\
+    2020-10-22 05:56:22.366990783 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_31/purify/patch/org/apache/commons/math3/util/ContinuedFraction.java\t\
+    2020-10-22 05:56:22.366990783 -0400\n@@ -131,8 +131,6 @@\n \n         int n =\
+    \ 1;\n         double dPrev = 0.0;\n-        double p0 = 1.0;\n-        double\
+    \ q1 = 1.0;\n         double cPrev = hPrev;\n         double hN = hPrev;\n \n\
+    @@ -140,34 +138,18 @@\n             final double a = getA(n, x);\n           \
+    \  final double b = getB(n, x);\n \n-            double cN = a * hPrev + b * p0;\n\
+    -            double q2 = a * q1 + b * dPrev;\n-            if (Double.isInfinite(cN)\
+    \ || Double.isInfinite(q2)) {\n-                double scaleFactor = 1d;\n-  \
+    \              double lastScaleFactor = 1d;\n-                final int maxPower\
+    \ = 5;\n-                final double scale = FastMath.max(a,b);\n-          \
+    \      if (scale <= 0) {  // Can't scale\n-                    throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE,\
+    \ x);\n-                }\n-                for (int i = 0; i < maxPower; i++)\
+    \ {\n-                    lastScaleFactor = scaleFactor;\n-                  \
+    \  scaleFactor *= scale;\n-                    if (a != 0.0 && a > b) {\n-   \
+    \                     cN = hPrev / lastScaleFactor + (b / scaleFactor * p0);\n\
+    -                        q2 = q1 / lastScaleFactor + (b / scaleFactor * dPrev);\n\
+    -                    } else if (b != 0) {\n-                        cN = (a /\
+    \ scaleFactor * hPrev) + p0 / lastScaleFactor;\n-                        q2 =\
+    \ (a / scaleFactor * q1) + dPrev / lastScaleFactor;\n-                    }\n\
+    -                    if (!(Double.isInfinite(cN) || Double.isInfinite(q2))) {\n\
+    -                        break;\n-                    }\n-                }\n\
+    +            double dN = a + b * dPrev;\n+            if (Precision.equals(dN,\
+    \ 0.0, small)) {\n+                dN = small;\n+            }\n+            double\
+    \ cN = a + b / cPrev;\n+            if (Precision.equals(cN, 0.0, small)) {\n\
+    +                cN = small;\n             }\n \n-            final double deltaN\
+    \ = cN / q2 / cPrev;\n-            hN = cPrev * deltaN;\n+            dN = 1 /\
+    \ dN;\n+            final double deltaN = cN * dN;\n+            hN = hPrev *\
+    \ deltaN;\n \n             if (Double.isInfinite(hN)) {\n                 throw\
+    \ new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE,\n\
+    @@ -182,11 +164,9 @@\n                 break;\n             }\n \n-          \
+    \  dPrev = q1;\n-            cPrev = cN / q2;\n-            p0 = hPrev;\n-   \
+    \         hPrev = cN;\n-            q1 = q2;\n+            dPrev = dN;\n+    \
+    \        cPrev = cN;\n+            hPrev = hN;\n             n++;\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_31/src/main/java/org/apache/commons/math3/util/ContinuedFraction.java\t\
+    2020-10-22 06:59:13.824114869 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_31/purify/purified/org/apache/commons/math3/util/ContinuedFraction.java\t\
+    2020-10-22 06:59:13.824114869 -0400\n@@ -140,34 +140,29 @@\n             final\
+    \ double a = getA(n, x);\n             final double b = getB(n, x);\n \n-    \
+    \        double cN = a * hPrev + b * p0;\n             double q2 = a * q1 + b\
+    \ * dPrev;\n-            if (Double.isInfinite(cN) || Double.isInfinite(q2)) {\n\
+    \                 double scaleFactor = 1d;\n                 double lastScaleFactor\
+    \ = 1d;\n                 final int maxPower = 5;\n                 final double\
+    \ scale = FastMath.max(a,b);\n-                if (scale <= 0) {  // Can't scale\n\
+    \                     throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE,\
+    \ x);\n-                }\n-                for (int i = 0; i < maxPower; i++)\
+    \ {\n                     lastScaleFactor = scaleFactor;\n                   \
+    \  scaleFactor *= scale;\n-                    if (a != 0.0 && a > b) {\n    \
+    \                     cN = hPrev / lastScaleFactor + (b / scaleFactor * p0);\n\
+    \                         q2 = q1 / lastScaleFactor + (b / scaleFactor * dPrev);\n\
+    -                    } else if (b != 0) {\n                         cN = (a /\
+    \ scaleFactor * hPrev) + p0 / lastScaleFactor;\n                         q2 =\
+    \ (a / scaleFactor * q1) + dPrev / lastScaleFactor;\n-                    }\n\
+    -                    if (!(Double.isInfinite(cN) || Double.isInfinite(q2))) {\n\
+    \                         break;\n-                    }\n-                }\n\
+    +            double dN = a + b * dPrev;\n+            if (Precision.equals(dN,\
+    \ 0.0, small)) {\n+            }\n+            double cN = a + b / cPrev;\n+ \
+    \           if (Precision.equals(cN, 0.0, small)) {\n             }\n \n-    \
+    \        final double deltaN = cN / q2 / cPrev;\n-            hN = cPrev * deltaN;\n\
+    +            dN = 1 / dN;\n+            final double deltaN = cN * dN;\n+    \
+    \        hN = hPrev * deltaN;\n \n             if (Double.isInfinite(hN)) {\n\
+    \                 throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE,\n\
+    @@ -187,6 +182,9 @@\n             p0 = hPrev;\n             hPrev = cN;\n    \
+    \         q1 = q2;\n+            dPrev = dN;\n+            cPrev = cN;\n+    \
+    \        hPrev = hN;\n             n++;\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 10
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/util/ContinuedFraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@double p0=1.0; '
+    - '---DEL PrimitiveType@@double '
+    - '---DEL VariableDeclarationFragment@@p0=1.0 '
+    - '------DEL SimpleName@@p0 '
+    - '------DEL NumberLiteral@@1.0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@double q1=1.0; '
+    - '---DEL PrimitiveType@@double '
+    - '---DEL VariableDeclarationFragment@@q1=1.0 '
+    - '------DEL SimpleName@@q1 '
+    - '------DEL NumberLiteral@@1.0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:Precision.equals(dN,0.0,small) @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+    - '---INS MethodInvocation@@Precision.equals(dN,0.0,small) @TO@ IfStatement@@MethodInvocation:Precision.equals(dN,0.0,small) '
+    - '------MOV SimpleName@@Name:FastMath @TO@ MethodInvocation@@Precision.equals(dN,0.0,small) '
+    - '------MOV SimpleName@@MethodName:max:[a, b] @TO@ MethodInvocation@@Precision.equals(dN,0.0,small) '
+    - '---INS ExpressionStatement@@Assignment:dN=small @TO@ IfStatement@@MethodInvocation:Precision.equals(dN,0.0,small) '
+    - '------MOV Assignment@@lastScaleFactor=scaleFactor @TO@ ExpressionStatement@@Assignment:dN=small '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@double cN=a * hPrev + b * p0; '
+    - '---DEL PrimitiveType@@double '
+    - '---DEL VariableDeclarationFragment@@cN=a * hPrev + b * p0 '
+    - '------DEL SimpleName@@cN '
+    - '------DEL InfixExpression@@a * hPrev + b * p0 '
+    - '---------DEL InfixExpression@@a * hPrev '
+    - '------------DEL SimpleName@@a '
+    - '------------DEL Operator@@* '
+    - '------------DEL SimpleName@@hPrev '
+    - '---------DEL Operator@@+ '
+    - '---------DEL InfixExpression@@b * p0 '
+    - '------------DEL SimpleName@@b '
+    - '------------DEL Operator@@* '
+    - '------------DEL SimpleName@@p0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double q2=a * q1 + b * dPrev; @TO@ double
+      dN=a + b * dPrev; '
+    - '---UPD VariableDeclarationFragment@@q2=a * q1 + b * dPrev @TO@ dN=a + b * dPrev '
+    - '------UPD SimpleName@@q2 @TO@ dN '
+    - '------UPD InfixExpression@@a * q1 + b * dPrev @TO@ a + b * dPrev '
+    - '---------MOV SimpleName@@a @TO@ InfixExpression@@a * q1 + b * dPrev '
+    - '---------DEL InfixExpression@@a * q1 '
+    - '------------DEL Operator@@* '
+    - '------------DEL SimpleName@@q1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double cN=a + b / cPrev; @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double cN=a
+      + b / cPrev; '
+    - '---INS VariableDeclarationFragment@@cN=a + b / cPrev @TO@ VariableDeclarationStatement@@double
+      cN=a + b / cPrev; '
+    - '------INS SimpleName@@cN @TO@ VariableDeclarationFragment@@cN=a + b / cPrev '
+    - '------INS InfixExpression@@a + b / cPrev @TO@ VariableDeclarationFragment@@cN=a
+      + b / cPrev '
+    - '---------MOV SimpleName@@hPrev @TO@ InfixExpression@@a + b / cPrev '
+    - '---------MOV Operator@@+ @TO@ InfixExpression@@a + b / cPrev '
+    - '---------MOV InfixExpression@@b / scaleFactor @TO@ InfixExpression@@a + b /
+      cPrev '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:Double.isInfinite(cN) || Double.isInfinite(q2) '
+    - '---DEL InfixExpression@@Double.isInfinite(cN) || Double.isInfinite(q2) '
+    - '------DEL MethodInvocation@@Double.isInfinite(cN) '
+    - '---------DEL SimpleName@@Name:Double '
+    - '---------DEL SimpleName@@MethodName:isInfinite:[cN] '
+    - '------------DEL SimpleName@@cN '
+    - '------DEL Operator@@|| '
+    - '------DEL MethodInvocation@@Double.isInfinite(q2) '
+    - '---------DEL SimpleName@@Name:Double '
+    - '---------DEL SimpleName@@MethodName:isInfinite:[q2] '
+    - '------------DEL SimpleName@@q2 '
+    - '---DEL VariableDeclarationStatement@@double scaleFactor=1d; '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL VariableDeclarationFragment@@scaleFactor=1d '
+    - '---------DEL SimpleName@@scaleFactor '
+    - '---------DEL NumberLiteral@@1d '
+    - '---DEL VariableDeclarationStatement@@double lastScaleFactor=1d; '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL VariableDeclarationFragment@@lastScaleFactor=1d '
+    - '---------DEL SimpleName@@lastScaleFactor '
+    - '---------DEL NumberLiteral@@1d '
+    - '---DEL VariableDeclarationStatement@@final int maxPower=5; '
+    - '------DEL Modifier@@final '
+    - '------DEL PrimitiveType@@int '
+    - '------DEL VariableDeclarationFragment@@maxPower=5 '
+    - '---------DEL SimpleName@@maxPower '
+    - '---------DEL NumberLiteral@@5 '
+    - '---DEL VariableDeclarationStatement@@final double scale=FastMath.max(a,b); '
+    - '------DEL Modifier@@final '
+    - '------DEL PrimitiveType@@double '
+    - '------DEL VariableDeclarationFragment@@scale=FastMath.max(a,b) '
+    - '---------DEL SimpleName@@scale '
+    - '---------DEL MethodInvocation@@FastMath.max(a,b) '
+    - '---DEL IfStatement@@InfixExpression:scale <= 0 '
+    - '------DEL InfixExpression@@scale <= 0 '
+    - '---------DEL SimpleName@@scale '
+    - '---------DEL Operator@@<= '
+    - '---------DEL NumberLiteral@@0 '
+    - '------DEL ThrowStatement@@ClassInstanceCreation:new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE,x) '
+    - '---------DEL ClassInstanceCreation@@ConvergenceException[LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE,
+      x] '
+    - '------------DEL New@@new '
+    - '------------DEL SimpleType@@ConvergenceException '
+    - '------------DEL QualifiedName@@LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE '
+    - '---------------DEL SimpleName@@LocalizedFormats '
+    - '---------------DEL SimpleName@@CONTINUED_FRACTION_INFINITY_DIVERGENCE '
+    - '------------DEL SimpleName@@x '
+    - '---DEL ForStatement@@[int i=0];i < maxPower; [i++] '
+    - '------DEL VariableDeclarationExpression@@int i=0 '
+    - '---------DEL PrimitiveType@@int '
+    - '---------DEL VariableDeclarationFragment@@i=0 '
+    - '------------DEL SimpleName@@i '
+    - '------------DEL NumberLiteral@@0 '
+    - '------DEL InfixExpression@@i < maxPower '
+    - '---------DEL SimpleName@@i '
+    - '---------DEL Operator@@< '
+    - '---------DEL SimpleName@@maxPower '
+    - '------DEL PostfixExpression@@i++ '
+    - '---------DEL SimpleName@@i '
+    - '---------DEL Operator@@++ '
+    - '------DEL ExpressionStatement@@Assignment:lastScaleFactor=scaleFactor '
+    - '------DEL ExpressionStatement@@Assignment:scaleFactor*=scale '
+    - '---------DEL Assignment@@scaleFactor*=scale '
+    - '------------DEL SimpleName@@scaleFactor '
+    - '------------DEL Operator@@*= '
+    - '------------DEL SimpleName@@scale '
+    - '------DEL IfStatement@@InfixExpression:a != 0.0 && a > b '
+    - '---------DEL InfixExpression@@a != 0.0 && a > b '
+    - '------------DEL InfixExpression@@a != 0.0 '
+    - '---------------DEL SimpleName@@a '
+    - '---------------DEL Operator@@!= '
+    - '---------------DEL NumberLiteral@@0.0 '
+    - '------------DEL Operator@@&& '
+    - '------------DEL InfixExpression@@a > b '
+    - '---------------DEL SimpleName@@a '
+    - '---------------DEL Operator@@> '
+    - '---------------DEL SimpleName@@b '
+    - '---------DEL ExpressionStatement@@Assignment:cN=hPrev / lastScaleFactor + (b
+      / scaleFactor * p0) '
+    - '------------DEL Assignment@@cN=hPrev / lastScaleFactor + (b / scaleFactor *
+      p0) '
+    - '---------------DEL SimpleName@@cN '
+    - '---------------DEL Operator@@= '
+    - '---------------DEL InfixExpression@@hPrev / lastScaleFactor + (b / scaleFactor
+      * p0) '
+    - '------------------DEL InfixExpression@@hPrev / lastScaleFactor '
+    - '---------------------DEL Operator@@/ '
+    - '---------------------DEL SimpleName@@lastScaleFactor '
+    - '------------------DEL ParenthesizedExpression@@(b / scaleFactor * p0) '
+    - '---------------------DEL InfixExpression@@b / scaleFactor * p0 '
+    - '------------------------DEL Operator@@* '
+    - '------------------------DEL SimpleName@@p0 '
+    - '---------DEL ExpressionStatement@@Assignment:q2=q1 / lastScaleFactor + (b /
+      scaleFactor * dPrev) '
+    - '------------DEL Assignment@@q2=q1 / lastScaleFactor + (b / scaleFactor * dPrev) '
+    - '---------------DEL SimpleName@@q2 '
+    - '---------------DEL Operator@@= '
+    - '---------------DEL InfixExpression@@q1 / lastScaleFactor + (b / scaleFactor
+      * dPrev) '
+    - '------------------DEL InfixExpression@@q1 / lastScaleFactor '
+    - '---------------------DEL SimpleName@@q1 '
+    - '---------------------DEL Operator@@/ '
+    - '---------------------DEL SimpleName@@lastScaleFactor '
+    - '------------------DEL Operator@@+ '
+    - '------------------DEL ParenthesizedExpression@@(b / scaleFactor * dPrev) '
+    - '---------------------DEL InfixExpression@@b / scaleFactor * dPrev '
+    - '------------------------DEL InfixExpression@@b / scaleFactor '
+    - '---------------------------DEL SimpleName@@b '
+    - '---------------------------DEL Operator@@/ '
+    - '---------------------------DEL SimpleName@@scaleFactor '
+    - '------------------------DEL Operator@@* '
+    - '------------------------DEL SimpleName@@dPrev '
+    - '---------DEL IfStatement@@InfixExpression:b != 0 '
+    - '------------DEL InfixExpression@@b != 0 '
+    - '---------------DEL SimpleName@@b '
+    - '---------------DEL Operator@@!= '
+    - '---------------DEL NumberLiteral@@0 '
+    - '------------DEL ExpressionStatement@@Assignment:q2=(a / scaleFactor * q1) +
+      dPrev / lastScaleFactor '
+    - '------DEL IfStatement@@PrefixExpression:!(Double.isInfinite(cN) || Double.isInfinite(q2)) '
+    - '---------DEL PrefixExpression@@!(Double.isInfinite(cN) || Double.isInfinite(q2)) '
+    - '------------DEL Operator@@! '
+    - '------------DEL ParenthesizedExpression@@(Double.isInfinite(cN) || Double.isInfinite(q2)) '
+    - '---------------DEL InfixExpression@@Double.isInfinite(cN) || Double.isInfinite(q2) '
+    - '------------------DEL MethodInvocation@@Double.isInfinite(cN) '
+    - '---------------------DEL SimpleName@@Name:Double '
+    - '---------------------DEL SimpleName@@MethodName:isInfinite:[cN] '
+    - '------------------------DEL SimpleName@@cN '
+    - '------------------DEL Operator@@|| '
+    - '------------------DEL MethodInvocation@@Double.isInfinite(q2) '
+    - '---------------------DEL SimpleName@@Name:Double '
+    - '---------------------DEL SimpleName@@MethodName:isInfinite:[q2] '
+    - '------------------------DEL SimpleName@@q2 '
+    - '---------DEL BreakStatement@@ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:Precision.equals(cN,0.0,small) @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+    - '---INS MethodInvocation@@Precision.equals(cN,0.0,small) @TO@ IfStatement@@MethodInvocation:Precision.equals(cN,0.0,small) '
+    - '------INS SimpleName@@Name:Precision @TO@ MethodInvocation@@Precision.equals(cN,0.0,small) '
+    - '------INS SimpleName@@MethodName:equals:[cN, 0.0, small] @TO@ MethodInvocation@@Precision.equals(cN,0.0,small) '
+    - '---------INS SimpleName@@cN @TO@ SimpleName@@MethodName:equals:[cN, 0.0, small] '
+    - '---------INS NumberLiteral@@0.0 @TO@ SimpleName@@MethodName:equals:[cN, 0.0,
+      small] '
+    - '---------INS SimpleName@@small @TO@ SimpleName@@MethodName:equals:[cN, 0.0,
+      small] '
+    - '---MOV ExpressionStatement@@Assignment:cN=(a / scaleFactor * hPrev) + p0 /
+      lastScaleFactor @TO@ IfStatement@@MethodInvocation:Precision.equals(cN,0.0,small) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:dN=1 / dN @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+    - '---MOV Assignment@@q2=(a / scaleFactor * q1) + dPrev / lastScaleFactor @TO@
+      ExpressionStatement@@Assignment:dN=1 / dN '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:cN=(a / scaleFactor * hPrev) + p0 / lastScaleFactor
+      @TO@ Assignment:cN=small '
+    - '---UPD Assignment@@cN=(a / scaleFactor * hPrev) + p0 / lastScaleFactor @TO@
+      cN=small '
+    - '------INS SimpleName@@small @TO@ Assignment@@cN=(a / scaleFactor * hPrev) +
+      p0 / lastScaleFactor '
+    - '------DEL InfixExpression@@(a / scaleFactor * hPrev) + p0 / lastScaleFactor '
+    - '---------DEL ParenthesizedExpression@@(a / scaleFactor * hPrev) '
+    - '------------DEL InfixExpression@@a / scaleFactor * hPrev '
+    - '---------------DEL InfixExpression@@a / scaleFactor '
+    - '------------------DEL SimpleName@@a '
+    - '------------------DEL Operator@@/ '
+    - '------------------DEL SimpleName@@scaleFactor '
+    - '---------------DEL Operator@@* '
+    - '---------------DEL SimpleName@@hPrev '
+    - '---------DEL Operator@@+ '
+    - '---------DEL InfixExpression@@p0 / lastScaleFactor '
+    - '------------DEL SimpleName@@p0 '
+    - '------------DEL Operator@@/ '
+    - '------------DEL SimpleName@@lastScaleFactor '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final double deltaN=cN / q2 / cPrev; @TO@
+      final double deltaN=cN * dN; '
+    - '---UPD VariableDeclarationFragment@@deltaN=cN / q2 / cPrev @TO@ deltaN=cN *
+      dN '
+    - '------UPD InfixExpression@@cN / q2 / cPrev @TO@ cN * dN '
+    - '---------UPD Operator@@/ @TO@ * '
+    - '---------UPD SimpleName@@q2 @TO@ dN '
+    - '---------DEL SimpleName@@cPrev '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:hN=cPrev * deltaN @TO@ Assignment:hN=hPrev
+      * deltaN '
+    - '---UPD Assignment@@hN=cPrev * deltaN @TO@ hN=hPrev * deltaN '
+    - '------UPD InfixExpression@@cPrev * deltaN @TO@ hPrev * deltaN '
+    - '---------UPD SimpleName@@cPrev @TO@ hPrev '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:dPrev=q1 @TO@ Assignment:dPrev=dN '
+    - '---UPD Assignment@@dPrev=q1 @TO@ dPrev=dN '
+    - '------UPD SimpleName@@q1 @TO@ dN '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:cPrev=cN / q2 @TO@ Assignment:cPrev=cN '
+    - '---UPD Assignment@@cPrev=cN / q2 @TO@ cPrev=cN '
+    - '------INS SimpleName@@cN @TO@ Assignment@@cPrev=cN / q2 '
+    - '------DEL InfixExpression@@cN / q2 '
+    - '---------DEL SimpleName@@cN '
+    - '---------DEL Operator@@/ '
+    - '---------DEL SimpleName@@q2 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:p0=hPrev '
+    - '---DEL Assignment@@p0=hPrev '
+    - '------DEL SimpleName@@p0 '
+    - '------DEL Operator@@= '
+    - '------DEL SimpleName@@hPrev '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:hPrev=cN @TO@ Assignment:hPrev=hN '
+    - '---UPD Assignment@@hPrev=cN @TO@ hPrev=hN '
+    - '------UPD SimpleName@@cN @TO@ hN '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:q1=q2 '
+    - '---DEL Assignment@@q1=q2 '
+    - '------DEL SimpleName@@q1 '
+    - '------DEL Operator@@= '
+    - '------DEL SimpleName@@q2 '
+  repair_actions_cnt: 17
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/util/ContinuedFraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@double cN=a * hPrev + b * p0; @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@double cN=a * hPrev + b * p0; @TO@ double
+      dN=a + b * dPrev; '
+    - '---UPD VariableDeclarationFragment@@cN=a * hPrev + b * p0 @TO@ dN=a + b * dPrev '
+    - '------UPD SimpleName@@cN @TO@ dN '
+    - '------UPD InfixExpression@@a * hPrev + b * p0 @TO@ a + b * dPrev '
+    - '---------MOV SimpleName@@a @TO@ InfixExpression@@a * hPrev + b * p0 '
+    - '---------DEL InfixExpression@@a * hPrev '
+    - '------------DEL Operator@@* '
+    - '------------DEL SimpleName@@hPrev '
+    - '---------UPD InfixExpression@@b * p0 @TO@ b * dPrev '
+    - '------------UPD SimpleName@@p0 @TO@ dPrev '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:Double.isInfinite(cN) || Double.isInfinite(q2) '
+    - '---DEL InfixExpression@@Double.isInfinite(cN) || Double.isInfinite(q2) '
+    - '------DEL MethodInvocation@@Double.isInfinite(cN) '
+    - '------DEL Operator@@|| '
+    - '------DEL MethodInvocation@@Double.isInfinite(q2) '
+    - '---------DEL SimpleName@@Name:Double '
+    - '---------DEL SimpleName@@MethodName:isInfinite:[q2] '
+    - '------------DEL SimpleName@@q2 '
+    - '---DEL IfStatement@@InfixExpression:scale <= 0 '
+    - '------DEL InfixExpression@@scale <= 0 '
+    - '---------DEL SimpleName@@scale '
+    - '---------DEL Operator@@<= '
+    - '---------DEL NumberLiteral@@0 '
+    - '---DEL ForStatement@@[int i=0];i < maxPower; [i++] '
+    - '------DEL VariableDeclarationExpression@@int i=0 '
+    - '---------DEL PrimitiveType@@int '
+    - '---------DEL VariableDeclarationFragment@@i=0 '
+    - '------------DEL NumberLiteral@@0 '
+    - '------DEL InfixExpression@@i < maxPower '
+    - '---------DEL SimpleName@@i '
+    - '---------DEL Operator@@< '
+    - '---------DEL SimpleName@@maxPower '
+    - '------DEL PostfixExpression@@i++ '
+    - '---------DEL SimpleName@@i '
+    - '---------DEL Operator@@++ '
+    - '------DEL IfStatement@@InfixExpression:a != 0.0 && a > b '
+    - '---------DEL InfixExpression@@a != 0.0 && a > b '
+    - '------------DEL InfixExpression@@a != 0.0 '
+    - '---------------DEL NumberLiteral@@0.0 '
+    - '------------DEL Operator@@&& '
+    - '---------DEL IfStatement@@InfixExpression:b != 0 '
+    - '------------DEL InfixExpression@@b != 0 '
+    - '---------------DEL SimpleName@@b '
+    - '---------------DEL Operator@@!= '
+    - '---------------DEL NumberLiteral@@0 '
+    - '------DEL IfStatement@@PrefixExpression:!(Double.isInfinite(cN) || Double.isInfinite(q2)) '
+    - '---------DEL PrefixExpression@@!(Double.isInfinite(cN) || Double.isInfinite(q2)) '
+    - '------------DEL Operator@@! '
+    - '------------DEL ParenthesizedExpression@@(Double.isInfinite(cN) || Double.isInfinite(q2)) '
+    - '---------------DEL InfixExpression@@Double.isInfinite(cN) || Double.isInfinite(q2) '
+    - '------------------DEL MethodInvocation@@Double.isInfinite(cN) '
+    - '------------------DEL Operator@@|| '
+    - '------------------DEL MethodInvocation@@Double.isInfinite(q2) '
+    - '---------------------DEL SimpleName@@Name:Double '
+    - '---------------------DEL SimpleName@@MethodName:isInfinite:[q2] '
+    - '------------------------DEL SimpleName@@q2 '
+    - '---------DEL BreakStatement@@ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@double scaleFactor=1d; @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@double lastScaleFactor=1d; @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@final int maxPower=5; @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV VariableDeclarationStatement@@final double scale=FastMath.max(a,b); @TO@
+      WhileStatement@@InfixExpression:n < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ThrowStatement@@ClassInstanceCreation:new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE,x)
+      @TO@ WhileStatement@@InfixExpression:n < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:lastScaleFactor=scaleFactor @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:scaleFactor*=scale @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:cN=hPrev / lastScaleFactor + (b / scaleFactor
+      * p0) @TO@ WhileStatement@@InfixExpression:n < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS BreakStatement@@ @TO@ WhileStatement@@InfixExpression:n < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:q2=q1 / lastScaleFactor + (b / scaleFactor
+      * dPrev) @TO@ WhileStatement@@InfixExpression:n < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:Precision.equals(dN,0.0,small) @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+    - '---INS MethodInvocation@@Precision.equals(dN,0.0,small) @TO@ IfStatement@@MethodInvocation:Precision.equals(dN,0.0,small) '
+    - '------MOV SimpleName@@Name:Double @TO@ MethodInvocation@@Precision.equals(dN,0.0,small) '
+    - '------MOV SimpleName@@MethodName:isInfinite:[cN] @TO@ MethodInvocation@@Precision.equals(dN,0.0,small) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@double cN=a + b / cPrev; @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@double cN=a
+      + b / cPrev; '
+    - '---INS VariableDeclarationFragment@@cN=a + b / cPrev @TO@ VariableDeclarationStatement@@double
+      cN=a + b / cPrev; '
+    - '------MOV SimpleName@@i @TO@ VariableDeclarationFragment@@cN=a + b / cPrev '
+    - '------INS InfixExpression@@a + b / cPrev @TO@ VariableDeclarationFragment@@cN=a
+      + b / cPrev '
+    - '---------MOV SimpleName@@a @TO@ InfixExpression@@a + b / cPrev '
+    - '---------MOV Operator@@!= @TO@ InfixExpression@@a + b / cPrev '
+    - '---------MOV InfixExpression@@a > b @TO@ InfixExpression@@a + b / cPrev '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:cN=(a / scaleFactor * hPrev) + p0 / lastScaleFactor
+      @TO@ WhileStatement@@InfixExpression:n < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:Precision.equals(cN,0.0,small) @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+    - '---INS MethodInvocation@@Precision.equals(cN,0.0,small) @TO@ IfStatement@@MethodInvocation:Precision.equals(cN,0.0,small) '
+    - '------MOV SimpleName@@Name:Double @TO@ MethodInvocation@@Precision.equals(cN,0.0,small) '
+    - '------MOV SimpleName@@MethodName:isInfinite:[cN] @TO@ MethodInvocation@@Precision.equals(cN,0.0,small) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:dN=1 / dN @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+    - '---INS Assignment@@dN=1 / dN @TO@ ExpressionStatement@@Assignment:dN=1 / dN '
+    - '------INS SimpleName@@dN @TO@ Assignment@@dN=1 / dN '
+    - '------INS Operator@@= @TO@ Assignment@@dN=1 / dN '
+    - '------INS InfixExpression@@1 / dN @TO@ Assignment@@dN=1 / dN '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@1 / dN '
+    - '---------INS Operator@@/ @TO@ InfixExpression@@1 / dN '
+    - '---------INS SimpleName@@dN @TO@ InfixExpression@@1 / dN '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:q2=(a / scaleFactor * q1) + dPrev / lastScaleFactor
+      @TO@ WhileStatement@@InfixExpression:n < maxIterations '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final double deltaN=cN / q2 / cPrev; @TO@
+      final double deltaN=cN * dN; '
+    - '---UPD VariableDeclarationFragment@@deltaN=cN / q2 / cPrev @TO@ deltaN=cN *
+      dN '
+    - '------UPD InfixExpression@@cN / q2 / cPrev @TO@ cN * dN '
+    - '---------UPD Operator@@/ @TO@ * '
+    - '---------UPD SimpleName@@q2 @TO@ dN '
+    - '---------DEL SimpleName@@cPrev '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:hN=cPrev * deltaN @TO@ Assignment:hN=hPrev
+      * deltaN '
+    - '---UPD Assignment@@hN=cPrev * deltaN @TO@ hN=hPrev * deltaN '
+    - '------UPD InfixExpression@@cPrev * deltaN @TO@ hPrev * deltaN '
+    - '---------UPD SimpleName@@cPrev @TO@ hPrev '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:dPrev=dN @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+    - '---INS Assignment@@dPrev=dN @TO@ ExpressionStatement@@Assignment:dPrev=dN '
+    - '------INS SimpleName@@dPrev @TO@ Assignment@@dPrev=dN '
+    - '------INS Operator@@= @TO@ Assignment@@dPrev=dN '
+    - '------INS SimpleName@@dN @TO@ Assignment@@dPrev=dN '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:cPrev=cN @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+    - '---INS Assignment@@cPrev=cN @TO@ ExpressionStatement@@Assignment:cPrev=cN '
+    - '------INS SimpleName@@cPrev @TO@ Assignment@@cPrev=cN '
+    - '------INS Operator@@= @TO@ Assignment@@cPrev=cN '
+    - '------INS SimpleName@@cN @TO@ Assignment@@cPrev=cN '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:hPrev=hN @TO@ WhileStatement@@InfixExpression:n
+      < maxIterations '
+    - '---INS Assignment@@hPrev=hN @TO@ ExpressionStatement@@Assignment:hPrev=hN '
+    - '------INS SimpleName@@hPrev @TO@ Assignment@@hPrev=hN '
+    - '------INS Operator@@= @TO@ Assignment@@hPrev=hN '
+    - '------INS SimpleName@@hN @TO@ Assignment@@hPrev=hN '
+  repair_actions_cnt: 24

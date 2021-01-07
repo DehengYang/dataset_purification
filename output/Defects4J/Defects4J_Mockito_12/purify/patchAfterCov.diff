@@ -1,0 +1,15 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_12/src/org/mockito/internal/util/reflection/GenericMaster.java	2020-10-24 10:15:39.989062655 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_12/purify/assertBeforeMut/org/mockito/internal/util/reflection/GenericMaster.java	2020-10-24 10:15:39.989062655 -0400
+@@ -17,8 +17,12 @@
+         Type generic = field.getGenericType();
+         if (generic != null && generic instanceof ParameterizedType) {
+             Type actual = ((ParameterizedType) generic).getActualTypeArguments()[0];
++            if (actual instanceof Class) {
+                 return (Class) actual;
++            } else if (actual instanceof ParameterizedType) {
+                 //in case of nested generics we don't go deep
++                return (Class) ((ParameterizedType) actual).getRawType();
++            }
+         }
+         
+         return Object.class;

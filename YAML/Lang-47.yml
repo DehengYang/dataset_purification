@@ -1,0 +1,156 @@
+1 bug_id: Lang-47
+2 src folder:
+  name of src folder: java
+  number of files: 98
+  number of java files: 88
+  number of src classes: 141
+  number of test classes: 95
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.text.StrBuilderTest#testLang412Left
+  - org.apache.commons.lang.text.StrBuilderTest#testLang412Right
+  failing tests:
+  - org.apache.commons.lang.text.StrBuilderTest
+  number of all test cases: 2689
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 8.0
+  purification via coverage: 1.363
+  purification via delta debugging: 78.166
+  repair actions extraction: 3.124
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.text.StrBuilderTest#testLang412Left: 35
+    org.apache.commons.lang.text.StrBuilderTest#testLang412Right: 35
+  fixed:
+    org.apache.commons.lang.text.StrBuilderTest#testLang412Left: 45
+    org.apache.commons.lang.text.StrBuilderTest#testLang412Right: 45
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 6
+  covDel: 0
+  cov_patch_lines: 6
+  delta_patch_lines: 6
+  oriAdd: 6
+  oriDel: 0
+  ori_patch_lines: 6
+  purAdd: 6
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 7
+  failFail: 5
+  passed: 0
+  total: 12
+9 sibling repair actions:
+- 0 1 1.0
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_47/src/java/org/apache/commons/lang/text/StrBuilder.java\t\
+    2020-10-21 03:45:34.046057660 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_47/purify/patch/org/apache/commons/lang/text/StrBuilder.java\t\
+    2020-10-21 03:45:34.042057544 -0400\n@@ -1183,6 +1183,9 @@\n         if (width\
+    \ > 0) {\n             ensureCapacity(size + width);\n             String str\
+    \ = (obj == null ? getNullText() : obj.toString());\n+            if (str == null)\
+    \ {\n+                str = \"\";\n+            }\n             int strLen = str.length();\n\
+    \             if (strLen >= width) {\n                 str.getChars(strLen - width,\
+    \ strLen, buffer, size);\n@@ -1227,6 +1230,9 @@\n         if (width > 0) {\n \
+    \            ensureCapacity(size + width);\n             String str = (obj ==\
+    \ null ? getNullText() : obj.toString());\n+            if (str == null) {\n+\
+    \                str = \"\";\n+            }\n             int strLen = str.length();\n\
+    \             if (strLen >= width) {\n                 str.getChars(0, width,\
+    \ buffer, size);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_47/src/java/org/apache/commons/lang/text/StrBuilder.java\t\
+    2020-10-21 03:47:05.172689571 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_47/purify/purified/org/apache/commons/lang/text/StrBuilder.java\t\
+    2020-10-21 03:47:05.168689456 -0400\n@@ -1183,6 +1183,9 @@\n         if (width\
+    \ > 0) {\n             ensureCapacity(size + width);\n             String str\
+    \ = (obj == null ? getNullText() : obj.toString());\n+            if (str == null)\
+    \ {\n+                str = \"\";\n+            }\n             int strLen = str.length();\n\
+    \             if (strLen >= width) {\n                 str.getChars(strLen - width,\
+    \ strLen, buffer, size);\n@@ -1227,6 +1230,9 @@\n         if (width > 0) {\n \
+    \            ensureCapacity(size + width);\n             String str = (obj ==\
+    \ null ? getNullText() : obj.toString());\n+            if (str == null) {\n+\
+    \                str = \"\";\n+            }\n             int strLen = str.length();\n\
+    \             if (strLen >= width) {\n                 str.getChars(0, width,\
+    \ buffer, size);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/text/StrBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:str == null @TO@ IfStatement@@InfixExpression:width
+      > 0 '
+    - '---INS InfixExpression@@str == null @TO@ IfStatement@@InfixExpression:str ==
+      null '
+    - '------INS SimpleName@@str @TO@ InfixExpression@@str == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@str == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@str == null '
+    - '---INS ExpressionStatement@@Assignment:str="" @TO@ IfStatement@@InfixExpression:str
+      == null '
+    - '------INS Assignment@@str="" @TO@ ExpressionStatement@@Assignment:str="" '
+    - '---------INS SimpleName@@str @TO@ Assignment@@str="" '
+    - '---------INS Operator@@= @TO@ Assignment@@str="" '
+    - '---------INS StringLiteral@@"" @TO@ Assignment@@str="" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:str == null @TO@ IfStatement@@InfixExpression:width
+      > 0 '
+    - '---INS InfixExpression@@str == null @TO@ IfStatement@@InfixExpression:str ==
+      null '
+    - '------INS SimpleName@@str @TO@ InfixExpression@@str == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@str == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@str == null '
+    - '---INS ExpressionStatement@@Assignment:str="" @TO@ IfStatement@@InfixExpression:str
+      == null '
+    - '------INS Assignment@@str="" @TO@ ExpressionStatement@@Assignment:str="" '
+    - '---------INS SimpleName@@str @TO@ Assignment@@str="" '
+    - '---------INS Operator@@= @TO@ Assignment@@str="" '
+    - '---------INS StringLiteral@@"" @TO@ Assignment@@str="" '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/text/StrBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:str == null @TO@ IfStatement@@InfixExpression:width
+      > 0 '
+    - '---INS InfixExpression@@str == null @TO@ IfStatement@@InfixExpression:str ==
+      null '
+    - '------INS SimpleName@@str @TO@ InfixExpression@@str == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@str == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@str == null '
+    - '---INS ExpressionStatement@@Assignment:str="" @TO@ IfStatement@@InfixExpression:str
+      == null '
+    - '------INS Assignment@@str="" @TO@ ExpressionStatement@@Assignment:str="" '
+    - '---------INS SimpleName@@str @TO@ Assignment@@str="" '
+    - '---------INS Operator@@= @TO@ Assignment@@str="" '
+    - '---------INS StringLiteral@@"" @TO@ Assignment@@str="" '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:str == null @TO@ IfStatement@@InfixExpression:width
+      > 0 '
+    - '---INS InfixExpression@@str == null @TO@ IfStatement@@InfixExpression:str ==
+      null '
+    - '------INS SimpleName@@str @TO@ InfixExpression@@str == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@str == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@str == null '
+    - '---INS ExpressionStatement@@Assignment:str="" @TO@ IfStatement@@InfixExpression:str
+      == null '
+    - '------INS Assignment@@str="" @TO@ ExpressionStatement@@Assignment:str="" '
+    - '---------INS SimpleName@@str @TO@ Assignment@@str="" '
+    - '---------INS Operator@@= @TO@ Assignment@@str="" '
+    - '---------INS StringLiteral@@"" @TO@ Assignment@@str="" '
+  repair_actions_cnt: 2

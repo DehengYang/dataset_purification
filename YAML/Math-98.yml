@@ -1,0 +1,106 @@
+1 bug_id: Math-98
+2 src folder:
+  name of src folder: java
+  number of files: 252
+  number of java files: 231
+  number of src classes: 244
+  number of test classes: 140
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.linear.RealMatrixImplTest#testMath209
+  - org.apache.commons.math.linear.BigMatrixImplTest#testMath209
+  failing tests:
+  - org.apache.commons.math.linear.RealMatrixImplTest
+  - org.apache.commons.math.linear.BigMatrixImplTest
+  number of all test cases: 1094
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 0.001
+  purification via delta debugging: 60.863
+  repair actions extraction: 3.044
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.linear.BigMatrixImplTest#testMath209: 32
+    org.apache.commons.math.linear.RealMatrixImplTest#testMath209: 28
+  fixed:
+    org.apache.commons.math.linear.BigMatrixImplTest#testMath209: 33
+    org.apache.commons.math.linear.RealMatrixImplTest#testMath209: 29
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 2
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_98/src/java/org/apache/commons/math/linear/RealMatrixImpl.java\t\
+    2020-10-21 14:10:58.899449055 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_98/purify/patch/org/apache/commons/math/linear/RealMatrixImpl.java\t\
+    2020-10-21 14:10:58.895448940 -0400\n@@ -776,7 +776,7 @@\n         if (v.length\
+    \ != nCols) {\n             throw new IllegalArgumentException(\"vector has wrong\
+    \ length\");\n         }\n-        final double[] out = new double[v.length];\n\
+    +        final double[] out = new double[nRows];\n         for (int row = 0; row\
+    \ < nRows; row++) {\n             final double[] dataRow = data[row];\n      \
+    \       double sum = 0;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_98/src/java/org/apache/commons/math/linear/RealMatrixImpl.java\t\
+    2020-10-21 14:12:11.849556991 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_98/purify/purified/org/apache/commons/math/linear/RealMatrixImpl.java\t\
+    2020-10-21 14:12:11.849556991 -0400\n@@ -776,7 +776,7 @@\n         if (v.length\
+    \ != nCols) {\n             throw new IllegalArgumentException(\"vector has wrong\
+    \ length\");\n         }\n-        final double[] out = new double[v.length];\n\
+    +        final double[] out = new double[nRows];\n         for (int row = 0; row\
+    \ < nRows; row++) {\n             final double[] dataRow = data[row];\n      \
+    \       double sum = 0;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/apache/commons/math/linear/BigMatrixImpl, org/apache/commons/math/linear/RealMatrixImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final double[] out=new double[v.length];
+      @TO@ final double[] out=new double[nRows]; '
+    - '---UPD VariableDeclarationFragment@@out=new double[v.length] @TO@ out=new double[nRows] '
+    - '------UPD ArrayCreation@@new double[v.length] @TO@ new double[nRows] '
+    - '---------INS SimpleName@@nRows @TO@ ArrayCreation@@new double[v.length] '
+    - '---------DEL QualifiedName@@v.length '
+    - '------------DEL SimpleName@@v '
+    - '------------DEL SimpleName@@length '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/apache/commons/math/linear/BigMatrixImpl, org/apache/commons/math/linear/RealMatrixImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final double[] out=new double[v.length];
+      @TO@ final double[] out=new double[nRows]; '
+    - '---UPD VariableDeclarationFragment@@out=new double[v.length] @TO@ out=new double[nRows] '
+    - '------UPD ArrayCreation@@new double[v.length] @TO@ new double[nRows] '
+    - '---------INS SimpleName@@nRows @TO@ ArrayCreation@@new double[v.length] '
+    - '---------DEL QualifiedName@@v.length '
+    - '------------DEL SimpleName@@v '
+    - '------------DEL SimpleName@@length '
+  repair_actions_cnt: 1

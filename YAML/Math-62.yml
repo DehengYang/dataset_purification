@@ -1,0 +1,255 @@
+1 bug_id: Math-62
+2 src folder:
+  name of src folder: java
+  number of files: 509
+  number of java files: 469
+  number of src classes: 636
+  number of test classes: 254
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.univariate.MultiStartUnivariateRealOptimizerTest#testQuinticMin
+  failing tests:
+  - org.apache.commons.math.optimization.univariate.MultiStartUnivariateRealOptimizerTest
+  number of all test cases: 2366
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.003
+  purification via delta debugging: 174.279
+  repair actions extraction: 0.973
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.univariate.MultiStartUnivariateRealOptimizerTest#testQuinticMin: 468
+  fixed:
+    org.apache.commons.math.optimization.univariate.MultiStartUnivariateRealOptimizerTest#testQuinticMin: 469
+6 reduced lines:
+  by all: 5
+  by coverage: 0
+  by delta debugging: 5
+  covAdd: 3
+  covDel: 4
+  cov_patch_lines: 7
+  delta_patch_lines: 2
+  oriAdd: 3
+  oriDel: 4
+  ori_patch_lines: 7
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 1
+  failFail: 1
+  passed: 2
+  total: 4
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_62/src/main/java/org/apache/commons/math/optimization/univariate/MultiStartUnivariateRealOptimizer.java\t\
+    2020-10-21 12:48:19.804072008 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_62/purify/patch/org/apache/commons/math/optimization/univariate/MultiStartUnivariateRealOptimizer.java\t\
+    2020-10-21 12:48:19.800071892 -0400\n@@ -143,7 +143,7 @@\n                   \
+    \                               final GoalType goal,\n                       \
+    \                           final double min, final double max)\n         throws\
+    \ FunctionEvaluationException {\n-        return optimize(f, goal, min, max, 0);\n\
+    +        return optimize(f, goal, min, max, min + 0.5 * (max - min));\n     }\n\
+    \ \n     /** {@inheritDoc} */\n@@ -157,9 +157,8 @@\n         // Multi-start loop.\n\
+    \         for (int i = 0; i < starts; ++i) {\n             try {\n-          \
+    \      final double bound1 = (i == 0) ? min : min + generator.nextDouble() * (max\
+    \ - min);\n-                final double bound2 = (i == 0) ? max : min + generator.nextDouble()\
+    \ * (max - min);\n-                optima[i] = optimizer.optimize(f, goal, FastMath.min(bound1,\
+    \ bound2), FastMath.max(bound1, bound2));\n+                final double s = (i\
+    \ == 0) ? startValue : min + generator.nextDouble() * (max - min);\n+        \
+    \        optima[i] = optimizer.optimize(f, goal, min, max, s);\n             }\
+    \ catch (FunctionEvaluationException fee) {\n                 optima[i] = null;\n\
+    \             } catch (ConvergenceException ce) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_62/src/main/java/org/apache/commons/math/optimization/univariate/MultiStartUnivariateRealOptimizer.java\t\
+    2020-10-21 12:51:32.485643540 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_62/purify/purified/org/apache/commons/math/optimization/univariate/MultiStartUnivariateRealOptimizer.java\t\
+    2020-10-21 12:51:32.485643540 -0400\n@@ -160,6 +160,8 @@\n                 final\
+    \ double bound1 = (i == 0) ? min : min + generator.nextDouble() * (max - min);\n\
+    \                 final double bound2 = (i == 0) ? max : min + generator.nextDouble()\
+    \ * (max - min);\n                 optima[i] = optimizer.optimize(f, goal, FastMath.min(bound1,\
+    \ bound2), FastMath.max(bound1, bound2));\n+                final double s = (i\
+    \ == 0) ? startValue : min + generator.nextDouble() * (max - min);\n+        \
+    \        optima[i] = optimizer.optimize(f, goal, min, max, s);\n             }\
+    \ catch (FunctionEvaluationException fee) {\n                 optima[i] = null;\n\
+    \             } catch (ConvergenceException ce) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/univariate/MultiStartUnivariateRealOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:optimize(f,goal,min,max,0) @TO@ MethodInvocation:optimize(f,goal,min,max,min
+      + 0.5 * (max - min)) '
+    - '---UPD MethodInvocation@@optimize(f,goal,min,max,0) @TO@ optimize(f,goal,min,max,min
+      + 0.5 * (max - min)) '
+    - '------UPD SimpleName@@MethodName:optimize:[f, goal, min, max, 0] @TO@ MethodName:optimize:[f,
+      goal, min, max, min + 0.5 * (max - min)] '
+    - '---------INS InfixExpression@@min + 0.5 * (max - min) @TO@ SimpleName@@MethodName:optimize:[f,
+      goal, min, max, 0] '
+    - '------------INS SimpleName@@min @TO@ InfixExpression@@min + 0.5 * (max - min) '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@min + 0.5 * (max - min) '
+    - '------------INS InfixExpression@@0.5 * (max - min) @TO@ InfixExpression@@min
+      + 0.5 * (max - min) '
+    - '---------------INS NumberLiteral@@0.5 @TO@ InfixExpression@@0.5 * (max - min) '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@0.5 * (max - min) '
+    - '---------------INS ParenthesizedExpression@@(max - min) @TO@ InfixExpression@@0.5
+      * (max - min) '
+    - '------------------INS InfixExpression@@max - min @TO@ ParenthesizedExpression@@(max
+      - min) '
+    - '---------------------INS SimpleName@@max @TO@ InfixExpression@@max - min '
+    - '---------------------INS Operator@@- @TO@ InfixExpression@@max - min '
+    - '---------------------INS SimpleName@@min @TO@ InfixExpression@@max - min '
+    - '---------DEL NumberLiteral@@0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final double bound1=(i == 0) ? min : min
+      + generator.nextDouble() * (max - min); @TO@ final double s=(i == 0) ? startValue
+      : min + generator.nextDouble() * (max - min); '
+    - '---UPD VariableDeclarationFragment@@bound1=(i == 0) ? min : min + generator.nextDouble()
+      * (max - min) @TO@ s=(i == 0) ? startValue : min + generator.nextDouble() *
+      (max - min) '
+    - '------UPD SimpleName@@bound1 @TO@ s '
+    - '------UPD ConditionalExpression@@(i == 0) ? min : min + generator.nextDouble()
+      * (max - min) @TO@ (i == 0) ? startValue : min + generator.nextDouble() * (max
+      - min) '
+    - '---------UPD SimpleName@@min @TO@ startValue '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@final double bound2=(i == 0) ? max : min
+      + generator.nextDouble() * (max - min); '
+    - '---DEL Modifier@@final '
+    - '---DEL PrimitiveType@@double '
+    - '---DEL VariableDeclarationFragment@@bound2=(i == 0) ? max : min + generator.nextDouble()
+      * (max - min) '
+    - '------DEL SimpleName@@bound2 '
+    - '------DEL ConditionalExpression@@(i == 0) ? max : min + generator.nextDouble()
+      * (max - min) '
+    - '---------DEL ParenthesizedExpression@@(i == 0) '
+    - '------------DEL InfixExpression@@i == 0 '
+    - '---------------DEL SimpleName@@i '
+    - '---------------DEL Operator@@== '
+    - '---------------DEL NumberLiteral@@0 '
+    - '---------DEL SimpleName@@max '
+    - '---------DEL InfixExpression@@min + generator.nextDouble() * (max - min) '
+    - '------------DEL SimpleName@@min '
+    - '------------DEL Operator@@+ '
+    - '------------DEL InfixExpression@@generator.nextDouble() * (max - min) '
+    - '---------------DEL MethodInvocation@@generator.nextDouble() '
+    - '------------------DEL SimpleName@@Name:generator '
+    - '------------------DEL SimpleName@@MethodName:nextDouble:[] '
+    - '---------------DEL Operator@@* '
+    - '---------------DEL ParenthesizedExpression@@(max - min) '
+    - '------------------DEL InfixExpression@@max - min '
+    - '---------------------DEL SimpleName@@max '
+    - '---------------------DEL Operator@@- '
+    - '---------------------DEL SimpleName@@min '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:optima[i]=optimizer.optimize(f,goal,FastMath.min(bound1,bound2),FastMath.max(bound1,bound2))
+      @TO@ Assignment:optima[i]=optimizer.optimize(f,goal,min,max,s) '
+    - '---UPD Assignment@@optima[i]=optimizer.optimize(f,goal,FastMath.min(bound1,bound2),FastMath.max(bound1,bound2))
+      @TO@ optima[i]=optimizer.optimize(f,goal,min,max,s) '
+    - '------UPD MethodInvocation@@optimizer.optimize(f,goal,FastMath.min(bound1,bound2),FastMath.max(bound1,bound2))
+      @TO@ optimizer.optimize(f,goal,min,max,s) '
+    - '---------UPD SimpleName@@MethodName:optimize:[f, goal, FastMath.min(bound1,bound2),
+      FastMath.max(bound1,bound2)] @TO@ MethodName:optimize:[f, goal, min, max, s] '
+    - '------------INS SimpleName@@min @TO@ SimpleName@@MethodName:optimize:[f, goal,
+      FastMath.min(bound1,bound2), FastMath.max(bound1,bound2)] '
+    - '------------INS SimpleName@@max @TO@ SimpleName@@MethodName:optimize:[f, goal,
+      FastMath.min(bound1,bound2), FastMath.max(bound1,bound2)] '
+    - '------------DEL MethodInvocation@@FastMath.min(bound1,bound2) '
+    - '---------------DEL SimpleName@@Name:FastMath '
+    - '---------------DEL SimpleName@@MethodName:min:[bound1, bound2] '
+    - '------------------DEL SimpleName@@bound1 '
+    - '------------------DEL SimpleName@@bound2 '
+    - '------------DEL MethodInvocation@@FastMath.max(bound1,bound2) '
+    - '---------------DEL SimpleName@@Name:FastMath '
+    - '---------------DEL SimpleName@@MethodName:max:[bound1, bound2] '
+    - '------------------DEL SimpleName@@bound2 '
+    - '------------MOV SimpleName@@bound1 @TO@ SimpleName@@MethodName:optimize:[f,
+      goal, FastMath.min(bound1,bound2), FastMath.max(bound1,bound2)] '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/univariate/MultiStartUnivariateRealOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final double s=(i == 0) ? startValue : min
+      + generator.nextDouble() * (max - min); @TO@ TryStatement@@try:[] '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final double s=(i
+      == 0) ? startValue : min + generator.nextDouble() * (max - min); '
+    - '---INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final double
+      s=(i == 0) ? startValue : min + generator.nextDouble() * (max - min); '
+    - '---INS VariableDeclarationFragment@@s=(i == 0) ? startValue : min + generator.nextDouble()
+      * (max - min) @TO@ VariableDeclarationStatement@@final double s=(i == 0) ? startValue
+      : min + generator.nextDouble() * (max - min); '
+    - '------INS SimpleName@@s @TO@ VariableDeclarationFragment@@s=(i == 0) ? startValue
+      : min + generator.nextDouble() * (max - min) '
+    - '------INS ConditionalExpression@@(i == 0) ? startValue : min + generator.nextDouble()
+      * (max - min) @TO@ VariableDeclarationFragment@@s=(i == 0) ? startValue : min
+      + generator.nextDouble() * (max - min) '
+    - '---------INS ParenthesizedExpression@@(i == 0) @TO@ ConditionalExpression@@(i
+      == 0) ? startValue : min + generator.nextDouble() * (max - min) '
+    - '------------INS InfixExpression@@i == 0 @TO@ ParenthesizedExpression@@(i ==
+      0) '
+    - '---------------INS SimpleName@@i @TO@ InfixExpression@@i == 0 '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@i == 0 '
+    - '---------------INS NumberLiteral@@0 @TO@ InfixExpression@@i == 0 '
+    - '---------INS SimpleName@@startValue @TO@ ConditionalExpression@@(i == 0) ?
+      startValue : min + generator.nextDouble() * (max - min) '
+    - '---------INS InfixExpression@@min + generator.nextDouble() * (max - min) @TO@
+      ConditionalExpression@@(i == 0) ? startValue : min + generator.nextDouble()
+      * (max - min) '
+    - '------------INS SimpleName@@min @TO@ InfixExpression@@min + generator.nextDouble()
+      * (max - min) '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@min + generator.nextDouble()
+      * (max - min) '
+    - '------------INS InfixExpression@@generator.nextDouble() * (max - min) @TO@
+      InfixExpression@@min + generator.nextDouble() * (max - min) '
+    - '---------------INS MethodInvocation@@generator.nextDouble() @TO@ InfixExpression@@generator.nextDouble()
+      * (max - min) '
+    - '------------------INS SimpleName@@Name:generator @TO@ MethodInvocation@@generator.nextDouble() '
+    - '------------------INS SimpleName@@MethodName:nextDouble:[] @TO@ MethodInvocation@@generator.nextDouble() '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@generator.nextDouble()
+      * (max - min) '
+    - '---------------INS ParenthesizedExpression@@(max - min) @TO@ InfixExpression@@generator.nextDouble()
+      * (max - min) '
+    - '------------------INS InfixExpression@@max - min @TO@ ParenthesizedExpression@@(max
+      - min) '
+    - '---------------------INS SimpleName@@max @TO@ InfixExpression@@max - min '
+    - '---------------------INS Operator@@- @TO@ InfixExpression@@max - min '
+    - '---------------------INS SimpleName@@min @TO@ InfixExpression@@max - min '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:optima[i]=optimizer.optimize(f,goal,min,max,s)
+      @TO@ TryStatement@@try:[] '
+    - '---INS Assignment@@optima[i]=optimizer.optimize(f,goal,min,max,s) @TO@ ExpressionStatement@@Assignment:optima[i]=optimizer.optimize(f,goal,min,max,s) '
+    - '------INS ArrayAccess@@optima[i] @TO@ Assignment@@optima[i]=optimizer.optimize(f,goal,min,max,s) '
+    - '---------INS SimpleName@@optima @TO@ ArrayAccess@@optima[i] '
+    - '---------INS SimpleName@@i @TO@ ArrayAccess@@optima[i] '
+    - '------INS Operator@@= @TO@ Assignment@@optima[i]=optimizer.optimize(f,goal,min,max,s) '
+    - '------INS MethodInvocation@@optimizer.optimize(f,goal,min,max,s) @TO@ Assignment@@optima[i]=optimizer.optimize(f,goal,min,max,s) '
+    - '---------INS SimpleName@@Name:optimizer @TO@ MethodInvocation@@optimizer.optimize(f,goal,min,max,s) '
+    - '---------INS SimpleName@@MethodName:optimize:[f, goal, min, max, s] @TO@ MethodInvocation@@optimizer.optimize(f,goal,min,max,s) '
+    - '------------INS SimpleName@@f @TO@ SimpleName@@MethodName:optimize:[f, goal,
+      min, max, s] '
+    - '------------INS SimpleName@@goal @TO@ SimpleName@@MethodName:optimize:[f, goal,
+      min, max, s] '
+    - '------------INS SimpleName@@min @TO@ SimpleName@@MethodName:optimize:[f, goal,
+      min, max, s] '
+    - '------------INS SimpleName@@max @TO@ SimpleName@@MethodName:optimize:[f, goal,
+      min, max, s] '
+    - '------------INS SimpleName@@s @TO@ SimpleName@@MethodName:optimize:[f, goal,
+      min, max, s] '
+  repair_actions_cnt: 2

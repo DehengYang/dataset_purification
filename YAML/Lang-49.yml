@@ -1,0 +1,122 @@
+1 bug_id: Lang-49
+2 src folder:
+  name of src folder: java
+  number of files: 97
+  number of java files: 87
+  number of src classes: 140
+  number of test classes: 93
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.math.FractionTest#testReduce
+  failing tests:
+  - org.apache.commons.lang.math.FractionTest
+  number of all test cases: 2610
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 7.0
+  purification via coverage: 0.673
+  purification via delta debugging: 37.815
+  repair actions extraction: 1.144
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.math.FractionTest#testReduce: 46
+  fixed:
+    org.apache.commons.lang.math.FractionTest#testReduce: 51
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 0
+  cov_patch_lines: 3
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 0
+  ori_patch_lines: 3
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 5
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_49/src/java/org/apache/commons/lang/math/Fraction.java\t\
+    2020-10-21 03:49:13.976409731 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_49/purify/patch/org/apache/commons/lang/math/Fraction.java\t\
+    2020-10-21 03:49:13.972409616 -0400\n@@ -463,6 +463,9 @@\n      * @return a new\
+    \ reduced fraction instance, or this if no simplification possible\n      */\n\
+    \     public Fraction reduce() {\n+        if (numerator == 0) {\n+          \
+    \  return equals(ZERO) ? this : ZERO;\n+        }\n         int gcd = greatestCommonDivisor(Math.abs(numerator),\
+    \ denominator);\n         if (gcd == 1) {\n             return this;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_49/src/java/org/apache/commons/lang/math/Fraction.java\t\
+    2020-10-21 03:50:01.489782049 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_49/purify/purified/org/apache/commons/lang/math/Fraction.java\t\
+    2020-10-21 03:50:01.485781933 -0400\n@@ -463,6 +463,9 @@\n      * @return a new\
+    \ reduced fraction instance, or this if no simplification possible\n      */\n\
+    \     public Fraction reduce() {\n+        if (numerator == 0) {\n+          \
+    \  return equals(ZERO) ? this : ZERO;\n+        }\n         int gcd = greatestCommonDivisor(Math.abs(numerator),\
+    \ denominator);\n         if (gcd == 1) {\n             return this;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/math/Fraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:numerator == 0 @TO@ MethodDeclaration@@public,
+      @@Fraction, MethodName:reduce, @@Argus:null '
+    - '---INS InfixExpression@@numerator == 0 @TO@ IfStatement@@InfixExpression:numerator
+      == 0 '
+    - '------INS SimpleName@@numerator @TO@ InfixExpression@@numerator == 0 '
+    - '------INS Operator@@== @TO@ InfixExpression@@numerator == 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@numerator == 0 '
+    - '---INS ReturnStatement@@ConditionalExpression:equals(ZERO) ? this : ZERO @TO@
+      IfStatement@@InfixExpression:numerator == 0 '
+    - '------INS ConditionalExpression@@equals(ZERO) ? this : ZERO @TO@ ReturnStatement@@ConditionalExpression:equals(ZERO)
+      ? this : ZERO '
+    - '---------INS MethodInvocation@@equals(ZERO) @TO@ ConditionalExpression@@equals(ZERO)
+      ? this : ZERO '
+    - '------------INS SimpleName@@MethodName:equals:[ZERO] @TO@ MethodInvocation@@equals(ZERO) '
+    - '---------------INS SimpleName@@ZERO @TO@ SimpleName@@MethodName:equals:[ZERO] '
+    - '---------INS ThisExpression@@this @TO@ ConditionalExpression@@equals(ZERO)
+      ? this : ZERO '
+    - '---------INS SimpleName@@ZERO @TO@ ConditionalExpression@@equals(ZERO) ? this
+      : ZERO '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/math/Fraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:numerator == 0 @TO@ MethodDeclaration@@public,
+      @@Fraction, MethodName:reduce, @@Argus:null '
+    - '---INS InfixExpression@@numerator == 0 @TO@ IfStatement@@InfixExpression:numerator
+      == 0 '
+    - '------INS SimpleName@@numerator @TO@ InfixExpression@@numerator == 0 '
+    - '------INS Operator@@== @TO@ InfixExpression@@numerator == 0 '
+    - '------INS NumberLiteral@@0 @TO@ InfixExpression@@numerator == 0 '
+    - '---INS ReturnStatement@@ConditionalExpression:equals(ZERO) ? this : ZERO @TO@
+      IfStatement@@InfixExpression:numerator == 0 '
+    - '------INS ConditionalExpression@@equals(ZERO) ? this : ZERO @TO@ ReturnStatement@@ConditionalExpression:equals(ZERO)
+      ? this : ZERO '
+    - '---------INS MethodInvocation@@equals(ZERO) @TO@ ConditionalExpression@@equals(ZERO)
+      ? this : ZERO '
+    - '------------INS SimpleName@@MethodName:equals:[ZERO] @TO@ MethodInvocation@@equals(ZERO) '
+    - '---------------INS SimpleName@@ZERO @TO@ SimpleName@@MethodName:equals:[ZERO] '
+    - '---------INS ThisExpression@@this @TO@ ConditionalExpression@@equals(ZERO)
+      ? this : ZERO '
+    - '---------INS SimpleName@@ZERO @TO@ ConditionalExpression@@equals(ZERO) ? this
+      : ZERO '
+  repair_actions_cnt: 1

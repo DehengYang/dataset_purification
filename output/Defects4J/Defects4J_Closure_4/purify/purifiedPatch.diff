@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_4/src/com/google/javascript/rhino/jstype/NamedType.java	2020-10-21 16:43:30.245209204 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_4/purify/purified/com/google/javascript/rhino/jstype/NamedType.java	2020-10-21 16:43:30.241209089 -0400
+@@ -187,7 +187,7 @@
+     // makes more sense. Now, resolution via registry is first in order to
+     // avoid triggering the warnings built into the resolution via properties.
+     boolean resolved = resolveViaRegistry(t, enclosing);
+-    if (detectImplicitPrototypeCycle()) {
++    if (detectInheritanceCycle()) {
+       handleTypeCycle(t);
+     }
+ 

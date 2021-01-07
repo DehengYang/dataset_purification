@@ -1,0 +1,218 @@
+1 bug_id: Lang-40
+2 src folder:
+  name of src folder: java
+  number of files: 93
+  number of java files: 82
+  number of src classes: 122
+  number of test classes: 88
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.StringUtilsEqualsIndexOfTest#testContainsIgnoreCase_LocaleIndependence
+  failing tests:
+  - org.apache.commons.lang.StringUtilsEqualsIndexOfTest
+  number of all test cases: 1643
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 9.0
+  purification via coverage: 1.875
+  purification via delta debugging: 108.558
+  repair actions extraction: 3.563
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.StringUtilsEqualsIndexOfTest#testContainsIgnoreCase_LocaleIndependence: 4
+  fixed:
+    org.apache.commons.lang.StringUtilsEqualsIndexOfTest#testContainsIgnoreCase_LocaleIndependence: 7
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 8
+  covDel: 1
+  cov_patch_lines: 9
+  delta_patch_lines: 9
+  oriAdd: 8
+  oriDel: 1
+  ori_patch_lines: 9
+  purAdd: 8
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 21
+  failFail: 2
+  passed: 0
+  total: 23
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_40/src/java/org/apache/commons/lang/StringUtils.java\t\
+    2020-10-21 01:35:00.475931850 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_40/purify/patch/org/apache/commons/lang/StringUtils.java\t\
+    2020-10-21 01:35:00.467931619 -0400\n@@ -1045,7 +1045,14 @@\n         if (str\
+    \ == null || searchStr == null) {\n             return false;\n         }\n- \
+    \       return contains(str.toUpperCase(), searchStr.toUpperCase());\n+      \
+    \  int len = searchStr.length();\n+        int max = str.length() - len;\n+  \
+    \      for (int i = 0; i <= max; i++) {\n+            if (str.regionMatches(true,\
+    \ i, searchStr, 0, len)) {\n+                return true;\n+            }\n+ \
+    \       }\n+        return false;\n     }\n \n     // IndexOfAny chars"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_40/src/java/org/apache/commons/lang/StringUtils.java\t\
+    2020-10-21 01:37:03.563481225 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_40/purify/purified/org/apache/commons/lang/StringUtils.java\t\
+    2020-10-21 01:37:03.559481109 -0400\n@@ -1045,7 +1045,14 @@\n         if (str\
+    \ == null || searchStr == null) {\n             return false;\n         }\n- \
+    \       return contains(str.toUpperCase(), searchStr.toUpperCase());\n+      \
+    \  int len = searchStr.length();\n+        int max = str.length() - len;\n+  \
+    \      for (int i = 0; i <= max; i++) {\n+            if (str.regionMatches(true,\
+    \ i, searchStr, 0, len)) {\n+                return true;\n+            }\n+ \
+    \       }\n+        return false;\n     }\n \n     // IndexOfAny chars"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/StringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int len=searchStr.length(); @TO@ MethodDeclaration@@public,
+      static, @@boolean, MethodName:containsIgnoreCase, @@Argus:String+str+String+searchStr+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int len=searchStr.length(); '
+    - '---INS VariableDeclarationFragment@@len=searchStr.length() @TO@ VariableDeclarationStatement@@int
+      len=searchStr.length(); '
+    - '------INS SimpleName@@len @TO@ VariableDeclarationFragment@@len=searchStr.length() '
+    - '------INS MethodInvocation@@searchStr.length() @TO@ VariableDeclarationFragment@@len=searchStr.length() '
+    - '---------INS SimpleName@@Name:searchStr @TO@ MethodInvocation@@searchStr.length() '
+    - '---------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@searchStr.length() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@MethodInvocation:contains(str.toUpperCase(),searchStr.toUpperCase()) '
+    - '---DEL MethodInvocation@@contains(str.toUpperCase(),searchStr.toUpperCase()) '
+    - '------DEL SimpleName@@MethodName:contains:[str.toUpperCase(), searchStr.toUpperCase()] '
+    - '---------DEL MethodInvocation@@str.toUpperCase() '
+    - '---------DEL MethodInvocation@@searchStr.toUpperCase() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int max=str.length() - len; @TO@ MethodDeclaration@@public,
+      static, @@boolean, MethodName:containsIgnoreCase, @@Argus:String+str+String+searchStr+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int max=str.length()
+      - len; '
+    - '---INS VariableDeclarationFragment@@max=str.length() - len @TO@ VariableDeclarationStatement@@int
+      max=str.length() - len; '
+    - '------INS SimpleName@@max @TO@ VariableDeclarationFragment@@max=str.length()
+      - len '
+    - '------INS InfixExpression@@str.length() - len @TO@ VariableDeclarationFragment@@max=str.length()
+      - len '
+    - '---------INS MethodInvocation@@str.length() @TO@ InfixExpression@@str.length()
+      - len '
+    - '------------MOV SimpleName@@Name:str @TO@ MethodInvocation@@str.length() '
+    - '------------MOV SimpleName@@MethodName:toUpperCase:[] @TO@ MethodInvocation@@str.length() '
+    - '---------INS Operator@@- @TO@ InfixExpression@@str.length() - len '
+    - '---------INS SimpleName@@len @TO@ InfixExpression@@str.length() - len '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i <= max; [i++] @TO@ MethodDeclaration@@public,
+      static, @@boolean, MethodName:containsIgnoreCase, @@Argus:String+str+String+searchStr+ '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      <= max; [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i <= max @TO@ ForStatement@@[int i=0];i <= max; [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i <= max '
+    - '------INS Operator@@<= @TO@ InfixExpression@@i <= max '
+    - '------INS SimpleName@@max @TO@ InfixExpression@@i <= max '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i <= max; [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS IfStatement@@MethodInvocation:str.regionMatches(true,i,searchStr,0,len)
+      @TO@ ForStatement@@[int i=0];i <= max; [i++] '
+    - '------INS MethodInvocation@@str.regionMatches(true,i,searchStr,0,len) @TO@
+      IfStatement@@MethodInvocation:str.regionMatches(true,i,searchStr,0,len) '
+    - '---------MOV SimpleName@@Name:searchStr @TO@ MethodInvocation@@str.regionMatches(true,i,searchStr,0,len) '
+    - '---------MOV SimpleName@@MethodName:toUpperCase:[] @TO@ MethodInvocation@@str.regionMatches(true,i,searchStr,0,len) '
+    - '------INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@MethodInvocation:str.regionMatches(true,i,searchStr,0,len) '
+    - '---------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@BooleanLiteral:false @TO@ MethodDeclaration@@public, static,
+      @@boolean, MethodName:containsIgnoreCase, @@Argus:String+str+String+searchStr+ '
+    - '---INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  repair_actions_cnt: 5
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/StringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int len=searchStr.length(); @TO@ MethodDeclaration@@public,
+      static, @@boolean, MethodName:containsIgnoreCase, @@Argus:String+str+String+searchStr+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int len=searchStr.length(); '
+    - '---INS VariableDeclarationFragment@@len=searchStr.length() @TO@ VariableDeclarationStatement@@int
+      len=searchStr.length(); '
+    - '------INS SimpleName@@len @TO@ VariableDeclarationFragment@@len=searchStr.length() '
+    - '------INS MethodInvocation@@searchStr.length() @TO@ VariableDeclarationFragment@@len=searchStr.length() '
+    - '---------INS SimpleName@@Name:searchStr @TO@ MethodInvocation@@searchStr.length() '
+    - '---------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@searchStr.length() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@MethodInvocation:contains(str.toUpperCase(),searchStr.toUpperCase()) '
+    - '---DEL MethodInvocation@@contains(str.toUpperCase(),searchStr.toUpperCase()) '
+    - '------DEL SimpleName@@MethodName:contains:[str.toUpperCase(), searchStr.toUpperCase()] '
+    - '---------DEL MethodInvocation@@str.toUpperCase() '
+    - '---------DEL MethodInvocation@@searchStr.toUpperCase() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int max=str.length() - len; @TO@ MethodDeclaration@@public,
+      static, @@boolean, MethodName:containsIgnoreCase, @@Argus:String+str+String+searchStr+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int max=str.length()
+      - len; '
+    - '---INS VariableDeclarationFragment@@max=str.length() - len @TO@ VariableDeclarationStatement@@int
+      max=str.length() - len; '
+    - '------INS SimpleName@@max @TO@ VariableDeclarationFragment@@max=str.length()
+      - len '
+    - '------INS InfixExpression@@str.length() - len @TO@ VariableDeclarationFragment@@max=str.length()
+      - len '
+    - '---------INS MethodInvocation@@str.length() @TO@ InfixExpression@@str.length()
+      - len '
+    - '------------MOV SimpleName@@Name:str @TO@ MethodInvocation@@str.length() '
+    - '------------MOV SimpleName@@MethodName:toUpperCase:[] @TO@ MethodInvocation@@str.length() '
+    - '---------INS Operator@@- @TO@ InfixExpression@@str.length() - len '
+    - '---------INS SimpleName@@len @TO@ InfixExpression@@str.length() - len '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i <= max; [i++] @TO@ MethodDeclaration@@public,
+      static, @@boolean, MethodName:containsIgnoreCase, @@Argus:String+str+String+searchStr+ '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      <= max; [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i <= max @TO@ ForStatement@@[int i=0];i <= max; [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i <= max '
+    - '------INS Operator@@<= @TO@ InfixExpression@@i <= max '
+    - '------INS SimpleName@@max @TO@ InfixExpression@@i <= max '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i <= max; [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS IfStatement@@MethodInvocation:str.regionMatches(true,i,searchStr,0,len)
+      @TO@ ForStatement@@[int i=0];i <= max; [i++] '
+    - '------INS MethodInvocation@@str.regionMatches(true,i,searchStr,0,len) @TO@
+      IfStatement@@MethodInvocation:str.regionMatches(true,i,searchStr,0,len) '
+    - '---------MOV SimpleName@@Name:searchStr @TO@ MethodInvocation@@str.regionMatches(true,i,searchStr,0,len) '
+    - '---------MOV SimpleName@@MethodName:toUpperCase:[] @TO@ MethodInvocation@@str.regionMatches(true,i,searchStr,0,len) '
+    - '------INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@MethodInvocation:str.regionMatches(true,i,searchStr,0,len) '
+    - '---------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ReturnStatement@@BooleanLiteral:false @TO@ MethodDeclaration@@public, static,
+      @@boolean, MethodName:containsIgnoreCase, @@Argus:String+str+String+searchStr+ '
+    - '---INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  repair_actions_cnt: 5

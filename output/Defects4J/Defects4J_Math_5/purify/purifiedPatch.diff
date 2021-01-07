@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_5/src/main/java/org/apache/commons/math3/complex/Complex.java	2020-10-21 04:39:46.479996263 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_5/purify/purified/org/apache/commons/math3/complex/Complex.java	2020-10-21 04:39:46.479996263 -0400
+@@ -302,7 +302,7 @@
+         }
+ 
+         if (real == 0.0 && imaginary == 0.0) {
+-            return NaN;
++            return INF;
+         }
+ 
+         if (isInfinite) {

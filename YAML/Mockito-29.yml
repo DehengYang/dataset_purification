@@ -1,0 +1,122 @@
+1 bug_id: Mockito-29
+2 src folder:
+  name of src folder: src
+  number of files: 276
+  number of java files: 240
+  number of src classes: 267
+  number of test classes: 215
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.bugs.NPEWithCertainMatchersTest#shouldNotThrowNPEWhenNullPassedToSame
+  failing tests:
+  - org.mockitousage.bugs.NPEWithCertainMatchersTest
+  number of all test cases: 0
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.272
+  purification via delta debugging: 263.642
+  repair actions extraction: 0.734
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 0
+  failFail: 1
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_29/src/org/mockito/internal/matchers/Same.java\t\
+    2020-10-24 20:10:22.221263600 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_29/purify/patch/org/mockito/internal/matchers/Same.java\t\
+    2020-10-24 20:10:22.221263600 -0400\n@@ -26,7 +26,7 @@\n     public void describeTo(Description\
+    \ description) {\n         description.appendText(\"same(\");\n         appendQuoting(description);\n\
+    -        description.appendText(wanted.toString());\n+        description.appendText(wanted\
+    \ == null ? \"null\" : wanted.toString());\n         appendQuoting(description);\n\
+    \         description.appendText(\")\");\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_29/src/org/mockito/internal/matchers/Same.java\t\
+    2020-10-24 20:15:02.365333680 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_29/purify/purified/org/mockito/internal/matchers/Same.java\t\
+    2020-10-24 20:15:02.365333680 -0400\n@@ -26,7 +26,7 @@\n     public void describeTo(Description\
+    \ description) {\n         description.appendText(\"same(\");\n         appendQuoting(description);\n\
+    -        description.appendText(wanted.toString());\n+        description.appendText(wanted\
+    \ == null ? \"null\" : wanted.toString());\n         appendQuoting(description);\n\
+    \         description.appendText(\")\");\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/matchers/Same:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:description.appendText(wanted.toString())
+      @TO@ MethodInvocation:description.appendText(wanted == null ? "null" : wanted.toString()) '
+    - '---UPD MethodInvocation@@description.appendText(wanted.toString()) @TO@ description.appendText(wanted
+      == null ? "null" : wanted.toString()) '
+    - '------UPD SimpleName@@MethodName:appendText:[wanted.toString()] @TO@ MethodName:appendText:[wanted
+      == null ? "null" : wanted.toString()] '
+    - '---------INS ConditionalExpression@@wanted == null ? "null" : wanted.toString()
+      @TO@ SimpleName@@MethodName:appendText:[wanted.toString()] '
+    - '------------INS InfixExpression@@wanted == null @TO@ ConditionalExpression@@wanted
+      == null ? "null" : wanted.toString() '
+    - '---------------INS SimpleName@@wanted @TO@ InfixExpression@@wanted == null '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@wanted == null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@wanted == null '
+    - '------------INS StringLiteral@@"null" @TO@ ConditionalExpression@@wanted ==
+      null ? "null" : wanted.toString() '
+    - '------------INS MethodInvocation@@wanted.toString() @TO@ ConditionalExpression@@wanted
+      == null ? "null" : wanted.toString() '
+    - '---------------MOV SimpleName@@Name:wanted @TO@ MethodInvocation@@wanted.toString() '
+    - '---------------MOV SimpleName@@MethodName:toString:[] @TO@ MethodInvocation@@wanted.toString() '
+    - '---------DEL MethodInvocation@@wanted.toString() '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/matchers/Same:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:description.appendText(wanted.toString())
+      @TO@ MethodInvocation:description.appendText(wanted == null ? "null" : wanted.toString()) '
+    - '---UPD MethodInvocation@@description.appendText(wanted.toString()) @TO@ description.appendText(wanted
+      == null ? "null" : wanted.toString()) '
+    - '------UPD SimpleName@@MethodName:appendText:[wanted.toString()] @TO@ MethodName:appendText:[wanted
+      == null ? "null" : wanted.toString()] '
+    - '---------INS ConditionalExpression@@wanted == null ? "null" : wanted.toString()
+      @TO@ SimpleName@@MethodName:appendText:[wanted.toString()] '
+    - '------------INS InfixExpression@@wanted == null @TO@ ConditionalExpression@@wanted
+      == null ? "null" : wanted.toString() '
+    - '---------------INS SimpleName@@wanted @TO@ InfixExpression@@wanted == null '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@wanted == null '
+    - '---------------INS NullLiteral@@null @TO@ InfixExpression@@wanted == null '
+    - '------------INS StringLiteral@@"null" @TO@ ConditionalExpression@@wanted ==
+      null ? "null" : wanted.toString() '
+    - '------------INS MethodInvocation@@wanted.toString() @TO@ ConditionalExpression@@wanted
+      == null ? "null" : wanted.toString() '
+    - '---------------MOV SimpleName@@Name:wanted @TO@ MethodInvocation@@wanted.toString() '
+    - '---------------MOV SimpleName@@MethodName:toString:[] @TO@ MethodInvocation@@wanted.toString() '
+    - '---------DEL MethodInvocation@@wanted.toString() '
+  repair_actions_cnt: 1

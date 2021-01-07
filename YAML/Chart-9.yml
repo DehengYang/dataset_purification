@@ -1,0 +1,126 @@
+1 bug_id: Chart-9
+2 src folder:
+  name of src folder: source
+  number of files: 651
+  number of java files: 578
+  number of src classes: 604
+  number of test classes: 330
+3 test (cases):
+  failing test cases:
+  - org.jfree.data.time.junit.TimeSeriesTests#testBug1864222
+  failing tests:
+  - org.jfree.data.time.junit.TimeSeriesTests
+  number of all test cases: 1821
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 35.85
+  repair actions extraction: 1.295
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.data.time.junit.TimeSeriesTests#testBug1864222: 221
+  fixed:
+    org.jfree.data.time.junit.TimeSeriesTests#testBug1864222: 228
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_9/source/org/jfree/data/time/TimeSeries.java\t\
+    2020-10-20 23:59:34.598555306 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_9/purify/patch/org/jfree/data/time/TimeSeries.java\t\
+    2020-10-20 23:59:34.598555306 -0400\n@@ -941,7 +941,7 @@\n             endIndex\
+    \ = -(endIndex + 1); // this is first item AFTER end period\n             endIndex\
+    \ = endIndex - 1;    // so this is last item BEFORE end\n         }\n-       \
+    \ if (endIndex < 0) {\n+        if ((endIndex < 0)  || (endIndex < startIndex))\
+    \ {\n             emptyRange = true;\n         }\n         if (emptyRange) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_9/source/org/jfree/data/time/TimeSeries.java\t\
+    2020-10-21 00:00:25.928037776 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_9/purify/purified/org/jfree/data/time/TimeSeries.java\t\
+    2020-10-21 00:00:25.924037661 -0400\n@@ -941,7 +941,7 @@\n             endIndex\
+    \ = -(endIndex + 1); // this is first item AFTER end period\n             endIndex\
+    \ = endIndex - 1;    // so this is last item BEFORE end\n         }\n-       \
+    \ if (endIndex < 0) {\n+        if ((endIndex < 0)  || (endIndex < startIndex))\
+    \ {\n             emptyRange = true;\n         }\n         if (emptyRange) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/time/TimeSeries:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:endIndex < 0 @TO@ InfixExpression:(endIndex
+      < 0) || (endIndex < startIndex) '
+    - '---INS InfixExpression@@(endIndex < 0) || (endIndex < startIndex) @TO@ IfStatement@@InfixExpression:endIndex
+      < 0 '
+    - '------INS ParenthesizedExpression@@(endIndex < 0) @TO@ InfixExpression@@(endIndex
+      < 0) || (endIndex < startIndex) '
+    - '---------INS InfixExpression@@endIndex < 0 @TO@ ParenthesizedExpression@@(endIndex
+      < 0) '
+    - '------------MOV SimpleName@@endIndex @TO@ InfixExpression@@endIndex < 0 '
+    - '------------MOV Operator@@< @TO@ InfixExpression@@endIndex < 0 '
+    - '------------MOV NumberLiteral@@0 @TO@ InfixExpression@@endIndex < 0 '
+    - '------INS Operator@@|| @TO@ InfixExpression@@(endIndex < 0) || (endIndex <
+      startIndex) '
+    - '------INS ParenthesizedExpression@@(endIndex < startIndex) @TO@ InfixExpression@@(endIndex
+      < 0) || (endIndex < startIndex) '
+    - '---------INS InfixExpression@@endIndex < startIndex @TO@ ParenthesizedExpression@@(endIndex
+      < startIndex) '
+    - '------------INS SimpleName@@endIndex @TO@ InfixExpression@@endIndex < startIndex '
+    - '------------INS Operator@@< @TO@ InfixExpression@@endIndex < startIndex '
+    - '------------INS SimpleName@@startIndex @TO@ InfixExpression@@endIndex < startIndex '
+    - '---DEL InfixExpression@@endIndex < 0 '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/data/time/TimeSeries:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:endIndex < 0 @TO@ InfixExpression:(endIndex
+      < 0) || (endIndex < startIndex) '
+    - '---INS InfixExpression@@(endIndex < 0) || (endIndex < startIndex) @TO@ IfStatement@@InfixExpression:endIndex
+      < 0 '
+    - '------INS ParenthesizedExpression@@(endIndex < 0) @TO@ InfixExpression@@(endIndex
+      < 0) || (endIndex < startIndex) '
+    - '---------INS InfixExpression@@endIndex < 0 @TO@ ParenthesizedExpression@@(endIndex
+      < 0) '
+    - '------------MOV SimpleName@@endIndex @TO@ InfixExpression@@endIndex < 0 '
+    - '------------MOV Operator@@< @TO@ InfixExpression@@endIndex < 0 '
+    - '------------MOV NumberLiteral@@0 @TO@ InfixExpression@@endIndex < 0 '
+    - '------INS Operator@@|| @TO@ InfixExpression@@(endIndex < 0) || (endIndex <
+      startIndex) '
+    - '------INS ParenthesizedExpression@@(endIndex < startIndex) @TO@ InfixExpression@@(endIndex
+      < 0) || (endIndex < startIndex) '
+    - '---------INS InfixExpression@@endIndex < startIndex @TO@ ParenthesizedExpression@@(endIndex
+      < startIndex) '
+    - '------------INS SimpleName@@endIndex @TO@ InfixExpression@@endIndex < startIndex '
+    - '------------INS Operator@@< @TO@ InfixExpression@@endIndex < startIndex '
+    - '------------INS SimpleName@@startIndex @TO@ InfixExpression@@endIndex < startIndex '
+    - '---DEL InfixExpression@@endIndex < 0 '
+  repair_actions_cnt: 1

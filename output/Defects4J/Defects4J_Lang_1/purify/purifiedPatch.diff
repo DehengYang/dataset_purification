@@ -1,0 +1,24 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_1/src/main/java/org/apache/commons/lang3/math/NumberUtils.java	2020-10-22 01:09:46.494145840 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_1/purify/purified/org/apache/commons/lang3/math/NumberUtils.java	2020-10-22 01:09:46.490145724 -0400
+@@ -464,11 +464,19 @@
+             }
+         }
+         if (pfxLen > 0) { // we have a hex number
++            char firstSigDigit = 0; // strip leading zeroes
++            for(int i = pfxLen; i < str.length(); i++) {
++                firstSigDigit = str.charAt(i);
++                if (firstSigDigit == '0') { // count leading zeroes
++                    pfxLen++;
++                } else {
++                }
++            }
+             final int hexDigits = str.length() - pfxLen;
+-            if (hexDigits > 16) { // too many for Long
++            if (hexDigits > 16 || (hexDigits == 16 && firstSigDigit > '7')) { // too many for Long
+                 return createBigInteger(str);
+             }
+-            if (hexDigits > 8) { // too many for an int
++            if (hexDigits > 8 || (hexDigits == 8 && firstSigDigit > '7')) { // too many for an int
+                 return createLong(str);
+             }
+             return createInteger(str);

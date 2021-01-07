@@ -1,0 +1,353 @@
+1 bug_id: Time-5
+2 src folder:
+  name of src folder: java
+  number of files: 186
+  number of java files: 157
+  number of src classes: 232
+  number of test classes: 124
+3 test (cases):
+  failing test cases:
+  - org.joda.time.TestPeriod_Basics#testNormalizedStandard_periodType_months2
+  - org.joda.time.TestPeriod_Basics#testNormalizedStandard_periodType_months1
+  - org.joda.time.TestPeriod_Basics#testNormalizedStandard_periodType_monthsWeeks
+  failing tests:
+  - org.joda.time.TestPeriod_Basics
+  number of all test cases: 4015
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.96
+  purification via delta debugging: 1392.7679
+  repair actions extraction: 2.079
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.TestPeriod_Basics#testNormalizedStandard_periodType_months1: 1072
+    org.joda.time.TestPeriod_Basics#testNormalizedStandard_periodType_months2: 1072
+    org.joda.time.TestPeriod_Basics#testNormalizedStandard_periodType_monthsWeeks: 1252
+  fixed:
+    org.joda.time.TestPeriod_Basics#testNormalizedStandard_periodType_months1: 1097
+    org.joda.time.TestPeriod_Basics#testNormalizedStandard_periodType_months2: 1097
+    org.joda.time.TestPeriod_Basics#testNormalizedStandard_periodType_monthsWeeks: 1273
+6 reduced lines:
+  by all: 8
+  by coverage: 0
+  by delta debugging: 8
+  covAdd: 12
+  covDel: 6
+  cov_patch_lines: 18
+  delta_patch_lines: 10
+  oriAdd: 12
+  oriDel: 6
+  ori_patch_lines: 18
+  purAdd: 7
+  purDel: 3
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 2
+  original: 2
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 11
+  failCompile: 48
+  failFail: 13
+  passed: 4
+  total: 76
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_5/src/main/java/org/joda/time/Period.java\t\
+    2020-10-21 23:19:04.221976270 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_5/purify/patch/org/joda/time/Period.java\t\
+    2020-10-21 23:19:04.217976154 -0400\n@@ -1625,13 +1625,19 @@\n         int years\
+    \ = getYears();\n         int months = getMonths();\n         if (years != 0 ||\
+    \ months != 0) {\n-            years = FieldUtils.safeAdd(years, months / 12);\n\
+    -            months = months % 12;\n-            if (years != 0) {\n-        \
+    \        result = result.withYears(years);\n+            long totalMonths = years\
+    \ * 12L + months;\n+            if (type.isSupported(DurationFieldType.YEARS_TYPE))\
+    \ {\n+                int normalizedYears = FieldUtils.safeToInt(totalMonths /\
+    \ 12);\n+                result = result.withYears(normalizedYears);\n+      \
+    \          totalMonths = totalMonths - (normalizedYears * 12);\n             }\n\
+    -            if (months != 0) {\n-                result = result.withMonths(months);\n\
+    +            if (type.isSupported(DurationFieldType.MONTHS_TYPE)) {\n+       \
+    \         int normalizedMonths = FieldUtils.safeToInt(totalMonths);\n+       \
+    \         result = result.withMonths(normalizedMonths);\n+                totalMonths\
+    \ = totalMonths - normalizedMonths;\n+            }\n+            if (totalMonths\
+    \ != 0) {\n+                throw new UnsupportedOperationException(\"Unable to\
+    \ normalize as PeriodType is missing either years or months but period has a month/year\
+    \ amount: \" + toString());\n             }\n         }\n         return result;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_5/src/main/java/org/joda/time/Period.java\t\
+    2020-10-21 23:42:37.526898519 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_5/purify/purified/org/joda/time/Period.java\t\
+    2020-10-21 23:42:37.522898403 -0400\n@@ -1627,11 +1627,15 @@\n         if (years\
+    \ != 0 || months != 0) {\n             years = FieldUtils.safeAdd(years, months\
+    \ / 12);\n             months = months % 12;\n-            if (years != 0) {\n\
+    -                result = result.withYears(years);\n+            long totalMonths\
+    \ = years * 12L + months;\n+            if (type.isSupported(DurationFieldType.YEARS_TYPE))\
+    \ {\n             }\n-            if (months != 0) {\n                 result\
+    \ = result.withMonths(months);\n+            if (type.isSupported(DurationFieldType.MONTHS_TYPE))\
+    \ {\n+                int normalizedMonths = FieldUtils.safeToInt(totalMonths);\n\
+    +                result = result.withMonths(normalizedMonths);\n+            }\n\
+    +            if (totalMonths != 0) {\n             }\n         }\n         return\
+    \ result;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/Period:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long totalMonths=years * 12L + months; @TO@
+      IfStatement@@InfixExpression:years != 0 || months != 0 '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long totalMonths=years
+      * 12L + months; '
+    - '---INS VariableDeclarationFragment@@totalMonths=years * 12L + months @TO@ VariableDeclarationStatement@@long
+      totalMonths=years * 12L + months; '
+    - '------INS SimpleName@@totalMonths @TO@ VariableDeclarationFragment@@totalMonths=years
+      * 12L + months '
+    - '------INS InfixExpression@@years * 12L + months @TO@ VariableDeclarationFragment@@totalMonths=years
+      * 12L + months '
+    - '---------INS InfixExpression@@years * 12L @TO@ InfixExpression@@years * 12L
+      + months '
+    - '------------INS SimpleName@@years @TO@ InfixExpression@@years * 12L '
+    - '------------INS Operator@@* @TO@ InfixExpression@@years * 12L '
+    - '------------INS NumberLiteral@@12L @TO@ InfixExpression@@years * 12L '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@years * 12L + months '
+    - '---------INS SimpleName@@months @TO@ InfixExpression@@years * 12L + months '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ExpressionStatement@@Assignment:years=FieldUtils.safeAdd(years,months /
+      12) '
+    - '---DEL Assignment@@years=FieldUtils.safeAdd(years,months / 12) '
+    - '------DEL SimpleName@@years '
+    - '------DEL Operator@@= '
+    - '------DEL MethodInvocation@@FieldUtils.safeAdd(years,months / 12) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:type.isSupported(DurationFieldType.YEARS_TYPE)
+      @TO@ IfStatement@@InfixExpression:years != 0 || months != 0 '
+    - '---INS MethodInvocation@@type.isSupported(DurationFieldType.YEARS_TYPE) @TO@
+      IfStatement@@MethodInvocation:type.isSupported(DurationFieldType.YEARS_TYPE) '
+    - '------INS SimpleName@@Name:type @TO@ MethodInvocation@@type.isSupported(DurationFieldType.YEARS_TYPE) '
+    - '------INS SimpleName@@MethodName:isSupported:[DurationFieldType.YEARS_TYPE]
+      @TO@ MethodInvocation@@type.isSupported(DurationFieldType.YEARS_TYPE) '
+    - '---------INS QualifiedName@@DurationFieldType.YEARS_TYPE @TO@ SimpleName@@MethodName:isSupported:[DurationFieldType.YEARS_TYPE] '
+    - '------------INS SimpleName@@DurationFieldType @TO@ QualifiedName@@DurationFieldType.YEARS_TYPE '
+    - '------------INS SimpleName@@YEARS_TYPE @TO@ QualifiedName@@DurationFieldType.YEARS_TYPE '
+    - '---MOV ExpressionStatement@@Assignment:months=months % 12 @TO@ IfStatement@@MethodInvocation:type.isSupported(DurationFieldType.YEARS_TYPE) '
+    - '---INS VariableDeclarationStatement@@int normalizedYears=FieldUtils.safeToInt(totalMonths
+      / 12); @TO@ IfStatement@@MethodInvocation:type.isSupported(DurationFieldType.YEARS_TYPE) '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int normalizedYears=FieldUtils.safeToInt(totalMonths
+      / 12); '
+    - '------INS VariableDeclarationFragment@@normalizedYears=FieldUtils.safeToInt(totalMonths
+      / 12) @TO@ VariableDeclarationStatement@@int normalizedYears=FieldUtils.safeToInt(totalMonths
+      / 12); '
+    - '---------INS SimpleName@@normalizedYears @TO@ VariableDeclarationFragment@@normalizedYears=FieldUtils.safeToInt(totalMonths
+      / 12) '
+    - '---------INS MethodInvocation@@FieldUtils.safeToInt(totalMonths / 12) @TO@
+      VariableDeclarationFragment@@normalizedYears=FieldUtils.safeToInt(totalMonths
+      / 12) '
+    - '------------MOV SimpleName@@Name:FieldUtils @TO@ MethodInvocation@@FieldUtils.safeToInt(totalMonths
+      / 12) '
+    - '------------MOV SimpleName@@MethodName:safeAdd:[years, months / 12] @TO@ MethodInvocation@@FieldUtils.safeToInt(totalMonths
+      / 12) '
+    - '---INS ExpressionStatement@@Assignment:result=result.withYears(normalizedYears)
+      @TO@ IfStatement@@MethodInvocation:type.isSupported(DurationFieldType.YEARS_TYPE) '
+    - '------INS Assignment@@result=result.withYears(normalizedYears) @TO@ ExpressionStatement@@Assignment:result=result.withYears(normalizedYears) '
+    - '---------INS SimpleName@@result @TO@ Assignment@@result=result.withYears(normalizedYears) '
+    - '---------INS Operator@@= @TO@ Assignment@@result=result.withYears(normalizedYears) '
+    - '---------INS MethodInvocation@@result.withYears(normalizedYears) @TO@ Assignment@@result=result.withYears(normalizedYears) '
+    - '------------INS SimpleName@@Name:result @TO@ MethodInvocation@@result.withYears(normalizedYears) '
+    - '------------INS SimpleName@@MethodName:withYears:[normalizedYears] @TO@ MethodInvocation@@result.withYears(normalizedYears) '
+    - '---------------INS SimpleName@@normalizedYears @TO@ SimpleName@@MethodName:withYears:[normalizedYears] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:months=months % 12 @TO@ Assignment:totalMonths=totalMonths
+      - (normalizedYears * 12) '
+    - '---UPD Assignment@@months=months % 12 @TO@ totalMonths=totalMonths - (normalizedYears
+      * 12) '
+    - '------UPD SimpleName@@months @TO@ totalMonths '
+    - '------UPD InfixExpression@@months % 12 @TO@ totalMonths - (normalizedYears
+      * 12) '
+    - '---------UPD SimpleName@@months @TO@ totalMonths '
+    - '---------UPD Operator@@% @TO@ - '
+    - '---------INS ParenthesizedExpression@@(normalizedYears * 12) @TO@ InfixExpression@@months
+      % 12 '
+    - '------------INS InfixExpression@@normalizedYears * 12 @TO@ ParenthesizedExpression@@(normalizedYears
+      * 12) '
+    - '---------------MOV NumberLiteral@@12 @TO@ InfixExpression@@normalizedYears
+      * 12 '
+    - '---------------INS SimpleName@@normalizedYears @TO@ InfixExpression@@normalizedYears
+      * 12 '
+    - '---------------INS Operator@@* @TO@ InfixExpression@@normalizedYears * 12 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:years != 0 @TO@ MethodInvocation:type.isSupported(DurationFieldType.MONTHS_TYPE) '
+    - '---DEL InfixExpression@@years != 0 '
+    - '------DEL SimpleName@@years '
+    - '------DEL Operator@@!= '
+    - '------DEL NumberLiteral@@0 '
+    - '---UPD ExpressionStatement@@Assignment:result=result.withYears(years) @TO@
+      Assignment:result=result.withMonths(normalizedMonths) '
+    - '------UPD Assignment@@result=result.withYears(years) @TO@ result=result.withMonths(normalizedMonths) '
+    - '---------UPD MethodInvocation@@result.withYears(years) @TO@ result.withMonths(normalizedMonths) '
+    - '------------UPD SimpleName@@MethodName:withYears:[years] @TO@ MethodName:withMonths:[normalizedMonths] '
+    - '---------------UPD SimpleName@@years @TO@ normalizedMonths '
+    - '---INS MethodInvocation@@type.isSupported(DurationFieldType.MONTHS_TYPE) @TO@
+      IfStatement@@InfixExpression:years != 0 '
+    - '------INS SimpleName@@Name:type @TO@ MethodInvocation@@type.isSupported(DurationFieldType.MONTHS_TYPE) '
+    - '------INS SimpleName@@MethodName:isSupported:[DurationFieldType.MONTHS_TYPE]
+      @TO@ MethodInvocation@@type.isSupported(DurationFieldType.MONTHS_TYPE) '
+    - '---------INS QualifiedName@@DurationFieldType.MONTHS_TYPE @TO@ SimpleName@@MethodName:isSupported:[DurationFieldType.MONTHS_TYPE] '
+    - '------------INS SimpleName@@DurationFieldType @TO@ QualifiedName@@DurationFieldType.MONTHS_TYPE '
+    - '------------INS SimpleName@@MONTHS_TYPE @TO@ QualifiedName@@DurationFieldType.MONTHS_TYPE '
+    - '---INS VariableDeclarationStatement@@int normalizedMonths=FieldUtils.safeToInt(totalMonths);
+      @TO@ IfStatement@@InfixExpression:years != 0 '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int normalizedMonths=FieldUtils.safeToInt(totalMonths); '
+    - '------INS VariableDeclarationFragment@@normalizedMonths=FieldUtils.safeToInt(totalMonths)
+      @TO@ VariableDeclarationStatement@@int normalizedMonths=FieldUtils.safeToInt(totalMonths); '
+    - '---------INS SimpleName@@normalizedMonths @TO@ VariableDeclarationFragment@@normalizedMonths=FieldUtils.safeToInt(totalMonths) '
+    - '---------INS MethodInvocation@@FieldUtils.safeToInt(totalMonths) @TO@ VariableDeclarationFragment@@normalizedMonths=FieldUtils.safeToInt(totalMonths) '
+    - '------------INS SimpleName@@Name:FieldUtils @TO@ MethodInvocation@@FieldUtils.safeToInt(totalMonths) '
+    - '------------INS SimpleName@@MethodName:safeToInt:[totalMonths] @TO@ MethodInvocation@@FieldUtils.safeToInt(totalMonths) '
+    - '---------------INS SimpleName@@totalMonths @TO@ SimpleName@@MethodName:safeToInt:[totalMonths] '
+    - '---INS ExpressionStatement@@Assignment:totalMonths=totalMonths - normalizedMonths
+      @TO@ IfStatement@@InfixExpression:years != 0 '
+    - '------INS Assignment@@totalMonths=totalMonths - normalizedMonths @TO@ ExpressionStatement@@Assignment:totalMonths=totalMonths
+      - normalizedMonths '
+    - '---------INS SimpleName@@totalMonths @TO@ Assignment@@totalMonths=totalMonths
+      - normalizedMonths '
+    - '---------INS Operator@@= @TO@ Assignment@@totalMonths=totalMonths - normalizedMonths '
+    - '---------INS InfixExpression@@totalMonths - normalizedMonths @TO@ Assignment@@totalMonths=totalMonths
+      - normalizedMonths '
+    - '------------INS SimpleName@@totalMonths @TO@ InfixExpression@@totalMonths -
+      normalizedMonths '
+    - '------------INS Operator@@- @TO@ InfixExpression@@totalMonths - normalizedMonths '
+    - '------------INS SimpleName@@normalizedMonths @TO@ InfixExpression@@totalMonths
+      - normalizedMonths '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:months != 0 @TO@ InfixExpression:totalMonths
+      != 0 '
+    - '---UPD InfixExpression@@months != 0 @TO@ totalMonths != 0 '
+    - '------UPD SimpleName@@months @TO@ totalMonths '
+    - '---DEL ExpressionStatement@@Assignment:result=result.withMonths(months) '
+    - '------DEL Assignment@@result=result.withMonths(months) '
+    - '---------DEL SimpleName@@result '
+    - '---------DEL Operator@@= '
+    - '---------DEL MethodInvocation@@result.withMonths(months) '
+    - '------------DEL SimpleName@@Name:result '
+    - '------------DEL SimpleName@@MethodName:withMonths:[months] '
+    - '---------------DEL SimpleName@@months '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new UnsupportedOperationException("Unable
+      to normalize as PeriodType is missing either years or months but period has
+      a month/year amount: " + toString()) @TO@ IfStatement@@InfixExpression:months
+      != 0 '
+    - '------INS ClassInstanceCreation@@UnsupportedOperationException["Unable to normalize
+      as PeriodType is missing either years or months but period has a month/year
+      amount: " + toString()] @TO@ ThrowStatement@@ClassInstanceCreation:new UnsupportedOperationException("Unable
+      to normalize as PeriodType is missing either years or months but period has
+      a month/year amount: " + toString()) '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@UnsupportedOperationException["Unable
+      to normalize as PeriodType is missing either years or months but period has
+      a month/year amount: " + toString()] '
+    - '---------INS SimpleType@@UnsupportedOperationException @TO@ ClassInstanceCreation@@UnsupportedOperationException["Unable
+      to normalize as PeriodType is missing either years or months but period has
+      a month/year amount: " + toString()] '
+    - '---------INS InfixExpression@@"Unable to normalize as PeriodType is missing
+      either years or months but period has a month/year amount: " + toString() @TO@
+      ClassInstanceCreation@@UnsupportedOperationException["Unable to normalize as
+      PeriodType is missing either years or months but period has a month/year amount:
+      " + toString()] '
+    - '------------INS StringLiteral@@"Unable to normalize as PeriodType is missing
+      either years or months but period has a month/year amount: " @TO@ InfixExpression@@"Unable
+      to normalize as PeriodType is missing either years or months but period has
+      a month/year amount: " + toString() '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@"Unable to normalize as PeriodType
+      is missing either years or months but period has a month/year amount: " + toString() '
+    - '------------INS MethodInvocation@@MethodName:toString:[] @TO@ InfixExpression@@"Unable
+      to normalize as PeriodType is missing either years or months but period has
+      a month/year amount: " + toString() '
+  repair_actions_cnt: 6
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/Period:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@long totalMonths=years * 12L + months; @TO@
+      IfStatement@@InfixExpression:years != 0 || months != 0 '
+    - '---INS PrimitiveType@@long @TO@ VariableDeclarationStatement@@long totalMonths=years
+      * 12L + months; '
+    - '---INS VariableDeclarationFragment@@totalMonths=years * 12L + months @TO@ VariableDeclarationStatement@@long
+      totalMonths=years * 12L + months; '
+    - '------INS SimpleName@@totalMonths @TO@ VariableDeclarationFragment@@totalMonths=years
+      * 12L + months '
+    - '------INS InfixExpression@@years * 12L + months @TO@ VariableDeclarationFragment@@totalMonths=years
+      * 12L + months '
+    - '---------INS InfixExpression@@years * 12L @TO@ InfixExpression@@years * 12L
+      + months '
+    - '------------MOV SimpleName@@years @TO@ InfixExpression@@years * 12L '
+    - '------------MOV Operator@@!= @TO@ InfixExpression@@years * 12L '
+    - '------------MOV NumberLiteral@@0 @TO@ InfixExpression@@years * 12L '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@years * 12L + months '
+    - '---------INS SimpleName@@months @TO@ InfixExpression@@years * 12L + months '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:years != 0 '
+    - '---DEL InfixExpression@@years != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:result=result.withYears(years) @TO@ Assignment:result=result.withMonths(normalizedMonths) '
+    - '---UPD Assignment@@result=result.withYears(years) @TO@ result=result.withMonths(normalizedMonths) '
+    - '------UPD MethodInvocation@@result.withYears(years) @TO@ result.withMonths(normalizedMonths) '
+    - '---------UPD SimpleName@@MethodName:withYears:[years] @TO@ MethodName:withMonths:[normalizedMonths] '
+    - '------------UPD SimpleName@@years @TO@ normalizedMonths '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:type.isSupported(DurationFieldType.YEARS_TYPE)
+      @TO@ IfStatement@@InfixExpression:years != 0 || months != 0 '
+    - '---INS MethodInvocation@@type.isSupported(DurationFieldType.YEARS_TYPE) @TO@
+      IfStatement@@MethodInvocation:type.isSupported(DurationFieldType.YEARS_TYPE) '
+    - '------INS SimpleName@@Name:type @TO@ MethodInvocation@@type.isSupported(DurationFieldType.YEARS_TYPE) '
+    - '------INS SimpleName@@MethodName:isSupported:[DurationFieldType.YEARS_TYPE]
+      @TO@ MethodInvocation@@type.isSupported(DurationFieldType.YEARS_TYPE) '
+    - '---------INS QualifiedName@@DurationFieldType.YEARS_TYPE @TO@ SimpleName@@MethodName:isSupported:[DurationFieldType.YEARS_TYPE] '
+    - '------------INS SimpleName@@DurationFieldType @TO@ QualifiedName@@DurationFieldType.YEARS_TYPE '
+    - '------------INS SimpleName@@YEARS_TYPE @TO@ QualifiedName@@DurationFieldType.YEARS_TYPE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:months != 0 @TO@ InfixExpression:totalMonths
+      != 0 '
+    - '---UPD InfixExpression@@months != 0 @TO@ totalMonths != 0 '
+    - '------UPD SimpleName@@months @TO@ totalMonths '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@Assignment:result=result.withMonths(months) @TO@ IfStatement@@InfixExpression:years
+      != 0 || months != 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:type.isSupported(DurationFieldType.MONTHS_TYPE)
+      @TO@ IfStatement@@InfixExpression:years != 0 || months != 0 '
+    - '---MOV ExpressionStatement@@Assignment:result=result.withYears(years) @TO@
+      IfStatement@@MethodInvocation:type.isSupported(DurationFieldType.MONTHS_TYPE) '
+    - '---INS MethodInvocation@@type.isSupported(DurationFieldType.MONTHS_TYPE) @TO@
+      IfStatement@@MethodInvocation:type.isSupported(DurationFieldType.MONTHS_TYPE) '
+    - '------INS SimpleName@@Name:type @TO@ MethodInvocation@@type.isSupported(DurationFieldType.MONTHS_TYPE) '
+    - '------INS SimpleName@@MethodName:isSupported:[DurationFieldType.MONTHS_TYPE]
+      @TO@ MethodInvocation@@type.isSupported(DurationFieldType.MONTHS_TYPE) '
+    - '---------INS QualifiedName@@DurationFieldType.MONTHS_TYPE @TO@ SimpleName@@MethodName:isSupported:[DurationFieldType.MONTHS_TYPE] '
+    - '------------INS SimpleName@@DurationFieldType @TO@ QualifiedName@@DurationFieldType.MONTHS_TYPE '
+    - '------------INS SimpleName@@MONTHS_TYPE @TO@ QualifiedName@@DurationFieldType.MONTHS_TYPE '
+    - '---INS VariableDeclarationStatement@@int normalizedMonths=FieldUtils.safeToInt(totalMonths);
+      @TO@ IfStatement@@MethodInvocation:type.isSupported(DurationFieldType.MONTHS_TYPE) '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int normalizedMonths=FieldUtils.safeToInt(totalMonths); '
+    - '------INS VariableDeclarationFragment@@normalizedMonths=FieldUtils.safeToInt(totalMonths)
+      @TO@ VariableDeclarationStatement@@int normalizedMonths=FieldUtils.safeToInt(totalMonths); '
+    - '---------INS SimpleName@@normalizedMonths @TO@ VariableDeclarationFragment@@normalizedMonths=FieldUtils.safeToInt(totalMonths) '
+    - '---------INS MethodInvocation@@FieldUtils.safeToInt(totalMonths) @TO@ VariableDeclarationFragment@@normalizedMonths=FieldUtils.safeToInt(totalMonths) '
+    - '------------INS SimpleName@@Name:FieldUtils @TO@ MethodInvocation@@FieldUtils.safeToInt(totalMonths) '
+    - '------------INS SimpleName@@MethodName:safeToInt:[totalMonths] @TO@ MethodInvocation@@FieldUtils.safeToInt(totalMonths) '
+    - '---------------INS SimpleName@@totalMonths @TO@ SimpleName@@MethodName:safeToInt:[totalMonths] '
+  repair_actions_cnt: 7

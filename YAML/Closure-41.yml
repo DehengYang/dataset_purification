@@ -1,0 +1,211 @@
+1 bug_id: Closure-41
+2 src folder:
+  name of src folder: src
+  number of files: 409
+  number of java files: 395
+  number of src classes: 1322
+  number of test classes: 220
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.LooseTypeCheckTest#testMethodInference6
+  - com.google.javascript.jscomp.TypeCheckTest#testMethodInference6
+  - com.google.javascript.jscomp.TypeCheckTest#testIssue368
+  failing tests:
+  - com.google.javascript.jscomp.LooseTypeCheckTest
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 7382
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.147
+  purification via delta debugging: 1267.6121
+  repair actions extraction: 2.472
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.LooseTypeCheckTest#testMethodInference6: 4868
+    com.google.javascript.jscomp.TypeCheckTest#testIssue368: 4906
+    com.google.javascript.jscomp.TypeCheckTest#testMethodInference6: 4866
+  fixed:
+    com.google.javascript.jscomp.LooseTypeCheckTest#testMethodInference6: 4820
+    com.google.javascript.jscomp.TypeCheckTest#testIssue368: 4926
+    com.google.javascript.jscomp.TypeCheckTest#testMethodInference6: 4818
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 9
+  covDel: 0
+  cov_patch_lines: 9
+  delta_patch_lines: 9
+  oriAdd: 9
+  oriDel: 0
+  ori_patch_lines: 9
+  purAdd: 9
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 17
+  failFail: 6
+  passed: 0
+  total: 23
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_41/src/com/google/javascript/jscomp/FunctionTypeBuilder.java\t\
+    2020-10-22 12:22:06.816539626 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_41/purify/patch/com/google/javascript/jscomp/FunctionTypeBuilder.java\t\
+    2020-10-22 12:22:06.816539626 -0400\n@@ -289,6 +289,9 @@\n       }\n \n      \
+    \ // Clone any remaining params that aren't in the function literal.\n+      while\
+    \ (oldParams.hasNext()) {\n+        paramBuilder.newParameterFromNode(oldParams.next());\n\
+    +      }\n \n       parametersNode = paramBuilder.build();\n     }\n@@ -480,6\
+    \ +483,12 @@\n     }\n \n     // Copy over any old parameters that aren't in the\
+    \ param list.\n+    if (!isVarArgs) {\n+      while (oldParameterType != null\
+    \ && !isVarArgs) {\n+        builder.newParameterFromNode(oldParameterType);\n\
+    +        oldParameterType = oldParameterType.getNext();\n+      }\n+    }\n \n\
+    \     if (templateTypeName != null && !foundTemplateType) {\n       reportError(TEMPLATE_TYPE_EXPECTED,\
+    \ fnName);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_41/src/com/google/javascript/jscomp/FunctionTypeBuilder.java\t\
+    2020-10-22 12:43:49.694177366 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_41/purify/purified/com/google/javascript/jscomp/FunctionTypeBuilder.java\t\
+    2020-10-22 12:43:49.694177366 -0400\n@@ -289,6 +289,9 @@\n       }\n \n      \
+    \ // Clone any remaining params that aren't in the function literal.\n+      while\
+    \ (oldParams.hasNext()) {\n+        paramBuilder.newParameterFromNode(oldParams.next());\n\
+    +      }\n \n       parametersNode = paramBuilder.build();\n     }\n@@ -480,6\
+    \ +483,12 @@\n     }\n \n     // Copy over any old parameters that aren't in the\
+    \ param list.\n+    if (!isVarArgs) {\n+      while (oldParameterType != null\
+    \ && !isVarArgs) {\n+        builder.newParameterFromNode(oldParameterType);\n\
+    +        oldParameterType = oldParameterType.getNext();\n+      }\n+    }\n \n\
+    \     if (templateTypeName != null && !foundTemplateType) {\n       reportError(TEMPLATE_TYPE_EXPECTED,\
+    \ fnName);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/FunctionTypeBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS WhileStatement@@MethodInvocation:oldParams.hasNext() @TO@ IfStatement@@InfixExpression:paramsParent
+      == null '
+    - '---INS MethodInvocation@@oldParams.hasNext() @TO@ WhileStatement@@MethodInvocation:oldParams.hasNext() '
+    - '------INS SimpleName@@Name:oldParams @TO@ MethodInvocation@@oldParams.hasNext() '
+    - '------INS SimpleName@@MethodName:hasNext:[] @TO@ MethodInvocation@@oldParams.hasNext() '
+    - '---INS ExpressionStatement@@MethodInvocation:paramBuilder.newParameterFromNode(oldParams.next())
+      @TO@ WhileStatement@@MethodInvocation:oldParams.hasNext() '
+    - '------INS MethodInvocation@@paramBuilder.newParameterFromNode(oldParams.next())
+      @TO@ ExpressionStatement@@MethodInvocation:paramBuilder.newParameterFromNode(oldParams.next()) '
+    - '---------INS SimpleName@@Name:paramBuilder @TO@ MethodInvocation@@paramBuilder.newParameterFromNode(oldParams.next()) '
+    - '---------INS SimpleName@@MethodName:newParameterFromNode:[oldParams.next()]
+      @TO@ MethodInvocation@@paramBuilder.newParameterFromNode(oldParams.next()) '
+    - '------------INS MethodInvocation@@oldParams.next() @TO@ SimpleName@@MethodName:newParameterFromNode:[oldParams.next()] '
+    - '---------------INS SimpleName@@Name:oldParams @TO@ MethodInvocation@@oldParams.next() '
+    - '---------------INS SimpleName@@MethodName:next:[] @TO@ MethodInvocation@@oldParams.next() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!isVarArgs @TO@ MethodDeclaration@@@@FunctionTypeBuilder,
+      MethodName:inferParameterTypes, @@Argus:Node+argsParent+JSDocInfo+info+ '
+    - '---INS PrefixExpression@@!isVarArgs @TO@ IfStatement@@PrefixExpression:!isVarArgs '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!isVarArgs '
+    - '------INS SimpleName@@isVarArgs @TO@ PrefixExpression@@!isVarArgs '
+    - '---INS WhileStatement@@InfixExpression:oldParameterType != null && !isVarArgs
+      @TO@ IfStatement@@PrefixExpression:!isVarArgs '
+    - '------INS InfixExpression@@oldParameterType != null && !isVarArgs @TO@ WhileStatement@@InfixExpression:oldParameterType
+      != null && !isVarArgs '
+    - '---------INS InfixExpression@@oldParameterType != null @TO@ InfixExpression@@oldParameterType
+      != null && !isVarArgs '
+    - '------------INS SimpleName@@oldParameterType @TO@ InfixExpression@@oldParameterType
+      != null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@oldParameterType != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@oldParameterType !=
+      null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@oldParameterType != null &&
+      !isVarArgs '
+    - '---------INS PrefixExpression@@!isVarArgs @TO@ InfixExpression@@oldParameterType
+      != null && !isVarArgs '
+    - '------------INS Operator@@! @TO@ PrefixExpression@@!isVarArgs '
+    - '------------INS SimpleName@@isVarArgs @TO@ PrefixExpression@@!isVarArgs '
+    - '------INS ExpressionStatement@@MethodInvocation:builder.newParameterFromNode(oldParameterType)
+      @TO@ WhileStatement@@InfixExpression:oldParameterType != null && !isVarArgs '
+    - '---------INS MethodInvocation@@builder.newParameterFromNode(oldParameterType)
+      @TO@ ExpressionStatement@@MethodInvocation:builder.newParameterFromNode(oldParameterType) '
+    - '------------INS SimpleName@@Name:builder @TO@ MethodInvocation@@builder.newParameterFromNode(oldParameterType) '
+    - '------------INS SimpleName@@MethodName:newParameterFromNode:[oldParameterType]
+      @TO@ MethodInvocation@@builder.newParameterFromNode(oldParameterType) '
+    - '---------------INS SimpleName@@oldParameterType @TO@ SimpleName@@MethodName:newParameterFromNode:[oldParameterType] '
+    - '------INS ExpressionStatement@@Assignment:oldParameterType=oldParameterType.getNext()
+      @TO@ WhileStatement@@InfixExpression:oldParameterType != null && !isVarArgs '
+    - '---------INS Assignment@@oldParameterType=oldParameterType.getNext() @TO@ ExpressionStatement@@Assignment:oldParameterType=oldParameterType.getNext() '
+    - '------------INS SimpleName@@oldParameterType @TO@ Assignment@@oldParameterType=oldParameterType.getNext() '
+    - '------------INS Operator@@= @TO@ Assignment@@oldParameterType=oldParameterType.getNext() '
+    - '------------INS MethodInvocation@@oldParameterType.getNext() @TO@ Assignment@@oldParameterType=oldParameterType.getNext() '
+    - '---------------INS SimpleName@@Name:oldParameterType @TO@ MethodInvocation@@oldParameterType.getNext() '
+    - '---------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@oldParameterType.getNext() '
+  files_cnt: '1'
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/FunctionTypeBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS WhileStatement@@MethodInvocation:oldParams.hasNext() @TO@ IfStatement@@InfixExpression:paramsParent
+      == null '
+    - '---INS MethodInvocation@@oldParams.hasNext() @TO@ WhileStatement@@MethodInvocation:oldParams.hasNext() '
+    - '------INS SimpleName@@Name:oldParams @TO@ MethodInvocation@@oldParams.hasNext() '
+    - '------INS SimpleName@@MethodName:hasNext:[] @TO@ MethodInvocation@@oldParams.hasNext() '
+    - '---INS ExpressionStatement@@MethodInvocation:paramBuilder.newParameterFromNode(oldParams.next())
+      @TO@ WhileStatement@@MethodInvocation:oldParams.hasNext() '
+    - '------INS MethodInvocation@@paramBuilder.newParameterFromNode(oldParams.next())
+      @TO@ ExpressionStatement@@MethodInvocation:paramBuilder.newParameterFromNode(oldParams.next()) '
+    - '---------INS SimpleName@@Name:paramBuilder @TO@ MethodInvocation@@paramBuilder.newParameterFromNode(oldParams.next()) '
+    - '---------INS SimpleName@@MethodName:newParameterFromNode:[oldParams.next()]
+      @TO@ MethodInvocation@@paramBuilder.newParameterFromNode(oldParams.next()) '
+    - '------------INS MethodInvocation@@oldParams.next() @TO@ SimpleName@@MethodName:newParameterFromNode:[oldParams.next()] '
+    - '---------------INS SimpleName@@Name:oldParams @TO@ MethodInvocation@@oldParams.next() '
+    - '---------------INS SimpleName@@MethodName:next:[] @TO@ MethodInvocation@@oldParams.next() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!isVarArgs @TO@ MethodDeclaration@@@@FunctionTypeBuilder,
+      MethodName:inferParameterTypes, @@Argus:Node+argsParent+JSDocInfo+info+ '
+    - '---INS PrefixExpression@@!isVarArgs @TO@ IfStatement@@PrefixExpression:!isVarArgs '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!isVarArgs '
+    - '------INS SimpleName@@isVarArgs @TO@ PrefixExpression@@!isVarArgs '
+    - '---INS WhileStatement@@InfixExpression:oldParameterType != null && !isVarArgs
+      @TO@ IfStatement@@PrefixExpression:!isVarArgs '
+    - '------INS InfixExpression@@oldParameterType != null && !isVarArgs @TO@ WhileStatement@@InfixExpression:oldParameterType
+      != null && !isVarArgs '
+    - '---------INS InfixExpression@@oldParameterType != null @TO@ InfixExpression@@oldParameterType
+      != null && !isVarArgs '
+    - '------------INS SimpleName@@oldParameterType @TO@ InfixExpression@@oldParameterType
+      != null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@oldParameterType != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@oldParameterType !=
+      null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@oldParameterType != null &&
+      !isVarArgs '
+    - '---------INS PrefixExpression@@!isVarArgs @TO@ InfixExpression@@oldParameterType
+      != null && !isVarArgs '
+    - '------------INS Operator@@! @TO@ PrefixExpression@@!isVarArgs '
+    - '------------INS SimpleName@@isVarArgs @TO@ PrefixExpression@@!isVarArgs '
+    - '------INS ExpressionStatement@@MethodInvocation:builder.newParameterFromNode(oldParameterType)
+      @TO@ WhileStatement@@InfixExpression:oldParameterType != null && !isVarArgs '
+    - '---------INS MethodInvocation@@builder.newParameterFromNode(oldParameterType)
+      @TO@ ExpressionStatement@@MethodInvocation:builder.newParameterFromNode(oldParameterType) '
+    - '------------INS SimpleName@@Name:builder @TO@ MethodInvocation@@builder.newParameterFromNode(oldParameterType) '
+    - '------------INS SimpleName@@MethodName:newParameterFromNode:[oldParameterType]
+      @TO@ MethodInvocation@@builder.newParameterFromNode(oldParameterType) '
+    - '---------------INS SimpleName@@oldParameterType @TO@ SimpleName@@MethodName:newParameterFromNode:[oldParameterType] '
+    - '------INS ExpressionStatement@@Assignment:oldParameterType=oldParameterType.getNext()
+      @TO@ WhileStatement@@InfixExpression:oldParameterType != null && !isVarArgs '
+    - '---------INS Assignment@@oldParameterType=oldParameterType.getNext() @TO@ ExpressionStatement@@Assignment:oldParameterType=oldParameterType.getNext() '
+    - '------------INS SimpleName@@oldParameterType @TO@ Assignment@@oldParameterType=oldParameterType.getNext() '
+    - '------------INS Operator@@= @TO@ Assignment@@oldParameterType=oldParameterType.getNext() '
+    - '------------INS MethodInvocation@@oldParameterType.getNext() @TO@ Assignment@@oldParameterType=oldParameterType.getNext() '
+    - '---------------INS SimpleName@@Name:oldParameterType @TO@ MethodInvocation@@oldParameterType.getNext() '
+    - '---------------INS SimpleName@@MethodName:getNext:[] @TO@ MethodInvocation@@oldParameterType.getNext() '
+  files_cnt: '1'
+  repair_actions_cnt: 2

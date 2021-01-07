@@ -1,0 +1,19 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_46/src/main/java/org/apache/commons/math/complex/Complex.java	2020-10-21 11:49:50.666596775 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_46/purify/purified/org/apache/commons/math/complex/Complex.java	2020-10-21 11:49:50.662596660 -0400
+@@ -257,7 +257,6 @@
+ 
+         if (divisor.isZero) {
+             // return isZero ? NaN : INF; // See MATH-657
+-            return isZero ? NaN : INF;
+         }
+ 
+         if (divisor.isInfinite() && !isInfinite()) {
+@@ -294,7 +293,7 @@
+         }
+         if (divisor == 0d) {
+             // return isZero ? NaN : INF; // See MATH-657
+-            return isZero ? NaN : INF;
++            return NaN;
+         }
+         if (Double.isInfinite(divisor)) {
+             return !isInfinite() ? ZERO : NaN;

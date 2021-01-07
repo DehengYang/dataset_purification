@@ -1,0 +1,219 @@
+1 bug_id: Lang-15
+2 src folder:
+  name of src folder: java
+  number of files: 112
+  number of java files: 99
+  number of src classes: 153
+  number of test classes: 104
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.reflect.TypeUtilsTest#testIsAssignable
+  - org.apache.commons.lang3.reflect.TypeUtilsTest#testGetTypeArguments
+  failing tests:
+  - org.apache.commons.lang3.reflect.TypeUtilsTest
+  number of all test cases: 2051
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.007
+  purification via delta debugging: 88.578
+  repair actions extraction: 1.968
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.reflect.TypeUtilsTest#testGetTypeArguments: 209
+    org.apache.commons.lang3.reflect.TypeUtilsTest#testIsAssignable: 410
+  fixed:
+    org.apache.commons.lang3.reflect.TypeUtilsTest#testGetTypeArguments: 208
+    org.apache.commons.lang3.reflect.TypeUtilsTest#testIsAssignable: 444
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 4
+  cov_patch_lines: 8
+  delta_patch_lines: 8
+  oriAdd: 4
+  oriDel: 4
+  ori_patch_lines: 8
+  purAdd: 4
+  purDel: 4
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 13
+  failFail: 1
+  passed: 0
+  total: 14
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_15/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java\t\
+    2020-10-21 00:55:30.543488154 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_15/purify/patch/org/apache/commons/lang3/reflect/TypeUtils.java\t\
+    2020-10-21 00:55:30.539488038 -0400\n@@ -216,9 +216,9 @@\n                 toClass,\
+    \ typeVarAssigns);\n \n         // now to check each type argument\n-        for\
+    \ (Map.Entry<TypeVariable<?>, Type> entry : toTypeVarAssigns.entrySet()) {\n-\
+    \            Type toTypeArg = entry.getValue();\n-            Type fromTypeArg\
+    \ = fromTypeVarAssigns.get(entry.getKey());\n+        for (TypeVariable<?> var\
+    \ : toTypeVarAssigns.keySet()) {\n+            Type toTypeArg = unrollVariableAssignments(var,\
+    \ toTypeVarAssigns);\n+            Type fromTypeArg = unrollVariableAssignments(var,\
+    \ fromTypeVarAssigns);\n \n             // parameters must either be absent from\
+    \ the subject type, within\n             // the bounds of the wildcard type, or\
+    \ be an exact match to the\n@@ -672,7 +672,7 @@\n                 : new HashMap<TypeVariable<?>,\
+    \ Type>(subtypeVarAssigns);\n \n         // has target class been reached?\n-\
+    \        if (cls.getTypeParameters().length > 0 || toClass.equals(cls)) {\n+ \
+    \       if (toClass.equals(cls)) {\n             return typeVarAssigns;\n    \
+    \     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_15/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java\t\
+    2020-10-21 00:57:12.854443052 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_15/purify/purified/org/apache/commons/lang3/reflect/TypeUtils.java\t\
+    2020-10-21 00:57:12.854443052 -0400\n@@ -216,9 +216,9 @@\n                 toClass,\
+    \ typeVarAssigns);\n \n         // now to check each type argument\n-        for\
+    \ (Map.Entry<TypeVariable<?>, Type> entry : toTypeVarAssigns.entrySet()) {\n-\
+    \            Type toTypeArg = entry.getValue();\n-            Type fromTypeArg\
+    \ = fromTypeVarAssigns.get(entry.getKey());\n+        for (TypeVariable<?> var\
+    \ : toTypeVarAssigns.keySet()) {\n+            Type toTypeArg = unrollVariableAssignments(var,\
+    \ toTypeVarAssigns);\n+            Type fromTypeArg = unrollVariableAssignments(var,\
+    \ fromTypeVarAssigns);\n \n             // parameters must either be absent from\
+    \ the subject type, within\n             // the bounds of the wildcard type, or\
+    \ be an exact match to the\n@@ -672,7 +672,7 @@\n                 : new HashMap<TypeVariable<?>,\
+    \ Type>(subtypeVarAssigns);\n \n         // has target class been reached?\n-\
+    \        if (cls.getTypeParameters().length > 0 || toClass.equals(cls)) {\n+ \
+    \       if (toClass.equals(cls)) {\n             return typeVarAssigns;\n    \
+    \     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/reflect/TypeUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD EnhancedForStatement@@Map.Entry<TypeVariable<?>,Type> entry, MethodInvocation:toTypeVarAssigns.entrySet()
+      @TO@ TypeVariable<?> var, MethodInvocation:toTypeVarAssigns.keySet() '
+    - '---UPD SingleVariableDeclaration@@Map.Entry<TypeVariable<?>,Type> entry @TO@
+      TypeVariable<?> var '
+    - '------INS ParameterizedType@@TypeVariable<?> @TO@ SingleVariableDeclaration@@Map.Entry<TypeVariable<?>,Type>
+      entry '
+    - '---------MOV SimpleType@@TypeVariable @TO@ ParameterizedType@@TypeVariable<?> '
+    - '---------MOV WildcardType@@? @TO@ ParameterizedType@@TypeVariable<?> '
+    - '------DEL ParameterizedType@@Map.Entry<TypeVariable<?>,Type> '
+    - '---------DEL SimpleType@@Map.Entry '
+    - '---------DEL ParameterizedType@@TypeVariable<?> '
+    - '---------DEL SimpleType@@Type '
+    - '------UPD SimpleName@@entry @TO@ var '
+    - '---UPD MethodInvocation@@toTypeVarAssigns.entrySet() @TO@ toTypeVarAssigns.keySet() '
+    - '------UPD SimpleName@@MethodName:entrySet:[] @TO@ MethodName:keySet:[] '
+    - '---UPD VariableDeclarationStatement@@Type toTypeArg=entry.getValue(); @TO@
+      Type toTypeArg=unrollVariableAssignments(var,toTypeVarAssigns); '
+    - '------UPD VariableDeclarationFragment@@toTypeArg=entry.getValue() @TO@ toTypeArg=unrollVariableAssignments(var,toTypeVarAssigns) '
+    - '---------UPD MethodInvocation@@entry.getValue() @TO@ unrollVariableAssignments(var,toTypeVarAssigns) '
+    - '------------INS SimpleName@@MethodName:unrollVariableAssignments:[var, toTypeVarAssigns]
+      @TO@ MethodInvocation@@entry.getValue() '
+    - '---------------INS SimpleName@@var @TO@ SimpleName@@MethodName:unrollVariableAssignments:[var,
+      toTypeVarAssigns] '
+    - '---------------INS SimpleName@@toTypeVarAssigns @TO@ SimpleName@@MethodName:unrollVariableAssignments:[var,
+      toTypeVarAssigns] '
+    - '------------DEL SimpleName@@Name:entry '
+    - '------------DEL SimpleName@@MethodName:getValue:[] '
+    - '---UPD VariableDeclarationStatement@@Type fromTypeArg=fromTypeVarAssigns.get(entry.getKey());
+      @TO@ Type fromTypeArg=unrollVariableAssignments(var,fromTypeVarAssigns); '
+    - '------UPD VariableDeclarationFragment@@fromTypeArg=fromTypeVarAssigns.get(entry.getKey())
+      @TO@ fromTypeArg=unrollVariableAssignments(var,fromTypeVarAssigns) '
+    - '---------UPD MethodInvocation@@fromTypeVarAssigns.get(entry.getKey()) @TO@
+      unrollVariableAssignments(var,fromTypeVarAssigns) '
+    - '------------DEL SimpleName@@Name:fromTypeVarAssigns '
+    - '------------UPD SimpleName@@MethodName:get:[entry.getKey()] @TO@ MethodName:unrollVariableAssignments:[var,
+      fromTypeVarAssigns] '
+    - '---------------DEL MethodInvocation@@entry.getKey() '
+    - '------------------DEL SimpleName@@Name:entry '
+    - '------------------DEL SimpleName@@MethodName:getKey:[] '
+    - '---------------INS SimpleName@@var @TO@ SimpleName@@MethodName:get:[entry.getKey()] '
+    - '---------------INS SimpleName@@fromTypeVarAssigns @TO@ SimpleName@@MethodName:get:[entry.getKey()] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:cls.getTypeParameters().length > 0 || toClass.equals(cls)
+      @TO@ MethodInvocation:toClass.equals(cls) '
+    - '---DEL InfixExpression@@cls.getTypeParameters().length > 0 || toClass.equals(cls) '
+    - '------DEL InfixExpression@@cls.getTypeParameters().length > 0 '
+    - '---------DEL FieldAccess@@cls.getTypeParameters().length '
+    - '------------DEL MethodInvocation@@cls.getTypeParameters() '
+    - '---------------DEL SimpleName@@Name:cls '
+    - '---------------DEL SimpleName@@MethodName:getTypeParameters:[] '
+    - '------------DEL SimpleName@@length '
+    - '---------DEL Operator@@> '
+    - '---------DEL NumberLiteral@@0 '
+    - '------DEL Operator@@|| '
+    - '---MOV MethodInvocation@@toClass.equals(cls) @TO@ IfStatement@@InfixExpression:cls.getTypeParameters().length
+      > 0 || toClass.equals(cls) '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/reflect/TypeUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD EnhancedForStatement@@Map.Entry<TypeVariable<?>,Type> entry, MethodInvocation:toTypeVarAssigns.entrySet()
+      @TO@ TypeVariable<?> var, MethodInvocation:toTypeVarAssigns.keySet() '
+    - '---UPD SingleVariableDeclaration@@Map.Entry<TypeVariable<?>,Type> entry @TO@
+      TypeVariable<?> var '
+    - '------INS ParameterizedType@@TypeVariable<?> @TO@ SingleVariableDeclaration@@Map.Entry<TypeVariable<?>,Type>
+      entry '
+    - '---------MOV SimpleType@@TypeVariable @TO@ ParameterizedType@@TypeVariable<?> '
+    - '---------MOV WildcardType@@? @TO@ ParameterizedType@@TypeVariable<?> '
+    - '------DEL ParameterizedType@@Map.Entry<TypeVariable<?>,Type> '
+    - '---------DEL SimpleType@@Map.Entry '
+    - '---------DEL ParameterizedType@@TypeVariable<?> '
+    - '---------DEL SimpleType@@Type '
+    - '------UPD SimpleName@@entry @TO@ var '
+    - '---UPD MethodInvocation@@toTypeVarAssigns.entrySet() @TO@ toTypeVarAssigns.keySet() '
+    - '------UPD SimpleName@@MethodName:entrySet:[] @TO@ MethodName:keySet:[] '
+    - '---UPD VariableDeclarationStatement@@Type toTypeArg=entry.getValue(); @TO@
+      Type toTypeArg=unrollVariableAssignments(var,toTypeVarAssigns); '
+    - '------UPD VariableDeclarationFragment@@toTypeArg=entry.getValue() @TO@ toTypeArg=unrollVariableAssignments(var,toTypeVarAssigns) '
+    - '---------UPD MethodInvocation@@entry.getValue() @TO@ unrollVariableAssignments(var,toTypeVarAssigns) '
+    - '------------INS SimpleName@@MethodName:unrollVariableAssignments:[var, toTypeVarAssigns]
+      @TO@ MethodInvocation@@entry.getValue() '
+    - '---------------INS SimpleName@@var @TO@ SimpleName@@MethodName:unrollVariableAssignments:[var,
+      toTypeVarAssigns] '
+    - '---------------INS SimpleName@@toTypeVarAssigns @TO@ SimpleName@@MethodName:unrollVariableAssignments:[var,
+      toTypeVarAssigns] '
+    - '------------DEL SimpleName@@Name:entry '
+    - '------------DEL SimpleName@@MethodName:getValue:[] '
+    - '---UPD VariableDeclarationStatement@@Type fromTypeArg=fromTypeVarAssigns.get(entry.getKey());
+      @TO@ Type fromTypeArg=unrollVariableAssignments(var,fromTypeVarAssigns); '
+    - '------UPD VariableDeclarationFragment@@fromTypeArg=fromTypeVarAssigns.get(entry.getKey())
+      @TO@ fromTypeArg=unrollVariableAssignments(var,fromTypeVarAssigns) '
+    - '---------UPD MethodInvocation@@fromTypeVarAssigns.get(entry.getKey()) @TO@
+      unrollVariableAssignments(var,fromTypeVarAssigns) '
+    - '------------DEL SimpleName@@Name:fromTypeVarAssigns '
+    - '------------UPD SimpleName@@MethodName:get:[entry.getKey()] @TO@ MethodName:unrollVariableAssignments:[var,
+      fromTypeVarAssigns] '
+    - '---------------DEL MethodInvocation@@entry.getKey() '
+    - '------------------DEL SimpleName@@Name:entry '
+    - '------------------DEL SimpleName@@MethodName:getKey:[] '
+    - '---------------INS SimpleName@@var @TO@ SimpleName@@MethodName:get:[entry.getKey()] '
+    - '---------------INS SimpleName@@fromTypeVarAssigns @TO@ SimpleName@@MethodName:get:[entry.getKey()] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:cls.getTypeParameters().length > 0 || toClass.equals(cls)
+      @TO@ MethodInvocation:toClass.equals(cls) '
+    - '---DEL InfixExpression@@cls.getTypeParameters().length > 0 || toClass.equals(cls) '
+    - '------DEL InfixExpression@@cls.getTypeParameters().length > 0 '
+    - '---------DEL FieldAccess@@cls.getTypeParameters().length '
+    - '------------DEL MethodInvocation@@cls.getTypeParameters() '
+    - '---------------DEL SimpleName@@Name:cls '
+    - '---------------DEL SimpleName@@MethodName:getTypeParameters:[] '
+    - '------------DEL SimpleName@@length '
+    - '---------DEL Operator@@> '
+    - '---------DEL NumberLiteral@@0 '
+    - '------DEL Operator@@|| '
+    - '---MOV MethodInvocation@@toClass.equals(cls) @TO@ IfStatement@@InfixExpression:cls.getTypeParameters().length
+      > 0 || toClass.equals(cls) '
+  repair_actions_cnt: 2

@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_26/src/main/java/org/joda/time/chrono/ZonedChronology.java	2020-10-20 23:33:47.549864243 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_26/purify/purified/org/joda/time/chrono/ZonedChronology.java	2020-10-20 23:33:47.545864128 -0400
+@@ -464,7 +464,7 @@
+         public long set(long instant, int value) {
+             long localInstant = iZone.convertUTCToLocal(instant);
+             localInstant = iField.set(localInstant, value);
+-            long result = iZone.convertLocalToUTC(localInstant, false);
++            long result = iZone.convertLocalToUTC(localInstant, false, instant);
+             if (get(result) != value) {
+                 throw new IllegalFieldValueException(iField.getType(), new Integer(value),
+                     "Illegal instant due to time zone offset transition: " +

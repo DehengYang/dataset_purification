@@ -1,0 +1,10 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_26/src/org/mockito/internal/util/Primitives.java	2020-10-24 19:50:37.779161349 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_26/purify/assertBeforeMut/org/mockito/internal/util/Primitives.java	2020-10-24 19:50:37.779161349 -0400
+@@ -63,6 +63,6 @@
+         primitiveValues.put(int.class, 0);
+         primitiveValues.put(long.class, 0L);
+         primitiveValues.put(float.class, 0F);
+-        primitiveValues.put(double.class, 0);
++        primitiveValues.put(double.class, 0D);
+     }
+ }

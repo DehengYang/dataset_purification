@@ -1,0 +1,118 @@
+1 bug_id: Mockito-19
+2 src folder:
+  name of src folder: src
+  number of files: 356
+  number of java files: 319
+  number of src classes: 393
+  number of test classes: 283
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.annotation.MockInjectionUsingSetterOrPropertyTest#shouldInsertFieldWithCorrectNameWhenMultipleTypesAvailable
+  failing tests:
+  - org.mockitousage.annotation.MockInjectionUsingSetterOrPropertyTest
+  number of all test cases: 973
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 5.0
+  purification via coverage: 0.925
+  purification via delta debugging: 4035.2959
+  repair actions extraction: 1.006
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 26
+  covDel: 8
+  cov_patch_lines: 34
+  delta_patch_lines: 34
+  oriAdd: 26
+  oriDel: 8
+  ori_patch_lines: 34
+  purAdd: 26
+  purDel: 8
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 11
+  original: 11
+  purifiy: 11
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 134
+  passed: 3
+  total: 137
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_19/src/org/mockito/internal/configuration/injection/filter/TypeBasedCandidateFilter.java\t\
+    2020-10-24 17:41:56.689228861 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_19/purify/patch/org/mockito/internal/configuration/injection/filter/TypeBasedCandidateFilter.java\t\
+    2020-10-24 17:41:56.689228861 -0400\n@@ -17,7 +17,7 @@\n         this.next = next;\n\
+    \     }\n \n-    public OngoingInjecter filterCandidate(Collection<Object> mocks,\
+    \ Field field, Object fieldInstance) {\n+    public OngoingInjecter filterCandidate(Collection<Object>\
+    \ mocks, Field field, List<Field> fields, Object fieldInstance) {\n         List<Object>\
+    \ mockTypeMatches = new ArrayList<Object>();\n         for (Object mock : mocks)\
+    \ {\n             if (field.getType().isAssignableFrom(mock.getClass())) {\n@@\
+    \ -25,6 +25,6 @@\n             }\n         }\n \n-        return next.filterCandidate(mockTypeMatches,\
+    \ field, fieldInstance);\n+        return next.filterCandidate(mockTypeMatches,\
+    \ field, fields, fieldInstance);\n     }\n }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_19/src/org/mockito/internal/configuration/injection/filter/TypeBasedCandidateFilter.java\t\
+    2020-10-24 18:50:06.486006950 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_19/purify/purified/org/mockito/internal/configuration/injection/filter/TypeBasedCandidateFilter.java\t\
+    2020-10-24 18:50:06.486006950 -0400\n@@ -17,7 +17,7 @@\n         this.next = next;\n\
+    \     }\n \n-    public OngoingInjecter filterCandidate(Collection<Object> mocks,\
+    \ Field field, Object fieldInstance) {\n+    public OngoingInjecter filterCandidate(Collection<Object>\
+    \ mocks, Field field, List<Field> fields, Object fieldInstance) {\n         List<Object>\
+    \ mockTypeMatches = new ArrayList<Object>();\n         for (Object mock : mocks)\
+    \ {\n             if (field.getType().isAssignableFrom(mock.getClass())) {\n@@\
+    \ -25,6 +25,6 @@\n             }\n         }\n \n-        return next.filterCandidate(mockTypeMatches,\
+    \ field, fieldInstance);\n+        return next.filterCandidate(mockTypeMatches,\
+    \ field, fields, fieldInstance);\n     }\n }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '5'
+  files_cnt: '5'
+  ? org/mockito/internal/configuration/injection/filter/FinalMockCandidateFilter,
+    org/mockito/internal/configuration/injection/filter/MockCandidateFilter, org/mockito/internal/configuration/injection/filter/NameBasedCandidateFilter,
+    org/mockito/internal/configuration/injection/filter/TypeBasedCandidateFilter,
+    org/mockito/internal/configuration/injection/PropertyAndSetterInjection
+  : - !yamlable/myyaml.Action
+      lines:
+      - 'UPD VariableDeclarationStatement@@Object injected=mockCandidateFilter.filterCandidate(mocks,field,instance).thenInject();
+        @TO@ Object injected=mockCandidateFilter.filterCandidate(mocks,field,orderedInstanceFields,instance).thenInject(); '
+      - '---UPD VariableDeclarationFragment@@injected=mockCandidateFilter.filterCandidate(mocks,field,instance).thenInject()
+        @TO@ injected=mockCandidateFilter.filterCandidate(mocks,field,orderedInstanceFields,instance).thenInject() '
+      - '------UPD MethodInvocation@@mockCandidateFilter.filterCandidate(mocks,field,instance).thenInject()
+        @TO@ mockCandidateFilter.filterCandidate(mocks,field,orderedInstanceFields,instance).thenInject() '
+      - '---------UPD MethodInvocation@@MethodName:filterCandidate:[mocks, field,
+        instance] @TO@ MethodName:filterCandidate:[mocks, field, orderedInstanceFields,
+        instance] '
+      - '------------INS SimpleName@@orderedInstanceFields @TO@ MethodInvocation@@MethodName:filterCandidate:[mocks,
+        field, instance] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '5'
+  files_cnt: '5'
+  ? org/mockito/internal/configuration/injection/filter/FinalMockCandidateFilter,
+    org/mockito/internal/configuration/injection/filter/MockCandidateFilter, org/mockito/internal/configuration/injection/filter/NameBasedCandidateFilter,
+    org/mockito/internal/configuration/injection/filter/TypeBasedCandidateFilter,
+    org/mockito/internal/configuration/injection/PropertyAndSetterInjection
+  : - !yamlable/myyaml.Action
+      lines:
+      - 'UPD VariableDeclarationStatement@@Object injected=mockCandidateFilter.filterCandidate(mocks,field,instance).thenInject();
+        @TO@ Object injected=mockCandidateFilter.filterCandidate(mocks,field,orderedInstanceFields,instance).thenInject(); '
+      - '---UPD VariableDeclarationFragment@@injected=mockCandidateFilter.filterCandidate(mocks,field,instance).thenInject()
+        @TO@ injected=mockCandidateFilter.filterCandidate(mocks,field,orderedInstanceFields,instance).thenInject() '
+      - '------UPD MethodInvocation@@mockCandidateFilter.filterCandidate(mocks,field,instance).thenInject()
+        @TO@ mockCandidateFilter.filterCandidate(mocks,field,orderedInstanceFields,instance).thenInject() '
+      - '---------UPD MethodInvocation@@MethodName:filterCandidate:[mocks, field,
+        instance] @TO@ MethodName:filterCandidate:[mocks, field, orderedInstanceFields,
+        instance] '
+      - '------------INS SimpleName@@orderedInstanceFields @TO@ MethodInvocation@@MethodName:filterCandidate:[mocks,
+        field, instance] '
+  repair_actions_cnt: 1

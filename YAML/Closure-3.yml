@@ -1,0 +1,482 @@
+1 bug_id: Closure-3
+2 src folder:
+  name of src folder: src
+  number of files: 429
+  number of java files: 413
+  number of src classes: 1382
+  number of test classes: 226
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testDoNotInlineCatchExpression3
+  - com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testDoNotInlineCatchExpression1a
+  - com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testDoNotInlineCatchExpression1
+  failing tests:
+  - com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest
+  number of all test cases: 7865
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.938
+  purification via delta debugging: 485.095
+  repair actions extraction: 1.122
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testDoNotInlineCatchExpression1: 4621
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testDoNotInlineCatchExpression1a: 4681
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testDoNotInlineCatchExpression3: 4620
+  fixed:
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testDoNotInlineCatchExpression1: 4399
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testDoNotInlineCatchExpression1a: 4463
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testDoNotInlineCatchExpression3: 4399
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 8
+  covDel: 2
+  cov_patch_lines: 10
+  delta_patch_lines: 10
+  oriAdd: 8
+  oriDel: 2
+  ori_patch_lines: 10
+  purAdd: 8
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 22
+  failFail: 2
+  passed: 0
+  total: 24
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_3/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java\t\
+    2020-10-22 09:02:30.394180658 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_3/purify/patch/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java\t\
+    2020-10-22 09:02:30.390180542 -0400\n@@ -152,7 +152,7 @@\n     reachingUses =\
+    \ new MaybeReachingVariableUse(cfg, t.getScope(), compiler);\n     reachingUses.analyze();\n\
+    \     for (Candidate c : candidates) {\n-      if (c.canInline()) {\n+      if\
+    \ (c.canInline(t.getScope())) {\n         c.inlineVariable();\n \n         //\
+    \ If definition c has dependencies, then inlining it may have\n@@ -277,7 +277,7\
+    \ @@\n       return defMetadata.node;\n     }\n \n-    private boolean canInline()\
+    \ {\n+    private boolean canInline(final Scope scope) {\n       // Cannot inline\
+    \ a parameter.\n       if (getDefCfgNode().isFunction()) {\n         return false;\n\
+    @@ -372,6 +372,12 @@\n                   case Token.REGEXP:\n                \
+    \   case Token.NEW:\n                     return true;\n+                  case\
+    \ Token.NAME:\n+                    Var var = scope.getOwnSlot(input.getString());\n\
+    +                    if (var != null\n+                        && var.getParentNode().isCatch())\
+    \ {\n+                      return true;\n+                    }\n           \
+    \      }\n                 return false;\n               }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_3/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java\t\
+    2020-10-22 09:11:08.141159137 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_3/purify/purified/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java\t\
+    2020-10-22 09:11:08.141159137 -0400\n@@ -152,7 +152,7 @@\n     reachingUses =\
+    \ new MaybeReachingVariableUse(cfg, t.getScope(), compiler);\n     reachingUses.analyze();\n\
+    \     for (Candidate c : candidates) {\n-      if (c.canInline()) {\n+      if\
+    \ (c.canInline(t.getScope())) {\n         c.inlineVariable();\n \n         //\
+    \ If definition c has dependencies, then inlining it may have\n@@ -277,7 +277,7\
+    \ @@\n       return defMetadata.node;\n     }\n \n-    private boolean canInline()\
+    \ {\n+    private boolean canInline(final Scope scope) {\n       // Cannot inline\
+    \ a parameter.\n       if (getDefCfgNode().isFunction()) {\n         return false;\n\
+    @@ -372,6 +372,12 @@\n                   case Token.REGEXP:\n                \
+    \   case Token.NEW:\n                     return true;\n+                  case\
+    \ Token.NAME:\n+                    Var var = scope.getOwnSlot(input.getString());\n\
+    +                    if (var != null\n+                        && var.getParentNode().isCatch())\
+    \ {\n+                      return true;\n+                    }\n           \
+    \      }\n                 return false;\n               }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/FlowSensitiveInlineVariables:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@MethodInvocation:c.canInline() @TO@ MethodInvocation:c.canInline(t.getScope()) '
+    - '---UPD MethodInvocation@@c.canInline() @TO@ c.canInline(t.getScope()) '
+    - '------UPD SimpleName@@MethodName:canInline:[] @TO@ MethodName:canInline:[t.getScope()] '
+    - '---------INS MethodInvocation@@t.getScope() @TO@ SimpleName@@MethodName:canInline:[] '
+    - '------------INS SimpleName@@Name:t @TO@ MethodInvocation@@t.getScope() '
+    - '------------INS SimpleName@@MethodName:getScope:[] @TO@ MethodInvocation@@t.getScope() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@boolean, MethodName:canInline, @@Argus:null
+      @TO@ private, @@boolean, MethodName:canInline, @@Argus:Scope+scope+ '
+    - '---INS SingleVariableDeclaration@@final Scope scope @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:canInline, @@Argus:null '
+    - '------INS Modifier@@final @TO@ SingleVariableDeclaration@@final Scope scope '
+    - '------INS SimpleType@@Scope @TO@ SingleVariableDeclaration@@final Scope scope '
+    - '------INS SimpleName@@scope @TO@ SingleVariableDeclaration@@final Scope scope '
+    - '---UPD IfStatement@@MethodInvocation:NodeUtil.has(def.getLastChild(),new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node input)'
+    - 'switch (input.getType()) '
+    - case Token.GETELEM
+    - case Token.GETPROP
+    - case Token.ARRAYLIT
+    - case Token.OBJECTLIT
+    - case Token.REGEXP
+    - case Token.NEW
+    - '      return true'
+    - '  '
+    - '  return false'
+    - ''
+    - ''
+    - ',new Predicate<Node>()'
+    - '@Override public boolean apply(Node input)'
+    - '  return !input.isFunction()'
+    - ''
+    - ''
+    - ) @TO@ MethodInvocation:NodeUtil.has(def.getLastChild(),new Predicate<Node>()
+    - '  @Override public boolean apply(  Node input)'
+    - 'switch (input.getType()) '
+    - case Token.GETELEM
+    - case Token.GETPROP
+    - case Token.ARRAYLIT
+    - case Token.OBJECTLIT
+    - case Token.REGEXP
+    - case Token.NEW
+    - '      return true'
+    - case Token.NAME
+    - '    Var var=scope.getOwnSlot(input.getString())'
+    - '  if (var != null && var.getParentNode().isCatch()) '
+    - '    return true'
+    - '  '
+    - ''
+    - return false
+    - ''
+    - ''
+    - ',new Predicate<Node>()'
+    - '@Override public boolean apply(Node input)'
+    - return !input.isFunction()
+    - ''
+    - ''
+    - ') '
+    - '------UPD MethodInvocation@@NodeUtil.has(def.getLastChild(),new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node input)'
+    - 'switch (input.getType()) '
+    - case Token.GETELEM
+    - case Token.GETPROP
+    - case Token.ARRAYLIT
+    - case Token.OBJECTLIT
+    - case Token.REGEXP
+    - case Token.NEW
+    - '      return true'
+    - '  '
+    - '  return false'
+    - ''
+    - ''
+    - ',new Predicate<Node>()'
+    - '@Override public boolean apply(Node input)'
+    - '  return !input.isFunction()'
+    - ''
+    - ''
+    - ) @TO@ NodeUtil.has(def.getLastChild(),new Predicate<Node>()
+    - '  @Override public boolean apply(  Node input)'
+    - 'switch (input.getType()) '
+    - case Token.GETELEM
+    - case Token.GETPROP
+    - case Token.ARRAYLIT
+    - case Token.OBJECTLIT
+    - case Token.REGEXP
+    - case Token.NEW
+    - '      return true'
+    - case Token.NAME
+    - '    Var var=scope.getOwnSlot(input.getString())'
+    - '  if (var != null && var.getParentNode().isCatch()) '
+    - '    return true'
+    - '  '
+    - ''
+    - return false
+    - ''
+    - ''
+    - ',new Predicate<Node>()'
+    - '@Override public boolean apply(Node input)'
+    - return !input.isFunction()
+    - ''
+    - ''
+    - ') '
+    - '---------UPD SimpleName@@MethodName:has:[def.getLastChild(), new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node input)'
+    - 'switch (input.getType()) '
+    - case Token.GETELEM
+    - case Token.GETPROP
+    - case Token.ARRAYLIT
+    - case Token.OBJECTLIT
+    - case Token.REGEXP
+    - case Token.NEW
+    - '      return true'
+    - '  '
+    - '  return false'
+    - ''
+    - ''
+    - ', new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node input)'
+    - '    return !input.isFunction()'
+    - '  '
+    - ''
+    - '] @TO@ MethodName:has:[def.getLastChild(), new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node input)'
+    - 'switch (input.getType()) '
+    - case Token.GETELEM
+    - case Token.GETPROP
+    - case Token.ARRAYLIT
+    - case Token.OBJECTLIT
+    - case Token.REGEXP
+    - case Token.NEW
+    - '      return true'
+    - case Token.NAME
+    - '    Var var=scope.getOwnSlot(input.getString())'
+    - '  if (var != null && var.getParentNode().isCatch()) '
+    - '    return true'
+    - '  '
+    - ''
+    - return false
+    - ''
+    - ''
+    - ', new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node input)'
+    - '    return !input.isFunction()'
+    - '  '
+    - ''
+    - '] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.NAME @TO@ SwitchStatement@@MethodInvocation:input.getType() '
+    - '---INS QualifiedName@@Token.NAME @TO@ SwitchCase@@QualifiedName:Token.NAME '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.NAME '
+    - '------INS SimpleName@@NAME @TO@ QualifiedName@@Token.NAME '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Var var=scope.getOwnSlot(input.getString());
+      @TO@ SwitchStatement@@MethodInvocation:input.getType() '
+    - '---INS SimpleType@@Var @TO@ VariableDeclarationStatement@@Var var=scope.getOwnSlot(input.getString()); '
+    - '---INS VariableDeclarationFragment@@var=scope.getOwnSlot(input.getString())
+      @TO@ VariableDeclarationStatement@@Var var=scope.getOwnSlot(input.getString()); '
+    - '------INS SimpleName@@var @TO@ VariableDeclarationFragment@@var=scope.getOwnSlot(input.getString()) '
+    - '------INS MethodInvocation@@scope.getOwnSlot(input.getString()) @TO@ VariableDeclarationFragment@@var=scope.getOwnSlot(input.getString()) '
+    - '---------INS SimpleName@@Name:scope @TO@ MethodInvocation@@scope.getOwnSlot(input.getString()) '
+    - '---------INS SimpleName@@MethodName:getOwnSlot:[input.getString()] @TO@ MethodInvocation@@scope.getOwnSlot(input.getString()) '
+    - '------------INS MethodInvocation@@input.getString() @TO@ SimpleName@@MethodName:getOwnSlot:[input.getString()] '
+    - '---------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.getString() '
+    - '---------------INS SimpleName@@MethodName:getString:[] @TO@ MethodInvocation@@input.getString() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:var != null && var.getParentNode().isCatch()
+      @TO@ SwitchStatement@@MethodInvocation:input.getType() '
+    - '---INS InfixExpression@@var != null && var.getParentNode().isCatch() @TO@ IfStatement@@InfixExpression:var
+      != null && var.getParentNode().isCatch() '
+    - '------INS InfixExpression@@var != null @TO@ InfixExpression@@var != null &&
+      var.getParentNode().isCatch() '
+    - '---------INS SimpleName@@var @TO@ InfixExpression@@var != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@var != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@var != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@var != null && var.getParentNode().isCatch() '
+    - '------INS MethodInvocation@@var.getParentNode().isCatch() @TO@ InfixExpression@@var
+      != null && var.getParentNode().isCatch() '
+    - '---------INS SimpleName@@Name:var @TO@ MethodInvocation@@var.getParentNode().isCatch() '
+    - '---------INS MethodInvocation@@MethodName:getParentNode:[] @TO@ MethodInvocation@@var.getParentNode().isCatch() '
+    - '---------INS SimpleName@@MethodName:isCatch:[] @TO@ MethodInvocation@@var.getParentNode().isCatch() '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:var
+      != null && var.getParentNode().isCatch() '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  files_cnt: '1'
+  repair_actions_cnt: 5
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/FlowSensitiveInlineVariables:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@MethodInvocation:c.canInline() @TO@ MethodInvocation:c.canInline(t.getScope()) '
+    - '---UPD MethodInvocation@@c.canInline() @TO@ c.canInline(t.getScope()) '
+    - '------UPD SimpleName@@MethodName:canInline:[] @TO@ MethodName:canInline:[t.getScope()] '
+    - '---------INS MethodInvocation@@t.getScope() @TO@ SimpleName@@MethodName:canInline:[] '
+    - '------------INS SimpleName@@Name:t @TO@ MethodInvocation@@t.getScope() '
+    - '------------INS SimpleName@@MethodName:getScope:[] @TO@ MethodInvocation@@t.getScope() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@boolean, MethodName:canInline, @@Argus:null
+      @TO@ private, @@boolean, MethodName:canInline, @@Argus:Scope+scope+ '
+    - '---INS SingleVariableDeclaration@@final Scope scope @TO@ MethodDeclaration@@private,
+      @@boolean, MethodName:canInline, @@Argus:null '
+    - '------INS Modifier@@final @TO@ SingleVariableDeclaration@@final Scope scope '
+    - '------INS SimpleType@@Scope @TO@ SingleVariableDeclaration@@final Scope scope '
+    - '------INS SimpleName@@scope @TO@ SingleVariableDeclaration@@final Scope scope '
+    - '---UPD IfStatement@@MethodInvocation:NodeUtil.has(def.getLastChild(),new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node input)'
+    - 'switch (input.getType()) '
+    - case Token.GETELEM
+    - case Token.GETPROP
+    - case Token.ARRAYLIT
+    - case Token.OBJECTLIT
+    - case Token.REGEXP
+    - case Token.NEW
+    - '      return true'
+    - '  '
+    - '  return false'
+    - ''
+    - ''
+    - ',new Predicate<Node>()'
+    - '@Override public boolean apply(Node input)'
+    - '  return !input.isFunction()'
+    - ''
+    - ''
+    - ) @TO@ MethodInvocation:NodeUtil.has(def.getLastChild(),new Predicate<Node>()
+    - '  @Override public boolean apply(  Node input)'
+    - 'switch (input.getType()) '
+    - case Token.GETELEM
+    - case Token.GETPROP
+    - case Token.ARRAYLIT
+    - case Token.OBJECTLIT
+    - case Token.REGEXP
+    - case Token.NEW
+    - '      return true'
+    - case Token.NAME
+    - '    Var var=scope.getOwnSlot(input.getString())'
+    - '  if (var != null && var.getParentNode().isCatch()) '
+    - '    return true'
+    - '  '
+    - ''
+    - return false
+    - ''
+    - ''
+    - ',new Predicate<Node>()'
+    - '@Override public boolean apply(Node input)'
+    - return !input.isFunction()
+    - ''
+    - ''
+    - ') '
+    - '------UPD MethodInvocation@@NodeUtil.has(def.getLastChild(),new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node input)'
+    - 'switch (input.getType()) '
+    - case Token.GETELEM
+    - case Token.GETPROP
+    - case Token.ARRAYLIT
+    - case Token.OBJECTLIT
+    - case Token.REGEXP
+    - case Token.NEW
+    - '      return true'
+    - '  '
+    - '  return false'
+    - ''
+    - ''
+    - ',new Predicate<Node>()'
+    - '@Override public boolean apply(Node input)'
+    - '  return !input.isFunction()'
+    - ''
+    - ''
+    - ) @TO@ NodeUtil.has(def.getLastChild(),new Predicate<Node>()
+    - '  @Override public boolean apply(  Node input)'
+    - 'switch (input.getType()) '
+    - case Token.GETELEM
+    - case Token.GETPROP
+    - case Token.ARRAYLIT
+    - case Token.OBJECTLIT
+    - case Token.REGEXP
+    - case Token.NEW
+    - '      return true'
+    - case Token.NAME
+    - '    Var var=scope.getOwnSlot(input.getString())'
+    - '  if (var != null && var.getParentNode().isCatch()) '
+    - '    return true'
+    - '  '
+    - ''
+    - return false
+    - ''
+    - ''
+    - ',new Predicate<Node>()'
+    - '@Override public boolean apply(Node input)'
+    - return !input.isFunction()
+    - ''
+    - ''
+    - ') '
+    - '---------UPD SimpleName@@MethodName:has:[def.getLastChild(), new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node input)'
+    - 'switch (input.getType()) '
+    - case Token.GETELEM
+    - case Token.GETPROP
+    - case Token.ARRAYLIT
+    - case Token.OBJECTLIT
+    - case Token.REGEXP
+    - case Token.NEW
+    - '      return true'
+    - '  '
+    - '  return false'
+    - ''
+    - ''
+    - ', new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node input)'
+    - '    return !input.isFunction()'
+    - '  '
+    - ''
+    - '] @TO@ MethodName:has:[def.getLastChild(), new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node input)'
+    - 'switch (input.getType()) '
+    - case Token.GETELEM
+    - case Token.GETPROP
+    - case Token.ARRAYLIT
+    - case Token.OBJECTLIT
+    - case Token.REGEXP
+    - case Token.NEW
+    - '      return true'
+    - case Token.NAME
+    - '    Var var=scope.getOwnSlot(input.getString())'
+    - '  if (var != null && var.getParentNode().isCatch()) '
+    - '    return true'
+    - '  '
+    - ''
+    - return false
+    - ''
+    - ''
+    - ', new Predicate<Node>()'
+    - '  @Override public boolean apply(  Node input)'
+    - '    return !input.isFunction()'
+    - '  '
+    - ''
+    - '] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.NAME @TO@ SwitchStatement@@MethodInvocation:input.getType() '
+    - '---INS QualifiedName@@Token.NAME @TO@ SwitchCase@@QualifiedName:Token.NAME '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.NAME '
+    - '------INS SimpleName@@NAME @TO@ QualifiedName@@Token.NAME '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@Var var=scope.getOwnSlot(input.getString());
+      @TO@ SwitchStatement@@MethodInvocation:input.getType() '
+    - '---INS SimpleType@@Var @TO@ VariableDeclarationStatement@@Var var=scope.getOwnSlot(input.getString()); '
+    - '---INS VariableDeclarationFragment@@var=scope.getOwnSlot(input.getString())
+      @TO@ VariableDeclarationStatement@@Var var=scope.getOwnSlot(input.getString()); '
+    - '------INS SimpleName@@var @TO@ VariableDeclarationFragment@@var=scope.getOwnSlot(input.getString()) '
+    - '------INS MethodInvocation@@scope.getOwnSlot(input.getString()) @TO@ VariableDeclarationFragment@@var=scope.getOwnSlot(input.getString()) '
+    - '---------INS SimpleName@@Name:scope @TO@ MethodInvocation@@scope.getOwnSlot(input.getString()) '
+    - '---------INS SimpleName@@MethodName:getOwnSlot:[input.getString()] @TO@ MethodInvocation@@scope.getOwnSlot(input.getString()) '
+    - '------------INS MethodInvocation@@input.getString() @TO@ SimpleName@@MethodName:getOwnSlot:[input.getString()] '
+    - '---------------INS SimpleName@@Name:input @TO@ MethodInvocation@@input.getString() '
+    - '---------------INS SimpleName@@MethodName:getString:[] @TO@ MethodInvocation@@input.getString() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:var != null && var.getParentNode().isCatch()
+      @TO@ SwitchStatement@@MethodInvocation:input.getType() '
+    - '---INS InfixExpression@@var != null && var.getParentNode().isCatch() @TO@ IfStatement@@InfixExpression:var
+      != null && var.getParentNode().isCatch() '
+    - '------INS InfixExpression@@var != null @TO@ InfixExpression@@var != null &&
+      var.getParentNode().isCatch() '
+    - '---------INS SimpleName@@var @TO@ InfixExpression@@var != null '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@var != null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@var != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@var != null && var.getParentNode().isCatch() '
+    - '------INS MethodInvocation@@var.getParentNode().isCatch() @TO@ InfixExpression@@var
+      != null && var.getParentNode().isCatch() '
+    - '---------INS SimpleName@@Name:var @TO@ MethodInvocation@@var.getParentNode().isCatch() '
+    - '---------INS MethodInvocation@@MethodName:getParentNode:[] @TO@ MethodInvocation@@var.getParentNode().isCatch() '
+    - '---------INS SimpleName@@MethodName:isCatch:[] @TO@ MethodInvocation@@var.getParentNode().isCatch() '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:var
+      != null && var.getParentNode().isCatch() '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  files_cnt: '1'
+  repair_actions_cnt: 5

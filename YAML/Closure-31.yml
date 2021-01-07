@@ -1,0 +1,104 @@
+1 bug_id: Closure-31
+2 src folder:
+  name of src folder: src
+  number of files: 416
+  number of java files: 400
+  number of src classes: 1341
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CommandLineRunnerTest#testDependencySortingWhitespaceMode
+  failing tests:
+  - com.google.javascript.jscomp.CommandLineRunnerTest
+  number of all test cases: 7462
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.28
+  purification via delta debugging: 179.352
+  repair actions extraction: 3.738
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testDependencySortingWhitespaceMode: 3213
+  fixed:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testDependencySortingWhitespaceMode: 3993
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 0
+  covDel: 1
+  cov_patch_lines: 1
+  delta_patch_lines: 1
+  oriAdd: 0
+  oriDel: 1
+  ori_patch_lines: 1
+  purAdd: 0
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 0
+  total: 0
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_31/src/com/google/javascript/jscomp/Compiler.java\t\
+    2020-10-21 21:49:55.031241994 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_31/purify/patch/com/google/javascript/jscomp/Compiler.java\t\
+    2020-10-21 21:49:55.031241994 -0400\n@@ -1282,7 +1282,6 @@\n \n       // Check\
+    \ if the sources need to be re-ordered.\n       if (options.dependencyOptions.needsManagement()\
+    \ &&\n-          !options.skipAllPasses &&\n           options.closurePass) {\n\
+    \         for (CompilerInput input : inputs) {\n           // Forward-declare\
+    \ all the provided types, so that they"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_31/src/com/google/javascript/jscomp/Compiler.java\t\
+    2020-10-21 21:53:35.661618959 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_31/purify/purified/com/google/javascript/jscomp/Compiler.java\t\
+    2020-10-21 21:53:35.661618959 -0400\n@@ -1282,7 +1282,6 @@\n \n       // Check\
+    \ if the sources need to be re-ordered.\n       if (options.dependencyOptions.needsManagement()\
+    \ &&\n-          !options.skipAllPasses &&\n           options.closurePass) {\n\
+    \         for (CompilerInput input : inputs) {\n           // Forward-declare\
+    \ all the provided types, so that they"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/Compiler:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:options.dependencyOptions.needsManagement()
+      && !options.skipAllPasses && options.closurePass @TO@ InfixExpression:options.dependencyOptions.needsManagement()
+      && options.closurePass '
+    - '---UPD InfixExpression@@options.dependencyOptions.needsManagement() && !options.skipAllPasses
+      && options.closurePass @TO@ options.dependencyOptions.needsManagement() && options.closurePass '
+    - '------DEL PrefixExpression@@!options.skipAllPasses '
+    - '---------DEL Operator@@! '
+    - '---------DEL QualifiedName@@options.skipAllPasses '
+    - '------------DEL SimpleName@@options '
+    - '------------DEL SimpleName@@skipAllPasses '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/Compiler:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:options.dependencyOptions.needsManagement()
+      && !options.skipAllPasses && options.closurePass @TO@ InfixExpression:options.dependencyOptions.needsManagement()
+      && options.closurePass '
+    - '---UPD InfixExpression@@options.dependencyOptions.needsManagement() && !options.skipAllPasses
+      && options.closurePass @TO@ options.dependencyOptions.needsManagement() && options.closurePass '
+    - '------DEL PrefixExpression@@!options.skipAllPasses '
+    - '---------DEL Operator@@! '
+    - '---------DEL QualifiedName@@options.skipAllPasses '
+    - '------------DEL SimpleName@@options '
+    - '------------DEL SimpleName@@skipAllPasses '
+  files_cnt: '1'
+  repair_actions_cnt: 1

@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_104/src/com/google/javascript/rhino/jstype/UnionType.java	2020-10-23 13:11:47.980228431 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_104/purify/assertBeforeMut/com/google/javascript/rhino/jstype/UnionType.java	2020-10-23 13:11:47.980228431 -0400
+@@ -288,7 +288,7 @@
+       builder.addAlternate(that);
+     }
+     JSType result = builder.build();
+-    if (result != null) {
++    if (!result.isNoType()) {
+       return result;
+     } else if (this.isObject() && that.isObject()) {
+       return getNativeType(JSTypeNative.NO_OBJECT_TYPE);

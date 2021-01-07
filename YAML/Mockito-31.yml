@@ -1,0 +1,166 @@
+1 bug_id: Mockito-31
+2 src folder:
+  name of src folder: src
+  number of files: 276
+  number of java files: 240
+  number of src classes: 267
+  number of test classes: 214
+3 test (cases):
+  failing test cases:
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsSmartNullsTest#shouldPrintTheParametersWhenCallingAMethodWithArgs
+  failing tests:
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsSmartNullsTest
+  number of all test cases: 0
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.465
+  purification via delta debugging: 204.384
+  repair actions extraction: 0.647
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 3
+  covDel: 1
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 3
+  oriDel: 1
+  ori_patch_lines: 4
+  purAdd: 3
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 6
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_31/src/org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls.java\t\
+    2020-10-24 20:21:55.613229075 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_31/purify/patch/org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls.java\t\
+    2020-10-24 20:21:55.613229075 -0400\n@@ -6,6 +6,7 @@\n \n import java.io.Serializable;\n\
+    \ import java.lang.reflect.Method;\n+import java.util.Arrays;\n \n import org.mockito.Mockito;\n\
+    \ import org.mockito.cglib.proxy.MethodInterceptor;\n@@ -57,7 +58,8 @@\n     \
+    \    }\n \n \t\tprivate String formatMethodCall() {\n-\t\t\treturn invocation.getMethod().getName()\
+    \ + \"()\";\n+\t\t\tString args = Arrays.toString(invocation.getArguments());\n\
+    +\t\t\treturn invocation.getMethod().getName() + \"(\" + args.substring(1, args.length()\
+    \ - 1) +\t\")\";\n \t\t}\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_31/src/org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls.java\t\
+    2020-10-24 20:25:37.847622007 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_31/purify/purified/org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls.java\t\
+    2020-10-24 20:25:37.847622007 -0400\n@@ -6,6 +6,7 @@\n \n import java.io.Serializable;\n\
+    \ import java.lang.reflect.Method;\n+import java.util.Arrays;\n \n import org.mockito.Mockito;\n\
+    \ import org.mockito.cglib.proxy.MethodInterceptor;\n@@ -57,7 +58,8 @@\n     \
+    \    }\n \n \t\tprivate String formatMethodCall() {\n-\t\t\treturn invocation.getMethod().getName()\
+    \ + \"()\";\n+\t\t\tString args = Arrays.toString(invocation.getArguments());\n\
+    +\t\t\treturn invocation.getMethod().getName() + \"(\" + args.substring(1, args.length()\
+    \ - 1) +\t\")\";\n \t\t}\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@String args=Arrays.toString(invocation.getArguments());
+      @TO@ MethodDeclaration@@private, @@String, MethodName:formatMethodCall, @@Argus:null '
+    - '---INS SimpleType@@String @TO@ VariableDeclarationStatement@@String args=Arrays.toString(invocation.getArguments()); '
+    - '---INS VariableDeclarationFragment@@args=Arrays.toString(invocation.getArguments())
+      @TO@ VariableDeclarationStatement@@String args=Arrays.toString(invocation.getArguments()); '
+    - '------INS SimpleName@@args @TO@ VariableDeclarationFragment@@args=Arrays.toString(invocation.getArguments()) '
+    - '------INS MethodInvocation@@Arrays.toString(invocation.getArguments()) @TO@
+      VariableDeclarationFragment@@args=Arrays.toString(invocation.getArguments()) '
+    - '---------INS SimpleName@@Name:Arrays @TO@ MethodInvocation@@Arrays.toString(invocation.getArguments()) '
+    - '---------INS SimpleName@@MethodName:toString:[invocation.getArguments()] @TO@
+      MethodInvocation@@Arrays.toString(invocation.getArguments()) '
+    - '------------INS MethodInvocation@@invocation.getArguments() @TO@ SimpleName@@MethodName:toString:[invocation.getArguments()] '
+    - '---------------INS SimpleName@@Name:invocation @TO@ MethodInvocation@@invocation.getArguments() '
+    - '---------------INS SimpleName@@MethodName:getArguments:[] @TO@ MethodInvocation@@invocation.getArguments() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@InfixExpression:invocation.getMethod().getName() + "()"
+      @TO@ InfixExpression:invocation.getMethod().getName() + "(" + args.substring(1,args.length()
+      - 1)+ ")" '
+    - '---UPD InfixExpression@@invocation.getMethod().getName() + "()" @TO@ invocation.getMethod().getName()
+      + "(" + args.substring(1,args.length() - 1)+ ")" '
+    - '------UPD StringLiteral@@"()" @TO@ "(" '
+    - '------INS MethodInvocation@@args.substring(1,args.length() - 1) @TO@ InfixExpression@@invocation.getMethod().getName()
+      + "()" '
+    - '---------INS SimpleName@@Name:args @TO@ MethodInvocation@@args.substring(1,args.length()
+      - 1) '
+    - '---------INS SimpleName@@MethodName:substring:[1, args.length() - 1] @TO@ MethodInvocation@@args.substring(1,args.length()
+      - 1) '
+    - '------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1,
+      args.length() - 1] '
+    - '------------INS InfixExpression@@args.length() - 1 @TO@ SimpleName@@MethodName:substring:[1,
+      args.length() - 1] '
+    - '---------------INS MethodInvocation@@args.length() @TO@ InfixExpression@@args.length()
+      - 1 '
+    - '------------------INS SimpleName@@Name:args @TO@ MethodInvocation@@args.length() '
+    - '------------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@args.length() '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@args.length() - 1 '
+    - '---------------INS NumberLiteral@@1 @TO@ InfixExpression@@args.length() - 1 '
+    - '------INS StringLiteral@@")" @TO@ InfixExpression@@invocation.getMethod().getName()
+      + "()" '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@String args=Arrays.toString(invocation.getArguments());
+      @TO@ MethodDeclaration@@private, @@String, MethodName:formatMethodCall, @@Argus:null '
+    - '---INS SimpleType@@String @TO@ VariableDeclarationStatement@@String args=Arrays.toString(invocation.getArguments()); '
+    - '---INS VariableDeclarationFragment@@args=Arrays.toString(invocation.getArguments())
+      @TO@ VariableDeclarationStatement@@String args=Arrays.toString(invocation.getArguments()); '
+    - '------INS SimpleName@@args @TO@ VariableDeclarationFragment@@args=Arrays.toString(invocation.getArguments()) '
+    - '------INS MethodInvocation@@Arrays.toString(invocation.getArguments()) @TO@
+      VariableDeclarationFragment@@args=Arrays.toString(invocation.getArguments()) '
+    - '---------INS SimpleName@@Name:Arrays @TO@ MethodInvocation@@Arrays.toString(invocation.getArguments()) '
+    - '---------INS SimpleName@@MethodName:toString:[invocation.getArguments()] @TO@
+      MethodInvocation@@Arrays.toString(invocation.getArguments()) '
+    - '------------INS MethodInvocation@@invocation.getArguments() @TO@ SimpleName@@MethodName:toString:[invocation.getArguments()] '
+    - '---------------INS SimpleName@@Name:invocation @TO@ MethodInvocation@@invocation.getArguments() '
+    - '---------------INS SimpleName@@MethodName:getArguments:[] @TO@ MethodInvocation@@invocation.getArguments() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@InfixExpression:invocation.getMethod().getName() + "()"
+      @TO@ InfixExpression:invocation.getMethod().getName() + "(" + args.substring(1,args.length()
+      - 1)+ ")" '
+    - '---UPD InfixExpression@@invocation.getMethod().getName() + "()" @TO@ invocation.getMethod().getName()
+      + "(" + args.substring(1,args.length() - 1)+ ")" '
+    - '------UPD StringLiteral@@"()" @TO@ "(" '
+    - '------INS MethodInvocation@@args.substring(1,args.length() - 1) @TO@ InfixExpression@@invocation.getMethod().getName()
+      + "()" '
+    - '---------INS SimpleName@@Name:args @TO@ MethodInvocation@@args.substring(1,args.length()
+      - 1) '
+    - '---------INS SimpleName@@MethodName:substring:[1, args.length() - 1] @TO@ MethodInvocation@@args.substring(1,args.length()
+      - 1) '
+    - '------------INS NumberLiteral@@1 @TO@ SimpleName@@MethodName:substring:[1,
+      args.length() - 1] '
+    - '------------INS InfixExpression@@args.length() - 1 @TO@ SimpleName@@MethodName:substring:[1,
+      args.length() - 1] '
+    - '---------------INS MethodInvocation@@args.length() @TO@ InfixExpression@@args.length()
+      - 1 '
+    - '------------------INS SimpleName@@Name:args @TO@ MethodInvocation@@args.length() '
+    - '------------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@args.length() '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@args.length() - 1 '
+    - '---------------INS NumberLiteral@@1 @TO@ InfixExpression@@args.length() - 1 '
+    - '------INS StringLiteral@@")" @TO@ InfixExpression@@invocation.getMethod().getName()
+      + "()" '
+  repair_actions_cnt: 2

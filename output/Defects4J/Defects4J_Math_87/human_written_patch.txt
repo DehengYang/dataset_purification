@@ -1,0 +1,18 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_87/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_87/fixed-version/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_87/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java	2020-03-01 00:22:47.248139204 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_87/fixed-version/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java	2020-03-01 00:22:50.844308654 -0800
+@@ -272,12 +272,10 @@
+     private Integer getBasicRow(final int col) {
+         Integer row = null;
+         for (int i = getNumObjectiveFunctions(); i < getHeight(); i++) {
+-            if (!MathUtils.equals(getEntry(i, col), 0.0, epsilon)) {
+-                if (row == null) {
++            if (MathUtils.equals(getEntry(i, col), 1.0, epsilon) && (row == null)) {
+                 row = i;
+-                } else {
++            } else if (!MathUtils.equals(getEntry(i, col), 0.0, epsilon)) {
+                 return null;
+-                }
+             }
+         }
+         return row;

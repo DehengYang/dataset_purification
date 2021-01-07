@@ -1,0 +1,92 @@
+1 bug_id: Math-104
+2 src folder:
+  name of src folder: java
+  number of files: 234
+  number of java files: 215
+  number of src classes: 227
+  number of test classes: 133
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.special.GammaTest#testRegularizedGammaPositivePositive
+  failing tests:
+  - org.apache.commons.math.special.GammaTest
+  number of all test cases: 1003
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 8.0
+  purification via coverage: 0.378
+  purification via delta debugging: 36.408
+  repair actions extraction: 0.812
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.special.GammaTest#testRegularizedGammaPositivePositive: 61
+  fixed:
+    org.apache.commons.math.special.GammaTest#testRegularizedGammaPositivePositive: 61
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_104/src/java/org/apache/commons/math/special/Gamma.java\t\
+    2020-10-21 14:24:48.679425740 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_104/purify/patch/org/apache/commons/math/special/Gamma.java\t\
+    2020-10-21 14:24:48.679425740 -0400\n@@ -34,7 +34,7 @@\n     private static final\
+    \ long serialVersionUID = -6587513359895466954L;\n \n     /** Maximum allowed\
+    \ numerical error. */\n-    private static final double DEFAULT_EPSILON = 10e-9;\n\
+    +    private static final double DEFAULT_EPSILON = 10e-15;\n \n     /** Lanczos\
+    \ coefficients */\n     private static double[] lanczos ="
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_104/src/java/org/apache/commons/math/special/Gamma.java\t\
+    2020-10-21 14:25:34.420747510 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_104/purify/purified/org/apache/commons/math/special/Gamma.java\t\
+    2020-10-21 14:25:34.420747510 -0400\n@@ -34,7 +34,7 @@\n     private static final\
+    \ long serialVersionUID = -6587513359895466954L;\n \n     /** Maximum allowed\
+    \ numerical error. */\n-    private static final double DEFAULT_EPSILON = 10e-9;\n\
+    +    private static final double DEFAULT_EPSILON = 10e-15;\n \n     /** Lanczos\
+    \ coefficients */\n     private static double[] lanczos ="
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/special/Gamma:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD FieldDeclaration@@private, static, final, double, [DEFAULT_EPSILON=10e-9]
+      @TO@ private, static, final, double, [DEFAULT_EPSILON=10e-15] '
+    - '---UPD VariableDeclarationFragment@@DEFAULT_EPSILON=10e-9 @TO@ DEFAULT_EPSILON=10e-15 '
+    - '------UPD NumberLiteral@@10e-9 @TO@ 10e-15 '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/special/Gamma:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD FieldDeclaration@@private, static, final, double, [DEFAULT_EPSILON=10e-9]
+      @TO@ private, static, final, double, [DEFAULT_EPSILON=10e-15] '
+    - '---UPD VariableDeclarationFragment@@DEFAULT_EPSILON=10e-9 @TO@ DEFAULT_EPSILON=10e-15 '
+    - '------UPD NumberLiteral@@10e-9 @TO@ 10e-15 '
+  repair_actions_cnt: 1

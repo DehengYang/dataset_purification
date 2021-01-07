@@ -1,0 +1,164 @@
+1 bug_id: Math-50
+2 src folder:
+  name of src folder: java
+  number of files: 614
+  number of java files: 567
+  number of src classes: 745
+  number of test classes: 275
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest#testIssue631
+  failing tests:
+  - org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest
+  number of all test cases: 2953
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.557
+  purification via delta debugging: 176.809
+  repair actions extraction: 0.803
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest#testIssue631: 394
+  fixed:
+    org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest#testIssue631: 727
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 0
+  covDel: 4
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 0
+  oriDel: 4
+  ori_patch_lines: 4
+  purAdd: 0
+  purDel: 4
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 4
+  failFail: 1
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_50/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java\t\
+    2020-10-21 12:03:15.565872997 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_50/purify/patch/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java\t\
+    2020-10-21 12:03:15.565872997 -0400\n@@ -184,10 +184,6 @@\n                  \
+    \   break;\n                 case REGULA_FALSI:\n                     // Nothing.\n\
+    -                    if (x == x1) {\n-                        x0 = 0.5 * (x0 +\
+    \ x1 - FastMath.max(rtol * FastMath.abs(x1), atol));\n-                      \
+    \  f0 = computeObjectiveValue(x0);\n-                    }\n                 \
+    \    break;\n                 default:\n                     // Should never happen."
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_50/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java\t\
+    2020-10-21 12:06:31.755546564 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_50/purify/purified/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java\t\
+    2020-10-21 12:06:31.755546564 -0400\n@@ -184,10 +184,6 @@\n                  \
+    \   break;\n                 case REGULA_FALSI:\n                     // Nothing.\n\
+    -                    if (x == x1) {\n-                        x0 = 0.5 * (x0 +\
+    \ x1 - FastMath.max(rtol * FastMath.abs(x1), atol));\n-                      \
+    \  f0 = computeObjectiveValue(x0);\n-                    }\n                 \
+    \    break;\n                 default:\n                     // Should never happen."
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 12
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/solvers/BaseSecantSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:x == x1 '
+    - '---DEL InfixExpression@@x == x1 '
+    - '------DEL SimpleName@@x '
+    - '------DEL Operator@@== '
+    - '------DEL SimpleName@@x1 '
+    - '---DEL ExpressionStatement@@Assignment:x0=0.5 * (x0 + x1 - FastMath.max(rtol
+      * FastMath.abs(x1),atol)) '
+    - '------DEL Assignment@@x0=0.5 * (x0 + x1 - FastMath.max(rtol * FastMath.abs(x1),atol)) '
+    - '---------DEL SimpleName@@x0 '
+    - '---------DEL Operator@@= '
+    - '---------DEL InfixExpression@@0.5 * (x0 + x1 - FastMath.max(rtol * FastMath.abs(x1),atol)) '
+    - '------------DEL NumberLiteral@@0.5 '
+    - '------------DEL Operator@@* '
+    - '------------DEL ParenthesizedExpression@@(x0 + x1 - FastMath.max(rtol * FastMath.abs(x1),atol)) '
+    - '---------------DEL InfixExpression@@x0 + x1 - FastMath.max(rtol * FastMath.abs(x1),atol) '
+    - '------------------DEL InfixExpression@@x0 + x1 '
+    - '---------------------DEL SimpleName@@x0 '
+    - '---------------------DEL Operator@@+ '
+    - '---------------------DEL SimpleName@@x1 '
+    - '------------------DEL Operator@@- '
+    - '------------------DEL MethodInvocation@@FastMath.max(rtol * FastMath.abs(x1),atol) '
+    - '---------------------DEL SimpleName@@Name:FastMath '
+    - '---------------------DEL SimpleName@@MethodName:max:[rtol * FastMath.abs(x1),
+      atol] '
+    - '------------------------DEL InfixExpression@@rtol * FastMath.abs(x1) '
+    - '---------------------------DEL SimpleName@@rtol '
+    - '---------------------------DEL Operator@@* '
+    - '---------------------------DEL MethodInvocation@@FastMath.abs(x1) '
+    - '------------------------------DEL SimpleName@@Name:FastMath '
+    - '------------------------------DEL SimpleName@@MethodName:abs:[x1] '
+    - '---------------------------------DEL SimpleName@@x1 '
+    - '------------------------DEL SimpleName@@atol '
+    - '---DEL ExpressionStatement@@Assignment:f0=computeObjectiveValue(x0) '
+    - '------DEL Assignment@@f0=computeObjectiveValue(x0) '
+    - '---------DEL SimpleName@@f0 '
+    - '---------DEL Operator@@= '
+    - '---------DEL MethodInvocation@@computeObjectiveValue(x0) '
+    - '------------DEL SimpleName@@MethodName:computeObjectiveValue:[x0] '
+    - '---------------DEL SimpleName@@x0 '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 12
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/analysis/solvers/BaseSecantSolver:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:x == x1 '
+    - '---DEL InfixExpression@@x == x1 '
+    - '------DEL SimpleName@@x '
+    - '------DEL Operator@@== '
+    - '------DEL SimpleName@@x1 '
+    - '---DEL ExpressionStatement@@Assignment:x0=0.5 * (x0 + x1 - FastMath.max(rtol
+      * FastMath.abs(x1),atol)) '
+    - '------DEL Assignment@@x0=0.5 * (x0 + x1 - FastMath.max(rtol * FastMath.abs(x1),atol)) '
+    - '---------DEL SimpleName@@x0 '
+    - '---------DEL Operator@@= '
+    - '---------DEL InfixExpression@@0.5 * (x0 + x1 - FastMath.max(rtol * FastMath.abs(x1),atol)) '
+    - '------------DEL NumberLiteral@@0.5 '
+    - '------------DEL Operator@@* '
+    - '------------DEL ParenthesizedExpression@@(x0 + x1 - FastMath.max(rtol * FastMath.abs(x1),atol)) '
+    - '---------------DEL InfixExpression@@x0 + x1 - FastMath.max(rtol * FastMath.abs(x1),atol) '
+    - '------------------DEL InfixExpression@@x0 + x1 '
+    - '---------------------DEL SimpleName@@x0 '
+    - '---------------------DEL Operator@@+ '
+    - '---------------------DEL SimpleName@@x1 '
+    - '------------------DEL Operator@@- '
+    - '------------------DEL MethodInvocation@@FastMath.max(rtol * FastMath.abs(x1),atol) '
+    - '---------------------DEL SimpleName@@Name:FastMath '
+    - '---------------------DEL SimpleName@@MethodName:max:[rtol * FastMath.abs(x1),
+      atol] '
+    - '------------------------DEL InfixExpression@@rtol * FastMath.abs(x1) '
+    - '---------------------------DEL SimpleName@@rtol '
+    - '---------------------------DEL Operator@@* '
+    - '---------------------------DEL MethodInvocation@@FastMath.abs(x1) '
+    - '------------------------------DEL SimpleName@@Name:FastMath '
+    - '------------------------------DEL SimpleName@@MethodName:abs:[x1] '
+    - '---------------------------------DEL SimpleName@@x1 '
+    - '------------------------DEL SimpleName@@atol '
+    - '---DEL ExpressionStatement@@Assignment:f0=computeObjectiveValue(x0) '
+    - '------DEL Assignment@@f0=computeObjectiveValue(x0) '
+    - '---------DEL SimpleName@@f0 '
+    - '---------DEL Operator@@= '
+    - '---------DEL MethodInvocation@@computeObjectiveValue(x0) '
+    - '------------DEL SimpleName@@MethodName:computeObjectiveValue:[x0] '
+    - '---------------DEL SimpleName@@x0 '
+  repair_actions_cnt: 1

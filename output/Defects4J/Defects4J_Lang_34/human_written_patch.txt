@@ -1,0 +1,21 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_34/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_34/fixed-version/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_34/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java	2020-03-01 00:09:23.806283275 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_34/fixed-version/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java	2020-03-01 00:09:27.214443854 -0800
+@@ -145,7 +145,7 @@
+      * @return Set the registry of objects being traversed
+      */
+     static Map<Object, Object> getRegistry() {
+-        return REGISTRY.get() != null ? REGISTRY.get() : Collections.<Object, Object>emptyMap();
++        return REGISTRY.get();
+     }
+ 
+     /**
+@@ -161,7 +161,7 @@
+      */
+     static boolean isRegistered(Object value) {
+         Map<Object, Object> m = getRegistry();
+-        return m.containsKey(value);
++        return m != null && m.containsKey(value);
+     }
+ 
+     /**

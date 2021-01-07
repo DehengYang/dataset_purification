@@ -1,0 +1,39 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_2/source/org/jfree/data/general/DatasetUtilities.java	2020-10-20 23:45:46.206627529 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_2/purify/purified/org/jfree/data/general/DatasetUtilities.java	2020-10-20 23:45:46.206627529 -0400
+@@ -752,12 +752,19 @@
+             for (int series = 0; series < seriesCount; series++) {
+                 int itemCount = dataset.getItemCount(series);
+                 for (int item = 0; item < itemCount; item++) {
++                    double value = intervalXYData.getXValue(series, item);
+                     lvalue = intervalXYData.getStartXValue(series, item);
+                     uvalue = intervalXYData.getEndXValue(series, item);
++                    if (!Double.isNaN(value)) {
++                        minimum = Math.min(minimum, value);
++                        maximum = Math.max(maximum, value);
++                    }
+                     if (!Double.isNaN(lvalue)) {
+                         minimum = Math.min(minimum, lvalue);
++                        maximum = Math.max(maximum, lvalue);
+                     }
+                     if (!Double.isNaN(uvalue)) {
++                        minimum = Math.min(minimum, uvalue);
+                         maximum = Math.max(maximum, uvalue);
+                     }
+                 }
+@@ -1239,10 +1246,16 @@
+             for (int series = 0; series < seriesCount; series++) {
+                 int itemCount = dataset.getItemCount(series);
+                 for (int item = 0; item < itemCount; item++) {
++                    double value = ixyd.getYValue(series, item);
+                     double lvalue = ixyd.getStartYValue(series, item);
+                     double uvalue = ixyd.getEndYValue(series, item);
++                    if (!Double.isNaN(value)) {
++                        minimum = Math.min(minimum, value);
++                        maximum = Math.max(maximum, value);
++                    }
+                     if (!Double.isNaN(lvalue)) {
+                         minimum = Math.min(minimum, lvalue);
++                        maximum = Math.max(maximum, lvalue);
+                     }
+                     if (!Double.isNaN(uvalue)) {
+                         maximum = Math.max(maximum, uvalue);

@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_5/src/main/java/org/apache/commons/math3/complex/Complex.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_5/fixed-version/src/main/java/org/apache/commons/math3/complex/Complex.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_5/src/main/java/org/apache/commons/math3/complex/Complex.java	2020-03-01 00:13:34.566098119 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_5/fixed-version/src/main/java/org/apache/commons/math3/complex/Complex.java	2020-03-01 00:13:38.210269819 -0800
+@@ -302,7 +302,7 @@
+         }
+ 
+         if (real == 0.0 && imaginary == 0.0) {
+-            return NaN;
++            return INF;
+         }
+ 
+         if (isInfinite) {

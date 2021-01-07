@@ -1,0 +1,338 @@
+1 bug_id: Closure-30
+2 src folder:
+  name of src folder: src
+  number of files: 416
+  number of java files: 400
+  number of src classes: 1341
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testInlineAcrossSideEffect1
+  - com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testIssue698
+  - com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testCanInlineAcrossNoSideEffect
+  failing tests:
+  - com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest
+  number of all test cases: 7468
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.7
+  purification via delta debugging: 969.297
+  repair actions extraction: 1.899
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testCanInlineAcrossNoSideEffect: 3998
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testInlineAcrossSideEffect1: 3839
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testIssue698: 4139
+  fixed:
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testCanInlineAcrossNoSideEffect: 3714
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testInlineAcrossSideEffect1: 3663
+    com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest#testIssue698: 4061
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 10
+  covDel: 2
+  cov_patch_lines: 12
+  delta_patch_lines: 10
+  oriAdd: 10
+  oriDel: 2
+  ori_patch_lines: 12
+  purAdd: 9
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 6
+  original: 6
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 17
+  failFail: 4
+  passed: 2
+  total: 24
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_30/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java\t\
+    2020-10-21 21:31:25.155177982 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_30/purify/patch/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java\t\
+    2020-10-21 21:31:25.155177982 -0400\n@@ -154,7 +154,7 @@\n \n   @Override\n  \
+    \ public void process(Node externs, Node root) {\n-    (new NodeTraversal(compiler,\
+    \ this)).traverse(root);\n+    (new NodeTraversal(compiler, this)).traverseRoots(externs,\
+    \ root);\n   }\n \n   @Override"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_30/src/com/google/javascript/jscomp/MustBeReachingVariableDef.java\t\
+    2020-10-21 21:48:05.840088294 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_30/purify/purified/com/google/javascript/jscomp/MustBeReachingVariableDef.java\t\
+    2020-10-21 21:48:05.840088294 -0400\n@@ -68,6 +68,7 @@\n   private static class\
+    \ Definition {\n     final Node node;\n     final Set<Var> depends = Sets.newHashSet();\n\
+    +    private boolean unknownDependencies = false;\n \n     Definition(Node node)\
+    \ {\n       this.node = node;\n@@ -393,9 +394,13 @@\n         new AbstractCfgNodeTraversalCallback()\
+    \ {\n       @Override\n       public void visit(NodeTraversal t, Node n, Node\
+    \ parent) {\n-        if (n.isName() && jsScope.isDeclared(n.getString(), true))\
+    \ {\n+        if (n.isName()) {\n           Var dep = jsScope.getVar(n.getString());\n\
+    +          if (dep == null) {\n+            def.unknownDependencies = true;\n\
+    +          } else {\n             def.depends.add(dep);\n+          }\n      \
+    \   }\n       }\n     });\n@@ -427,6 +432,9 @@\n     GraphNode<Node, Branch> n\
+    \ = getCfg().getNode(useNode);\n     FlowState<MustDef> state = n.getAnnotation();\n\
+    \     Definition def = state.getIn().reachingDef.get(jsScope.getVar(name));\n\
+    +    if (def.unknownDependencies) {\n+      return true;\n+    }\n \n     for\
+    \ (Var s : def.depends) {\n       if (s.scope != jsScope) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '2'
+  com/google/javascript/jscomp/FlowSensitiveInlineVariables, com/google/javascript/jscomp/MustBeReachingVariableDef:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, boolean, [unknownDependencies=false] @TO@ TypeDeclaration@@[private,
+      static]Definition,  '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, boolean, [unknownDependencies=false] '
+    - '---INS PrimitiveType@@boolean @TO@ FieldDeclaration@@private, boolean, [unknownDependencies=false] '
+    - '---INS VariableDeclarationFragment@@unknownDependencies=false @TO@ FieldDeclaration@@private,
+      boolean, [unknownDependencies=false] '
+    - '------INS SimpleName@@unknownDependencies @TO@ VariableDeclarationFragment@@unknownDependencies=false '
+    - '------INS BooleanLiteral@@false @TO@ VariableDeclarationFragment@@unknownDependencies=false '
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD ExpressionStatement@@MethodInvocation:NodeTraversal.traverse(compiler,rValue,new
+      AbstractCfgNodeTraversalCallback()
+    - '  @Override public void visit(  NodeTraversal t,  Node n,  Node parent)'
+    - '    if (n.isName() && jsScope.isDeclared(n.getString(),true)) '
+    - '      Var dep=jsScope.getVar(n.getString())'
+    - '      def.depends.add(dep)'
+    - '    '
+    - '  '
+    - ''
+    - ) @TO@ MethodInvocation:NodeTraversal.traverse(compiler,rValue,new AbstractCfgNodeTraversalCallback()
+    - '  @Override public void visit(  NodeTraversal t,  Node n,  Node parent)'
+    - '    if (n.isName()) '
+    - '      Var dep=jsScope.getVar(n.getString())'
+    - '      if (dep == null) '
+    - '        def.unknownDependencies=true'
+    - '      '
+    - ' else '
+    - '        def.depends.add(dep)'
+    - '      '
+    - '    '
+    - '  '
+    - ''
+    - ') '
+    - '---UPD MethodInvocation@@NodeTraversal.traverse(compiler,rValue,new AbstractCfgNodeTraversalCallback()'
+    - '  @Override public void visit(  NodeTraversal t,  Node n,  Node parent)'
+    - '    if (n.isName() && jsScope.isDeclared(n.getString(),true)) '
+    - '      Var dep=jsScope.getVar(n.getString())'
+    - '      def.depends.add(dep)'
+    - '    '
+    - '  '
+    - ''
+    - ) @TO@ NodeTraversal.traverse(compiler,rValue,new AbstractCfgNodeTraversalCallback()
+    - '  @Override public void visit(  NodeTraversal t,  Node n,  Node parent)'
+    - '    if (n.isName()) '
+    - '      Var dep=jsScope.getVar(n.getString())'
+    - '      if (dep == null) '
+    - '        def.unknownDependencies=true'
+    - '      '
+    - ' else '
+    - '        def.depends.add(dep)'
+    - '      '
+    - '    '
+    - '  '
+    - ''
+    - ') '
+    - '------UPD SimpleName@@MethodName:traverse:[compiler, rValue, new AbstractCfgNodeTraversalCallback()'
+    - '  @Override public void visit(  NodeTraversal t,  Node n,  Node parent)'
+    - '    if (n.isName() && jsScope.isDeclared(n.getString(),true)) '
+    - '      Var dep=jsScope.getVar(n.getString())'
+    - '      def.depends.add(dep)'
+    - '    '
+    - '  '
+    - ''
+    - '] @TO@ MethodName:traverse:[compiler, rValue, new AbstractCfgNodeTraversalCallback()'
+    - '  @Override public void visit(  NodeTraversal t,  Node n,  Node parent)'
+    - '    if (n.isName()) '
+    - '      Var dep=jsScope.getVar(n.getString())'
+    - '      if (dep == null) '
+    - '        def.unknownDependencies=true'
+    - '      '
+    - ' else '
+    - '        def.depends.add(dep)'
+    - '      '
+    - '    '
+    - '  '
+    - ''
+    - '] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:n.isName() && jsScope.isDeclared(n.getString(),true)
+      @TO@ MethodInvocation:n.isName() '
+    - '---DEL InfixExpression@@n.isName() && jsScope.isDeclared(n.getString(),true) '
+    - '------DEL MethodInvocation@@n.isName() '
+    - '------DEL MethodInvocation@@jsScope.isDeclared(n.getString(),true) '
+    - '---------DEL SimpleName@@Name:jsScope '
+    - '---------DEL SimpleName@@MethodName:isDeclared:[n.getString(), true] '
+    - '------------DEL MethodInvocation@@n.getString() '
+    - '---------------DEL SimpleName@@Name:n '
+    - '---------------DEL SimpleName@@MethodName:getString:[] '
+    - '------------DEL BooleanLiteral@@true '
+    - '---INS MethodInvocation@@n.isName() @TO@ IfStatement@@InfixExpression:n.isName()
+      && jsScope.isDeclared(n.getString(),true) '
+    - '------MOV SimpleName@@Name:n @TO@ MethodInvocation@@n.isName() '
+    - '------MOV SimpleName@@MethodName:isName:[] @TO@ MethodInvocation@@n.isName() '
+    - '---INS IfStatement@@InfixExpression:dep == null @TO@ IfStatement@@InfixExpression:n.isName()
+      && jsScope.isDeclared(n.getString(),true) '
+    - '------MOV ExpressionStatement@@MethodInvocation:def.depends.add(dep) @TO@ IfStatement@@InfixExpression:dep
+      == null '
+    - '------INS InfixExpression@@dep == null @TO@ IfStatement@@InfixExpression:dep
+      == null '
+    - '---------MOV Operator@@&& @TO@ InfixExpression@@dep == null '
+    - '---------INS SimpleName@@dep @TO@ InfixExpression@@dep == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@dep == null '
+    - '------INS ExpressionStatement@@Assignment:def.unknownDependencies=true @TO@
+      IfStatement@@InfixExpression:dep == null '
+    - '---------INS Assignment@@def.unknownDependencies=true @TO@ ExpressionStatement@@Assignment:def.unknownDependencies=true '
+    - '------------INS QualifiedName@@def.unknownDependencies @TO@ Assignment@@def.unknownDependencies=true '
+    - '---------------INS SimpleName@@def @TO@ QualifiedName@@def.unknownDependencies '
+    - '---------------INS SimpleName@@unknownDependencies @TO@ QualifiedName@@def.unknownDependencies '
+    - '------------INS Operator@@= @TO@ Assignment@@def.unknownDependencies=true '
+    - '------------INS BooleanLiteral@@true @TO@ Assignment@@def.unknownDependencies=true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@QualifiedName:def.unknownDependencies @TO@ MethodDeclaration@@@@boolean,
+      MethodName:dependsOnOuterScopeVars, @@Argus:String+name+Node+useNode+ '
+    - '---INS QualifiedName@@def.unknownDependencies @TO@ IfStatement@@QualifiedName:def.unknownDependencies '
+    - '------INS SimpleName@@def @TO@ QualifiedName@@def.unknownDependencies '
+    - '------INS SimpleName@@unknownDependencies @TO@ QualifiedName@@def.unknownDependencies '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@QualifiedName:def.unknownDependencies '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  files_cnt: '2'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '2'
+  com/google/javascript/jscomp/FlowSensitiveInlineVariables, com/google/javascript/jscomp/MustBeReachingVariableDef:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS FieldDeclaration@@private, boolean, [unknownDependencies=false] @TO@ TypeDeclaration@@[private,
+      static]Definition,  '
+    - '---INS Modifier@@private @TO@ FieldDeclaration@@private, boolean, [unknownDependencies=false] '
+    - '---INS PrimitiveType@@boolean @TO@ FieldDeclaration@@private, boolean, [unknownDependencies=false] '
+    - '---INS VariableDeclarationFragment@@unknownDependencies=false @TO@ FieldDeclaration@@private,
+      boolean, [unknownDependencies=false] '
+    - '------INS SimpleName@@unknownDependencies @TO@ VariableDeclarationFragment@@unknownDependencies=false '
+    - '------INS BooleanLiteral@@false @TO@ VariableDeclarationFragment@@unknownDependencies=false '
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD ExpressionStatement@@MethodInvocation:NodeTraversal.traverse(compiler,rValue,new
+      AbstractCfgNodeTraversalCallback()
+    - '  @Override public void visit(  NodeTraversal t,  Node n,  Node parent)'
+    - '    if (n.isName() && jsScope.isDeclared(n.getString(),true)) '
+    - '      Var dep=jsScope.getVar(n.getString())'
+    - '      def.depends.add(dep)'
+    - '    '
+    - '  '
+    - ''
+    - ) @TO@ MethodInvocation:NodeTraversal.traverse(compiler,rValue,new AbstractCfgNodeTraversalCallback()
+    - '  @Override public void visit(  NodeTraversal t,  Node n,  Node parent)'
+    - '    if (n.isName()) '
+    - '      Var dep=jsScope.getVar(n.getString())'
+    - '      if (dep == null) '
+    - '        def.unknownDependencies=true'
+    - '      '
+    - ' else '
+    - '        def.depends.add(dep)'
+    - '      '
+    - '    '
+    - '  '
+    - ''
+    - ') '
+    - '---UPD MethodInvocation@@NodeTraversal.traverse(compiler,rValue,new AbstractCfgNodeTraversalCallback()'
+    - '  @Override public void visit(  NodeTraversal t,  Node n,  Node parent)'
+    - '    if (n.isName() && jsScope.isDeclared(n.getString(),true)) '
+    - '      Var dep=jsScope.getVar(n.getString())'
+    - '      def.depends.add(dep)'
+    - '    '
+    - '  '
+    - ''
+    - ) @TO@ NodeTraversal.traverse(compiler,rValue,new AbstractCfgNodeTraversalCallback()
+    - '  @Override public void visit(  NodeTraversal t,  Node n,  Node parent)'
+    - '    if (n.isName()) '
+    - '      Var dep=jsScope.getVar(n.getString())'
+    - '      if (dep == null) '
+    - '        def.unknownDependencies=true'
+    - '      '
+    - ' else '
+    - '        def.depends.add(dep)'
+    - '      '
+    - '    '
+    - '  '
+    - ''
+    - ') '
+    - '------UPD SimpleName@@MethodName:traverse:[compiler, rValue, new AbstractCfgNodeTraversalCallback()'
+    - '  @Override public void visit(  NodeTraversal t,  Node n,  Node parent)'
+    - '    if (n.isName() && jsScope.isDeclared(n.getString(),true)) '
+    - '      Var dep=jsScope.getVar(n.getString())'
+    - '      def.depends.add(dep)'
+    - '    '
+    - '  '
+    - ''
+    - '] @TO@ MethodName:traverse:[compiler, rValue, new AbstractCfgNodeTraversalCallback()'
+    - '  @Override public void visit(  NodeTraversal t,  Node n,  Node parent)'
+    - '    if (n.isName()) '
+    - '      Var dep=jsScope.getVar(n.getString())'
+    - '      if (dep == null) '
+    - '        def.unknownDependencies=true'
+    - '      '
+    - ' else '
+    - '        def.depends.add(dep)'
+    - '      '
+    - '    '
+    - '  '
+    - ''
+    - '] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:n.isName() && jsScope.isDeclared(n.getString(),true)
+      @TO@ MethodInvocation:n.isName() '
+    - '---DEL InfixExpression@@n.isName() && jsScope.isDeclared(n.getString(),true) '
+    - '------DEL MethodInvocation@@n.isName() '
+    - '------DEL MethodInvocation@@jsScope.isDeclared(n.getString(),true) '
+    - '---------DEL SimpleName@@Name:jsScope '
+    - '---------DEL SimpleName@@MethodName:isDeclared:[n.getString(), true] '
+    - '------------DEL MethodInvocation@@n.getString() '
+    - '---------------DEL SimpleName@@Name:n '
+    - '---------------DEL SimpleName@@MethodName:getString:[] '
+    - '------------DEL BooleanLiteral@@true '
+    - '---INS MethodInvocation@@n.isName() @TO@ IfStatement@@InfixExpression:n.isName()
+      && jsScope.isDeclared(n.getString(),true) '
+    - '------MOV SimpleName@@Name:n @TO@ MethodInvocation@@n.isName() '
+    - '------MOV SimpleName@@MethodName:isName:[] @TO@ MethodInvocation@@n.isName() '
+    - '---INS IfStatement@@InfixExpression:dep == null @TO@ IfStatement@@InfixExpression:n.isName()
+      && jsScope.isDeclared(n.getString(),true) '
+    - '------MOV ExpressionStatement@@MethodInvocation:def.depends.add(dep) @TO@ IfStatement@@InfixExpression:dep
+      == null '
+    - '------INS InfixExpression@@dep == null @TO@ IfStatement@@InfixExpression:dep
+      == null '
+    - '---------MOV Operator@@&& @TO@ InfixExpression@@dep == null '
+    - '---------INS SimpleName@@dep @TO@ InfixExpression@@dep == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@dep == null '
+    - '------INS ExpressionStatement@@Assignment:def.unknownDependencies=true @TO@
+      IfStatement@@InfixExpression:dep == null '
+    - '---------INS Assignment@@def.unknownDependencies=true @TO@ ExpressionStatement@@Assignment:def.unknownDependencies=true '
+    - '------------INS QualifiedName@@def.unknownDependencies @TO@ Assignment@@def.unknownDependencies=true '
+    - '---------------INS SimpleName@@def @TO@ QualifiedName@@def.unknownDependencies '
+    - '---------------INS SimpleName@@unknownDependencies @TO@ QualifiedName@@def.unknownDependencies '
+    - '------------INS Operator@@= @TO@ Assignment@@def.unknownDependencies=true '
+    - '------------INS BooleanLiteral@@true @TO@ Assignment@@def.unknownDependencies=true '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@QualifiedName:def.unknownDependencies @TO@ MethodDeclaration@@@@boolean,
+      MethodName:dependsOnOuterScopeVars, @@Argus:String+name+Node+useNode+ '
+    - '---INS QualifiedName@@def.unknownDependencies @TO@ IfStatement@@QualifiedName:def.unknownDependencies '
+    - '------INS SimpleName@@def @TO@ QualifiedName@@def.unknownDependencies '
+    - '------INS SimpleName@@unknownDependencies @TO@ QualifiedName@@def.unknownDependencies '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@QualifiedName:def.unknownDependencies '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  files_cnt: '2'
+  repair_actions_cnt: 4

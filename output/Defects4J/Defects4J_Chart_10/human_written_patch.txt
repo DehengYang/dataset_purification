@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_10/source/org/jfree/chart/imagemap/StandardToolTipTagFragmentGenerator.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_10/fixed-version/source/org/jfree/chart/imagemap/StandardToolTipTagFragmentGenerator.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_10/source/org/jfree/chart/imagemap/StandardToolTipTagFragmentGenerator.java	2020-03-01 00:03:35.861889487 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Chart_10/fixed-version/source/org/jfree/chart/imagemap/StandardToolTipTagFragmentGenerator.java	2020-03-01 00:03:39.294051197 -0800
+@@ -62,7 +62,7 @@
+      * @return The formatted HTML area tag attribute(s).
+      */
+     public String generateToolTipFragment(String toolTipText) {
+-        return " title=\"" + toolTipText
++        return " title=\"" + ImageMapUtilities.htmlEscape(toolTipText) 
+             + "\" alt=\"\"";
+     }
+ 

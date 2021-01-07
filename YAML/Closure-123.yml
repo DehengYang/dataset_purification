@@ -1,0 +1,104 @@
+1 bug_id: Closure-123
+2 src folder:
+  name of src folder: src
+  number of files: 439
+  number of java files: 423
+  number of src classes: 1420
+  number of test classes: 236
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CodePrinterTest#testPrintInOperatorInForLoop
+  failing tests:
+  - com.google.javascript.jscomp.CodePrinterTest
+  number of all test cases: 8264
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.003
+  purification via delta debugging: 215.828
+  repair actions extraction: 2.119
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CodePrinterTest#testPrintInOperatorInForLoop: 1960
+  fixed:
+    com.google.javascript.jscomp.CodePrinterTest#testPrintInOperatorInForLoop: 1960
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_123/src/com/google/javascript/jscomp/CodeGenerator.java\t\
+    2020-10-23 17:01:52.547930796 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_123/purify/patch/com/google/javascript/jscomp/CodeGenerator.java\t\
+    2020-10-23 17:01:52.547930796 -0400\n@@ -282,7 +282,7 @@\n       case Token.HOOK:\
+    \ {\n         Preconditions.checkState(childCount == 3);\n         int p = NodeUtil.precedence(type);\n\
+    -        Context rhsContext = Context.OTHER;\n+        Context rhsContext = getContextForNoInOperator(context);\n\
+    \         addExpr(first, p + 1, context);\n         cc.addOp(\"?\", true);\n \
+    \        addExpr(first.getNext(), 1, rhsContext);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_123/src/com/google/javascript/jscomp/CodeGenerator.java\t\
+    2020-10-23 17:05:55.754967924 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_123/purify/purified/com/google/javascript/jscomp/CodeGenerator.java\t\
+    2020-10-23 17:05:55.754967924 -0400\n@@ -282,7 +282,7 @@\n       case Token.HOOK:\
+    \ {\n         Preconditions.checkState(childCount == 3);\n         int p = NodeUtil.precedence(type);\n\
+    -        Context rhsContext = Context.OTHER;\n+        Context rhsContext = getContextForNoInOperator(context);\n\
+    \         addExpr(first, p + 1, context);\n         cc.addOp(\"?\", true);\n \
+    \        addExpr(first.getNext(), 1, rhsContext);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CodeGenerator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Context rhsContext=Context.OTHER; @TO@ Context
+      rhsContext=getContextForNoInOperator(context); '
+    - '---UPD VariableDeclarationFragment@@rhsContext=Context.OTHER @TO@ rhsContext=getContextForNoInOperator(context) '
+    - '------INS MethodInvocation@@getContextForNoInOperator(context) @TO@ VariableDeclarationFragment@@rhsContext=Context.OTHER '
+    - '---------INS SimpleName@@MethodName:getContextForNoInOperator:[context] @TO@
+      MethodInvocation@@getContextForNoInOperator(context) '
+    - '------------INS SimpleName@@context @TO@ SimpleName@@MethodName:getContextForNoInOperator:[context] '
+    - '------DEL QualifiedName@@Context.OTHER '
+    - '---------DEL SimpleName@@Context '
+    - '---------DEL SimpleName@@OTHER '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/CodeGenerator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Context rhsContext=Context.OTHER; @TO@ Context
+      rhsContext=getContextForNoInOperator(context); '
+    - '---UPD VariableDeclarationFragment@@rhsContext=Context.OTHER @TO@ rhsContext=getContextForNoInOperator(context) '
+    - '------INS MethodInvocation@@getContextForNoInOperator(context) @TO@ VariableDeclarationFragment@@rhsContext=Context.OTHER '
+    - '---------INS SimpleName@@MethodName:getContextForNoInOperator:[context] @TO@
+      MethodInvocation@@getContextForNoInOperator(context) '
+    - '------------INS SimpleName@@context @TO@ SimpleName@@MethodName:getContextForNoInOperator:[context] '
+    - '------DEL QualifiedName@@Context.OTHER '
+    - '---------DEL SimpleName@@Context '
+    - '---------DEL SimpleName@@OTHER '
+  files_cnt: '1'
+  repair_actions_cnt: 1

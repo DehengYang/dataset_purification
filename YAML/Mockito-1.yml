@@ -1,0 +1,408 @@
+1 bug_id: Mockito-1
+2 src folder:
+  name of src folder: src
+  number of files: 356
+  number of java files: 319
+  number of src classes: 393
+  number of test classes: 283
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.basicapi.UsingVarargsTest#shouldVerifyStringVarargs
+  - org.mockito.internal.util.reflection.ParameterizedConstructorInstantiatorTest#should_report_failure_if_constructor_throws_exception
+  - org.mockitousage.stubbing.DeprecatedStubbingTest#shouldEvaluateLatestStubbingFirst
+  - org.mockitousage.basicapi.UsingVarargsTest#shouldStubBooleanVarargs
+  - org.mockitousage.basicapi.UsingVarargsTest#shouldStubStringVarargs
+  - org.mockitousage.basicapi.UsingVarargsTest#shouldStubCorrectlyWhenDoubleStringAndMixedVarargsUsed
+  - org.mockitousage.matchers.VerificationAndStubbingUsingMatchersTest#shouldVerifyUsingMatchers
+  - org.mockitousage.verification.VerificationInOrderMixedWithOrdiraryVerificationTest#shouldUseEqualsToVerifyMethodVarargs
+  - org.mockitousage.basicapi.ResetTest#shouldRemoveAllStubbing
+  - org.mockitousage.basicapi.UsingVarargsTest#shouldMatchEasilyEmptyVararg
+  - org.mockitousage.stubbing.BasicStubbingTest#test_stub_only_not_verifiable
+  - org.mockito.internal.util.reflection.FieldInitializerTest#can_instantiate_class_with_parameterized_constructor
+  - org.mockitousage.bugs.VarargsErrorWhenCallingRealMethodTest#shouldNotThrowAnyException
+  - org.mockitousage.basicapi.UsingVarargsTest#shouldVerifyWithNullVarArgArray
+  - org.mockito.internal.util.reflection.ParameterizedConstructorInstantiatorTest#should_instantiate_type_with_vararg_constructor
+  - org.mockitousage.basicapi.UsingVarargsTest#shouldVerifyWithAnyObject
+  - org.mockitousage.basicapi.UsingVarargsTest#shouldVerifyBooleanVarargs
+  - org.mockitousage.bugs.varargs.VarargsNotPlayingWithAnyObjectTest#shouldStubUsingAnyVarargs
+  - org.mockitousage.stubbing.BasicStubbingTest#should_evaluate_latest_stubbing_first
+  - org.mockitousage.bugs.varargs.VarargsAndAnyObjectPicksUpExtraInvocationsTest#shouldVerifyCorrectlyNumberOfInvocationsUsingAnyVarargAndEqualArgument
+  - org.mockito.internal.util.reflection.ParameterizedConstructorInstantiatorTest#should_instantiate_type_if_resolver_provide_matching_types
+  - org.mockitousage.basicapi.UsingVarargsTest#shouldStubCorrectlyWhenMixedVarargsUsed
+  - org.mockitousage.bugs.varargs.VarargsAndAnyObjectPicksUpExtraInvocationsTest#shouldVerifyCorrectlyWithAnyVarargs
+  - org.mockito.internal.util.reflection.ParameterizedConstructorInstantiatorTest#should_fail_if_an_argument_instance_type_do_not_match_wanted_type
+  - org.mockitousage.basicapi.UsingVarargsTest#shouldVerifyObjectVarargs
+  - org.mockito.internal.invocation.InvocationMatcherTest#should_capture_arguments_when_args_count_does_NOT_match
+  failing tests:
+  - org.mockitousage.basicapi.UsingVarargsTest
+  - org.mockito.internal.util.reflection.ParameterizedConstructorInstantiatorTest
+  - org.mockitousage.stubbing.DeprecatedStubbingTest
+  - org.mockitousage.matchers.VerificationAndStubbingUsingMatchersTest
+  - org.mockitousage.verification.VerificationInOrderMixedWithOrdiraryVerificationTest
+  - org.mockitousage.basicapi.ResetTest
+  - org.mockitousage.stubbing.BasicStubbingTest
+  - org.mockito.internal.util.reflection.FieldInitializerTest
+  - org.mockitousage.bugs.VarargsErrorWhenCallingRealMethodTest
+  - org.mockitousage.bugs.varargs.VarargsNotPlayingWithAnyObjectTest
+  - org.mockitousage.bugs.varargs.VarargsAndAnyObjectPicksUpExtraInvocationsTest
+  - org.mockito.internal.invocation.InvocationMatcherTest
+  number of all test cases: 993
+  number of failing test cases: 26
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 5.0
+  purification via coverage: 1.365
+  purification via delta debugging: 4677.4258
+  repair actions extraction: 1.077
+5 stmts covered by failing cases:
+  buggy:
+    org.mockito.internal.util.reflection.FieldInitializerTest#can_instantiate_class_with_parameterized_constructor: 41
+    org.mockitousage.bugs.VarargsErrorWhenCallingRealMethodTest#shouldNotThrowAnyException: 157
+    org.mockitousage.matchers.VerificationAndStubbingUsingMatchersTest#shouldVerifyUsingMatchers: 165
+    org.mockitousage.stubbing.BasicStubbingTest#should_evaluate_latest_stubbing_first: 165
+    org.mockitousage.stubbing.BasicStubbingTest#test_stub_only_not_verifiable: 165
+    org.mockitousage.verification.VerificationInOrderMixedWithOrdiraryVerificationTest#shouldUseEqualsToVerifyMethodVarargs: 165
+  fixed:
+    org.mockito.internal.util.reflection.FieldInitializerTest#can_instantiate_class_with_parameterized_constructor: 41
+    org.mockitousage.bugs.VarargsErrorWhenCallingRealMethodTest#shouldNotThrowAnyException: 157
+    org.mockitousage.matchers.VerificationAndStubbingUsingMatchersTest#shouldVerifyUsingMatchers: 165
+    org.mockitousage.stubbing.BasicStubbingTest#should_evaluate_latest_stubbing_first: 165
+    org.mockitousage.stubbing.BasicStubbingTest#test_stub_only_not_verifiable: 165
+    org.mockitousage.verification.VerificationInOrderMixedWithOrdiraryVerificationTest#shouldUseEqualsToVerifyMethodVarargs: 165
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 12
+  covDel: 1
+  cov_patch_lines: 13
+  delta_patch_lines: 13
+  oriAdd: 12
+  oriDel: 1
+  ori_patch_lines: 13
+  purAdd: 12
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 28
+  passed: 3
+  total: 31
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_1/src/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-27 00:42:55.794184994 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_1/purify/patch/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-27 00:42:55.794184994 -0400\n@@ -120,7 +120,18 @@\n     public void captureArgumentsFrom(Invocation\
+    \ invocation) {\n         if (invocation.getMethod().isVarArgs()) {\n        \
+    \     int indexOfVararg = invocation.getRawArguments().length - 1;\n-        \
+    \    throw new UnsupportedOperationException();\n+            for (int position\
+    \ = 0; position < indexOfVararg; position++) {\n+                Matcher m = matchers.get(position);\n\
+    +                if (m instanceof CapturesArguments) {\n+                    ((CapturesArguments)\
+    \ m).captureFrom(invocation.getArgumentAt(position, Object.class));\n+       \
+    \         }\n+            }\n+            for (int position = indexOfVararg; position\
+    \ < matchers.size(); position++) {\n+                Matcher m = matchers.get(position);\n\
+    +                if (m instanceof CapturesArguments) {\n+                    ((CapturesArguments)\
+    \ m).captureFrom(invocation.getRawArguments()[position - indexOfVararg]);\n+ \
+    \               }\n+            }\n \n         } else {\n             for (int\
+    \ position = 0; position < matchers.size(); position++) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_1/src/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-27 02:01:50.379376731 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_1/purify/purified/org/mockito/internal/invocation/InvocationMatcher.java\t\
+    2020-10-27 02:01:50.379376731 -0400\n@@ -120,7 +120,18 @@\n     public void captureArgumentsFrom(Invocation\
+    \ invocation) {\n         if (invocation.getMethod().isVarArgs()) {\n        \
+    \     int indexOfVararg = invocation.getRawArguments().length - 1;\n-        \
+    \    throw new UnsupportedOperationException();\n+            for (int position\
+    \ = 0; position < indexOfVararg; position++) {\n+                Matcher m = matchers.get(position);\n\
+    +                if (m instanceof CapturesArguments) {\n+                    ((CapturesArguments)\
+    \ m).captureFrom(invocation.getArgumentAt(position, Object.class));\n+       \
+    \         }\n+            }\n+            for (int position = indexOfVararg; position\
+    \ < matchers.size(); position++) {\n+                Matcher m = matchers.get(position);\n\
+    +                if (m instanceof CapturesArguments) {\n+                    ((CapturesArguments)\
+    \ m).captureFrom(invocation.getRawArguments()[position - indexOfVararg]);\n+ \
+    \               }\n+            }\n \n         } else {\n             for (int\
+    \ position = 0; position < matchers.size(); position++) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/invocation/InvocationMatcher:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int position=0];position < indexOfVararg; [position++] @TO@
+      IfStatement@@MethodInvocation:invocation.getMethod().isVarArgs() '
+    - '---INS VariableDeclarationExpression@@int position=0 @TO@ ForStatement@@[int
+      position=0];position < indexOfVararg; [position++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int position=0 '
+    - '------INS VariableDeclarationFragment@@position=0 @TO@ VariableDeclarationExpression@@int
+      position=0 '
+    - '---------INS SimpleName@@position @TO@ VariableDeclarationFragment@@position=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@position=0 '
+    - '---INS InfixExpression@@position < indexOfVararg @TO@ ForStatement@@[int position=0];position
+      < indexOfVararg; [position++] '
+    - '------INS SimpleName@@position @TO@ InfixExpression@@position < indexOfVararg '
+    - '------INS Operator@@< @TO@ InfixExpression@@position < indexOfVararg '
+    - '------INS SimpleName@@indexOfVararg @TO@ InfixExpression@@position < indexOfVararg '
+    - '---INS PostfixExpression@@position++ @TO@ ForStatement@@[int position=0];position
+      < indexOfVararg; [position++] '
+    - '------INS SimpleName@@position @TO@ PostfixExpression@@position++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@position++ '
+    - '---INS VariableDeclarationStatement@@Matcher m=matchers.get(position); @TO@
+      ForStatement@@[int position=0];position < indexOfVararg; [position++] '
+    - '------INS SimpleType@@Matcher @TO@ VariableDeclarationStatement@@Matcher m=matchers.get(position); '
+    - '------INS VariableDeclarationFragment@@m=matchers.get(position) @TO@ VariableDeclarationStatement@@Matcher
+      m=matchers.get(position); '
+    - '---------INS SimpleName@@m @TO@ VariableDeclarationFragment@@m=matchers.get(position) '
+    - '---------INS MethodInvocation@@matchers.get(position) @TO@ VariableDeclarationFragment@@m=matchers.get(position) '
+    - '------------INS SimpleName@@Name:matchers @TO@ MethodInvocation@@matchers.get(position) '
+    - '------------INS SimpleName@@MethodName:get:[position] @TO@ MethodInvocation@@matchers.get(position) '
+    - '---------------INS SimpleName@@position @TO@ SimpleName@@MethodName:get:[position] '
+    - '---INS IfStatement@@InstanceofExpression:m instanceof CapturesArguments @TO@
+      ForStatement@@[int position=0];position < indexOfVararg; [position++] '
+    - '------INS InstanceofExpression@@m instanceof CapturesArguments @TO@ IfStatement@@InstanceofExpression:m
+      instanceof CapturesArguments '
+    - '---------INS SimpleName@@m @TO@ InstanceofExpression@@m instanceof CapturesArguments '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@m instanceof
+      CapturesArguments '
+    - '---------INS SimpleType@@CapturesArguments @TO@ InstanceofExpression@@m instanceof
+      CapturesArguments '
+    - '------INS ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(invocation.getArgumentAt(position,Object.class))
+      @TO@ IfStatement@@InstanceofExpression:m instanceof CapturesArguments '
+    - '---------INS MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getArgumentAt(position,Object.class))
+      @TO@ ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(invocation.getArgumentAt(position,Object.class)) '
+    - '------------INS ParenthesizedExpression@@((CapturesArguments)m) @TO@ MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getArgumentAt(position,Object.class)) '
+    - '---------------INS CastExpression@@(CapturesArguments)m @TO@ ParenthesizedExpression@@((CapturesArguments)m) '
+    - '------------------INS SimpleType@@CapturesArguments @TO@ CastExpression@@(CapturesArguments)m '
+    - '------------------INS SimpleName@@m @TO@ CastExpression@@(CapturesArguments)m '
+    - '------------INS SimpleName@@MethodName:captureFrom:[invocation.getArgumentAt(position,Object.class)]
+      @TO@ MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getArgumentAt(position,Object.class)) '
+    - '---------------INS MethodInvocation@@invocation.getArgumentAt(position,Object.class)
+      @TO@ SimpleName@@MethodName:captureFrom:[invocation.getArgumentAt(position,Object.class)] '
+    - '------------------INS SimpleName@@Name:invocation @TO@ MethodInvocation@@invocation.getArgumentAt(position,Object.class) '
+    - '------------------INS SimpleName@@MethodName:getArgumentAt:[position, Object.class]
+      @TO@ MethodInvocation@@invocation.getArgumentAt(position,Object.class) '
+    - '---------------------INS SimpleName@@position @TO@ SimpleName@@MethodName:getArgumentAt:[position,
+      Object.class] '
+    - '---------------------INS TypeLiteral@@Object.class @TO@ SimpleName@@MethodName:getArgumentAt:[position,
+      Object.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ThrowStatement@@ClassInstanceCreation:new UnsupportedOperationException() '
+    - '---DEL ClassInstanceCreation@@UnsupportedOperationException[] '
+    - '------DEL New@@new '
+    - '------DEL SimpleType@@UnsupportedOperationException '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int position=indexOfVararg];position < matchers.size();
+      [position++] @TO@ IfStatement@@MethodInvocation:invocation.getMethod().isVarArgs() '
+    - '---INS VariableDeclarationExpression@@int position=indexOfVararg @TO@ ForStatement@@[int
+      position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int position=indexOfVararg '
+    - '------INS VariableDeclarationFragment@@position=indexOfVararg @TO@ VariableDeclarationExpression@@int
+      position=indexOfVararg '
+    - '---------INS SimpleName@@position @TO@ VariableDeclarationFragment@@position=indexOfVararg '
+    - '---------INS SimpleName@@indexOfVararg @TO@ VariableDeclarationFragment@@position=indexOfVararg '
+    - '---INS InfixExpression@@position < matchers.size() @TO@ ForStatement@@[int
+      position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------INS SimpleName@@position @TO@ InfixExpression@@position < matchers.size() '
+    - '------INS Operator@@< @TO@ InfixExpression@@position < matchers.size() '
+    - '------INS MethodInvocation@@matchers.size() @TO@ InfixExpression@@position
+      < matchers.size() '
+    - '---------INS SimpleName@@Name:matchers @TO@ MethodInvocation@@matchers.size() '
+    - '---------INS SimpleName@@MethodName:size:[] @TO@ MethodInvocation@@matchers.size() '
+    - '---INS PostfixExpression@@position++ @TO@ ForStatement@@[int position=indexOfVararg];position
+      < matchers.size(); [position++] '
+    - '------INS SimpleName@@position @TO@ PostfixExpression@@position++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@position++ '
+    - '---INS VariableDeclarationStatement@@Matcher m=matchers.get(position); @TO@
+      ForStatement@@[int position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------INS SimpleType@@Matcher @TO@ VariableDeclarationStatement@@Matcher m=matchers.get(position); '
+    - '------INS VariableDeclarationFragment@@m=matchers.get(position) @TO@ VariableDeclarationStatement@@Matcher
+      m=matchers.get(position); '
+    - '---------INS SimpleName@@m @TO@ VariableDeclarationFragment@@m=matchers.get(position) '
+    - '---------INS MethodInvocation@@matchers.get(position) @TO@ VariableDeclarationFragment@@m=matchers.get(position) '
+    - '------------INS SimpleName@@Name:matchers @TO@ MethodInvocation@@matchers.get(position) '
+    - '------------INS SimpleName@@MethodName:get:[position] @TO@ MethodInvocation@@matchers.get(position) '
+    - '---------------INS SimpleName@@position @TO@ SimpleName@@MethodName:get:[position] '
+    - '---INS IfStatement@@InstanceofExpression:m instanceof CapturesArguments @TO@
+      ForStatement@@[int position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------INS InstanceofExpression@@m instanceof CapturesArguments @TO@ IfStatement@@InstanceofExpression:m
+      instanceof CapturesArguments '
+    - '---------INS SimpleName@@m @TO@ InstanceofExpression@@m instanceof CapturesArguments '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@m instanceof
+      CapturesArguments '
+    - '---------INS SimpleType@@CapturesArguments @TO@ InstanceofExpression@@m instanceof
+      CapturesArguments '
+    - '------INS ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) @TO@ IfStatement@@InstanceofExpression:m instanceof CapturesArguments '
+    - '---------INS MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) @TO@ ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) '
+    - '------------INS ParenthesizedExpression@@((CapturesArguments)m) @TO@ MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) '
+    - '---------------INS CastExpression@@(CapturesArguments)m @TO@ ParenthesizedExpression@@((CapturesArguments)m) '
+    - '------------------INS SimpleType@@CapturesArguments @TO@ CastExpression@@(CapturesArguments)m '
+    - '------------------INS SimpleName@@m @TO@ CastExpression@@(CapturesArguments)m '
+    - '------------INS SimpleName@@MethodName:captureFrom:[invocation.getRawArguments()[position
+      - indexOfVararg]] @TO@ MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) '
+    - '---------------INS ArrayAccess@@invocation.getRawArguments()[position - indexOfVararg]
+      @TO@ SimpleName@@MethodName:captureFrom:[invocation.getRawArguments()[position
+      - indexOfVararg]] '
+    - '------------------INS MethodInvocation@@invocation.getRawArguments() @TO@ ArrayAccess@@invocation.getRawArguments()[position
+      - indexOfVararg] '
+    - '---------------------INS SimpleName@@Name:invocation @TO@ MethodInvocation@@invocation.getRawArguments() '
+    - '---------------------INS SimpleName@@MethodName:getRawArguments:[] @TO@ MethodInvocation@@invocation.getRawArguments() '
+    - '------------------INS InfixExpression@@position - indexOfVararg @TO@ ArrayAccess@@invocation.getRawArguments()[position
+      - indexOfVararg] '
+    - '---------------------INS SimpleName@@position @TO@ InfixExpression@@position
+      - indexOfVararg '
+    - '---------------------INS Operator@@- @TO@ InfixExpression@@position - indexOfVararg '
+    - '---------------------INS SimpleName@@indexOfVararg @TO@ InfixExpression@@position
+      - indexOfVararg '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/invocation/InvocationMatcher:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int position=0];position < indexOfVararg; [position++] @TO@
+      IfStatement@@MethodInvocation:invocation.getMethod().isVarArgs() '
+    - '---INS VariableDeclarationExpression@@int position=0 @TO@ ForStatement@@[int
+      position=0];position < indexOfVararg; [position++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int position=0 '
+    - '------INS VariableDeclarationFragment@@position=0 @TO@ VariableDeclarationExpression@@int
+      position=0 '
+    - '---------INS SimpleName@@position @TO@ VariableDeclarationFragment@@position=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@position=0 '
+    - '---INS InfixExpression@@position < indexOfVararg @TO@ ForStatement@@[int position=0];position
+      < indexOfVararg; [position++] '
+    - '------INS SimpleName@@position @TO@ InfixExpression@@position < indexOfVararg '
+    - '------INS Operator@@< @TO@ InfixExpression@@position < indexOfVararg '
+    - '------INS SimpleName@@indexOfVararg @TO@ InfixExpression@@position < indexOfVararg '
+    - '---INS PostfixExpression@@position++ @TO@ ForStatement@@[int position=0];position
+      < indexOfVararg; [position++] '
+    - '------INS SimpleName@@position @TO@ PostfixExpression@@position++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@position++ '
+    - '---INS VariableDeclarationStatement@@Matcher m=matchers.get(position); @TO@
+      ForStatement@@[int position=0];position < indexOfVararg; [position++] '
+    - '------INS SimpleType@@Matcher @TO@ VariableDeclarationStatement@@Matcher m=matchers.get(position); '
+    - '------INS VariableDeclarationFragment@@m=matchers.get(position) @TO@ VariableDeclarationStatement@@Matcher
+      m=matchers.get(position); '
+    - '---------INS SimpleName@@m @TO@ VariableDeclarationFragment@@m=matchers.get(position) '
+    - '---------INS MethodInvocation@@matchers.get(position) @TO@ VariableDeclarationFragment@@m=matchers.get(position) '
+    - '------------INS SimpleName@@Name:matchers @TO@ MethodInvocation@@matchers.get(position) '
+    - '------------INS SimpleName@@MethodName:get:[position] @TO@ MethodInvocation@@matchers.get(position) '
+    - '---------------INS SimpleName@@position @TO@ SimpleName@@MethodName:get:[position] '
+    - '---INS IfStatement@@InstanceofExpression:m instanceof CapturesArguments @TO@
+      ForStatement@@[int position=0];position < indexOfVararg; [position++] '
+    - '------INS InstanceofExpression@@m instanceof CapturesArguments @TO@ IfStatement@@InstanceofExpression:m
+      instanceof CapturesArguments '
+    - '---------INS SimpleName@@m @TO@ InstanceofExpression@@m instanceof CapturesArguments '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@m instanceof
+      CapturesArguments '
+    - '---------INS SimpleType@@CapturesArguments @TO@ InstanceofExpression@@m instanceof
+      CapturesArguments '
+    - '------INS ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(invocation.getArgumentAt(position,Object.class))
+      @TO@ IfStatement@@InstanceofExpression:m instanceof CapturesArguments '
+    - '---------INS MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getArgumentAt(position,Object.class))
+      @TO@ ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(invocation.getArgumentAt(position,Object.class)) '
+    - '------------INS ParenthesizedExpression@@((CapturesArguments)m) @TO@ MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getArgumentAt(position,Object.class)) '
+    - '---------------INS CastExpression@@(CapturesArguments)m @TO@ ParenthesizedExpression@@((CapturesArguments)m) '
+    - '------------------INS SimpleType@@CapturesArguments @TO@ CastExpression@@(CapturesArguments)m '
+    - '------------------INS SimpleName@@m @TO@ CastExpression@@(CapturesArguments)m '
+    - '------------INS SimpleName@@MethodName:captureFrom:[invocation.getArgumentAt(position,Object.class)]
+      @TO@ MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getArgumentAt(position,Object.class)) '
+    - '---------------INS MethodInvocation@@invocation.getArgumentAt(position,Object.class)
+      @TO@ SimpleName@@MethodName:captureFrom:[invocation.getArgumentAt(position,Object.class)] '
+    - '------------------INS SimpleName@@Name:invocation @TO@ MethodInvocation@@invocation.getArgumentAt(position,Object.class) '
+    - '------------------INS SimpleName@@MethodName:getArgumentAt:[position, Object.class]
+      @TO@ MethodInvocation@@invocation.getArgumentAt(position,Object.class) '
+    - '---------------------INS SimpleName@@position @TO@ SimpleName@@MethodName:getArgumentAt:[position,
+      Object.class] '
+    - '---------------------INS TypeLiteral@@Object.class @TO@ SimpleName@@MethodName:getArgumentAt:[position,
+      Object.class] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ThrowStatement@@ClassInstanceCreation:new UnsupportedOperationException() '
+    - '---DEL ClassInstanceCreation@@UnsupportedOperationException[] '
+    - '------DEL New@@new '
+    - '------DEL SimpleType@@UnsupportedOperationException '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int position=indexOfVararg];position < matchers.size();
+      [position++] @TO@ IfStatement@@MethodInvocation:invocation.getMethod().isVarArgs() '
+    - '---INS VariableDeclarationExpression@@int position=indexOfVararg @TO@ ForStatement@@[int
+      position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int position=indexOfVararg '
+    - '------INS VariableDeclarationFragment@@position=indexOfVararg @TO@ VariableDeclarationExpression@@int
+      position=indexOfVararg '
+    - '---------INS SimpleName@@position @TO@ VariableDeclarationFragment@@position=indexOfVararg '
+    - '---------INS SimpleName@@indexOfVararg @TO@ VariableDeclarationFragment@@position=indexOfVararg '
+    - '---INS InfixExpression@@position < matchers.size() @TO@ ForStatement@@[int
+      position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------INS SimpleName@@position @TO@ InfixExpression@@position < matchers.size() '
+    - '------INS Operator@@< @TO@ InfixExpression@@position < matchers.size() '
+    - '------INS MethodInvocation@@matchers.size() @TO@ InfixExpression@@position
+      < matchers.size() '
+    - '---------INS SimpleName@@Name:matchers @TO@ MethodInvocation@@matchers.size() '
+    - '---------INS SimpleName@@MethodName:size:[] @TO@ MethodInvocation@@matchers.size() '
+    - '---INS PostfixExpression@@position++ @TO@ ForStatement@@[int position=indexOfVararg];position
+      < matchers.size(); [position++] '
+    - '------INS SimpleName@@position @TO@ PostfixExpression@@position++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@position++ '
+    - '---INS VariableDeclarationStatement@@Matcher m=matchers.get(position); @TO@
+      ForStatement@@[int position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------INS SimpleType@@Matcher @TO@ VariableDeclarationStatement@@Matcher m=matchers.get(position); '
+    - '------INS VariableDeclarationFragment@@m=matchers.get(position) @TO@ VariableDeclarationStatement@@Matcher
+      m=matchers.get(position); '
+    - '---------INS SimpleName@@m @TO@ VariableDeclarationFragment@@m=matchers.get(position) '
+    - '---------INS MethodInvocation@@matchers.get(position) @TO@ VariableDeclarationFragment@@m=matchers.get(position) '
+    - '------------INS SimpleName@@Name:matchers @TO@ MethodInvocation@@matchers.get(position) '
+    - '------------INS SimpleName@@MethodName:get:[position] @TO@ MethodInvocation@@matchers.get(position) '
+    - '---------------INS SimpleName@@position @TO@ SimpleName@@MethodName:get:[position] '
+    - '---INS IfStatement@@InstanceofExpression:m instanceof CapturesArguments @TO@
+      ForStatement@@[int position=indexOfVararg];position < matchers.size(); [position++] '
+    - '------INS InstanceofExpression@@m instanceof CapturesArguments @TO@ IfStatement@@InstanceofExpression:m
+      instanceof CapturesArguments '
+    - '---------INS SimpleName@@m @TO@ InstanceofExpression@@m instanceof CapturesArguments '
+    - '---------INS Instanceof@@instanceof @TO@ InstanceofExpression@@m instanceof
+      CapturesArguments '
+    - '---------INS SimpleType@@CapturesArguments @TO@ InstanceofExpression@@m instanceof
+      CapturesArguments '
+    - '------INS ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) @TO@ IfStatement@@InstanceofExpression:m instanceof CapturesArguments '
+    - '---------INS MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) @TO@ ExpressionStatement@@MethodInvocation:((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) '
+    - '------------INS ParenthesizedExpression@@((CapturesArguments)m) @TO@ MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) '
+    - '---------------INS CastExpression@@(CapturesArguments)m @TO@ ParenthesizedExpression@@((CapturesArguments)m) '
+    - '------------------INS SimpleType@@CapturesArguments @TO@ CastExpression@@(CapturesArguments)m '
+    - '------------------INS SimpleName@@m @TO@ CastExpression@@(CapturesArguments)m '
+    - '------------INS SimpleName@@MethodName:captureFrom:[invocation.getRawArguments()[position
+      - indexOfVararg]] @TO@ MethodInvocation@@((CapturesArguments)m).captureFrom(invocation.getRawArguments()[position
+      - indexOfVararg]) '
+    - '---------------INS ArrayAccess@@invocation.getRawArguments()[position - indexOfVararg]
+      @TO@ SimpleName@@MethodName:captureFrom:[invocation.getRawArguments()[position
+      - indexOfVararg]] '
+    - '------------------INS MethodInvocation@@invocation.getRawArguments() @TO@ ArrayAccess@@invocation.getRawArguments()[position
+      - indexOfVararg] '
+    - '---------------------INS SimpleName@@Name:invocation @TO@ MethodInvocation@@invocation.getRawArguments() '
+    - '---------------------INS SimpleName@@MethodName:getRawArguments:[] @TO@ MethodInvocation@@invocation.getRawArguments() '
+    - '------------------INS InfixExpression@@position - indexOfVararg @TO@ ArrayAccess@@invocation.getRawArguments()[position
+      - indexOfVararg] '
+    - '---------------------INS SimpleName@@position @TO@ InfixExpression@@position
+      - indexOfVararg '
+    - '---------------------INS Operator@@- @TO@ InfixExpression@@position - indexOfVararg '
+    - '---------------------INS SimpleName@@indexOfVararg @TO@ InfixExpression@@position
+      - indexOfVararg '
+  repair_actions_cnt: 3

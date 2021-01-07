@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_28/src/org/mockito/internal/configuration/DefaultInjectionEngine.java	2020-10-24 20:05:33.792951073 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_28/purify/assertBeforeMut/org/mockito/internal/configuration/DefaultInjectionEngine.java	2020-10-24 20:05:33.792951073 -0400
+@@ -90,7 +90,8 @@
+ 
+     private void injectMockCandidate(Class<?> awaitingInjectionClazz, Set<Object> mocks, Object fieldInstance) {
+         for(Field field : orderedInstanceFieldsFrom(awaitingInjectionClazz)) {
+-            mockCandidateFilter.filterCandidate(mocks, field, fieldInstance).thenInject();
++            Object injected = mockCandidateFilter.filterCandidate(mocks, field, fieldInstance).thenInject();
++            mocks.remove(injected);
+         }
+     }
+ 

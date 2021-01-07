@@ -1,0 +1,31 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_44/src/main/java/org/apache/commons/math/ode/AbstractIntegrator.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_44/fixed-version/src/main/java/org/apache/commons/math/ode/AbstractIntegrator.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_44/src/main/java/org/apache/commons/math/ode/AbstractIntegrator.java	2020-03-01 00:18:20.223557223 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_44/fixed-version/src/main/java/org/apache/commons/math/ode/AbstractIntegrator.java	2020-03-01 00:18:23.875729300 -0800
+@@ -277,7 +277,6 @@
+ 
+             double previousT = interpolator.getGlobalPreviousTime();
+             final double currentT = interpolator.getGlobalCurrentTime();
+-            resetOccurred = false;
+ 
+             // initialize the events states if needed
+             if (! statesInitialized) {
+@@ -331,6 +330,9 @@
+                 if (isLastStep) {
+                     // the event asked to stop integration
+                     System.arraycopy(eventY, 0, y, 0, y.length);
++                    for (final EventState remaining : occuringEvents) {
++                        remaining.stepAccepted(eventT, eventY);
++                    }
+                     return eventT;
+                 }
+ 
+@@ -340,6 +342,9 @@
+                     System.arraycopy(eventY, 0, y, 0, y.length);
+                     computeDerivatives(eventT, y, yDot);
+                     resetOccurred = true;
++                    for (final EventState remaining : occuringEvents) {
++                        remaining.stepAccepted(eventT, eventY);
++                    }
+                     return eventT;
+                 }
+ 

@@ -1,0 +1,25 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_23/src/main/java/org/joda/time/DateTimeZone.java	2020-10-20 23:23:54.660731123 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_23/purify/purified/org/joda/time/DateTimeZone.java	2020-10-20 23:23:54.656731007 -0400
+@@ -561,6 +561,8 @@
+             // Backwards compatibility with TimeZone.
+             map = new HashMap<String, String>();
+             map.put("GMT", "UTC");
++            map.put("MET", "CET");
++            map.put("ECT", "CET");
+             map.put("MIT", "Pacific/Apia");
+             map.put("HST", "Pacific/Honolulu");  // JDK 1.1 compatible
+             map.put("AST", "America/Anchorage");
+@@ -574,13 +576,9 @@
+             map.put("CNT", "America/St_Johns");
+             map.put("AGT", "America/Buenos_Aires");
+             map.put("BET", "America/Sao_Paulo");
+-            map.put("WET", "Europe/London");
+-            map.put("ECT", "Europe/Paris");
+             map.put("ART", "Africa/Cairo");
+             map.put("CAT", "Africa/Harare");
+-            map.put("EET", "Europe/Bucharest");
+             map.put("EAT", "Africa/Addis_Ababa");
+-            map.put("MET", "Asia/Tehran");
+             map.put("NET", "Asia/Yerevan");
+             map.put("PLT", "Asia/Karachi");
+             map.put("IST", "Asia/Calcutta");

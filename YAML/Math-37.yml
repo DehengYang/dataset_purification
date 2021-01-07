@@ -1,0 +1,309 @@
+1 bug_id: Math-37
+2 src folder:
+  name of src folder: java
+  number of files: 624
+  number of java files: 623
+  number of src classes: 850
+  number of test classes: 300
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.complex.ComplexTest#testTanhInf
+  - org.apache.commons.math.complex.ComplexTest#testTan
+  - org.apache.commons.math.complex.ComplexTest#testTanh
+  - org.apache.commons.math.complex.ComplexTest#testTanInf
+  failing tests:
+  - org.apache.commons.math.complex.ComplexTest
+  number of all test cases: 3583
+  number of failing test cases: 4
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.073
+  purification via delta debugging: 304.741
+  repair actions extraction: 1.665
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.complex.ComplexTest#testTan: 250
+    org.apache.commons.math.complex.ComplexTest#testTanInf: 159
+    org.apache.commons.math.complex.ComplexTest#testTanh: 252
+    org.apache.commons.math.complex.ComplexTest#testTanhInf: 257
+  fixed:
+    org.apache.commons.math.complex.ComplexTest#testTan: 249
+    org.apache.commons.math.complex.ComplexTest#testTanInf: 22
+    org.apache.commons.math.complex.ComplexTest#testTanh: 249
+    org.apache.commons.math.complex.ComplexTest#testTanhInf: 22
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 14
+  covDel: 2
+  cov_patch_lines: 16
+  delta_patch_lines: 16
+  oriAdd: 14
+  oriDel: 2
+  ori_patch_lines: 16
+  purAdd: 14
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 22
+  failFail: 8
+  passed: 0
+  total: 30
+9 sibling repair actions:
+- 0 3 0.8739495798319328
+- 1 2 0.8359046283309958
+- 1 4 0.8587015821058375
+- 4 5 0.7210092188258127
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_37/src/main/java/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 10:55:41.344656846 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_37/purify/patch/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 10:55:41.344656846 -0400\n@@ -1015,9 +1015,15 @@\n      * @since 1.2\n\
+    \      */\n     public Complex tan() {\n-        if (isNaN) {\n+        if (isNaN\
+    \ || Double.isInfinite(real)) {\n             return NaN;\n         }\n+     \
+    \   if (imaginary > 20.0) {\n+            return createComplex(0.0, 1.0);\n+ \
+    \       }\n+        if (imaginary < -20.0) {\n+            return createComplex(0.0,\
+    \ -1.0);\n+        }\n \n         double real2 = 2.0 * real;\n         double\
+    \ imaginary2 = 2.0 * imaginary;\n@@ -1060,9 +1066,15 @@\n      * @since 1.2\n\
+    \      */\n     public Complex tanh() {\n-        if (isNaN) {\n+        if (isNaN\
+    \ || Double.isInfinite(imaginary)) {\n             return NaN;\n         }\n+\
+    \        if (real > 20.0) {\n+            return createComplex(1.0, 0.0);\n+ \
+    \       }\n+        if (real < -20.0) {\n+            return createComplex(-1.0,\
+    \ 0.0);\n+        }\n         double real2 = 2.0 * real;\n         double imaginary2\
+    \ = 2.0 * imaginary;\n         double d = FastMath.cosh(real2) + FastMath.cos(imaginary2);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_37/src/main/java/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 11:01:04.826009636 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_37/purify/purified/org/apache/commons/math/complex/Complex.java\t\
+    2020-10-21 11:01:04.810009173 -0400\n@@ -1015,9 +1015,15 @@\n      * @since 1.2\n\
+    \      */\n     public Complex tan() {\n-        if (isNaN) {\n+        if (isNaN\
+    \ || Double.isInfinite(real)) {\n             return NaN;\n         }\n+     \
+    \   if (imaginary > 20.0) {\n+            return createComplex(0.0, 1.0);\n+ \
+    \       }\n+        if (imaginary < -20.0) {\n+            return createComplex(0.0,\
+    \ -1.0);\n+        }\n \n         double real2 = 2.0 * real;\n         double\
+    \ imaginary2 = 2.0 * imaginary;\n@@ -1060,9 +1066,15 @@\n      * @since 1.2\n\
+    \      */\n     public Complex tanh() {\n-        if (isNaN) {\n+        if (isNaN\
+    \ || Double.isInfinite(imaginary)) {\n             return NaN;\n         }\n+\
+    \        if (real > 20.0) {\n+            return createComplex(1.0, 0.0);\n+ \
+    \       }\n+        if (real < -20.0) {\n+            return createComplex(-1.0,\
+    \ 0.0);\n+        }\n         double real2 = 2.0 * real;\n         double imaginary2\
+    \ = 2.0 * imaginary;\n         double d = FastMath.cosh(real2) + FastMath.cos(imaginary2);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/complex/Complex:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@SimpleName:isNaN @TO@ InfixExpression:isNaN || Double.isInfinite(real) '
+    - '---INS InfixExpression@@isNaN || Double.isInfinite(real) @TO@ IfStatement@@SimpleName:isNaN '
+    - '------INS SimpleName@@isNaN @TO@ InfixExpression@@isNaN || Double.isInfinite(real) '
+    - '------INS Operator@@|| @TO@ InfixExpression@@isNaN || Double.isInfinite(real) '
+    - '------INS MethodInvocation@@Double.isInfinite(real) @TO@ InfixExpression@@isNaN
+      || Double.isInfinite(real) '
+    - '---------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isInfinite(real) '
+    - '---------INS SimpleName@@MethodName:isInfinite:[real] @TO@ MethodInvocation@@Double.isInfinite(real) '
+    - '------------INS SimpleName@@real @TO@ SimpleName@@MethodName:isInfinite:[real] '
+    - '---DEL SimpleName@@isNaN '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:imaginary > 20.0 @TO@ MethodDeclaration@@public,
+      @@Complex, MethodName:tan, @@Argus:null '
+    - '---INS InfixExpression@@imaginary > 20.0 @TO@ IfStatement@@InfixExpression:imaginary
+      > 20.0 '
+    - '------INS SimpleName@@imaginary @TO@ InfixExpression@@imaginary > 20.0 '
+    - '------INS Operator@@> @TO@ InfixExpression@@imaginary > 20.0 '
+    - '------INS NumberLiteral@@20.0 @TO@ InfixExpression@@imaginary > 20.0 '
+    - '---INS ReturnStatement@@MethodInvocation:createComplex(0.0,1.0) @TO@ IfStatement@@InfixExpression:imaginary
+      > 20.0 '
+    - '------INS MethodInvocation@@createComplex(0.0,1.0) @TO@ ReturnStatement@@MethodInvocation:createComplex(0.0,1.0) '
+    - '---------INS SimpleName@@MethodName:createComplex:[0.0, 1.0] @TO@ MethodInvocation@@createComplex(0.0,1.0) '
+    - '------------INS NumberLiteral@@0.0 @TO@ SimpleName@@MethodName:createComplex:[0.0,
+      1.0] '
+    - '------------INS NumberLiteral@@1.0 @TO@ SimpleName@@MethodName:createComplex:[0.0,
+      1.0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:imaginary < -20.0 @TO@ MethodDeclaration@@public,
+      @@Complex, MethodName:tan, @@Argus:null '
+    - '---INS InfixExpression@@imaginary < -20.0 @TO@ IfStatement@@InfixExpression:imaginary
+      < -20.0 '
+    - '------INS SimpleName@@imaginary @TO@ InfixExpression@@imaginary < -20.0 '
+    - '------INS Operator@@< @TO@ InfixExpression@@imaginary < -20.0 '
+    - '------INS PrefixExpression@@-20.0 @TO@ InfixExpression@@imaginary < -20.0 '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-20.0 '
+    - '---------INS NumberLiteral@@20.0 @TO@ PrefixExpression@@-20.0 '
+    - '---INS ReturnStatement@@MethodInvocation:createComplex(0.0,-1.0) @TO@ IfStatement@@InfixExpression:imaginary
+      < -20.0 '
+    - '------INS MethodInvocation@@createComplex(0.0,-1.0) @TO@ ReturnStatement@@MethodInvocation:createComplex(0.0,-1.0) '
+    - '---------INS SimpleName@@MethodName:createComplex:[0.0, -1.0] @TO@ MethodInvocation@@createComplex(0.0,-1.0) '
+    - '------------INS NumberLiteral@@0.0 @TO@ SimpleName@@MethodName:createComplex:[0.0,
+      -1.0] '
+    - '------------INS PrefixExpression@@-1.0 @TO@ SimpleName@@MethodName:createComplex:[0.0,
+      -1.0] '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-1.0 '
+    - '---------------INS NumberLiteral@@1.0 @TO@ PrefixExpression@@-1.0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@SimpleName:isNaN @TO@ InfixExpression:isNaN || Double.isInfinite(imaginary) '
+    - '---DEL SimpleName@@isNaN '
+    - '---INS InfixExpression@@isNaN || Double.isInfinite(imaginary) @TO@ IfStatement@@SimpleName:isNaN '
+    - '------INS SimpleName@@isNaN @TO@ InfixExpression@@isNaN || Double.isInfinite(imaginary) '
+    - '------INS Operator@@|| @TO@ InfixExpression@@isNaN || Double.isInfinite(imaginary) '
+    - '------INS MethodInvocation@@Double.isInfinite(imaginary) @TO@ InfixExpression@@isNaN
+      || Double.isInfinite(imaginary) '
+    - '---------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isInfinite(imaginary) '
+    - '---------INS SimpleName@@MethodName:isInfinite:[imaginary] @TO@ MethodInvocation@@Double.isInfinite(imaginary) '
+    - '------------INS SimpleName@@imaginary @TO@ SimpleName@@MethodName:isInfinite:[imaginary] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:real > 20.0 @TO@ MethodDeclaration@@public,
+      @@Complex, MethodName:tanh, @@Argus:null '
+    - '---INS InfixExpression@@real > 20.0 @TO@ IfStatement@@InfixExpression:real
+      > 20.0 '
+    - '------INS SimpleName@@real @TO@ InfixExpression@@real > 20.0 '
+    - '------INS Operator@@> @TO@ InfixExpression@@real > 20.0 '
+    - '------INS NumberLiteral@@20.0 @TO@ InfixExpression@@real > 20.0 '
+    - '---INS ReturnStatement@@MethodInvocation:createComplex(1.0,0.0) @TO@ IfStatement@@InfixExpression:real
+      > 20.0 '
+    - '------INS MethodInvocation@@createComplex(1.0,0.0) @TO@ ReturnStatement@@MethodInvocation:createComplex(1.0,0.0) '
+    - '---------INS SimpleName@@MethodName:createComplex:[1.0, 0.0] @TO@ MethodInvocation@@createComplex(1.0,0.0) '
+    - '------------INS NumberLiteral@@1.0 @TO@ SimpleName@@MethodName:createComplex:[1.0,
+      0.0] '
+    - '------------INS NumberLiteral@@0.0 @TO@ SimpleName@@MethodName:createComplex:[1.0,
+      0.0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:real < -20.0 @TO@ MethodDeclaration@@public,
+      @@Complex, MethodName:tanh, @@Argus:null '
+    - '---INS InfixExpression@@real < -20.0 @TO@ IfStatement@@InfixExpression:real
+      < -20.0 '
+    - '------INS SimpleName@@real @TO@ InfixExpression@@real < -20.0 '
+    - '------INS Operator@@< @TO@ InfixExpression@@real < -20.0 '
+    - '------INS PrefixExpression@@-20.0 @TO@ InfixExpression@@real < -20.0 '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-20.0 '
+    - '---------INS NumberLiteral@@20.0 @TO@ PrefixExpression@@-20.0 '
+    - '---INS ReturnStatement@@MethodInvocation:createComplex(-1.0,0.0) @TO@ IfStatement@@InfixExpression:real
+      < -20.0 '
+    - '------INS MethodInvocation@@createComplex(-1.0,0.0) @TO@ ReturnStatement@@MethodInvocation:createComplex(-1.0,0.0) '
+    - '---------INS SimpleName@@MethodName:createComplex:[-1.0, 0.0] @TO@ MethodInvocation@@createComplex(-1.0,0.0) '
+    - '------------INS PrefixExpression@@-1.0 @TO@ SimpleName@@MethodName:createComplex:[-1.0,
+      0.0] '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-1.0 '
+    - '---------------INS NumberLiteral@@1.0 @TO@ PrefixExpression@@-1.0 '
+    - '------------INS NumberLiteral@@0.0 @TO@ SimpleName@@MethodName:createComplex:[-1.0,
+      0.0] '
+  repair_actions_cnt: 6
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/complex/Complex:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@SimpleName:isNaN @TO@ InfixExpression:isNaN || Double.isInfinite(real) '
+    - '---INS InfixExpression@@isNaN || Double.isInfinite(real) @TO@ IfStatement@@SimpleName:isNaN '
+    - '------INS SimpleName@@isNaN @TO@ InfixExpression@@isNaN || Double.isInfinite(real) '
+    - '------INS Operator@@|| @TO@ InfixExpression@@isNaN || Double.isInfinite(real) '
+    - '------INS MethodInvocation@@Double.isInfinite(real) @TO@ InfixExpression@@isNaN
+      || Double.isInfinite(real) '
+    - '---------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isInfinite(real) '
+    - '---------INS SimpleName@@MethodName:isInfinite:[real] @TO@ MethodInvocation@@Double.isInfinite(real) '
+    - '------------INS SimpleName@@real @TO@ SimpleName@@MethodName:isInfinite:[real] '
+    - '---DEL SimpleName@@isNaN '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:imaginary > 20.0 @TO@ MethodDeclaration@@public,
+      @@Complex, MethodName:tan, @@Argus:null '
+    - '---INS InfixExpression@@imaginary > 20.0 @TO@ IfStatement@@InfixExpression:imaginary
+      > 20.0 '
+    - '------INS SimpleName@@imaginary @TO@ InfixExpression@@imaginary > 20.0 '
+    - '------INS Operator@@> @TO@ InfixExpression@@imaginary > 20.0 '
+    - '------INS NumberLiteral@@20.0 @TO@ InfixExpression@@imaginary > 20.0 '
+    - '---INS ReturnStatement@@MethodInvocation:createComplex(0.0,1.0) @TO@ IfStatement@@InfixExpression:imaginary
+      > 20.0 '
+    - '------INS MethodInvocation@@createComplex(0.0,1.0) @TO@ ReturnStatement@@MethodInvocation:createComplex(0.0,1.0) '
+    - '---------INS SimpleName@@MethodName:createComplex:[0.0, 1.0] @TO@ MethodInvocation@@createComplex(0.0,1.0) '
+    - '------------INS NumberLiteral@@0.0 @TO@ SimpleName@@MethodName:createComplex:[0.0,
+      1.0] '
+    - '------------INS NumberLiteral@@1.0 @TO@ SimpleName@@MethodName:createComplex:[0.0,
+      1.0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:imaginary < -20.0 @TO@ MethodDeclaration@@public,
+      @@Complex, MethodName:tan, @@Argus:null '
+    - '---INS InfixExpression@@imaginary < -20.0 @TO@ IfStatement@@InfixExpression:imaginary
+      < -20.0 '
+    - '------INS SimpleName@@imaginary @TO@ InfixExpression@@imaginary < -20.0 '
+    - '------INS Operator@@< @TO@ InfixExpression@@imaginary < -20.0 '
+    - '------INS PrefixExpression@@-20.0 @TO@ InfixExpression@@imaginary < -20.0 '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-20.0 '
+    - '---------INS NumberLiteral@@20.0 @TO@ PrefixExpression@@-20.0 '
+    - '---INS ReturnStatement@@MethodInvocation:createComplex(0.0,-1.0) @TO@ IfStatement@@InfixExpression:imaginary
+      < -20.0 '
+    - '------INS MethodInvocation@@createComplex(0.0,-1.0) @TO@ ReturnStatement@@MethodInvocation:createComplex(0.0,-1.0) '
+    - '---------INS SimpleName@@MethodName:createComplex:[0.0, -1.0] @TO@ MethodInvocation@@createComplex(0.0,-1.0) '
+    - '------------INS NumberLiteral@@0.0 @TO@ SimpleName@@MethodName:createComplex:[0.0,
+      -1.0] '
+    - '------------INS PrefixExpression@@-1.0 @TO@ SimpleName@@MethodName:createComplex:[0.0,
+      -1.0] '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-1.0 '
+    - '---------------INS NumberLiteral@@1.0 @TO@ PrefixExpression@@-1.0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@SimpleName:isNaN @TO@ InfixExpression:isNaN || Double.isInfinite(imaginary) '
+    - '---DEL SimpleName@@isNaN '
+    - '---INS InfixExpression@@isNaN || Double.isInfinite(imaginary) @TO@ IfStatement@@SimpleName:isNaN '
+    - '------INS SimpleName@@isNaN @TO@ InfixExpression@@isNaN || Double.isInfinite(imaginary) '
+    - '------INS Operator@@|| @TO@ InfixExpression@@isNaN || Double.isInfinite(imaginary) '
+    - '------INS MethodInvocation@@Double.isInfinite(imaginary) @TO@ InfixExpression@@isNaN
+      || Double.isInfinite(imaginary) '
+    - '---------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isInfinite(imaginary) '
+    - '---------INS SimpleName@@MethodName:isInfinite:[imaginary] @TO@ MethodInvocation@@Double.isInfinite(imaginary) '
+    - '------------INS SimpleName@@imaginary @TO@ SimpleName@@MethodName:isInfinite:[imaginary] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:real > 20.0 @TO@ MethodDeclaration@@public,
+      @@Complex, MethodName:tanh, @@Argus:null '
+    - '---INS InfixExpression@@real > 20.0 @TO@ IfStatement@@InfixExpression:real
+      > 20.0 '
+    - '------INS SimpleName@@real @TO@ InfixExpression@@real > 20.0 '
+    - '------INS Operator@@> @TO@ InfixExpression@@real > 20.0 '
+    - '------INS NumberLiteral@@20.0 @TO@ InfixExpression@@real > 20.0 '
+    - '---INS ReturnStatement@@MethodInvocation:createComplex(1.0,0.0) @TO@ IfStatement@@InfixExpression:real
+      > 20.0 '
+    - '------INS MethodInvocation@@createComplex(1.0,0.0) @TO@ ReturnStatement@@MethodInvocation:createComplex(1.0,0.0) '
+    - '---------INS SimpleName@@MethodName:createComplex:[1.0, 0.0] @TO@ MethodInvocation@@createComplex(1.0,0.0) '
+    - '------------INS NumberLiteral@@1.0 @TO@ SimpleName@@MethodName:createComplex:[1.0,
+      0.0] '
+    - '------------INS NumberLiteral@@0.0 @TO@ SimpleName@@MethodName:createComplex:[1.0,
+      0.0] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:real < -20.0 @TO@ MethodDeclaration@@public,
+      @@Complex, MethodName:tanh, @@Argus:null '
+    - '---INS InfixExpression@@real < -20.0 @TO@ IfStatement@@InfixExpression:real
+      < -20.0 '
+    - '------INS SimpleName@@real @TO@ InfixExpression@@real < -20.0 '
+    - '------INS Operator@@< @TO@ InfixExpression@@real < -20.0 '
+    - '------INS PrefixExpression@@-20.0 @TO@ InfixExpression@@real < -20.0 '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-20.0 '
+    - '---------INS NumberLiteral@@20.0 @TO@ PrefixExpression@@-20.0 '
+    - '---INS ReturnStatement@@MethodInvocation:createComplex(-1.0,0.0) @TO@ IfStatement@@InfixExpression:real
+      < -20.0 '
+    - '------INS MethodInvocation@@createComplex(-1.0,0.0) @TO@ ReturnStatement@@MethodInvocation:createComplex(-1.0,0.0) '
+    - '---------INS SimpleName@@MethodName:createComplex:[-1.0, 0.0] @TO@ MethodInvocation@@createComplex(-1.0,0.0) '
+    - '------------INS PrefixExpression@@-1.0 @TO@ SimpleName@@MethodName:createComplex:[-1.0,
+      0.0] '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-1.0 '
+    - '---------------INS NumberLiteral@@1.0 @TO@ PrefixExpression@@-1.0 '
+    - '------------INS NumberLiteral@@0.0 @TO@ SimpleName@@MethodName:createComplex:[-1.0,
+      0.0] '
+  repair_actions_cnt: 6

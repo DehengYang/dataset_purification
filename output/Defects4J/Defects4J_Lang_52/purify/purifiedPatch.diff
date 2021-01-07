@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Lang_52/src/java/org/apache/commons/lang/StringEscapeUtils.java	2020-10-21 03:57:17.130362748 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_52/purify/purified/org/apache/commons/lang/StringEscapeUtils.java	2020-10-21 03:57:17.130362748 -0400
+@@ -233,6 +233,8 @@
+                         out.write('\\');
+                         out.write('\\');
+                         break;
++                    case '/':
++                        out.write('\\');
+                     default :
+                         out.write(ch);
+                         break;

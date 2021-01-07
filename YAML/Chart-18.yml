@@ -1,0 +1,184 @@
+1 bug_id: Chart-18
+2 src folder:
+  name of src folder: source
+  number of files: 650
+  number of java files: 577
+  number of src classes: 603
+  number of test classes: 322
+3 test (cases):
+  failing test cases:
+  - org.jfree.data.junit.DefaultKeyedValuesTests#testGetIndex2
+  - org.jfree.data.category.junit.DefaultCategoryDatasetTests#testBug1835955
+  - org.jfree.data.junit.DefaultKeyedValuesTests#testRemoveValue
+  - org.jfree.data.junit.DefaultKeyedValues2DTests#testRemoveColumnByKey
+  failing tests:
+  - org.jfree.data.junit.DefaultKeyedValuesTests
+  - org.jfree.data.category.junit.DefaultCategoryDatasetTests
+  - org.jfree.data.junit.DefaultKeyedValues2DTests
+  number of all test cases: 1748
+  number of failing test cases: 4
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.936
+  purification via delta debugging: 178.321
+  repair actions extraction: 1.454
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.data.category.junit.DefaultCategoryDatasetTests#testBug1835955: 93
+    org.jfree.data.junit.DefaultKeyedValues2DTests#testRemoveColumnByKey: 67
+    org.jfree.data.junit.DefaultKeyedValuesTests#testGetIndex2: 39
+    org.jfree.data.junit.DefaultKeyedValuesTests#testRemoveValue: 50
+  fixed:
+    org.jfree.data.category.junit.DefaultCategoryDatasetTests#testBug1835955: 110
+    org.jfree.data.junit.DefaultKeyedValues2DTests#testRemoveColumnByKey: 91
+    org.jfree.data.junit.DefaultKeyedValuesTests#testGetIndex2: 43
+    org.jfree.data.junit.DefaultKeyedValuesTests#testRemoveValue: 53
+6 reduced lines:
+  by all: 1
+  by coverage: 1
+  by delta debugging: 0
+  covAdd: 10
+  covDel: 3
+  cov_patch_lines: 13
+  delta_patch_lines: 13
+  oriAdd: 11
+  oriDel: 3
+  ori_patch_lines: 14
+  purAdd: 10
+  purDel: 3
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 6
+  original: 6
+  purifiy: 6
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 24
+  failFail: 3
+  passed: 0
+  total: 27
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_18/source/org/jfree/data/DefaultKeyedValues2D.java\t\
+    2020-10-21 00:20:25.086675548 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_18/purify/patch/org/jfree/data/DefaultKeyedValues2D.java\t\
+    2020-10-21 00:20:25.086675548 -0400\n@@ -452,10 +452,19 @@\n      * @see #removeRow(Comparable)\n\
+    \      */\n     public void removeColumn(Comparable columnKey) {\n+    \tif (columnKey\
+    \ == null) {\n+    \t\tthrow new IllegalArgumentException(\"Null 'columnKey' argument.\"\
+    );\n+    \t}\n+    \tif (!this.columnKeys.contains(columnKey)) {\n+    \t\tthrow\
+    \ new UnknownKeyException(\"Unknown key: \" + columnKey);\n+    \t}\n        \
+    \ Iterator iterator = this.rows.iterator();\n         while (iterator.hasNext())\
+    \ {\n             DefaultKeyedValues rowData = (DefaultKeyedValues) iterator.next();\n\
+    +            int index = rowData.getIndex(columnKey);\n+            if (index\
+    \ >= 0) {\n                 rowData.removeValue(columnKey);\n+            }\n\
+    \         }\n         this.columnKeys.remove(columnKey);\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_18/source/org/jfree/data/DefaultKeyedValues2D.java\t\
+    2020-10-21 00:23:39.316286486 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_18/purify/purified/org/jfree/data/DefaultKeyedValues2D.java\t\
+    2020-10-21 00:23:39.316286486 -0400\n@@ -452,10 +452,18 @@\n      * @see #removeRow(Comparable)\n\
+    \      */\n     public void removeColumn(Comparable columnKey) {\n+    \tif (columnKey\
+    \ == null) {\n+    \t}\n+    \tif (!this.columnKeys.contains(columnKey)) {\n+\
+    \    \t\tthrow new UnknownKeyException(\"Unknown key: \" + columnKey);\n+    \t\
+    }\n         Iterator iterator = this.rows.iterator();\n         while (iterator.hasNext())\
+    \ {\n             DefaultKeyedValues rowData = (DefaultKeyedValues) iterator.next();\n\
+    +            int index = rowData.getIndex(columnKey);\n+            if (index\
+    \ >= 0) {\n                 rowData.removeValue(columnKey);\n+            }\n\
+    \         }\n         this.columnKeys.remove(columnKey);\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/jfree/data/DefaultKeyedValues2D, org/jfree/data/DefaultKeyedValues:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:rebuildIndex() @TO@ MethodDeclaration@@public,
+      @@void, MethodName:removeValue, @@Argus:int+index+ '
+    - '---MOV MethodInvocation@@MethodName:rebuildIndex:[] @TO@ ExpressionStatement@@MethodInvocation:rebuildIndex() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:index < this.keys.size() '
+    - '---DEL InfixExpression@@index < this.keys.size() '
+    - '------DEL SimpleName@@index '
+    - '------DEL Operator@@< '
+    - '------DEL MethodInvocation@@this.keys.size() '
+    - '---------DEL FieldAccess@@this.keys '
+    - '------------DEL ThisExpression@@this '
+    - '------------DEL SimpleName@@keys '
+    - '---------DEL SimpleName@@MethodName:size:[] '
+    - '---DEL ExpressionStatement@@MethodInvocation:rebuildIndex() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ThrowStatement@@ClassInstanceCreation:new UnknownKeyException("The key
+      (" + key + ") is not recognised.") @TO@ IfStatement@@InfixExpression:index <
+      0 '
+    - '---INS ClassInstanceCreation@@UnknownKeyException["The key (" + key + ") is
+      not recognised."] @TO@ ThrowStatement@@ClassInstanceCreation:new UnknownKeyException("The
+      key (" + key + ") is not recognised.") '
+    - '------INS New@@new @TO@ ClassInstanceCreation@@UnknownKeyException["The key
+      (" + key + ") is not recognised."] '
+    - '------INS SimpleType@@UnknownKeyException @TO@ ClassInstanceCreation@@UnknownKeyException["The
+      key (" + key + ") is not recognised."] '
+    - '------INS InfixExpression@@"The key (" + key + ") is not recognised." @TO@
+      ClassInstanceCreation@@UnknownKeyException["The key (" + key + ") is not recognised."] '
+    - '---------INS StringLiteral@@"The key (" @TO@ InfixExpression@@"The key (" +
+      key + ") is not recognised." '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@"The key (" + key + ") is not
+      recognised." '
+    - '---------INS SimpleName@@key @TO@ InfixExpression@@"The key (" + key + ") is
+      not recognised." '
+    - '---------INS StringLiteral@@") is not recognised." @TO@ InfixExpression@@"The
+      key (" + key + ") is not recognised." '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@ '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '2'
+  files_cnt: '2'
+  org/jfree/data/DefaultKeyedValues2D, org/jfree/data/DefaultKeyedValues:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:rebuildIndex() @TO@ MethodDeclaration@@public,
+      @@void, MethodName:removeValue, @@Argus:int+index+ '
+    - '---MOV MethodInvocation@@MethodName:rebuildIndex:[] @TO@ ExpressionStatement@@MethodInvocation:rebuildIndex() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@InfixExpression:index < this.keys.size() '
+    - '---DEL InfixExpression@@index < this.keys.size() '
+    - '------DEL SimpleName@@index '
+    - '------DEL Operator@@< '
+    - '------DEL MethodInvocation@@this.keys.size() '
+    - '---------DEL FieldAccess@@this.keys '
+    - '------------DEL ThisExpression@@this '
+    - '------------DEL SimpleName@@keys '
+    - '---------DEL SimpleName@@MethodName:size:[] '
+    - '---DEL ExpressionStatement@@MethodInvocation:rebuildIndex() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ThrowStatement@@ClassInstanceCreation:new UnknownKeyException("The key
+      (" + key + ") is not recognised.") @TO@ IfStatement@@InfixExpression:index <
+      0 '
+    - '---INS ClassInstanceCreation@@UnknownKeyException["The key (" + key + ") is
+      not recognised."] @TO@ ThrowStatement@@ClassInstanceCreation:new UnknownKeyException("The
+      key (" + key + ") is not recognised.") '
+    - '------INS New@@new @TO@ ClassInstanceCreation@@UnknownKeyException["The key
+      (" + key + ") is not recognised."] '
+    - '------INS SimpleType@@UnknownKeyException @TO@ ClassInstanceCreation@@UnknownKeyException["The
+      key (" + key + ") is not recognised."] '
+    - '------INS InfixExpression@@"The key (" + key + ") is not recognised." @TO@
+      ClassInstanceCreation@@UnknownKeyException["The key (" + key + ") is not recognised."] '
+    - '---------INS StringLiteral@@"The key (" @TO@ InfixExpression@@"The key (" +
+      key + ") is not recognised." '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@"The key (" + key + ") is not
+      recognised." '
+    - '---------INS SimpleName@@key @TO@ InfixExpression@@"The key (" + key + ") is
+      not recognised." '
+    - '---------INS StringLiteral@@") is not recognised." @TO@ InfixExpression@@"The
+      key (" + key + ") is not recognised." '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@ '
+  repair_actions_cnt: 4

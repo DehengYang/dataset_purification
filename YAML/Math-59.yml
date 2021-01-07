@@ -1,0 +1,104 @@
+1 bug_id: Math-59
+2 src folder:
+  name of src folder: java
+  number of files: 538
+  number of java files: 499
+  number of src classes: 628
+  number of test classes: 247
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.util.FastMathTest#testMinMaxFloat
+  failing tests:
+  - org.apache.commons.math.util.FastMathTest
+  number of all test cases: 2236
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 7.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.003
+  purification via delta debugging: 71.821
+  repair actions extraction: 3.362
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.util.FastMathTest#testMinMaxFloat: 922
+  fixed:
+    org.apache.commons.math.util.FastMathTest#testMinMaxFloat: 922
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_59/src/main/java/org/apache/commons/math/util/FastMath.java\t\
+    2020-10-21 12:41:29.284201713 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_59/purify/patch/org/apache/commons/math/util/FastMath.java\t\
+    2020-10-21 12:41:29.264201134 -0400\n@@ -3479,7 +3479,7 @@\n      * @return b\
+    \ if a is lesser or equal to b, a otherwise\n      */\n     public static float\
+    \ max(final float a, final float b) {\n-        return (a <= b) ? b : (Float.isNaN(a\
+    \ + b) ? Float.NaN : b);\n+        return (a <= b) ? b : (Float.isNaN(a + b) ?\
+    \ Float.NaN : a);\n     }\n \n     /** Compute the maximum of two values"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_59/src/main/java/org/apache/commons/math/util/FastMath.java\t\
+    2020-10-21 12:43:01.746875273 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_59/purify/purified/org/apache/commons/math/util/FastMath.java\t\
+    2020-10-21 12:43:01.742875156 -0400\n@@ -3479,7 +3479,7 @@\n      * @return b\
+    \ if a is lesser or equal to b, a otherwise\n      */\n     public static float\
+    \ max(final float a, final float b) {\n-        return (a <= b) ? b : (Float.isNaN(a\
+    \ + b) ? Float.NaN : b);\n+        return (a <= b) ? b : (Float.isNaN(a + b) ?\
+    \ Float.NaN : a);\n     }\n \n     /** Compute the maximum of two values"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/FastMath:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@ConditionalExpression:(a <= b) ? b : (Float.isNaN(a +
+      b) ? Float.NaN : b) @TO@ ConditionalExpression:(a <= b) ? b : (Float.isNaN(a
+      + b) ? Float.NaN : a) '
+    - '---UPD ConditionalExpression@@(a <= b) ? b : (Float.isNaN(a + b) ? Float.NaN
+      : b) @TO@ (a <= b) ? b : (Float.isNaN(a + b) ? Float.NaN : a) '
+    - '------UPD ParenthesizedExpression@@(Float.isNaN(a + b) ? Float.NaN : b) @TO@
+      (Float.isNaN(a + b) ? Float.NaN : a) '
+    - '---------UPD ConditionalExpression@@Float.isNaN(a + b) ? Float.NaN : b @TO@
+      Float.isNaN(a + b) ? Float.NaN : a '
+    - '------------UPD SimpleName@@b @TO@ a '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/FastMath:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@ConditionalExpression:(a <= b) ? b : (Float.isNaN(a +
+      b) ? Float.NaN : b) @TO@ ConditionalExpression:(a <= b) ? b : (Float.isNaN(a
+      + b) ? Float.NaN : a) '
+    - '---UPD ConditionalExpression@@(a <= b) ? b : (Float.isNaN(a + b) ? Float.NaN
+      : b) @TO@ (a <= b) ? b : (Float.isNaN(a + b) ? Float.NaN : a) '
+    - '------UPD ParenthesizedExpression@@(Float.isNaN(a + b) ? Float.NaN : b) @TO@
+      (Float.isNaN(a + b) ? Float.NaN : a) '
+    - '---------UPD ConditionalExpression@@Float.isNaN(a + b) ? Float.NaN : b @TO@
+      Float.isNaN(a + b) ? Float.NaN : a '
+    - '------------UPD SimpleName@@b @TO@ a '
+  repair_actions_cnt: 1

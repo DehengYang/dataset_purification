@@ -1,0 +1,17 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_95/src/java/org/apache/commons/math/distribution/FDistributionImpl.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_95/fixed-version/src/java/org/apache/commons/math/distribution/FDistributionImpl.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_95/src/java/org/apache/commons/math/distribution/FDistributionImpl.java	2020-03-01 00:23:44.774849834 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_95/fixed-version/src/java/org/apache/commons/math/distribution/FDistributionImpl.java	2020-03-01 00:23:48.347018153 -0800
+@@ -141,10 +141,12 @@
+      * @return initial domain value
+      */
+     protected double getInitialDomain(double p) {
+-        double ret;
++        double ret = 1.0;
+         double d = getDenominatorDegreesOfFreedom();
++        if (d > 2.0) {
+             // use mean
+             ret = d / (d - 2.0);
++        }
+         return ret;
+     }
+     

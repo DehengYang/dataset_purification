@@ -1,0 +1,171 @@
+1 bug_id: Chart-19
+2 src folder:
+  name of src folder: source
+  number of files: 649
+  number of java files: 577
+  number of src classes: 603
+  number of test classes: 320
+3 test (cases):
+  failing test cases:
+  - org.jfree.chart.plot.junit.CategoryPlotTests#testGetRangeAxisIndex
+  - org.jfree.chart.plot.junit.CategoryPlotTests#testGetDomainAxisIndex
+  failing tests:
+  - org.jfree.chart.plot.junit.CategoryPlotTests
+  number of all test cases: 1733
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 2.329
+  purification via delta debugging: 128.184
+  repair actions extraction: 2.978
+5 stmts covered by failing cases:
+  buggy:
+    org.jfree.chart.plot.junit.CategoryPlotTests#testGetDomainAxisIndex: 725
+    org.jfree.chart.plot.junit.CategoryPlotTests#testGetRangeAxisIndex: 731
+  fixed:
+    org.jfree.chart.plot.junit.CategoryPlotTests#testGetDomainAxisIndex: 729
+    org.jfree.chart.plot.junit.CategoryPlotTests#testGetRangeAxisIndex: 735
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 6
+  covDel: 0
+  cov_patch_lines: 6
+  delta_patch_lines: 6
+  oriAdd: 6
+  oriDel: 0
+  ori_patch_lines: 6
+  purAdd: 6
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 7
+  failFail: 5
+  passed: 0
+  total: 12
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_19/source/org/jfree/chart/plot/CategoryPlot.java\t\
+    2020-10-21 00:24:20.709482250 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_19/purify/patch/org/jfree/chart/plot/CategoryPlot.java\t\
+    2020-10-21 00:24:20.709482250 -0400\n@@ -695,6 +695,9 @@\n      * @since 1.0.3\n\
+    \      */\n     public int getDomainAxisIndex(CategoryAxis axis) {\n+        if\
+    \ (axis == null) {\n+            throw new IllegalArgumentException(\"Null 'axis'\
+    \ argument.\");\n+        }\n         return this.domainAxes.indexOf(axis);\n\
+    \     }\n     \n@@ -970,6 +973,9 @@\n      * @since 1.0.7\n      */\n     public\
+    \ int getRangeAxisIndex(ValueAxis axis) {\n+        if (axis == null) {\n+   \
+    \         throw new IllegalArgumentException(\"Null 'axis' argument.\");\n+  \
+    \      }\n         int result = this.rangeAxes.indexOf(axis);\n         if (result\
+    \ < 0) { // try the parent plot\n             Plot parent = getParent();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Chart_19/source/org/jfree/chart/plot/CategoryPlot.java\t\
+    2020-10-21 00:26:48.405748955 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_19/purify/purified/org/jfree/chart/plot/CategoryPlot.java\t\
+    2020-10-21 00:26:48.397748723 -0400\n@@ -695,6 +695,9 @@\n      * @since 1.0.3\n\
+    \      */\n     public int getDomainAxisIndex(CategoryAxis axis) {\n+        if\
+    \ (axis == null) {\n+            throw new IllegalArgumentException(\"Null 'axis'\
+    \ argument.\");\n+        }\n         return this.domainAxes.indexOf(axis);\n\
+    \     }\n     \n@@ -970,6 +973,9 @@\n      * @since 1.0.7\n      */\n     public\
+    \ int getRangeAxisIndex(ValueAxis axis) {\n+        if (axis == null) {\n+   \
+    \         throw new IllegalArgumentException(\"Null 'axis' argument.\");\n+  \
+    \      }\n         int result = this.rangeAxes.indexOf(axis);\n         if (result\
+    \ < 0) { // try the parent plot\n             Plot parent = getParent();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/plot/CategoryPlot:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:axis == null @TO@ MethodDeclaration@@public,
+      @@int, MethodName:getDomainAxisIndex, @@Argus:CategoryAxis+axis+ '
+    - '---INS InfixExpression@@axis == null @TO@ IfStatement@@InfixExpression:axis
+      == null '
+    - '------INS SimpleName@@axis @TO@ InfixExpression@@axis == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@axis == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@axis == null '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Null
+      ''axis'' argument.") @TO@ IfStatement@@InfixExpression:axis == null '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Null ''axis'' argument."]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Null
+      ''axis'' argument.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Null
+      ''axis'' argument."] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Null
+      ''axis'' argument."] '
+    - '---------INS StringLiteral@@"Null ''axis'' argument." @TO@ ClassInstanceCreation@@IllegalArgumentException["Null
+      ''axis'' argument."] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:axis == null @TO@ MethodDeclaration@@public,
+      @@int, MethodName:getRangeAxisIndex, @@Argus:ValueAxis+axis+ '
+    - '---INS InfixExpression@@axis == null @TO@ IfStatement@@InfixExpression:axis
+      == null '
+    - '------INS SimpleName@@axis @TO@ InfixExpression@@axis == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@axis == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@axis == null '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Null
+      ''axis'' argument.") @TO@ IfStatement@@InfixExpression:axis == null '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Null ''axis'' argument."]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Null
+      ''axis'' argument.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Null
+      ''axis'' argument."] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Null
+      ''axis'' argument."] '
+    - '---------INS StringLiteral@@"Null ''axis'' argument." @TO@ ClassInstanceCreation@@IllegalArgumentException["Null
+      ''axis'' argument."] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/jfree/chart/plot/CategoryPlot:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:axis == null @TO@ MethodDeclaration@@public,
+      @@int, MethodName:getDomainAxisIndex, @@Argus:CategoryAxis+axis+ '
+    - '---INS InfixExpression@@axis == null @TO@ IfStatement@@InfixExpression:axis
+      == null '
+    - '------INS SimpleName@@axis @TO@ InfixExpression@@axis == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@axis == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@axis == null '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Null
+      ''axis'' argument.") @TO@ IfStatement@@InfixExpression:axis == null '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Null ''axis'' argument."]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Null
+      ''axis'' argument.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Null
+      ''axis'' argument."] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Null
+      ''axis'' argument."] '
+    - '---------INS StringLiteral@@"Null ''axis'' argument." @TO@ ClassInstanceCreation@@IllegalArgumentException["Null
+      ''axis'' argument."] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:axis == null @TO@ MethodDeclaration@@public,
+      @@int, MethodName:getRangeAxisIndex, @@Argus:ValueAxis+axis+ '
+    - '---INS InfixExpression@@axis == null @TO@ IfStatement@@InfixExpression:axis
+      == null '
+    - '------INS SimpleName@@axis @TO@ InfixExpression@@axis == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@axis == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@axis == null '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Null
+      ''axis'' argument.") @TO@ IfStatement@@InfixExpression:axis == null '
+    - '------INS ClassInstanceCreation@@IllegalArgumentException["Null ''axis'' argument."]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new IllegalArgumentException("Null
+      ''axis'' argument.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@IllegalArgumentException["Null
+      ''axis'' argument."] '
+    - '---------INS SimpleType@@IllegalArgumentException @TO@ ClassInstanceCreation@@IllegalArgumentException["Null
+      ''axis'' argument."] '
+    - '---------INS StringLiteral@@"Null ''axis'' argument." @TO@ ClassInstanceCreation@@IllegalArgumentException["Null
+      ''axis'' argument."] '
+  repair_actions_cnt: 2

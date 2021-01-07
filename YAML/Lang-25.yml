@@ -1,0 +1,208 @@
+1 bug_id: Lang-25
+2 src folder:
+  name of src folder: java
+  number of files: 105
+  number of java files: 93
+  number of src classes: 143
+  number of test classes: 94
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.text.translate.EntityArraysTest#testISO8859_1_ESCAPE
+  failing tests:
+  - org.apache.commons.lang3.text.translate.EntityArraysTest
+  number of all test cases: 1821
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 9.0
+  purification via coverage: 2.141
+  purification via delta debugging: 163.805
+  repair actions extraction: 3.803
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.text.translate.EntityArraysTest#testISO8859_1_ESCAPE: 16
+  fixed:
+    org.apache.commons.lang3.text.translate.EntityArraysTest#testISO8859_1_ESCAPE: 16
+6 reduced lines:
+  by all: 53
+  by coverage: 0
+  by delta debugging: 53
+  covAdd: 27
+  covDel: 27
+  cov_patch_lines: 54
+  delta_patch_lines: 1
+  oriAdd: 27
+  oriDel: 27
+  ori_patch_lines: 54
+  purAdd: 0
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 1
+  passed: 6
+  total: 7
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_25/src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java\t\
+    2020-10-21 01:09:45.100168569 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_25/purify/patch/org/apache/commons/lang3/text/translate/EntityArrays.java\t\
+    2020-10-21 01:09:45.100168569 -0400\n@@ -71,33 +71,33 @@\n         {\"\\u00C7\"\
+    , \"&Ccedil;\"}, // \uFFFD - uppercase C, cedilla\n         {\"\\u00C8\", \"&Egrave;\"\
+    }, // \uFFFD - uppercase E, grave accent\n         {\"\\u00C9\", \"&Eacute;\"\
+    }, // \uFFFD - uppercase E, acute accent\n-        {\"\\u00CB\", \"&Ecirc;\"},\
+    \ // \uFFFD - uppercase E, circumflex accent\n-        {\"\\u00CC\", \"&Euml;\"\
+    }, // \uFFFD - uppercase E, umlaut\n-        {\"\\u00CD\", \"&Igrave;\"}, // \uFFFD\
+    \ - uppercase I, grave accent\n-        {\"\\u00CE\", \"&Iacute;\"}, // \uFFFD\
+    \ - uppercase I, acute accent\n-        {\"\\u00CF\", \"&Icirc;\"}, // \uFFFD\
+    \ - uppercase I, circumflex accent\n-        {\"\\u00D0\", \"&Iuml;\"}, // \uFFFD\
+    \ - uppercase I, umlaut\n-        {\"\\u00D1\", \"&ETH;\"}, // \uFFFD - uppercase\
+    \ Eth, Icelandic\n-        {\"\\u00D2\", \"&Ntilde;\"}, // \uFFFD - uppercase\
+    \ N, tilde\n-        {\"\\u00D3\", \"&Ograve;\"}, // \uFFFD - uppercase O, grave\
+    \ accent\n-        {\"\\u00D4\", \"&Oacute;\"}, // \uFFFD - uppercase O, acute\
+    \ accent\n-        {\"\\u00D5\", \"&Ocirc;\"}, // \uFFFD - uppercase O, circumflex\
+    \ accent\n-        {\"\\u00D6\", \"&Otilde;\"}, // \uFFFD - uppercase O, tilde\n\
+    -        {\"\\u00D7\", \"&Ouml;\"}, // \uFFFD - uppercase O, umlaut\n-       \
+    \ {\"\\u00D8\", \"&times;\"}, // multiplication sign\n-        {\"\\u00D9\", \"\
+    &Oslash;\"}, // \uFFFD - uppercase O, slash\n-        {\"\\u00DA\", \"&Ugrave;\"\
+    }, // \uFFFD - uppercase U, grave accent\n-        {\"\\u00DB\", \"&Uacute;\"\
+    }, // \uFFFD - uppercase U, acute accent\n-        {\"\\u00DC\", \"&Ucirc;\"},\
+    \ // \uFFFD - uppercase U, circumflex accent\n-        {\"\\u00DD\", \"&Uuml;\"\
+    }, // \uFFFD - uppercase U, umlaut\n-        {\"\\u00DE\", \"&Yacute;\"}, // \uFFFD\
+    \ - uppercase Y, acute accent\n-        {\"\\u00DF\", \"&THORN;\"}, // \uFFFD\
+    \ - uppercase THORN, Icelandic\n-        {\"\\u00E0\", \"&szlig;\"}, // \uFFFD\
+    \ - lowercase sharps, German\n-        {\"\\u00E1\", \"&agrave;\"}, // \uFFFD\
+    \ - lowercase a, grave accent\n-        {\"\\u00E2\", \"&aacute;\"}, // \uFFFD\
+    \ - lowercase a, acute accent\n-        {\"\\u00E3\", \"&acirc;\"}, // \uFFFD\
+    \ - lowercase a, circumflex accent\n-        {\"\\u00E4\", \"&atilde;\"}, // \uFFFD\
+    \ - lowercase a, tilde\n-        {\"\\u00E5\", \"&auml;\"}, // \uFFFD - lowercase\
+    \ a, umlaut\n+        {\"\\u00CA\", \"&Ecirc;\"}, // \uFFFD - uppercase E, circumflex\
+    \ accent\n+        {\"\\u00CB\", \"&Euml;\"}, // \uFFFD - uppercase E, umlaut\n\
+    +        {\"\\u00CC\", \"&Igrave;\"}, // \uFFFD - uppercase I, grave accent\n\
+    +        {\"\\u00CD\", \"&Iacute;\"}, // \uFFFD - uppercase I, acute accent\n\
+    +        {\"\\u00CE\", \"&Icirc;\"}, // \uFFFD - uppercase I, circumflex accent\n\
+    +        {\"\\u00CF\", \"&Iuml;\"}, // \uFFFD - uppercase I, umlaut\n+       \
+    \ {\"\\u00D0\", \"&ETH;\"}, // \uFFFD - uppercase Eth, Icelandic\n+        {\"\
+    \\u00D1\", \"&Ntilde;\"}, // \uFFFD - uppercase N, tilde\n+        {\"\\u00D2\"\
+    , \"&Ograve;\"}, // \uFFFD - uppercase O, grave accent\n+        {\"\\u00D3\"\
+    , \"&Oacute;\"}, // \uFFFD - uppercase O, acute accent\n+        {\"\\u00D4\"\
+    , \"&Ocirc;\"}, // \uFFFD - uppercase O, circumflex accent\n+        {\"\\u00D5\"\
+    , \"&Otilde;\"}, // \uFFFD - uppercase O, tilde\n+        {\"\\u00D6\", \"&Ouml;\"\
+    }, // \uFFFD - uppercase O, umlaut\n+        {\"\\u00D7\", \"&times;\"}, // multiplication\
+    \ sign\n+        {\"\\u00D8\", \"&Oslash;\"}, // \uFFFD - uppercase O, slash\n\
+    +        {\"\\u00D9\", \"&Ugrave;\"}, // \uFFFD - uppercase U, grave accent\n\
+    +        {\"\\u00DA\", \"&Uacute;\"}, // \uFFFD - uppercase U, acute accent\n\
+    +        {\"\\u00DB\", \"&Ucirc;\"}, // \uFFFD - uppercase U, circumflex accent\n\
+    +        {\"\\u00DC\", \"&Uuml;\"}, // \uFFFD - uppercase U, umlaut\n+       \
+    \ {\"\\u00DD\", \"&Yacute;\"}, // \uFFFD - uppercase Y, acute accent\n+      \
+    \  {\"\\u00DE\", \"&THORN;\"}, // \uFFFD - uppercase THORN, Icelandic\n+     \
+    \   {\"\\u00DF\", \"&szlig;\"}, // \uFFFD - lowercase sharps, German\n+      \
+    \  {\"\\u00E0\", \"&agrave;\"}, // \uFFFD - lowercase a, grave accent\n+     \
+    \   {\"\\u00E1\", \"&aacute;\"}, // \uFFFD - lowercase a, acute accent\n+    \
+    \    {\"\\u00E2\", \"&acirc;\"}, // \uFFFD - lowercase a, circumflex accent\n\
+    +        {\"\\u00E3\", \"&atilde;\"}, // \uFFFD - lowercase a, tilde\n+      \
+    \  {\"\\u00E4\", \"&auml;\"}, // \uFFFD - lowercase a, umlaut\n         {\"\\\
+    u00E5\", \"&aring;\"}, // \uFFFD - lowercase a, ring\n         {\"\\u00E6\", \"\
+    &aelig;\"}, // \uFFFD - lowercase ae\n         {\"\\u00E7\", \"&ccedil;\"}, //\
+    \ \uFFFD - lowercase c, cedilla"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_25/src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java\t\
+    2020-10-21 01:12:43.313315430 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_25/purify/purified/org/apache/commons/lang3/text/translate/EntityArrays.java\t\
+    2020-10-21 01:12:43.313315430 -0400\n@@ -97,7 +97,6 @@\n         {\"\\u00E2\"\
+    , \"&aacute;\"}, // \uFFFD - lowercase a, acute accent\n         {\"\\u00E3\"\
+    , \"&acirc;\"}, // \uFFFD - lowercase a, circumflex accent\n         {\"\\u00E4\"\
+    , \"&atilde;\"}, // \uFFFD - lowercase a, tilde\n-        {\"\\u00E5\", \"&auml;\"\
+    }, // \uFFFD - lowercase a, umlaut\n         {\"\\u00E5\", \"&aring;\"}, // \uFFFD\
+    \ - lowercase a, ring\n         {\"\\u00E6\", \"&aelig;\"}, // \uFFFD - lowercase\
+    \ ae\n         {\"\\u00E7\", \"&ccedil;\"}, // \uFFFD - lowercase c, cedilla"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/translate/EntityArrays:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD FieldDeclaration@@private, static, final, String[][], [ISO8859_1_ESCAPE={{"\u00A0","&nbsp;"},{"\u00A1","&iexcl;"},{"\u00A2","&cent;"},{"\u00A3","&pound;"},{"\u00A4","&curren;"},{"\u00A5","&yen;"},{"\u00A6","&brvbar;"},{"\u00A7","&sect;"},{"\u00A8","&uml;"},{"\u00A9","&copy;"},{"\u00AA","&ordf;"},{"\u00AB","&laquo;"},{"\u00AC","&not;"},{"\u00AD","&shy;"},{"\u00AE","&reg;"},{"\u00AF","&macr;"},{"\u00B0","&deg;"},{"\u00B1","&plusmn;"},{"\u00B2","&sup2;"},{"\u00B3","&sup3;"},{"\u00B4","&acute;"},{"\u00B5","&micro;"},{"\u00B6","&para;"},{"\u00B7","&middot;"},{"\u00B8","&cedil;"},{"\u00B9","&sup1;"},{"\u00BA","&ordm;"},{"\u00BB","&raquo;"},{"\u00BC","&frac14;"},{"\u00BD","&frac12;"},{"\u00BE","&frac34;"},{"\u00BF","&iquest;"},{"\u00C0","&Agrave;"},{"\u00C1","&Aacute;"},{"\u00C2","&Acirc;"},{"\u00C3","&Atilde;"},{"\u00C4","&Auml;"},{"\u00C5","&Aring;"},{"\u00C6","&AElig;"},{"\u00C7","&Ccedil;"},{"\u00C8","&Egrave;"},{"\u00C9","&Eacute;"},{"\u00CB","&Ecirc;"},{"\u00CC","&Euml;"},{"\u00CD","&Igrave;"},{"\u00CE","&Iacute;"},{"\u00CF","&Icirc;"},{"\u00D0","&Iuml;"},{"\u00D1","&ETH;"},{"\u00D2","&Ntilde;"},{"\u00D3","&Ograve;"},{"\u00D4","&Oacute;"},{"\u00D5","&Ocirc;"},{"\u00D6","&Otilde;"},{"\u00D7","&Ouml;"},{"\u00D8","&times;"},{"\u00D9","&Oslash;"},{"\u00DA","&Ugrave;"},{"\u00DB","&Uacute;"},{"\u00DC","&Ucirc;"},{"\u00DD","&Uuml;"},{"\u00DE","&Yacute;"},{"\u00DF","&THORN;"},{"\u00E0","&szlig;"},{"\u00E1","&agrave;"},{"\u00E2","&aacute;"},{"\u00E3","&acirc;"},{"\u00E4","&atilde;"},{"\u00E5","&auml;"},{"\u00E5","&aring;"},{"\u00E6","&aelig;"},{"\u00E7","&ccedil;"},{"\u00E8","&egrave;"},{"\u00E9","&eacute;"},{"\u00EA","&ecirc;"},{"\u00EB","&euml;"},{"\u00EC","&igrave;"},{"\u00ED","&iacute;"},{"\u00EE","&icirc;"},{"\u00EF","&iuml;"},{"\u00F0","&eth;"},{"\u00F1","&ntilde;"},{"\u00F2","&ograve;"},{"\u00F3","&oacute;"},{"\u00F4","&ocirc;"},{"\u00F5","&otilde;"},{"\u00F6","&ouml;"},{"\u00F7","&divide;"},{"\u00F8","&oslash;"},{"\u00F9","&ugrave;"},{"\u00FA","&uacute;"},{"\u00FB","&ucirc;"},{"\u00FC","&uuml;"},{"\u00FD","&yacute;"},{"\u00FE","&thorn;"},{"\u00FF","&yuml;"}}]
+      @TO@ private, static, final, String[][], [ISO8859_1_ESCAPE={{"\u00A0","&nbsp;"},{"\u00A1","&iexcl;"},{"\u00A2","&cent;"},{"\u00A3","&pound;"},{"\u00A4","&curren;"},{"\u00A5","&yen;"},{"\u00A6","&brvbar;"},{"\u00A7","&sect;"},{"\u00A8","&uml;"},{"\u00A9","&copy;"},{"\u00AA","&ordf;"},{"\u00AB","&laquo;"},{"\u00AC","&not;"},{"\u00AD","&shy;"},{"\u00AE","&reg;"},{"\u00AF","&macr;"},{"\u00B0","&deg;"},{"\u00B1","&plusmn;"},{"\u00B2","&sup2;"},{"\u00B3","&sup3;"},{"\u00B4","&acute;"},{"\u00B5","&micro;"},{"\u00B6","&para;"},{"\u00B7","&middot;"},{"\u00B8","&cedil;"},{"\u00B9","&sup1;"},{"\u00BA","&ordm;"},{"\u00BB","&raquo;"},{"\u00BC","&frac14;"},{"\u00BD","&frac12;"},{"\u00BE","&frac34;"},{"\u00BF","&iquest;"},{"\u00C0","&Agrave;"},{"\u00C1","&Aacute;"},{"\u00C2","&Acirc;"},{"\u00C3","&Atilde;"},{"\u00C4","&Auml;"},{"\u00C5","&Aring;"},{"\u00C6","&AElig;"},{"\u00C7","&Ccedil;"},{"\u00C8","&Egrave;"},{"\u00C9","&Eacute;"},{"\u00CA","&Ecirc;"},{"\u00CB","&Euml;"},{"\u00CC","&Igrave;"},{"\u00CD","&Iacute;"},{"\u00CE","&Icirc;"},{"\u00CF","&Iuml;"},{"\u00D0","&ETH;"},{"\u00D1","&Ntilde;"},{"\u00D2","&Ograve;"},{"\u00D3","&Oacute;"},{"\u00D4","&Ocirc;"},{"\u00D5","&Otilde;"},{"\u00D6","&Ouml;"},{"\u00D7","&times;"},{"\u00D8","&Oslash;"},{"\u00D9","&Ugrave;"},{"\u00DA","&Uacute;"},{"\u00DB","&Ucirc;"},{"\u00DC","&Uuml;"},{"\u00DD","&Yacute;"},{"\u00DE","&THORN;"},{"\u00DF","&szlig;"},{"\u00E0","&agrave;"},{"\u00E1","&aacute;"},{"\u00E2","&acirc;"},{"\u00E3","&atilde;"},{"\u00E4","&auml;"},{"\u00E5","&aring;"},{"\u00E6","&aelig;"},{"\u00E7","&ccedil;"},{"\u00E8","&egrave;"},{"\u00E9","&eacute;"},{"\u00EA","&ecirc;"},{"\u00EB","&euml;"},{"\u00EC","&igrave;"},{"\u00ED","&iacute;"},{"\u00EE","&icirc;"},{"\u00EF","&iuml;"},{"\u00F0","&eth;"},{"\u00F1","&ntilde;"},{"\u00F2","&ograve;"},{"\u00F3","&oacute;"},{"\u00F4","&ocirc;"},{"\u00F5","&otilde;"},{"\u00F6","&ouml;"},{"\u00F7","&divide;"},{"\u00F8","&oslash;"},{"\u00F9","&ugrave;"},{"\u00FA","&uacute;"},{"\u00FB","&ucirc;"},{"\u00FC","&uuml;"},{"\u00FD","&yacute;"},{"\u00FE","&thorn;"},{"\u00FF","&yuml;"}}] '
+    - '---UPD VariableDeclarationFragment@@ISO8859_1_ESCAPE={{"\u00A0","&nbsp;"},{"\u00A1","&iexcl;"},{"\u00A2","&cent;"},{"\u00A3","&pound;"},{"\u00A4","&curren;"},{"\u00A5","&yen;"},{"\u00A6","&brvbar;"},{"\u00A7","&sect;"},{"\u00A8","&uml;"},{"\u00A9","&copy;"},{"\u00AA","&ordf;"},{"\u00AB","&laquo;"},{"\u00AC","&not;"},{"\u00AD","&shy;"},{"\u00AE","&reg;"},{"\u00AF","&macr;"},{"\u00B0","&deg;"},{"\u00B1","&plusmn;"},{"\u00B2","&sup2;"},{"\u00B3","&sup3;"},{"\u00B4","&acute;"},{"\u00B5","&micro;"},{"\u00B6","&para;"},{"\u00B7","&middot;"},{"\u00B8","&cedil;"},{"\u00B9","&sup1;"},{"\u00BA","&ordm;"},{"\u00BB","&raquo;"},{"\u00BC","&frac14;"},{"\u00BD","&frac12;"},{"\u00BE","&frac34;"},{"\u00BF","&iquest;"},{"\u00C0","&Agrave;"},{"\u00C1","&Aacute;"},{"\u00C2","&Acirc;"},{"\u00C3","&Atilde;"},{"\u00C4","&Auml;"},{"\u00C5","&Aring;"},{"\u00C6","&AElig;"},{"\u00C7","&Ccedil;"},{"\u00C8","&Egrave;"},{"\u00C9","&Eacute;"},{"\u00CB","&Ecirc;"},{"\u00CC","&Euml;"},{"\u00CD","&Igrave;"},{"\u00CE","&Iacute;"},{"\u00CF","&Icirc;"},{"\u00D0","&Iuml;"},{"\u00D1","&ETH;"},{"\u00D2","&Ntilde;"},{"\u00D3","&Ograve;"},{"\u00D4","&Oacute;"},{"\u00D5","&Ocirc;"},{"\u00D6","&Otilde;"},{"\u00D7","&Ouml;"},{"\u00D8","&times;"},{"\u00D9","&Oslash;"},{"\u00DA","&Ugrave;"},{"\u00DB","&Uacute;"},{"\u00DC","&Ucirc;"},{"\u00DD","&Uuml;"},{"\u00DE","&Yacute;"},{"\u00DF","&THORN;"},{"\u00E0","&szlig;"},{"\u00E1","&agrave;"},{"\u00E2","&aacute;"},{"\u00E3","&acirc;"},{"\u00E4","&atilde;"},{"\u00E5","&auml;"},{"\u00E5","&aring;"},{"\u00E6","&aelig;"},{"\u00E7","&ccedil;"},{"\u00E8","&egrave;"},{"\u00E9","&eacute;"},{"\u00EA","&ecirc;"},{"\u00EB","&euml;"},{"\u00EC","&igrave;"},{"\u00ED","&iacute;"},{"\u00EE","&icirc;"},{"\u00EF","&iuml;"},{"\u00F0","&eth;"},{"\u00F1","&ntilde;"},{"\u00F2","&ograve;"},{"\u00F3","&oacute;"},{"\u00F4","&ocirc;"},{"\u00F5","&otilde;"},{"\u00F6","&ouml;"},{"\u00F7","&divide;"},{"\u00F8","&oslash;"},{"\u00F9","&ugrave;"},{"\u00FA","&uacute;"},{"\u00FB","&ucirc;"},{"\u00FC","&uuml;"},{"\u00FD","&yacute;"},{"\u00FE","&thorn;"},{"\u00FF","&yuml;"}}
+      @TO@ ISO8859_1_ESCAPE={{"\u00A0","&nbsp;"},{"\u00A1","&iexcl;"},{"\u00A2","&cent;"},{"\u00A3","&pound;"},{"\u00A4","&curren;"},{"\u00A5","&yen;"},{"\u00A6","&brvbar;"},{"\u00A7","&sect;"},{"\u00A8","&uml;"},{"\u00A9","&copy;"},{"\u00AA","&ordf;"},{"\u00AB","&laquo;"},{"\u00AC","&not;"},{"\u00AD","&shy;"},{"\u00AE","&reg;"},{"\u00AF","&macr;"},{"\u00B0","&deg;"},{"\u00B1","&plusmn;"},{"\u00B2","&sup2;"},{"\u00B3","&sup3;"},{"\u00B4","&acute;"},{"\u00B5","&micro;"},{"\u00B6","&para;"},{"\u00B7","&middot;"},{"\u00B8","&cedil;"},{"\u00B9","&sup1;"},{"\u00BA","&ordm;"},{"\u00BB","&raquo;"},{"\u00BC","&frac14;"},{"\u00BD","&frac12;"},{"\u00BE","&frac34;"},{"\u00BF","&iquest;"},{"\u00C0","&Agrave;"},{"\u00C1","&Aacute;"},{"\u00C2","&Acirc;"},{"\u00C3","&Atilde;"},{"\u00C4","&Auml;"},{"\u00C5","&Aring;"},{"\u00C6","&AElig;"},{"\u00C7","&Ccedil;"},{"\u00C8","&Egrave;"},{"\u00C9","&Eacute;"},{"\u00CA","&Ecirc;"},{"\u00CB","&Euml;"},{"\u00CC","&Igrave;"},{"\u00CD","&Iacute;"},{"\u00CE","&Icirc;"},{"\u00CF","&Iuml;"},{"\u00D0","&ETH;"},{"\u00D1","&Ntilde;"},{"\u00D2","&Ograve;"},{"\u00D3","&Oacute;"},{"\u00D4","&Ocirc;"},{"\u00D5","&Otilde;"},{"\u00D6","&Ouml;"},{"\u00D7","&times;"},{"\u00D8","&Oslash;"},{"\u00D9","&Ugrave;"},{"\u00DA","&Uacute;"},{"\u00DB","&Ucirc;"},{"\u00DC","&Uuml;"},{"\u00DD","&Yacute;"},{"\u00DE","&THORN;"},{"\u00DF","&szlig;"},{"\u00E0","&agrave;"},{"\u00E1","&aacute;"},{"\u00E2","&acirc;"},{"\u00E3","&atilde;"},{"\u00E4","&auml;"},{"\u00E5","&aring;"},{"\u00E6","&aelig;"},{"\u00E7","&ccedil;"},{"\u00E8","&egrave;"},{"\u00E9","&eacute;"},{"\u00EA","&ecirc;"},{"\u00EB","&euml;"},{"\u00EC","&igrave;"},{"\u00ED","&iacute;"},{"\u00EE","&icirc;"},{"\u00EF","&iuml;"},{"\u00F0","&eth;"},{"\u00F1","&ntilde;"},{"\u00F2","&ograve;"},{"\u00F3","&oacute;"},{"\u00F4","&ocirc;"},{"\u00F5","&otilde;"},{"\u00F6","&ouml;"},{"\u00F7","&divide;"},{"\u00F8","&oslash;"},{"\u00F9","&ugrave;"},{"\u00FA","&uacute;"},{"\u00FB","&ucirc;"},{"\u00FC","&uuml;"},{"\u00FD","&yacute;"},{"\u00FE","&thorn;"},{"\u00FF","&yuml;"}} '
+    - '------UPD ArrayInitializer@@{{"\u00A0","&nbsp;"},{"\u00A1","&iexcl;"},{"\u00A2","&cent;"},{"\u00A3","&pound;"},{"\u00A4","&curren;"},{"\u00A5","&yen;"},{"\u00A6","&brvbar;"},{"\u00A7","&sect;"},{"\u00A8","&uml;"},{"\u00A9","&copy;"},{"\u00AA","&ordf;"},{"\u00AB","&laquo;"},{"\u00AC","&not;"},{"\u00AD","&shy;"},{"\u00AE","&reg;"},{"\u00AF","&macr;"},{"\u00B0","&deg;"},{"\u00B1","&plusmn;"},{"\u00B2","&sup2;"},{"\u00B3","&sup3;"},{"\u00B4","&acute;"},{"\u00B5","&micro;"},{"\u00B6","&para;"},{"\u00B7","&middot;"},{"\u00B8","&cedil;"},{"\u00B9","&sup1;"},{"\u00BA","&ordm;"},{"\u00BB","&raquo;"},{"\u00BC","&frac14;"},{"\u00BD","&frac12;"},{"\u00BE","&frac34;"},{"\u00BF","&iquest;"},{"\u00C0","&Agrave;"},{"\u00C1","&Aacute;"},{"\u00C2","&Acirc;"},{"\u00C3","&Atilde;"},{"\u00C4","&Auml;"},{"\u00C5","&Aring;"},{"\u00C6","&AElig;"},{"\u00C7","&Ccedil;"},{"\u00C8","&Egrave;"},{"\u00C9","&Eacute;"},{"\u00CB","&Ecirc;"},{"\u00CC","&Euml;"},{"\u00CD","&Igrave;"},{"\u00CE","&Iacute;"},{"\u00CF","&Icirc;"},{"\u00D0","&Iuml;"},{"\u00D1","&ETH;"},{"\u00D2","&Ntilde;"},{"\u00D3","&Ograve;"},{"\u00D4","&Oacute;"},{"\u00D5","&Ocirc;"},{"\u00D6","&Otilde;"},{"\u00D7","&Ouml;"},{"\u00D8","&times;"},{"\u00D9","&Oslash;"},{"\u00DA","&Ugrave;"},{"\u00DB","&Uacute;"},{"\u00DC","&Ucirc;"},{"\u00DD","&Uuml;"},{"\u00DE","&Yacute;"},{"\u00DF","&THORN;"},{"\u00E0","&szlig;"},{"\u00E1","&agrave;"},{"\u00E2","&aacute;"},{"\u00E3","&acirc;"},{"\u00E4","&atilde;"},{"\u00E5","&auml;"},{"\u00E5","&aring;"},{"\u00E6","&aelig;"},{"\u00E7","&ccedil;"},{"\u00E8","&egrave;"},{"\u00E9","&eacute;"},{"\u00EA","&ecirc;"},{"\u00EB","&euml;"},{"\u00EC","&igrave;"},{"\u00ED","&iacute;"},{"\u00EE","&icirc;"},{"\u00EF","&iuml;"},{"\u00F0","&eth;"},{"\u00F1","&ntilde;"},{"\u00F2","&ograve;"},{"\u00F3","&oacute;"},{"\u00F4","&ocirc;"},{"\u00F5","&otilde;"},{"\u00F6","&ouml;"},{"\u00F7","&divide;"},{"\u00F8","&oslash;"},{"\u00F9","&ugrave;"},{"\u00FA","&uacute;"},{"\u00FB","&ucirc;"},{"\u00FC","&uuml;"},{"\u00FD","&yacute;"},{"\u00FE","&thorn;"},{"\u00FF","&yuml;"}}
+      @TO@ {{"\u00A0","&nbsp;"},{"\u00A1","&iexcl;"},{"\u00A2","&cent;"},{"\u00A3","&pound;"},{"\u00A4","&curren;"},{"\u00A5","&yen;"},{"\u00A6","&brvbar;"},{"\u00A7","&sect;"},{"\u00A8","&uml;"},{"\u00A9","&copy;"},{"\u00AA","&ordf;"},{"\u00AB","&laquo;"},{"\u00AC","&not;"},{"\u00AD","&shy;"},{"\u00AE","&reg;"},{"\u00AF","&macr;"},{"\u00B0","&deg;"},{"\u00B1","&plusmn;"},{"\u00B2","&sup2;"},{"\u00B3","&sup3;"},{"\u00B4","&acute;"},{"\u00B5","&micro;"},{"\u00B6","&para;"},{"\u00B7","&middot;"},{"\u00B8","&cedil;"},{"\u00B9","&sup1;"},{"\u00BA","&ordm;"},{"\u00BB","&raquo;"},{"\u00BC","&frac14;"},{"\u00BD","&frac12;"},{"\u00BE","&frac34;"},{"\u00BF","&iquest;"},{"\u00C0","&Agrave;"},{"\u00C1","&Aacute;"},{"\u00C2","&Acirc;"},{"\u00C3","&Atilde;"},{"\u00C4","&Auml;"},{"\u00C5","&Aring;"},{"\u00C6","&AElig;"},{"\u00C7","&Ccedil;"},{"\u00C8","&Egrave;"},{"\u00C9","&Eacute;"},{"\u00CA","&Ecirc;"},{"\u00CB","&Euml;"},{"\u00CC","&Igrave;"},{"\u00CD","&Iacute;"},{"\u00CE","&Icirc;"},{"\u00CF","&Iuml;"},{"\u00D0","&ETH;"},{"\u00D1","&Ntilde;"},{"\u00D2","&Ograve;"},{"\u00D3","&Oacute;"},{"\u00D4","&Ocirc;"},{"\u00D5","&Otilde;"},{"\u00D6","&Ouml;"},{"\u00D7","&times;"},{"\u00D8","&Oslash;"},{"\u00D9","&Ugrave;"},{"\u00DA","&Uacute;"},{"\u00DB","&Ucirc;"},{"\u00DC","&Uuml;"},{"\u00DD","&Yacute;"},{"\u00DE","&THORN;"},{"\u00DF","&szlig;"},{"\u00E0","&agrave;"},{"\u00E1","&aacute;"},{"\u00E2","&acirc;"},{"\u00E3","&atilde;"},{"\u00E4","&auml;"},{"\u00E5","&aring;"},{"\u00E6","&aelig;"},{"\u00E7","&ccedil;"},{"\u00E8","&egrave;"},{"\u00E9","&eacute;"},{"\u00EA","&ecirc;"},{"\u00EB","&euml;"},{"\u00EC","&igrave;"},{"\u00ED","&iacute;"},{"\u00EE","&icirc;"},{"\u00EF","&iuml;"},{"\u00F0","&eth;"},{"\u00F1","&ntilde;"},{"\u00F2","&ograve;"},{"\u00F3","&oacute;"},{"\u00F4","&ocirc;"},{"\u00F5","&otilde;"},{"\u00F6","&ouml;"},{"\u00F7","&divide;"},{"\u00F8","&oslash;"},{"\u00F9","&ugrave;"},{"\u00FA","&uacute;"},{"\u00FB","&ucirc;"},{"\u00FC","&uuml;"},{"\u00FD","&yacute;"},{"\u00FE","&thorn;"},{"\u00FF","&yuml;"}} '
+    - '---------UPD ArrayInitializer@@{"\u00CB","&Ecirc;"} @TO@ {"\u00CA","&Ecirc;"} '
+    - '------------UPD StringLiteral@@"\u00CB" @TO@ "\u00CA" '
+    - '---------UPD ArrayInitializer@@{"\u00CC","&Euml;"} @TO@ {"\u00CB","&Euml;"} '
+    - '------------UPD StringLiteral@@"\u00CC" @TO@ "\u00CB" '
+    - '---------UPD ArrayInitializer@@{"\u00CD","&Igrave;"} @TO@ {"\u00CC","&Igrave;"} '
+    - '------------UPD StringLiteral@@"\u00CD" @TO@ "\u00CC" '
+    - '---------UPD ArrayInitializer@@{"\u00CE","&Iacute;"} @TO@ {"\u00CD","&Iacute;"} '
+    - '------------UPD StringLiteral@@"\u00CE" @TO@ "\u00CD" '
+    - '---------UPD ArrayInitializer@@{"\u00CF","&Icirc;"} @TO@ {"\u00CE","&Icirc;"} '
+    - '------------UPD StringLiteral@@"\u00CF" @TO@ "\u00CE" '
+    - '---------UPD ArrayInitializer@@{"\u00D0","&Iuml;"} @TO@ {"\u00CF","&Iuml;"} '
+    - '------------UPD StringLiteral@@"\u00D0" @TO@ "\u00CF" '
+    - '---------UPD ArrayInitializer@@{"\u00D1","&ETH;"} @TO@ {"\u00D0","&ETH;"} '
+    - '------------UPD StringLiteral@@"\u00D1" @TO@ "\u00D0" '
+    - '---------UPD ArrayInitializer@@{"\u00D2","&Ntilde;"} @TO@ {"\u00D1","&Ntilde;"} '
+    - '------------UPD StringLiteral@@"\u00D2" @TO@ "\u00D1" '
+    - '---------UPD ArrayInitializer@@{"\u00D3","&Ograve;"} @TO@ {"\u00D2","&Ograve;"} '
+    - '------------UPD StringLiteral@@"\u00D3" @TO@ "\u00D2" '
+    - '---------UPD ArrayInitializer@@{"\u00D4","&Oacute;"} @TO@ {"\u00D3","&Oacute;"} '
+    - '------------UPD StringLiteral@@"\u00D4" @TO@ "\u00D3" '
+    - '---------UPD ArrayInitializer@@{"\u00D5","&Ocirc;"} @TO@ {"\u00D4","&Ocirc;"} '
+    - '------------UPD StringLiteral@@"\u00D5" @TO@ "\u00D4" '
+    - '---------UPD ArrayInitializer@@{"\u00D6","&Otilde;"} @TO@ {"\u00D5","&Otilde;"} '
+    - '------------UPD StringLiteral@@"\u00D6" @TO@ "\u00D5" '
+    - '---------UPD ArrayInitializer@@{"\u00D7","&Ouml;"} @TO@ {"\u00D6","&Ouml;"} '
+    - '------------UPD StringLiteral@@"\u00D7" @TO@ "\u00D6" '
+    - '---------UPD ArrayInitializer@@{"\u00D8","&times;"} @TO@ {"\u00D7","&times;"} '
+    - '------------UPD StringLiteral@@"\u00D8" @TO@ "\u00D7" '
+    - '---------UPD ArrayInitializer@@{"\u00D9","&Oslash;"} @TO@ {"\u00D8","&Oslash;"} '
+    - '------------UPD StringLiteral@@"\u00D9" @TO@ "\u00D8" '
+    - '---------UPD ArrayInitializer@@{"\u00DA","&Ugrave;"} @TO@ {"\u00D9","&Ugrave;"} '
+    - '------------UPD StringLiteral@@"\u00DA" @TO@ "\u00D9" '
+    - '---------UPD ArrayInitializer@@{"\u00DB","&Uacute;"} @TO@ {"\u00DA","&Uacute;"} '
+    - '------------UPD StringLiteral@@"\u00DB" @TO@ "\u00DA" '
+    - '---------UPD ArrayInitializer@@{"\u00DC","&Ucirc;"} @TO@ {"\u00DB","&Ucirc;"} '
+    - '------------UPD StringLiteral@@"\u00DC" @TO@ "\u00DB" '
+    - '---------UPD ArrayInitializer@@{"\u00DD","&Uuml;"} @TO@ {"\u00DC","&Uuml;"} '
+    - '------------UPD StringLiteral@@"\u00DD" @TO@ "\u00DC" '
+    - '---------UPD ArrayInitializer@@{"\u00DE","&Yacute;"} @TO@ {"\u00DD","&Yacute;"} '
+    - '------------UPD StringLiteral@@"\u00DE" @TO@ "\u00DD" '
+    - '---------UPD ArrayInitializer@@{"\u00DF","&THORN;"} @TO@ {"\u00DE","&THORN;"} '
+    - '------------UPD StringLiteral@@"\u00DF" @TO@ "\u00DE" '
+    - '---------UPD ArrayInitializer@@{"\u00E0","&szlig;"} @TO@ {"\u00DF","&szlig;"} '
+    - '------------UPD StringLiteral@@"\u00E0" @TO@ "\u00DF" '
+    - '---------UPD ArrayInitializer@@{"\u00E1","&agrave;"} @TO@ {"\u00E0","&agrave;"} '
+    - '------------UPD StringLiteral@@"\u00E1" @TO@ "\u00E0" '
+    - '---------UPD ArrayInitializer@@{"\u00E2","&aacute;"} @TO@ {"\u00E1","&aacute;"} '
+    - '------------UPD StringLiteral@@"\u00E2" @TO@ "\u00E1" '
+    - '---------UPD ArrayInitializer@@{"\u00E3","&acirc;"} @TO@ {"\u00E2","&acirc;"} '
+    - '------------UPD StringLiteral@@"\u00E3" @TO@ "\u00E2" '
+    - '---------UPD ArrayInitializer@@{"\u00E4","&atilde;"} @TO@ {"\u00E3","&atilde;"} '
+    - '------------UPD StringLiteral@@"\u00E4" @TO@ "\u00E3" '
+    - '---------UPD ArrayInitializer@@{"\u00E5","&auml;"} @TO@ {"\u00E4","&auml;"} '
+    - '------------UPD StringLiteral@@"\u00E5" @TO@ "\u00E4" '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/text/translate/EntityArrays:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD FieldDeclaration@@private, static, final, String[][], [ISO8859_1_ESCAPE={{"\u00A0","&nbsp;"},{"\u00A1","&iexcl;"},{"\u00A2","&cent;"},{"\u00A3","&pound;"},{"\u00A4","&curren;"},{"\u00A5","&yen;"},{"\u00A6","&brvbar;"},{"\u00A7","&sect;"},{"\u00A8","&uml;"},{"\u00A9","&copy;"},{"\u00AA","&ordf;"},{"\u00AB","&laquo;"},{"\u00AC","&not;"},{"\u00AD","&shy;"},{"\u00AE","&reg;"},{"\u00AF","&macr;"},{"\u00B0","&deg;"},{"\u00B1","&plusmn;"},{"\u00B2","&sup2;"},{"\u00B3","&sup3;"},{"\u00B4","&acute;"},{"\u00B5","&micro;"},{"\u00B6","&para;"},{"\u00B7","&middot;"},{"\u00B8","&cedil;"},{"\u00B9","&sup1;"},{"\u00BA","&ordm;"},{"\u00BB","&raquo;"},{"\u00BC","&frac14;"},{"\u00BD","&frac12;"},{"\u00BE","&frac34;"},{"\u00BF","&iquest;"},{"\u00C0","&Agrave;"},{"\u00C1","&Aacute;"},{"\u00C2","&Acirc;"},{"\u00C3","&Atilde;"},{"\u00C4","&Auml;"},{"\u00C5","&Aring;"},{"\u00C6","&AElig;"},{"\u00C7","&Ccedil;"},{"\u00C8","&Egrave;"},{"\u00C9","&Eacute;"},{"\u00CB","&Ecirc;"},{"\u00CC","&Euml;"},{"\u00CD","&Igrave;"},{"\u00CE","&Iacute;"},{"\u00CF","&Icirc;"},{"\u00D0","&Iuml;"},{"\u00D1","&ETH;"},{"\u00D2","&Ntilde;"},{"\u00D3","&Ograve;"},{"\u00D4","&Oacute;"},{"\u00D5","&Ocirc;"},{"\u00D6","&Otilde;"},{"\u00D7","&Ouml;"},{"\u00D8","&times;"},{"\u00D9","&Oslash;"},{"\u00DA","&Ugrave;"},{"\u00DB","&Uacute;"},{"\u00DC","&Ucirc;"},{"\u00DD","&Uuml;"},{"\u00DE","&Yacute;"},{"\u00DF","&THORN;"},{"\u00E0","&szlig;"},{"\u00E1","&agrave;"},{"\u00E2","&aacute;"},{"\u00E3","&acirc;"},{"\u00E4","&atilde;"},{"\u00E5","&auml;"},{"\u00E5","&aring;"},{"\u00E6","&aelig;"},{"\u00E7","&ccedil;"},{"\u00E8","&egrave;"},{"\u00E9","&eacute;"},{"\u00EA","&ecirc;"},{"\u00EB","&euml;"},{"\u00EC","&igrave;"},{"\u00ED","&iacute;"},{"\u00EE","&icirc;"},{"\u00EF","&iuml;"},{"\u00F0","&eth;"},{"\u00F1","&ntilde;"},{"\u00F2","&ograve;"},{"\u00F3","&oacute;"},{"\u00F4","&ocirc;"},{"\u00F5","&otilde;"},{"\u00F6","&ouml;"},{"\u00F7","&divide;"},{"\u00F8","&oslash;"},{"\u00F9","&ugrave;"},{"\u00FA","&uacute;"},{"\u00FB","&ucirc;"},{"\u00FC","&uuml;"},{"\u00FD","&yacute;"},{"\u00FE","&thorn;"},{"\u00FF","&yuml;"}}]
+      @TO@ private, static, final, String[][], [ISO8859_1_ESCAPE={{"\u00A0","&nbsp;"},{"\u00A1","&iexcl;"},{"\u00A2","&cent;"},{"\u00A3","&pound;"},{"\u00A4","&curren;"},{"\u00A5","&yen;"},{"\u00A6","&brvbar;"},{"\u00A7","&sect;"},{"\u00A8","&uml;"},{"\u00A9","&copy;"},{"\u00AA","&ordf;"},{"\u00AB","&laquo;"},{"\u00AC","&not;"},{"\u00AD","&shy;"},{"\u00AE","&reg;"},{"\u00AF","&macr;"},{"\u00B0","&deg;"},{"\u00B1","&plusmn;"},{"\u00B2","&sup2;"},{"\u00B3","&sup3;"},{"\u00B4","&acute;"},{"\u00B5","&micro;"},{"\u00B6","&para;"},{"\u00B7","&middot;"},{"\u00B8","&cedil;"},{"\u00B9","&sup1;"},{"\u00BA","&ordm;"},{"\u00BB","&raquo;"},{"\u00BC","&frac14;"},{"\u00BD","&frac12;"},{"\u00BE","&frac34;"},{"\u00BF","&iquest;"},{"\u00C0","&Agrave;"},{"\u00C1","&Aacute;"},{"\u00C2","&Acirc;"},{"\u00C3","&Atilde;"},{"\u00C4","&Auml;"},{"\u00C5","&Aring;"},{"\u00C6","&AElig;"},{"\u00C7","&Ccedil;"},{"\u00C8","&Egrave;"},{"\u00C9","&Eacute;"},{"\u00CB","&Ecirc;"},{"\u00CC","&Euml;"},{"\u00CD","&Igrave;"},{"\u00CE","&Iacute;"},{"\u00CF","&Icirc;"},{"\u00D0","&Iuml;"},{"\u00D1","&ETH;"},{"\u00D2","&Ntilde;"},{"\u00D3","&Ograve;"},{"\u00D4","&Oacute;"},{"\u00D5","&Ocirc;"},{"\u00D6","&Otilde;"},{"\u00D7","&Ouml;"},{"\u00D8","&times;"},{"\u00D9","&Oslash;"},{"\u00DA","&Ugrave;"},{"\u00DB","&Uacute;"},{"\u00DC","&Ucirc;"},{"\u00DD","&Uuml;"},{"\u00DE","&Yacute;"},{"\u00DF","&THORN;"},{"\u00E0","&szlig;"},{"\u00E1","&agrave;"},{"\u00E2","&aacute;"},{"\u00E3","&acirc;"},{"\u00E4","&atilde;"},{"\u00E5","&aring;"},{"\u00E6","&aelig;"},{"\u00E7","&ccedil;"},{"\u00E8","&egrave;"},{"\u00E9","&eacute;"},{"\u00EA","&ecirc;"},{"\u00EB","&euml;"},{"\u00EC","&igrave;"},{"\u00ED","&iacute;"},{"\u00EE","&icirc;"},{"\u00EF","&iuml;"},{"\u00F0","&eth;"},{"\u00F1","&ntilde;"},{"\u00F2","&ograve;"},{"\u00F3","&oacute;"},{"\u00F4","&ocirc;"},{"\u00F5","&otilde;"},{"\u00F6","&ouml;"},{"\u00F7","&divide;"},{"\u00F8","&oslash;"},{"\u00F9","&ugrave;"},{"\u00FA","&uacute;"},{"\u00FB","&ucirc;"},{"\u00FC","&uuml;"},{"\u00FD","&yacute;"},{"\u00FE","&thorn;"},{"\u00FF","&yuml;"}}] '
+    - '---UPD VariableDeclarationFragment@@ISO8859_1_ESCAPE={{"\u00A0","&nbsp;"},{"\u00A1","&iexcl;"},{"\u00A2","&cent;"},{"\u00A3","&pound;"},{"\u00A4","&curren;"},{"\u00A5","&yen;"},{"\u00A6","&brvbar;"},{"\u00A7","&sect;"},{"\u00A8","&uml;"},{"\u00A9","&copy;"},{"\u00AA","&ordf;"},{"\u00AB","&laquo;"},{"\u00AC","&not;"},{"\u00AD","&shy;"},{"\u00AE","&reg;"},{"\u00AF","&macr;"},{"\u00B0","&deg;"},{"\u00B1","&plusmn;"},{"\u00B2","&sup2;"},{"\u00B3","&sup3;"},{"\u00B4","&acute;"},{"\u00B5","&micro;"},{"\u00B6","&para;"},{"\u00B7","&middot;"},{"\u00B8","&cedil;"},{"\u00B9","&sup1;"},{"\u00BA","&ordm;"},{"\u00BB","&raquo;"},{"\u00BC","&frac14;"},{"\u00BD","&frac12;"},{"\u00BE","&frac34;"},{"\u00BF","&iquest;"},{"\u00C0","&Agrave;"},{"\u00C1","&Aacute;"},{"\u00C2","&Acirc;"},{"\u00C3","&Atilde;"},{"\u00C4","&Auml;"},{"\u00C5","&Aring;"},{"\u00C6","&AElig;"},{"\u00C7","&Ccedil;"},{"\u00C8","&Egrave;"},{"\u00C9","&Eacute;"},{"\u00CB","&Ecirc;"},{"\u00CC","&Euml;"},{"\u00CD","&Igrave;"},{"\u00CE","&Iacute;"},{"\u00CF","&Icirc;"},{"\u00D0","&Iuml;"},{"\u00D1","&ETH;"},{"\u00D2","&Ntilde;"},{"\u00D3","&Ograve;"},{"\u00D4","&Oacute;"},{"\u00D5","&Ocirc;"},{"\u00D6","&Otilde;"},{"\u00D7","&Ouml;"},{"\u00D8","&times;"},{"\u00D9","&Oslash;"},{"\u00DA","&Ugrave;"},{"\u00DB","&Uacute;"},{"\u00DC","&Ucirc;"},{"\u00DD","&Uuml;"},{"\u00DE","&Yacute;"},{"\u00DF","&THORN;"},{"\u00E0","&szlig;"},{"\u00E1","&agrave;"},{"\u00E2","&aacute;"},{"\u00E3","&acirc;"},{"\u00E4","&atilde;"},{"\u00E5","&auml;"},{"\u00E5","&aring;"},{"\u00E6","&aelig;"},{"\u00E7","&ccedil;"},{"\u00E8","&egrave;"},{"\u00E9","&eacute;"},{"\u00EA","&ecirc;"},{"\u00EB","&euml;"},{"\u00EC","&igrave;"},{"\u00ED","&iacute;"},{"\u00EE","&icirc;"},{"\u00EF","&iuml;"},{"\u00F0","&eth;"},{"\u00F1","&ntilde;"},{"\u00F2","&ograve;"},{"\u00F3","&oacute;"},{"\u00F4","&ocirc;"},{"\u00F5","&otilde;"},{"\u00F6","&ouml;"},{"\u00F7","&divide;"},{"\u00F8","&oslash;"},{"\u00F9","&ugrave;"},{"\u00FA","&uacute;"},{"\u00FB","&ucirc;"},{"\u00FC","&uuml;"},{"\u00FD","&yacute;"},{"\u00FE","&thorn;"},{"\u00FF","&yuml;"}}
+      @TO@ ISO8859_1_ESCAPE={{"\u00A0","&nbsp;"},{"\u00A1","&iexcl;"},{"\u00A2","&cent;"},{"\u00A3","&pound;"},{"\u00A4","&curren;"},{"\u00A5","&yen;"},{"\u00A6","&brvbar;"},{"\u00A7","&sect;"},{"\u00A8","&uml;"},{"\u00A9","&copy;"},{"\u00AA","&ordf;"},{"\u00AB","&laquo;"},{"\u00AC","&not;"},{"\u00AD","&shy;"},{"\u00AE","&reg;"},{"\u00AF","&macr;"},{"\u00B0","&deg;"},{"\u00B1","&plusmn;"},{"\u00B2","&sup2;"},{"\u00B3","&sup3;"},{"\u00B4","&acute;"},{"\u00B5","&micro;"},{"\u00B6","&para;"},{"\u00B7","&middot;"},{"\u00B8","&cedil;"},{"\u00B9","&sup1;"},{"\u00BA","&ordm;"},{"\u00BB","&raquo;"},{"\u00BC","&frac14;"},{"\u00BD","&frac12;"},{"\u00BE","&frac34;"},{"\u00BF","&iquest;"},{"\u00C0","&Agrave;"},{"\u00C1","&Aacute;"},{"\u00C2","&Acirc;"},{"\u00C3","&Atilde;"},{"\u00C4","&Auml;"},{"\u00C5","&Aring;"},{"\u00C6","&AElig;"},{"\u00C7","&Ccedil;"},{"\u00C8","&Egrave;"},{"\u00C9","&Eacute;"},{"\u00CB","&Ecirc;"},{"\u00CC","&Euml;"},{"\u00CD","&Igrave;"},{"\u00CE","&Iacute;"},{"\u00CF","&Icirc;"},{"\u00D0","&Iuml;"},{"\u00D1","&ETH;"},{"\u00D2","&Ntilde;"},{"\u00D3","&Ograve;"},{"\u00D4","&Oacute;"},{"\u00D5","&Ocirc;"},{"\u00D6","&Otilde;"},{"\u00D7","&Ouml;"},{"\u00D8","&times;"},{"\u00D9","&Oslash;"},{"\u00DA","&Ugrave;"},{"\u00DB","&Uacute;"},{"\u00DC","&Ucirc;"},{"\u00DD","&Uuml;"},{"\u00DE","&Yacute;"},{"\u00DF","&THORN;"},{"\u00E0","&szlig;"},{"\u00E1","&agrave;"},{"\u00E2","&aacute;"},{"\u00E3","&acirc;"},{"\u00E4","&atilde;"},{"\u00E5","&aring;"},{"\u00E6","&aelig;"},{"\u00E7","&ccedil;"},{"\u00E8","&egrave;"},{"\u00E9","&eacute;"},{"\u00EA","&ecirc;"},{"\u00EB","&euml;"},{"\u00EC","&igrave;"},{"\u00ED","&iacute;"},{"\u00EE","&icirc;"},{"\u00EF","&iuml;"},{"\u00F0","&eth;"},{"\u00F1","&ntilde;"},{"\u00F2","&ograve;"},{"\u00F3","&oacute;"},{"\u00F4","&ocirc;"},{"\u00F5","&otilde;"},{"\u00F6","&ouml;"},{"\u00F7","&divide;"},{"\u00F8","&oslash;"},{"\u00F9","&ugrave;"},{"\u00FA","&uacute;"},{"\u00FB","&ucirc;"},{"\u00FC","&uuml;"},{"\u00FD","&yacute;"},{"\u00FE","&thorn;"},{"\u00FF","&yuml;"}} '
+    - '------UPD ArrayInitializer@@{{"\u00A0","&nbsp;"},{"\u00A1","&iexcl;"},{"\u00A2","&cent;"},{"\u00A3","&pound;"},{"\u00A4","&curren;"},{"\u00A5","&yen;"},{"\u00A6","&brvbar;"},{"\u00A7","&sect;"},{"\u00A8","&uml;"},{"\u00A9","&copy;"},{"\u00AA","&ordf;"},{"\u00AB","&laquo;"},{"\u00AC","&not;"},{"\u00AD","&shy;"},{"\u00AE","&reg;"},{"\u00AF","&macr;"},{"\u00B0","&deg;"},{"\u00B1","&plusmn;"},{"\u00B2","&sup2;"},{"\u00B3","&sup3;"},{"\u00B4","&acute;"},{"\u00B5","&micro;"},{"\u00B6","&para;"},{"\u00B7","&middot;"},{"\u00B8","&cedil;"},{"\u00B9","&sup1;"},{"\u00BA","&ordm;"},{"\u00BB","&raquo;"},{"\u00BC","&frac14;"},{"\u00BD","&frac12;"},{"\u00BE","&frac34;"},{"\u00BF","&iquest;"},{"\u00C0","&Agrave;"},{"\u00C1","&Aacute;"},{"\u00C2","&Acirc;"},{"\u00C3","&Atilde;"},{"\u00C4","&Auml;"},{"\u00C5","&Aring;"},{"\u00C6","&AElig;"},{"\u00C7","&Ccedil;"},{"\u00C8","&Egrave;"},{"\u00C9","&Eacute;"},{"\u00CB","&Ecirc;"},{"\u00CC","&Euml;"},{"\u00CD","&Igrave;"},{"\u00CE","&Iacute;"},{"\u00CF","&Icirc;"},{"\u00D0","&Iuml;"},{"\u00D1","&ETH;"},{"\u00D2","&Ntilde;"},{"\u00D3","&Ograve;"},{"\u00D4","&Oacute;"},{"\u00D5","&Ocirc;"},{"\u00D6","&Otilde;"},{"\u00D7","&Ouml;"},{"\u00D8","&times;"},{"\u00D9","&Oslash;"},{"\u00DA","&Ugrave;"},{"\u00DB","&Uacute;"},{"\u00DC","&Ucirc;"},{"\u00DD","&Uuml;"},{"\u00DE","&Yacute;"},{"\u00DF","&THORN;"},{"\u00E0","&szlig;"},{"\u00E1","&agrave;"},{"\u00E2","&aacute;"},{"\u00E3","&acirc;"},{"\u00E4","&atilde;"},{"\u00E5","&auml;"},{"\u00E5","&aring;"},{"\u00E6","&aelig;"},{"\u00E7","&ccedil;"},{"\u00E8","&egrave;"},{"\u00E9","&eacute;"},{"\u00EA","&ecirc;"},{"\u00EB","&euml;"},{"\u00EC","&igrave;"},{"\u00ED","&iacute;"},{"\u00EE","&icirc;"},{"\u00EF","&iuml;"},{"\u00F0","&eth;"},{"\u00F1","&ntilde;"},{"\u00F2","&ograve;"},{"\u00F3","&oacute;"},{"\u00F4","&ocirc;"},{"\u00F5","&otilde;"},{"\u00F6","&ouml;"},{"\u00F7","&divide;"},{"\u00F8","&oslash;"},{"\u00F9","&ugrave;"},{"\u00FA","&uacute;"},{"\u00FB","&ucirc;"},{"\u00FC","&uuml;"},{"\u00FD","&yacute;"},{"\u00FE","&thorn;"},{"\u00FF","&yuml;"}}
+      @TO@ {{"\u00A0","&nbsp;"},{"\u00A1","&iexcl;"},{"\u00A2","&cent;"},{"\u00A3","&pound;"},{"\u00A4","&curren;"},{"\u00A5","&yen;"},{"\u00A6","&brvbar;"},{"\u00A7","&sect;"},{"\u00A8","&uml;"},{"\u00A9","&copy;"},{"\u00AA","&ordf;"},{"\u00AB","&laquo;"},{"\u00AC","&not;"},{"\u00AD","&shy;"},{"\u00AE","&reg;"},{"\u00AF","&macr;"},{"\u00B0","&deg;"},{"\u00B1","&plusmn;"},{"\u00B2","&sup2;"},{"\u00B3","&sup3;"},{"\u00B4","&acute;"},{"\u00B5","&micro;"},{"\u00B6","&para;"},{"\u00B7","&middot;"},{"\u00B8","&cedil;"},{"\u00B9","&sup1;"},{"\u00BA","&ordm;"},{"\u00BB","&raquo;"},{"\u00BC","&frac14;"},{"\u00BD","&frac12;"},{"\u00BE","&frac34;"},{"\u00BF","&iquest;"},{"\u00C0","&Agrave;"},{"\u00C1","&Aacute;"},{"\u00C2","&Acirc;"},{"\u00C3","&Atilde;"},{"\u00C4","&Auml;"},{"\u00C5","&Aring;"},{"\u00C6","&AElig;"},{"\u00C7","&Ccedil;"},{"\u00C8","&Egrave;"},{"\u00C9","&Eacute;"},{"\u00CB","&Ecirc;"},{"\u00CC","&Euml;"},{"\u00CD","&Igrave;"},{"\u00CE","&Iacute;"},{"\u00CF","&Icirc;"},{"\u00D0","&Iuml;"},{"\u00D1","&ETH;"},{"\u00D2","&Ntilde;"},{"\u00D3","&Ograve;"},{"\u00D4","&Oacute;"},{"\u00D5","&Ocirc;"},{"\u00D6","&Otilde;"},{"\u00D7","&Ouml;"},{"\u00D8","&times;"},{"\u00D9","&Oslash;"},{"\u00DA","&Ugrave;"},{"\u00DB","&Uacute;"},{"\u00DC","&Ucirc;"},{"\u00DD","&Uuml;"},{"\u00DE","&Yacute;"},{"\u00DF","&THORN;"},{"\u00E0","&szlig;"},{"\u00E1","&agrave;"},{"\u00E2","&aacute;"},{"\u00E3","&acirc;"},{"\u00E4","&atilde;"},{"\u00E5","&aring;"},{"\u00E6","&aelig;"},{"\u00E7","&ccedil;"},{"\u00E8","&egrave;"},{"\u00E9","&eacute;"},{"\u00EA","&ecirc;"},{"\u00EB","&euml;"},{"\u00EC","&igrave;"},{"\u00ED","&iacute;"},{"\u00EE","&icirc;"},{"\u00EF","&iuml;"},{"\u00F0","&eth;"},{"\u00F1","&ntilde;"},{"\u00F2","&ograve;"},{"\u00F3","&oacute;"},{"\u00F4","&ocirc;"},{"\u00F5","&otilde;"},{"\u00F6","&ouml;"},{"\u00F7","&divide;"},{"\u00F8","&oslash;"},{"\u00F9","&ugrave;"},{"\u00FA","&uacute;"},{"\u00FB","&ucirc;"},{"\u00FC","&uuml;"},{"\u00FD","&yacute;"},{"\u00FE","&thorn;"},{"\u00FF","&yuml;"}} '
+    - '---------DEL ArrayInitializer@@{"\u00E5","&auml;"} '
+    - '------------DEL StringLiteral@@"\u00E5" '
+    - '------------DEL StringLiteral@@"&auml;" '
+  repair_actions_cnt: 1

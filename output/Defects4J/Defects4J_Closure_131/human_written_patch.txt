@@ -1,0 +1,18 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_131/src/com/google/javascript/rhino/TokenStream.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_131/fixed-version/src/com/google/javascript/rhino/TokenStream.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_131/src/com/google/javascript/rhino/TokenStream.java	2020-03-01 00:35:04.342870604 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_131/fixed-version/src/com/google/javascript/rhino/TokenStream.java	2020-03-01 00:35:07.215005937 -0800
+@@ -191,12 +191,13 @@
+       int length = s.length();
+ 
+       if (length == 0 ||
++          Character.isIdentifierIgnorable(s.charAt(0)) ||
+           !Character.isJavaIdentifierStart(s.charAt(0))) {
+         return false;
+       }
+ 
+       for (int i = 1; i < length; i++) {
+-        if (
++        if (Character.isIdentifierIgnorable(s.charAt(i)) ||
+             !Character.isJavaIdentifierPart(s.charAt(i))) {
+           return false;
+         }

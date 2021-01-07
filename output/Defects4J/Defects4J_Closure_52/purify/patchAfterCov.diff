@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_52/src/com/google/javascript/jscomp/CodeGenerator.java	2020-10-23 06:39:40.255101745 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_52/purify/assertBeforeMut/com/google/javascript/jscomp/CodeGenerator.java	2020-10-23 06:39:40.255101745 -0400
+@@ -742,7 +742,7 @@
+         return false;
+       }
+     }
+-    return len > 0;
++    return len > 0 && s.charAt(0) != '0';
+   }
+ 
+   static double getSimpleNumber(String s) {

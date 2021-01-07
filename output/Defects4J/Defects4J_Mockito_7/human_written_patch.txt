@@ -1,0 +1,11 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_7/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_7/fixed-version/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_7/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java	2020-03-01 00:36:07.993869782 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Mockito_7/fixed-version/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java	2020-03-01 00:36:11.698044319 -0800
+@@ -376,6 +376,7 @@
+             for (Type type : typeVariable.getBounds()) {
+                 registerTypeVariablesOn(type);
+             }
++            registerTypeParametersOn(new TypeVariable[] { typeVariable });
+             registerTypeVariablesOn(getActualTypeArgumentFor(typeVariable));
+         }
+ 

@@ -1,0 +1,23 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_90/src/com/google/javascript/jscomp/FunctionTypeBuilder.java	2020-10-23 11:48:26.675424163 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_90/purify/assertBeforeMut/com/google/javascript/jscomp/FunctionTypeBuilder.java	2020-10-23 11:48:26.675424163 -0400
+@@ -181,7 +181,7 @@
+       // create interfaces JSType, ObjectType, FunctionType etc and have
+       // separate implementation instead of the class hierarchy, so that
+       // union types can also be object types, etc.
+-      if (!type.isSubtype(
++      if (!type.restrictByNotNullOrUndefined().isSubtype(
+               typeRegistry.getNativeType(OBJECT_TYPE))) {
+         reportWarning(THIS_TYPE_NON_OBJECT, type.toString());
+         return false;
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_90/src/com/google/javascript/rhino/jstype/FunctionType.java	2020-10-23 11:48:26.679424278 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_90/purify/assertBeforeMut/com/google/javascript/rhino/jstype/FunctionType.java	2020-10-23 11:48:26.675424163 -0400
+@@ -877,6 +877,9 @@
+     // mean "nullable Foo". For certain tags (like @extends) we de-nullify
+     // the name for them.
+     JSType maybeTypeOfThis = safeResolve(typeOfThis, t, scope);
++    if (maybeTypeOfThis != null) {
++      maybeTypeOfThis = maybeTypeOfThis.restrictByNotNullOrUndefined();
++    }
+     if (maybeTypeOfThis instanceof ObjectType) {
+       typeOfThis = (ObjectType) maybeTypeOfThis;
+     }

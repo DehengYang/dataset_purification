@@ -1,0 +1,235 @@
+1 bug_id: Math-99
+2 src folder:
+  name of src folder: java
+  number of files: 317
+  number of java files: 285
+  number of src classes: 334
+  number of test classes: 167
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.util.MathUtilsTest#testGcd
+  - org.apache.commons.math.util.MathUtilsTest#testLcm
+  failing tests:
+  - org.apache.commons.math.util.MathUtilsTest
+  number of all test cases: 1552
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.372
+  purification via delta debugging: 81.179
+  repair actions extraction: 2.29
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.util.MathUtilsTest#testGcd: 24
+    org.apache.commons.math.util.MathUtilsTest#testLcm: 30
+  fixed:
+    org.apache.commons.math.util.MathUtilsTest#testGcd: 34
+    org.apache.commons.math.util.MathUtilsTest#testLcm: 33
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 8
+  covDel: 0
+  cov_patch_lines: 8
+  delta_patch_lines: 8
+  oriAdd: 8
+  oriDel: 0
+  ori_patch_lines: 8
+  purAdd: 8
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 13
+  failFail: 1
+  passed: 0
+  total: 14
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_99/src/java/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 14:12:45.858539712 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_99/purify/patch/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 14:12:45.854539596 -0400\n@@ -540,6 +540,11 @@\n         int u = p;\n\
+    \         int v = q;\n         if ((u == 0) || (v == 0)) {\n+            if ((u\
+    \ == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE)) {\n+                throw\
+    \ MathRuntimeException.createArithmeticException(\n+                        \"\
+    overflow: gcd({0}, {1}) is 2^31\",\n+                        new Object[] { p,\
+    \ q });\n+            }\n             return (Math.abs(u) + Math.abs(v));\n  \
+    \       }\n         // keep u and v negative, as negative integers range down\
+    \ to\n@@ -711,6 +716,9 @@\n             return 0;\n         }\n         int lcm\
+    \ = Math.abs(mulAndCheck(a / gcd(a, b), b));\n+        if (lcm == Integer.MIN_VALUE){\n\
+    +            throw new ArithmeticException(\"overflow: lcm is 2^31\");\n+    \
+    \    }\n         return lcm;\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_99/src/java/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 14:14:20.529275345 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_99/purify/purified/org/apache/commons/math/util/MathUtils.java\t\
+    2020-10-21 14:14:20.529275345 -0400\n@@ -540,6 +540,11 @@\n         int u = p;\n\
+    \         int v = q;\n         if ((u == 0) || (v == 0)) {\n+            if ((u\
+    \ == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE)) {\n+                throw\
+    \ MathRuntimeException.createArithmeticException(\n+                        \"\
+    overflow: gcd({0}, {1}) is 2^31\",\n+                        new Object[] { p,\
+    \ q });\n+            }\n             return (Math.abs(u) + Math.abs(v));\n  \
+    \       }\n         // keep u and v negative, as negative integers range down\
+    \ to\n@@ -711,6 +716,9 @@\n             return 0;\n         }\n         int lcm\
+    \ = Math.abs(mulAndCheck(a / gcd(a, b), b));\n+        if (lcm == Integer.MIN_VALUE){\n\
+    +            throw new ArithmeticException(\"overflow: lcm is 2^31\");\n+    \
+    \    }\n         return lcm;\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/MathUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:(u == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE)
+      @TO@ IfStatement@@InfixExpression:(u == 0) || (v == 0) '
+    - '---INS InfixExpression@@(u == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE)
+      @TO@ IfStatement@@InfixExpression:(u == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE) '
+    - '------INS ParenthesizedExpression@@(u == Integer.MIN_VALUE) @TO@ InfixExpression@@(u
+      == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE) '
+    - '---------INS InfixExpression@@u == Integer.MIN_VALUE @TO@ ParenthesizedExpression@@(u
+      == Integer.MIN_VALUE) '
+    - '------------INS SimpleName@@u @TO@ InfixExpression@@u == Integer.MIN_VALUE '
+    - '------------INS Operator@@== @TO@ InfixExpression@@u == Integer.MIN_VALUE '
+    - '------------INS QualifiedName@@Integer.MIN_VALUE @TO@ InfixExpression@@u ==
+      Integer.MIN_VALUE '
+    - '---------------INS SimpleName@@Integer @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '---------------INS SimpleName@@MIN_VALUE @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '------INS Operator@@|| @TO@ InfixExpression@@(u == Integer.MIN_VALUE) || (v
+      == Integer.MIN_VALUE) '
+    - '------INS ParenthesizedExpression@@(v == Integer.MIN_VALUE) @TO@ InfixExpression@@(u
+      == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE) '
+    - '---------INS InfixExpression@@v == Integer.MIN_VALUE @TO@ ParenthesizedExpression@@(v
+      == Integer.MIN_VALUE) '
+    - '------------INS SimpleName@@v @TO@ InfixExpression@@v == Integer.MIN_VALUE '
+    - '------------INS Operator@@== @TO@ InfixExpression@@v == Integer.MIN_VALUE '
+    - '------------INS QualifiedName@@Integer.MIN_VALUE @TO@ InfixExpression@@v ==
+      Integer.MIN_VALUE '
+    - '---------------INS SimpleName@@Integer @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '---------------INS SimpleName@@MIN_VALUE @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '---INS ThrowStatement@@MethodInvocation:MathRuntimeException.createArithmeticException("overflow:
+      gcd({0}, {1}) is 2^31",new Object[]{p,q}) @TO@ IfStatement@@InfixExpression:(u
+      == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE) '
+    - '------INS MethodInvocation@@MathRuntimeException.createArithmeticException("overflow:
+      gcd({0}, {1}) is 2^31",new Object[]{p,q}) @TO@ ThrowStatement@@MethodInvocation:MathRuntimeException.createArithmeticException("overflow:
+      gcd({0}, {1}) is 2^31",new Object[]{p,q}) '
+    - '---------INS SimpleName@@Name:MathRuntimeException @TO@ MethodInvocation@@MathRuntimeException.createArithmeticException("overflow:
+      gcd({0}, {1}) is 2^31",new Object[]{p,q}) '
+    - '---------INS SimpleName@@MethodName:createArithmeticException:["overflow: gcd({0},
+      {1}) is 2^31", new Object[]{p,q}] @TO@ MethodInvocation@@MathRuntimeException.createArithmeticException("overflow:
+      gcd({0}, {1}) is 2^31",new Object[]{p,q}) '
+    - '------------INS StringLiteral@@"overflow: gcd({0}, {1}) is 2^31" @TO@ SimpleName@@MethodName:createArithmeticException:["overflow:
+      gcd({0}, {1}) is 2^31", new Object[]{p,q}] '
+    - '------------INS ArrayCreation@@new Object[]{p,q} @TO@ SimpleName@@MethodName:createArithmeticException:["overflow:
+      gcd({0}, {1}) is 2^31", new Object[]{p,q}] '
+    - '---------------INS ArrayType@@Object[] @TO@ ArrayCreation@@new Object[]{p,q} '
+    - '------------------INS SimpleType@@Object @TO@ ArrayType@@Object[] '
+    - '---------------INS ArrayInitializer@@{p,q} @TO@ ArrayCreation@@new Object[]{p,q} '
+    - '------------------INS SimpleName@@p @TO@ ArrayInitializer@@{p,q} '
+    - '------------------INS SimpleName@@q @TO@ ArrayInitializer@@{p,q} '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:lcm == Integer.MIN_VALUE @TO@ MethodDeclaration@@public,
+      static, @@int, MethodName:lcm, @@Argus:int+a+int+b+ '
+    - '---INS InfixExpression@@lcm == Integer.MIN_VALUE @TO@ IfStatement@@InfixExpression:lcm
+      == Integer.MIN_VALUE '
+    - '------INS SimpleName@@lcm @TO@ InfixExpression@@lcm == Integer.MIN_VALUE '
+    - '------INS Operator@@== @TO@ InfixExpression@@lcm == Integer.MIN_VALUE '
+    - '------INS QualifiedName@@Integer.MIN_VALUE @TO@ InfixExpression@@lcm == Integer.MIN_VALUE '
+    - '---------INS SimpleName@@Integer @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '---------INS SimpleName@@MIN_VALUE @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new ArithmeticException("overflow:
+      lcm is 2^31") @TO@ IfStatement@@InfixExpression:lcm == Integer.MIN_VALUE '
+    - '------INS ClassInstanceCreation@@ArithmeticException["overflow: lcm is 2^31"]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new ArithmeticException("overflow:
+      lcm is 2^31") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@ArithmeticException["overflow:
+      lcm is 2^31"] '
+    - '---------INS SimpleType@@ArithmeticException @TO@ ClassInstanceCreation@@ArithmeticException["overflow:
+      lcm is 2^31"] '
+    - '---------INS StringLiteral@@"overflow: lcm is 2^31" @TO@ ClassInstanceCreation@@ArithmeticException["overflow:
+      lcm is 2^31"] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/util/MathUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:(u == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE)
+      @TO@ IfStatement@@InfixExpression:(u == 0) || (v == 0) '
+    - '---INS InfixExpression@@(u == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE)
+      @TO@ IfStatement@@InfixExpression:(u == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE) '
+    - '------INS ParenthesizedExpression@@(u == Integer.MIN_VALUE) @TO@ InfixExpression@@(u
+      == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE) '
+    - '---------INS InfixExpression@@u == Integer.MIN_VALUE @TO@ ParenthesizedExpression@@(u
+      == Integer.MIN_VALUE) '
+    - '------------INS SimpleName@@u @TO@ InfixExpression@@u == Integer.MIN_VALUE '
+    - '------------INS Operator@@== @TO@ InfixExpression@@u == Integer.MIN_VALUE '
+    - '------------INS QualifiedName@@Integer.MIN_VALUE @TO@ InfixExpression@@u ==
+      Integer.MIN_VALUE '
+    - '---------------INS SimpleName@@Integer @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '---------------INS SimpleName@@MIN_VALUE @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '------INS Operator@@|| @TO@ InfixExpression@@(u == Integer.MIN_VALUE) || (v
+      == Integer.MIN_VALUE) '
+    - '------INS ParenthesizedExpression@@(v == Integer.MIN_VALUE) @TO@ InfixExpression@@(u
+      == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE) '
+    - '---------INS InfixExpression@@v == Integer.MIN_VALUE @TO@ ParenthesizedExpression@@(v
+      == Integer.MIN_VALUE) '
+    - '------------INS SimpleName@@v @TO@ InfixExpression@@v == Integer.MIN_VALUE '
+    - '------------INS Operator@@== @TO@ InfixExpression@@v == Integer.MIN_VALUE '
+    - '------------INS QualifiedName@@Integer.MIN_VALUE @TO@ InfixExpression@@v ==
+      Integer.MIN_VALUE '
+    - '---------------INS SimpleName@@Integer @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '---------------INS SimpleName@@MIN_VALUE @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '---INS ThrowStatement@@MethodInvocation:MathRuntimeException.createArithmeticException("overflow:
+      gcd({0}, {1}) is 2^31",new Object[]{p,q}) @TO@ IfStatement@@InfixExpression:(u
+      == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE) '
+    - '------INS MethodInvocation@@MathRuntimeException.createArithmeticException("overflow:
+      gcd({0}, {1}) is 2^31",new Object[]{p,q}) @TO@ ThrowStatement@@MethodInvocation:MathRuntimeException.createArithmeticException("overflow:
+      gcd({0}, {1}) is 2^31",new Object[]{p,q}) '
+    - '---------INS SimpleName@@Name:MathRuntimeException @TO@ MethodInvocation@@MathRuntimeException.createArithmeticException("overflow:
+      gcd({0}, {1}) is 2^31",new Object[]{p,q}) '
+    - '---------INS SimpleName@@MethodName:createArithmeticException:["overflow: gcd({0},
+      {1}) is 2^31", new Object[]{p,q}] @TO@ MethodInvocation@@MathRuntimeException.createArithmeticException("overflow:
+      gcd({0}, {1}) is 2^31",new Object[]{p,q}) '
+    - '------------INS StringLiteral@@"overflow: gcd({0}, {1}) is 2^31" @TO@ SimpleName@@MethodName:createArithmeticException:["overflow:
+      gcd({0}, {1}) is 2^31", new Object[]{p,q}] '
+    - '------------INS ArrayCreation@@new Object[]{p,q} @TO@ SimpleName@@MethodName:createArithmeticException:["overflow:
+      gcd({0}, {1}) is 2^31", new Object[]{p,q}] '
+    - '---------------INS ArrayType@@Object[] @TO@ ArrayCreation@@new Object[]{p,q} '
+    - '------------------INS SimpleType@@Object @TO@ ArrayType@@Object[] '
+    - '---------------INS ArrayInitializer@@{p,q} @TO@ ArrayCreation@@new Object[]{p,q} '
+    - '------------------INS SimpleName@@p @TO@ ArrayInitializer@@{p,q} '
+    - '------------------INS SimpleName@@q @TO@ ArrayInitializer@@{p,q} '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:lcm == Integer.MIN_VALUE @TO@ MethodDeclaration@@public,
+      static, @@int, MethodName:lcm, @@Argus:int+a+int+b+ '
+    - '---INS InfixExpression@@lcm == Integer.MIN_VALUE @TO@ IfStatement@@InfixExpression:lcm
+      == Integer.MIN_VALUE '
+    - '------INS SimpleName@@lcm @TO@ InfixExpression@@lcm == Integer.MIN_VALUE '
+    - '------INS Operator@@== @TO@ InfixExpression@@lcm == Integer.MIN_VALUE '
+    - '------INS QualifiedName@@Integer.MIN_VALUE @TO@ InfixExpression@@lcm == Integer.MIN_VALUE '
+    - '---------INS SimpleName@@Integer @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '---------INS SimpleName@@MIN_VALUE @TO@ QualifiedName@@Integer.MIN_VALUE '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new ArithmeticException("overflow:
+      lcm is 2^31") @TO@ IfStatement@@InfixExpression:lcm == Integer.MIN_VALUE '
+    - '------INS ClassInstanceCreation@@ArithmeticException["overflow: lcm is 2^31"]
+      @TO@ ThrowStatement@@ClassInstanceCreation:new ArithmeticException("overflow:
+      lcm is 2^31") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@ArithmeticException["overflow:
+      lcm is 2^31"] '
+    - '---------INS SimpleType@@ArithmeticException @TO@ ClassInstanceCreation@@ArithmeticException["overflow:
+      lcm is 2^31"] '
+    - '---------INS StringLiteral@@"overflow: lcm is 2^31" @TO@ ClassInstanceCreation@@ArithmeticException["overflow:
+      lcm is 2^31"] '
+  repair_actions_cnt: 2

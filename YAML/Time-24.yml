@@ -1,0 +1,208 @@
+1 bug_id: Time-24
+2 src folder:
+  name of src folder: java
+  number of files: 182
+  number of java files: 156
+  number of src classes: 226
+  number of test classes: 123
+3 test (cases):
+  failing test cases:
+  - org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_weekyear_month_week_2010
+  - org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_weekyear_month_week_2011
+  - org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_weekyear_month_week_2012
+  - org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_year_month_week_2010
+  - org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_year_month_week_2011
+  - org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_year_month_week_2012
+  - org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_year_month_week_2016
+  failing tests:
+  - org.joda.time.format.TestDateTimeFormatter
+  number of all test cases: 3868
+  number of failing test cases: 7
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.797
+  purification via delta debugging: 120.764
+  repair actions extraction: 1.096
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_weekyear_month_week_2010: 2080
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_weekyear_month_week_2011: 2074
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_weekyear_month_week_2012: 2076
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_year_month_week_2010: 2076
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_year_month_week_2011: 2069
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_year_month_week_2012: 2071
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_year_month_week_2016: 2077
+  fixed:
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_weekyear_month_week_2010: 2037
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_weekyear_month_week_2011: 2033
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_weekyear_month_week_2012: 2035
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_year_month_week_2010: 2033
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_year_month_week_2011: 2029
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_year_month_week_2012: 2032
+    org.joda.time.format.TestDateTimeFormatter#testParseLocalDate_year_month_week_2016: 2035
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 5
+  covDel: 0
+  cov_patch_lines: 5
+  delta_patch_lines: 5
+  oriAdd: 5
+  oriDel: 0
+  ori_patch_lines: 5
+  purAdd: 5
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 9
+  failFail: 2
+  passed: 0
+  total: 11
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_24/src/main/java/org/joda/time/format/DateTimeParserBucket.java\t\
+    2020-10-20 23:24:44.498171273 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_24/purify/patch/org/joda/time/format/DateTimeParserBucket.java\t\
+    2020-10-20 23:24:44.498171273 -0400\n@@ -352,6 +352,11 @@\n             for (int\
+    \ i = 0; i < count; i++) {\n                 millis = savedFields[i].set(millis,\
+    \ resetFields);\n             }\n+            if (resetFields) {\n+          \
+    \      for (int i = 0; i < count; i++) {\n+                    millis = savedFields[i].set(millis,\
+    \ i == (count - 1));\n+                }\n+            }\n         } catch (IllegalFieldValueException\
+    \ e) {\n             if (text != null) {\n                 e.prependMessage(\"\
+    Cannot parse \\\"\" + text + '\"');"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_24/src/main/java/org/joda/time/format/DateTimeParserBucket.java\t\
+    2020-10-20 23:27:04.882227983 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_24/purify/purified/org/joda/time/format/DateTimeParserBucket.java\t\
+    2020-10-20 23:27:04.878227867 -0400\n@@ -352,6 +352,11 @@\n             for (int\
+    \ i = 0; i < count; i++) {\n                 millis = savedFields[i].set(millis,\
+    \ resetFields);\n             }\n+            if (resetFields) {\n+          \
+    \      for (int i = 0; i < count; i++) {\n+                    millis = savedFields[i].set(millis,\
+    \ i == (count - 1));\n+                }\n+            }\n         } catch (IllegalFieldValueException\
+    \ e) {\n             if (text != null) {\n                 e.prependMessage(\"\
+    Cannot parse \\\"\" + text + '\"');"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 10
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/format/DateTimeParserBucket:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:resetFields @TO@ TryStatement@@try:[] '
+    - '---INS SimpleName@@resetFields @TO@ IfStatement@@SimpleName:resetFields '
+    - '---INS ForStatement@@[int i=0];i < count; [i++] @TO@ IfStatement@@SimpleName:resetFields '
+    - '------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < count; [i++] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '---------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '------INS InfixExpression@@i < count @TO@ ForStatement@@[int i=0];i < count;
+      [i++] '
+    - '---------INS SimpleName@@i @TO@ InfixExpression@@i < count '
+    - '---------INS Operator@@< @TO@ InfixExpression@@i < count '
+    - '---------INS SimpleName@@count @TO@ InfixExpression@@i < count '
+    - '------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < count; [i++] '
+    - '---------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '------INS ExpressionStatement@@Assignment:millis=savedFields[i].set(millis,i
+      == (count - 1)) @TO@ ForStatement@@[int i=0];i < count; [i++] '
+    - '---------INS Assignment@@millis=savedFields[i].set(millis,i == (count - 1))
+      @TO@ ExpressionStatement@@Assignment:millis=savedFields[i].set(millis,i == (count
+      - 1)) '
+    - '------------INS SimpleName@@millis @TO@ Assignment@@millis=savedFields[i].set(millis,i
+      == (count - 1)) '
+    - '------------INS Operator@@= @TO@ Assignment@@millis=savedFields[i].set(millis,i
+      == (count - 1)) '
+    - '------------INS MethodInvocation@@savedFields[i].set(millis,i == (count - 1))
+      @TO@ Assignment@@millis=savedFields[i].set(millis,i == (count - 1)) '
+    - '---------------INS ArrayAccess@@savedFields[i] @TO@ MethodInvocation@@savedFields[i].set(millis,i
+      == (count - 1)) '
+    - '------------------INS SimpleName@@savedFields @TO@ ArrayAccess@@savedFields[i] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@savedFields[i] '
+    - '---------------INS SimpleName@@MethodName:set:[millis, i == (count - 1)] @TO@
+      MethodInvocation@@savedFields[i].set(millis,i == (count - 1)) '
+    - '------------------INS SimpleName@@millis @TO@ SimpleName@@MethodName:set:[millis,
+      i == (count - 1)] '
+    - '------------------INS InfixExpression@@i == (count - 1) @TO@ SimpleName@@MethodName:set:[millis,
+      i == (count - 1)] '
+    - '---------------------INS SimpleName@@i @TO@ InfixExpression@@i == (count -
+      1) '
+    - '---------------------INS Operator@@== @TO@ InfixExpression@@i == (count - 1) '
+    - '---------------------INS ParenthesizedExpression@@(count - 1) @TO@ InfixExpression@@i
+      == (count - 1) '
+    - '------------------------INS InfixExpression@@count - 1 @TO@ ParenthesizedExpression@@(count
+      - 1) '
+    - '---------------------------INS SimpleName@@count @TO@ InfixExpression@@count
+      - 1 '
+    - '---------------------------INS Operator@@- @TO@ InfixExpression@@count - 1 '
+    - '---------------------------INS NumberLiteral@@1 @TO@ InfixExpression@@count
+      - 1 '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 10
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/format/DateTimeParserBucket:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@SimpleName:resetFields @TO@ TryStatement@@try:[] '
+    - '---INS SimpleName@@resetFields @TO@ IfStatement@@SimpleName:resetFields '
+    - '---INS ForStatement@@[int i=0];i < count; [i++] @TO@ IfStatement@@SimpleName:resetFields '
+    - '------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < count; [i++] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '---------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '------INS InfixExpression@@i < count @TO@ ForStatement@@[int i=0];i < count;
+      [i++] '
+    - '---------INS SimpleName@@i @TO@ InfixExpression@@i < count '
+    - '---------INS Operator@@< @TO@ InfixExpression@@i < count '
+    - '---------INS SimpleName@@count @TO@ InfixExpression@@i < count '
+    - '------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < count; [i++] '
+    - '---------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '------INS ExpressionStatement@@Assignment:millis=savedFields[i].set(millis,i
+      == (count - 1)) @TO@ ForStatement@@[int i=0];i < count; [i++] '
+    - '---------INS Assignment@@millis=savedFields[i].set(millis,i == (count - 1))
+      @TO@ ExpressionStatement@@Assignment:millis=savedFields[i].set(millis,i == (count
+      - 1)) '
+    - '------------INS SimpleName@@millis @TO@ Assignment@@millis=savedFields[i].set(millis,i
+      == (count - 1)) '
+    - '------------INS Operator@@= @TO@ Assignment@@millis=savedFields[i].set(millis,i
+      == (count - 1)) '
+    - '------------INS MethodInvocation@@savedFields[i].set(millis,i == (count - 1))
+      @TO@ Assignment@@millis=savedFields[i].set(millis,i == (count - 1)) '
+    - '---------------INS ArrayAccess@@savedFields[i] @TO@ MethodInvocation@@savedFields[i].set(millis,i
+      == (count - 1)) '
+    - '------------------INS SimpleName@@savedFields @TO@ ArrayAccess@@savedFields[i] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@savedFields[i] '
+    - '---------------INS SimpleName@@MethodName:set:[millis, i == (count - 1)] @TO@
+      MethodInvocation@@savedFields[i].set(millis,i == (count - 1)) '
+    - '------------------INS SimpleName@@millis @TO@ SimpleName@@MethodName:set:[millis,
+      i == (count - 1)] '
+    - '------------------INS InfixExpression@@i == (count - 1) @TO@ SimpleName@@MethodName:set:[millis,
+      i == (count - 1)] '
+    - '---------------------INS SimpleName@@i @TO@ InfixExpression@@i == (count -
+      1) '
+    - '---------------------INS Operator@@== @TO@ InfixExpression@@i == (count - 1) '
+    - '---------------------INS ParenthesizedExpression@@(count - 1) @TO@ InfixExpression@@i
+      == (count - 1) '
+    - '------------------------INS InfixExpression@@count - 1 @TO@ ParenthesizedExpression@@(count
+      - 1) '
+    - '---------------------------INS SimpleName@@count @TO@ InfixExpression@@count
+      - 1 '
+    - '---------------------------INS Operator@@- @TO@ InfixExpression@@count - 1 '
+    - '---------------------------INS NumberLiteral@@1 @TO@ InfixExpression@@count
+      - 1 '
+  repair_actions_cnt: 1

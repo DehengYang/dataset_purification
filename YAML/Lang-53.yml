@@ -1,0 +1,103 @@
+1 bug_id: Lang-53
+2 src folder:
+  name of src folder: java
+  number of files: 87
+  number of java files: 77
+  number of src classes: 124
+  number of test classes: 90
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.time.DateUtilsTest#testRoundLang346
+  failing tests:
+  - org.apache.commons.lang.time.DateUtilsTest
+  number of all test cases: 1718
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 7.0
+  purification via coverage: 1.279
+  purification via delta debugging: 51.418
+  repair actions extraction: 1.903
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.time.DateUtilsTest#testRoundLang346: 42
+  fixed:
+    org.apache.commons.lang.time.DateUtilsTest#testRoundLang346: 46
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 2
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 4
+  failFail: 2
+  passed: 0
+  total: 6
+9 sibling repair actions:
+- 0 1 0.9710982658959537
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_53/src/java/org/apache/commons/lang/time/DateUtils.java\t\
+    2020-10-23 03:12:35.947685583 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_53/purify/patch/org/apache/commons/lang/time/DateUtils.java\t\
+    2020-10-23 03:12:35.947685583 -0400\n@@ -640,18 +640,18 @@\n         int millisecs\
+    \ = val.get(Calendar.MILLISECOND);\n         if (!round || millisecs < 500) {\n\
+    \             time = time - millisecs;\n+        }\n         if (field == Calendar.SECOND)\
+    \ {\n             done = true;\n-            }\n         }\n \n         // truncate\
+    \ seconds\n         int seconds = val.get(Calendar.SECOND);\n         if (!done\
+    \ && (!round || seconds < 30)) {\n             time = time - (seconds * 1000L);\n\
+    +        }\n         if (field == Calendar.MINUTE) {\n             done = true;\n\
+    -            }\n         }\n \n         // truncate minutes"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_53/src/java/org/apache/commons/lang/time/DateUtils.java\t\
+    2020-10-23 03:13:38.297489935 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_53/purify/purified/org/apache/commons/lang/time/DateUtils.java\t\
+    2020-10-23 03:13:38.293489819 -0400\n@@ -640,18 +640,18 @@\n         int millisecs\
+    \ = val.get(Calendar.MILLISECOND);\n         if (!round || millisecs < 500) {\n\
+    \             time = time - millisecs;\n+        }\n         if (field == Calendar.SECOND)\
+    \ {\n             done = true;\n-            }\n         }\n \n         // truncate\
+    \ seconds\n         int seconds = val.get(Calendar.SECOND);\n         if (!done\
+    \ && (!round || seconds < 30)) {\n             time = time - (seconds * 1000L);\n\
+    +        }\n         if (field == Calendar.MINUTE) {\n             done = true;\n\
+    -            }\n         }\n \n         // truncate minutes"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 1
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/time/DateUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:field == Calendar.SECOND @TO@ MethodDeclaration@@private,
+      static, @@void, MethodName:modify, @@Argus:Calendar+val+int+field+boolean+round+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:field == Calendar.MINUTE @TO@ MethodDeclaration@@private,
+      static, @@void, MethodName:modify, @@Argus:Calendar+val+int+field+boolean+round+ '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 1
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/time/DateUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:field == Calendar.SECOND @TO@ MethodDeclaration@@private,
+      static, @@void, MethodName:modify, @@Argus:Calendar+val+int+field+boolean+round+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:field == Calendar.MINUTE @TO@ MethodDeclaration@@private,
+      static, @@void, MethodName:modify, @@Argus:Calendar+val+int+field+boolean+round+ '
+  repair_actions_cnt: 2

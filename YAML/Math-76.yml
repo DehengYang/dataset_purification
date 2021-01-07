@@ -1,0 +1,397 @@
+1 bug_id: Math-76
+2 src folder:
+  name of src folder: java
+  number of files: 435
+  number of java files: 398
+  number of src classes: 542
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.linear.SingularValueSolverTest#testMath320B
+  - org.apache.commons.math.linear.SingularValueSolverTest#testMath320A
+  failing tests:
+  - org.apache.commons.math.linear.SingularValueSolverTest
+  number of all test cases: 2135
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.766
+  purification via delta debugging: 242.789
+  repair actions extraction: 1.05
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.linear.SingularValueSolverTest#testMath320A: 537
+    org.apache.commons.math.linear.SingularValueSolverTest#testMath320B: 510
+  fixed:
+    org.apache.commons.math.linear.SingularValueSolverTest#testMath320A: 567
+    org.apache.commons.math.linear.SingularValueSolverTest#testMath320B: 517
+6 reduced lines:
+  by all: 13
+  by coverage: 0
+  by delta debugging: 13
+  covAdd: 14
+  covDel: 8
+  cov_patch_lines: 22
+  delta_patch_lines: 9
+  oriAdd: 14
+  oriDel: 8
+  ori_patch_lines: 22
+  purAdd: 6
+  purDel: 3
+7 reduced chunks:
+  by all: 7
+  by coverage: 0
+  by delta debugging: 7
+  cov: 12
+  original: 12
+  purifiy: 5
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 23
+  failFail: 6
+  passed: 2
+  total: 31
+9 sibling repair actions:
+- 0 3 0.9915373765867419
+- 1 4 0.8080625752105897
+- 2 5 1.0
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_76/src/main/java/org/apache/commons/math/linear/SingularValueDecompositionImpl.java\t\
+    2020-10-22 08:26:11.695143377 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_76/purify/patch/org/apache/commons/math/linear/SingularValueDecompositionImpl.java\t\
+    2020-10-22 08:26:11.695143377 -0400\n@@ -159,24 +159,27 @@\n             if (m\
+    \ >= n) {\n                 // the tridiagonal matrix is Bt.B, where B is upper\
+    \ bidiagonal\n                 final RealMatrix e =\n-                    eigenDecomposition.getV().getSubMatrix(0,\
+    \ p - 1, 0, p - 1);\n+                    eigenDecomposition.getV().getSubMatrix(0,\
+    \ n - 1, 0, p - 1);\n                 final double[][] eData = e.getData();\n\
+    \                 final double[][] wData = new double[m][p];\n               \
+    \  double[] ei1 = eData[0];\n-                for (int i = 0; i < p - 1; ++i)\
+    \ {\n+                for (int i = 0; i < p; ++i) {\n                     // compute\
+    \ W = B.E.S^(-1) where E is the eigenvectors matrix\n                     final\
+    \ double mi = mainBidiagonal[i];\n                     final double[] ei0 = ei1;\n\
+    \                     final double[] wi  = wData[i];\n+                    if\
+    \ (i < n - 1) {\n                         ei1 = eData[i + 1];\n              \
+    \           final double si = secondaryBidiagonal[i];\n                      \
+    \   for (int j = 0; j < p; ++j) {\n                             wi[j] = (mi *\
+    \ ei0[j] + si * ei1[j]) / singularValues[j];\n                         }\n-  \
+    \              }\n+                    } else {\n                         for\
+    \ (int j = 0; j < p; ++j) {\n-                            wData[p - 1][j] = ei1[j]\
+    \ * mainBidiagonal[p - 1] / singularValues[j];\n+                            wi[j]\
+    \ = mi * ei0[j] / singularValues[j];\n                         }\n+          \
+    \          }\n+                }\n \n                 for (int i = p; i < m; ++i)\
+    \ {\n                     wData[i] = new double[p];\n@@ -245,23 +248,26 @@\n \
+    \                // the tridiagonal matrix is B.Bt, where B is lower bidiagonal\n\
+    \                 // compute W = Bt.E.S^(-1) where E is the eigenvectors matrix\n\
+    \                 final RealMatrix e =\n-                    eigenDecomposition.getV().getSubMatrix(0,\
+    \ p - 1, 0, p - 1);\n+                    eigenDecomposition.getV().getSubMatrix(0,\
+    \ m - 1, 0, p - 1);\n                 final double[][] eData = e.getData();\n\
+    \                 final double[][] wData = new double[n][p];\n               \
+    \  double[] ei1 = eData[0];\n-                for (int i = 0; i < p - 1; ++i)\
+    \ {\n+                for (int i = 0; i < p; ++i) {\n                     final\
+    \ double mi = mainBidiagonal[i];\n                     final double[] ei0 = ei1;\n\
+    \                     final double[] wi  = wData[i];\n+                    if\
+    \ (i < m - 1) {\n                         ei1 = eData[i + 1];\n              \
+    \           final double si = secondaryBidiagonal[i];\n                      \
+    \   for (int j = 0; j < p; ++j) {\n                             wi[j] = (mi *\
+    \ ei0[j] + si * ei1[j]) / singularValues[j];\n                         }\n-  \
+    \              }\n+                    } else {\n                         for\
+    \ (int j = 0; j < p; ++j) {\n-                            wData[p - 1][j] = ei1[j]\
+    \ * mainBidiagonal[p - 1] / singularValues[j];\n+                            wi[j]\
+    \ = mi * ei0[j] / singularValues[j];\n                         }\n+          \
+    \          }\n+                }\n                 for (int i = p; i < n; ++i)\
+    \ {\n                     wData[i] = new double[p];\n                 }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_76/src/main/java/org/apache/commons/math/linear/SingularValueDecompositionImpl.java\t\
+    2020-10-22 08:30:32.286684076 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_76/purify/purified/org/apache/commons/math/linear/SingularValueDecompositionImpl.java\t\
+    2020-10-22 08:30:32.286684076 -0400\n@@ -159,24 +159,27 @@\n             if (m\
+    \ >= n) {\n                 // the tridiagonal matrix is Bt.B, where B is upper\
+    \ bidiagonal\n                 final RealMatrix e =\n-                    eigenDecomposition.getV().getSubMatrix(0,\
+    \ p - 1, 0, p - 1);\n+                    eigenDecomposition.getV().getSubMatrix(0,\
+    \ n - 1, 0, p - 1);\n                 final double[][] eData = e.getData();\n\
+    \                 final double[][] wData = new double[m][p];\n               \
+    \  double[] ei1 = eData[0];\n-                for (int i = 0; i < p - 1; ++i)\
+    \ {\n+                for (int i = 0; i < p; ++i) {\n                     // compute\
+    \ W = B.E.S^(-1) where E is the eigenvectors matrix\n                     final\
+    \ double mi = mainBidiagonal[i];\n                     final double[] ei0 = ei1;\n\
+    \                     final double[] wi  = wData[i];\n+                    if\
+    \ (i < n - 1) {\n                         ei1 = eData[i + 1];\n              \
+    \           final double si = secondaryBidiagonal[i];\n                      \
+    \   for (int j = 0; j < p; ++j) {\n                             wi[j] = (mi *\
+    \ ei0[j] + si * ei1[j]) / singularValues[j];\n                         }\n-  \
+    \              }\n+                    } else {\n                         for\
+    \ (int j = 0; j < p; ++j) {\n                             wData[p - 1][j] = ei1[j]\
+    \ * mainBidiagonal[p - 1] / singularValues[j];\n                         }\n+\
+    \                    }\n+                }\n \n                 for (int i = p;\
+    \ i < m; ++i) {\n                     wData[i] = new double[p];"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/linear/SingularValueDecompositionImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final RealMatrix e=eigenDecomposition.getV().getSubMatrix(0,p
+      - 1,0,p - 1); @TO@ final RealMatrix e=eigenDecomposition.getV().getSubMatrix(0,n
+      - 1,0,p - 1); '
+    - '---UPD VariableDeclarationFragment@@e=eigenDecomposition.getV().getSubMatrix(0,p
+      - 1,0,p - 1) @TO@ e=eigenDecomposition.getV().getSubMatrix(0,n - 1,0,p - 1) '
+    - '------UPD MethodInvocation@@eigenDecomposition.getV().getSubMatrix(0,p - 1,0,p
+      - 1) @TO@ eigenDecomposition.getV().getSubMatrix(0,n - 1,0,p - 1) '
+    - '---------UPD SimpleName@@MethodName:getSubMatrix:[0, p - 1, 0, p - 1] @TO@
+      MethodName:getSubMatrix:[0, n - 1, 0, p - 1] '
+    - '------------UPD InfixExpression@@p - 1 @TO@ n - 1 '
+    - '---------------UPD SimpleName@@p @TO@ n '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ForStatement@@[int i=0];i < p - 1; [++i] @TO@ [int i=0];i < p; [++i] '
+    - '---INS InfixExpression@@i < p @TO@ ForStatement@@[int i=0];i < p - 1; [++i] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < p '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < p '
+    - '------INS SimpleName@@p @TO@ InfixExpression@@i < p '
+    - '---DEL InfixExpression@@i < p - 1 '
+    - '---INS PrefixExpression@@++i @TO@ ForStatement@@[int i=0];i < p - 1; [++i] '
+    - '------INS Operator@@++ @TO@ PrefixExpression@@++i '
+    - '------INS SimpleName@@i @TO@ PrefixExpression@@++i '
+    - '---UPD PrefixExpression@@++i @TO@ ++j '
+    - '------UPD SimpleName@@i @TO@ j '
+    - '---INS IfStatement@@InfixExpression:i < n - 1 @TO@ ForStatement@@[int i=0];i
+      < p - 1; [++i] '
+    - '------INS InfixExpression@@i < n - 1 @TO@ IfStatement@@InfixExpression:i <
+      n - 1 '
+    - '---------MOV SimpleName@@i @TO@ InfixExpression@@i < n - 1 '
+    - '---------MOV Operator@@< @TO@ InfixExpression@@i < n - 1 '
+    - '---------MOV InfixExpression@@p - 1 @TO@ InfixExpression@@i < n - 1 '
+    - '------MOV ExpressionStatement@@Assignment:ei1=eData[i + 1] @TO@ IfStatement@@InfixExpression:i
+      < n - 1 '
+    - '------MOV VariableDeclarationStatement@@final double si=secondaryBidiagonal[i];
+      @TO@ IfStatement@@InfixExpression:i < n - 1 '
+    - '------MOV ForStatement@@[int j=0];j < p; [++j] @TO@ IfStatement@@InfixExpression:i
+      < n - 1 '
+    - '------INS ForStatement@@[int j=0];j < p; [++j] @TO@ IfStatement@@InfixExpression:i
+      < n - 1 '
+    - '---------MOV PrefixExpression@@++i @TO@ ForStatement@@[int j=0];j < p; [++j] '
+    - '---------MOV VariableDeclarationExpression@@int j=0 @TO@ ForStatement@@[int
+      j=0];j < p; [++j] '
+    - '---------INS InfixExpression@@j < p @TO@ ForStatement@@[int j=0];j < p; [++j] '
+    - '------------INS SimpleName@@j @TO@ InfixExpression@@j < p '
+    - '------------INS Operator@@< @TO@ InfixExpression@@j < p '
+    - '------------INS SimpleName@@p @TO@ InfixExpression@@j < p '
+    - '---------INS ExpressionStatement@@Assignment:wi[j]=mi * ei0[j] / singularValues[j]
+      @TO@ ForStatement@@[int j=0];j < p; [++j] '
+    - '------------INS Assignment@@wi[j]=mi * ei0[j] / singularValues[j] @TO@ ExpressionStatement@@Assignment:wi[j]=mi
+      * ei0[j] / singularValues[j] '
+    - '---------------INS ArrayAccess@@wi[j] @TO@ Assignment@@wi[j]=mi * ei0[j] /
+      singularValues[j] '
+    - '------------------INS SimpleName@@wi @TO@ ArrayAccess@@wi[j] '
+    - '------------------INS SimpleName@@j @TO@ ArrayAccess@@wi[j] '
+    - '---------------INS Operator@@= @TO@ Assignment@@wi[j]=mi * ei0[j] / singularValues[j] '
+    - '---------------INS InfixExpression@@mi * ei0[j] / singularValues[j] @TO@ Assignment@@wi[j]=mi
+      * ei0[j] / singularValues[j] '
+    - '------------------INS InfixExpression@@mi * ei0[j] @TO@ InfixExpression@@mi
+      * ei0[j] / singularValues[j] '
+    - '---------------------INS SimpleName@@mi @TO@ InfixExpression@@mi * ei0[j] '
+    - '---------------------INS Operator@@* @TO@ InfixExpression@@mi * ei0[j] '
+    - '---------------------INS ArrayAccess@@ei0[j] @TO@ InfixExpression@@mi * ei0[j] '
+    - '------------------------INS SimpleName@@ei0 @TO@ ArrayAccess@@ei0[j] '
+    - '------------------------INS SimpleName@@j @TO@ ArrayAccess@@ei0[j] '
+    - '------------------INS Operator@@/ @TO@ InfixExpression@@mi * ei0[j] / singularValues[j] '
+    - '------------------INS ArrayAccess@@singularValues[j] @TO@ InfixExpression@@mi
+      * ei0[j] / singularValues[j] '
+    - '---------------------INS SimpleName@@singularValues @TO@ ArrayAccess@@singularValues[j] '
+    - '---------------------INS SimpleName@@j @TO@ ArrayAccess@@singularValues[j] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ForStatement@@[int j=0];j < p; [++j] '
+    - '---DEL InfixExpression@@j < p '
+    - '------DEL SimpleName@@j '
+    - '------DEL Operator@@< '
+    - '------DEL SimpleName@@p '
+    - '---DEL PrefixExpression@@++j '
+    - '------DEL Operator@@++ '
+    - '------DEL SimpleName@@j '
+    - '---DEL ExpressionStatement@@Assignment:wData[p - 1][j]=ei1[j] * mainBidiagonal[p
+      - 1] / singularValues[j] '
+    - '------DEL Assignment@@wData[p - 1][j]=ei1[j] * mainBidiagonal[p - 1] / singularValues[j] '
+    - '---------DEL ArrayAccess@@wData[p - 1][j] '
+    - '------------DEL ArrayAccess@@wData[p - 1] '
+    - '---------------DEL SimpleName@@wData '
+    - '---------------DEL InfixExpression@@p - 1 '
+    - '------------------DEL SimpleName@@p '
+    - '------------------DEL Operator@@- '
+    - '------------------DEL NumberLiteral@@1 '
+    - '------------DEL SimpleName@@j '
+    - '---------DEL Operator@@= '
+    - '---------DEL InfixExpression@@ei1[j] * mainBidiagonal[p - 1] / singularValues[j] '
+    - '------------DEL InfixExpression@@ei1[j] * mainBidiagonal[p - 1] '
+    - '---------------DEL ArrayAccess@@ei1[j] '
+    - '------------------DEL SimpleName@@ei1 '
+    - '------------------DEL SimpleName@@j '
+    - '---------------DEL Operator@@* '
+    - '---------------DEL ArrayAccess@@mainBidiagonal[p - 1] '
+    - '------------------DEL SimpleName@@mainBidiagonal '
+    - '------------------DEL InfixExpression@@p - 1 '
+    - '---------------------DEL SimpleName@@p '
+    - '---------------------DEL Operator@@- '
+    - '---------------------DEL NumberLiteral@@1 '
+    - '------------DEL Operator@@/ '
+    - '------------DEL ArrayAccess@@singularValues[j] '
+    - '---------------DEL SimpleName@@singularValues '
+    - '---------------DEL SimpleName@@j '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final RealMatrix e=eigenDecomposition.getV().getSubMatrix(0,p
+      - 1,0,p - 1); @TO@ final RealMatrix e=eigenDecomposition.getV().getSubMatrix(0,m
+      - 1,0,p - 1); '
+    - '---UPD VariableDeclarationFragment@@e=eigenDecomposition.getV().getSubMatrix(0,p
+      - 1,0,p - 1) @TO@ e=eigenDecomposition.getV().getSubMatrix(0,m - 1,0,p - 1) '
+    - '------UPD MethodInvocation@@eigenDecomposition.getV().getSubMatrix(0,p - 1,0,p
+      - 1) @TO@ eigenDecomposition.getV().getSubMatrix(0,m - 1,0,p - 1) '
+    - '---------UPD SimpleName@@MethodName:getSubMatrix:[0, p - 1, 0, p - 1] @TO@
+      MethodName:getSubMatrix:[0, m - 1, 0, p - 1] '
+    - '------------UPD InfixExpression@@p - 1 @TO@ m - 1 '
+    - '---------------UPD SimpleName@@p @TO@ m '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ForStatement@@[int i=0];i < p - 1; [++i] @TO@ [int i=0];i < p; [++i] '
+    - '---DEL InfixExpression@@i < p - 1 '
+    - '---UPD PrefixExpression@@++i @TO@ ++j '
+    - '------UPD SimpleName@@i @TO@ j '
+    - '---INS InfixExpression@@i < p @TO@ ForStatement@@[int i=0];i < p - 1; [++i] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < p '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < p '
+    - '------INS SimpleName@@p @TO@ InfixExpression@@i < p '
+    - '---INS PrefixExpression@@++i @TO@ ForStatement@@[int i=0];i < p - 1; [++i] '
+    - '------INS Operator@@++ @TO@ PrefixExpression@@++i '
+    - '------INS SimpleName@@i @TO@ PrefixExpression@@++i '
+    - '---INS IfStatement@@InfixExpression:i < m - 1 @TO@ ForStatement@@[int i=0];i
+      < p - 1; [++i] '
+    - '------MOV ExpressionStatement@@Assignment:ei1=eData[i + 1] @TO@ IfStatement@@InfixExpression:i
+      < m - 1 '
+    - '------MOV VariableDeclarationStatement@@final double si=secondaryBidiagonal[i];
+      @TO@ IfStatement@@InfixExpression:i < m - 1 '
+    - '------INS InfixExpression@@i < m - 1 @TO@ IfStatement@@InfixExpression:i <
+      m - 1 '
+    - '---------MOV SimpleName@@i @TO@ InfixExpression@@i < m - 1 '
+    - '---------MOV Operator@@< @TO@ InfixExpression@@i < m - 1 '
+    - '---------MOV InfixExpression@@p - 1 @TO@ InfixExpression@@i < m - 1 '
+    - '------MOV ForStatement@@[int j=0];j < p; [++j] @TO@ IfStatement@@InfixExpression:i
+      < m - 1 '
+    - '------INS ForStatement@@[int j=0];j < p; [++j] @TO@ IfStatement@@InfixExpression:i
+      < m - 1 '
+    - '---------MOV PrefixExpression@@++i @TO@ ForStatement@@[int j=0];j < p; [++j] '
+    - '---------MOV VariableDeclarationExpression@@int j=0 @TO@ ForStatement@@[int
+      j=0];j < p; [++j] '
+    - '---------INS InfixExpression@@j < p @TO@ ForStatement@@[int j=0];j < p; [++j] '
+    - '------------INS SimpleName@@j @TO@ InfixExpression@@j < p '
+    - '------------INS Operator@@< @TO@ InfixExpression@@j < p '
+    - '------------INS SimpleName@@p @TO@ InfixExpression@@j < p '
+    - '---------INS ExpressionStatement@@Assignment:wi[j]=mi * ei0[j] / singularValues[j]
+      @TO@ ForStatement@@[int j=0];j < p; [++j] '
+    - '------------INS Assignment@@wi[j]=mi * ei0[j] / singularValues[j] @TO@ ExpressionStatement@@Assignment:wi[j]=mi
+      * ei0[j] / singularValues[j] '
+    - '---------------INS ArrayAccess@@wi[j] @TO@ Assignment@@wi[j]=mi * ei0[j] /
+      singularValues[j] '
+    - '------------------INS SimpleName@@wi @TO@ ArrayAccess@@wi[j] '
+    - '------------------INS SimpleName@@j @TO@ ArrayAccess@@wi[j] '
+    - '---------------INS Operator@@= @TO@ Assignment@@wi[j]=mi * ei0[j] / singularValues[j] '
+    - '---------------INS InfixExpression@@mi * ei0[j] / singularValues[j] @TO@ Assignment@@wi[j]=mi
+      * ei0[j] / singularValues[j] '
+    - '------------------INS InfixExpression@@mi * ei0[j] @TO@ InfixExpression@@mi
+      * ei0[j] / singularValues[j] '
+    - '---------------------INS SimpleName@@mi @TO@ InfixExpression@@mi * ei0[j] '
+    - '---------------------INS Operator@@* @TO@ InfixExpression@@mi * ei0[j] '
+    - '---------------------INS ArrayAccess@@ei0[j] @TO@ InfixExpression@@mi * ei0[j] '
+    - '------------------------INS SimpleName@@ei0 @TO@ ArrayAccess@@ei0[j] '
+    - '------------------------INS SimpleName@@j @TO@ ArrayAccess@@ei0[j] '
+    - '------------------INS Operator@@/ @TO@ InfixExpression@@mi * ei0[j] / singularValues[j] '
+    - '------------------INS ArrayAccess@@singularValues[j] @TO@ InfixExpression@@mi
+      * ei0[j] / singularValues[j] '
+    - '---------------------INS SimpleName@@singularValues @TO@ ArrayAccess@@singularValues[j] '
+    - '---------------------INS SimpleName@@j @TO@ ArrayAccess@@singularValues[j] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ForStatement@@[int j=0];j < p; [++j] '
+    - '---DEL InfixExpression@@j < p '
+    - '------DEL SimpleName@@j '
+    - '------DEL Operator@@< '
+    - '------DEL SimpleName@@p '
+    - '---DEL PrefixExpression@@++j '
+    - '------DEL Operator@@++ '
+    - '------DEL SimpleName@@j '
+    - '---DEL ExpressionStatement@@Assignment:wData[p - 1][j]=ei1[j] * mainBidiagonal[p
+      - 1] / singularValues[j] '
+    - '------DEL Assignment@@wData[p - 1][j]=ei1[j] * mainBidiagonal[p - 1] / singularValues[j] '
+    - '---------DEL ArrayAccess@@wData[p - 1][j] '
+    - '------------DEL ArrayAccess@@wData[p - 1] '
+    - '---------------DEL SimpleName@@wData '
+    - '---------------DEL InfixExpression@@p - 1 '
+    - '------------------DEL SimpleName@@p '
+    - '------------------DEL Operator@@- '
+    - '------------------DEL NumberLiteral@@1 '
+    - '------------DEL SimpleName@@j '
+    - '---------DEL Operator@@= '
+    - '---------DEL InfixExpression@@ei1[j] * mainBidiagonal[p - 1] / singularValues[j] '
+    - '------------DEL InfixExpression@@ei1[j] * mainBidiagonal[p - 1] '
+    - '---------------DEL ArrayAccess@@ei1[j] '
+    - '------------------DEL SimpleName@@ei1 '
+    - '------------------DEL SimpleName@@j '
+    - '---------------DEL Operator@@* '
+    - '---------------DEL ArrayAccess@@mainBidiagonal[p - 1] '
+    - '------------------DEL SimpleName@@mainBidiagonal '
+    - '------------------DEL InfixExpression@@p - 1 '
+    - '---------------------DEL SimpleName@@p '
+    - '---------------------DEL Operator@@- '
+    - '---------------------DEL NumberLiteral@@1 '
+    - '------------DEL Operator@@/ '
+    - '------------DEL ArrayAccess@@singularValues[j] '
+    - '---------------DEL SimpleName@@singularValues '
+    - '---------------DEL SimpleName@@j '
+  repair_actions_cnt: 6
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/linear/SingularValueDecompositionImpl:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final RealMatrix e=eigenDecomposition.getV().getSubMatrix(0,p
+      - 1,0,p - 1); @TO@ final RealMatrix e=eigenDecomposition.getV().getSubMatrix(0,n
+      - 1,0,p - 1); '
+    - '---UPD VariableDeclarationFragment@@e=eigenDecomposition.getV().getSubMatrix(0,p
+      - 1,0,p - 1) @TO@ e=eigenDecomposition.getV().getSubMatrix(0,n - 1,0,p - 1) '
+    - '------UPD MethodInvocation@@eigenDecomposition.getV().getSubMatrix(0,p - 1,0,p
+      - 1) @TO@ eigenDecomposition.getV().getSubMatrix(0,n - 1,0,p - 1) '
+    - '---------UPD SimpleName@@MethodName:getSubMatrix:[0, p - 1, 0, p - 1] @TO@
+      MethodName:getSubMatrix:[0, n - 1, 0, p - 1] '
+    - '------------UPD InfixExpression@@p - 1 @TO@ n - 1 '
+    - '---------------UPD SimpleName@@p @TO@ n '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ForStatement@@[int i=0];i < p - 1; [++i] @TO@ [int i=0];i < p; [++i] '
+    - '---INS InfixExpression@@i < p @TO@ ForStatement@@[int i=0];i < p - 1; [++i] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < p '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < p '
+    - '------INS SimpleName@@p @TO@ InfixExpression@@i < p '
+    - '---DEL InfixExpression@@i < p - 1 '
+    - '---INS PrefixExpression@@++i @TO@ ForStatement@@[int i=0];i < p - 1; [++i] '
+    - '------INS Operator@@++ @TO@ PrefixExpression@@++i '
+    - '------INS SimpleName@@i @TO@ PrefixExpression@@++i '
+    - '---UPD PrefixExpression@@++i @TO@ ++j '
+    - '------MOV SimpleName@@j @TO@ PrefixExpression@@++i '
+    - '---INS IfStatement@@InfixExpression:i < n - 1 @TO@ ForStatement@@[int i=0];i
+      < p - 1; [++i] '
+    - '------INS InfixExpression@@i < n - 1 @TO@ IfStatement@@InfixExpression:i <
+      n - 1 '
+    - '---------MOV SimpleName@@i @TO@ InfixExpression@@i < n - 1 '
+    - '---------MOV Operator@@< @TO@ InfixExpression@@i < n - 1 '
+    - '---------MOV InfixExpression@@p - 1 @TO@ InfixExpression@@i < n - 1 '
+    - '------MOV ExpressionStatement@@Assignment:ei1=eData[i + 1] @TO@ IfStatement@@InfixExpression:i
+      < n - 1 '
+    - '------MOV VariableDeclarationStatement@@final double si=secondaryBidiagonal[i];
+      @TO@ IfStatement@@InfixExpression:i < n - 1 '
+    - '------MOV ForStatement@@[int j=0];j < p; [++j] @TO@ IfStatement@@InfixExpression:i
+      < n - 1 '
+    - '------MOV ForStatement@@[int j=0];j < p; [++j] @TO@ IfStatement@@InfixExpression:i
+      < n - 1 '
+    - '---------MOV PrefixExpression@@++i @TO@ ForStatement@@[int j=0];j < p; [++j] '
+  repair_actions_cnt: 2

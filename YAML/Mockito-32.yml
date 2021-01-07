@@ -1,0 +1,152 @@
+1 bug_id: Mockito-32
+2 src folder:
+  name of src folder: src
+  number of files: 269
+  number of java files: 233
+  number of src classes: 258
+  number of test classes: 208
+3 test (cases):
+  failing test cases:
+  - org.mockitousage.bugs.SpyShouldHaveNiceNameTest#shouldPrintNiceName
+  failing tests:
+  - org.mockitousage.bugs.SpyShouldHaveNiceNameTest
+  number of all test cases: 0
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.649
+  purification via delta debugging: 442.5
+  repair actions extraction: 1.2
+5 stmts covered by failing cases:
+  buggy: {}
+  fixed: {}
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 5
+  covDel: 1
+  cov_patch_lines: 6
+  delta_patch_lines: 6
+  oriAdd: 5
+  oriDel: 1
+  ori_patch_lines: 6
+  purAdd: 5
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 0
+  failFail: 11
+  passed: 2
+  total: 14
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_32/src/org/mockito/internal/configuration/SpyAnnotationEngine.java\t\
+    2020-10-24 20:26:31.645169171 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_32/purify/patch/org/mockito/internal/configuration/SpyAnnotationEngine.java\t\
+    2020-10-24 20:26:31.645169171 -0400\n@@ -16,6 +16,7 @@\n import org.mockito.exceptions.base.MockitoException;\n\
+    \ import org.mockito.internal.util.MockUtil;\n \n+import static org.mockito.Mockito.withSettings;\n\
+    \ \n @SuppressWarnings({\"unchecked\"})\n public class SpyAnnotationEngine implements\
+    \ AnnotationEngine {\n@@ -46,7 +47,10 @@\n                         // instance\
+    \ has been spied earlier\n                         Mockito.reset(instance);\n\
+    \                     } else {\n-                        field.set(testClass,\
+    \ Mockito.spy(instance));\n+                        field.set(testClass, Mockito.mock(instance.getClass(),\
+    \ withSettings()\n+                                .spiedInstance(instance)\n\
+    +                                .defaultAnswer(Mockito.CALLS_REAL_METHODS)\n\
+    +                                .name(field.getName())));\n                 \
+    \    }\n                 } catch (IllegalAccessException e) {\n              \
+    \       throw new MockitoException(\"Problems initiating spied field \" + field.getName(),\
+    \ e);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_32/src/org/mockito/internal/configuration/SpyAnnotationEngine.java\t\
+    2020-10-24 20:34:12.054403950 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_32/purify/purified/org/mockito/internal/configuration/SpyAnnotationEngine.java\t\
+    2020-10-24 20:34:12.050403835 -0400\n@@ -16,6 +16,7 @@\n import org.mockito.exceptions.base.MockitoException;\n\
+    \ import org.mockito.internal.util.MockUtil;\n \n+import static org.mockito.Mockito.withSettings;\n\
+    \ \n @SuppressWarnings({\"unchecked\"})\n public class SpyAnnotationEngine implements\
+    \ AnnotationEngine {\n@@ -46,7 +47,10 @@\n                         // instance\
+    \ has been spied earlier\n                         Mockito.reset(instance);\n\
+    \                     } else {\n-                        field.set(testClass,\
+    \ Mockito.spy(instance));\n+                        field.set(testClass, Mockito.mock(instance.getClass(),\
+    \ withSettings()\n+                                .spiedInstance(instance)\n\
+    +                                .defaultAnswer(Mockito.CALLS_REAL_METHODS)\n\
+    +                                .name(field.getName())));\n                 \
+    \    }\n                 } catch (IllegalAccessException e) {\n              \
+    \       throw new MockitoException(\"Problems initiating spied field \" + field.getName(),\
+    \ e);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/configuration/SpyAnnotationEngine:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:field.set(testClass,Mockito.spy(instance))
+      @TO@ MethodInvocation:field.set(testClass,Mockito.mock(instance.getClass(),withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()))) '
+    - '---UPD MethodInvocation@@field.set(testClass,Mockito.spy(instance)) @TO@ field.set(testClass,Mockito.mock(instance.getClass(),withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()))) '
+    - '------UPD SimpleName@@MethodName:set:[testClass, Mockito.spy(instance)] @TO@
+      MethodName:set:[testClass, Mockito.mock(instance.getClass(),withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()))] '
+    - '---------UPD MethodInvocation@@Mockito.spy(instance) @TO@ Mockito.mock(instance.getClass(),withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName())) '
+    - '------------UPD SimpleName@@MethodName:spy:[instance] @TO@ MethodName:mock:[instance.getClass(),
+      withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName())] '
+    - '---------------DEL SimpleName@@instance '
+    - '---------------INS MethodInvocation@@instance.getClass() @TO@ SimpleName@@MethodName:spy:[instance] '
+    - '------------------INS SimpleName@@Name:instance @TO@ MethodInvocation@@instance.getClass() '
+    - '------------------INS SimpleName@@MethodName:getClass:[] @TO@ MethodInvocation@@instance.getClass() '
+    - '---------------INS MethodInvocation@@withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName())
+      @TO@ SimpleName@@MethodName:spy:[instance] '
+    - '------------------INS MethodInvocation@@MethodName:withSettings:[] @TO@ MethodInvocation@@withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()) '
+    - '------------------INS MethodInvocation@@MethodName:spiedInstance:[instance]
+      @TO@ MethodInvocation@@withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()) '
+    - '---------------------INS SimpleName@@instance @TO@ MethodInvocation@@MethodName:spiedInstance:[instance] '
+    - '------------------INS MethodInvocation@@MethodName:defaultAnswer:[Mockito.CALLS_REAL_METHODS]
+      @TO@ MethodInvocation@@withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()) '
+    - '---------------------INS QualifiedName@@Mockito.CALLS_REAL_METHODS @TO@ MethodInvocation@@MethodName:defaultAnswer:[Mockito.CALLS_REAL_METHODS] '
+    - '------------------------INS SimpleName@@Mockito @TO@ QualifiedName@@Mockito.CALLS_REAL_METHODS '
+    - '------------------------INS SimpleName@@CALLS_REAL_METHODS @TO@ QualifiedName@@Mockito.CALLS_REAL_METHODS '
+    - '------------------INS SimpleName@@MethodName:name:[field.getName()] @TO@ MethodInvocation@@withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()) '
+    - '---------------------INS MethodInvocation@@field.getName() @TO@ SimpleName@@MethodName:name:[field.getName()] '
+    - '------------------------INS SimpleName@@Name:field @TO@ MethodInvocation@@field.getName() '
+    - '------------------------INS SimpleName@@MethodName:getName:[] @TO@ MethodInvocation@@field.getName() '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/configuration/SpyAnnotationEngine:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@MethodInvocation:field.set(testClass,Mockito.spy(instance))
+      @TO@ MethodInvocation:field.set(testClass,Mockito.mock(instance.getClass(),withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()))) '
+    - '---UPD MethodInvocation@@field.set(testClass,Mockito.spy(instance)) @TO@ field.set(testClass,Mockito.mock(instance.getClass(),withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()))) '
+    - '------UPD SimpleName@@MethodName:set:[testClass, Mockito.spy(instance)] @TO@
+      MethodName:set:[testClass, Mockito.mock(instance.getClass(),withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()))] '
+    - '---------UPD MethodInvocation@@Mockito.spy(instance) @TO@ Mockito.mock(instance.getClass(),withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName())) '
+    - '------------UPD SimpleName@@MethodName:spy:[instance] @TO@ MethodName:mock:[instance.getClass(),
+      withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName())] '
+    - '---------------DEL SimpleName@@instance '
+    - '---------------INS MethodInvocation@@instance.getClass() @TO@ SimpleName@@MethodName:spy:[instance] '
+    - '------------------INS SimpleName@@Name:instance @TO@ MethodInvocation@@instance.getClass() '
+    - '------------------INS SimpleName@@MethodName:getClass:[] @TO@ MethodInvocation@@instance.getClass() '
+    - '---------------INS MethodInvocation@@withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName())
+      @TO@ SimpleName@@MethodName:spy:[instance] '
+    - '------------------INS MethodInvocation@@MethodName:withSettings:[] @TO@ MethodInvocation@@withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()) '
+    - '------------------INS MethodInvocation@@MethodName:spiedInstance:[instance]
+      @TO@ MethodInvocation@@withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()) '
+    - '---------------------INS SimpleName@@instance @TO@ MethodInvocation@@MethodName:spiedInstance:[instance] '
+    - '------------------INS MethodInvocation@@MethodName:defaultAnswer:[Mockito.CALLS_REAL_METHODS]
+      @TO@ MethodInvocation@@withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()) '
+    - '---------------------INS QualifiedName@@Mockito.CALLS_REAL_METHODS @TO@ MethodInvocation@@MethodName:defaultAnswer:[Mockito.CALLS_REAL_METHODS] '
+    - '------------------------INS SimpleName@@Mockito @TO@ QualifiedName@@Mockito.CALLS_REAL_METHODS '
+    - '------------------------INS SimpleName@@CALLS_REAL_METHODS @TO@ QualifiedName@@Mockito.CALLS_REAL_METHODS '
+    - '------------------INS SimpleName@@MethodName:name:[field.getName()] @TO@ MethodInvocation@@withSettings().spiedInstance(instance).defaultAnswer(Mockito.CALLS_REAL_METHODS).name(field.getName()) '
+    - '---------------------INS MethodInvocation@@field.getName() @TO@ SimpleName@@MethodName:name:[field.getName()] '
+    - '------------------------INS SimpleName@@Name:field @TO@ MethodInvocation@@field.getName() '
+    - '------------------------INS SimpleName@@MethodName:getName:[] @TO@ MethodInvocation@@field.getName() '
+  repair_actions_cnt: 1

@@ -1,0 +1,130 @@
+1 bug_id: Closure-57
+2 src folder:
+  name of src folder: src
+  number of files: 419
+  number of java files: 405
+  number of src classes: 1303
+  number of test classes: 215
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.ClosureCodingConventionTest#testRequire
+  failing tests:
+  - com.google.javascript.jscomp.ClosureCodingConventionTest
+  number of all test cases: 7175
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 0.0
+  purification via delta debugging: 167.111
+  repair actions extraction: 0.894
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.ClosureCodingConventionTest#testRequire: 1269
+  fixed:
+    com.google.javascript.jscomp.ClosureCodingConventionTest#testRequire: 1270
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_57/src/com/google/javascript/jscomp/ClosureCodingConvention.java\t\
+    2020-10-23 07:19:37.316480169 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_57/purify/patch/com/google/javascript/jscomp/ClosureCodingConvention.java\t\
+    2020-10-23 07:19:37.316480169 -0400\n@@ -194,7 +194,7 @@\n         String qualifiedName\
+    \ = callee.getQualifiedName();\n         if (functionName.equals(qualifiedName))\
+    \ {\n           Node target = callee.getNext();\n-          if (target != null)\
+    \ {\n+          if (target != null && target.getType() == Token.STRING) {\n  \
+    \           className = target.getString();\n           }\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_57/src/com/google/javascript/jscomp/ClosureCodingConvention.java\t\
+    2020-10-23 07:22:52.398125237 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_57/purify/purified/com/google/javascript/jscomp/ClosureCodingConvention.java\t\
+    2020-10-23 07:22:52.398125237 -0400\n@@ -194,7 +194,7 @@\n         String qualifiedName\
+    \ = callee.getQualifiedName();\n         if (functionName.equals(qualifiedName))\
+    \ {\n           Node target = callee.getNext();\n-          if (target != null)\
+    \ {\n+          if (target != null && target.getType() == Token.STRING) {\n  \
+    \           className = target.getString();\n           }\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ClosureCodingConvention:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:target != null @TO@ InfixExpression:target
+      != null && target.getType() == Token.STRING '
+    - '---INS InfixExpression@@target != null && target.getType() == Token.STRING
+      @TO@ IfStatement@@InfixExpression:target != null '
+    - '------INS InfixExpression@@target != null @TO@ InfixExpression@@target != null
+      && target.getType() == Token.STRING '
+    - '---------MOV SimpleName@@target @TO@ InfixExpression@@target != null '
+    - '---------MOV Operator@@!= @TO@ InfixExpression@@target != null '
+    - '---------MOV NullLiteral@@null @TO@ InfixExpression@@target != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@target != null && target.getType()
+      == Token.STRING '
+    - '------INS InfixExpression@@target.getType() == Token.STRING @TO@ InfixExpression@@target
+      != null && target.getType() == Token.STRING '
+    - '---------INS MethodInvocation@@target.getType() @TO@ InfixExpression@@target.getType()
+      == Token.STRING '
+    - '------------INS SimpleName@@Name:target @TO@ MethodInvocation@@target.getType() '
+    - '------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@target.getType() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@target.getType() == Token.STRING '
+    - '---------INS QualifiedName@@Token.STRING @TO@ InfixExpression@@target.getType()
+      == Token.STRING '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.STRING '
+    - '------------INS SimpleName@@STRING @TO@ QualifiedName@@Token.STRING '
+    - '---DEL InfixExpression@@target != null '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/ClosureCodingConvention:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:target != null @TO@ InfixExpression:target
+      != null && target.getType() == Token.STRING '
+    - '---INS InfixExpression@@target != null && target.getType() == Token.STRING
+      @TO@ IfStatement@@InfixExpression:target != null '
+    - '------INS InfixExpression@@target != null @TO@ InfixExpression@@target != null
+      && target.getType() == Token.STRING '
+    - '---------MOV SimpleName@@target @TO@ InfixExpression@@target != null '
+    - '---------MOV Operator@@!= @TO@ InfixExpression@@target != null '
+    - '---------MOV NullLiteral@@null @TO@ InfixExpression@@target != null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@target != null && target.getType()
+      == Token.STRING '
+    - '------INS InfixExpression@@target.getType() == Token.STRING @TO@ InfixExpression@@target
+      != null && target.getType() == Token.STRING '
+    - '---------INS MethodInvocation@@target.getType() @TO@ InfixExpression@@target.getType()
+      == Token.STRING '
+    - '------------INS SimpleName@@Name:target @TO@ MethodInvocation@@target.getType() '
+    - '------------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@target.getType() '
+    - '---------INS Operator@@== @TO@ InfixExpression@@target.getType() == Token.STRING '
+    - '---------INS QualifiedName@@Token.STRING @TO@ InfixExpression@@target.getType()
+      == Token.STRING '
+    - '------------INS SimpleName@@Token @TO@ QualifiedName@@Token.STRING '
+    - '------------INS SimpleName@@STRING @TO@ QualifiedName@@Token.STRING '
+    - '---DEL InfixExpression@@target != null '
+  files_cnt: '1'
+  repair_actions_cnt: 1

@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_70/src/main/java/org/apache/commons/math/analysis/solvers/BisectionSolver.java	2020-10-21 13:10:29.114503307 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_70/purify/purified/org/apache/commons/math/analysis/solvers/BisectionSolver.java	2020-10-21 13:10:29.114503307 -0400
+@@ -69,7 +69,7 @@
+     /** {@inheritDoc} */
+     public double solve(final UnivariateRealFunction f, double min, double max, double initial)
+         throws MaxIterationsExceededException, FunctionEvaluationException {
+-        return solve(min, max);
++        return solve(f, min, max);
+     }
+ 
+     /** {@inheritDoc} */

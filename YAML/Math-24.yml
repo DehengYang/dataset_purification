@@ -1,0 +1,118 @@
+1 bug_id: Math-24
+2 src folder:
+  name of src folder: java
+  number of files: 648
+  number of java files: 647
+  number of src classes: 854
+  number of test classes: 323
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.optimization.univariate.BrentOptimizerTest#testMath855
+  failing tests:
+  - org.apache.commons.math3.optimization.univariate.BrentOptimizerTest
+  number of all test cases: 4137
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.617
+  purification via delta debugging: 457.455
+  repair actions extraction: 0.89
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.optimization.univariate.BrentOptimizerTest#testMath855: 312
+  fixed:
+    org.apache.commons.math3.optimization.univariate.BrentOptimizerTest#testMath855: 317
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 2
+  covDel: 2
+  cov_patch_lines: 4
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 2
+  ori_patch_lines: 4
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 2
+  original: 2
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 1
+  failFail: 1
+  passed: 1
+  total: 3
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_24/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java\t\
+    2020-10-22 05:47:37.487821025 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_24/purify/patch/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java\t\
+    2020-10-22 05:47:37.487821025 -0400\n@@ -227,7 +227,7 @@\n \n                \
+    \ if (checker != null) {\n                     if (checker.converged(iter, previous,\
+    \ current)) {\n-                        return current;\n+                   \
+    \     return best(current, previous, isMinim);\n                     }\n     \
+    \            }\n \n@@ -264,7 +264,7 @@\n                     }\n             \
+    \    }\n             } else { // Default termination (Brent's criterion).\n- \
+    \               return current;\n+                return best(current, previous,\
+    \ isMinim);\n             }\n             ++iter;\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_24/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java\t\
+    2020-10-22 05:55:33.301571569 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_24/purify/purified/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java\t\
+    2020-10-22 05:55:33.301571569 -0400\n@@ -264,7 +264,7 @@\n                   \
+    \  }\n                 }\n             } else { // Default termination (Brent's\
+    \ criterion).\n-                return current;\n+                return best(current,\
+    \ previous, isMinim);\n             }\n             ++iter;\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/univariate/BrentOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@SimpleName:current @TO@ MethodInvocation:best(current,previous,isMinim) '
+    - '---INS MethodInvocation@@best(current,previous,isMinim) @TO@ ReturnStatement@@SimpleName:current '
+    - '------INS SimpleName@@MethodName:best:[current, previous, isMinim] @TO@ MethodInvocation@@best(current,previous,isMinim) '
+    - '---------INS SimpleName@@current @TO@ SimpleName@@MethodName:best:[current,
+      previous, isMinim] '
+    - '---------INS SimpleName@@previous @TO@ SimpleName@@MethodName:best:[current,
+      previous, isMinim] '
+    - '---------INS SimpleName@@isMinim @TO@ SimpleName@@MethodName:best:[current,
+      previous, isMinim] '
+    - '---DEL SimpleName@@current '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@SimpleName:current @TO@ MethodInvocation:best(current,previous,isMinim) '
+    - '---DEL SimpleName@@current '
+    - '---INS MethodInvocation@@best(current,previous,isMinim) @TO@ ReturnStatement@@SimpleName:current '
+    - '------INS SimpleName@@MethodName:best:[current, previous, isMinim] @TO@ MethodInvocation@@best(current,previous,isMinim) '
+    - '---------INS SimpleName@@current @TO@ SimpleName@@MethodName:best:[current,
+      previous, isMinim] '
+    - '---------INS SimpleName@@previous @TO@ SimpleName@@MethodName:best:[current,
+      previous, isMinim] '
+    - '---------INS SimpleName@@isMinim @TO@ SimpleName@@MethodName:best:[current,
+      previous, isMinim] '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/optimization/univariate/BrentOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@SimpleName:current @TO@ MethodInvocation:best(current,previous,isMinim) '
+    - '---INS MethodInvocation@@best(current,previous,isMinim) @TO@ ReturnStatement@@SimpleName:current '
+    - '------INS SimpleName@@MethodName:best:[current, previous, isMinim] @TO@ MethodInvocation@@best(current,previous,isMinim) '
+    - '---------INS SimpleName@@current @TO@ SimpleName@@MethodName:best:[current,
+      previous, isMinim] '
+    - '---------INS SimpleName@@previous @TO@ SimpleName@@MethodName:best:[current,
+      previous, isMinim] '
+    - '---------INS SimpleName@@isMinim @TO@ SimpleName@@MethodName:best:[current,
+      previous, isMinim] '
+    - '---DEL SimpleName@@current '
+  repair_actions_cnt: 1

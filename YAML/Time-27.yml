@@ -1,0 +1,158 @@
+1 bug_id: Time-27
+2 src folder:
+  name of src folder: java
+  number of files: 182
+  number of java files: 156
+  number of src classes: 226
+  number of test classes: 122
+3 test (cases):
+  failing test cases:
+  - org.joda.time.format.TestPeriodFormatterBuilder#testBug2495455
+  failing tests:
+  - org.joda.time.format.TestPeriodFormatterBuilder
+  number of all test cases: 3791
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.367
+  purification via delta debugging: 35.477
+  repair actions extraction: 2.005
+5 stmts covered by failing cases:
+  buggy:
+    org.joda.time.format.TestPeriodFormatterBuilder#testBug2495455: 1436
+  fixed:
+    org.joda.time.format.TestPeriodFormatterBuilder#testBug2495455: 1426
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 2
+  covDel: 0
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 2
+  oriDel: 0
+  ori_patch_lines: 2
+  purAdd: 2
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_27/src/main/java/org/joda/time/format/PeriodFormatterBuilder.java\t\
+    2020-10-20 23:34:34.227213148 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_27/purify/patch/org/joda/time/format/PeriodFormatterBuilder.java\t\
+    2020-10-20 23:34:34.227213148 -0400\n@@ -798,9 +798,11 @@\n         int size =\
+    \ elementPairs.size();\n         if (size >= 2 && elementPairs.get(0) instanceof\
+    \ Separator) {\n             Separator sep = (Separator) elementPairs.get(0);\n\
+    +            if (sep.iAfterParser == null && sep.iAfterPrinter == null) {\n  \
+    \               PeriodFormatter f = toFormatter(elementPairs.subList(2, size),\
+    \ notPrinter, notParser);\n                 sep = sep.finish(f.getPrinter(), f.getParser());\n\
+    \                 return new PeriodFormatter(sep, sep);\n+            }\n    \
+    \     }\n         Object[] comp = createComposite(elementPairs);\n         if\
+    \ (notPrinter) {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Time_27/src/main/java/org/joda/time/format/PeriodFormatterBuilder.java\t\
+    2020-10-20 23:35:26.924736033 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_27/purify/purified/org/joda/time/format/PeriodFormatterBuilder.java\t\
+    2020-10-20 23:35:26.924736033 -0400\n@@ -798,9 +798,11 @@\n         int size =\
+    \ elementPairs.size();\n         if (size >= 2 && elementPairs.get(0) instanceof\
+    \ Separator) {\n             Separator sep = (Separator) elementPairs.get(0);\n\
+    +            if (sep.iAfterParser == null && sep.iAfterPrinter == null) {\n  \
+    \               PeriodFormatter f = toFormatter(elementPairs.subList(2, size),\
+    \ notPrinter, notParser);\n                 sep = sep.finish(f.getPrinter(), f.getParser());\n\
+    \                 return new PeriodFormatter(sep, sep);\n+            }\n    \
+    \     }\n         Object[] comp = createComposite(elementPairs);\n         if\
+    \ (notPrinter) {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/format/PeriodFormatterBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:sep.iAfterParser == null && sep.iAfterPrinter
+      == null @TO@ IfStatement@@InfixExpression:size >= 2 && elementPairs.get(0) instanceof
+      Separator '
+    - '---INS InfixExpression@@sep.iAfterParser == null && sep.iAfterPrinter == null
+      @TO@ IfStatement@@InfixExpression:sep.iAfterParser == null && sep.iAfterPrinter
+      == null '
+    - '------INS InfixExpression@@sep.iAfterParser == null @TO@ InfixExpression@@sep.iAfterParser
+      == null && sep.iAfterPrinter == null '
+    - '---------INS QualifiedName@@sep.iAfterParser @TO@ InfixExpression@@sep.iAfterParser
+      == null '
+    - '------------INS SimpleName@@sep @TO@ QualifiedName@@sep.iAfterParser '
+    - '------------INS SimpleName@@iAfterParser @TO@ QualifiedName@@sep.iAfterParser '
+    - '---------INS Operator@@== @TO@ InfixExpression@@sep.iAfterParser == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@sep.iAfterParser == null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@sep.iAfterParser == null && sep.iAfterPrinter
+      == null '
+    - '------INS InfixExpression@@sep.iAfterPrinter == null @TO@ InfixExpression@@sep.iAfterParser
+      == null && sep.iAfterPrinter == null '
+    - '---------INS QualifiedName@@sep.iAfterPrinter @TO@ InfixExpression@@sep.iAfterPrinter
+      == null '
+    - '------------INS SimpleName@@sep @TO@ QualifiedName@@sep.iAfterPrinter '
+    - '------------INS SimpleName@@iAfterPrinter @TO@ QualifiedName@@sep.iAfterPrinter '
+    - '---------INS Operator@@== @TO@ InfixExpression@@sep.iAfterPrinter == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@sep.iAfterPrinter == null '
+    - '---MOV VariableDeclarationStatement@@PeriodFormatter f=toFormatter(elementPairs.subList(2,size),notPrinter,notParser);
+      @TO@ IfStatement@@InfixExpression:sep.iAfterParser == null && sep.iAfterPrinter
+      == null '
+    - '---MOV ExpressionStatement@@Assignment:sep=sep.finish(f.getPrinter(),f.getParser())
+      @TO@ IfStatement@@InfixExpression:sep.iAfterParser == null && sep.iAfterPrinter
+      == null '
+    - '---MOV ReturnStatement@@ClassInstanceCreation:new PeriodFormatter(sep,sep)
+      @TO@ IfStatement@@InfixExpression:sep.iAfterParser == null && sep.iAfterPrinter
+      == null '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/joda/time/format/PeriodFormatterBuilder:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:sep.iAfterParser == null && sep.iAfterPrinter
+      == null @TO@ IfStatement@@InfixExpression:size >= 2 && elementPairs.get(0) instanceof
+      Separator '
+    - '---INS InfixExpression@@sep.iAfterParser == null && sep.iAfterPrinter == null
+      @TO@ IfStatement@@InfixExpression:sep.iAfterParser == null && sep.iAfterPrinter
+      == null '
+    - '------INS InfixExpression@@sep.iAfterParser == null @TO@ InfixExpression@@sep.iAfterParser
+      == null && sep.iAfterPrinter == null '
+    - '---------INS QualifiedName@@sep.iAfterParser @TO@ InfixExpression@@sep.iAfterParser
+      == null '
+    - '------------INS SimpleName@@sep @TO@ QualifiedName@@sep.iAfterParser '
+    - '------------INS SimpleName@@iAfterParser @TO@ QualifiedName@@sep.iAfterParser '
+    - '---------INS Operator@@== @TO@ InfixExpression@@sep.iAfterParser == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@sep.iAfterParser == null '
+    - '------INS Operator@@&& @TO@ InfixExpression@@sep.iAfterParser == null && sep.iAfterPrinter
+      == null '
+    - '------INS InfixExpression@@sep.iAfterPrinter == null @TO@ InfixExpression@@sep.iAfterParser
+      == null && sep.iAfterPrinter == null '
+    - '---------INS QualifiedName@@sep.iAfterPrinter @TO@ InfixExpression@@sep.iAfterPrinter
+      == null '
+    - '------------INS SimpleName@@sep @TO@ QualifiedName@@sep.iAfterPrinter '
+    - '------------INS SimpleName@@iAfterPrinter @TO@ QualifiedName@@sep.iAfterPrinter '
+    - '---------INS Operator@@== @TO@ InfixExpression@@sep.iAfterPrinter == null '
+    - '---------INS NullLiteral@@null @TO@ InfixExpression@@sep.iAfterPrinter == null '
+    - '---MOV VariableDeclarationStatement@@PeriodFormatter f=toFormatter(elementPairs.subList(2,size),notPrinter,notParser);
+      @TO@ IfStatement@@InfixExpression:sep.iAfterParser == null && sep.iAfterPrinter
+      == null '
+    - '---MOV ExpressionStatement@@Assignment:sep=sep.finish(f.getPrinter(),f.getParser())
+      @TO@ IfStatement@@InfixExpression:sep.iAfterParser == null && sep.iAfterPrinter
+      == null '
+    - '---MOV ReturnStatement@@ClassInstanceCreation:new PeriodFormatter(sep,sep)
+      @TO@ IfStatement@@InfixExpression:sep.iAfterParser == null && sep.iAfterPrinter
+      == null '
+  repair_actions_cnt: 1

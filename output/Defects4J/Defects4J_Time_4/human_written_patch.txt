@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_4/src/main/java/org/joda/time/Partial.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_4/fixed-version/src/main/java/org/joda/time/Partial.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_4/src/main/java/org/joda/time/Partial.java	2020-03-01 00:01:17.087351164 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Time_4/fixed-version/src/main/java/org/joda/time/Partial.java	2020-03-01 00:01:18.455415613 -0800
+@@ -461,7 +461,7 @@
+             System.arraycopy(iValues, i, newValues, i + 1, newValues.length - i - 1);
+             // use public constructor to ensure full validation
+             // this isn't overly efficient, but is safe
+-            Partial newPartial = new Partial(iChronology, newTypes, newValues);
++            Partial newPartial = new Partial(newTypes, newValues, iChronology);
+             iChronology.validate(newPartial, newValues);
+             return newPartial;
+         }

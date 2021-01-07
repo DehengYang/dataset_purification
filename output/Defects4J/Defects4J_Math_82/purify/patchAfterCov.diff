@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_82/src/main/java/org/apache/commons/math/optimization/linear/SimplexSolver.java	2020-10-21 13:40:27.158490055 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_82/purify/assertBeforeMut/org/apache/commons/math/optimization/linear/SimplexSolver.java	2020-10-21 13:40:27.158490055 -0400
+@@ -79,7 +79,7 @@
+         for (int i = tableau.getNumObjectiveFunctions(); i < tableau.getHeight(); i++) {
+             final double rhs = tableau.getEntry(i, tableau.getWidth() - 1);
+             final double entry = tableau.getEntry(i, col);
+-            if (MathUtils.compareTo(entry, 0, epsilon) >= 0) {
++            if (MathUtils.compareTo(entry, 0, epsilon) > 0) {
+                 final double ratio = rhs / entry;
+                 if (ratio < minRatio) {
+                     minRatio = ratio;

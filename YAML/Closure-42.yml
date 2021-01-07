@@ -1,0 +1,158 @@
+1 bug_id: Closure-42
+2 src folder:
+  name of src folder: src
+  number of files: 409
+  number of java files: 395
+  number of src classes: 1322
+  number of test classes: 219
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.parsing.ParserTest#testForEach
+  failing tests:
+  - com.google.javascript.jscomp.parsing.ParserTest
+  number of all test cases: 7241
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.324
+  purification via delta debugging: 457.251
+  repair actions extraction: 2.37
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.parsing.ParserTest#testForEach: 1090
+  fixed:
+    com.google.javascript.jscomp.parsing.ParserTest#testForEach: 999
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 7
+  covDel: 0
+  cov_patch_lines: 7
+  delta_patch_lines: 6
+  oriAdd: 7
+  oriDel: 0
+  ori_patch_lines: 7
+  purAdd: 6
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 17
+  failFail: 0
+  passed: 1
+  total: 18
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_42/src/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-22 12:45:27.961016699 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_42/purify/patch/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-22 12:45:27.961016699 -0400\n@@ -565,8 +565,15 @@\n \n     @Override\n\
+    \     Node processForInLoop(ForInLoop loopNode) {\n+      if (loopNode.isForEach())\
+    \ {\n+        errorReporter.error(\n+            \"unsupported language extension:\
+    \ for each\",\n+            sourceName,\n+            loopNode.getLineno(), \"\
+    \", 0);\n \n         // Return the bare minimum to put the AST in a valid state.\n\
+    +        return newNode(Token.EXPR_RESULT, Node.newNumber(0));\n+      }\n   \
+    \    return newNode(\n           Token.FOR,\n           transform(loopNode.getIterator()),"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_42/src/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-22 12:53:33.551049084 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_42/purify/purified/com/google/javascript/jscomp/parsing/IRFactory.java\t\
+    2020-10-22 12:53:33.551049084 -0400\n@@ -565,8 +565,14 @@\n \n     @Override\n\
+    \     Node processForInLoop(ForInLoop loopNode) {\n+      if (loopNode.isForEach())\
+    \ {\n+        errorReporter.error(\n+            \"unsupported language extension:\
+    \ for each\",\n+            sourceName,\n+            loopNode.getLineno(), \"\
+    \", 0);\n \n         // Return the bare minimum to put the AST in a valid state.\n\
+    +      }\n       return newNode(\n           Token.FOR,\n           transform(loopNode.getIterator()),"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/IRFactory:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:loopNode.isForEach() @TO@ MethodDeclaration@@@@Node,
+      MethodName:processForInLoop, @@Argus:ForInLoop+loopNode+ '
+    - '---INS MethodInvocation@@loopNode.isForEach() @TO@ IfStatement@@MethodInvocation:loopNode.isForEach() '
+    - '------INS SimpleName@@Name:loopNode @TO@ MethodInvocation@@loopNode.isForEach() '
+    - '------INS SimpleName@@MethodName:isForEach:[] @TO@ MethodInvocation@@loopNode.isForEach() '
+    - '---INS ExpressionStatement@@MethodInvocation:errorReporter.error("unsupported
+      language extension: for each",sourceName,loopNode.getLineno(),"",0) @TO@ IfStatement@@MethodInvocation:loopNode.isForEach() '
+    - '------INS MethodInvocation@@errorReporter.error("unsupported language extension:
+      for each",sourceName,loopNode.getLineno(),"",0) @TO@ ExpressionStatement@@MethodInvocation:errorReporter.error("unsupported
+      language extension: for each",sourceName,loopNode.getLineno(),"",0) '
+    - '---------INS SimpleName@@Name:errorReporter @TO@ MethodInvocation@@errorReporter.error("unsupported
+      language extension: for each",sourceName,loopNode.getLineno(),"",0) '
+    - '---------INS SimpleName@@MethodName:error:["unsupported language extension:
+      for each", sourceName, loopNode.getLineno(), "", 0] @TO@ MethodInvocation@@errorReporter.error("unsupported
+      language extension: for each",sourceName,loopNode.getLineno(),"",0) '
+    - '------------INS StringLiteral@@"unsupported language extension: for each" @TO@
+      SimpleName@@MethodName:error:["unsupported language extension: for each", sourceName,
+      loopNode.getLineno(), "", 0] '
+    - '------------INS SimpleName@@sourceName @TO@ SimpleName@@MethodName:error:["unsupported
+      language extension: for each", sourceName, loopNode.getLineno(), "", 0] '
+    - '------------INS MethodInvocation@@loopNode.getLineno() @TO@ SimpleName@@MethodName:error:["unsupported
+      language extension: for each", sourceName, loopNode.getLineno(), "", 0] '
+    - '---------------INS SimpleName@@Name:loopNode @TO@ MethodInvocation@@loopNode.getLineno() '
+    - '---------------INS SimpleName@@MethodName:getLineno:[] @TO@ MethodInvocation@@loopNode.getLineno() '
+    - '------------INS StringLiteral@@"" @TO@ SimpleName@@MethodName:error:["unsupported
+      language extension: for each", sourceName, loopNode.getLineno(), "", 0] '
+    - '------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:error:["unsupported
+      language extension: for each", sourceName, loopNode.getLineno(), "", 0] '
+    - '---INS ReturnStatement@@MethodInvocation:newNode(Token.EXPR_RESULT,Node.newNumber(0))
+      @TO@ IfStatement@@MethodInvocation:loopNode.isForEach() '
+    - '------INS MethodInvocation@@newNode(Token.EXPR_RESULT,Node.newNumber(0)) @TO@
+      ReturnStatement@@MethodInvocation:newNode(Token.EXPR_RESULT,Node.newNumber(0)) '
+    - '---------INS SimpleName@@MethodName:newNode:[Token.EXPR_RESULT, Node.newNumber(0)]
+      @TO@ MethodInvocation@@newNode(Token.EXPR_RESULT,Node.newNumber(0)) '
+    - '------------INS QualifiedName@@Token.EXPR_RESULT @TO@ SimpleName@@MethodName:newNode:[Token.EXPR_RESULT,
+      Node.newNumber(0)] '
+    - '---------------INS SimpleName@@Token @TO@ QualifiedName@@Token.EXPR_RESULT '
+    - '---------------INS SimpleName@@EXPR_RESULT @TO@ QualifiedName@@Token.EXPR_RESULT '
+    - '------------INS MethodInvocation@@Node.newNumber(0) @TO@ SimpleName@@MethodName:newNode:[Token.EXPR_RESULT,
+      Node.newNumber(0)] '
+    - '---------------INS SimpleName@@Name:Node @TO@ MethodInvocation@@Node.newNumber(0) '
+    - '---------------INS SimpleName@@MethodName:newNumber:[0] @TO@ MethodInvocation@@Node.newNumber(0) '
+    - '------------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:newNumber:[0] '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/IRFactory:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:loopNode.isForEach() @TO@ MethodDeclaration@@@@Node,
+      MethodName:processForInLoop, @@Argus:ForInLoop+loopNode+ '
+    - '---INS MethodInvocation@@loopNode.isForEach() @TO@ IfStatement@@MethodInvocation:loopNode.isForEach() '
+    - '------INS SimpleName@@Name:loopNode @TO@ MethodInvocation@@loopNode.isForEach() '
+    - '------INS SimpleName@@MethodName:isForEach:[] @TO@ MethodInvocation@@loopNode.isForEach() '
+    - '---INS ExpressionStatement@@MethodInvocation:errorReporter.error("unsupported
+      language extension: for each",sourceName,loopNode.getLineno(),"",0) @TO@ IfStatement@@MethodInvocation:loopNode.isForEach() '
+    - '------INS MethodInvocation@@errorReporter.error("unsupported language extension:
+      for each",sourceName,loopNode.getLineno(),"",0) @TO@ ExpressionStatement@@MethodInvocation:errorReporter.error("unsupported
+      language extension: for each",sourceName,loopNode.getLineno(),"",0) '
+    - '---------INS SimpleName@@Name:errorReporter @TO@ MethodInvocation@@errorReporter.error("unsupported
+      language extension: for each",sourceName,loopNode.getLineno(),"",0) '
+    - '---------INS SimpleName@@MethodName:error:["unsupported language extension:
+      for each", sourceName, loopNode.getLineno(), "", 0] @TO@ MethodInvocation@@errorReporter.error("unsupported
+      language extension: for each",sourceName,loopNode.getLineno(),"",0) '
+    - '------------INS StringLiteral@@"unsupported language extension: for each" @TO@
+      SimpleName@@MethodName:error:["unsupported language extension: for each", sourceName,
+      loopNode.getLineno(), "", 0] '
+    - '------------INS SimpleName@@sourceName @TO@ SimpleName@@MethodName:error:["unsupported
+      language extension: for each", sourceName, loopNode.getLineno(), "", 0] '
+    - '------------INS MethodInvocation@@loopNode.getLineno() @TO@ SimpleName@@MethodName:error:["unsupported
+      language extension: for each", sourceName, loopNode.getLineno(), "", 0] '
+    - '---------------INS SimpleName@@Name:loopNode @TO@ MethodInvocation@@loopNode.getLineno() '
+    - '---------------INS SimpleName@@MethodName:getLineno:[] @TO@ MethodInvocation@@loopNode.getLineno() '
+    - '------------INS StringLiteral@@"" @TO@ SimpleName@@MethodName:error:["unsupported
+      language extension: for each", sourceName, loopNode.getLineno(), "", 0] '
+    - '------------INS NumberLiteral@@0 @TO@ SimpleName@@MethodName:error:["unsupported
+      language extension: for each", sourceName, loopNode.getLineno(), "", 0] '
+  files_cnt: '1'
+  repair_actions_cnt: 1

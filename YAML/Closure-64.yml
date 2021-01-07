@@ -1,0 +1,632 @@
+1 bug_id: Closure-64
+2 src folder:
+  name of src folder: src
+  number of files: 407
+  number of java files: 394
+  number of src classes: 1272
+  number of test classes: 209
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CommandLineRunnerTest#testES5StrictUseStrictMultipleInputs
+  failing tests:
+  - com.google.javascript.jscomp.CommandLineRunnerTest
+  number of all test cases: 7101
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.552
+  purification via delta debugging: 264.514
+  repair actions extraction: 3.068
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testES5StrictUseStrictMultipleInputs: 5957
+  fixed:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testES5StrictUseStrictMultipleInputs: 5957
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 4
+  covDel: 4
+  cov_patch_lines: 8
+  delta_patch_lines: 6
+  oriAdd: 4
+  oriDel: 4
+  ori_patch_lines: 8
+  purAdd: 3
+  purDel: 3
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 4
+  original: 4
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 13
+  failFail: 1
+  passed: 0
+  total: 14
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_64/src/com/google/javascript/jscomp/Compiler.java\t\
+    2020-10-23 08:03:09.988129864 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_64/purify/patch/com/google/javascript/jscomp/Compiler.java\t\
+    2020-10-23 08:03:09.988129864 -0400\n@@ -1429,7 +1429,7 @@\n \n         // if\
+    \ LanguageMode is ECMASCRIPT5_STRICT, only print 'use strict'\n         // for\
+    \ the first input file\n-        String code = toSource(root, sourceMap);\n+ \
+    \       String code = toSource(root, sourceMap, inputSeqNum == 0);\n         if\
+    \ (!code.isEmpty()) {\n           cb.append(code);\n \n@@ -1458,19 +1458,19 @@\n\
+    \   @Override\n   String toSource(Node n) {\n     initCompilerOptionsIfTesting();\n\
+    -    return toSource(n, null);\n+    return toSource(n, null, true);\n   }\n \n\
+    \   /**\n    * Generates JavaScript source code for an AST.\n    */\n-  private\
+    \ String toSource(Node n, SourceMap sourceMap) {\n+  private String toSource(Node\
+    \ n, SourceMap sourceMap, boolean firstOutput) {\n     CodePrinter.Builder builder\
+    \ = new CodePrinter.Builder(n);\n     builder.setPrettyPrint(options.prettyPrint);\n\
+    \     builder.setLineBreak(options.lineBreak);\n     builder.setSourceMap(sourceMap);\n\
+    \     builder.setSourceMapDetailLevel(options.sourceMapDetailLevel);\n-    builder.setTagAsStrict(\n\
+    +    builder.setTagAsStrict(firstOutput &&\n         options.getLanguageOut()\
+    \ == LanguageMode.ECMASCRIPT5_STRICT);\n     builder.setLineLengthThreshold(options.lineLengthThreshold);"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_64/src/com/google/javascript/jscomp/Compiler.java\t\
+    2020-10-23 08:08:05.836697188 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_64/purify/purified/com/google/javascript/jscomp/Compiler.java\t\
+    2020-10-23 08:08:05.836697188 -0400\n@@ -1429,7 +1429,7 @@\n \n         // if\
+    \ LanguageMode is ECMASCRIPT5_STRICT, only print 'use strict'\n         // for\
+    \ the first input file\n-        String code = toSource(root, sourceMap);\n+ \
+    \       String code = toSource(root, sourceMap, inputSeqNum == 0);\n         if\
+    \ (!code.isEmpty()) {\n           cb.append(code);\n \n@@ -1464,13 +1464,13 @@\n\
+    \   /**\n    * Generates JavaScript source code for an AST.\n    */\n-  private\
+    \ String toSource(Node n, SourceMap sourceMap) {\n+  private String toSource(Node\
+    \ n, SourceMap sourceMap, boolean firstOutput) {\n     CodePrinter.Builder builder\
+    \ = new CodePrinter.Builder(n);\n     builder.setPrettyPrint(options.prettyPrint);\n\
+    \     builder.setLineBreak(options.lineBreak);\n     builder.setSourceMap(sourceMap);\n\
+    \     builder.setSourceMapDetailLevel(options.sourceMapDetailLevel);\n-    builder.setTagAsStrict(\n\
+    +    builder.setTagAsStrict(firstOutput &&\n         options.getLanguageOut()\
+    \ == LanguageMode.ECMASCRIPT5_STRICT);\n     builder.setLineLengthThreshold(options.lineLengthThreshold);"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/Compiler:
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD ExpressionStatement@@MethodInvocation:runInCompilerThread(new Callable<Void>()
+    - '  public Void call() throws Exception '
+    - '    if (options.printInputDelimiter) '
+    - '      if ((cb.getLength() > 0) && !cb.endsWith("\n")) '
+    - '        cb.append("\n")'
+    - '      '
+    - '      Preconditions.checkState(root.getType() == Token.SCRIPT)'
+    - '      String delimiter=options.inputDelimiter'
+    - '      String sourceName=(String)root.getProp(Node.SOURCENAME_PROP)'
+    - '      Preconditions.checkState(sourceName != null)'
+    - '      Preconditions.checkState(!sourceName.isEmpty())'
+    - '      delimiter=delimiter.replaceAll("%name%",sourceName).replaceAll("%num%",String.valueOf(inputSeqNum))'
+    - '      cb.append(delimiter).append("\n")'
+    - '    '
+    - '    if (root.getJSDocInfo() != null && root.getJSDocInfo().getLicense() !=
+      null) '
+    - '      cb.append("/*\n").append(root.getJSDocInfo().getLicense()).append("*/\n")'
+    - '    '
+    - '    if (options.sourceMapOutputPath != null) '
+    - '      sourceMap.setStartingPosition(cb.getLineIndex(),cb.getColumnIndex())'
+    - '    '
+    - '    String code=toSource(root,sourceMap)'
+    - '    if (!code.isEmpty()) '
+    - '      cb.append(code)'
+    - '      int length=code.length()'
+    - '      char lastChar=code.charAt(length - 1)'
+    - '      char secondLastChar=length >= 2 ? code.charAt(length - 2) : ''\0'''
+    - '      boolean hasSemiColon=lastChar == '';'' || (lastChar == ''\n'' && secondLastChar
+      == '';'')'
+    - '      if (!hasSemiColon) '
+    - '        cb.append(";")'
+    - '      '
+    - '    '
+    - '    return null'
+    - '  '
+    - ''
+    - ) @TO@ MethodInvocation:runInCompilerThread(new Callable<Void>()
+    - '  public Void call() throws Exception '
+    - '    if (options.printInputDelimiter) '
+    - '      if ((cb.getLength() > 0) && !cb.endsWith("\n")) '
+    - '        cb.append("\n")'
+    - '      '
+    - '      Preconditions.checkState(root.getType() == Token.SCRIPT)'
+    - '      String delimiter=options.inputDelimiter'
+    - '      String sourceName=(String)root.getProp(Node.SOURCENAME_PROP)'
+    - '      Preconditions.checkState(sourceName != null)'
+    - '      Preconditions.checkState(!sourceName.isEmpty())'
+    - '      delimiter=delimiter.replaceAll("%name%",sourceName).replaceAll("%num%",String.valueOf(inputSeqNum))'
+    - '      cb.append(delimiter).append("\n")'
+    - '    '
+    - '    if (root.getJSDocInfo() != null && root.getJSDocInfo().getLicense() !=
+      null) '
+    - '      cb.append("/*\n").append(root.getJSDocInfo().getLicense()).append("*/\n")'
+    - '    '
+    - '    if (options.sourceMapOutputPath != null) '
+    - '      sourceMap.setStartingPosition(cb.getLineIndex(),cb.getColumnIndex())'
+    - '    '
+    - '    String code=toSource(root,sourceMap,inputSeqNum == 0)'
+    - '    if (!code.isEmpty()) '
+    - '      cb.append(code)'
+    - '      int length=code.length()'
+    - '      char lastChar=code.charAt(length - 1)'
+    - '      char secondLastChar=length >= 2 ? code.charAt(length - 2) : ''\0'''
+    - '      boolean hasSemiColon=lastChar == '';'' || (lastChar == ''\n'' && secondLastChar
+      == '';'')'
+    - '      if (!hasSemiColon) '
+    - '        cb.append(";")'
+    - '      '
+    - '    '
+    - '    return null'
+    - '  '
+    - ''
+    - ') '
+    - '---UPD MethodInvocation@@runInCompilerThread(new Callable<Void>()'
+    - '  public Void call() throws Exception '
+    - '    if (options.printInputDelimiter) '
+    - '      if ((cb.getLength() > 0) && !cb.endsWith("\n")) '
+    - '        cb.append("\n")'
+    - '      '
+    - '      Preconditions.checkState(root.getType() == Token.SCRIPT)'
+    - '      String delimiter=options.inputDelimiter'
+    - '      String sourceName=(String)root.getProp(Node.SOURCENAME_PROP)'
+    - '      Preconditions.checkState(sourceName != null)'
+    - '      Preconditions.checkState(!sourceName.isEmpty())'
+    - '      delimiter=delimiter.replaceAll("%name%",sourceName).replaceAll("%num%",String.valueOf(inputSeqNum))'
+    - '      cb.append(delimiter).append("\n")'
+    - '    '
+    - '    if (root.getJSDocInfo() != null && root.getJSDocInfo().getLicense() !=
+      null) '
+    - '      cb.append("/*\n").append(root.getJSDocInfo().getLicense()).append("*/\n")'
+    - '    '
+    - '    if (options.sourceMapOutputPath != null) '
+    - '      sourceMap.setStartingPosition(cb.getLineIndex(),cb.getColumnIndex())'
+    - '    '
+    - '    String code=toSource(root,sourceMap)'
+    - '    if (!code.isEmpty()) '
+    - '      cb.append(code)'
+    - '      int length=code.length()'
+    - '      char lastChar=code.charAt(length - 1)'
+    - '      char secondLastChar=length >= 2 ? code.charAt(length - 2) : ''\0'''
+    - '      boolean hasSemiColon=lastChar == '';'' || (lastChar == ''\n'' && secondLastChar
+      == '';'')'
+    - '      if (!hasSemiColon) '
+    - '        cb.append(";")'
+    - '      '
+    - '    '
+    - '    return null'
+    - '  '
+    - ''
+    - ) @TO@ runInCompilerThread(new Callable<Void>()
+    - '  public Void call() throws Exception '
+    - '    if (options.printInputDelimiter) '
+    - '      if ((cb.getLength() > 0) && !cb.endsWith("\n")) '
+    - '        cb.append("\n")'
+    - '      '
+    - '      Preconditions.checkState(root.getType() == Token.SCRIPT)'
+    - '      String delimiter=options.inputDelimiter'
+    - '      String sourceName=(String)root.getProp(Node.SOURCENAME_PROP)'
+    - '      Preconditions.checkState(sourceName != null)'
+    - '      Preconditions.checkState(!sourceName.isEmpty())'
+    - '      delimiter=delimiter.replaceAll("%name%",sourceName).replaceAll("%num%",String.valueOf(inputSeqNum))'
+    - '      cb.append(delimiter).append("\n")'
+    - '    '
+    - '    if (root.getJSDocInfo() != null && root.getJSDocInfo().getLicense() !=
+      null) '
+    - '      cb.append("/*\n").append(root.getJSDocInfo().getLicense()).append("*/\n")'
+    - '    '
+    - '    if (options.sourceMapOutputPath != null) '
+    - '      sourceMap.setStartingPosition(cb.getLineIndex(),cb.getColumnIndex())'
+    - '    '
+    - '    String code=toSource(root,sourceMap,inputSeqNum == 0)'
+    - '    if (!code.isEmpty()) '
+    - '      cb.append(code)'
+    - '      int length=code.length()'
+    - '      char lastChar=code.charAt(length - 1)'
+    - '      char secondLastChar=length >= 2 ? code.charAt(length - 2) : ''\0'''
+    - '      boolean hasSemiColon=lastChar == '';'' || (lastChar == ''\n'' && secondLastChar
+      == '';'')'
+    - '      if (!hasSemiColon) '
+    - '        cb.append(";")'
+    - '      '
+    - '    '
+    - '    return null'
+    - '  '
+    - ''
+    - ') '
+    - '------UPD SimpleName@@MethodName:runInCompilerThread:[new Callable<Void>()'
+    - '  public Void call() throws Exception '
+    - '    if (options.printInputDelimiter) '
+    - '      if ((cb.getLength() > 0) && !cb.endsWith("\n")) '
+    - '        cb.append("\n")'
+    - '      '
+    - '      Preconditions.checkState(root.getType() == Token.SCRIPT)'
+    - '      String delimiter=options.inputDelimiter'
+    - '      String sourceName=(String)root.getProp(Node.SOURCENAME_PROP)'
+    - '      Preconditions.checkState(sourceName != null)'
+    - '      Preconditions.checkState(!sourceName.isEmpty())'
+    - '      delimiter=delimiter.replaceAll("%name%",sourceName).replaceAll("%num%",String.valueOf(inputSeqNum))'
+    - '      cb.append(delimiter).append("\n")'
+    - '    '
+    - '    if (root.getJSDocInfo() != null && root.getJSDocInfo().getLicense() !=
+      null) '
+    - '      cb.append("/*\n").append(root.getJSDocInfo().getLicense()).append("*/\n")'
+    - '    '
+    - '    if (options.sourceMapOutputPath != null) '
+    - '      sourceMap.setStartingPosition(cb.getLineIndex(),cb.getColumnIndex())'
+    - '    '
+    - '    String code=toSource(root,sourceMap)'
+    - '    if (!code.isEmpty()) '
+    - '      cb.append(code)'
+    - '      int length=code.length()'
+    - '      char lastChar=code.charAt(length - 1)'
+    - '      char secondLastChar=length >= 2 ? code.charAt(length - 2) : ''\0'''
+    - '      boolean hasSemiColon=lastChar == '';'' || (lastChar == ''\n'' && secondLastChar
+      == '';'')'
+    - '      if (!hasSemiColon) '
+    - '        cb.append(";")'
+    - '      '
+    - '    '
+    - '    return null'
+    - '  '
+    - ''
+    - '] @TO@ MethodName:runInCompilerThread:[new Callable<Void>()'
+    - '  public Void call() throws Exception '
+    - '    if (options.printInputDelimiter) '
+    - '      if ((cb.getLength() > 0) && !cb.endsWith("\n")) '
+    - '        cb.append("\n")'
+    - '      '
+    - '      Preconditions.checkState(root.getType() == Token.SCRIPT)'
+    - '      String delimiter=options.inputDelimiter'
+    - '      String sourceName=(String)root.getProp(Node.SOURCENAME_PROP)'
+    - '      Preconditions.checkState(sourceName != null)'
+    - '      Preconditions.checkState(!sourceName.isEmpty())'
+    - '      delimiter=delimiter.replaceAll("%name%",sourceName).replaceAll("%num%",String.valueOf(inputSeqNum))'
+    - '      cb.append(delimiter).append("\n")'
+    - '    '
+    - '    if (root.getJSDocInfo() != null && root.getJSDocInfo().getLicense() !=
+      null) '
+    - '      cb.append("/*\n").append(root.getJSDocInfo().getLicense()).append("*/\n")'
+    - '    '
+    - '    if (options.sourceMapOutputPath != null) '
+    - '      sourceMap.setStartingPosition(cb.getLineIndex(),cb.getColumnIndex())'
+    - '    '
+    - '    String code=toSource(root,sourceMap,inputSeqNum == 0)'
+    - '    if (!code.isEmpty()) '
+    - '      cb.append(code)'
+    - '      int length=code.length()'
+    - '      char lastChar=code.charAt(length - 1)'
+    - '      char secondLastChar=length >= 2 ? code.charAt(length - 2) : ''\0'''
+    - '      boolean hasSemiColon=lastChar == '';'' || (lastChar == ''\n'' && secondLastChar
+      == '';'')'
+    - '      if (!hasSemiColon) '
+    - '        cb.append(";")'
+    - '      '
+    - '    '
+    - '    return null'
+    - '  '
+    - ''
+    - '] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@String code=toSource(root,sourceMap); @TO@
+      String code=toSource(root,sourceMap,inputSeqNum == 0); '
+    - '---UPD VariableDeclarationFragment@@code=toSource(root,sourceMap) @TO@ code=toSource(root,sourceMap,inputSeqNum
+      == 0) '
+    - '------UPD MethodInvocation@@toSource(root,sourceMap) @TO@ toSource(root,sourceMap,inputSeqNum
+      == 0) '
+    - '---------UPD SimpleName@@MethodName:toSource:[root, sourceMap] @TO@ MethodName:toSource:[root,
+      sourceMap, inputSeqNum == 0] '
+    - '------------INS InfixExpression@@inputSeqNum == 0 @TO@ SimpleName@@MethodName:toSource:[root,
+      sourceMap] '
+    - '---------------INS SimpleName@@inputSeqNum @TO@ InfixExpression@@inputSeqNum
+      == 0 '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@inputSeqNum == 0 '
+    - '---------------INS NumberLiteral@@0 @TO@ InfixExpression@@inputSeqNum == 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:toSource(n,null) @TO@ MethodInvocation:toSource(n,null,true) '
+    - '---UPD MethodInvocation@@toSource(n,null) @TO@ toSource(n,null,true) '
+    - '------UPD SimpleName@@MethodName:toSource:[n, null] @TO@ MethodName:toSource:[n,
+      null, true] '
+    - '---------INS BooleanLiteral@@true @TO@ SimpleName@@MethodName:toSource:[n,
+      null] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@String, MethodName:toSource, @@Argus:Node+n+SourceMap+sourceMap+
+      @TO@ private, @@String, MethodName:toSource, @@Argus:Node+n+SourceMap+sourceMap+boolean+firstOutput+ '
+    - '---INS SingleVariableDeclaration@@boolean firstOutput @TO@ MethodDeclaration@@private,
+      @@String, MethodName:toSource, @@Argus:Node+n+SourceMap+sourceMap+ '
+    - '------INS PrimitiveType@@boolean @TO@ SingleVariableDeclaration@@boolean firstOutput '
+    - '------INS SimpleName@@firstOutput @TO@ SingleVariableDeclaration@@boolean firstOutput '
+    - '---UPD ExpressionStatement@@MethodInvocation:builder.setTagAsStrict(options.getLanguageOut()
+      == LanguageMode.ECMASCRIPT5_STRICT) @TO@ MethodInvocation:builder.setTagAsStrict(firstOutput
+      && options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT) '
+    - '------UPD MethodInvocation@@builder.setTagAsStrict(options.getLanguageOut()
+      == LanguageMode.ECMASCRIPT5_STRICT) @TO@ builder.setTagAsStrict(firstOutput
+      && options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT) '
+    - '---------UPD SimpleName@@MethodName:setTagAsStrict:[options.getLanguageOut()
+      == LanguageMode.ECMASCRIPT5_STRICT] @TO@ MethodName:setTagAsStrict:[firstOutput
+      && options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT] '
+    - '------------INS InfixExpression@@firstOutput && options.getLanguageOut() ==
+      LanguageMode.ECMASCRIPT5_STRICT @TO@ SimpleName@@MethodName:setTagAsStrict:[options.getLanguageOut()
+      == LanguageMode.ECMASCRIPT5_STRICT] '
+    - '---------------MOV InfixExpression@@options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT
+      @TO@ InfixExpression@@firstOutput && options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT '
+    - '---------------INS SimpleName@@firstOutput @TO@ InfixExpression@@firstOutput
+      && options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT '
+    - '---------------INS Operator@@&& @TO@ InfixExpression@@firstOutput && options.getLanguageOut()
+      == LanguageMode.ECMASCRIPT5_STRICT '
+  files_cnt: '1'
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/Compiler:
+  - !yamlable/myyaml.Action
+    lines:
+    - UPD ExpressionStatement@@MethodInvocation:runInCompilerThread(new Callable<Void>()
+    - '  public Void call() throws Exception '
+    - '    if (options.printInputDelimiter) '
+    - '      if ((cb.getLength() > 0) && !cb.endsWith("\n")) '
+    - '        cb.append("\n")'
+    - '      '
+    - '      Preconditions.checkState(root.getType() == Token.SCRIPT)'
+    - '      String delimiter=options.inputDelimiter'
+    - '      String sourceName=(String)root.getProp(Node.SOURCENAME_PROP)'
+    - '      Preconditions.checkState(sourceName != null)'
+    - '      Preconditions.checkState(!sourceName.isEmpty())'
+    - '      delimiter=delimiter.replaceAll("%name%",sourceName).replaceAll("%num%",String.valueOf(inputSeqNum))'
+    - '      cb.append(delimiter).append("\n")'
+    - '    '
+    - '    if (root.getJSDocInfo() != null && root.getJSDocInfo().getLicense() !=
+      null) '
+    - '      cb.append("/*\n").append(root.getJSDocInfo().getLicense()).append("*/\n")'
+    - '    '
+    - '    if (options.sourceMapOutputPath != null) '
+    - '      sourceMap.setStartingPosition(cb.getLineIndex(),cb.getColumnIndex())'
+    - '    '
+    - '    String code=toSource(root,sourceMap)'
+    - '    if (!code.isEmpty()) '
+    - '      cb.append(code)'
+    - '      int length=code.length()'
+    - '      char lastChar=code.charAt(length - 1)'
+    - '      char secondLastChar=length >= 2 ? code.charAt(length - 2) : ''\0'''
+    - '      boolean hasSemiColon=lastChar == '';'' || (lastChar == ''\n'' && secondLastChar
+      == '';'')'
+    - '      if (!hasSemiColon) '
+    - '        cb.append(";")'
+    - '      '
+    - '    '
+    - '    return null'
+    - '  '
+    - ''
+    - ) @TO@ MethodInvocation:runInCompilerThread(new Callable<Void>()
+    - '  public Void call() throws Exception '
+    - '    if (options.printInputDelimiter) '
+    - '      if ((cb.getLength() > 0) && !cb.endsWith("\n")) '
+    - '        cb.append("\n")'
+    - '      '
+    - '      Preconditions.checkState(root.getType() == Token.SCRIPT)'
+    - '      String delimiter=options.inputDelimiter'
+    - '      String sourceName=(String)root.getProp(Node.SOURCENAME_PROP)'
+    - '      Preconditions.checkState(sourceName != null)'
+    - '      Preconditions.checkState(!sourceName.isEmpty())'
+    - '      delimiter=delimiter.replaceAll("%name%",sourceName).replaceAll("%num%",String.valueOf(inputSeqNum))'
+    - '      cb.append(delimiter).append("\n")'
+    - '    '
+    - '    if (root.getJSDocInfo() != null && root.getJSDocInfo().getLicense() !=
+      null) '
+    - '      cb.append("/*\n").append(root.getJSDocInfo().getLicense()).append("*/\n")'
+    - '    '
+    - '    if (options.sourceMapOutputPath != null) '
+    - '      sourceMap.setStartingPosition(cb.getLineIndex(),cb.getColumnIndex())'
+    - '    '
+    - '    String code=toSource(root,sourceMap,inputSeqNum == 0)'
+    - '    if (!code.isEmpty()) '
+    - '      cb.append(code)'
+    - '      int length=code.length()'
+    - '      char lastChar=code.charAt(length - 1)'
+    - '      char secondLastChar=length >= 2 ? code.charAt(length - 2) : ''\0'''
+    - '      boolean hasSemiColon=lastChar == '';'' || (lastChar == ''\n'' && secondLastChar
+      == '';'')'
+    - '      if (!hasSemiColon) '
+    - '        cb.append(";")'
+    - '      '
+    - '    '
+    - '    return null'
+    - '  '
+    - ''
+    - ') '
+    - '---UPD MethodInvocation@@runInCompilerThread(new Callable<Void>()'
+    - '  public Void call() throws Exception '
+    - '    if (options.printInputDelimiter) '
+    - '      if ((cb.getLength() > 0) && !cb.endsWith("\n")) '
+    - '        cb.append("\n")'
+    - '      '
+    - '      Preconditions.checkState(root.getType() == Token.SCRIPT)'
+    - '      String delimiter=options.inputDelimiter'
+    - '      String sourceName=(String)root.getProp(Node.SOURCENAME_PROP)'
+    - '      Preconditions.checkState(sourceName != null)'
+    - '      Preconditions.checkState(!sourceName.isEmpty())'
+    - '      delimiter=delimiter.replaceAll("%name%",sourceName).replaceAll("%num%",String.valueOf(inputSeqNum))'
+    - '      cb.append(delimiter).append("\n")'
+    - '    '
+    - '    if (root.getJSDocInfo() != null && root.getJSDocInfo().getLicense() !=
+      null) '
+    - '      cb.append("/*\n").append(root.getJSDocInfo().getLicense()).append("*/\n")'
+    - '    '
+    - '    if (options.sourceMapOutputPath != null) '
+    - '      sourceMap.setStartingPosition(cb.getLineIndex(),cb.getColumnIndex())'
+    - '    '
+    - '    String code=toSource(root,sourceMap)'
+    - '    if (!code.isEmpty()) '
+    - '      cb.append(code)'
+    - '      int length=code.length()'
+    - '      char lastChar=code.charAt(length - 1)'
+    - '      char secondLastChar=length >= 2 ? code.charAt(length - 2) : ''\0'''
+    - '      boolean hasSemiColon=lastChar == '';'' || (lastChar == ''\n'' && secondLastChar
+      == '';'')'
+    - '      if (!hasSemiColon) '
+    - '        cb.append(";")'
+    - '      '
+    - '    '
+    - '    return null'
+    - '  '
+    - ''
+    - ) @TO@ runInCompilerThread(new Callable<Void>()
+    - '  public Void call() throws Exception '
+    - '    if (options.printInputDelimiter) '
+    - '      if ((cb.getLength() > 0) && !cb.endsWith("\n")) '
+    - '        cb.append("\n")'
+    - '      '
+    - '      Preconditions.checkState(root.getType() == Token.SCRIPT)'
+    - '      String delimiter=options.inputDelimiter'
+    - '      String sourceName=(String)root.getProp(Node.SOURCENAME_PROP)'
+    - '      Preconditions.checkState(sourceName != null)'
+    - '      Preconditions.checkState(!sourceName.isEmpty())'
+    - '      delimiter=delimiter.replaceAll("%name%",sourceName).replaceAll("%num%",String.valueOf(inputSeqNum))'
+    - '      cb.append(delimiter).append("\n")'
+    - '    '
+    - '    if (root.getJSDocInfo() != null && root.getJSDocInfo().getLicense() !=
+      null) '
+    - '      cb.append("/*\n").append(root.getJSDocInfo().getLicense()).append("*/\n")'
+    - '    '
+    - '    if (options.sourceMapOutputPath != null) '
+    - '      sourceMap.setStartingPosition(cb.getLineIndex(),cb.getColumnIndex())'
+    - '    '
+    - '    String code=toSource(root,sourceMap,inputSeqNum == 0)'
+    - '    if (!code.isEmpty()) '
+    - '      cb.append(code)'
+    - '      int length=code.length()'
+    - '      char lastChar=code.charAt(length - 1)'
+    - '      char secondLastChar=length >= 2 ? code.charAt(length - 2) : ''\0'''
+    - '      boolean hasSemiColon=lastChar == '';'' || (lastChar == ''\n'' && secondLastChar
+      == '';'')'
+    - '      if (!hasSemiColon) '
+    - '        cb.append(";")'
+    - '      '
+    - '    '
+    - '    return null'
+    - '  '
+    - ''
+    - ') '
+    - '------UPD SimpleName@@MethodName:runInCompilerThread:[new Callable<Void>()'
+    - '  public Void call() throws Exception '
+    - '    if (options.printInputDelimiter) '
+    - '      if ((cb.getLength() > 0) && !cb.endsWith("\n")) '
+    - '        cb.append("\n")'
+    - '      '
+    - '      Preconditions.checkState(root.getType() == Token.SCRIPT)'
+    - '      String delimiter=options.inputDelimiter'
+    - '      String sourceName=(String)root.getProp(Node.SOURCENAME_PROP)'
+    - '      Preconditions.checkState(sourceName != null)'
+    - '      Preconditions.checkState(!sourceName.isEmpty())'
+    - '      delimiter=delimiter.replaceAll("%name%",sourceName).replaceAll("%num%",String.valueOf(inputSeqNum))'
+    - '      cb.append(delimiter).append("\n")'
+    - '    '
+    - '    if (root.getJSDocInfo() != null && root.getJSDocInfo().getLicense() !=
+      null) '
+    - '      cb.append("/*\n").append(root.getJSDocInfo().getLicense()).append("*/\n")'
+    - '    '
+    - '    if (options.sourceMapOutputPath != null) '
+    - '      sourceMap.setStartingPosition(cb.getLineIndex(),cb.getColumnIndex())'
+    - '    '
+    - '    String code=toSource(root,sourceMap)'
+    - '    if (!code.isEmpty()) '
+    - '      cb.append(code)'
+    - '      int length=code.length()'
+    - '      char lastChar=code.charAt(length - 1)'
+    - '      char secondLastChar=length >= 2 ? code.charAt(length - 2) : ''\0'''
+    - '      boolean hasSemiColon=lastChar == '';'' || (lastChar == ''\n'' && secondLastChar
+      == '';'')'
+    - '      if (!hasSemiColon) '
+    - '        cb.append(";")'
+    - '      '
+    - '    '
+    - '    return null'
+    - '  '
+    - ''
+    - '] @TO@ MethodName:runInCompilerThread:[new Callable<Void>()'
+    - '  public Void call() throws Exception '
+    - '    if (options.printInputDelimiter) '
+    - '      if ((cb.getLength() > 0) && !cb.endsWith("\n")) '
+    - '        cb.append("\n")'
+    - '      '
+    - '      Preconditions.checkState(root.getType() == Token.SCRIPT)'
+    - '      String delimiter=options.inputDelimiter'
+    - '      String sourceName=(String)root.getProp(Node.SOURCENAME_PROP)'
+    - '      Preconditions.checkState(sourceName != null)'
+    - '      Preconditions.checkState(!sourceName.isEmpty())'
+    - '      delimiter=delimiter.replaceAll("%name%",sourceName).replaceAll("%num%",String.valueOf(inputSeqNum))'
+    - '      cb.append(delimiter).append("\n")'
+    - '    '
+    - '    if (root.getJSDocInfo() != null && root.getJSDocInfo().getLicense() !=
+      null) '
+    - '      cb.append("/*\n").append(root.getJSDocInfo().getLicense()).append("*/\n")'
+    - '    '
+    - '    if (options.sourceMapOutputPath != null) '
+    - '      sourceMap.setStartingPosition(cb.getLineIndex(),cb.getColumnIndex())'
+    - '    '
+    - '    String code=toSource(root,sourceMap,inputSeqNum == 0)'
+    - '    if (!code.isEmpty()) '
+    - '      cb.append(code)'
+    - '      int length=code.length()'
+    - '      char lastChar=code.charAt(length - 1)'
+    - '      char secondLastChar=length >= 2 ? code.charAt(length - 2) : ''\0'''
+    - '      boolean hasSemiColon=lastChar == '';'' || (lastChar == ''\n'' && secondLastChar
+      == '';'')'
+    - '      if (!hasSemiColon) '
+    - '        cb.append(";")'
+    - '      '
+    - '    '
+    - '    return null'
+    - '  '
+    - ''
+    - '] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@String code=toSource(root,sourceMap); @TO@
+      String code=toSource(root,sourceMap,inputSeqNum == 0); '
+    - '---UPD VariableDeclarationFragment@@code=toSource(root,sourceMap) @TO@ code=toSource(root,sourceMap,inputSeqNum
+      == 0) '
+    - '------UPD MethodInvocation@@toSource(root,sourceMap) @TO@ toSource(root,sourceMap,inputSeqNum
+      == 0) '
+    - '---------UPD SimpleName@@MethodName:toSource:[root, sourceMap] @TO@ MethodName:toSource:[root,
+      sourceMap, inputSeqNum == 0] '
+    - '------------INS InfixExpression@@inputSeqNum == 0 @TO@ SimpleName@@MethodName:toSource:[root,
+      sourceMap] '
+    - '---------------INS SimpleName@@inputSeqNum @TO@ InfixExpression@@inputSeqNum
+      == 0 '
+    - '---------------INS Operator@@== @TO@ InfixExpression@@inputSeqNum == 0 '
+    - '---------------INS NumberLiteral@@0 @TO@ InfixExpression@@inputSeqNum == 0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@String, MethodName:toSource, @@Argus:Node+n+SourceMap+sourceMap+
+      @TO@ private, @@String, MethodName:toSource, @@Argus:Node+n+SourceMap+sourceMap+boolean+firstOutput+ '
+    - '---INS SingleVariableDeclaration@@boolean firstOutput @TO@ MethodDeclaration@@private,
+      @@String, MethodName:toSource, @@Argus:Node+n+SourceMap+sourceMap+ '
+    - '------INS PrimitiveType@@boolean @TO@ SingleVariableDeclaration@@boolean firstOutput '
+    - '------INS SimpleName@@firstOutput @TO@ SingleVariableDeclaration@@boolean firstOutput '
+    - '---UPD ExpressionStatement@@MethodInvocation:builder.setTagAsStrict(options.getLanguageOut()
+      == LanguageMode.ECMASCRIPT5_STRICT) @TO@ MethodInvocation:builder.setTagAsStrict(firstOutput
+      && options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT) '
+    - '------UPD MethodInvocation@@builder.setTagAsStrict(options.getLanguageOut()
+      == LanguageMode.ECMASCRIPT5_STRICT) @TO@ builder.setTagAsStrict(firstOutput
+      && options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT) '
+    - '---------UPD SimpleName@@MethodName:setTagAsStrict:[options.getLanguageOut()
+      == LanguageMode.ECMASCRIPT5_STRICT] @TO@ MethodName:setTagAsStrict:[firstOutput
+      && options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT] '
+    - '------------INS InfixExpression@@firstOutput && options.getLanguageOut() ==
+      LanguageMode.ECMASCRIPT5_STRICT @TO@ SimpleName@@MethodName:setTagAsStrict:[options.getLanguageOut()
+      == LanguageMode.ECMASCRIPT5_STRICT] '
+    - '---------------MOV InfixExpression@@options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT
+      @TO@ InfixExpression@@firstOutput && options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT '
+    - '---------------INS SimpleName@@firstOutput @TO@ InfixExpression@@firstOutput
+      && options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT '
+    - '---------------INS Operator@@&& @TO@ InfixExpression@@firstOutput && options.getLanguageOut()
+      == LanguageMode.ECMASCRIPT5_STRICT '
+  files_cnt: '1'
+  repair_actions_cnt: 3

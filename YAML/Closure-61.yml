@@ -1,0 +1,158 @@
+1 bug_id: Closure-61
+2 src folder:
+  name of src folder: src
+  number of files: 409
+  number of java files: 396
+  number of src classes: 1280
+  number of test classes: 211
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest#testRemoveUselessOps
+  - com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest#testCall1
+  - com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest#testCall2
+  failing tests:
+  - com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest
+  number of all test cases: 7117
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.862
+  purification via delta debugging: 286.057
+  repair actions extraction: 2.518
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest#testCall1: 2502
+    com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest#testCall2: 2553
+    com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest#testRemoveUselessOps: 2464
+  fixed:
+    com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest#testCall1: 2361
+    com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest#testCall2: 2373
+    com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest#testRemoveUselessOps: 3023
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 6
+  covDel: 0
+  cov_patch_lines: 6
+  delta_patch_lines: 6
+  oriAdd: 6
+  oriDel: 0
+  ori_patch_lines: 6
+  purAdd: 6
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 11
+  failFail: 1
+  passed: 0
+  total: 12
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_61/src/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 07:48:01.425822951 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_61/purify/patch/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 07:48:01.421822835 -0400\n@@ -955,6 +955,12 @@\n       }\n \n     \
+    \  // Functions in the \"Math\" namespace have no side effects.\n+      if (nameNode.getFirstChild().getType()\
+    \ == Token.NAME) {\n+        String namespaceName = nameNode.getFirstChild().getString();\n\
+    +        if (namespaceName.equals(\"Math\")) {\n+          return false;\n+  \
+    \      }\n+      }\n \n       if (compiler != null && !compiler.hasRegExpGlobalReferences())\
+    \ {\n         if (nameNode.getFirstChild().getType() == Token.REGEXP"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_61/src/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 07:53:18.411001471 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_61/purify/purified/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 07:53:18.407001355 -0400\n@@ -955,6 +955,12 @@\n       }\n \n     \
+    \  // Functions in the \"Math\" namespace have no side effects.\n+      if (nameNode.getFirstChild().getType()\
+    \ == Token.NAME) {\n+        String namespaceName = nameNode.getFirstChild().getString();\n\
+    +        if (namespaceName.equals(\"Math\")) {\n+          return false;\n+  \
+    \      }\n+      }\n \n       if (compiler != null && !compiler.hasRegExpGlobalReferences())\
+    \ {\n         if (nameNode.getFirstChild().getType() == Token.REGEXP"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NodeUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:nameNode.getFirstChild().getType() == Token.NAME
+      @TO@ IfStatement@@InfixExpression:nameNode.getType() == Token.GETPROP '
+    - '---INS InfixExpression@@nameNode.getFirstChild().getType() == Token.NAME @TO@
+      IfStatement@@InfixExpression:nameNode.getFirstChild().getType() == Token.NAME '
+    - '------INS MethodInvocation@@nameNode.getFirstChild().getType() @TO@ InfixExpression@@nameNode.getFirstChild().getType()
+      == Token.NAME '
+    - '---------INS SimpleName@@Name:nameNode @TO@ MethodInvocation@@nameNode.getFirstChild().getType() '
+    - '---------INS MethodInvocation@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@nameNode.getFirstChild().getType() '
+    - '---------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@nameNode.getFirstChild().getType() '
+    - '------INS Operator@@== @TO@ InfixExpression@@nameNode.getFirstChild().getType()
+      == Token.NAME '
+    - '------INS QualifiedName@@Token.NAME @TO@ InfixExpression@@nameNode.getFirstChild().getType()
+      == Token.NAME '
+    - '---------INS SimpleName@@Token @TO@ QualifiedName@@Token.NAME '
+    - '---------INS SimpleName@@NAME @TO@ QualifiedName@@Token.NAME '
+    - '---INS VariableDeclarationStatement@@String namespaceName=nameNode.getFirstChild().getString();
+      @TO@ IfStatement@@InfixExpression:nameNode.getFirstChild().getType() == Token.NAME '
+    - '------INS SimpleType@@String @TO@ VariableDeclarationStatement@@String namespaceName=nameNode.getFirstChild().getString(); '
+    - '------INS VariableDeclarationFragment@@namespaceName=nameNode.getFirstChild().getString()
+      @TO@ VariableDeclarationStatement@@String namespaceName=nameNode.getFirstChild().getString(); '
+    - '---------INS SimpleName@@namespaceName @TO@ VariableDeclarationFragment@@namespaceName=nameNode.getFirstChild().getString() '
+    - '---------INS MethodInvocation@@nameNode.getFirstChild().getString() @TO@ VariableDeclarationFragment@@namespaceName=nameNode.getFirstChild().getString() '
+    - '------------INS SimpleName@@Name:nameNode @TO@ MethodInvocation@@nameNode.getFirstChild().getString() '
+    - '------------INS MethodInvocation@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@nameNode.getFirstChild().getString() '
+    - '------------INS SimpleName@@MethodName:getString:[] @TO@ MethodInvocation@@nameNode.getFirstChild().getString() '
+    - '---INS IfStatement@@MethodInvocation:namespaceName.equals("Math") @TO@ IfStatement@@InfixExpression:nameNode.getFirstChild().getType()
+      == Token.NAME '
+    - '------INS MethodInvocation@@namespaceName.equals("Math") @TO@ IfStatement@@MethodInvocation:namespaceName.equals("Math") '
+    - '---------INS SimpleName@@Name:namespaceName @TO@ MethodInvocation@@namespaceName.equals("Math") '
+    - '---------INS SimpleName@@MethodName:equals:["Math"] @TO@ MethodInvocation@@namespaceName.equals("Math") '
+    - '------------INS StringLiteral@@"Math" @TO@ SimpleName@@MethodName:equals:["Math"] '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@MethodInvocation:namespaceName.equals("Math") '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NodeUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:nameNode.getFirstChild().getType() == Token.NAME
+      @TO@ IfStatement@@InfixExpression:nameNode.getType() == Token.GETPROP '
+    - '---INS InfixExpression@@nameNode.getFirstChild().getType() == Token.NAME @TO@
+      IfStatement@@InfixExpression:nameNode.getFirstChild().getType() == Token.NAME '
+    - '------INS MethodInvocation@@nameNode.getFirstChild().getType() @TO@ InfixExpression@@nameNode.getFirstChild().getType()
+      == Token.NAME '
+    - '---------INS SimpleName@@Name:nameNode @TO@ MethodInvocation@@nameNode.getFirstChild().getType() '
+    - '---------INS MethodInvocation@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@nameNode.getFirstChild().getType() '
+    - '---------INS SimpleName@@MethodName:getType:[] @TO@ MethodInvocation@@nameNode.getFirstChild().getType() '
+    - '------INS Operator@@== @TO@ InfixExpression@@nameNode.getFirstChild().getType()
+      == Token.NAME '
+    - '------INS QualifiedName@@Token.NAME @TO@ InfixExpression@@nameNode.getFirstChild().getType()
+      == Token.NAME '
+    - '---------INS SimpleName@@Token @TO@ QualifiedName@@Token.NAME '
+    - '---------INS SimpleName@@NAME @TO@ QualifiedName@@Token.NAME '
+    - '---INS VariableDeclarationStatement@@String namespaceName=nameNode.getFirstChild().getString();
+      @TO@ IfStatement@@InfixExpression:nameNode.getFirstChild().getType() == Token.NAME '
+    - '------INS SimpleType@@String @TO@ VariableDeclarationStatement@@String namespaceName=nameNode.getFirstChild().getString(); '
+    - '------INS VariableDeclarationFragment@@namespaceName=nameNode.getFirstChild().getString()
+      @TO@ VariableDeclarationStatement@@String namespaceName=nameNode.getFirstChild().getString(); '
+    - '---------INS SimpleName@@namespaceName @TO@ VariableDeclarationFragment@@namespaceName=nameNode.getFirstChild().getString() '
+    - '---------INS MethodInvocation@@nameNode.getFirstChild().getString() @TO@ VariableDeclarationFragment@@namespaceName=nameNode.getFirstChild().getString() '
+    - '------------INS SimpleName@@Name:nameNode @TO@ MethodInvocation@@nameNode.getFirstChild().getString() '
+    - '------------INS MethodInvocation@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@nameNode.getFirstChild().getString() '
+    - '------------INS SimpleName@@MethodName:getString:[] @TO@ MethodInvocation@@nameNode.getFirstChild().getString() '
+    - '---INS IfStatement@@MethodInvocation:namespaceName.equals("Math") @TO@ IfStatement@@InfixExpression:nameNode.getFirstChild().getType()
+      == Token.NAME '
+    - '------INS MethodInvocation@@namespaceName.equals("Math") @TO@ IfStatement@@MethodInvocation:namespaceName.equals("Math") '
+    - '---------INS SimpleName@@Name:namespaceName @TO@ MethodInvocation@@namespaceName.equals("Math") '
+    - '---------INS SimpleName@@MethodName:equals:["Math"] @TO@ MethodInvocation@@namespaceName.equals("Math") '
+    - '------------INS StringLiteral@@"Math" @TO@ SimpleName@@MethodName:equals:["Math"] '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@MethodInvocation:namespaceName.equals("Math") '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+  files_cnt: '1'
+  repair_actions_cnt: 1

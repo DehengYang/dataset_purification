@@ -1,0 +1,13 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_2/src/main/java/org/apache/commons/lang3/LocaleUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_2/fixed-version/src/main/java/org/apache/commons/lang3/LocaleUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_2/src/main/java/org/apache/commons/lang3/LocaleUtils.java	2020-03-01 00:05:42.379850519 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_2/fixed-version/src/main/java/org/apache/commons/lang3/LocaleUtils.java	2020-03-01 00:05:45.812012228 -0800
+@@ -89,6 +89,9 @@
+         if (str == null) {
+             return null;
+         }
++        if (str.contains("#")) { // LANG-879 - Cannot handle Java 7 script & extensions
++            throw new IllegalArgumentException("Invalid locale format: " + str);
++        }
+         final int len = str.length();
+         if (len < 2) {
+             throw new IllegalArgumentException("Invalid locale format: " + str);

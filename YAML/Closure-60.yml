@@ -1,0 +1,144 @@
+1 bug_id: Closure-60
+2 src folder:
+  name of src folder: src
+  number of files: 410
+  number of java files: 397
+  number of src classes: 1281
+  number of test classes: 211
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.CommandLineRunnerTest#testIssue504
+  - com.google.javascript.jscomp.NodeUtilTest#testGetBooleanValue
+  failing tests:
+  - com.google.javascript.jscomp.CommandLineRunnerTest
+  - com.google.javascript.jscomp.NodeUtilTest
+  number of all test cases: 7123
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.774
+  purification via delta debugging: 665.546
+  repair actions extraction: 2.778
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testIssue504: 7634
+    com.google.javascript.jscomp.NodeUtilTest#testGetBooleanValue: 1277
+  fixed:
+    com.google.javascript.jscomp.CommandLineRunnerTest#testIssue504: 8476
+    com.google.javascript.jscomp.NodeUtilTest#testGetBooleanValue: 1334
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 5
+  covDel: 0
+  cov_patch_lines: 5
+  delta_patch_lines: 3
+  oriAdd: 5
+  oriDel: 0
+  ori_patch_lines: 5
+  purAdd: 3
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 3
+  failCompile: 6
+  failFail: 2
+  passed: 0
+  total: 11
+9 sibling repair actions:
+- 1 3 0.770949720670391
+- 1 4 0.770949720670391
+- 1 5 0.7374301675977654
+- 3 4 1.0
+- 3 5 0.958904109589041
+- 4 5 0.958904109589041
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_60/src/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 07:35:00.119199065 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_60/purify/patch/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 07:35:00.119199065 -0400\n@@ -105,6 +105,8 @@\n         // ignoring\
+    \ side-effects\n         return TernaryValue.TRUE;\n \n+      case Token.VOID:\n\
+    +        return TernaryValue.FALSE;\n \n       default:\n         return getPureBooleanValue(n);\n\
+    @@ -133,7 +135,10 @@\n         return TernaryValue.FALSE;\n \n       case Token.VOID:\n\
+    +        if (!mayHaveSideEffects(n.getFirstChild())) {\n           return TernaryValue.FALSE;\n\
+    +        }\n+        break;\n \n       case Token.NAME:\n         String name\
+    \ = n.getString();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_60/src/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 07:46:40.583481902 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_60/purify/purified/com/google/javascript/jscomp/NodeUtil.java\t\
+    2020-10-23 07:46:40.579481786 -0400\n@@ -105,6 +105,7 @@\n         // ignoring\
+    \ side-effects\n         return TernaryValue.TRUE;\n \n+      case Token.VOID:\n\
+    \ \n       default:\n         return getPureBooleanValue(n);\n@@ -133,7 +134,9\
+    \ @@\n         return TernaryValue.FALSE;\n \n       case Token.VOID:\n+     \
+    \   if (!mayHaveSideEffects(n.getFirstChild())) {\n           return TernaryValue.FALSE;\n\
+    +        }\n \n       case Token.NAME:\n         String name = n.getString();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NodeUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.VOID @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS QualifiedName@@Token.VOID @TO@ SwitchCase@@QualifiedName:Token.VOID '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.VOID '
+    - '------INS SimpleName@@VOID @TO@ QualifiedName@@Token.VOID '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ReturnStatement@@QualifiedName:TernaryValue.FALSE @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!mayHaveSideEffects(n.getFirstChild()) @TO@
+      SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS PrefixExpression@@!mayHaveSideEffects(n.getFirstChild()) @TO@ IfStatement@@PrefixExpression:!mayHaveSideEffects(n.getFirstChild()) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!mayHaveSideEffects(n.getFirstChild()) '
+    - '------INS MethodInvocation@@mayHaveSideEffects(n.getFirstChild()) @TO@ PrefixExpression@@!mayHaveSideEffects(n.getFirstChild()) '
+    - '---------INS SimpleName@@MethodName:mayHaveSideEffects:[n.getFirstChild()]
+      @TO@ MethodInvocation@@mayHaveSideEffects(n.getFirstChild()) '
+    - '------------INS MethodInvocation@@n.getFirstChild() @TO@ SimpleName@@MethodName:mayHaveSideEffects:[n.getFirstChild()] '
+    - '---------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getFirstChild() '
+    - '---------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@n.getFirstChild() '
+    - '---INS ReturnStatement@@QualifiedName:TernaryValue.FALSE @TO@ IfStatement@@PrefixExpression:!mayHaveSideEffects(n.getFirstChild()) '
+    - '------MOV QualifiedName@@TernaryValue.FALSE @TO@ ReturnStatement@@QualifiedName:TernaryValue.FALSE '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV BreakStatement@@ @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV BreakStatement@@ @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS BreakStatement@@ @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+  files_cnt: '1'
+  repair_actions_cnt: 6
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/NodeUtil:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS SwitchCase@@QualifiedName:Token.VOID @TO@ SwitchStatement@@MethodInvocation:n.getType() '
+    - '---INS QualifiedName@@Token.VOID @TO@ SwitchCase@@QualifiedName:Token.VOID '
+    - '------INS SimpleName@@Token @TO@ QualifiedName@@Token.VOID '
+    - '------INS SimpleName@@VOID @TO@ QualifiedName@@Token.VOID '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!mayHaveSideEffects(n.getFirstChild()) @TO@
+      SwitchStatement@@MethodInvocation:n.getType() '
+    - '---MOV ReturnStatement@@QualifiedName:TernaryValue.FALSE @TO@ IfStatement@@PrefixExpression:!mayHaveSideEffects(n.getFirstChild()) '
+    - '---INS PrefixExpression@@!mayHaveSideEffects(n.getFirstChild()) @TO@ IfStatement@@PrefixExpression:!mayHaveSideEffects(n.getFirstChild()) '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!mayHaveSideEffects(n.getFirstChild()) '
+    - '------INS MethodInvocation@@mayHaveSideEffects(n.getFirstChild()) @TO@ PrefixExpression@@!mayHaveSideEffects(n.getFirstChild()) '
+    - '---------INS SimpleName@@MethodName:mayHaveSideEffects:[n.getFirstChild()]
+      @TO@ MethodInvocation@@mayHaveSideEffects(n.getFirstChild()) '
+    - '------------INS MethodInvocation@@n.getFirstChild() @TO@ SimpleName@@MethodName:mayHaveSideEffects:[n.getFirstChild()] '
+    - '---------------INS SimpleName@@Name:n @TO@ MethodInvocation@@n.getFirstChild() '
+    - '---------------INS SimpleName@@MethodName:getFirstChild:[] @TO@ MethodInvocation@@n.getFirstChild() '
+  files_cnt: '1'
+  repair_actions_cnt: 2

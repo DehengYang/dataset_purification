@@ -1,0 +1,214 @@
+1 bug_id: Lang-42
+2 src folder:
+  name of src folder: java
+  number of files: 96
+  number of java files: 85
+  number of src classes: 132
+  number of test classes: 97
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang.StringEscapeUtilsTest#testEscapeHtmlHighUnicode
+  failing tests:
+  - org.apache.commons.lang.StringEscapeUtilsTest
+  number of all test cases: 1903
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 0.688
+  purification via delta debugging: 169.447
+  repair actions extraction: 1.482
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang.StringEscapeUtilsTest#testEscapeHtmlHighUnicode: 145
+  fixed:
+    org.apache.commons.lang.StringEscapeUtilsTest#testEscapeHtmlHighUnicode: 148
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 7
+  covDel: 2
+  cov_patch_lines: 9
+  delta_patch_lines: 9
+  oriAdd: 7
+  oriDel: 2
+  ori_patch_lines: 9
+  purAdd: 7
+  purDel: 2
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 2
+  original: 2
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 1
+  failCompile: 8
+  failFail: 14
+  passed: 0
+  total: 23
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_42/src/java/org/apache/commons/lang/Entities.java\t\
+    2020-10-21 03:37:33.064164897 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_42/purify/patch/org/apache/commons/lang/Entities.java\t\
+    2020-10-21 03:37:33.064164897 -0400\n@@ -825,10 +825,15 @@\n     public void escape(Writer\
+    \ writer, String str) throws IOException {\n         int len = str.length();\n\
+    \         for (int i = 0; i < len; i++) {\n-            char c = str.charAt(i);\n\
+    +            int c = Character.codePointAt(str, i); \n             String entityName\
+    \ = this.entityName(c);\n             if (entityName == null) {\n-           \
+    \     if (c > 0x7F) {\n+                if (c >= 0x010000 && i < len - 1) {\n\
+    +                    writer.write(\"&#\");\n+                    writer.write(Integer.toString(c,\
+    \ 10));\n+                    writer.write(';');\n+                    i++;\n\
+    +                } else if (c > 0x7F) { \n                     writer.write(\"\
+    &#\");\n                     writer.write(Integer.toString(c, 10));\n        \
+    \             writer.write(';');"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_42/src/java/org/apache/commons/lang/Entities.java\t\
+    2020-10-21 03:40:32.693353759 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_42/purify/purified/org/apache/commons/lang/Entities.java\t\
+    2020-10-21 03:40:32.693353759 -0400\n@@ -825,10 +825,15 @@\n     public void escape(Writer\
+    \ writer, String str) throws IOException {\n         int len = str.length();\n\
+    \         for (int i = 0; i < len; i++) {\n-            char c = str.charAt(i);\n\
+    +            int c = Character.codePointAt(str, i); \n             String entityName\
+    \ = this.entityName(c);\n             if (entityName == null) {\n-           \
+    \     if (c > 0x7F) {\n+                if (c >= 0x010000 && i < len - 1) {\n\
+    +                    writer.write(\"&#\");\n+                    writer.write(Integer.toString(c,\
+    \ 10));\n+                    writer.write(';');\n+                    i++;\n\
+    +                } else if (c > 0x7F) { \n                     writer.write(\"\
+    &#\");\n                     writer.write(Integer.toString(c, 10));\n        \
+    \             writer.write(';');"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/Entities:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@char c=str.charAt(i); @TO@ int c=Character.codePointAt(str,i); '
+    - '---UPD PrimitiveType@@char @TO@ int '
+    - '---UPD VariableDeclarationFragment@@c=str.charAt(i) @TO@ c=Character.codePointAt(str,i) '
+    - '------UPD MethodInvocation@@str.charAt(i) @TO@ Character.codePointAt(str,i) '
+    - '---------UPD SimpleName@@Name:str @TO@ Name:Character '
+    - '---------UPD SimpleName@@MethodName:charAt:[i] @TO@ MethodName:codePointAt:[str,
+      i] '
+    - '------------INS SimpleName@@str @TO@ SimpleName@@MethodName:charAt:[i] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:c >= 0x010000 && i < len - 1 @TO@ IfStatement@@InfixExpression:entityName
+      == null '
+    - '---MOV IfStatement@@InfixExpression:c > 0x7F @TO@ IfStatement@@InfixExpression:c
+      >= 0x010000 && i < len - 1 '
+    - '---INS InfixExpression@@c >= 0x010000 && i < len - 1 @TO@ IfStatement@@InfixExpression:c
+      >= 0x010000 && i < len - 1 '
+    - '------INS InfixExpression@@c >= 0x010000 @TO@ InfixExpression@@c >= 0x010000
+      && i < len - 1 '
+    - '---------INS SimpleName@@c @TO@ InfixExpression@@c >= 0x010000 '
+    - '---------INS Operator@@>= @TO@ InfixExpression@@c >= 0x010000 '
+    - '---------INS NumberLiteral@@0x010000 @TO@ InfixExpression@@c >= 0x010000 '
+    - '------INS Operator@@&& @TO@ InfixExpression@@c >= 0x010000 && i < len - 1 '
+    - '------INS InfixExpression@@i < len - 1 @TO@ InfixExpression@@c >= 0x010000
+      && i < len - 1 '
+    - '---------INS SimpleName@@i @TO@ InfixExpression@@i < len - 1 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@i < len - 1 '
+    - '---------INS InfixExpression@@len - 1 @TO@ InfixExpression@@i < len - 1 '
+    - '------------INS SimpleName@@len @TO@ InfixExpression@@len - 1 '
+    - '------------INS Operator@@- @TO@ InfixExpression@@len - 1 '
+    - '------------INS NumberLiteral@@1 @TO@ InfixExpression@@len - 1 '
+    - '---INS ExpressionStatement@@MethodInvocation:writer.write("&#") @TO@ IfStatement@@InfixExpression:c
+      >= 0x010000 && i < len - 1 '
+    - '------INS MethodInvocation@@writer.write("&#") @TO@ ExpressionStatement@@MethodInvocation:writer.write("&#") '
+    - '---------INS SimpleName@@Name:writer @TO@ MethodInvocation@@writer.write("&#") '
+    - '---------INS SimpleName@@MethodName:write:["&#"] @TO@ MethodInvocation@@writer.write("&#") '
+    - '------------INS StringLiteral@@"&#" @TO@ SimpleName@@MethodName:write:["&#"] '
+    - '---INS ExpressionStatement@@MethodInvocation:writer.write(Integer.toString(c,10))
+      @TO@ IfStatement@@InfixExpression:c >= 0x010000 && i < len - 1 '
+    - '------INS MethodInvocation@@writer.write(Integer.toString(c,10)) @TO@ ExpressionStatement@@MethodInvocation:writer.write(Integer.toString(c,10)) '
+    - '---------INS SimpleName@@Name:writer @TO@ MethodInvocation@@writer.write(Integer.toString(c,10)) '
+    - '---------INS SimpleName@@MethodName:write:[Integer.toString(c,10)] @TO@ MethodInvocation@@writer.write(Integer.toString(c,10)) '
+    - '------------INS MethodInvocation@@Integer.toString(c,10) @TO@ SimpleName@@MethodName:write:[Integer.toString(c,10)] '
+    - '---------------INS SimpleName@@Name:Integer @TO@ MethodInvocation@@Integer.toString(c,10) '
+    - '---------------INS SimpleName@@MethodName:toString:[c, 10] @TO@ MethodInvocation@@Integer.toString(c,10) '
+    - '------------------INS SimpleName@@c @TO@ SimpleName@@MethodName:toString:[c,
+      10] '
+    - '------------------INS NumberLiteral@@10 @TO@ SimpleName@@MethodName:toString:[c,
+      10] '
+    - '---INS ExpressionStatement@@MethodInvocation:writer.write('';'') @TO@ IfStatement@@InfixExpression:c
+      >= 0x010000 && i < len - 1 '
+    - '------INS MethodInvocation@@writer.write('';'') @TO@ ExpressionStatement@@MethodInvocation:writer.write('';'') '
+    - '---------INS SimpleName@@Name:writer @TO@ MethodInvocation@@writer.write('';'') '
+    - '---------INS SimpleName@@MethodName:write:['';''] @TO@ MethodInvocation@@writer.write('';'') '
+    - '------------INS CharacterLiteral@@'';'' @TO@ SimpleName@@MethodName:write:['';''] '
+    - '---INS ExpressionStatement@@PostfixExpression:i++ @TO@ IfStatement@@InfixExpression:c
+      >= 0x010000 && i < len - 1 '
+    - '------INS PostfixExpression@@i++ @TO@ ExpressionStatement@@PostfixExpression:i++ '
+    - '---------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang/Entities:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@char c=str.charAt(i); @TO@ int c=Character.codePointAt(str,i); '
+    - '---UPD PrimitiveType@@char @TO@ int '
+    - '---UPD VariableDeclarationFragment@@c=str.charAt(i) @TO@ c=Character.codePointAt(str,i) '
+    - '------UPD MethodInvocation@@str.charAt(i) @TO@ Character.codePointAt(str,i) '
+    - '---------UPD SimpleName@@Name:str @TO@ Name:Character '
+    - '---------UPD SimpleName@@MethodName:charAt:[i] @TO@ MethodName:codePointAt:[str,
+      i] '
+    - '------------INS SimpleName@@str @TO@ SimpleName@@MethodName:charAt:[i] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:c >= 0x010000 && i < len - 1 @TO@ IfStatement@@InfixExpression:entityName
+      == null '
+    - '---MOV IfStatement@@InfixExpression:c > 0x7F @TO@ IfStatement@@InfixExpression:c
+      >= 0x010000 && i < len - 1 '
+    - '---INS InfixExpression@@c >= 0x010000 && i < len - 1 @TO@ IfStatement@@InfixExpression:c
+      >= 0x010000 && i < len - 1 '
+    - '------INS InfixExpression@@c >= 0x010000 @TO@ InfixExpression@@c >= 0x010000
+      && i < len - 1 '
+    - '---------INS SimpleName@@c @TO@ InfixExpression@@c >= 0x010000 '
+    - '---------INS Operator@@>= @TO@ InfixExpression@@c >= 0x010000 '
+    - '---------INS NumberLiteral@@0x010000 @TO@ InfixExpression@@c >= 0x010000 '
+    - '------INS Operator@@&& @TO@ InfixExpression@@c >= 0x010000 && i < len - 1 '
+    - '------INS InfixExpression@@i < len - 1 @TO@ InfixExpression@@c >= 0x010000
+      && i < len - 1 '
+    - '---------INS SimpleName@@i @TO@ InfixExpression@@i < len - 1 '
+    - '---------INS Operator@@< @TO@ InfixExpression@@i < len - 1 '
+    - '---------INS InfixExpression@@len - 1 @TO@ InfixExpression@@i < len - 1 '
+    - '------------INS SimpleName@@len @TO@ InfixExpression@@len - 1 '
+    - '------------INS Operator@@- @TO@ InfixExpression@@len - 1 '
+    - '------------INS NumberLiteral@@1 @TO@ InfixExpression@@len - 1 '
+    - '---INS ExpressionStatement@@MethodInvocation:writer.write("&#") @TO@ IfStatement@@InfixExpression:c
+      >= 0x010000 && i < len - 1 '
+    - '------INS MethodInvocation@@writer.write("&#") @TO@ ExpressionStatement@@MethodInvocation:writer.write("&#") '
+    - '---------INS SimpleName@@Name:writer @TO@ MethodInvocation@@writer.write("&#") '
+    - '---------INS SimpleName@@MethodName:write:["&#"] @TO@ MethodInvocation@@writer.write("&#") '
+    - '------------INS StringLiteral@@"&#" @TO@ SimpleName@@MethodName:write:["&#"] '
+    - '---INS ExpressionStatement@@MethodInvocation:writer.write(Integer.toString(c,10))
+      @TO@ IfStatement@@InfixExpression:c >= 0x010000 && i < len - 1 '
+    - '------INS MethodInvocation@@writer.write(Integer.toString(c,10)) @TO@ ExpressionStatement@@MethodInvocation:writer.write(Integer.toString(c,10)) '
+    - '---------INS SimpleName@@Name:writer @TO@ MethodInvocation@@writer.write(Integer.toString(c,10)) '
+    - '---------INS SimpleName@@MethodName:write:[Integer.toString(c,10)] @TO@ MethodInvocation@@writer.write(Integer.toString(c,10)) '
+    - '------------INS MethodInvocation@@Integer.toString(c,10) @TO@ SimpleName@@MethodName:write:[Integer.toString(c,10)] '
+    - '---------------INS SimpleName@@Name:Integer @TO@ MethodInvocation@@Integer.toString(c,10) '
+    - '---------------INS SimpleName@@MethodName:toString:[c, 10] @TO@ MethodInvocation@@Integer.toString(c,10) '
+    - '------------------INS SimpleName@@c @TO@ SimpleName@@MethodName:toString:[c,
+      10] '
+    - '------------------INS NumberLiteral@@10 @TO@ SimpleName@@MethodName:toString:[c,
+      10] '
+    - '---INS ExpressionStatement@@MethodInvocation:writer.write('';'') @TO@ IfStatement@@InfixExpression:c
+      >= 0x010000 && i < len - 1 '
+    - '------INS MethodInvocation@@writer.write('';'') @TO@ ExpressionStatement@@MethodInvocation:writer.write('';'') '
+    - '---------INS SimpleName@@Name:writer @TO@ MethodInvocation@@writer.write('';'') '
+    - '---------INS SimpleName@@MethodName:write:['';''] @TO@ MethodInvocation@@writer.write('';'') '
+    - '------------INS CharacterLiteral@@'';'' @TO@ SimpleName@@MethodName:write:['';''] '
+    - '---INS ExpressionStatement@@PostfixExpression:i++ @TO@ IfStatement@@InfixExpression:c
+      >= 0x010000 && i < len - 1 '
+    - '------INS PostfixExpression@@i++ @TO@ ExpressionStatement@@PostfixExpression:i++ '
+    - '---------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+  repair_actions_cnt: 2

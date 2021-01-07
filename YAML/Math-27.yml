@@ -1,0 +1,104 @@
+1 bug_id: Math-27
+2 src folder:
+  name of src folder: java
+  number of files: 633
+  number of java files: 632
+  number of src classes: 854
+  number of test classes: 317
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.fraction.FractionTest#testMath835
+  failing tests:
+  - org.apache.commons.math3.fraction.FractionTest
+  number of all test cases: 4022
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 114.494
+  repair actions extraction: 1.714
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.fraction.FractionTest#testMath835: 66
+  fixed:
+    org.apache.commons.math3.fraction.FractionTest#testMath835: 65
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 2
+  failFail: 0
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_27/src/main/java/org/apache/commons/math3/fraction/Fraction.java\t\
+    2020-10-21 10:12:50.626243882 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_27/purify/patch/org/apache/commons/math3/fraction/Fraction.java\t\
+    2020-10-21 10:12:50.626243882 -0400\n@@ -594,7 +594,7 @@\n      * @return the\
+    \ fraction percentage as a <tt>double</tt>.\n      */\n     public double percentageValue()\
+    \ {\n-        return multiply(100).doubleValue();\n+        return 100 * doubleValue();\n\
+    \     }\n \n     /**"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_27/src/main/java/org/apache/commons/math3/fraction/Fraction.java\t\
+    2020-10-21 10:15:03.998105561 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_27/purify/purified/org/apache/commons/math3/fraction/Fraction.java\t\
+    2020-10-21 10:15:03.994105445 -0400\n@@ -594,7 +594,7 @@\n      * @return the\
+    \ fraction percentage as a <tt>double</tt>.\n      */\n     public double percentageValue()\
+    \ {\n-        return multiply(100).doubleValue();\n+        return 100 * doubleValue();\n\
+    \     }\n \n     /**"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/fraction/Fraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:multiply(100).doubleValue() @TO@ InfixExpression:100
+      * doubleValue() '
+    - '---INS InfixExpression@@100 * doubleValue() @TO@ ReturnStatement@@MethodInvocation:multiply(100).doubleValue() '
+    - '------INS NumberLiteral@@100 @TO@ InfixExpression@@100 * doubleValue() '
+    - '------INS Operator@@* @TO@ InfixExpression@@100 * doubleValue() '
+    - '------INS MethodInvocation@@MethodName:doubleValue:[] @TO@ InfixExpression@@100
+      * doubleValue() '
+    - '---DEL MethodInvocation@@multiply(100).doubleValue() '
+    - '------DEL MethodInvocation@@MethodName:multiply:[100] '
+    - '---------DEL NumberLiteral@@100 '
+    - '------DEL SimpleName@@MethodName:doubleValue:[] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/fraction/Fraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:multiply(100).doubleValue() @TO@ InfixExpression:100
+      * doubleValue() '
+    - '---INS InfixExpression@@100 * doubleValue() @TO@ ReturnStatement@@MethodInvocation:multiply(100).doubleValue() '
+    - '------INS NumberLiteral@@100 @TO@ InfixExpression@@100 * doubleValue() '
+    - '------INS Operator@@* @TO@ InfixExpression@@100 * doubleValue() '
+    - '------INS MethodInvocation@@MethodName:doubleValue:[] @TO@ InfixExpression@@100
+      * doubleValue() '
+    - '---DEL MethodInvocation@@multiply(100).doubleValue() '
+    - '------DEL MethodInvocation@@MethodName:multiply:[100] '
+    - '---------DEL NumberLiteral@@100 '
+    - '------DEL SimpleName@@MethodName:doubleValue:[] '
+  repair_actions_cnt: 1

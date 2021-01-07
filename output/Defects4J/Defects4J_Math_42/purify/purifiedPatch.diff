@@ -1,0 +1,15 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_42/src/main/java/org/apache/commons/math/optimization/linear/SimplexTableau.java	2020-10-21 11:33:54.806957211 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_42/purify/purified/org/apache/commons/math/optimization/linear/SimplexTableau.java	2020-10-21 11:33:54.802957096 -0400
+@@ -407,10 +407,11 @@
+             continue;
+           }
+           Integer basicRow = getBasicRow(colIndex);
++          if (basicRow != null && basicRow == 0) {
+               // if the basic row is found to be the objective function row
+               // set the coefficient to 0 -> this case handles unconstrained 
+               // variables that are still part of the objective function
+-          if (basicRows.contains(basicRow)) {
++          } else if (basicRows.contains(basicRow)) {
+               // if multiple variables can take a given value
+               // then we choose the first and set the rest equal to 0
+               coefficients[i] = 0 - (restrictToNonNegative ? 0 : mostNegative);

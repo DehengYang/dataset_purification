@@ -1,0 +1,12 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_33/src/com/google/javascript/rhino/jstype/PrototypeObjectType.java	2020-10-22 11:22:39.821420257 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_33/purify/purified/com/google/javascript/rhino/jstype/PrototypeObjectType.java	2020-10-22 11:22:39.821420257 -0400
+@@ -554,6 +554,9 @@
+   @Override
+   public void matchConstraint(ObjectType constraintObj) {
+     // We only want to match contraints on anonymous types.
++    if (hasReferenceName()) {
++      return;
++    }
+ 
+     // Handle the case where the constraint object is a record type.
+     //

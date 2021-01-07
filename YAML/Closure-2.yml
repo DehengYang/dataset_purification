@@ -1,0 +1,128 @@
+1 bug_id: Closure-2
+2 src folder:
+  name of src folder: src
+  number of files: 428
+  number of java files: 412
+  number of src classes: 1374
+  number of test classes: 225
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.TypeCheckTest#testBadInterfaceExtendsNonExistentInterfaces
+  failing tests:
+  - com.google.javascript.jscomp.TypeCheckTest
+  number of all test cases: 7864
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 3.0
+  purification via coverage: 1.101
+  purification via delta debugging: 226.309
+  repair actions extraction: 2.565
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.TypeCheckTest#testBadInterfaceExtendsNonExistentInterfaces: 3870
+  fixed:
+    com.google.javascript.jscomp.TypeCheckTest#testBadInterfaceExtendsNonExistentInterfaces: 3941
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 4
+  covDel: 0
+  cov_patch_lines: 4
+  delta_patch_lines: 4
+  oriAdd: 4
+  oriDel: 0
+  ori_patch_lines: 4
+  purAdd: 4
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 6
+  failFail: 0
+  passed: 0
+  total: 6
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_2/src/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-21 16:31:34.952546761 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_2/purify/patch/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-21 16:31:34.948546645 -0400\n@@ -1569,9 +1569,13 @@\n       ObjectType\
+    \ interfaceType) {\n     ObjectType implicitProto = interfaceType.getImplicitPrototype();\n\
+    \     Set<String> currentPropertyNames;\n+    if (implicitProto == null) {\n \
+    \      // This can be the case if interfaceType is proxy to a non-existent\n \
+    \      // object (which is a bad type annotation, but shouldn't crash).\n+   \
+    \   currentPropertyNames = ImmutableSet.of();\n+    } else {\n       currentPropertyNames\
+    \ = implicitProto.getOwnPropertyNames();\n+    }\n     for (String name : currentPropertyNames)\
+    \ {\n       ObjectType oType = properties.get(name);\n       if (oType != null)\
+    \ {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_2/src/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-21 16:35:54.800052178 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_2/purify/purified/com/google/javascript/jscomp/TypeCheck.java\t\
+    2020-10-21 16:35:54.800052178 -0400\n@@ -1569,9 +1569,13 @@\n       ObjectType\
+    \ interfaceType) {\n     ObjectType implicitProto = interfaceType.getImplicitPrototype();\n\
+    \     Set<String> currentPropertyNames;\n+    if (implicitProto == null) {\n \
+    \      // This can be the case if interfaceType is proxy to a non-existent\n \
+    \      // object (which is a bad type annotation, but shouldn't crash).\n+   \
+    \   currentPropertyNames = ImmutableSet.of();\n+    } else {\n       currentPropertyNames\
+    \ = implicitProto.getOwnPropertyNames();\n+    }\n     for (String name : currentPropertyNames)\
+    \ {\n       ObjectType oType = properties.get(name);\n       if (oType != null)\
+    \ {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeCheck:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:implicitProto == null @TO@ MethodDeclaration@@private,
+      @@void, MethodName:checkInterfaceConflictProperties, @@Argus:NodeTraversal+t+Node+n+String+functionName+HashMap<String,ObjectType>+properties+HashMap<String,ObjectType>+currentProperties+ObjectType+interfaceType+ '
+    - '---INS InfixExpression@@implicitProto == null @TO@ IfStatement@@InfixExpression:implicitProto
+      == null '
+    - '------INS SimpleName@@implicitProto @TO@ InfixExpression@@implicitProto ==
+      null '
+    - '------INS Operator@@== @TO@ InfixExpression@@implicitProto == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@implicitProto == null '
+    - '---MOV ExpressionStatement@@Assignment:currentPropertyNames=implicitProto.getOwnPropertyNames()
+      @TO@ IfStatement@@InfixExpression:implicitProto == null '
+    - '---INS ExpressionStatement@@Assignment:currentPropertyNames=ImmutableSet.of()
+      @TO@ IfStatement@@InfixExpression:implicitProto == null '
+    - '------INS Assignment@@currentPropertyNames=ImmutableSet.of() @TO@ ExpressionStatement@@Assignment:currentPropertyNames=ImmutableSet.of() '
+    - '---------INS SimpleName@@currentPropertyNames @TO@ Assignment@@currentPropertyNames=ImmutableSet.of() '
+    - '---------INS Operator@@= @TO@ Assignment@@currentPropertyNames=ImmutableSet.of() '
+    - '---------INS MethodInvocation@@ImmutableSet.of() @TO@ Assignment@@currentPropertyNames=ImmutableSet.of() '
+    - '------------INS SimpleName@@Name:ImmutableSet @TO@ MethodInvocation@@ImmutableSet.of() '
+    - '------------INS SimpleName@@MethodName:of:[] @TO@ MethodInvocation@@ImmutableSet.of() '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  com/google/javascript/jscomp/TypeCheck:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:implicitProto == null @TO@ MethodDeclaration@@private,
+      @@void, MethodName:checkInterfaceConflictProperties, @@Argus:NodeTraversal+t+Node+n+String+functionName+HashMap<String,ObjectType>+properties+HashMap<String,ObjectType>+currentProperties+ObjectType+interfaceType+ '
+    - '---INS InfixExpression@@implicitProto == null @TO@ IfStatement@@InfixExpression:implicitProto
+      == null '
+    - '------INS SimpleName@@implicitProto @TO@ InfixExpression@@implicitProto ==
+      null '
+    - '------INS Operator@@== @TO@ InfixExpression@@implicitProto == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@implicitProto == null '
+    - '---MOV ExpressionStatement@@Assignment:currentPropertyNames=implicitProto.getOwnPropertyNames()
+      @TO@ IfStatement@@InfixExpression:implicitProto == null '
+    - '---INS ExpressionStatement@@Assignment:currentPropertyNames=ImmutableSet.of()
+      @TO@ IfStatement@@InfixExpression:implicitProto == null '
+    - '------INS Assignment@@currentPropertyNames=ImmutableSet.of() @TO@ ExpressionStatement@@Assignment:currentPropertyNames=ImmutableSet.of() '
+    - '---------INS SimpleName@@currentPropertyNames @TO@ Assignment@@currentPropertyNames=ImmutableSet.of() '
+    - '---------INS Operator@@= @TO@ Assignment@@currentPropertyNames=ImmutableSet.of() '
+    - '---------INS MethodInvocation@@ImmutableSet.of() @TO@ Assignment@@currentPropertyNames=ImmutableSet.of() '
+    - '------------INS SimpleName@@Name:ImmutableSet @TO@ MethodInvocation@@ImmutableSet.of() '
+    - '------------INS SimpleName@@MethodName:of:[] @TO@ MethodInvocation@@ImmutableSet.of() '
+  files_cnt: '1'
+  repair_actions_cnt: 1

@@ -1,0 +1,18 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Time_11/src/main/java/org/joda/time/tz/ZoneInfoCompiler.java	2020-10-22 00:11:04.004277607 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Time_11/purify/assertBeforeMut/org/joda/time/tz/ZoneInfoCompiler.java	2020-10-22 00:11:04.004277607 -0400
+@@ -65,10 +65,11 @@
+ 
+     static Chronology cLenientISO;
+ 
+-    static ThreadLocal<Boolean> cVerbose = new ThreadLocal<Boolean>();
+-    static {
+-        cVerbose.set(Boolean.FALSE);
+-    }
++    static ThreadLocal<Boolean> cVerbose = new ThreadLocal<Boolean>() {
++        protected Boolean initialValue() {
++            return Boolean.FALSE;
++        }
++    };
+ 
+     /**
+      * Gets a flag indicating that verbose logging is required.

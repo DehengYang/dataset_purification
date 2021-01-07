@@ -1,0 +1,135 @@
+1 bug_id: Lang-7
+2 src folder:
+  name of src folder: java
+  number of files: 120
+  number of java files: 107
+  number of src classes: 168
+  number of test classes: 112
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.math.NumberUtilsTest#testCreateNumber
+  failing tests:
+  - org.apache.commons.lang3.math.NumberUtilsTest
+  number of all test cases: 2265
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.97
+  purification via delta debugging: 109.723
+  repair actions extraction: 1.684
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.math.NumberUtilsTest#testCreateNumber: 217
+  fixed:
+    org.apache.commons.lang3.math.NumberUtilsTest#testCreateNumber: 221
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 3
+  covDel: 3
+  cov_patch_lines: 6
+  delta_patch_lines: 3
+  oriAdd: 3
+  oriDel: 3
+  ori_patch_lines: 6
+  purAdd: 0
+  purDel: 3
+7 reduced chunks:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  cov: 3
+  original: 3
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 5
+  failFail: 1
+  passed: 1
+  total: 7
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_7/src/main/java/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-22 01:28:38.502877040 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_7/purify/patch/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-22 01:28:38.502877040 -0400\n@@ -449,9 +449,6 @@\n         if (StringUtils.isBlank(str))\
+    \ {\n             throw new NumberFormatException(\"A blank string is not a valid\
+    \ number\");\n         }  \n-        if (str.startsWith(\"--\")) {\n-        \
+    \    return null;\n-        }\n         if (str.startsWith(\"0x\") || str.startsWith(\"\
+    -0x\") || str.startsWith(\"0X\") || str.startsWith(\"-0X\")) {\n             int\
+    \ hexDigits = str.length() - 2; // drop 0x\n             if (str.startsWith(\"\
+    -\")) { // drop -\n@@ -718,10 +715,13 @@\n         if (StringUtils.isBlank(str))\
+    \ {\n             throw new NumberFormatException(\"A blank string is not a valid\
+    \ number\");\n         }\n+        if (str.trim().startsWith(\"--\")) {\n    \
+    \         // this is protection for poorness in java.lang.BigDecimal.\n      \
+    \       // it accepts this as a legal value, but it does not appear \n       \
+    \      // to be in specification of class. OS X Java parses it to \n         \
+    \    // a wrong value.\n+            throw new NumberFormatException(str + \"\
+    \ is not a valid number.\");\n+        }\n         return new BigDecimal(str);\n\
+    \     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_7/src/main/java/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-22 01:30:42.218454244 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_7/purify/purified/org/apache/commons/lang3/math/NumberUtils.java\t\
+    2020-10-22 01:30:42.214454128 -0400\n@@ -449,9 +449,6 @@\n         if (StringUtils.isBlank(str))\
+    \ {\n             throw new NumberFormatException(\"A blank string is not a valid\
+    \ number\");\n         }  \n-        if (str.startsWith(\"--\")) {\n-        \
+    \    return null;\n-        }\n         if (str.startsWith(\"0x\") || str.startsWith(\"\
+    -0x\") || str.startsWith(\"0X\") || str.startsWith(\"-0X\")) {\n             int\
+    \ hexDigits = str.length() - 2; // drop 0x\n             if (str.startsWith(\"\
+    -\")) { // drop -"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 5
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:str.startsWith("--") '
+    - '---DEL MethodInvocation@@str.startsWith("--") '
+    - '------DEL SimpleName@@Name:str '
+    - '------DEL SimpleName@@MethodName:startsWith:["--"] '
+    - '---------DEL StringLiteral@@"--" '
+    - '---DEL ReturnStatement@@NullLiteral:null '
+    - '------DEL NullLiteral@@null '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:str.trim().startsWith("--") @TO@ MethodDeclaration@@public,
+      static, @@BigDecimal, MethodName:createBigDecimal, @@Argus:String+str+ '
+    - '---INS MethodInvocation@@str.trim().startsWith("--") @TO@ IfStatement@@MethodInvocation:str.trim().startsWith("--") '
+    - '------INS SimpleName@@Name:str @TO@ MethodInvocation@@str.trim().startsWith("--") '
+    - '------INS MethodInvocation@@MethodName:trim:[] @TO@ MethodInvocation@@str.trim().startsWith("--") '
+    - '------INS SimpleName@@MethodName:startsWith:["--"] @TO@ MethodInvocation@@str.trim().startsWith("--") '
+    - '---------INS StringLiteral@@"--" @TO@ SimpleName@@MethodName:startsWith:["--"] '
+    - '---INS ThrowStatement@@ClassInstanceCreation:new NumberFormatException(str
+      + " is not a valid number.") @TO@ IfStatement@@MethodInvocation:str.trim().startsWith("--") '
+    - '------INS ClassInstanceCreation@@NumberFormatException[str + " is not a valid
+      number."] @TO@ ThrowStatement@@ClassInstanceCreation:new NumberFormatException(str
+      + " is not a valid number.") '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@NumberFormatException[str
+      + " is not a valid number."] '
+    - '---------INS SimpleType@@NumberFormatException @TO@ ClassInstanceCreation@@NumberFormatException[str
+      + " is not a valid number."] '
+    - '---------INS InfixExpression@@str + " is not a valid number." @TO@ ClassInstanceCreation@@NumberFormatException[str
+      + " is not a valid number."] '
+    - '------------INS SimpleName@@str @TO@ InfixExpression@@str + " is not a valid
+      number." '
+    - '------------INS Operator@@+ @TO@ InfixExpression@@str + " is not a valid number." '
+    - '------------INS StringLiteral@@" is not a valid number." @TO@ InfixExpression@@str
+      + " is not a valid number." '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/math/NumberUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL IfStatement@@MethodInvocation:str.startsWith("--") '
+    - '---DEL MethodInvocation@@str.startsWith("--") '
+    - '------DEL SimpleName@@Name:str '
+    - '------DEL SimpleName@@MethodName:startsWith:["--"] '
+    - '---------DEL StringLiteral@@"--" '
+    - '---DEL ReturnStatement@@NullLiteral:null '
+    - '------DEL NullLiteral@@null '
+  repair_actions_cnt: 1

@@ -1,0 +1,407 @@
+1 bug_id: Math-29
+2 src folder:
+  name of src folder: java
+  number of files: 623
+  number of java files: 622
+  number of src classes: 841
+  number of test classes: 310
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.linear.SparseRealVectorTest#testEbeMultiplyMixedTypes
+  - org.apache.commons.math3.linear.SparseRealVectorTest#testEbeDivideMixedTypes
+  - org.apache.commons.math3.linear.SparseRealVectorTest#testEbeMultiplySameType
+  failing tests:
+  - org.apache.commons.math3.linear.SparseRealVectorTest
+  number of all test cases: 3786
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.078
+  purification via delta debugging: 633.311
+  repair actions extraction: 1.462
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.linear.SparseRealVectorTest#testEbeDivideMixedTypes: 195
+    org.apache.commons.math3.linear.SparseRealVectorTest#testEbeMultiplyMixedTypes: 195
+    org.apache.commons.math3.linear.SparseRealVectorTest#testEbeMultiplySameType: 196
+  fixed:
+    org.apache.commons.math3.linear.SparseRealVectorTest#testEbeDivideMixedTypes: 181
+    org.apache.commons.math3.linear.SparseRealVectorTest#testEbeMultiplyMixedTypes: 210
+    org.apache.commons.math3.linear.SparseRealVectorTest#testEbeMultiplySameType: 225
+6 reduced lines:
+  by all: 4
+  by coverage: 1
+  by delta debugging: 3
+  covAdd: 14
+  covDel: 4
+  cov_patch_lines: 18
+  delta_patch_lines: 15
+  oriAdd: 15
+  oriDel: 4
+  ori_patch_lines: 19
+  purAdd: 14
+  purDel: 1
+7 reduced chunks:
+  by all: -1
+  by coverage: 0
+  by delta debugging: -1
+  cov: 2
+  original: 2
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 38
+  failFail: 6
+  passed: 3
+  total: 47
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_29/src/main/java/org/apache/commons/math3/linear/OpenMapRealVector.java\t\
+    2020-10-21 10:20:15.927139787 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_29/purify/patch/org/apache/commons/math3/linear/OpenMapRealVector.java\t\
+    2020-10-21 10:20:15.927139787 -0400\n@@ -346,10 +346,9 @@\n          * this only.\
+    \ Indeed, if this[i] = 0d and v[i] = 0d, then\n          * this[i] / v[i] = NaN,\
+    \ and not 0d.\n          */\n-        Iterator iter = entries.iterator();\n- \
+    \       while (iter.hasNext()) {\n-            iter.advance();\n-            res.setEntry(iter.key(),\
+    \ iter.value() / v.getEntry(iter.key()));\n+        final int n = getDimension();\n\
+    +        for (int i = 0; i < n; i++) {\n+            res.setEntry(i, this.getEntry(i)\
+    \ / v.getEntry(i));\n         }\n         return res;\n     }\n@@ -371,6 +370,18\
+    \ @@\n          *\n          * These special cases are handled below.\n      \
+    \    */\n+        if (v.isNaN() || v.isInfinite()) {\n+            final int n\
+    \ = getDimension();\n+            for (int i = 0; i < n; i++) {\n+           \
+    \     final double y = v.getEntry(i);\n+                if (Double.isNaN(y)) {\n\
+    +                    res.setEntry(i, Double.NaN);\n+                } else if\
+    \ (Double.isInfinite(y)) {\n+                    final double x = this.getEntry(i);\n\
+    +                    res.setEntry(i, x * y);\n+                }\n+          \
+    \  }\n+        }\n         return res;\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_29/src/main/java/org/apache/commons/math3/linear/OpenMapRealVector.java\t\
+    2020-10-21 10:31:08.074025244 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_29/purify/purified/org/apache/commons/math3/linear/OpenMapRealVector.java\t\
+    2020-10-21 10:31:08.074025244 -0400\n@@ -347,9 +347,11 @@\n          * this[i]\
+    \ / v[i] = NaN, and not 0d.\n          */\n         Iterator iter = entries.iterator();\n\
+    -        while (iter.hasNext()) {\n             iter.advance();\n            \
+    \ res.setEntry(iter.key(), iter.value() / v.getEntry(iter.key()));\n+        final\
+    \ int n = getDimension();\n+        for (int i = 0; i < n; i++) {\n+         \
+    \   res.setEntry(i, this.getEntry(i) / v.getEntry(i));\n         }\n         return\
+    \ res;\n     }\n@@ -371,6 +373,17 @@\n          *\n          * These special cases\
+    \ are handled below.\n          */\n+        if (v.isNaN() || v.isInfinite())\
+    \ {\n+            final int n = getDimension();\n+            for (int i = 0;\
+    \ i < n; i++) {\n+                final double y = v.getEntry(i);\n+         \
+    \       if (Double.isNaN(y)) {\n+                } else if (Double.isInfinite(y))\
+    \ {\n+                    final double x = this.getEntry(i);\n+              \
+    \      res.setEntry(i, x * y);\n+                }\n+            }\n+        }\n\
+    \         return res;\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/linear/OpenMapRealVector:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@Iterator iter=entries.iterator(); @TO@ final
+      int n=getDimension(); '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@Iterator iter=entries.iterator(); '
+    - '---DEL SimpleType@@Iterator '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@Iterator iter=entries.iterator(); '
+    - '---UPD VariableDeclarationFragment@@iter=entries.iterator() @TO@ n=getDimension() '
+    - '------UPD SimpleName@@iter @TO@ n '
+    - '------UPD MethodInvocation@@entries.iterator() @TO@ MethodName:getDimension:[] '
+    - '---------DEL SimpleName@@Name:entries '
+    - '---------DEL SimpleName@@MethodName:iterator:[] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < n; [i++] @TO@ MethodDeclaration@@public, @@OpenMapRealVector,
+      MethodName:ebeDivide, @@Argus:RealVector+v+ '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < n; [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < n @TO@ ForStatement@@[int i=0];i < n; [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < n '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < n '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@i < n '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < n; [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS ExpressionStatement@@MethodInvocation:res.setEntry(i,this.getEntry(i)
+      / v.getEntry(i)) @TO@ ForStatement@@[int i=0];i < n; [i++] '
+    - '------MOV MethodInvocation@@res.setEntry(iter.key(),iter.value() / v.getEntry(iter.key()))
+      @TO@ ExpressionStatement@@MethodInvocation:res.setEntry(i,this.getEntry(i) /
+      v.getEntry(i)) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL WhileStatement@@MethodInvocation:iter.hasNext() '
+    - '---DEL MethodInvocation@@iter.hasNext() '
+    - '------DEL SimpleName@@Name:iter '
+    - '------DEL SimpleName@@MethodName:hasNext:[] '
+    - '---DEL ExpressionStatement@@MethodInvocation:iter.advance() '
+    - '------DEL MethodInvocation@@iter.advance() '
+    - '---------DEL SimpleName@@Name:iter '
+    - '---------DEL SimpleName@@MethodName:advance:[] '
+    - '---DEL ExpressionStatement@@MethodInvocation:res.setEntry(iter.key(),iter.value()
+      / v.getEntry(iter.key())) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:v.isNaN() || v.isInfinite() @TO@ MethodDeclaration@@public,
+      @@OpenMapRealVector, MethodName:ebeMultiply, @@Argus:RealVector+v+ '
+    - '---INS InfixExpression@@v.isNaN() || v.isInfinite() @TO@ IfStatement@@InfixExpression:v.isNaN()
+      || v.isInfinite() '
+    - '------INS MethodInvocation@@v.isNaN() @TO@ InfixExpression@@v.isNaN() || v.isInfinite() '
+    - '---------INS SimpleName@@Name:v @TO@ MethodInvocation@@v.isNaN() '
+    - '---------INS SimpleName@@MethodName:isNaN:[] @TO@ MethodInvocation@@v.isNaN() '
+    - '------INS Operator@@|| @TO@ InfixExpression@@v.isNaN() || v.isInfinite() '
+    - '------INS MethodInvocation@@v.isInfinite() @TO@ InfixExpression@@v.isNaN()
+      || v.isInfinite() '
+    - '---------INS SimpleName@@Name:v @TO@ MethodInvocation@@v.isInfinite() '
+    - '---------INS SimpleName@@MethodName:isInfinite:[] @TO@ MethodInvocation@@v.isInfinite() '
+    - '---INS VariableDeclarationStatement@@final int n=getDimension(); @TO@ IfStatement@@InfixExpression:v.isNaN()
+      || v.isInfinite() '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final int n=getDimension(); '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@final int n=getDimension(); '
+    - '------INS VariableDeclarationFragment@@n=getDimension() @TO@ VariableDeclarationStatement@@final
+      int n=getDimension(); '
+    - '---------INS SimpleName@@n @TO@ VariableDeclarationFragment@@n=getDimension() '
+    - '---------INS MethodInvocation@@MethodName:getDimension:[] @TO@ VariableDeclarationFragment@@n=getDimension() '
+    - '---INS ForStatement@@[int i=0];i < n; [i++] @TO@ IfStatement@@InfixExpression:v.isNaN()
+      || v.isInfinite() '
+    - '------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < n; [i++] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '---------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '------INS InfixExpression@@i < n @TO@ ForStatement@@[int i=0];i < n; [i++] '
+    - '---------INS SimpleName@@i @TO@ InfixExpression@@i < n '
+    - '---------INS Operator@@< @TO@ InfixExpression@@i < n '
+    - '---------INS SimpleName@@n @TO@ InfixExpression@@i < n '
+    - '------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < n; [i++] '
+    - '---------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '------INS VariableDeclarationStatement@@final double y=v.getEntry(i); @TO@
+      ForStatement@@[int i=0];i < n; [i++] '
+    - '---------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double
+      y=v.getEntry(i); '
+    - '---------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final
+      double y=v.getEntry(i); '
+    - '---------INS VariableDeclarationFragment@@y=v.getEntry(i) @TO@ VariableDeclarationStatement@@final
+      double y=v.getEntry(i); '
+    - '------------INS SimpleName@@y @TO@ VariableDeclarationFragment@@y=v.getEntry(i) '
+    - '------------INS MethodInvocation@@v.getEntry(i) @TO@ VariableDeclarationFragment@@y=v.getEntry(i) '
+    - '---------------INS SimpleName@@Name:v @TO@ MethodInvocation@@v.getEntry(i) '
+    - '---------------INS SimpleName@@MethodName:getEntry:[i] @TO@ MethodInvocation@@v.getEntry(i) '
+    - '------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:getEntry:[i] '
+    - '------INS IfStatement@@MethodInvocation:Double.isNaN(y) @TO@ ForStatement@@[int
+      i=0];i < n; [i++] '
+    - '---------INS MethodInvocation@@Double.isNaN(y) @TO@ IfStatement@@MethodInvocation:Double.isNaN(y) '
+    - '------------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(y) '
+    - '------------INS SimpleName@@MethodName:isNaN:[y] @TO@ MethodInvocation@@Double.isNaN(y) '
+    - '---------------INS SimpleName@@y @TO@ SimpleName@@MethodName:isNaN:[y] '
+    - '---------INS ExpressionStatement@@MethodInvocation:res.setEntry(i,Double.NaN)
+      @TO@ IfStatement@@MethodInvocation:Double.isNaN(y) '
+    - '------------INS MethodInvocation@@res.setEntry(i,Double.NaN) @TO@ ExpressionStatement@@MethodInvocation:res.setEntry(i,Double.NaN) '
+    - '---------------INS SimpleName@@Name:res @TO@ MethodInvocation@@res.setEntry(i,Double.NaN) '
+    - '---------------INS SimpleName@@MethodName:setEntry:[i, Double.NaN] @TO@ MethodInvocation@@res.setEntry(i,Double.NaN) '
+    - '------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:setEntry:[i,
+      Double.NaN] '
+    - '------------------INS QualifiedName@@Double.NaN @TO@ SimpleName@@MethodName:setEntry:[i,
+      Double.NaN] '
+    - '---------------------INS SimpleName@@Double @TO@ QualifiedName@@Double.NaN '
+    - '---------------------INS SimpleName@@NaN @TO@ QualifiedName@@Double.NaN '
+    - '---------INS IfStatement@@MethodInvocation:Double.isInfinite(y) @TO@ IfStatement@@MethodInvocation:Double.isNaN(y) '
+    - '------------INS MethodInvocation@@Double.isInfinite(y) @TO@ IfStatement@@MethodInvocation:Double.isInfinite(y) '
+    - '---------------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isInfinite(y) '
+    - '---------------INS SimpleName@@MethodName:isInfinite:[y] @TO@ MethodInvocation@@Double.isInfinite(y) '
+    - '------------------INS SimpleName@@y @TO@ SimpleName@@MethodName:isInfinite:[y] '
+    - '------------INS VariableDeclarationStatement@@final double x=this.getEntry(i);
+      @TO@ IfStatement@@MethodInvocation:Double.isInfinite(y) '
+    - '---------------INS Modifier@@final @TO@ VariableDeclarationStatement@@final
+      double x=this.getEntry(i); '
+    - '---------------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final
+      double x=this.getEntry(i); '
+    - '---------------INS VariableDeclarationFragment@@x=this.getEntry(i) @TO@ VariableDeclarationStatement@@final
+      double x=this.getEntry(i); '
+    - '------------------INS SimpleName@@x @TO@ VariableDeclarationFragment@@x=this.getEntry(i) '
+    - '------------------INS MethodInvocation@@this.getEntry(i) @TO@ VariableDeclarationFragment@@x=this.getEntry(i) '
+    - '---------------------INS ThisExpression@@this @TO@ MethodInvocation@@this.getEntry(i) '
+    - '---------------------INS SimpleName@@MethodName:getEntry:[i] @TO@ MethodInvocation@@this.getEntry(i) '
+    - '------------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:getEntry:[i] '
+    - '------------INS ExpressionStatement@@MethodInvocation:res.setEntry(i,x * y)
+      @TO@ IfStatement@@MethodInvocation:Double.isInfinite(y) '
+    - '---------------INS MethodInvocation@@res.setEntry(i,x * y) @TO@ ExpressionStatement@@MethodInvocation:res.setEntry(i,x
+      * y) '
+    - '------------------INS SimpleName@@Name:res @TO@ MethodInvocation@@res.setEntry(i,x
+      * y) '
+    - '------------------INS SimpleName@@MethodName:setEntry:[i, x * y] @TO@ MethodInvocation@@res.setEntry(i,x
+      * y) '
+    - '---------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:setEntry:[i,
+      x * y] '
+    - '---------------------INS InfixExpression@@x * y @TO@ SimpleName@@MethodName:setEntry:[i,
+      x * y] '
+    - '------------------------INS SimpleName@@x @TO@ InfixExpression@@x * y '
+    - '------------------------INS Operator@@* @TO@ InfixExpression@@x * y '
+    - '------------------------INS SimpleName@@y @TO@ InfixExpression@@x * y '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/linear/OpenMapRealVector:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL WhileStatement@@MethodInvocation:iter.hasNext() '
+    - '---DEL MethodInvocation@@iter.hasNext() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:iter.advance() @TO@ MethodDeclaration@@public,
+      @@OpenMapRealVector, MethodName:ebeDivide, @@Argus:RealVector+v+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV ExpressionStatement@@MethodInvocation:res.setEntry(iter.key(),iter.value()
+      / v.getEntry(iter.key())) @TO@ MethodDeclaration@@public, @@OpenMapRealVector,
+      MethodName:ebeDivide, @@Argus:RealVector+v+ '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@final int n=getDimension(); @TO@ MethodDeclaration@@public,
+      @@OpenMapRealVector, MethodName:ebeDivide, @@Argus:RealVector+v+ '
+    - '---INS Modifier@@final @TO@ VariableDeclarationStatement@@final int n=getDimension(); '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@final int n=getDimension(); '
+    - '---INS VariableDeclarationFragment@@n=getDimension() @TO@ VariableDeclarationStatement@@final
+      int n=getDimension(); '
+    - '------INS SimpleName@@n @TO@ VariableDeclarationFragment@@n=getDimension() '
+    - '------INS MethodInvocation@@MethodName:getDimension:[] @TO@ VariableDeclarationFragment@@n=getDimension() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ForStatement@@[int i=0];i < n; [i++] @TO@ MethodDeclaration@@public, @@OpenMapRealVector,
+      MethodName:ebeDivide, @@Argus:RealVector+v+ '
+    - '---INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < n; [i++] '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---INS InfixExpression@@i < n @TO@ ForStatement@@[int i=0];i < n; [i++] '
+    - '------INS SimpleName@@i @TO@ InfixExpression@@i < n '
+    - '------INS Operator@@< @TO@ InfixExpression@@i < n '
+    - '------INS SimpleName@@n @TO@ InfixExpression@@i < n '
+    - '---INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < n; [i++] '
+    - '------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---INS ExpressionStatement@@MethodInvocation:res.setEntry(i,this.getEntry(i)
+      / v.getEntry(i)) @TO@ ForStatement@@[int i=0];i < n; [i++] '
+    - '------INS MethodInvocation@@res.setEntry(i,this.getEntry(i) / v.getEntry(i))
+      @TO@ ExpressionStatement@@MethodInvocation:res.setEntry(i,this.getEntry(i) /
+      v.getEntry(i)) '
+    - '---------INS SimpleName@@Name:res @TO@ MethodInvocation@@res.setEntry(i,this.getEntry(i)
+      / v.getEntry(i)) '
+    - '---------INS SimpleName@@MethodName:setEntry:[i, this.getEntry(i) / v.getEntry(i)]
+      @TO@ MethodInvocation@@res.setEntry(i,this.getEntry(i) / v.getEntry(i)) '
+    - '------------INS SimpleName@@i @TO@ SimpleName@@MethodName:setEntry:[i, this.getEntry(i)
+      / v.getEntry(i)] '
+    - '------------INS InfixExpression@@this.getEntry(i) / v.getEntry(i) @TO@ SimpleName@@MethodName:setEntry:[i,
+      this.getEntry(i) / v.getEntry(i)] '
+    - '---------------INS MethodInvocation@@this.getEntry(i) @TO@ InfixExpression@@this.getEntry(i)
+      / v.getEntry(i) '
+    - '------------------INS ThisExpression@@this @TO@ MethodInvocation@@this.getEntry(i) '
+    - '------------------INS SimpleName@@MethodName:getEntry:[i] @TO@ MethodInvocation@@this.getEntry(i) '
+    - '---------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:getEntry:[i] '
+    - '---------------INS Operator@@/ @TO@ InfixExpression@@this.getEntry(i) / v.getEntry(i) '
+    - '---------------INS MethodInvocation@@v.getEntry(i) @TO@ InfixExpression@@this.getEntry(i)
+      / v.getEntry(i) '
+    - '------------------MOV SimpleName@@Name:iter @TO@ MethodInvocation@@v.getEntry(i) '
+    - '------------------MOV SimpleName@@MethodName:hasNext:[] @TO@ MethodInvocation@@v.getEntry(i) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:v.isNaN() || v.isInfinite() @TO@ MethodDeclaration@@public,
+      @@OpenMapRealVector, MethodName:ebeMultiply, @@Argus:RealVector+v+ '
+    - '---INS InfixExpression@@v.isNaN() || v.isInfinite() @TO@ IfStatement@@InfixExpression:v.isNaN()
+      || v.isInfinite() '
+    - '------INS MethodInvocation@@v.isNaN() @TO@ InfixExpression@@v.isNaN() || v.isInfinite() '
+    - '---------INS SimpleName@@Name:v @TO@ MethodInvocation@@v.isNaN() '
+    - '---------INS SimpleName@@MethodName:isNaN:[] @TO@ MethodInvocation@@v.isNaN() '
+    - '------INS Operator@@|| @TO@ InfixExpression@@v.isNaN() || v.isInfinite() '
+    - '------INS MethodInvocation@@v.isInfinite() @TO@ InfixExpression@@v.isNaN()
+      || v.isInfinite() '
+    - '---------INS SimpleName@@Name:v @TO@ MethodInvocation@@v.isInfinite() '
+    - '---------INS SimpleName@@MethodName:isInfinite:[] @TO@ MethodInvocation@@v.isInfinite() '
+    - '---INS VariableDeclarationStatement@@final int n=getDimension(); @TO@ IfStatement@@InfixExpression:v.isNaN()
+      || v.isInfinite() '
+    - '------INS Modifier@@final @TO@ VariableDeclarationStatement@@final int n=getDimension(); '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@final int n=getDimension(); '
+    - '------INS VariableDeclarationFragment@@n=getDimension() @TO@ VariableDeclarationStatement@@final
+      int n=getDimension(); '
+    - '---------INS SimpleName@@n @TO@ VariableDeclarationFragment@@n=getDimension() '
+    - '---------INS MethodInvocation@@MethodName:getDimension:[] @TO@ VariableDeclarationFragment@@n=getDimension() '
+    - '---INS ForStatement@@[int i=0];i < n; [i++] @TO@ IfStatement@@InfixExpression:v.isNaN()
+      || v.isInfinite() '
+    - '------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < n; [i++] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '---------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '------INS InfixExpression@@i < n @TO@ ForStatement@@[int i=0];i < n; [i++] '
+    - '---------INS SimpleName@@i @TO@ InfixExpression@@i < n '
+    - '---------INS Operator@@< @TO@ InfixExpression@@i < n '
+    - '---------INS SimpleName@@n @TO@ InfixExpression@@i < n '
+    - '------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < n; [i++] '
+    - '---------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '------INS VariableDeclarationStatement@@final double y=v.getEntry(i); @TO@
+      ForStatement@@[int i=0];i < n; [i++] '
+    - '---------INS Modifier@@final @TO@ VariableDeclarationStatement@@final double
+      y=v.getEntry(i); '
+    - '---------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final
+      double y=v.getEntry(i); '
+    - '---------INS VariableDeclarationFragment@@y=v.getEntry(i) @TO@ VariableDeclarationStatement@@final
+      double y=v.getEntry(i); '
+    - '------------INS SimpleName@@y @TO@ VariableDeclarationFragment@@y=v.getEntry(i) '
+    - '------------INS MethodInvocation@@v.getEntry(i) @TO@ VariableDeclarationFragment@@y=v.getEntry(i) '
+    - '---------------INS SimpleName@@Name:v @TO@ MethodInvocation@@v.getEntry(i) '
+    - '---------------INS SimpleName@@MethodName:getEntry:[i] @TO@ MethodInvocation@@v.getEntry(i) '
+    - '------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:getEntry:[i] '
+    - '------INS IfStatement@@MethodInvocation:Double.isNaN(y) @TO@ ForStatement@@[int
+      i=0];i < n; [i++] '
+    - '---------INS MethodInvocation@@Double.isNaN(y) @TO@ IfStatement@@MethodInvocation:Double.isNaN(y) '
+    - '------------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(y) '
+    - '------------INS SimpleName@@MethodName:isNaN:[y] @TO@ MethodInvocation@@Double.isNaN(y) '
+    - '---------------INS SimpleName@@y @TO@ SimpleName@@MethodName:isNaN:[y] '
+    - '---------INS IfStatement@@MethodInvocation:Double.isInfinite(y) @TO@ IfStatement@@MethodInvocation:Double.isNaN(y) '
+    - '------------INS MethodInvocation@@Double.isInfinite(y) @TO@ IfStatement@@MethodInvocation:Double.isInfinite(y) '
+    - '---------------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isInfinite(y) '
+    - '---------------INS SimpleName@@MethodName:isInfinite:[y] @TO@ MethodInvocation@@Double.isInfinite(y) '
+    - '------------------INS SimpleName@@y @TO@ SimpleName@@MethodName:isInfinite:[y] '
+    - '------------INS VariableDeclarationStatement@@final double x=this.getEntry(i);
+      @TO@ IfStatement@@MethodInvocation:Double.isInfinite(y) '
+    - '---------------INS Modifier@@final @TO@ VariableDeclarationStatement@@final
+      double x=this.getEntry(i); '
+    - '---------------INS PrimitiveType@@double @TO@ VariableDeclarationStatement@@final
+      double x=this.getEntry(i); '
+    - '---------------INS VariableDeclarationFragment@@x=this.getEntry(i) @TO@ VariableDeclarationStatement@@final
+      double x=this.getEntry(i); '
+    - '------------------INS SimpleName@@x @TO@ VariableDeclarationFragment@@x=this.getEntry(i) '
+    - '------------------INS MethodInvocation@@this.getEntry(i) @TO@ VariableDeclarationFragment@@x=this.getEntry(i) '
+    - '---------------------INS ThisExpression@@this @TO@ MethodInvocation@@this.getEntry(i) '
+    - '---------------------INS SimpleName@@MethodName:getEntry:[i] @TO@ MethodInvocation@@this.getEntry(i) '
+    - '------------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:getEntry:[i] '
+    - '------------INS ExpressionStatement@@MethodInvocation:res.setEntry(i,x * y)
+      @TO@ IfStatement@@MethodInvocation:Double.isInfinite(y) '
+    - '---------------INS MethodInvocation@@res.setEntry(i,x * y) @TO@ ExpressionStatement@@MethodInvocation:res.setEntry(i,x
+      * y) '
+    - '------------------INS SimpleName@@Name:res @TO@ MethodInvocation@@res.setEntry(i,x
+      * y) '
+    - '------------------INS SimpleName@@MethodName:setEntry:[i, x * y] @TO@ MethodInvocation@@res.setEntry(i,x
+      * y) '
+    - '---------------------INS SimpleName@@i @TO@ SimpleName@@MethodName:setEntry:[i,
+      x * y] '
+    - '---------------------INS InfixExpression@@x * y @TO@ SimpleName@@MethodName:setEntry:[i,
+      x * y] '
+    - '------------------------INS SimpleName@@x @TO@ InfixExpression@@x * y '
+    - '------------------------INS Operator@@* @TO@ InfixExpression@@x * y '
+    - '------------------------INS SimpleName@@y @TO@ InfixExpression@@x * y '
+  repair_actions_cnt: 6

@@ -1,0 +1,402 @@
+1 bug_id: Closure-32
+2 src folder:
+  name of src folder: src
+  number of files: 416
+  number of java files: 400
+  number of src classes: 1341
+  number of test classes: 221
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testParsePreserve
+  - com.google.javascript.jscomp.IntegrationTest#testIssue701
+  - com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testParseLicenseAscii
+  - com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testParseLicense
+  failing tests:
+  - com.google.javascript.jscomp.parsing.JsDocInfoParserTest
+  - com.google.javascript.jscomp.IntegrationTest
+  number of all test cases: 7461
+  number of failing test cases: 4
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 2.262
+  purification via delta debugging: 1529.447
+  repair actions extraction: 2.279
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.IntegrationTest#testIssue701: 4184
+    com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testParseLicense: 1146
+    com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testParseLicenseAscii: 1162
+    com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testParsePreserve: 1146
+  fixed:
+    com.google.javascript.jscomp.IntegrationTest#testIssue701: 4192
+    com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testParseLicense: 1153
+    com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testParseLicenseAscii: 1171
+    com.google.javascript.jscomp.parsing.JsDocInfoParserTest#testParsePreserve: 1153
+6 reduced lines:
+  by all: 2
+  by coverage: 0
+  by delta debugging: 2
+  covAdd: 15
+  covDel: 3
+  cov_patch_lines: 18
+  delta_patch_lines: 16
+  oriAdd: 15
+  oriDel: 3
+  ori_patch_lines: 18
+  purAdd: 13
+  purDel: 3
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 6
+  original: 6
+  purifiy: 6
+8 mutants by delta debugging:
+  failAll: 2
+  failCompile: 40
+  failFail: 14
+  passed: 1
+  total: 57
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_32/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java\t\
+    2020-10-22 10:51:10.090756966 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_32/purify/patch/com/google/javascript/jscomp/parsing/JsDocInfoParser.java\t\
+    2020-10-22 10:51:10.086756850 -0400\n@@ -1355,12 +1355,14 @@\n     // Track the\
+    \ start of the line to count whitespace that\n     // the tokenizer skipped. Because\
+    \ this case is rare, it's easier\n     // to do this here than in the tokenizer.\n\
+    +    int lineStartChar = -1;\n \n     do {\n       switch (token) {\n        \
+    \ case STAR:\n           if (ignoreStar) {\n             // Mark the position\
+    \ after the star as the new start of the line.\n+            lineStartChar = stream.getCharno()\
+    \ + 1;\n           } else {\n             // The star is part of the comment.\n\
+    \             if (builder.length() > 0) {\n@@ -1379,6 +1381,7 @@\n           }\n\
+    \ \n           ignoreStar = true;\n+          lineStartChar = 0;\n           token\
+    \ = next();\n           continue;\n \n@@ -1386,7 +1389,19 @@\n           ignoreStar\
+    \ = false;\n           state = State.SEARCHING_ANNOTATION;\n \n+          boolean\
+    \ isEOC = token == JsDocToken.EOC;\n+          if (!isEOC) {\n+            if\
+    \ (lineStartChar != -1 && option == WhitespaceOption.PRESERVE) {\n+          \
+    \    int numSpaces = stream.getCharno() - lineStartChar;\n+              for (int\
+    \ i = 0; i < numSpaces; i++) {\n+                builder.append(' ');\n+     \
+    \         }\n+              lineStartChar = -1;\n+            } else if (builder.length()\
+    \ > 0) {\n               // All tokens must be separated by a space.\n+      \
+    \        builder.append(' ');\n+            }\n+          }\n \n           if\
+    \ (token == JsDocToken.EOC ||\n               token == JsDocToken.EOF ||\n@@ -1411,9\
+    \ +1426,6 @@\n             return new ExtractionInfo(multilineText, token);\n\
+    \           }\n \n-          if (builder.length() > 0) {\n-            builder.append('\
+    \ ');\n-          }\n           builder.append(toString(token));\n \n        \
+    \   line = stream.getRemainingJSDocLine();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_32/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java\t\
+    2020-10-22 11:17:13.747987445 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_32/purify/purified/com/google/javascript/jscomp/parsing/JsDocInfoParser.java\t\
+    2020-10-22 11:17:13.747987445 -0400\n@@ -1355,12 +1355,14 @@\n     // Track the\
+    \ start of the line to count whitespace that\n     // the tokenizer skipped. Because\
+    \ this case is rare, it's easier\n     // to do this here than in the tokenizer.\n\
+    +    int lineStartChar = -1;\n \n     do {\n       switch (token) {\n        \
+    \ case STAR:\n           if (ignoreStar) {\n             // Mark the position\
+    \ after the star as the new start of the line.\n+            lineStartChar = stream.getCharno()\
+    \ + 1;\n           } else {\n             // The star is part of the comment.\n\
+    \             if (builder.length() > 0) {\n@@ -1379,6 +1381,7 @@\n           }\n\
+    \ \n           ignoreStar = true;\n+          lineStartChar = 0;\n           token\
+    \ = next();\n           continue;\n \n@@ -1386,7 +1389,17 @@\n           ignoreStar\
+    \ = false;\n           state = State.SEARCHING_ANNOTATION;\n \n+          boolean\
+    \ isEOC = token == JsDocToken.EOC;\n+          if (!isEOC) {\n+            if\
+    \ (lineStartChar != -1 && option == WhitespaceOption.PRESERVE) {\n+          \
+    \    int numSpaces = stream.getCharno() - lineStartChar;\n+              for (int\
+    \ i = 0; i < numSpaces; i++) {\n+                builder.append(' ');\n+     \
+    \         }\n+            } else if (builder.length() > 0) {\n               //\
+    \ All tokens must be separated by a space.\n+            }\n+          }\n \n\
+    \           if (token == JsDocToken.EOC ||\n               token == JsDocToken.EOF\
+    \ ||\n@@ -1411,9 +1424,6 @@\n             return new ExtractionInfo(multilineText,\
+    \ token);\n           }\n \n-          if (builder.length() > 0) {\n-        \
+    \    builder.append(' ');\n-          }\n           builder.append(toString(token));\n\
+    \ \n           line = stream.getRemainingJSDocLine();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/JsDocInfoParser:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int lineStartChar=-1; @TO@ MethodDeclaration@@private,
+      @@ExtractionInfo, MethodName:extractMultilineTextualBlock, @@Argus:JsDocToken+token+WhitespaceOption+option+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int lineStartChar=-1; '
+    - '---INS VariableDeclarationFragment@@lineStartChar=-1 @TO@ VariableDeclarationStatement@@int
+      lineStartChar=-1; '
+    - '------INS SimpleName@@lineStartChar @TO@ VariableDeclarationFragment@@lineStartChar=-1 '
+    - '------INS PrefixExpression@@-1 @TO@ VariableDeclarationFragment@@lineStartChar=-1 '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:lineStartChar=stream.getCharno() + 1 @TO@
+      IfStatement@@SimpleName:ignoreStar '
+    - '---INS Assignment@@lineStartChar=stream.getCharno() + 1 @TO@ ExpressionStatement@@Assignment:lineStartChar=stream.getCharno()
+      + 1 '
+    - '------INS SimpleName@@lineStartChar @TO@ Assignment@@lineStartChar=stream.getCharno()
+      + 1 '
+    - '------INS Operator@@= @TO@ Assignment@@lineStartChar=stream.getCharno() + 1 '
+    - '------INS InfixExpression@@stream.getCharno() + 1 @TO@ Assignment@@lineStartChar=stream.getCharno()
+      + 1 '
+    - '---------INS MethodInvocation@@stream.getCharno() @TO@ InfixExpression@@stream.getCharno()
+      + 1 '
+    - '------------INS SimpleName@@Name:stream @TO@ MethodInvocation@@stream.getCharno() '
+    - '------------INS SimpleName@@MethodName:getCharno:[] @TO@ MethodInvocation@@stream.getCharno() '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@stream.getCharno() + 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@stream.getCharno() + 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:lineStartChar=0 @TO@ SwitchStatement@@SimpleName:token '
+    - '---INS Assignment@@lineStartChar=0 @TO@ ExpressionStatement@@Assignment:lineStartChar=0 '
+    - '------INS SimpleName@@lineStartChar @TO@ Assignment@@lineStartChar=0 '
+    - '------INS Operator@@= @TO@ Assignment@@lineStartChar=0 '
+    - '------INS NumberLiteral@@0 @TO@ Assignment@@lineStartChar=0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean isEOC=token == JsDocToken.EOC; @TO@
+      SwitchStatement@@SimpleName:token '
+    - '---INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean isEOC=token
+      == JsDocToken.EOC; '
+    - '---INS VariableDeclarationFragment@@isEOC=token == JsDocToken.EOC @TO@ VariableDeclarationStatement@@boolean
+      isEOC=token == JsDocToken.EOC; '
+    - '------INS SimpleName@@isEOC @TO@ VariableDeclarationFragment@@isEOC=token ==
+      JsDocToken.EOC '
+    - '------INS InfixExpression@@token == JsDocToken.EOC @TO@ VariableDeclarationFragment@@isEOC=token
+      == JsDocToken.EOC '
+    - '---------INS SimpleName@@token @TO@ InfixExpression@@token == JsDocToken.EOC '
+    - '---------INS Operator@@== @TO@ InfixExpression@@token == JsDocToken.EOC '
+    - '---------INS QualifiedName@@JsDocToken.EOC @TO@ InfixExpression@@token == JsDocToken.EOC '
+    - '------------INS SimpleName@@JsDocToken @TO@ QualifiedName@@JsDocToken.EOC '
+    - '------------INS SimpleName@@EOC @TO@ QualifiedName@@JsDocToken.EOC '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@PrefixExpression:!isEOC @TO@ SwitchStatement@@SimpleName:token '
+    - '---INS PrefixExpression@@!isEOC @TO@ IfStatement@@PrefixExpression:!isEOC '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!isEOC '
+    - '------INS SimpleName@@isEOC @TO@ PrefixExpression@@!isEOC '
+    - '---INS IfStatement@@InfixExpression:lineStartChar != -1 && option == WhitespaceOption.PRESERVE
+      @TO@ IfStatement@@PrefixExpression:!isEOC '
+    - '------INS InfixExpression@@lineStartChar != -1 && option == WhitespaceOption.PRESERVE
+      @TO@ IfStatement@@InfixExpression:lineStartChar != -1 && option == WhitespaceOption.PRESERVE '
+    - '---------INS InfixExpression@@lineStartChar != -1 @TO@ InfixExpression@@lineStartChar
+      != -1 && option == WhitespaceOption.PRESERVE '
+    - '------------INS SimpleName@@lineStartChar @TO@ InfixExpression@@lineStartChar
+      != -1 '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@lineStartChar != -1 '
+    - '------------INS PrefixExpression@@-1 @TO@ InfixExpression@@lineStartChar !=
+      -1 '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@lineStartChar != -1 && option
+      == WhitespaceOption.PRESERVE '
+    - '---------INS InfixExpression@@option == WhitespaceOption.PRESERVE @TO@ InfixExpression@@lineStartChar
+      != -1 && option == WhitespaceOption.PRESERVE '
+    - '------------INS SimpleName@@option @TO@ InfixExpression@@option == WhitespaceOption.PRESERVE '
+    - '------------INS Operator@@== @TO@ InfixExpression@@option == WhitespaceOption.PRESERVE '
+    - '------------INS QualifiedName@@WhitespaceOption.PRESERVE @TO@ InfixExpression@@option
+      == WhitespaceOption.PRESERVE '
+    - '---------------INS SimpleName@@WhitespaceOption @TO@ QualifiedName@@WhitespaceOption.PRESERVE '
+    - '---------------INS SimpleName@@PRESERVE @TO@ QualifiedName@@WhitespaceOption.PRESERVE '
+    - '------INS VariableDeclarationStatement@@int numSpaces=stream.getCharno() -
+      lineStartChar; @TO@ IfStatement@@InfixExpression:lineStartChar != -1 && option
+      == WhitespaceOption.PRESERVE '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int numSpaces=stream.getCharno()
+      - lineStartChar; '
+    - '---------INS VariableDeclarationFragment@@numSpaces=stream.getCharno() - lineStartChar
+      @TO@ VariableDeclarationStatement@@int numSpaces=stream.getCharno() - lineStartChar; '
+    - '------------INS SimpleName@@numSpaces @TO@ VariableDeclarationFragment@@numSpaces=stream.getCharno()
+      - lineStartChar '
+    - '------------INS InfixExpression@@stream.getCharno() - lineStartChar @TO@ VariableDeclarationFragment@@numSpaces=stream.getCharno()
+      - lineStartChar '
+    - '---------------INS MethodInvocation@@stream.getCharno() @TO@ InfixExpression@@stream.getCharno()
+      - lineStartChar '
+    - '------------------INS SimpleName@@Name:stream @TO@ MethodInvocation@@stream.getCharno() '
+    - '------------------INS SimpleName@@MethodName:getCharno:[] @TO@ MethodInvocation@@stream.getCharno() '
+    - '---------------INS Operator@@- @TO@ InfixExpression@@stream.getCharno() - lineStartChar '
+    - '---------------INS SimpleName@@lineStartChar @TO@ InfixExpression@@stream.getCharno()
+      - lineStartChar '
+    - '------INS ForStatement@@[int i=0];i < numSpaces; [i++] @TO@ IfStatement@@InfixExpression:lineStartChar
+      != -1 && option == WhitespaceOption.PRESERVE '
+    - '---------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int
+      i=0];i < numSpaces; [i++] '
+    - '------------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS InfixExpression@@i < numSpaces @TO@ ForStatement@@[int i=0];i
+      < numSpaces; [i++] '
+    - '------------INS SimpleName@@i @TO@ InfixExpression@@i < numSpaces '
+    - '------------INS Operator@@< @TO@ InfixExpression@@i < numSpaces '
+    - '------------INS SimpleName@@numSpaces @TO@ InfixExpression@@i < numSpaces '
+    - '---------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < numSpaces;
+      [i++] '
+    - '------------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---------INS ExpressionStatement@@MethodInvocation:builder.append('' '') @TO@
+      ForStatement@@[int i=0];i < numSpaces; [i++] '
+    - '------------INS MethodInvocation@@builder.append('' '') @TO@ ExpressionStatement@@MethodInvocation:builder.append(''
+      '') '
+    - '---------------INS SimpleName@@Name:builder @TO@ MethodInvocation@@builder.append(''
+      '') '
+    - '---------------INS SimpleName@@MethodName:append:['' ''] @TO@ MethodInvocation@@builder.append(''
+      '') '
+    - '------------------INS CharacterLiteral@@'' '' @TO@ SimpleName@@MethodName:append:[''
+      ''] '
+    - '------INS ExpressionStatement@@Assignment:lineStartChar=-1 @TO@ IfStatement@@InfixExpression:lineStartChar
+      != -1 && option == WhitespaceOption.PRESERVE '
+    - '---------INS Assignment@@lineStartChar=-1 @TO@ ExpressionStatement@@Assignment:lineStartChar=-1 '
+    - '------------INS SimpleName@@lineStartChar @TO@ Assignment@@lineStartChar=-1 '
+    - '------------INS Operator@@= @TO@ Assignment@@lineStartChar=-1 '
+    - '------------INS PrefixExpression@@-1 @TO@ Assignment@@lineStartChar=-1 '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+    - '------MOV IfStatement@@InfixExpression:builder.length() > 0 @TO@ IfStatement@@InfixExpression:lineStartChar
+      != -1 && option == WhitespaceOption.PRESERVE '
+  files_cnt: '1'
+  repair_actions_cnt: 5
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  com/google/javascript/jscomp/parsing/JsDocInfoParser:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int lineStartChar=-1; @TO@ MethodDeclaration@@private,
+      @@ExtractionInfo, MethodName:extractMultilineTextualBlock, @@Argus:JsDocToken+token+WhitespaceOption+option+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int lineStartChar=-1; '
+    - '---INS VariableDeclarationFragment@@lineStartChar=-1 @TO@ VariableDeclarationStatement@@int
+      lineStartChar=-1; '
+    - '------INS SimpleName@@lineStartChar @TO@ VariableDeclarationFragment@@lineStartChar=-1 '
+    - '------INS PrefixExpression@@-1 @TO@ VariableDeclarationFragment@@lineStartChar=-1 '
+    - '---------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:lineStartChar=stream.getCharno() + 1 @TO@
+      IfStatement@@SimpleName:ignoreStar '
+    - '---INS Assignment@@lineStartChar=stream.getCharno() + 1 @TO@ ExpressionStatement@@Assignment:lineStartChar=stream.getCharno()
+      + 1 '
+    - '------INS SimpleName@@lineStartChar @TO@ Assignment@@lineStartChar=stream.getCharno()
+      + 1 '
+    - '------INS Operator@@= @TO@ Assignment@@lineStartChar=stream.getCharno() + 1 '
+    - '------INS InfixExpression@@stream.getCharno() + 1 @TO@ Assignment@@lineStartChar=stream.getCharno()
+      + 1 '
+    - '---------INS MethodInvocation@@stream.getCharno() @TO@ InfixExpression@@stream.getCharno()
+      + 1 '
+    - '------------INS SimpleName@@Name:stream @TO@ MethodInvocation@@stream.getCharno() '
+    - '------------INS SimpleName@@MethodName:getCharno:[] @TO@ MethodInvocation@@stream.getCharno() '
+    - '---------INS Operator@@+ @TO@ InfixExpression@@stream.getCharno() + 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@stream.getCharno() + 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:lineStartChar=0 @TO@ SwitchStatement@@SimpleName:token '
+    - '---INS Assignment@@lineStartChar=0 @TO@ ExpressionStatement@@Assignment:lineStartChar=0 '
+    - '------INS SimpleName@@lineStartChar @TO@ Assignment@@lineStartChar=0 '
+    - '------INS Operator@@= @TO@ Assignment@@lineStartChar=0 '
+    - '------INS NumberLiteral@@0 @TO@ Assignment@@lineStartChar=0 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'MOV IfStatement@@InfixExpression:token == JsDocToken.EOC || token == JsDocToken.EOF
+      || (token == JsDocToken.ANNOTATION && option != WhitespaceOption.PRESERVE) @TO@
+      SwitchStatement@@SimpleName:token '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@boolean isEOC=token == JsDocToken.EOC; @TO@
+      SwitchStatement@@SimpleName:token '
+    - '---INS PrimitiveType@@boolean @TO@ VariableDeclarationStatement@@boolean isEOC=token
+      == JsDocToken.EOC; '
+    - '---INS VariableDeclarationFragment@@isEOC=token == JsDocToken.EOC @TO@ VariableDeclarationStatement@@boolean
+      isEOC=token == JsDocToken.EOC; '
+    - '------INS SimpleName@@isEOC @TO@ VariableDeclarationFragment@@isEOC=token ==
+      JsDocToken.EOC '
+    - '------INS InfixExpression@@token == JsDocToken.EOC @TO@ VariableDeclarationFragment@@isEOC=token
+      == JsDocToken.EOC '
+    - '---------INS SimpleName@@token @TO@ InfixExpression@@token == JsDocToken.EOC '
+    - '---------INS Operator@@== @TO@ InfixExpression@@token == JsDocToken.EOC '
+    - '---------INS QualifiedName@@JsDocToken.EOC @TO@ InfixExpression@@token == JsDocToken.EOC '
+    - '------------INS SimpleName@@JsDocToken @TO@ QualifiedName@@JsDocToken.EOC '
+    - '------------INS SimpleName@@EOC @TO@ QualifiedName@@JsDocToken.EOC '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD IfStatement@@InfixExpression:builder.length() > 0 @TO@ PrefixExpression:!isEOC '
+    - '---INS PrefixExpression@@!isEOC @TO@ IfStatement@@InfixExpression:builder.length()
+      > 0 '
+    - '------INS Operator@@! @TO@ PrefixExpression@@!isEOC '
+    - '------INS SimpleName@@isEOC @TO@ PrefixExpression@@!isEOC '
+    - '---INS IfStatement@@InfixExpression:lineStartChar != -1 && option == WhitespaceOption.PRESERVE
+      @TO@ IfStatement@@InfixExpression:builder.length() > 0 '
+    - '------INS InfixExpression@@lineStartChar != -1 && option == WhitespaceOption.PRESERVE
+      @TO@ IfStatement@@InfixExpression:lineStartChar != -1 && option == WhitespaceOption.PRESERVE '
+    - '---------INS InfixExpression@@lineStartChar != -1 @TO@ InfixExpression@@lineStartChar
+      != -1 && option == WhitespaceOption.PRESERVE '
+    - '------------INS SimpleName@@lineStartChar @TO@ InfixExpression@@lineStartChar
+      != -1 '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@lineStartChar != -1 '
+    - '------------INS PrefixExpression@@-1 @TO@ InfixExpression@@lineStartChar !=
+      -1 '
+    - '---------------INS Operator@@- @TO@ PrefixExpression@@-1 '
+    - '---------------INS NumberLiteral@@1 @TO@ PrefixExpression@@-1 '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@lineStartChar != -1 && option
+      == WhitespaceOption.PRESERVE '
+    - '---------INS InfixExpression@@option == WhitespaceOption.PRESERVE @TO@ InfixExpression@@lineStartChar
+      != -1 && option == WhitespaceOption.PRESERVE '
+    - '------------INS SimpleName@@option @TO@ InfixExpression@@option == WhitespaceOption.PRESERVE '
+    - '------------INS Operator@@== @TO@ InfixExpression@@option == WhitespaceOption.PRESERVE '
+    - '------------INS QualifiedName@@WhitespaceOption.PRESERVE @TO@ InfixExpression@@option
+      == WhitespaceOption.PRESERVE '
+    - '---------------INS SimpleName@@WhitespaceOption @TO@ QualifiedName@@WhitespaceOption.PRESERVE '
+    - '---------------INS SimpleName@@PRESERVE @TO@ QualifiedName@@WhitespaceOption.PRESERVE '
+    - '------INS VariableDeclarationStatement@@int numSpaces=stream.getCharno() -
+      lineStartChar; @TO@ IfStatement@@InfixExpression:lineStartChar != -1 && option
+      == WhitespaceOption.PRESERVE '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int numSpaces=stream.getCharno()
+      - lineStartChar; '
+    - '---------INS VariableDeclarationFragment@@numSpaces=stream.getCharno() - lineStartChar
+      @TO@ VariableDeclarationStatement@@int numSpaces=stream.getCharno() - lineStartChar; '
+    - '------------INS SimpleName@@numSpaces @TO@ VariableDeclarationFragment@@numSpaces=stream.getCharno()
+      - lineStartChar '
+    - '------------INS InfixExpression@@stream.getCharno() - lineStartChar @TO@ VariableDeclarationFragment@@numSpaces=stream.getCharno()
+      - lineStartChar '
+    - '---------------INS SimpleName@@lineStartChar @TO@ InfixExpression@@stream.getCharno()
+      - lineStartChar '
+    - '---------------MOV MethodInvocation@@builder.length() @TO@ InfixExpression@@stream.getCharno()
+      - lineStartChar '
+    - '---------------MOV Operator@@> @TO@ InfixExpression@@stream.getCharno() - lineStartChar '
+    - '------INS ForStatement@@[int i=0];i < numSpaces; [i++] @TO@ IfStatement@@InfixExpression:lineStartChar
+      != -1 && option == WhitespaceOption.PRESERVE '
+    - '---------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int
+      i=0];i < numSpaces; [i++] '
+    - '------------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '---------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '---------INS InfixExpression@@i < numSpaces @TO@ ForStatement@@[int i=0];i
+      < numSpaces; [i++] '
+    - '------------INS SimpleName@@i @TO@ InfixExpression@@i < numSpaces '
+    - '------------INS Operator@@< @TO@ InfixExpression@@i < numSpaces '
+    - '------------INS SimpleName@@numSpaces @TO@ InfixExpression@@i < numSpaces '
+    - '---------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < numSpaces;
+      [i++] '
+    - '------------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '------------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '---------INS ExpressionStatement@@MethodInvocation:builder.append('' '') @TO@
+      ForStatement@@[int i=0];i < numSpaces; [i++] '
+    - '------------MOV MethodInvocation@@builder.append('' '') @TO@ ExpressionStatement@@MethodInvocation:builder.append(''
+      '') '
+    - '------INS IfStatement@@InfixExpression:builder.length() > 0 @TO@ IfStatement@@InfixExpression:lineStartChar
+      != -1 && option == WhitespaceOption.PRESERVE '
+    - '---------INS InfixExpression@@builder.length() > 0 @TO@ IfStatement@@InfixExpression:builder.length()
+      > 0 '
+    - '------------INS MethodInvocation@@builder.length() @TO@ InfixExpression@@builder.length()
+      > 0 '
+    - '---------------INS SimpleName@@Name:builder @TO@ MethodInvocation@@builder.length() '
+    - '---------------INS SimpleName@@MethodName:length:[] @TO@ MethodInvocation@@builder.length() '
+    - '------------INS Operator@@> @TO@ InfixExpression@@builder.length() > 0 '
+    - '------------INS NumberLiteral@@0 @TO@ InfixExpression@@builder.length() > 0 '
+    - '---DEL InfixExpression@@builder.length() > 0 '
+    - '------DEL NumberLiteral@@0 '
+    - '---DEL ExpressionStatement@@MethodInvocation:builder.append('' '') '
+  files_cnt: '1'
+  repair_actions_cnt: 6

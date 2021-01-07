@@ -1,0 +1,13 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Math_84/src/main/java/org/apache/commons/math/optimization/direct/MultiDirectional.java	2020-10-23 03:41:45.358303131 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_84/purify/purified/org/apache/commons/math/optimization/direct/MultiDirectional.java	2020-10-23 03:41:45.358303131 -0400
+@@ -89,8 +89,10 @@
+             final RealPointValuePair contracted = evaluateNewSimplex(original, gamma, comparator);
+             if (comparator.compare(contracted, best) < 0) {
+                 // accept the contracted simplex
++            }
+ 
+             // check convergence
++            for (int i = 0; i < simplex.length; ++i) {
+                 return;
+             }
+ 

@@ -1,0 +1,633 @@
+1 bug_id: Mockito-25
+2 src folder:
+  name of src folder: src
+  number of files: 338
+  number of java files: 300
+  number of src classes: 351
+  number of test classes: 258
+3 test (cases):
+  failing test cases:
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#can_create_mock_from_multiple_type_variable_bounds_when_return_type_of_parameterized_method_is_a_typevar_that_is_referencing_a_typevar_on_class
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#will_return_default_value_on_non_mockable_nested_generic
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#can_create_mock_from_return_types_declared_with_a_bounded_wildcard
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#generic_deep_mock_frenzy__look_at_these_chained_calls
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#can_create_mock_from_multiple_type_variable_bounds_when_return_type_of_parameterized_method_is_a_parameterizedtype_that_is_referencing_a_typevar_on_class
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#can_create_mock_from_multiple_type_variable_bounds_when_method_return_type_is_referencing_a_typevar_on_class
+  failing tests:
+  - org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest
+  number of all test cases: 1290
+  number of failing test cases: 6
+4 time cost of purification:
+  coverage on buggy version: 6.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.796
+  purification via delta debugging: 1400.814
+  repair actions extraction: 0.823
+5 stmts covered by failing cases:
+  buggy:
+    ? org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#can_create_mock_from_multiple_type_variable_bounds_when_method_return_type_is_referencing_a_typevar_on_class
+    : 548
+    ? org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#can_create_mock_from_multiple_type_variable_bounds_when_return_type_of_parameterized_method_is_a_parameterizedtype_that_is_referencing_a_typevar_on_class
+    : 573
+    ? org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#can_create_mock_from_multiple_type_variable_bounds_when_return_type_of_parameterized_method_is_a_typevar_that_is_referencing_a_typevar_on_class
+    : 549
+    ? org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#can_create_mock_from_return_types_declared_with_a_bounded_wildcard
+    : 618
+    ? org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#generic_deep_mock_frenzy__look_at_these_chained_calls
+    : 601
+    ? org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#will_return_default_value_on_non_mockable_nested_generic
+    : 565
+  fixed:
+    ? org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#can_create_mock_from_multiple_type_variable_bounds_when_method_return_type_is_referencing_a_typevar_on_class
+    : 618
+    ? org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#can_create_mock_from_multiple_type_variable_bounds_when_return_type_of_parameterized_method_is_a_parameterizedtype_that_is_referencing_a_typevar_on_class
+    : 652
+    ? org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#can_create_mock_from_multiple_type_variable_bounds_when_return_type_of_parameterized_method_is_a_typevar_that_is_referencing_a_typevar_on_class
+    : 619
+    ? org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#can_create_mock_from_return_types_declared_with_a_bounded_wildcard
+    : 672
+    ? org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#generic_deep_mock_frenzy__look_at_these_chained_calls
+    : 647
+    ? org.mockito.internal.stubbing.defaultanswers.ReturnsGenericDeepStubsTest#will_return_default_value_on_non_mockable_nested_generic
+    : 618
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 29
+  covDel: 6
+  cov_patch_lines: 35
+  delta_patch_lines: 34
+  oriAdd: 29
+  oriDel: 6
+  ori_patch_lines: 35
+  purAdd: 28
+  purDel: 6
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 10
+  original: 10
+  purifiy: 10
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 120
+  passed: 1
+  total: 121
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_25/src/org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs.java\t\
+    2020-10-24 19:24:02.088829730 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_25/purify/patch/org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs.java\t\
+    2020-10-24 19:24:02.088829730 -0400\n@@ -4,6 +4,7 @@\n  */\n package org.mockito.internal.stubbing.defaultanswers;\n\
+    \ \n+import org.mockito.MockSettings;\n import org.mockito.internal.InternalMockHandler;\n\
+    \ import org.mockito.internal.creation.settings.CreationSettings;\n import org.mockito.internal.stubbing.InvocationContainerImpl;\n\
+    @@ -16,6 +17,8 @@\n \n import java.io.Serializable;\n \n+import static org.mockito.Mockito.mock;\n\
+    +import static org.mockito.Mockito.withSettings;\n \n /**\n  * Returning deep\
+    \ stub implementation.\n@@ -50,10 +53,10 @@\n             return delegate.returnValueFor(rawType);\n\
+    \         }\n \n-        return getMock(invocation);\n+        return getMock(invocation,\
+    \ returnTypeGenericMetadata);\n     }\n \n-    private Object getMock(InvocationOnMock\
+    \ invocation) throws Throwable {\n+    private Object getMock(InvocationOnMock\
+    \ invocation, GenericMetadataSupport returnTypeGenericMetadata) throws Throwable\
+    \ {\n     \tInternalMockHandler<Object> handler = new MockUtil().getMockHandler(invocation.getMock());\n\
+    \     \tInvocationContainerImpl container = (InvocationContainerImpl) handler.getInvocationContainer();\n\
+    \ \n@@ -65,7 +68,7 @@\n \t\t}\n \n         // deep stub\n-        return recordDeepStubMock(invocation,\
+    \ container);\n+        return recordDeepStubMock(createNewDeepStubMock(returnTypeGenericMetadata),\
+    \ container);\n     }\n \n     /**\n@@ -74,13 +77,33 @@\n      * @param returnTypeGenericMetadata\
+    \ The metadata to use to create the new mock.\n      * @return The mock\n    \
+    \  */\n+    private Object createNewDeepStubMock(GenericMetadataSupport returnTypeGenericMetadata)\
+    \ {\n+        return mock(\n+                returnTypeGenericMetadata.rawType(),\n\
+    +                withSettingsUsing(returnTypeGenericMetadata)\n+        );\n+\
+    \    }\n \n+    private MockSettings withSettingsUsing(GenericMetadataSupport\
+    \ returnTypeGenericMetadata) {\n+        MockSettings mockSettings =\n+      \
+    \          returnTypeGenericMetadata.rawExtraInterfaces().length > 0 ?\n+    \
+    \            withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())\n\
+    +                : withSettings();\n \n+        return mockSettings\n+       \
+    \         .defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata));\n\
+    +    }\n \n+    private ReturnsDeepStubs returnsDeepStubsAnswerUsing(final GenericMetadataSupport\
+    \ returnTypeGenericMetadata) {\n+        return new ReturnsDeepStubs() {\n+  \
+    \          @Override\n+            protected GenericMetadataSupport actualParameterizedType(Object\
+    \ mock) {\n+                return returnTypeGenericMetadata;\n+            }\n\
+    +        };\n+    }\n \n-    private Object recordDeepStubMock(InvocationOnMock\
+    \ invocation, InvocationContainerImpl container) {\n-        Class<?> clz = invocation.getMethod().getReturnType();\n\
+    -        final Object mock = org.mockito.Mockito.mock(clz, this);\n+    private\
+    \ Object recordDeepStubMock(final Object mock, InvocationContainerImpl container)\
+    \ throws Throwable {\n \n         container.addAnswer(new Answer<Object>() {\n\
+    \             public Object answer(InvocationOnMock invocation) throws Throwable\
+    \ {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_25/src/org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs.java\t\
+    2020-10-24 19:47:55.102473758 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_25/purify/purified/org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs.java\t\
+    2020-10-24 19:47:55.102473758 -0400\n@@ -4,6 +4,7 @@\n  */\n package org.mockito.internal.stubbing.defaultanswers;\n\
+    \ \n+import org.mockito.MockSettings;\n import org.mockito.internal.InternalMockHandler;\n\
+    \ import org.mockito.internal.creation.settings.CreationSettings;\n import org.mockito.internal.stubbing.InvocationContainerImpl;\n\
+    @@ -16,6 +17,8 @@\n \n import java.io.Serializable;\n \n+import static org.mockito.Mockito.mock;\n\
+    +import static org.mockito.Mockito.withSettings;\n \n /**\n  * Returning deep\
+    \ stub implementation.\n@@ -50,10 +53,10 @@\n             return delegate.returnValueFor(rawType);\n\
+    \         }\n \n-        return getMock(invocation);\n+        return getMock(invocation,\
+    \ returnTypeGenericMetadata);\n     }\n \n-    private Object getMock(InvocationOnMock\
+    \ invocation) throws Throwable {\n+    private Object getMock(InvocationOnMock\
+    \ invocation, GenericMetadataSupport returnTypeGenericMetadata) throws Throwable\
+    \ {\n     \tInternalMockHandler<Object> handler = new MockUtil().getMockHandler(invocation.getMock());\n\
+    \     \tInvocationContainerImpl container = (InvocationContainerImpl) handler.getInvocationContainer();\n\
+    \ \n@@ -65,7 +68,7 @@\n \t\t}\n \n         // deep stub\n-        return recordDeepStubMock(invocation,\
+    \ container);\n+        return recordDeepStubMock(createNewDeepStubMock(returnTypeGenericMetadata),\
+    \ container);\n     }\n \n     /**\n@@ -74,13 +77,32 @@\n      * @param returnTypeGenericMetadata\
+    \ The metadata to use to create the new mock.\n      * @return The mock\n    \
+    \  */\n+    private Object createNewDeepStubMock(GenericMetadataSupport returnTypeGenericMetadata)\
+    \ {\n+        return mock(\n+                returnTypeGenericMetadata.rawType(),\n\
+    +                withSettingsUsing(returnTypeGenericMetadata)\n+        );\n+\
+    \    }\n \n+    private MockSettings withSettingsUsing(GenericMetadataSupport\
+    \ returnTypeGenericMetadata) {\n+        MockSettings mockSettings =\n+      \
+    \          returnTypeGenericMetadata.rawExtraInterfaces().length > 0 ?\n+    \
+    \            withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())\n\
+    +                : withSettings();\n \n+        return mockSettings\n+       \
+    \         .defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata));\n\
+    +    }\n \n+    private ReturnsDeepStubs returnsDeepStubsAnswerUsing(final GenericMetadataSupport\
+    \ returnTypeGenericMetadata) {\n+        return new ReturnsDeepStubs() {\n+  \
+    \          protected GenericMetadataSupport actualParameterizedType(Object mock)\
+    \ {\n+                return returnTypeGenericMetadata;\n+            }\n+   \
+    \     };\n+    }\n \n-    private Object recordDeepStubMock(InvocationOnMock invocation,\
+    \ InvocationContainerImpl container) {\n-        Class<?> clz = invocation.getMethod().getReturnType();\n\
+    -        final Object mock = org.mockito.Mockito.mock(clz, this);\n+    private\
+    \ Object recordDeepStubMock(final Object mock, InvocationContainerImpl container)\
+    \ throws Throwable {\n \n         container.addAnswer(new Answer<Object>() {\n\
+    \             public Object answer(InvocationOnMock invocation) throws Throwable\
+    \ {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:getMock(invocation) @TO@ MethodInvocation:getMock(invocation,returnTypeGenericMetadata) '
+    - '---UPD MethodInvocation@@getMock(invocation) @TO@ getMock(invocation,returnTypeGenericMetadata) '
+    - '------UPD SimpleName@@MethodName:getMock:[invocation] @TO@ MethodName:getMock:[invocation,
+      returnTypeGenericMetadata] '
+    - '---------INS SimpleName@@returnTypeGenericMetadata @TO@ SimpleName@@MethodName:getMock:[invocation] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@Object, MethodName:getMock, @@Argus:InvocationOnMock+invocation+Throwable,  @TO@
+      private, @@Object, MethodName:getMock, @@Argus:InvocationOnMock+invocation+GenericMetadataSupport+returnTypeGenericMetadata+Throwable,  '
+    - '---INS SingleVariableDeclaration@@GenericMetadataSupport returnTypeGenericMetadata
+      @TO@ MethodDeclaration@@private, @@Object, MethodName:getMock, @@Argus:InvocationOnMock+invocation+Throwable,  '
+    - '------INS SimpleType@@GenericMetadataSupport @TO@ SingleVariableDeclaration@@GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '------INS SimpleName@@returnTypeGenericMetadata @TO@ SingleVariableDeclaration@@GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '---UPD ReturnStatement@@MethodInvocation:recordDeepStubMock(invocation,container)
+      @TO@ MethodInvocation:recordDeepStubMock(createNewDeepStubMock(returnTypeGenericMetadata),container) '
+    - '------UPD MethodInvocation@@recordDeepStubMock(invocation,container) @TO@ recordDeepStubMock(createNewDeepStubMock(returnTypeGenericMetadata),container) '
+    - '---------UPD SimpleName@@MethodName:recordDeepStubMock:[invocation, container]
+      @TO@ MethodName:recordDeepStubMock:[createNewDeepStubMock(returnTypeGenericMetadata),
+      container] '
+    - '------------UPD SimpleName@@invocation @TO@ returnTypeGenericMetadata '
+    - '------------INS MethodInvocation@@createNewDeepStubMock(returnTypeGenericMetadata)
+      @TO@ SimpleName@@MethodName:recordDeepStubMock:[invocation, container] '
+    - '---------------INS SimpleName@@MethodName:createNewDeepStubMock:[returnTypeGenericMetadata]
+      @TO@ MethodInvocation@@createNewDeepStubMock(returnTypeGenericMetadata) '
+    - '------------------MOV SimpleName@@invocation @TO@ SimpleName@@MethodName:createNewDeepStubMock:[returnTypeGenericMetadata] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@Object, MethodName:recordDeepStubMock, @@Argus:InvocationOnMock+invocation+InvocationContainerImpl+container+
+      @TO@ private, @@Object, MethodName:recordDeepStubMock, @@Argus:Object+mock+InvocationContainerImpl+container+Throwable,  '
+    - '---UPD SingleVariableDeclaration@@InvocationOnMock invocation @TO@ final Object
+      mock '
+    - '------UPD SimpleType@@InvocationOnMock @TO@ Object '
+    - '------UPD SimpleName@@invocation @TO@ mock '
+    - '------INS Modifier@@final @TO@ SingleVariableDeclaration@@InvocationOnMock
+      invocation '
+    - '---DEL VariableDeclarationStatement@@Class<?> clz=invocation.getMethod().getReturnType(); '
+    - '------DEL ParameterizedType@@Class<?> '
+    - '---------DEL SimpleType@@Class '
+    - '---------DEL WildcardType@@? '
+    - '------DEL VariableDeclarationFragment@@clz=invocation.getMethod().getReturnType() '
+    - '---------DEL SimpleName@@clz '
+    - '---------DEL MethodInvocation@@invocation.getMethod().getReturnType() '
+    - '------------DEL SimpleName@@Name:invocation '
+    - '------------DEL MethodInvocation@@MethodName:getMethod:[] '
+    - '------------DEL SimpleName@@MethodName:getReturnType:[] '
+    - '---DEL VariableDeclarationStatement@@final Object mock=org.mockito.Mockito.mock(clz,this); '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@Object '
+    - '------DEL VariableDeclarationFragment@@mock=org.mockito.Mockito.mock(clz,this) '
+    - '---------DEL SimpleName@@mock '
+    - '---------DEL MethodInvocation@@org.mockito.Mockito.mock(clz,this) '
+    - '------------DEL QualifiedName@@Name:org.mockito.Mockito '
+    - '------------DEL SimpleName@@MethodName:mock:[clz, this] '
+    - '---------------DEL SimpleName@@clz '
+    - '---------------DEL ThisExpression@@this '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@Object, MethodName:createNewDeepStubMock,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ @TO@ TypeDeclaration@@[public]ReturnsDeepStubs,
+      [Answer<Object>, Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@Object, MethodName:createNewDeepStubMock,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SimpleType@@Object @TO@ MethodDeclaration@@private, @@Object, MethodName:createNewDeepStubMock,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SimpleName@@MethodName:createNewDeepStubMock @TO@ MethodDeclaration@@private,
+      @@Object, MethodName:createNewDeepStubMock, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SingleVariableDeclaration@@GenericMetadataSupport returnTypeGenericMetadata
+      @TO@ MethodDeclaration@@private, @@Object, MethodName:createNewDeepStubMock,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS SimpleType@@GenericMetadataSupport @TO@ SingleVariableDeclaration@@GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '------INS SimpleName@@returnTypeGenericMetadata @TO@ SingleVariableDeclaration@@GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '---INS ReturnStatement@@MethodInvocation:mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata))
+      @TO@ MethodDeclaration@@private, @@Object, MethodName:createNewDeepStubMock,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS MethodInvocation@@mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata))
+      @TO@ ReturnStatement@@MethodInvocation:mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata)) '
+    - '---------INS SimpleName@@MethodName:mock:[returnTypeGenericMetadata.rawType(),
+      withSettingsUsing(returnTypeGenericMetadata)] @TO@ MethodInvocation@@mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata)) '
+    - '------------INS MethodInvocation@@returnTypeGenericMetadata.rawType() @TO@
+      SimpleName@@MethodName:mock:[returnTypeGenericMetadata.rawType(), withSettingsUsing(returnTypeGenericMetadata)] '
+    - '---------------INS SimpleName@@Name:returnTypeGenericMetadata @TO@ MethodInvocation@@returnTypeGenericMetadata.rawType() '
+    - '---------------INS SimpleName@@MethodName:rawType:[] @TO@ MethodInvocation@@returnTypeGenericMetadata.rawType() '
+    - '------------INS MethodInvocation@@withSettingsUsing(returnTypeGenericMetadata)
+      @TO@ SimpleName@@MethodName:mock:[returnTypeGenericMetadata.rawType(), withSettingsUsing(returnTypeGenericMetadata)] '
+    - '---------------INS SimpleName@@MethodName:withSettingsUsing:[returnTypeGenericMetadata]
+      @TO@ MethodInvocation@@withSettingsUsing(returnTypeGenericMetadata) '
+    - '------------------INS SimpleName@@returnTypeGenericMetadata @TO@ SimpleName@@MethodName:withSettingsUsing:[returnTypeGenericMetadata] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ @TO@ TypeDeclaration@@[public]ReturnsDeepStubs,
+      [Answer<Object>, Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SimpleType@@MockSettings @TO@ MethodDeclaration@@private, @@MockSettings,
+      MethodName:withSettingsUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SimpleName@@MethodName:withSettingsUsing @TO@ MethodDeclaration@@private,
+      @@MockSettings, MethodName:withSettingsUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SingleVariableDeclaration@@GenericMetadataSupport returnTypeGenericMetadata
+      @TO@ MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS SimpleType@@GenericMetadataSupport @TO@ SingleVariableDeclaration@@GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '------INS SimpleName@@returnTypeGenericMetadata @TO@ SingleVariableDeclaration@@GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '---INS VariableDeclarationStatement@@MockSettings mockSettings=returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings(); @TO@ MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS SimpleType@@MockSettings @TO@ VariableDeclarationStatement@@MockSettings
+      mockSettings=returnTypeGenericMetadata.rawExtraInterfaces().length > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings(); '
+    - '------INS VariableDeclarationFragment@@mockSettings=returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() @TO@ VariableDeclarationStatement@@MockSettings mockSettings=returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings(); '
+    - '---------INS SimpleName@@mockSettings @TO@ VariableDeclarationFragment@@mockSettings=returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() '
+    - '---------INS ConditionalExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() @TO@ VariableDeclarationFragment@@mockSettings=returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() '
+    - '------------INS InfixExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 @TO@ ConditionalExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() '
+    - '---------------INS FieldAccess@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      @TO@ InfixExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 '
+    - '------------------INS MethodInvocation@@returnTypeGenericMetadata.rawExtraInterfaces()
+      @TO@ FieldAccess@@returnTypeGenericMetadata.rawExtraInterfaces().length '
+    - '---------------------INS SimpleName@@Name:returnTypeGenericMetadata @TO@ MethodInvocation@@returnTypeGenericMetadata.rawExtraInterfaces() '
+    - '---------------------INS SimpleName@@MethodName:rawExtraInterfaces:[] @TO@
+      MethodInvocation@@returnTypeGenericMetadata.rawExtraInterfaces() '
+    - '------------------INS SimpleName@@length @TO@ FieldAccess@@returnTypeGenericMetadata.rawExtraInterfaces().length '
+    - '---------------INS Operator@@> @TO@ InfixExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 '
+    - '---------------INS NumberLiteral@@0 @TO@ InfixExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 '
+    - '------------INS MethodInvocation@@withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      @TO@ ConditionalExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() '
+    - '---------------INS MethodInvocation@@MethodName:withSettings:[] @TO@ MethodInvocation@@withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces()) '
+    - '---------------INS SimpleName@@MethodName:extraInterfaces:[returnTypeGenericMetadata.rawExtraInterfaces()]
+      @TO@ MethodInvocation@@withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces()) '
+    - '------------------INS MethodInvocation@@returnTypeGenericMetadata.rawExtraInterfaces()
+      @TO@ SimpleName@@MethodName:extraInterfaces:[returnTypeGenericMetadata.rawExtraInterfaces()] '
+    - '---------------------INS SimpleName@@Name:returnTypeGenericMetadata @TO@ MethodInvocation@@returnTypeGenericMetadata.rawExtraInterfaces() '
+    - '---------------------INS SimpleName@@MethodName:rawExtraInterfaces:[] @TO@
+      MethodInvocation@@returnTypeGenericMetadata.rawExtraInterfaces() '
+    - '------------INS MethodInvocation@@MethodName:withSettings:[] @TO@ ConditionalExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() '
+    - '---INS ReturnStatement@@MethodInvocation:mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata))
+      @TO@ MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS MethodInvocation@@mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata))
+      @TO@ ReturnStatement@@MethodInvocation:mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '---------INS SimpleName@@Name:mockSettings @TO@ MethodInvocation@@mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '---------INS SimpleName@@MethodName:defaultAnswer:[returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)]
+      @TO@ MethodInvocation@@mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '------------INS MethodInvocation@@returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)
+      @TO@ SimpleName@@MethodName:defaultAnswer:[returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)] '
+    - '---------------INS SimpleName@@MethodName:returnsDeepStubsAnswerUsing:[returnTypeGenericMetadata]
+      @TO@ MethodInvocation@@returnsDeepStubsAnswerUsing(returnTypeGenericMetadata) '
+    - '------------------INS SimpleName@@returnTypeGenericMetadata @TO@ SimpleName@@MethodName:returnsDeepStubsAnswerUsing:[returnTypeGenericMetadata] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@ReturnsDeepStubs, MethodName:returnsDeepStubsAnswerUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ @TO@ TypeDeclaration@@[public]ReturnsDeepStubs,
+      [Answer<Object>, Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@ReturnsDeepStubs,
+      MethodName:returnsDeepStubsAnswerUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SimpleType@@ReturnsDeepStubs @TO@ MethodDeclaration@@private, @@ReturnsDeepStubs,
+      MethodName:returnsDeepStubsAnswerUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SimpleName@@MethodName:returnsDeepStubsAnswerUsing @TO@ MethodDeclaration@@private,
+      @@ReturnsDeepStubs, MethodName:returnsDeepStubsAnswerUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SingleVariableDeclaration@@final GenericMetadataSupport returnTypeGenericMetadata
+      @TO@ MethodDeclaration@@private, @@ReturnsDeepStubs, MethodName:returnsDeepStubsAnswerUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS Modifier@@final @TO@ SingleVariableDeclaration@@final GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '------INS SimpleType@@GenericMetadataSupport @TO@ SingleVariableDeclaration@@final
+      GenericMetadataSupport returnTypeGenericMetadata '
+    - '------INS SimpleName@@returnTypeGenericMetadata @TO@ SingleVariableDeclaration@@final
+      GenericMetadataSupport returnTypeGenericMetadata '
+    - '---INS ReturnStatement@@ClassInstanceCreation:new ReturnsDeepStubs()'
+    - '  @Override protected GenericMetadataSupport actualParameterizedType(  Object
+      mock)'
+    - '    return returnTypeGenericMetadata'
+    - '  '
+    - ''
+    - ' @TO@ MethodDeclaration@@private, @@ReturnsDeepStubs, MethodName:returnsDeepStubsAnswerUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS ClassInstanceCreation@@ReturnsDeepStubs[] @TO@ ReturnStatement@@ClassInstanceCreation:new
+      ReturnsDeepStubs()'
+    - '  @Override protected GenericMetadataSupport actualParameterizedType(  Object
+      mock)'
+    - '    return returnTypeGenericMetadata'
+    - '  '
+    - ''
+    - ' '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@ReturnsDeepStubs[] '
+    - '---------INS SimpleType@@ReturnsDeepStubs @TO@ ClassInstanceCreation@@ReturnsDeepStubs[] '
+    - '---------INS AnonymousClassDeclaration@@AnonymousClass @TO@ ClassInstanceCreation@@ReturnsDeepStubs[] '
+    - '------------INS MethodDeclaration@@protected, @@GenericMetadataSupport, MethodName:actualParameterizedType,
+      @@Argus:Object+mock+ @TO@ AnonymousClassDeclaration@@AnonymousClass '
+    - '---------------INS Modifier@@protected @TO@ MethodDeclaration@@protected, @@GenericMetadataSupport,
+      MethodName:actualParameterizedType, @@Argus:Object+mock+ '
+    - '---------------INS SimpleType@@GenericMetadataSupport @TO@ MethodDeclaration@@protected,
+      @@GenericMetadataSupport, MethodName:actualParameterizedType, @@Argus:Object+mock+ '
+    - '---------------INS SimpleName@@MethodName:actualParameterizedType @TO@ MethodDeclaration@@protected,
+      @@GenericMetadataSupport, MethodName:actualParameterizedType, @@Argus:Object+mock+ '
+    - '---------------INS SingleVariableDeclaration@@Object mock @TO@ MethodDeclaration@@protected,
+      @@GenericMetadataSupport, MethodName:actualParameterizedType, @@Argus:Object+mock+ '
+    - '------------------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object
+      mock '
+    - '------------------INS SimpleName@@mock @TO@ SingleVariableDeclaration@@Object
+      mock '
+    - '---------------INS ReturnStatement@@SimpleName:returnTypeGenericMetadata @TO@
+      MethodDeclaration@@protected, @@GenericMetadataSupport, MethodName:actualParameterizedType,
+      @@Argus:Object+mock+ '
+    - '------------------INS SimpleName@@returnTypeGenericMetadata @TO@ ReturnStatement@@SimpleName:returnTypeGenericMetadata '
+  repair_actions_cnt: 6
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/stubbing/defaultanswers/ReturnsDeepStubs:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:getMock(invocation) @TO@ MethodInvocation:getMock(invocation,returnTypeGenericMetadata) '
+    - '---UPD MethodInvocation@@getMock(invocation) @TO@ getMock(invocation,returnTypeGenericMetadata) '
+    - '------UPD SimpleName@@MethodName:getMock:[invocation] @TO@ MethodName:getMock:[invocation,
+      returnTypeGenericMetadata] '
+    - '---------INS SimpleName@@returnTypeGenericMetadata @TO@ SimpleName@@MethodName:getMock:[invocation] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@Object, MethodName:getMock, @@Argus:InvocationOnMock+invocation+Throwable,  @TO@
+      private, @@Object, MethodName:getMock, @@Argus:InvocationOnMock+invocation+GenericMetadataSupport+returnTypeGenericMetadata+Throwable,  '
+    - '---INS SingleVariableDeclaration@@GenericMetadataSupport returnTypeGenericMetadata
+      @TO@ MethodDeclaration@@private, @@Object, MethodName:getMock, @@Argus:InvocationOnMock+invocation+Throwable,  '
+    - '------INS SimpleType@@GenericMetadataSupport @TO@ SingleVariableDeclaration@@GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '------INS SimpleName@@returnTypeGenericMetadata @TO@ SingleVariableDeclaration@@GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '---UPD ReturnStatement@@MethodInvocation:recordDeepStubMock(invocation,container)
+      @TO@ MethodInvocation:recordDeepStubMock(createNewDeepStubMock(returnTypeGenericMetadata),container) '
+    - '------UPD MethodInvocation@@recordDeepStubMock(invocation,container) @TO@ recordDeepStubMock(createNewDeepStubMock(returnTypeGenericMetadata),container) '
+    - '---------UPD SimpleName@@MethodName:recordDeepStubMock:[invocation, container]
+      @TO@ MethodName:recordDeepStubMock:[createNewDeepStubMock(returnTypeGenericMetadata),
+      container] '
+    - '------------UPD SimpleName@@invocation @TO@ returnTypeGenericMetadata '
+    - '------------INS MethodInvocation@@createNewDeepStubMock(returnTypeGenericMetadata)
+      @TO@ SimpleName@@MethodName:recordDeepStubMock:[invocation, container] '
+    - '---------------INS SimpleName@@MethodName:createNewDeepStubMock:[returnTypeGenericMetadata]
+      @TO@ MethodInvocation@@createNewDeepStubMock(returnTypeGenericMetadata) '
+    - '------------------MOV SimpleName@@invocation @TO@ SimpleName@@MethodName:createNewDeepStubMock:[returnTypeGenericMetadata] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@Object, MethodName:recordDeepStubMock, @@Argus:InvocationOnMock+invocation+InvocationContainerImpl+container+
+      @TO@ private, @@Object, MethodName:recordDeepStubMock, @@Argus:Object+mock+InvocationContainerImpl+container+Throwable,  '
+    - '---UPD SingleVariableDeclaration@@InvocationOnMock invocation @TO@ final Object
+      mock '
+    - '------UPD SimpleType@@InvocationOnMock @TO@ Object '
+    - '------UPD SimpleName@@invocation @TO@ mock '
+    - '------INS Modifier@@final @TO@ SingleVariableDeclaration@@InvocationOnMock
+      invocation '
+    - '---DEL VariableDeclarationStatement@@Class<?> clz=invocation.getMethod().getReturnType(); '
+    - '------DEL ParameterizedType@@Class<?> '
+    - '---------DEL SimpleType@@Class '
+    - '---------DEL WildcardType@@? '
+    - '------DEL VariableDeclarationFragment@@clz=invocation.getMethod().getReturnType() '
+    - '---------DEL SimpleName@@clz '
+    - '---------DEL MethodInvocation@@invocation.getMethod().getReturnType() '
+    - '------------DEL SimpleName@@Name:invocation '
+    - '------------DEL MethodInvocation@@MethodName:getMethod:[] '
+    - '------------DEL SimpleName@@MethodName:getReturnType:[] '
+    - '---DEL VariableDeclarationStatement@@final Object mock=org.mockito.Mockito.mock(clz,this); '
+    - '------DEL Modifier@@final '
+    - '------DEL SimpleType@@Object '
+    - '------DEL VariableDeclarationFragment@@mock=org.mockito.Mockito.mock(clz,this) '
+    - '---------DEL SimpleName@@mock '
+    - '---------DEL MethodInvocation@@org.mockito.Mockito.mock(clz,this) '
+    - '------------DEL QualifiedName@@Name:org.mockito.Mockito '
+    - '------------DEL SimpleName@@MethodName:mock:[clz, this] '
+    - '---------------DEL SimpleName@@clz '
+    - '---------------DEL ThisExpression@@this '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@Object, MethodName:createNewDeepStubMock,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ @TO@ TypeDeclaration@@[public]ReturnsDeepStubs,
+      [Answer<Object>, Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@Object, MethodName:createNewDeepStubMock,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SimpleType@@Object @TO@ MethodDeclaration@@private, @@Object, MethodName:createNewDeepStubMock,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SimpleName@@MethodName:createNewDeepStubMock @TO@ MethodDeclaration@@private,
+      @@Object, MethodName:createNewDeepStubMock, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SingleVariableDeclaration@@GenericMetadataSupport returnTypeGenericMetadata
+      @TO@ MethodDeclaration@@private, @@Object, MethodName:createNewDeepStubMock,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS SimpleType@@GenericMetadataSupport @TO@ SingleVariableDeclaration@@GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '------INS SimpleName@@returnTypeGenericMetadata @TO@ SingleVariableDeclaration@@GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '---INS ReturnStatement@@MethodInvocation:mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata))
+      @TO@ MethodDeclaration@@private, @@Object, MethodName:createNewDeepStubMock,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS MethodInvocation@@mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata))
+      @TO@ ReturnStatement@@MethodInvocation:mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata)) '
+    - '---------INS SimpleName@@MethodName:mock:[returnTypeGenericMetadata.rawType(),
+      withSettingsUsing(returnTypeGenericMetadata)] @TO@ MethodInvocation@@mock(returnTypeGenericMetadata.rawType(),withSettingsUsing(returnTypeGenericMetadata)) '
+    - '------------INS MethodInvocation@@returnTypeGenericMetadata.rawType() @TO@
+      SimpleName@@MethodName:mock:[returnTypeGenericMetadata.rawType(), withSettingsUsing(returnTypeGenericMetadata)] '
+    - '---------------INS SimpleName@@Name:returnTypeGenericMetadata @TO@ MethodInvocation@@returnTypeGenericMetadata.rawType() '
+    - '---------------INS SimpleName@@MethodName:rawType:[] @TO@ MethodInvocation@@returnTypeGenericMetadata.rawType() '
+    - '------------INS MethodInvocation@@withSettingsUsing(returnTypeGenericMetadata)
+      @TO@ SimpleName@@MethodName:mock:[returnTypeGenericMetadata.rawType(), withSettingsUsing(returnTypeGenericMetadata)] '
+    - '---------------INS SimpleName@@MethodName:withSettingsUsing:[returnTypeGenericMetadata]
+      @TO@ MethodInvocation@@withSettingsUsing(returnTypeGenericMetadata) '
+    - '------------------INS SimpleName@@returnTypeGenericMetadata @TO@ SimpleName@@MethodName:withSettingsUsing:[returnTypeGenericMetadata] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ @TO@ TypeDeclaration@@[public]ReturnsDeepStubs,
+      [Answer<Object>, Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SimpleType@@MockSettings @TO@ MethodDeclaration@@private, @@MockSettings,
+      MethodName:withSettingsUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SimpleName@@MethodName:withSettingsUsing @TO@ MethodDeclaration@@private,
+      @@MockSettings, MethodName:withSettingsUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SingleVariableDeclaration@@GenericMetadataSupport returnTypeGenericMetadata
+      @TO@ MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS SimpleType@@GenericMetadataSupport @TO@ SingleVariableDeclaration@@GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '------INS SimpleName@@returnTypeGenericMetadata @TO@ SingleVariableDeclaration@@GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '---INS VariableDeclarationStatement@@MockSettings mockSettings=returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings(); @TO@ MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS SimpleType@@MockSettings @TO@ VariableDeclarationStatement@@MockSettings
+      mockSettings=returnTypeGenericMetadata.rawExtraInterfaces().length > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings(); '
+    - '------INS VariableDeclarationFragment@@mockSettings=returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() @TO@ VariableDeclarationStatement@@MockSettings mockSettings=returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings(); '
+    - '---------INS SimpleName@@mockSettings @TO@ VariableDeclarationFragment@@mockSettings=returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() '
+    - '---------INS ConditionalExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() @TO@ VariableDeclarationFragment@@mockSettings=returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() '
+    - '------------INS InfixExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 @TO@ ConditionalExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() '
+    - '---------------INS FieldAccess@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      @TO@ InfixExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 '
+    - '------------------INS MethodInvocation@@returnTypeGenericMetadata.rawExtraInterfaces()
+      @TO@ FieldAccess@@returnTypeGenericMetadata.rawExtraInterfaces().length '
+    - '---------------------INS SimpleName@@Name:returnTypeGenericMetadata @TO@ MethodInvocation@@returnTypeGenericMetadata.rawExtraInterfaces() '
+    - '---------------------INS SimpleName@@MethodName:rawExtraInterfaces:[] @TO@
+      MethodInvocation@@returnTypeGenericMetadata.rawExtraInterfaces() '
+    - '------------------INS SimpleName@@length @TO@ FieldAccess@@returnTypeGenericMetadata.rawExtraInterfaces().length '
+    - '---------------INS Operator@@> @TO@ InfixExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 '
+    - '---------------INS NumberLiteral@@0 @TO@ InfixExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 '
+    - '------------INS MethodInvocation@@withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      @TO@ ConditionalExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() '
+    - '---------------INS MethodInvocation@@MethodName:withSettings:[] @TO@ MethodInvocation@@withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces()) '
+    - '---------------INS SimpleName@@MethodName:extraInterfaces:[returnTypeGenericMetadata.rawExtraInterfaces()]
+      @TO@ MethodInvocation@@withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces()) '
+    - '------------------INS MethodInvocation@@returnTypeGenericMetadata.rawExtraInterfaces()
+      @TO@ SimpleName@@MethodName:extraInterfaces:[returnTypeGenericMetadata.rawExtraInterfaces()] '
+    - '---------------------INS SimpleName@@Name:returnTypeGenericMetadata @TO@ MethodInvocation@@returnTypeGenericMetadata.rawExtraInterfaces() '
+    - '---------------------INS SimpleName@@MethodName:rawExtraInterfaces:[] @TO@
+      MethodInvocation@@returnTypeGenericMetadata.rawExtraInterfaces() '
+    - '------------INS MethodInvocation@@MethodName:withSettings:[] @TO@ ConditionalExpression@@returnTypeGenericMetadata.rawExtraInterfaces().length
+      > 0 ? withSettings().extraInterfaces(returnTypeGenericMetadata.rawExtraInterfaces())
+      : withSettings() '
+    - '---INS ReturnStatement@@MethodInvocation:mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata))
+      @TO@ MethodDeclaration@@private, @@MockSettings, MethodName:withSettingsUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS MethodInvocation@@mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata))
+      @TO@ ReturnStatement@@MethodInvocation:mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '---------INS SimpleName@@Name:mockSettings @TO@ MethodInvocation@@mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '---------INS SimpleName@@MethodName:defaultAnswer:[returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)]
+      @TO@ MethodInvocation@@mockSettings.defaultAnswer(returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)) '
+    - '------------INS MethodInvocation@@returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)
+      @TO@ SimpleName@@MethodName:defaultAnswer:[returnsDeepStubsAnswerUsing(returnTypeGenericMetadata)] '
+    - '---------------INS SimpleName@@MethodName:returnsDeepStubsAnswerUsing:[returnTypeGenericMetadata]
+      @TO@ MethodInvocation@@returnsDeepStubsAnswerUsing(returnTypeGenericMetadata) '
+    - '------------------INS SimpleName@@returnTypeGenericMetadata @TO@ SimpleName@@MethodName:returnsDeepStubsAnswerUsing:[returnTypeGenericMetadata] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, @@ReturnsDeepStubs, MethodName:returnsDeepStubsAnswerUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ @TO@ TypeDeclaration@@[public]ReturnsDeepStubs,
+      [Answer<Object>, Serializable] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, @@ReturnsDeepStubs,
+      MethodName:returnsDeepStubsAnswerUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SimpleType@@ReturnsDeepStubs @TO@ MethodDeclaration@@private, @@ReturnsDeepStubs,
+      MethodName:returnsDeepStubsAnswerUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SimpleName@@MethodName:returnsDeepStubsAnswerUsing @TO@ MethodDeclaration@@private,
+      @@ReturnsDeepStubs, MethodName:returnsDeepStubsAnswerUsing, @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '---INS SingleVariableDeclaration@@final GenericMetadataSupport returnTypeGenericMetadata
+      @TO@ MethodDeclaration@@private, @@ReturnsDeepStubs, MethodName:returnsDeepStubsAnswerUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS Modifier@@final @TO@ SingleVariableDeclaration@@final GenericMetadataSupport
+      returnTypeGenericMetadata '
+    - '------INS SimpleType@@GenericMetadataSupport @TO@ SingleVariableDeclaration@@final
+      GenericMetadataSupport returnTypeGenericMetadata '
+    - '------INS SimpleName@@returnTypeGenericMetadata @TO@ SingleVariableDeclaration@@final
+      GenericMetadataSupport returnTypeGenericMetadata '
+    - '---INS ReturnStatement@@ClassInstanceCreation:new ReturnsDeepStubs()'
+    - '  protected GenericMetadataSupport actualParameterizedType(  Object mock)'
+    - '    return returnTypeGenericMetadata'
+    - '  '
+    - ''
+    - ' @TO@ MethodDeclaration@@private, @@ReturnsDeepStubs, MethodName:returnsDeepStubsAnswerUsing,
+      @@Argus:GenericMetadataSupport+returnTypeGenericMetadata+ '
+    - '------INS ClassInstanceCreation@@ReturnsDeepStubs[] @TO@ ReturnStatement@@ClassInstanceCreation:new
+      ReturnsDeepStubs()'
+    - '  protected GenericMetadataSupport actualParameterizedType(  Object mock)'
+    - '    return returnTypeGenericMetadata'
+    - '  '
+    - ''
+    - ' '
+    - '---------INS New@@new @TO@ ClassInstanceCreation@@ReturnsDeepStubs[] '
+    - '---------INS SimpleType@@ReturnsDeepStubs @TO@ ClassInstanceCreation@@ReturnsDeepStubs[] '
+    - '---------INS AnonymousClassDeclaration@@AnonymousClass @TO@ ClassInstanceCreation@@ReturnsDeepStubs[] '
+    - '------------INS MethodDeclaration@@protected, @@GenericMetadataSupport, MethodName:actualParameterizedType,
+      @@Argus:Object+mock+ @TO@ AnonymousClassDeclaration@@AnonymousClass '
+    - '---------------INS Modifier@@protected @TO@ MethodDeclaration@@protected, @@GenericMetadataSupport,
+      MethodName:actualParameterizedType, @@Argus:Object+mock+ '
+    - '---------------INS SimpleType@@GenericMetadataSupport @TO@ MethodDeclaration@@protected,
+      @@GenericMetadataSupport, MethodName:actualParameterizedType, @@Argus:Object+mock+ '
+    - '---------------INS SimpleName@@MethodName:actualParameterizedType @TO@ MethodDeclaration@@protected,
+      @@GenericMetadataSupport, MethodName:actualParameterizedType, @@Argus:Object+mock+ '
+    - '---------------INS SingleVariableDeclaration@@Object mock @TO@ MethodDeclaration@@protected,
+      @@GenericMetadataSupport, MethodName:actualParameterizedType, @@Argus:Object+mock+ '
+    - '------------------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object
+      mock '
+    - '------------------INS SimpleName@@mock @TO@ SingleVariableDeclaration@@Object
+      mock '
+    - '---------------INS ReturnStatement@@SimpleName:returnTypeGenericMetadata @TO@
+      MethodDeclaration@@protected, @@GenericMetadataSupport, MethodName:actualParameterizedType,
+      @@Argus:Object+mock+ '
+    - '------------------INS SimpleName@@returnTypeGenericMetadata @TO@ ReturnStatement@@SimpleName:returnTypeGenericMetadata '
+  repair_actions_cnt: 6

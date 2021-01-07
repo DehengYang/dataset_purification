@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_16/src/main/java/org/apache/commons/lang3/math/NumberUtils.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_16/fixed-version/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_16/src/main/java/org/apache/commons/lang3/math/NumberUtils.java	2020-03-01 00:07:19.156410254 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_16/fixed-version/src/main/java/org/apache/commons/lang3/math/NumberUtils.java	2020-03-01 00:07:22.568571022 -0800
+@@ -455,7 +455,7 @@
+             // a wrong value.
+             return null;
+         }
+-        if (str.startsWith("0x") || str.startsWith("-0x")) {
++        if (str.startsWith("0x") || str.startsWith("-0x") || str.startsWith("0X") || str.startsWith("-0X")) {
+             return createInteger(str);
+         }   
+         char lastChar = str.charAt(str.length() - 1);

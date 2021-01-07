@@ -1,0 +1,118 @@
+1 bug_id: Lang-33
+2 src folder:
+  name of src folder: java
+  number of files: 91
+  number of java files: 80
+  number of src classes: 126
+  number of test classes: 85
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.ClassUtilsTest#testToClass_object
+  failing tests:
+  - org.apache.commons.lang3.ClassUtilsTest
+  number of all test cases: 1670
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 2.0
+  coverage on fixed version: 8.0
+  purification via coverage: 0.001
+  purification via delta debugging: 38.14
+  repair actions extraction: 1.546
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.ClassUtilsTest#testToClass_object: 59
+  fixed:
+    org.apache.commons.lang3.ClassUtilsTest#testToClass_object: 59
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 1
+  cov_patch_lines: 2
+  delta_patch_lines: 2
+  oriAdd: 1
+  oriDel: 1
+  ori_patch_lines: 2
+  purAdd: 1
+  purDel: 1
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 2
+  passed: 0
+  total: 2
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_33/src/main/java/org/apache/commons/lang3/ClassUtils.java\t\
+    2020-10-21 01:23:10.843440224 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_33/purify/patch/org/apache/commons/lang3/ClassUtils.java\t\
+    2020-10-21 01:23:10.839440109 -0400\n@@ -907,7 +907,7 @@\n         }\n       \
+    \  Class<?>[] classes = new Class[array.length];\n         for (int i = 0; i <\
+    \ array.length; i++) {\n-            classes[i] = array[i].getClass();\n+    \
+    \        classes[i] = array[i] == null ? null : array[i].getClass();\n       \
+    \  }\n         return classes;\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_33/src/main/java/org/apache/commons/lang3/ClassUtils.java\t\
+    2020-10-21 01:23:59.628849372 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_33/purify/purified/org/apache/commons/lang3/ClassUtils.java\t\
+    2020-10-21 01:23:59.628849372 -0400\n@@ -907,7 +907,7 @@\n         }\n       \
+    \  Class<?>[] classes = new Class[array.length];\n         for (int i = 0; i <\
+    \ array.length; i++) {\n-            classes[i] = array[i].getClass();\n+    \
+    \        classes[i] = array[i] == null ? null : array[i].getClass();\n       \
+    \  }\n         return classes;\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/ClassUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:classes[i]=array[i].getClass() @TO@ Assignment:classes[i]=array[i]
+      == null ? null : array[i].getClass() '
+    - '---UPD Assignment@@classes[i]=array[i].getClass() @TO@ classes[i]=array[i]
+      == null ? null : array[i].getClass() '
+    - '------INS ConditionalExpression@@array[i] == null ? null : array[i].getClass()
+      @TO@ Assignment@@classes[i]=array[i].getClass() '
+    - '---------INS InfixExpression@@array[i] == null @TO@ ConditionalExpression@@array[i]
+      == null ? null : array[i].getClass() '
+    - '------------INS ArrayAccess@@array[i] @TO@ InfixExpression@@array[i] == null '
+    - '---------------INS SimpleName@@array @TO@ ArrayAccess@@array[i] '
+    - '---------------INS SimpleName@@i @TO@ ArrayAccess@@array[i] '
+    - '------------INS Operator@@== @TO@ InfixExpression@@array[i] == null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@array[i] == null '
+    - '---------MOV MethodInvocation@@array[i].getClass() @TO@ ConditionalExpression@@array[i]
+      == null ? null : array[i].getClass() '
+    - '---------INS NullLiteral@@null @TO@ ConditionalExpression@@array[i] == null
+      ? null : array[i].getClass() '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/ClassUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ExpressionStatement@@Assignment:classes[i]=array[i].getClass() @TO@ Assignment:classes[i]=array[i]
+      == null ? null : array[i].getClass() '
+    - '---UPD Assignment@@classes[i]=array[i].getClass() @TO@ classes[i]=array[i]
+      == null ? null : array[i].getClass() '
+    - '------INS ConditionalExpression@@array[i] == null ? null : array[i].getClass()
+      @TO@ Assignment@@classes[i]=array[i].getClass() '
+    - '---------INS InfixExpression@@array[i] == null @TO@ ConditionalExpression@@array[i]
+      == null ? null : array[i].getClass() '
+    - '------------INS ArrayAccess@@array[i] @TO@ InfixExpression@@array[i] == null '
+    - '---------------INS SimpleName@@array @TO@ ArrayAccess@@array[i] '
+    - '---------------INS SimpleName@@i @TO@ ArrayAccess@@array[i] '
+    - '------------INS Operator@@== @TO@ InfixExpression@@array[i] == null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@array[i] == null '
+    - '---------MOV MethodInvocation@@array[i].getClass() @TO@ ConditionalExpression@@array[i]
+      == null ? null : array[i].getClass() '
+    - '---------INS NullLiteral@@null @TO@ ConditionalExpression@@array[i] == null
+      ? null : array[i].getClass() '
+  repair_actions_cnt: 1

@@ -1,0 +1,120 @@
+1 bug_id: Math-10
+2 src folder:
+  name of src folder: java
+  number of files: 753
+  number of java files: 752
+  number of src classes: 1014
+  number of test classes: 373
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest#testAtan2SpecialCases
+  failing tests:
+  - org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest
+  number of all test cases: 4625
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 0.001
+  purification via delta debugging: 139.159
+  repair actions extraction: 2.106
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest#testAtan2SpecialCases: 341
+  fixed:
+    org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest#testAtan2SpecialCases: 358
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 0
+  cov_patch_lines: 1
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 0
+  ori_patch_lines: 1
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 0
+  total: 0
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_10/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java\t\
+    2020-10-21 04:55:43.779653298 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_10/purify/patch/org/apache/commons/math3/analysis/differentiation/DSCompiler.java\t\
+    2020-10-21 04:55:43.779653298 -0400\n@@ -1416,6 +1416,7 @@\n         }\n \n  \
+    \       // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity)\
+    \ correctly\n+        result[resultOffset] = FastMath.atan2(y[yOffset], x[xOffset]);\n\
+    \ \n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_10/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java\t\
+    2020-10-21 04:58:22.552240517 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_10/purify/purified/org/apache/commons/math3/analysis/differentiation/DSCompiler.java\t\
+    2020-10-21 04:58:22.552240517 -0400\n@@ -1416,6 +1416,7 @@\n         }\n \n  \
+    \       // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity)\
+    \ correctly\n+        result[resultOffset] = FastMath.atan2(y[yOffset], x[xOffset]);\n\
+    \ \n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/analysis/differentiation/DSCompiler:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:result[resultOffset]=FastMath.atan2(y[yOffset],x[xOffset])
+      @TO@ MethodDeclaration@@public, @@void, MethodName:atan2, @@Argus:double[]+y+int+yOffset+double[]+x+int+xOffset+double[]+result+int+resultOffset+ '
+    - '---INS Assignment@@result[resultOffset]=FastMath.atan2(y[yOffset],x[xOffset])
+      @TO@ ExpressionStatement@@Assignment:result[resultOffset]=FastMath.atan2(y[yOffset],x[xOffset]) '
+    - '------INS ArrayAccess@@result[resultOffset] @TO@ Assignment@@result[resultOffset]=FastMath.atan2(y[yOffset],x[xOffset]) '
+    - '---------INS SimpleName@@result @TO@ ArrayAccess@@result[resultOffset] '
+    - '---------INS SimpleName@@resultOffset @TO@ ArrayAccess@@result[resultOffset] '
+    - '------INS Operator@@= @TO@ Assignment@@result[resultOffset]=FastMath.atan2(y[yOffset],x[xOffset]) '
+    - '------INS MethodInvocation@@FastMath.atan2(y[yOffset],x[xOffset]) @TO@ Assignment@@result[resultOffset]=FastMath.atan2(y[yOffset],x[xOffset]) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.atan2(y[yOffset],x[xOffset]) '
+    - '---------INS SimpleName@@MethodName:atan2:[y[yOffset], x[xOffset]] @TO@ MethodInvocation@@FastMath.atan2(y[yOffset],x[xOffset]) '
+    - '------------INS ArrayAccess@@y[yOffset] @TO@ SimpleName@@MethodName:atan2:[y[yOffset],
+      x[xOffset]] '
+    - '---------------INS SimpleName@@y @TO@ ArrayAccess@@y[yOffset] '
+    - '---------------INS SimpleName@@yOffset @TO@ ArrayAccess@@y[yOffset] '
+    - '------------INS ArrayAccess@@x[xOffset] @TO@ SimpleName@@MethodName:atan2:[y[yOffset],
+      x[xOffset]] '
+    - '---------------INS SimpleName@@x @TO@ ArrayAccess@@x[xOffset] '
+    - '---------------INS SimpleName@@xOffset @TO@ ArrayAccess@@x[xOffset] '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math3/analysis/differentiation/DSCompiler:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@Assignment:result[resultOffset]=FastMath.atan2(y[yOffset],x[xOffset])
+      @TO@ MethodDeclaration@@public, @@void, MethodName:atan2, @@Argus:double[]+y+int+yOffset+double[]+x+int+xOffset+double[]+result+int+resultOffset+ '
+    - '---INS Assignment@@result[resultOffset]=FastMath.atan2(y[yOffset],x[xOffset])
+      @TO@ ExpressionStatement@@Assignment:result[resultOffset]=FastMath.atan2(y[yOffset],x[xOffset]) '
+    - '------INS ArrayAccess@@result[resultOffset] @TO@ Assignment@@result[resultOffset]=FastMath.atan2(y[yOffset],x[xOffset]) '
+    - '---------INS SimpleName@@result @TO@ ArrayAccess@@result[resultOffset] '
+    - '---------INS SimpleName@@resultOffset @TO@ ArrayAccess@@result[resultOffset] '
+    - '------INS Operator@@= @TO@ Assignment@@result[resultOffset]=FastMath.atan2(y[yOffset],x[xOffset]) '
+    - '------INS MethodInvocation@@FastMath.atan2(y[yOffset],x[xOffset]) @TO@ Assignment@@result[resultOffset]=FastMath.atan2(y[yOffset],x[xOffset]) '
+    - '---------INS SimpleName@@Name:FastMath @TO@ MethodInvocation@@FastMath.atan2(y[yOffset],x[xOffset]) '
+    - '---------INS SimpleName@@MethodName:atan2:[y[yOffset], x[xOffset]] @TO@ MethodInvocation@@FastMath.atan2(y[yOffset],x[xOffset]) '
+    - '------------INS ArrayAccess@@y[yOffset] @TO@ SimpleName@@MethodName:atan2:[y[yOffset],
+      x[xOffset]] '
+    - '---------------INS SimpleName@@y @TO@ ArrayAccess@@y[yOffset] '
+    - '---------------INS SimpleName@@yOffset @TO@ ArrayAccess@@y[yOffset] '
+    - '------------INS ArrayAccess@@x[xOffset] @TO@ SimpleName@@MethodName:atan2:[y[yOffset],
+      x[xOffset]] '
+    - '---------------INS SimpleName@@x @TO@ ArrayAccess@@x[xOffset] '
+    - '---------------INS SimpleName@@xOffset @TO@ ArrayAccess@@x[xOffset] '
+  repair_actions_cnt: 1

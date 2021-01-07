@@ -1,0 +1,48 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Closure_49/src/com/google/javascript/jscomp/MakeDeclaredNamesUnique.java	2020-10-23 06:22:57.018066699 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_49/purify/purified/com/google/javascript/jscomp/MakeDeclaredNamesUnique.java	2020-10-23 06:22:57.018066699 -0400
+@@ -88,14 +88,7 @@
+       renamer = nameStack.peek().forChildScope();
+     }
+ 
+-    if (declarationRoot.getType() == Token.FUNCTION) {
+-      for (Node c = declarationRoot.getFirstChild().getNext().getFirstChild(); c != null; c = c.getNext()) {
+-        String name = c.getString();
+-        renamer.addDeclaredName(name);
+-      }
+       Node functionBody = declarationRoot.getLastChild();
+-      findDeclaredNames(functionBody, null, renamer);
+-    }  else 
+     if (declarationRoot.getType() != Token.FUNCTION) {
+       // Add the block declarations
+       findDeclaredNames(declarationRoot, null, renamer);
+@@ -127,11 +120,22 @@
+             renamer.addDeclaredName(name);
+           }
+ 
++          nameStack.push(renamer);
++        }
++        break;
+ 
++      case Token.LP: {
++          Renamer renamer = nameStack.peek().forChildScope();
+ 
+           // Add the function parameters
++          for (Node c = n.getFirstChild(); c != null; c = c.getNext()) {
++            String name = c.getString();
++            renamer.addDeclaredName(name);
++          }
+ 
+           // Add the function body declarations
++          Node functionBody = n.getNext();
++          findDeclaredNames(functionBody, null, renamer);
+ 
+           nameStack.push(renamer);
+         }
+@@ -170,6 +174,7 @@
+ 
+       case Token.FUNCTION:
+         // Remove the function body scope
++        nameStack.pop();
+         // Remove function recursive name (if any).
+         nameStack.pop();
+         break;

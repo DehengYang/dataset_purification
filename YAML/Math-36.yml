@@ -1,0 +1,368 @@
+1 bug_id: Math-36
+2 src folder:
+  name of src folder: java
+  number of files: 617
+  number of java files: 616
+  number of src classes: 832
+  number of test classes: 300
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.fraction.BigFractionTest#testFloatValueForLargeNumeratorAndDenominator
+  - org.apache.commons.math.fraction.BigFractionTest#testDoubleValueForLargeNumeratorAndDenominator
+  failing tests:
+  - org.apache.commons.math.fraction.BigFractionTest
+  number of all test cases: 3541
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 4.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.128
+  purification via delta debugging: 226.703
+  repair actions extraction: 1.465
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.fraction.BigFractionTest#testDoubleValueForLargeNumeratorAndDenominator: 356
+    org.apache.commons.math.fraction.BigFractionTest#testFloatValueForLargeNumeratorAndDenominator: 356
+  fixed:
+    org.apache.commons.math.fraction.BigFractionTest#testDoubleValueForLargeNumeratorAndDenominator: 359
+    org.apache.commons.math.fraction.BigFractionTest#testFloatValueForLargeNumeratorAndDenominator: 359
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 12
+  covDel: 0
+  cov_patch_lines: 12
+  delta_patch_lines: 12
+  oriAdd: 12
+  oriDel: 0
+  ori_patch_lines: 12
+  purAdd: 12
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 21
+  failFail: 5
+  passed: 0
+  total: 26
+9 sibling repair actions:
+- 0 1 0.9537053979871912
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_36/src/main/java/org/apache/commons/math/fraction/BigFraction.java\t\
+    2020-10-21 10:50:47.448159665 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_36/purify/patch/org/apache/commons/math/fraction/BigFraction.java\t\
+    2020-10-21 10:50:47.448159665 -0400\n@@ -683,8 +683,14 @@\n     @Override\n  \
+    \   public double doubleValue() {\n         double result = numerator.doubleValue()\
+    \ / denominator.doubleValue();\n+        if (Double.isNaN(result)) {\n       \
+    \      // Numerator and/or denominator must be out of range:\n             //\
+    \ Calculate how far to shift them to put them in range.\n+            int shift\
+    \ = Math.max(numerator.bitLength(),\n+                                 denominator.bitLength())\
+    \ - Double.MAX_EXPONENT;\n+            result = numerator.shiftRight(shift).doubleValue()\
+    \ /\n+                denominator.shiftRight(shift).doubleValue();\n+        }\n\
+    \         return result;\n     }\n \n@@ -730,8 +736,14 @@\n     @Override\n  \
+    \   public float floatValue() {\n         float result = numerator.floatValue()\
+    \ / denominator.floatValue();\n+        if (Double.isNaN(result)) {\n        \
+    \     // Numerator and/or denominator must be out of range:\n             // Calculate\
+    \ how far to shift them to put them in range.\n+            int shift = Math.max(numerator.bitLength(),\n\
+    +                                 denominator.bitLength()) - Float.MAX_EXPONENT;\n\
+    +            result = numerator.shiftRight(shift).floatValue() /\n+          \
+    \      denominator.shiftRight(shift).floatValue();\n+        }\n         return\
+    \ result;\n     }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_36/src/main/java/org/apache/commons/math/fraction/BigFraction.java\t\
+    2020-10-21 10:54:51.735222516 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_36/purify/purified/org/apache/commons/math/fraction/BigFraction.java\t\
+    2020-10-21 10:54:51.735222516 -0400\n@@ -683,8 +683,14 @@\n     @Override\n  \
+    \   public double doubleValue() {\n         double result = numerator.doubleValue()\
+    \ / denominator.doubleValue();\n+        if (Double.isNaN(result)) {\n       \
+    \      // Numerator and/or denominator must be out of range:\n             //\
+    \ Calculate how far to shift them to put them in range.\n+            int shift\
+    \ = Math.max(numerator.bitLength(),\n+                                 denominator.bitLength())\
+    \ - Double.MAX_EXPONENT;\n+            result = numerator.shiftRight(shift).doubleValue()\
+    \ /\n+                denominator.shiftRight(shift).doubleValue();\n+        }\n\
+    \         return result;\n     }\n \n@@ -730,8 +736,14 @@\n     @Override\n  \
+    \   public float floatValue() {\n         float result = numerator.floatValue()\
+    \ / denominator.floatValue();\n+        if (Double.isNaN(result)) {\n        \
+    \     // Numerator and/or denominator must be out of range:\n             // Calculate\
+    \ how far to shift them to put them in range.\n+            int shift = Math.max(numerator.bitLength(),\n\
+    +                                 denominator.bitLength()) - Float.MAX_EXPONENT;\n\
+    +            result = numerator.shiftRight(shift).floatValue() /\n+          \
+    \      denominator.shiftRight(shift).floatValue();\n+        }\n         return\
+    \ result;\n     }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/fraction/BigFraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:Double.isNaN(result) @TO@ MethodDeclaration@@public,
+      @@double, MethodName:doubleValue, @@Argus:null '
+    - '---INS MethodInvocation@@Double.isNaN(result) @TO@ IfStatement@@MethodInvocation:Double.isNaN(result) '
+    - '------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(result) '
+    - '------INS SimpleName@@MethodName:isNaN:[result] @TO@ MethodInvocation@@Double.isNaN(result) '
+    - '---------INS SimpleName@@result @TO@ SimpleName@@MethodName:isNaN:[result] '
+    - '---INS VariableDeclarationStatement@@int shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT; @TO@ IfStatement@@MethodInvocation:Double.isNaN(result) '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT; '
+    - '------INS VariableDeclarationFragment@@shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT @TO@ VariableDeclarationStatement@@int shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT; '
+    - '---------INS SimpleName@@shift @TO@ VariableDeclarationFragment@@shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT '
+    - '---------INS InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT @TO@ VariableDeclarationFragment@@shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT '
+    - '------------INS MethodInvocation@@Math.max(numerator.bitLength(),denominator.bitLength())
+      @TO@ InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT '
+    - '---------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(numerator.bitLength(),denominator.bitLength()) '
+    - '---------------INS SimpleName@@MethodName:max:[numerator.bitLength(), denominator.bitLength()]
+      @TO@ MethodInvocation@@Math.max(numerator.bitLength(),denominator.bitLength()) '
+    - '------------------INS MethodInvocation@@numerator.bitLength() @TO@ SimpleName@@MethodName:max:[numerator.bitLength(),
+      denominator.bitLength()] '
+    - '---------------------INS SimpleName@@Name:numerator @TO@ MethodInvocation@@numerator.bitLength() '
+    - '---------------------INS SimpleName@@MethodName:bitLength:[] @TO@ MethodInvocation@@numerator.bitLength() '
+    - '------------------INS MethodInvocation@@denominator.bitLength() @TO@ SimpleName@@MethodName:max:[numerator.bitLength(),
+      denominator.bitLength()] '
+    - '---------------------INS SimpleName@@Name:denominator @TO@ MethodInvocation@@denominator.bitLength() '
+    - '---------------------INS SimpleName@@MethodName:bitLength:[] @TO@ MethodInvocation@@denominator.bitLength() '
+    - '------------INS Operator@@- @TO@ InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT '
+    - '------------INS QualifiedName@@Double.MAX_EXPONENT @TO@ InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT '
+    - '---------------INS SimpleName@@Double @TO@ QualifiedName@@Double.MAX_EXPONENT '
+    - '---------------INS SimpleName@@MAX_EXPONENT @TO@ QualifiedName@@Double.MAX_EXPONENT '
+    - '---INS ExpressionStatement@@Assignment:result=numerator.shiftRight(shift).doubleValue()
+      / denominator.shiftRight(shift).doubleValue() @TO@ IfStatement@@MethodInvocation:Double.isNaN(result) '
+    - '------INS Assignment@@result=numerator.shiftRight(shift).doubleValue() / denominator.shiftRight(shift).doubleValue()
+      @TO@ ExpressionStatement@@Assignment:result=numerator.shiftRight(shift).doubleValue()
+      / denominator.shiftRight(shift).doubleValue() '
+    - '---------INS SimpleName@@result @TO@ Assignment@@result=numerator.shiftRight(shift).doubleValue()
+      / denominator.shiftRight(shift).doubleValue() '
+    - '---------INS Operator@@= @TO@ Assignment@@result=numerator.shiftRight(shift).doubleValue()
+      / denominator.shiftRight(shift).doubleValue() '
+    - '---------INS InfixExpression@@numerator.shiftRight(shift).doubleValue() / denominator.shiftRight(shift).doubleValue()
+      @TO@ Assignment@@result=numerator.shiftRight(shift).doubleValue() / denominator.shiftRight(shift).doubleValue() '
+    - '------------INS MethodInvocation@@numerator.shiftRight(shift).doubleValue()
+      @TO@ InfixExpression@@numerator.shiftRight(shift).doubleValue() / denominator.shiftRight(shift).doubleValue() '
+    - '---------------INS SimpleName@@Name:numerator @TO@ MethodInvocation@@numerator.shiftRight(shift).doubleValue() '
+    - '---------------INS MethodInvocation@@MethodName:shiftRight:[shift] @TO@ MethodInvocation@@numerator.shiftRight(shift).doubleValue() '
+    - '------------------INS SimpleName@@shift @TO@ MethodInvocation@@MethodName:shiftRight:[shift] '
+    - '---------------INS SimpleName@@MethodName:doubleValue:[] @TO@ MethodInvocation@@numerator.shiftRight(shift).doubleValue() '
+    - '------------INS Operator@@/ @TO@ InfixExpression@@numerator.shiftRight(shift).doubleValue()
+      / denominator.shiftRight(shift).doubleValue() '
+    - '------------INS MethodInvocation@@denominator.shiftRight(shift).doubleValue()
+      @TO@ InfixExpression@@numerator.shiftRight(shift).doubleValue() / denominator.shiftRight(shift).doubleValue() '
+    - '---------------INS SimpleName@@Name:denominator @TO@ MethodInvocation@@denominator.shiftRight(shift).doubleValue() '
+    - '---------------INS MethodInvocation@@MethodName:shiftRight:[shift] @TO@ MethodInvocation@@denominator.shiftRight(shift).doubleValue() '
+    - '------------------INS SimpleName@@shift @TO@ MethodInvocation@@MethodName:shiftRight:[shift] '
+    - '---------------INS SimpleName@@MethodName:doubleValue:[] @TO@ MethodInvocation@@denominator.shiftRight(shift).doubleValue() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:Double.isNaN(result) @TO@ MethodDeclaration@@public,
+      @@float, MethodName:floatValue, @@Argus:null '
+    - '---INS MethodInvocation@@Double.isNaN(result) @TO@ IfStatement@@MethodInvocation:Double.isNaN(result) '
+    - '------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(result) '
+    - '------INS SimpleName@@MethodName:isNaN:[result] @TO@ MethodInvocation@@Double.isNaN(result) '
+    - '---------INS SimpleName@@result @TO@ SimpleName@@MethodName:isNaN:[result] '
+    - '---INS VariableDeclarationStatement@@int shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT; @TO@ IfStatement@@MethodInvocation:Double.isNaN(result) '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT; '
+    - '------INS VariableDeclarationFragment@@shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT @TO@ VariableDeclarationStatement@@int shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT; '
+    - '---------INS SimpleName@@shift @TO@ VariableDeclarationFragment@@shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT '
+    - '---------INS InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT @TO@ VariableDeclarationFragment@@shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT '
+    - '------------INS MethodInvocation@@Math.max(numerator.bitLength(),denominator.bitLength())
+      @TO@ InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT '
+    - '---------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(numerator.bitLength(),denominator.bitLength()) '
+    - '---------------INS SimpleName@@MethodName:max:[numerator.bitLength(), denominator.bitLength()]
+      @TO@ MethodInvocation@@Math.max(numerator.bitLength(),denominator.bitLength()) '
+    - '------------------INS MethodInvocation@@numerator.bitLength() @TO@ SimpleName@@MethodName:max:[numerator.bitLength(),
+      denominator.bitLength()] '
+    - '---------------------INS SimpleName@@Name:numerator @TO@ MethodInvocation@@numerator.bitLength() '
+    - '---------------------INS SimpleName@@MethodName:bitLength:[] @TO@ MethodInvocation@@numerator.bitLength() '
+    - '------------------INS MethodInvocation@@denominator.bitLength() @TO@ SimpleName@@MethodName:max:[numerator.bitLength(),
+      denominator.bitLength()] '
+    - '---------------------INS SimpleName@@Name:denominator @TO@ MethodInvocation@@denominator.bitLength() '
+    - '---------------------INS SimpleName@@MethodName:bitLength:[] @TO@ MethodInvocation@@denominator.bitLength() '
+    - '------------INS Operator@@- @TO@ InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT '
+    - '------------INS QualifiedName@@Float.MAX_EXPONENT @TO@ InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT '
+    - '---------------INS SimpleName@@Float @TO@ QualifiedName@@Float.MAX_EXPONENT '
+    - '---------------INS SimpleName@@MAX_EXPONENT @TO@ QualifiedName@@Float.MAX_EXPONENT '
+    - '---INS ExpressionStatement@@Assignment:result=numerator.shiftRight(shift).floatValue()
+      / denominator.shiftRight(shift).floatValue() @TO@ IfStatement@@MethodInvocation:Double.isNaN(result) '
+    - '------INS Assignment@@result=numerator.shiftRight(shift).floatValue() / denominator.shiftRight(shift).floatValue()
+      @TO@ ExpressionStatement@@Assignment:result=numerator.shiftRight(shift).floatValue()
+      / denominator.shiftRight(shift).floatValue() '
+    - '---------INS SimpleName@@result @TO@ Assignment@@result=numerator.shiftRight(shift).floatValue()
+      / denominator.shiftRight(shift).floatValue() '
+    - '---------INS Operator@@= @TO@ Assignment@@result=numerator.shiftRight(shift).floatValue()
+      / denominator.shiftRight(shift).floatValue() '
+    - '---------INS InfixExpression@@numerator.shiftRight(shift).floatValue() / denominator.shiftRight(shift).floatValue()
+      @TO@ Assignment@@result=numerator.shiftRight(shift).floatValue() / denominator.shiftRight(shift).floatValue() '
+    - '------------INS MethodInvocation@@numerator.shiftRight(shift).floatValue()
+      @TO@ InfixExpression@@numerator.shiftRight(shift).floatValue() / denominator.shiftRight(shift).floatValue() '
+    - '---------------INS SimpleName@@Name:numerator @TO@ MethodInvocation@@numerator.shiftRight(shift).floatValue() '
+    - '---------------INS MethodInvocation@@MethodName:shiftRight:[shift] @TO@ MethodInvocation@@numerator.shiftRight(shift).floatValue() '
+    - '------------------INS SimpleName@@shift @TO@ MethodInvocation@@MethodName:shiftRight:[shift] '
+    - '---------------INS SimpleName@@MethodName:floatValue:[] @TO@ MethodInvocation@@numerator.shiftRight(shift).floatValue() '
+    - '------------INS Operator@@/ @TO@ InfixExpression@@numerator.shiftRight(shift).floatValue()
+      / denominator.shiftRight(shift).floatValue() '
+    - '------------INS MethodInvocation@@denominator.shiftRight(shift).floatValue()
+      @TO@ InfixExpression@@numerator.shiftRight(shift).floatValue() / denominator.shiftRight(shift).floatValue() '
+    - '---------------INS SimpleName@@Name:denominator @TO@ MethodInvocation@@denominator.shiftRight(shift).floatValue() '
+    - '---------------INS MethodInvocation@@MethodName:shiftRight:[shift] @TO@ MethodInvocation@@denominator.shiftRight(shift).floatValue() '
+    - '------------------INS SimpleName@@shift @TO@ MethodInvocation@@MethodName:shiftRight:[shift] '
+    - '---------------INS SimpleName@@MethodName:floatValue:[] @TO@ MethodInvocation@@denominator.shiftRight(shift).floatValue() '
+  repair_actions_cnt: 2
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/fraction/BigFraction:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:Double.isNaN(result) @TO@ MethodDeclaration@@public,
+      @@double, MethodName:doubleValue, @@Argus:null '
+    - '---INS MethodInvocation@@Double.isNaN(result) @TO@ IfStatement@@MethodInvocation:Double.isNaN(result) '
+    - '------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(result) '
+    - '------INS SimpleName@@MethodName:isNaN:[result] @TO@ MethodInvocation@@Double.isNaN(result) '
+    - '---------INS SimpleName@@result @TO@ SimpleName@@MethodName:isNaN:[result] '
+    - '---INS VariableDeclarationStatement@@int shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT; @TO@ IfStatement@@MethodInvocation:Double.isNaN(result) '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT; '
+    - '------INS VariableDeclarationFragment@@shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT @TO@ VariableDeclarationStatement@@int shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT; '
+    - '---------INS SimpleName@@shift @TO@ VariableDeclarationFragment@@shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT '
+    - '---------INS InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT @TO@ VariableDeclarationFragment@@shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT '
+    - '------------INS MethodInvocation@@Math.max(numerator.bitLength(),denominator.bitLength())
+      @TO@ InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT '
+    - '---------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(numerator.bitLength(),denominator.bitLength()) '
+    - '---------------INS SimpleName@@MethodName:max:[numerator.bitLength(), denominator.bitLength()]
+      @TO@ MethodInvocation@@Math.max(numerator.bitLength(),denominator.bitLength()) '
+    - '------------------INS MethodInvocation@@numerator.bitLength() @TO@ SimpleName@@MethodName:max:[numerator.bitLength(),
+      denominator.bitLength()] '
+    - '---------------------INS SimpleName@@Name:numerator @TO@ MethodInvocation@@numerator.bitLength() '
+    - '---------------------INS SimpleName@@MethodName:bitLength:[] @TO@ MethodInvocation@@numerator.bitLength() '
+    - '------------------INS MethodInvocation@@denominator.bitLength() @TO@ SimpleName@@MethodName:max:[numerator.bitLength(),
+      denominator.bitLength()] '
+    - '---------------------INS SimpleName@@Name:denominator @TO@ MethodInvocation@@denominator.bitLength() '
+    - '---------------------INS SimpleName@@MethodName:bitLength:[] @TO@ MethodInvocation@@denominator.bitLength() '
+    - '------------INS Operator@@- @TO@ InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT '
+    - '------------INS QualifiedName@@Double.MAX_EXPONENT @TO@ InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Double.MAX_EXPONENT '
+    - '---------------INS SimpleName@@Double @TO@ QualifiedName@@Double.MAX_EXPONENT '
+    - '---------------INS SimpleName@@MAX_EXPONENT @TO@ QualifiedName@@Double.MAX_EXPONENT '
+    - '---INS ExpressionStatement@@Assignment:result=numerator.shiftRight(shift).doubleValue()
+      / denominator.shiftRight(shift).doubleValue() @TO@ IfStatement@@MethodInvocation:Double.isNaN(result) '
+    - '------INS Assignment@@result=numerator.shiftRight(shift).doubleValue() / denominator.shiftRight(shift).doubleValue()
+      @TO@ ExpressionStatement@@Assignment:result=numerator.shiftRight(shift).doubleValue()
+      / denominator.shiftRight(shift).doubleValue() '
+    - '---------INS SimpleName@@result @TO@ Assignment@@result=numerator.shiftRight(shift).doubleValue()
+      / denominator.shiftRight(shift).doubleValue() '
+    - '---------INS Operator@@= @TO@ Assignment@@result=numerator.shiftRight(shift).doubleValue()
+      / denominator.shiftRight(shift).doubleValue() '
+    - '---------INS InfixExpression@@numerator.shiftRight(shift).doubleValue() / denominator.shiftRight(shift).doubleValue()
+      @TO@ Assignment@@result=numerator.shiftRight(shift).doubleValue() / denominator.shiftRight(shift).doubleValue() '
+    - '------------INS MethodInvocation@@numerator.shiftRight(shift).doubleValue()
+      @TO@ InfixExpression@@numerator.shiftRight(shift).doubleValue() / denominator.shiftRight(shift).doubleValue() '
+    - '---------------INS SimpleName@@Name:numerator @TO@ MethodInvocation@@numerator.shiftRight(shift).doubleValue() '
+    - '---------------INS MethodInvocation@@MethodName:shiftRight:[shift] @TO@ MethodInvocation@@numerator.shiftRight(shift).doubleValue() '
+    - '------------------INS SimpleName@@shift @TO@ MethodInvocation@@MethodName:shiftRight:[shift] '
+    - '---------------INS SimpleName@@MethodName:doubleValue:[] @TO@ MethodInvocation@@numerator.shiftRight(shift).doubleValue() '
+    - '------------INS Operator@@/ @TO@ InfixExpression@@numerator.shiftRight(shift).doubleValue()
+      / denominator.shiftRight(shift).doubleValue() '
+    - '------------INS MethodInvocation@@denominator.shiftRight(shift).doubleValue()
+      @TO@ InfixExpression@@numerator.shiftRight(shift).doubleValue() / denominator.shiftRight(shift).doubleValue() '
+    - '---------------INS SimpleName@@Name:denominator @TO@ MethodInvocation@@denominator.shiftRight(shift).doubleValue() '
+    - '---------------INS MethodInvocation@@MethodName:shiftRight:[shift] @TO@ MethodInvocation@@denominator.shiftRight(shift).doubleValue() '
+    - '------------------INS SimpleName@@shift @TO@ MethodInvocation@@MethodName:shiftRight:[shift] '
+    - '---------------INS SimpleName@@MethodName:doubleValue:[] @TO@ MethodInvocation@@denominator.shiftRight(shift).doubleValue() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@MethodInvocation:Double.isNaN(result) @TO@ MethodDeclaration@@public,
+      @@float, MethodName:floatValue, @@Argus:null '
+    - '---INS MethodInvocation@@Double.isNaN(result) @TO@ IfStatement@@MethodInvocation:Double.isNaN(result) '
+    - '------INS SimpleName@@Name:Double @TO@ MethodInvocation@@Double.isNaN(result) '
+    - '------INS SimpleName@@MethodName:isNaN:[result] @TO@ MethodInvocation@@Double.isNaN(result) '
+    - '---------INS SimpleName@@result @TO@ SimpleName@@MethodName:isNaN:[result] '
+    - '---INS VariableDeclarationStatement@@int shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT; @TO@ IfStatement@@MethodInvocation:Double.isNaN(result) '
+    - '------INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT; '
+    - '------INS VariableDeclarationFragment@@shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT @TO@ VariableDeclarationStatement@@int shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT; '
+    - '---------INS SimpleName@@shift @TO@ VariableDeclarationFragment@@shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT '
+    - '---------INS InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT @TO@ VariableDeclarationFragment@@shift=Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT '
+    - '------------INS MethodInvocation@@Math.max(numerator.bitLength(),denominator.bitLength())
+      @TO@ InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT '
+    - '---------------INS SimpleName@@Name:Math @TO@ MethodInvocation@@Math.max(numerator.bitLength(),denominator.bitLength()) '
+    - '---------------INS SimpleName@@MethodName:max:[numerator.bitLength(), denominator.bitLength()]
+      @TO@ MethodInvocation@@Math.max(numerator.bitLength(),denominator.bitLength()) '
+    - '------------------INS MethodInvocation@@numerator.bitLength() @TO@ SimpleName@@MethodName:max:[numerator.bitLength(),
+      denominator.bitLength()] '
+    - '---------------------INS SimpleName@@Name:numerator @TO@ MethodInvocation@@numerator.bitLength() '
+    - '---------------------INS SimpleName@@MethodName:bitLength:[] @TO@ MethodInvocation@@numerator.bitLength() '
+    - '------------------INS MethodInvocation@@denominator.bitLength() @TO@ SimpleName@@MethodName:max:[numerator.bitLength(),
+      denominator.bitLength()] '
+    - '---------------------INS SimpleName@@Name:denominator @TO@ MethodInvocation@@denominator.bitLength() '
+    - '---------------------INS SimpleName@@MethodName:bitLength:[] @TO@ MethodInvocation@@denominator.bitLength() '
+    - '------------INS Operator@@- @TO@ InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT '
+    - '------------INS QualifiedName@@Float.MAX_EXPONENT @TO@ InfixExpression@@Math.max(numerator.bitLength(),denominator.bitLength())
+      - Float.MAX_EXPONENT '
+    - '---------------INS SimpleName@@Float @TO@ QualifiedName@@Float.MAX_EXPONENT '
+    - '---------------INS SimpleName@@MAX_EXPONENT @TO@ QualifiedName@@Float.MAX_EXPONENT '
+    - '---INS ExpressionStatement@@Assignment:result=numerator.shiftRight(shift).floatValue()
+      / denominator.shiftRight(shift).floatValue() @TO@ IfStatement@@MethodInvocation:Double.isNaN(result) '
+    - '------INS Assignment@@result=numerator.shiftRight(shift).floatValue() / denominator.shiftRight(shift).floatValue()
+      @TO@ ExpressionStatement@@Assignment:result=numerator.shiftRight(shift).floatValue()
+      / denominator.shiftRight(shift).floatValue() '
+    - '---------INS SimpleName@@result @TO@ Assignment@@result=numerator.shiftRight(shift).floatValue()
+      / denominator.shiftRight(shift).floatValue() '
+    - '---------INS Operator@@= @TO@ Assignment@@result=numerator.shiftRight(shift).floatValue()
+      / denominator.shiftRight(shift).floatValue() '
+    - '---------INS InfixExpression@@numerator.shiftRight(shift).floatValue() / denominator.shiftRight(shift).floatValue()
+      @TO@ Assignment@@result=numerator.shiftRight(shift).floatValue() / denominator.shiftRight(shift).floatValue() '
+    - '------------INS MethodInvocation@@numerator.shiftRight(shift).floatValue()
+      @TO@ InfixExpression@@numerator.shiftRight(shift).floatValue() / denominator.shiftRight(shift).floatValue() '
+    - '---------------INS SimpleName@@Name:numerator @TO@ MethodInvocation@@numerator.shiftRight(shift).floatValue() '
+    - '---------------INS MethodInvocation@@MethodName:shiftRight:[shift] @TO@ MethodInvocation@@numerator.shiftRight(shift).floatValue() '
+    - '------------------INS SimpleName@@shift @TO@ MethodInvocation@@MethodName:shiftRight:[shift] '
+    - '---------------INS SimpleName@@MethodName:floatValue:[] @TO@ MethodInvocation@@numerator.shiftRight(shift).floatValue() '
+    - '------------INS Operator@@/ @TO@ InfixExpression@@numerator.shiftRight(shift).floatValue()
+      / denominator.shiftRight(shift).floatValue() '
+    - '------------INS MethodInvocation@@denominator.shiftRight(shift).floatValue()
+      @TO@ InfixExpression@@numerator.shiftRight(shift).floatValue() / denominator.shiftRight(shift).floatValue() '
+    - '---------------INS SimpleName@@Name:denominator @TO@ MethodInvocation@@denominator.shiftRight(shift).floatValue() '
+    - '---------------INS MethodInvocation@@MethodName:shiftRight:[shift] @TO@ MethodInvocation@@denominator.shiftRight(shift).floatValue() '
+    - '------------------INS SimpleName@@shift @TO@ MethodInvocation@@MethodName:shiftRight:[shift] '
+    - '---------------INS SimpleName@@MethodName:floatValue:[] @TO@ MethodInvocation@@denominator.shiftRight(shift).floatValue() '
+  repair_actions_cnt: 2

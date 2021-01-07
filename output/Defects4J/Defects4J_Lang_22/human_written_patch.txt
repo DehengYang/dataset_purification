@@ -1,0 +1,19 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_22/src/main/java/org/apache/commons/lang3/math/Fraction.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_22/fixed-version/src/main/java/org/apache/commons/lang3/math/Fraction.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_22/src/main/java/org/apache/commons/lang3/math/Fraction.java	2020-03-01 00:08:00.550360576 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Lang_22/fixed-version/src/main/java/org/apache/commons/lang3/math/Fraction.java	2020-03-01 00:08:03.994522852 -0800
+@@ -580,8 +580,14 @@
+      */
+     private static int greatestCommonDivisor(int u, int v) {
+         // From Commons Math:
++        if ((u == 0) || (v == 0)) {
++            if ((u == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE)) {
++                throw new ArithmeticException("overflow: gcd is 2^31");
++            }
++            return Math.abs(u) + Math.abs(v);
++        }
+         //if either operand is abs 1, return 1:
+-        if (Math.abs(u) <= 1 || Math.abs(v) <= 1) {
++        if (Math.abs(u) == 1 || Math.abs(v) == 1) {
+             return 1;
+         }
+         // keep u and v negative, as negative integers range down to

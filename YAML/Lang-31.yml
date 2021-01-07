@@ -1,0 +1,306 @@
+1 bug_id: Lang-31
+2 src folder:
+  name of src folder: java
+  number of files: 95
+  number of java files: 84
+  number of src classes: 131
+  number of test classes: 88
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAnyCharArrayWithSupplementaryChars
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAnyStringWithSupplementaryChars
+  failing tests:
+  - org.apache.commons.lang3.StringUtilsEqualsIndexOfTest
+  number of all test cases: 1721
+  number of failing test cases: 2
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 9.0
+  purification via coverage: 1.873
+  purification via delta debugging: 109.094
+  repair actions extraction: 3.048
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAnyCharArrayWithSupplementaryChars: 30
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAnyStringWithSupplementaryChars: 32
+  fixed:
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAnyCharArrayWithSupplementaryChars: 35
+    org.apache.commons.lang3.StringUtilsEqualsIndexOfTest#testContainsAnyStringWithSupplementaryChars: 37
+6 reduced lines:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  covAdd: 8
+  covDel: 0
+  cov_patch_lines: 8
+  delta_patch_lines: 7
+  oriAdd: 8
+  oriDel: 0
+  ori_patch_lines: 8
+  purAdd: 7
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 4
+  original: 4
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 16
+  failFail: 1
+  passed: 1
+  total: 18
+9 sibling repair actions:
+- 0 1 0.9132530120481928
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_31/src/main/java/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 01:19:46.477537332 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_31/purify/patch/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 01:19:46.469537101 -0400\n@@ -1443,13 +1443,21 @@\n \t\t}\n \t\tint\
+    \ csLength = cs.length();\n \t\tint searchLength = searchChars.length;\n+\t\t\
+    int csLastIndex = csLength - 1;\n+\t\tint searchLastIndex = searchLength - 1;\n\
+    \ \t\tfor (int i = 0; i < csLength; i++) {\n \t\t\tchar ch = cs.charAt(i);\n \t\
+    \t\tfor (int j = 0; j < searchLength; j++) {\n \t\t\t\tif (searchChars[j] == ch)\
+    \ {\n+\t\t\t\t\tif (i < csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE\
+    \ && ch <= Character.MAX_HIGH_SURROGATE) {\n \t\t\t\t\t\t// ch is a supplementary\
+    \ character\n+\t\t\t\t\t\tif (searchChars[j + 1] == cs.charAt(i + 1)) {\n+\t\t\
+    \t\t\t\t\treturn true;\n+\t\t\t\t\t\t}\n+\t\t\t\t\t} else {\n \t\t\t\t\t\t// ch\
+    \ is in the Basic Multilingual Plane\n \t\t\t\t\t\treturn true;\n+\t\t\t\t\t}\n\
+    \ \t\t\t\t}\n \t\t\t}\n \t\t}"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_31/src/main/java/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 01:21:50.549120981 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_31/purify/purified/org/apache/commons/lang3/StringUtils.java\t\
+    2020-10-21 01:21:50.549120981 -0400\n@@ -1443,13 +1443,20 @@\n \t\t}\n \t\tint\
+    \ csLength = cs.length();\n \t\tint searchLength = searchChars.length;\n+\t\t\
+    int csLastIndex = csLength - 1;\n+\t\tint searchLastIndex = searchLength - 1;\n\
+    \ \t\tfor (int i = 0; i < csLength; i++) {\n \t\t\tchar ch = cs.charAt(i);\n \t\
+    \t\tfor (int j = 0; j < searchLength; j++) {\n \t\t\t\tif (searchChars[j] == ch)\
+    \ {\n+\t\t\t\t\tif (i < csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE\
+    \ && ch <= Character.MAX_HIGH_SURROGATE) {\n \t\t\t\t\t\t// ch is a supplementary\
+    \ character\n+\t\t\t\t\t\tif (searchChars[j + 1] == cs.charAt(i + 1)) {\n+\t\t\
+    \t\t\t\t}\n+\t\t\t\t\t} else {\n \t\t\t\t\t\t// ch is in the Basic Multilingual\
+    \ Plane\n \t\t\t\t\t\treturn true;\n+\t\t\t\t\t}\n \t\t\t\t}\n \t\t\t}\n \t\t}"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/StringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int csLastIndex=csLength - 1; @TO@ MethodDeclaration@@public,
+      static, @@boolean, MethodName:containsAny, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int csLastIndex=csLength
+      - 1; '
+    - '---INS VariableDeclarationFragment@@csLastIndex=csLength - 1 @TO@ VariableDeclarationStatement@@int
+      csLastIndex=csLength - 1; '
+    - '------INS SimpleName@@csLastIndex @TO@ VariableDeclarationFragment@@csLastIndex=csLength
+      - 1 '
+    - '------INS InfixExpression@@csLength - 1 @TO@ VariableDeclarationFragment@@csLastIndex=csLength
+      - 1 '
+    - '---------INS SimpleName@@csLength @TO@ InfixExpression@@csLength - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@csLength - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@csLength - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int searchLastIndex=searchLength - 1; @TO@
+      MethodDeclaration@@public, static, @@boolean, MethodName:containsAny, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int searchLastIndex=searchLength
+      - 1; '
+    - '---INS VariableDeclarationFragment@@searchLastIndex=searchLength - 1 @TO@ VariableDeclarationStatement@@int
+      searchLastIndex=searchLength - 1; '
+    - '------INS SimpleName@@searchLastIndex @TO@ VariableDeclarationFragment@@searchLastIndex=searchLength
+      - 1 '
+    - '------INS InfixExpression@@searchLength - 1 @TO@ VariableDeclarationFragment@@searchLastIndex=searchLength
+      - 1 '
+    - '---------INS SimpleName@@searchLength @TO@ InfixExpression@@searchLength -
+      1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@searchLength - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@searchLength - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:i < csLastIndex && j < searchLastIndex &&
+      ch >= Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE @TO@
+      IfStatement@@InfixExpression:searchChars[j] == ch '
+    - '---INS InfixExpression@@i < csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE
+      && ch <= Character.MAX_HIGH_SURROGATE @TO@ IfStatement@@InfixExpression:i <
+      csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE &&
+      ch <= Character.MAX_HIGH_SURROGATE '
+    - '------INS InfixExpression@@i < csLastIndex && j < searchLastIndex && ch >=
+      Character.MIN_HIGH_SURROGATE @TO@ InfixExpression@@i < csLastIndex && j < searchLastIndex
+      && ch >= Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE '
+    - '---------INS InfixExpression@@i < csLastIndex && j < searchLastIndex @TO@ InfixExpression@@i
+      < csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE '
+    - '------------INS InfixExpression@@i < csLastIndex @TO@ InfixExpression@@i <
+      csLastIndex && j < searchLastIndex '
+    - '---------------INS SimpleName@@i @TO@ InfixExpression@@i < csLastIndex '
+    - '---------------INS Operator@@< @TO@ InfixExpression@@i < csLastIndex '
+    - '---------------INS SimpleName@@csLastIndex @TO@ InfixExpression@@i < csLastIndex '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@i < csLastIndex && j < searchLastIndex '
+    - '------------INS InfixExpression@@j < searchLastIndex @TO@ InfixExpression@@i
+      < csLastIndex && j < searchLastIndex '
+    - '---------------INS SimpleName@@j @TO@ InfixExpression@@j < searchLastIndex '
+    - '---------------INS Operator@@< @TO@ InfixExpression@@j < searchLastIndex '
+    - '---------------INS SimpleName@@searchLastIndex @TO@ InfixExpression@@j < searchLastIndex '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@i < csLastIndex && j < searchLastIndex
+      && ch >= Character.MIN_HIGH_SURROGATE '
+    - '---------INS InfixExpression@@ch >= Character.MIN_HIGH_SURROGATE @TO@ InfixExpression@@i
+      < csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE '
+    - '------------INS SimpleName@@ch @TO@ InfixExpression@@ch >= Character.MIN_HIGH_SURROGATE '
+    - '------------INS Operator@@>= @TO@ InfixExpression@@ch >= Character.MIN_HIGH_SURROGATE '
+    - '------------INS QualifiedName@@Character.MIN_HIGH_SURROGATE @TO@ InfixExpression@@ch
+      >= Character.MIN_HIGH_SURROGATE '
+    - '---------------INS SimpleName@@Character @TO@ QualifiedName@@Character.MIN_HIGH_SURROGATE '
+    - '---------------INS SimpleName@@MIN_HIGH_SURROGATE @TO@ QualifiedName@@Character.MIN_HIGH_SURROGATE '
+    - '------INS Operator@@&& @TO@ InfixExpression@@i < csLastIndex && j < searchLastIndex
+      && ch >= Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE '
+    - '------INS InfixExpression@@ch <= Character.MAX_HIGH_SURROGATE @TO@ InfixExpression@@i
+      < csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE &&
+      ch <= Character.MAX_HIGH_SURROGATE '
+    - '---------INS SimpleName@@ch @TO@ InfixExpression@@ch <= Character.MAX_HIGH_SURROGATE '
+    - '---------INS Operator@@<= @TO@ InfixExpression@@ch <= Character.MAX_HIGH_SURROGATE '
+    - '---------INS QualifiedName@@Character.MAX_HIGH_SURROGATE @TO@ InfixExpression@@ch
+      <= Character.MAX_HIGH_SURROGATE '
+    - '------------INS SimpleName@@Character @TO@ QualifiedName@@Character.MAX_HIGH_SURROGATE '
+    - '------------INS SimpleName@@MAX_HIGH_SURROGATE @TO@ QualifiedName@@Character.MAX_HIGH_SURROGATE '
+    - '---INS IfStatement@@InfixExpression:searchChars[j + 1] == cs.charAt(i + 1)
+      @TO@ IfStatement@@InfixExpression:i < csLastIndex && j < searchLastIndex &&
+      ch >= Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE '
+    - '------MOV ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------INS InfixExpression@@searchChars[j + 1] == cs.charAt(i + 1) @TO@ IfStatement@@InfixExpression:searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '---------INS ArrayAccess@@searchChars[j + 1] @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------------INS SimpleName@@searchChars @TO@ ArrayAccess@@searchChars[j + 1] '
+    - '------------INS InfixExpression@@j + 1 @TO@ ArrayAccess@@searchChars[j + 1] '
+    - '---------------INS SimpleName@@j @TO@ InfixExpression@@j + 1 '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@j + 1 '
+    - '---------------INS NumberLiteral@@1 @TO@ InfixExpression@@j + 1 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@searchChars[j + 1] == cs.charAt(i
+      + 1) '
+    - '---------INS MethodInvocation@@cs.charAt(i + 1) @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------------INS SimpleName@@Name:cs @TO@ MethodInvocation@@cs.charAt(i + 1) '
+    - '------------INS SimpleName@@MethodName:charAt:[i + 1] @TO@ MethodInvocation@@cs.charAt(i
+      + 1) '
+    - '---------------INS InfixExpression@@i + 1 @TO@ SimpleName@@MethodName:charAt:[i
+      + 1] '
+    - '------------------INS SimpleName@@i @TO@ InfixExpression@@i + 1 '
+    - '------------------INS Operator@@+ @TO@ InfixExpression@@i + 1 '
+    - '------------------INS NumberLiteral@@1 @TO@ InfixExpression@@i + 1 '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:i
+      < csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE &&
+      ch <= Character.MAX_HIGH_SURROGATE '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  repair_actions_cnt: 3
+13 purify_repair_actions:
+  biggest_depth: 7
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/StringUtils:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int csLastIndex=csLength - 1; @TO@ MethodDeclaration@@public,
+      static, @@boolean, MethodName:containsAny, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int csLastIndex=csLength
+      - 1; '
+    - '---INS VariableDeclarationFragment@@csLastIndex=csLength - 1 @TO@ VariableDeclarationStatement@@int
+      csLastIndex=csLength - 1; '
+    - '------INS SimpleName@@csLastIndex @TO@ VariableDeclarationFragment@@csLastIndex=csLength
+      - 1 '
+    - '------INS InfixExpression@@csLength - 1 @TO@ VariableDeclarationFragment@@csLastIndex=csLength
+      - 1 '
+    - '---------INS SimpleName@@csLength @TO@ InfixExpression@@csLength - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@csLength - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@csLength - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS VariableDeclarationStatement@@int searchLastIndex=searchLength - 1; @TO@
+      MethodDeclaration@@public, static, @@boolean, MethodName:containsAny, @@Argus:CharSequence+cs+char[]+searchChars+ '
+    - '---INS PrimitiveType@@int @TO@ VariableDeclarationStatement@@int searchLastIndex=searchLength
+      - 1; '
+    - '---INS VariableDeclarationFragment@@searchLastIndex=searchLength - 1 @TO@ VariableDeclarationStatement@@int
+      searchLastIndex=searchLength - 1; '
+    - '------INS SimpleName@@searchLastIndex @TO@ VariableDeclarationFragment@@searchLastIndex=searchLength
+      - 1 '
+    - '------INS InfixExpression@@searchLength - 1 @TO@ VariableDeclarationFragment@@searchLastIndex=searchLength
+      - 1 '
+    - '---------INS SimpleName@@searchLength @TO@ InfixExpression@@searchLength -
+      1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@searchLength - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@searchLength - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:i < csLastIndex && j < searchLastIndex &&
+      ch >= Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE @TO@
+      IfStatement@@InfixExpression:searchChars[j] == ch '
+    - '---INS InfixExpression@@i < csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE
+      && ch <= Character.MAX_HIGH_SURROGATE @TO@ IfStatement@@InfixExpression:i <
+      csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE &&
+      ch <= Character.MAX_HIGH_SURROGATE '
+    - '------INS InfixExpression@@i < csLastIndex && j < searchLastIndex && ch >=
+      Character.MIN_HIGH_SURROGATE @TO@ InfixExpression@@i < csLastIndex && j < searchLastIndex
+      && ch >= Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE '
+    - '---------INS InfixExpression@@i < csLastIndex && j < searchLastIndex @TO@ InfixExpression@@i
+      < csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE '
+    - '------------INS InfixExpression@@i < csLastIndex @TO@ InfixExpression@@i <
+      csLastIndex && j < searchLastIndex '
+    - '---------------INS SimpleName@@i @TO@ InfixExpression@@i < csLastIndex '
+    - '---------------INS Operator@@< @TO@ InfixExpression@@i < csLastIndex '
+    - '---------------INS SimpleName@@csLastIndex @TO@ InfixExpression@@i < csLastIndex '
+    - '------------INS Operator@@&& @TO@ InfixExpression@@i < csLastIndex && j < searchLastIndex '
+    - '------------INS InfixExpression@@j < searchLastIndex @TO@ InfixExpression@@i
+      < csLastIndex && j < searchLastIndex '
+    - '---------------INS SimpleName@@j @TO@ InfixExpression@@j < searchLastIndex '
+    - '---------------INS Operator@@< @TO@ InfixExpression@@j < searchLastIndex '
+    - '---------------INS SimpleName@@searchLastIndex @TO@ InfixExpression@@j < searchLastIndex '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@i < csLastIndex && j < searchLastIndex
+      && ch >= Character.MIN_HIGH_SURROGATE '
+    - '---------INS InfixExpression@@ch >= Character.MIN_HIGH_SURROGATE @TO@ InfixExpression@@i
+      < csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE '
+    - '------------INS SimpleName@@ch @TO@ InfixExpression@@ch >= Character.MIN_HIGH_SURROGATE '
+    - '------------INS Operator@@>= @TO@ InfixExpression@@ch >= Character.MIN_HIGH_SURROGATE '
+    - '------------INS QualifiedName@@Character.MIN_HIGH_SURROGATE @TO@ InfixExpression@@ch
+      >= Character.MIN_HIGH_SURROGATE '
+    - '---------------INS SimpleName@@Character @TO@ QualifiedName@@Character.MIN_HIGH_SURROGATE '
+    - '---------------INS SimpleName@@MIN_HIGH_SURROGATE @TO@ QualifiedName@@Character.MIN_HIGH_SURROGATE '
+    - '------INS Operator@@&& @TO@ InfixExpression@@i < csLastIndex && j < searchLastIndex
+      && ch >= Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE '
+    - '------INS InfixExpression@@ch <= Character.MAX_HIGH_SURROGATE @TO@ InfixExpression@@i
+      < csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE &&
+      ch <= Character.MAX_HIGH_SURROGATE '
+    - '---------INS SimpleName@@ch @TO@ InfixExpression@@ch <= Character.MAX_HIGH_SURROGATE '
+    - '---------INS Operator@@<= @TO@ InfixExpression@@ch <= Character.MAX_HIGH_SURROGATE '
+    - '---------INS QualifiedName@@Character.MAX_HIGH_SURROGATE @TO@ InfixExpression@@ch
+      <= Character.MAX_HIGH_SURROGATE '
+    - '------------INS SimpleName@@Character @TO@ QualifiedName@@Character.MAX_HIGH_SURROGATE '
+    - '------------INS SimpleName@@MAX_HIGH_SURROGATE @TO@ QualifiedName@@Character.MAX_HIGH_SURROGATE '
+    - '---MOV ReturnStatement@@BooleanLiteral:true @TO@ IfStatement@@InfixExpression:i
+      < csLastIndex && j < searchLastIndex && ch >= Character.MIN_HIGH_SURROGATE &&
+      ch <= Character.MAX_HIGH_SURROGATE '
+    - '---INS IfStatement@@InfixExpression:searchChars[j + 1] == cs.charAt(i + 1)
+      @TO@ IfStatement@@InfixExpression:i < csLastIndex && j < searchLastIndex &&
+      ch >= Character.MIN_HIGH_SURROGATE && ch <= Character.MAX_HIGH_SURROGATE '
+    - '------INS InfixExpression@@searchChars[j + 1] == cs.charAt(i + 1) @TO@ IfStatement@@InfixExpression:searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '---------INS ArrayAccess@@searchChars[j + 1] @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------------INS SimpleName@@searchChars @TO@ ArrayAccess@@searchChars[j + 1] '
+    - '------------INS InfixExpression@@j + 1 @TO@ ArrayAccess@@searchChars[j + 1] '
+    - '---------------INS SimpleName@@j @TO@ InfixExpression@@j + 1 '
+    - '---------------INS Operator@@+ @TO@ InfixExpression@@j + 1 '
+    - '---------------INS NumberLiteral@@1 @TO@ InfixExpression@@j + 1 '
+    - '---------INS Operator@@== @TO@ InfixExpression@@searchChars[j + 1] == cs.charAt(i
+      + 1) '
+    - '---------INS MethodInvocation@@cs.charAt(i + 1) @TO@ InfixExpression@@searchChars[j
+      + 1] == cs.charAt(i + 1) '
+    - '------------INS SimpleName@@Name:cs @TO@ MethodInvocation@@cs.charAt(i + 1) '
+    - '------------INS SimpleName@@MethodName:charAt:[i + 1] @TO@ MethodInvocation@@cs.charAt(i
+      + 1) '
+    - '---------------INS InfixExpression@@i + 1 @TO@ SimpleName@@MethodName:charAt:[i
+      + 1] '
+    - '------------------INS SimpleName@@i @TO@ InfixExpression@@i + 1 '
+    - '------------------INS Operator@@+ @TO@ InfixExpression@@i + 1 '
+    - '------------------INS NumberLiteral@@1 @TO@ InfixExpression@@i + 1 '
+  repair_actions_cnt: 3

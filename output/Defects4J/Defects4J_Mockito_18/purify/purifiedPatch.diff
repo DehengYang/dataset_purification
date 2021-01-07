@@ -1,0 +1,11 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_18/src/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java	2020-10-27 03:11:10.203893398 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_18/purify/purified/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java	2020-10-27 03:11:10.203893398 -0400
+@@ -84,6 +84,8 @@
+             return Primitives.defaultValueForPrimitiveOrWrapper(type);
+             //new instances are used instead of Collections.emptyList(), etc.
+             //to avoid UnsupportedOperationException if code under test modifies returned collection
++        } else if (type == Iterable.class) {
++            return new ArrayList<Object>(0);
+         } else if (type == Collection.class) {
+             return new LinkedList<Object>();
+         } else if (type == Set.class) {

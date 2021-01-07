@@ -1,0 +1,43 @@
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_18/source/org/jfree/data/DefaultKeyedValues.java	2020-10-21 00:23:39.304286139 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_18/purify/purified/org/jfree/data/DefaultKeyedValues.java	2020-10-21 00:23:39.304286139 -0400
+@@ -315,9 +315,7 @@
+     public void removeValue(int index) {
+         this.keys.remove(index);
+         this.values.remove(index);
+-        if (index < this.keys.size()) {
+         rebuildIndex();
+-        }
+     }
+ 
+     /**
+@@ -332,7 +330,8 @@
+     public void removeValue(Comparable key) {
+         int index = getIndex(key);
+         if (index < 0) {
+-			return;
++            throw new UnknownKeyException("The key (" + key 
++                    + ") is not recognised.");
+         }
+         removeValue(index);
+     }
+--- /mnt/purify/repairDir/Purify_Defects4J_Chart_18/source/org/jfree/data/DefaultKeyedValues2D.java	2020-10-21 00:23:39.316286486 -0400
++++ /mnt/purify/buggylocs/Defects4J/Defects4J_Chart_18/purify/purified/org/jfree/data/DefaultKeyedValues2D.java	2020-10-21 00:23:39.316286486 -0400
+@@ -452,10 +452,18 @@
+      * @see #removeRow(Comparable)
+      */
+     public void removeColumn(Comparable columnKey) {
++    	if (columnKey == null) {
++    	}
++    	if (!this.columnKeys.contains(columnKey)) {
++    		throw new UnknownKeyException("Unknown key: " + columnKey);
++    	}
+         Iterator iterator = this.rows.iterator();
+         while (iterator.hasNext()) {
+             DefaultKeyedValues rowData = (DefaultKeyedValues) iterator.next();
++            int index = rowData.getIndex(columnKey);
++            if (index >= 0) {
+                 rowData.removeValue(columnKey);
++            }
+         }
+         this.columnKeys.remove(columnKey);
+     }

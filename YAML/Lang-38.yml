@@ -1,0 +1,90 @@
+1 bug_id: Lang-38
+2 src folder:
+  name of src folder: java
+  number of files: 90
+  number of java files: 79
+  number of src classes: 123
+  number of test classes: 84
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.lang3.time.FastDateFormatTest#testLang538
+  failing tests:
+  - org.apache.commons.lang3.time.FastDateFormatTest
+  number of all test cases: 1624
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 9.0
+  purification via coverage: 0.001
+  purification via delta debugging: 19.913
+  repair actions extraction: 1.808
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.lang3.time.FastDateFormatTest#testLang538: 161
+  fixed:
+    org.apache.commons.lang3.time.FastDateFormatTest#testLang538: 162
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 1
+  covDel: 0
+  cov_patch_lines: 1
+  delta_patch_lines: 1
+  oriAdd: 1
+  oriDel: 0
+  ori_patch_lines: 1
+  purAdd: 1
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 0
+  passed: 0
+  total: 0
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_38/src/java/org/apache/commons/lang3/time/FastDateFormat.java\t\
+    2020-10-21 01:32:37.787816925 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_38/purify/patch/org/apache/commons/lang3/time/FastDateFormat.java\t\
+    2020-10-21 01:32:37.787816925 -0400\n@@ -869,6 +869,7 @@\n      */\n     public\
+    \ StringBuffer format(Calendar calendar, StringBuffer buf) {\n         if (mTimeZoneForced)\
+    \ {\n+            calendar.getTime(); /// LANG-538\n             calendar = (Calendar)\
+    \ calendar.clone();\n             calendar.setTimeZone(mTimeZone);\n         }"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Lang_38/src/java/org/apache/commons/lang3/time/FastDateFormat.java\t\
+    2020-10-21 01:33:09.160722164 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Lang_38/purify/purified/org/apache/commons/lang3/time/FastDateFormat.java\t\
+    2020-10-21 01:33:09.160722164 -0400\n@@ -869,6 +869,7 @@\n      */\n     public\
+    \ StringBuffer format(Calendar calendar, StringBuffer buf) {\n         if (mTimeZoneForced)\
+    \ {\n+            calendar.getTime(); /// LANG-538\n             calendar = (Calendar)\
+    \ calendar.clone();\n             calendar.setTimeZone(mTimeZone);\n         }"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/time/FastDateFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:calendar.getTime() @TO@ IfStatement@@SimpleName:mTimeZoneForced '
+    - '---INS MethodInvocation@@calendar.getTime() @TO@ ExpressionStatement@@MethodInvocation:calendar.getTime() '
+    - '------INS SimpleName@@Name:calendar @TO@ MethodInvocation@@calendar.getTime() '
+    - '------INS SimpleName@@MethodName:getTime:[] @TO@ MethodInvocation@@calendar.getTime() '
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 3
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/lang3/time/FastDateFormat:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS ExpressionStatement@@MethodInvocation:calendar.getTime() @TO@ IfStatement@@SimpleName:mTimeZoneForced '
+    - '---INS MethodInvocation@@calendar.getTime() @TO@ ExpressionStatement@@MethodInvocation:calendar.getTime() '
+    - '------INS SimpleName@@Name:calendar @TO@ MethodInvocation@@calendar.getTime() '
+    - '------INS SimpleName@@MethodName:getTime:[] @TO@ MethodInvocation@@calendar.getTime() '
+  repair_actions_cnt: 1

@@ -1,0 +1,12 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_125/src/com/google/javascript/jscomp/TypeCheck.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_125/fixed-version/src/com/google/javascript/jscomp/TypeCheck.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_125/src/com/google/javascript/jscomp/TypeCheck.java	2020-03-01 00:34:28.277171220 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Closure_125/fixed-version/src/com/google/javascript/jscomp/TypeCheck.java	2020-03-01 00:34:31.245311076 -0800
+@@ -1658,7 +1658,7 @@
+     JSType type = getJSType(constructor).restrictByNotNullOrUndefined();
+     if (type.isConstructor() || type.isEmptyType() || type.isUnknownType()) {
+       FunctionType fnType = type.toMaybeFunctionType();
+-      if (fnType != null) {
++      if (fnType != null && fnType.hasInstanceType()) {
+         visitParameterList(t, n, fnType);
+         ensureTyped(t, n, fnType.getInstanceType());
+       } else {

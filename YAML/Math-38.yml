@@ -1,0 +1,161 @@
+1 bug_id: Math-38
+2 src folder:
+  name of src folder: java
+  number of files: 619
+  number of java files: 618
+  number of src classes: 845
+  number of test classes: 295
+3 test (cases):
+  failing test cases:
+  - org.apache.commons.math.optimization.direct.BOBYQAOptimizerTest#testConstrainedRosenWithMoreInterpolationPoints
+  failing tests:
+  - org.apache.commons.math.optimization.direct.BOBYQAOptimizerTest
+  number of all test cases: 3261
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 5.0
+  coverage on fixed version: 1.0
+  purification via coverage: 1.91
+  purification via delta debugging: 544.177
+  repair actions extraction: 3.137
+5 stmts covered by failing cases:
+  buggy:
+    org.apache.commons.math.optimization.direct.BOBYQAOptimizerTest#testConstrainedRosenWithMoreInterpolationPoints: 290
+  fixed:
+    org.apache.commons.math.optimization.direct.BOBYQAOptimizerTest#testConstrainedRosenWithMoreInterpolationPoints: 1146
+6 reduced lines:
+  by all: 3
+  by coverage: 0
+  by delta debugging: 3
+  covAdd: 4
+  covDel: 4
+  cov_patch_lines: 8
+  delta_patch_lines: 5
+  oriAdd: 4
+  oriDel: 4
+  ori_patch_lines: 8
+  purAdd: 2
+  purDel: 3
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 3
+  original: 3
+  purifiy: 2
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 12
+  failFail: 7
+  passed: 2
+  total: 21
+9 sibling repair actions:
+- 0 3 1.0
+- 1 2 0.8662280701754386
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_38/src/main/java/org/apache/commons/math/optimization/direct/BOBYQAOptimizer.java\t\
+    2020-10-22 07:00:01.217486690 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_38/purify/patch/org/apache/commons/math/optimization/direct/BOBYQAOptimizer.java\t\
+    2020-10-22 07:00:01.205486343 -0400\n@@ -1657,10 +1657,10 @@\n               \
+    \      final int tmp2 = jpt;\n                     jpt = ipt - n;\n          \
+    \           ipt = tmp2;\n-                    throw new PathIsExploredException();\
+    \ // XXX\n+//                     throw new PathIsExploredException(); // XXX\n\
+    \                 }\n-                final int iptMinus1 = ipt;\n-          \
+    \      final int jptMinus1 = jpt;\n+                final int iptMinus1 = ipt\
+    \ - 1;\n+                final int jptMinus1 = jpt - 1;\n                 interpolationPoints.setEntry(nfm,\
+    \ iptMinus1, interpolationPoints.getEntry(ipt, iptMinus1));\n                \
+    \ interpolationPoints.setEntry(nfm, jptMinus1, interpolationPoints.getEntry(jpt,\
+    \ jptMinus1));\n             }\n@@ -1749,7 +1749,7 @@\n                 final\
+    \ int ih = ipt * (ipt - 1) / 2 + jpt - 1;\n                 final double tmp =\
+    \ interpolationPoints.getEntry(nfm, ipt - 1) * interpolationPoints.getEntry(nfm,\
+    \ jpt - 1);\n                 modelSecondDerivativesValues.setEntry(ih, (fbeg\
+    \ - fAtInterpolationPoints.getEntry(ipt) - fAtInterpolationPoints.getEntry(jpt)\
+    \ + f) / tmp);\n-                throw new PathIsExploredException(); // XXX\n\
+    +//                 throw new PathIsExploredException(); // XXX\n            \
+    \ }\n         } while (getEvaluations() < npt);\n     } // prelim"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Math_38/src/main/java/org/apache/commons/math/optimization/direct/BOBYQAOptimizer.java\t\
+    2020-10-22 07:12:07.758517127 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Math_38/purify/purified/org/apache/commons/math/optimization/direct/BOBYQAOptimizer.java\t\
+    2020-10-22 07:12:07.754517011 -0400\n@@ -1659,8 +1659,8 @@\n                 \
+    \    ipt = tmp2;\n                     throw new PathIsExploredException(); //\
+    \ XXX\n                 }\n-                final int iptMinus1 = ipt;\n-    \
+    \            final int jptMinus1 = jpt;\n+                final int iptMinus1\
+    \ = ipt - 1;\n+                final int jptMinus1 = jpt - 1;\n              \
+    \   interpolationPoints.setEntry(nfm, iptMinus1, interpolationPoints.getEntry(ipt,\
+    \ iptMinus1));\n                 interpolationPoints.setEntry(nfm, jptMinus1,\
+    \ interpolationPoints.getEntry(jpt, jptMinus1));\n             }\n@@ -1749,7 +1749,6\
+    \ @@\n                 final int ih = ipt * (ipt - 1) / 2 + jpt - 1;\n       \
+    \          final double tmp = interpolationPoints.getEntry(nfm, ipt - 1) * interpolationPoints.getEntry(nfm,\
+    \ jpt - 1);\n                 modelSecondDerivativesValues.setEntry(ih, (fbeg\
+    \ - fAtInterpolationPoints.getEntry(ipt) - fAtInterpolationPoints.getEntry(jpt)\
+    \ + f) / tmp);\n-                throw new PathIsExploredException(); // XXX\n\
+    \             }\n         } while (getEvaluations() < npt);\n     } // prelim"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/direct/BOBYQAOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ThrowStatement@@ClassInstanceCreation:new PathIsExploredException() '
+    - '---DEL ClassInstanceCreation@@PathIsExploredException[] '
+    - '------DEL New@@new '
+    - '------DEL SimpleType@@PathIsExploredException '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final int iptMinus1=ipt; @TO@ final int iptMinus1=ipt
+      - 1; '
+    - '---UPD VariableDeclarationFragment@@iptMinus1=ipt @TO@ iptMinus1=ipt - 1 '
+    - '------DEL SimpleName@@ipt '
+    - '------INS InfixExpression@@ipt - 1 @TO@ VariableDeclarationFragment@@iptMinus1=ipt '
+    - '---------INS SimpleName@@ipt @TO@ InfixExpression@@ipt - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@ipt - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@ipt - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final int jptMinus1=jpt; @TO@ final int jptMinus1=jpt
+      - 1; '
+    - '---UPD VariableDeclarationFragment@@jptMinus1=jpt @TO@ jptMinus1=jpt - 1 '
+    - '------DEL SimpleName@@jpt '
+    - '------INS InfixExpression@@jpt - 1 @TO@ VariableDeclarationFragment@@jptMinus1=jpt '
+    - '---------INS SimpleName@@jpt @TO@ InfixExpression@@jpt - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@jpt - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@jpt - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ThrowStatement@@ClassInstanceCreation:new PathIsExploredException() '
+    - '---DEL ClassInstanceCreation@@PathIsExploredException[] '
+    - '------DEL New@@new '
+    - '------DEL SimpleType@@PathIsExploredException '
+  repair_actions_cnt: 4
+13 purify_repair_actions:
+  biggest_depth: 4
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/apache/commons/math/optimization/direct/BOBYQAOptimizer:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final int iptMinus1=ipt; @TO@ final int iptMinus1=ipt
+      - 1; '
+    - '---UPD VariableDeclarationFragment@@iptMinus1=ipt @TO@ iptMinus1=ipt - 1 '
+    - '------INS InfixExpression@@ipt - 1 @TO@ VariableDeclarationFragment@@iptMinus1=ipt '
+    - '---------INS SimpleName@@ipt @TO@ InfixExpression@@ipt - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@ipt - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@ipt - 1 '
+    - '------DEL SimpleName@@ipt '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD VariableDeclarationStatement@@final int jptMinus1=jpt; @TO@ final int jptMinus1=jpt
+      - 1; '
+    - '---UPD VariableDeclarationFragment@@jptMinus1=jpt @TO@ jptMinus1=jpt - 1 '
+    - '------DEL SimpleName@@jpt '
+    - '------INS InfixExpression@@jpt - 1 @TO@ VariableDeclarationFragment@@jptMinus1=jpt '
+    - '---------INS SimpleName@@jpt @TO@ InfixExpression@@jpt - 1 '
+    - '---------INS Operator@@- @TO@ InfixExpression@@jpt - 1 '
+    - '---------INS NumberLiteral@@1 @TO@ InfixExpression@@jpt - 1 '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ThrowStatement@@ClassInstanceCreation:new PathIsExploredException() '
+    - '---DEL ClassInstanceCreation@@PathIsExploredException[] '
+    - '------DEL New@@new '
+    - '------DEL SimpleType@@PathIsExploredException '
+  repair_actions_cnt: 3

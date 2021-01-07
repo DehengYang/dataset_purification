@@ -1,0 +1,40 @@
+diff -Naur /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_23/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_23/fixed-version/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java
+--- /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_23/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java	2020-03-01 00:15:46.576317942 -0800
++++ /mnt/benchmarks/bugs/Defects4J/Defects4J_Math_23/fixed-version/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java	2020-03-01 00:15:50.180487756 -0800
+@@ -148,6 +148,7 @@
+         UnivariatePointValuePair current
+             = new UnivariatePointValuePair(x, isMinim ? fx : -fx);
+         // Best point encountered so far (which is the initial guess).
++        UnivariatePointValuePair best = current;
+ 
+         int iter = 0;
+         while (true) {
+@@ -231,10 +232,15 @@
+                 // User-defined convergence checker.
+                 previous = current;
+                 current = new UnivariatePointValuePair(u, isMinim ? fu : -fu);
++                best = best(best,
++                            best(current,
++                                 previous,
++                                 isMinim),
++                            isMinim);
+ 
+                 if (checker != null) {
+                     if (checker.converged(iter, previous, current)) {
+-                        return best(current, previous, isMinim);
++                        return best;
+                     }
+                 }
+ 
+@@ -271,9 +277,10 @@
+                     }
+                 }
+             } else { // Default termination (Brent's criterion).
+-                return
++                return best(best,
+                             best(current,
+                                  previous,
++                                 isMinim),
+                             isMinim);
+             }
+             ++iter;

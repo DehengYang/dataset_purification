@@ -1,0 +1,186 @@
+1 bug_id: Closure-103
+2 src folder:
+  name of src folder: src
+  number of files: 322
+  number of java files: 312
+  number of src classes: 994
+  number of test classes: 158
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.jscomp.ControlFlowAnalysisTest#testInstanceOf
+  - com.google.javascript.jscomp.CheckUnreachableCodeTest#testInstanceOfThrowsException
+  - com.google.javascript.jscomp.DisambiguatePropertiesTest#testSupertypeReferenceOfSubtypeProperty
+  failing tests:
+  - com.google.javascript.jscomp.ControlFlowAnalysisTest
+  - com.google.javascript.jscomp.CheckUnreachableCodeTest
+  - com.google.javascript.jscomp.DisambiguatePropertiesTest
+  number of all test cases: 4516
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 1.0
+  coverage on fixed version: 2.0
+  purification via coverage: 1.17
+  purification via delta debugging: 163.397
+  repair actions extraction: 2.025
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.jscomp.CheckUnreachableCodeTest#testInstanceOfThrowsException: 2257
+    com.google.javascript.jscomp.ControlFlowAnalysisTest#testInstanceOf: 1617
+    com.google.javascript.jscomp.DisambiguatePropertiesTest#testSupertypeReferenceOfSubtypeProperty: 4306
+  fixed:
+    com.google.javascript.jscomp.CheckUnreachableCodeTest#testInstanceOfThrowsException: 2528
+    com.google.javascript.jscomp.ControlFlowAnalysisTest#testInstanceOf: 1628
+    com.google.javascript.jscomp.DisambiguatePropertiesTest#testSupertypeReferenceOfSubtypeProperty: 4303
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 8
+  covDel: 0
+  cov_patch_lines: 8
+  delta_patch_lines: 8
+  oriAdd: 8
+  oriDel: 0
+  ori_patch_lines: 8
+  purAdd: 8
+  purDel: 0
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 3
+  original: 3
+  purifiy: 3
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 12
+  failFail: 2
+  passed: 0
+  total: 14
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_103/src/com/google/javascript/jscomp/ControlFlowAnalysis.java\t\
+    2020-10-23 13:07:28.200704476 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_103/purify/patch/com/google/javascript/jscomp/ControlFlowAnalysis.java\t\
+    2020-10-23 13:07:28.200704476 -0400\n@@ -891,6 +891,7 @@\n       case Token.ASSIGN:\n\
+    \       case Token.INC:\n       case Token.DEC:\n+      case Token.INSTANCEOF:\n\
+    \         return true;\n       case Token.FUNCTION:\n         return false;"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_103/src/com/google/javascript/jscomp/ControlFlowAnalysis.java\t\
+    2020-10-23 13:10:35.950142377 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_103/purify/purified/com/google/javascript/jscomp/ControlFlowAnalysis.java\t\
+    2020-10-23 13:10:35.950142377 -0400\n@@ -891,6 +891,7 @@\n       case Token.ASSIGN:\n\
+    \       case Token.INC:\n       case Token.DEC:\n+      case Token.INSTANCEOF:\n\
+    \         return true;\n       case Token.FUNCTION:\n         return false;"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '2'
+  com/google/javascript/jscomp/ControlFlowAnalysis, com/google/javascript/jscomp/DisambiguateProperties:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:foundType == null @TO@ MethodDeclaration@@public,
+      @@ObjectType, MethodName:getTypeWithProperty, @@Argus:String+field+JSType+type+ '
+    - '---INS InfixExpression@@foundType == null @TO@ IfStatement@@InfixExpression:foundType
+      == null '
+    - '------INS SimpleName@@foundType @TO@ InfixExpression@@foundType == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@foundType == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@foundType == null '
+    - '---INS VariableDeclarationStatement@@ObjectType maybeType=ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field));
+      @TO@ IfStatement@@InfixExpression:foundType == null '
+    - '------INS SimpleType@@ObjectType @TO@ VariableDeclarationStatement@@ObjectType
+      maybeType=ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field)); '
+    - '------INS VariableDeclarationFragment@@maybeType=ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field))
+      @TO@ VariableDeclarationStatement@@ObjectType maybeType=ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field)); '
+    - '---------INS SimpleName@@maybeType @TO@ VariableDeclarationFragment@@maybeType=ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field)) '
+    - '---------INS MethodInvocation@@ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field))
+      @TO@ VariableDeclarationFragment@@maybeType=ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field)) '
+    - '------------INS SimpleName@@Name:ObjectType @TO@ MethodInvocation@@ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field)) '
+    - '------------INS SimpleName@@MethodName:cast:[registry.getGreatestSubtypeWithProperty(type,field)]
+      @TO@ MethodInvocation@@ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field)) '
+    - '---------------INS MethodInvocation@@registry.getGreatestSubtypeWithProperty(type,field)
+      @TO@ SimpleName@@MethodName:cast:[registry.getGreatestSubtypeWithProperty(type,field)] '
+    - '------------------INS SimpleName@@Name:registry @TO@ MethodInvocation@@registry.getGreatestSubtypeWithProperty(type,field) '
+    - '------------------INS SimpleName@@MethodName:getGreatestSubtypeWithProperty:[type,
+      field] @TO@ MethodInvocation@@registry.getGreatestSubtypeWithProperty(type,field) '
+    - '---------------------INS SimpleName@@type @TO@ SimpleName@@MethodName:getGreatestSubtypeWithProperty:[type,
+      field] '
+    - '---------------------INS SimpleName@@field @TO@ SimpleName@@MethodName:getGreatestSubtypeWithProperty:[type,
+      field] '
+    - '---INS IfStatement@@InfixExpression:maybeType != null && maybeType.hasOwnProperty(field)
+      @TO@ IfStatement@@InfixExpression:foundType == null '
+    - '------INS InfixExpression@@maybeType != null && maybeType.hasOwnProperty(field)
+      @TO@ IfStatement@@InfixExpression:maybeType != null && maybeType.hasOwnProperty(field) '
+    - '---------INS InfixExpression@@maybeType != null @TO@ InfixExpression@@maybeType
+      != null && maybeType.hasOwnProperty(field) '
+    - '------------INS SimpleName@@maybeType @TO@ InfixExpression@@maybeType != null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@maybeType != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@maybeType != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@maybeType != null && maybeType.hasOwnProperty(field) '
+    - '---------INS MethodInvocation@@maybeType.hasOwnProperty(field) @TO@ InfixExpression@@maybeType
+      != null && maybeType.hasOwnProperty(field) '
+    - '------------INS SimpleName@@Name:maybeType @TO@ MethodInvocation@@maybeType.hasOwnProperty(field) '
+    - '------------INS SimpleName@@MethodName:hasOwnProperty:[field] @TO@ MethodInvocation@@maybeType.hasOwnProperty(field) '
+    - '---------------INS SimpleName@@field @TO@ SimpleName@@MethodName:hasOwnProperty:[field] '
+    - '------INS ExpressionStatement@@Assignment:foundType=maybeType @TO@ IfStatement@@InfixExpression:maybeType
+      != null && maybeType.hasOwnProperty(field) '
+    - '---------INS Assignment@@foundType=maybeType @TO@ ExpressionStatement@@Assignment:foundType=maybeType '
+    - '------------INS SimpleName@@foundType @TO@ Assignment@@foundType=maybeType '
+    - '------------INS Operator@@= @TO@ Assignment@@foundType=maybeType '
+    - '------------INS SimpleName@@maybeType @TO@ Assignment@@foundType=maybeType '
+  files_cnt: '2'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '2'
+  com/google/javascript/jscomp/ControlFlowAnalysis, com/google/javascript/jscomp/DisambiguateProperties:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS IfStatement@@InfixExpression:foundType == null @TO@ MethodDeclaration@@public,
+      @@ObjectType, MethodName:getTypeWithProperty, @@Argus:String+field+JSType+type+ '
+    - '---INS InfixExpression@@foundType == null @TO@ IfStatement@@InfixExpression:foundType
+      == null '
+    - '------INS SimpleName@@foundType @TO@ InfixExpression@@foundType == null '
+    - '------INS Operator@@== @TO@ InfixExpression@@foundType == null '
+    - '------INS NullLiteral@@null @TO@ InfixExpression@@foundType == null '
+    - '---INS VariableDeclarationStatement@@ObjectType maybeType=ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field));
+      @TO@ IfStatement@@InfixExpression:foundType == null '
+    - '------INS SimpleType@@ObjectType @TO@ VariableDeclarationStatement@@ObjectType
+      maybeType=ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field)); '
+    - '------INS VariableDeclarationFragment@@maybeType=ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field))
+      @TO@ VariableDeclarationStatement@@ObjectType maybeType=ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field)); '
+    - '---------INS SimpleName@@maybeType @TO@ VariableDeclarationFragment@@maybeType=ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field)) '
+    - '---------INS MethodInvocation@@ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field))
+      @TO@ VariableDeclarationFragment@@maybeType=ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field)) '
+    - '------------INS SimpleName@@Name:ObjectType @TO@ MethodInvocation@@ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field)) '
+    - '------------INS SimpleName@@MethodName:cast:[registry.getGreatestSubtypeWithProperty(type,field)]
+      @TO@ MethodInvocation@@ObjectType.cast(registry.getGreatestSubtypeWithProperty(type,field)) '
+    - '---------------INS MethodInvocation@@registry.getGreatestSubtypeWithProperty(type,field)
+      @TO@ SimpleName@@MethodName:cast:[registry.getGreatestSubtypeWithProperty(type,field)] '
+    - '------------------INS SimpleName@@Name:registry @TO@ MethodInvocation@@registry.getGreatestSubtypeWithProperty(type,field) '
+    - '------------------INS SimpleName@@MethodName:getGreatestSubtypeWithProperty:[type,
+      field] @TO@ MethodInvocation@@registry.getGreatestSubtypeWithProperty(type,field) '
+    - '---------------------INS SimpleName@@type @TO@ SimpleName@@MethodName:getGreatestSubtypeWithProperty:[type,
+      field] '
+    - '---------------------INS SimpleName@@field @TO@ SimpleName@@MethodName:getGreatestSubtypeWithProperty:[type,
+      field] '
+    - '---INS IfStatement@@InfixExpression:maybeType != null && maybeType.hasOwnProperty(field)
+      @TO@ IfStatement@@InfixExpression:foundType == null '
+    - '------INS InfixExpression@@maybeType != null && maybeType.hasOwnProperty(field)
+      @TO@ IfStatement@@InfixExpression:maybeType != null && maybeType.hasOwnProperty(field) '
+    - '---------INS InfixExpression@@maybeType != null @TO@ InfixExpression@@maybeType
+      != null && maybeType.hasOwnProperty(field) '
+    - '------------INS SimpleName@@maybeType @TO@ InfixExpression@@maybeType != null '
+    - '------------INS Operator@@!= @TO@ InfixExpression@@maybeType != null '
+    - '------------INS NullLiteral@@null @TO@ InfixExpression@@maybeType != null '
+    - '---------INS Operator@@&& @TO@ InfixExpression@@maybeType != null && maybeType.hasOwnProperty(field) '
+    - '---------INS MethodInvocation@@maybeType.hasOwnProperty(field) @TO@ InfixExpression@@maybeType
+      != null && maybeType.hasOwnProperty(field) '
+    - '------------INS SimpleName@@Name:maybeType @TO@ MethodInvocation@@maybeType.hasOwnProperty(field) '
+    - '------------INS SimpleName@@MethodName:hasOwnProperty:[field] @TO@ MethodInvocation@@maybeType.hasOwnProperty(field) '
+    - '---------------INS SimpleName@@field @TO@ SimpleName@@MethodName:hasOwnProperty:[field] '
+    - '------INS ExpressionStatement@@Assignment:foundType=maybeType @TO@ IfStatement@@InfixExpression:maybeType
+      != null && maybeType.hasOwnProperty(field) '
+    - '---------INS Assignment@@foundType=maybeType @TO@ ExpressionStatement@@Assignment:foundType=maybeType '
+    - '------------INS SimpleName@@foundType @TO@ Assignment@@foundType=maybeType '
+    - '------------INS Operator@@= @TO@ Assignment@@foundType=maybeType '
+    - '------------INS SimpleName@@maybeType @TO@ Assignment@@foundType=maybeType '
+  files_cnt: '2'
+  repair_actions_cnt: 1

@@ -1,0 +1,383 @@
+1 bug_id: Mockito-21
+2 src folder:
+  name of src folder: src
+  number of files: 353
+  number of java files: 315
+  number of src classes: 375
+  number of test classes: 275
+3 test (cases):
+  failing test cases:
+  - org.mockito.internal.creation.instance.ConstructorInstantiatorTest#creates_instances_of_inner_classes
+  failing tests:
+  - org.mockito.internal.creation.instance.ConstructorInstantiatorTest
+  number of all test cases: 1373
+  number of failing test cases: 1
+4 time cost of purification:
+  coverage on buggy version: 3.0
+  coverage on fixed version: 3.0
+  purification via coverage: 0.582
+  purification via delta debugging: 1806.368
+  repair actions extraction: 0.731
+5 stmts covered by failing cases:
+  buggy:
+    org.mockito.internal.creation.instance.ConstructorInstantiatorTest#creates_instances_of_inner_classes: 225
+  fixed:
+    org.mockito.internal.creation.instance.ConstructorInstantiatorTest#creates_instances_of_inner_classes: 226
+6 reduced lines:
+  by all: 9
+  by coverage: 0
+  by delta debugging: 9
+  covAdd: 20
+  covDel: 4
+  cov_patch_lines: 24
+  delta_patch_lines: 15
+  oriAdd: 20
+  oriDel: 4
+  ori_patch_lines: 24
+  purAdd: 11
+  purDel: 4
+7 reduced chunks:
+  by all: 1
+  by coverage: 0
+  by delta debugging: 1
+  cov: 5
+  original: 5
+  purifiy: 4
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 58
+  failFail: 2
+  passed: 3
+  total: 63
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_21/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java\t\
+    2020-10-23 22:56:34.988050533 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_21/purify/patch/org/mockito/internal/creation/instance/ConstructorInstantiator.java\t\
+    2020-10-23 22:56:34.988050533 -0400\n@@ -14,18 +14,23 @@\n         if (outerClassInstance\
+    \ == null) {\n             return noArgConstructor(cls);\n         }\n-      \
+    \  return withOuterClass(cls);\n+        return withParams(cls, outerClassInstance);\n\
+    \     }\n \n-    private <T> T withOuterClass(Class<T> cls) {\n+    private static\
+    \ <T> T withParams(Class<T> cls, Object... params) {\n         try {\n       \
+    \      //this is kind of overengineered because we don't need to support more\
+    \ params\n             //however, I know we will be needing it :)\n-         \
+    \   Constructor<T> c = cls.getDeclaredConstructor(outerClassInstance.getClass());\n\
+    -            return c.newInstance(outerClassInstance);\n+            for (Constructor<?>\
+    \ constructor : cls.getDeclaredConstructors()) {\n+                Class<?>[]\
+    \ types = constructor.getParameterTypes();\n+                if (paramsMatch(types,\
+    \ params)) {\n+                    return (T) constructor.newInstance(params);\n\
+    +                }\n+            }\n         } catch (Exception e) {\n       \
+    \      throw paramsException(cls, e);\n         }\n+        throw paramsException(cls,\
+    \ null);\n     }\n \n     private static <T> InstantationException paramsException(Class<T>\
+    \ cls, Exception e) {\n@@ -33,6 +38,17 @@\n                 + cls.getSimpleName()\
+    \ + \"'.\\nPlease ensure that the outer instance has correct type and that the\
+    \ target class has parameter-less constructor.\", e);\n     }\n \n+    private\
+    \ static boolean paramsMatch(Class<?>[] types, Object[] params) {\n+        if\
+    \ (params.length != types.length) {\n+            return false;\n+        }\n\
+    +        for (int i = 0; i < params.length; i++) {\n+            if (!types[i].isInstance(params[i]))\
+    \ {\n+                return false;\n+            }\n+        }\n+        return\
+    \ true;\n+    }\n \n     private static <T> T noArgConstructor(Class<T> cls) {\n\
+    \         try {"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Mockito_21/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java\t\
+    2020-10-23 23:27:21.077525396 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Mockito_21/purify/purified/org/mockito/internal/creation/instance/ConstructorInstantiator.java\t\
+    2020-10-23 23:27:21.077525396 -0400\n@@ -14,15 +14,19 @@\n         if (outerClassInstance\
+    \ == null) {\n             return noArgConstructor(cls);\n         }\n-      \
+    \  return withOuterClass(cls);\n+        return withParams(cls, outerClassInstance);\n\
+    \     }\n \n-    private <T> T withOuterClass(Class<T> cls) {\n+    private static\
+    \ <T> T withParams(Class<T> cls, Object... params) {\n         try {\n       \
+    \      //this is kind of overengineered because we don't need to support more\
+    \ params\n             //however, I know we will be needing it :)\n-         \
+    \   Constructor<T> c = cls.getDeclaredConstructor(outerClassInstance.getClass());\n\
+    -            return c.newInstance(outerClassInstance);\n+            for (Constructor<?>\
+    \ constructor : cls.getDeclaredConstructors()) {\n+                Class<?>[]\
+    \ types = constructor.getParameterTypes();\n+                if (paramsMatch(types,\
+    \ params)) {\n+                    return (T) constructor.newInstance(params);\n\
+    +                }\n+            }\n         } catch (Exception e) {\n       \
+    \      throw paramsException(cls, e);\n         }\n@@ -33,6 +37,9 @@\n       \
+    \          + cls.getSimpleName() + \"'.\\nPlease ensure that the outer instance\
+    \ has correct type and that the target class has parameter-less constructor.\"\
+    , e);\n     }\n \n+    private static boolean paramsMatch(Class<?>[] types, Object[]\
+    \ params) {\n+        return true;\n+    }\n \n     private static <T> T noArgConstructor(Class<T>\
+    \ cls) {\n         try {"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 8
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/creation/instance/ConstructorInstantiator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:withOuterClass(cls) @TO@ MethodInvocation:withParams(cls,outerClassInstance) '
+    - '---UPD MethodInvocation@@withOuterClass(cls) @TO@ withParams(cls,outerClassInstance) '
+    - '------UPD SimpleName@@MethodName:withOuterClass:[cls] @TO@ MethodName:withParams:[cls,
+      outerClassInstance] '
+    - '---------INS SimpleName@@outerClassInstance @TO@ SimpleName@@MethodName:withOuterClass:[cls] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@T, T, MethodName:withOuterClass, @@Argus:Class<T>+cls+
+      @TO@ private, static, @@T, T, MethodName:withParams, @@Argus:Class<T>+cls+Object+params+ '
+    - '---UPD SimpleName@@MethodName:withOuterClass @TO@ MethodName:withParams '
+    - '---INS Modifier@@static @TO@ MethodDeclaration@@private, @@T, T, MethodName:withOuterClass,
+      @@Argus:Class<T>+cls+ '
+    - '---INS SingleVariableDeclaration@@Object... params @TO@ MethodDeclaration@@private,
+      @@T, T, MethodName:withOuterClass, @@Argus:Class<T>+cls+ '
+    - '------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object... params '
+    - '------INS SimpleName@@params @TO@ SingleVariableDeclaration@@Object... params '
+    - '---INS ThrowStatement@@MethodInvocation:paramsException(cls,null) @TO@ MethodDeclaration@@private,
+      @@T, T, MethodName:withOuterClass, @@Argus:Class<T>+cls+ '
+    - '------INS MethodInvocation@@paramsException(cls,null) @TO@ ThrowStatement@@MethodInvocation:paramsException(cls,null) '
+    - '---------INS SimpleName@@MethodName:paramsException:[cls, null] @TO@ MethodInvocation@@paramsException(cls,null) '
+    - '------------INS SimpleName@@cls @TO@ SimpleName@@MethodName:paramsException:[cls,
+      null] '
+    - '------------INS NullLiteral@@null @TO@ SimpleName@@MethodName:paramsException:[cls,
+      null] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@Constructor<T> c=cls.getDeclaredConstructor(outerClassInstance.getClass()); '
+    - '---DEL ParameterizedType@@Constructor<T> '
+    - '------DEL SimpleType@@T '
+    - '---DEL VariableDeclarationFragment@@c=cls.getDeclaredConstructor(outerClassInstance.getClass()) '
+    - '------DEL SimpleName@@c '
+    - '------DEL MethodInvocation@@cls.getDeclaredConstructor(outerClassInstance.getClass()) '
+    - '---------DEL SimpleName@@MethodName:getDeclaredConstructor:[outerClassInstance.getClass()] '
+    - '------------DEL MethodInvocation@@outerClassInstance.getClass() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS EnhancedForStatement@@Constructor<?> constructor, MethodInvocation:cls.getDeclaredConstructors()
+      @TO@ TryStatement@@try:[] '
+    - '---INS SingleVariableDeclaration@@Constructor<?> constructor @TO@ EnhancedForStatement@@Constructor<?>
+      constructor, MethodInvocation:cls.getDeclaredConstructors() '
+    - '------INS ParameterizedType@@Constructor<?> @TO@ SingleVariableDeclaration@@Constructor<?>
+      constructor '
+    - '---------MOV SimpleType@@Constructor @TO@ ParameterizedType@@Constructor<?> '
+    - '---------INS WildcardType@@? @TO@ ParameterizedType@@Constructor<?> '
+    - '------INS SimpleName@@constructor @TO@ SingleVariableDeclaration@@Constructor<?>
+      constructor '
+    - '---INS MethodInvocation@@cls.getDeclaredConstructors() @TO@ EnhancedForStatement@@Constructor<?>
+      constructor, MethodInvocation:cls.getDeclaredConstructors() '
+    - '------MOV SimpleName@@Name:cls @TO@ MethodInvocation@@cls.getDeclaredConstructors() '
+    - '------INS SimpleName@@MethodName:getDeclaredConstructors:[] @TO@ MethodInvocation@@cls.getDeclaredConstructors() '
+    - '---INS VariableDeclarationStatement@@Class<?>[] types=constructor.getParameterTypes();
+      @TO@ EnhancedForStatement@@Constructor<?> constructor, MethodInvocation:cls.getDeclaredConstructors() '
+    - '------INS ArrayType@@Class<?>[] @TO@ VariableDeclarationStatement@@Class<?>[]
+      types=constructor.getParameterTypes(); '
+    - '---------INS ParameterizedType@@Class<?> @TO@ ArrayType@@Class<?>[] '
+    - '------------INS SimpleType@@Class @TO@ ParameterizedType@@Class<?> '
+    - '------------INS WildcardType@@? @TO@ ParameterizedType@@Class<?> '
+    - '------INS VariableDeclarationFragment@@types=constructor.getParameterTypes()
+      @TO@ VariableDeclarationStatement@@Class<?>[] types=constructor.getParameterTypes(); '
+    - '---------INS SimpleName@@types @TO@ VariableDeclarationFragment@@types=constructor.getParameterTypes() '
+    - '---------INS MethodInvocation@@constructor.getParameterTypes() @TO@ VariableDeclarationFragment@@types=constructor.getParameterTypes() '
+    - '------------MOV SimpleName@@Name:outerClassInstance @TO@ MethodInvocation@@constructor.getParameterTypes() '
+    - '------------MOV SimpleName@@MethodName:getClass:[] @TO@ MethodInvocation@@constructor.getParameterTypes() '
+    - '---INS IfStatement@@MethodInvocation:paramsMatch(types,params) @TO@ EnhancedForStatement@@Constructor<?>
+      constructor, MethodInvocation:cls.getDeclaredConstructors() '
+    - '------INS MethodInvocation@@paramsMatch(types,params) @TO@ IfStatement@@MethodInvocation:paramsMatch(types,params) '
+    - '---------INS SimpleName@@MethodName:paramsMatch:[types, params] @TO@ MethodInvocation@@paramsMatch(types,params) '
+    - '------------INS SimpleName@@types @TO@ SimpleName@@MethodName:paramsMatch:[types,
+      params] '
+    - '------------INS SimpleName@@params @TO@ SimpleName@@MethodName:paramsMatch:[types,
+      params] '
+    - '------INS ReturnStatement@@CastExpression:(T)constructor.newInstance(params)
+      @TO@ IfStatement@@MethodInvocation:paramsMatch(types,params) '
+    - '---------INS CastExpression@@(T)constructor.newInstance(params) @TO@ ReturnStatement@@CastExpression:(T)constructor.newInstance(params) '
+    - '------------INS SimpleType@@T @TO@ CastExpression@@(T)constructor.newInstance(params) '
+    - '------------INS MethodInvocation@@constructor.newInstance(params) @TO@ CastExpression@@(T)constructor.newInstance(params) '
+    - '---------------MOV SimpleName@@Name:c @TO@ MethodInvocation@@constructor.newInstance(params) '
+    - '---------------MOV SimpleName@@MethodName:newInstance:[outerClassInstance]
+      @TO@ MethodInvocation@@constructor.newInstance(params) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@MethodInvocation:c.newInstance(outerClassInstance) '
+    - '---DEL MethodInvocation@@c.newInstance(outerClassInstance) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, static, @@boolean, MethodName:paramsMatch,
+      @@Argus:Class<?>[]+types+Object[]+params+ @TO@ TypeDeclaration@@[public]ConstructorInstantiator,
+      [Instantiator] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, static, @@boolean,
+      MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '---INS Modifier@@static @TO@ MethodDeclaration@@private, static, @@boolean,
+      MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '---INS PrimitiveType@@boolean @TO@ MethodDeclaration@@private, static, @@boolean,
+      MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '---INS SimpleName@@MethodName:paramsMatch @TO@ MethodDeclaration@@private,
+      static, @@boolean, MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '---INS SingleVariableDeclaration@@Class<?>[] types @TO@ MethodDeclaration@@private,
+      static, @@boolean, MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '------INS ArrayType@@Class<?>[] @TO@ SingleVariableDeclaration@@Class<?>[]
+      types '
+    - '---------INS ParameterizedType@@Class<?> @TO@ ArrayType@@Class<?>[] '
+    - '------------INS SimpleType@@Class @TO@ ParameterizedType@@Class<?> '
+    - '------------INS WildcardType@@? @TO@ ParameterizedType@@Class<?> '
+    - '------INS SimpleName@@types @TO@ SingleVariableDeclaration@@Class<?>[] types '
+    - '---INS SingleVariableDeclaration@@Object[] params @TO@ MethodDeclaration@@private,
+      static, @@boolean, MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '------INS ArrayType@@Object[] @TO@ SingleVariableDeclaration@@Object[] params '
+    - '---------INS SimpleType@@Object @TO@ ArrayType@@Object[] '
+    - '------INS SimpleName@@params @TO@ SingleVariableDeclaration@@Object[] params '
+    - '---INS IfStatement@@InfixExpression:params.length != types.length @TO@ MethodDeclaration@@private,
+      static, @@boolean, MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '------INS InfixExpression@@params.length != types.length @TO@ IfStatement@@InfixExpression:params.length
+      != types.length '
+    - '---------INS QualifiedName@@params.length @TO@ InfixExpression@@params.length
+      != types.length '
+    - '------------INS SimpleName@@params @TO@ QualifiedName@@params.length '
+    - '------------INS SimpleName@@length @TO@ QualifiedName@@params.length '
+    - '---------INS Operator@@!= @TO@ InfixExpression@@params.length != types.length '
+    - '---------INS QualifiedName@@types.length @TO@ InfixExpression@@params.length
+      != types.length '
+    - '------------INS SimpleName@@types @TO@ QualifiedName@@types.length '
+    - '------------INS SimpleName@@length @TO@ QualifiedName@@types.length '
+    - '------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@InfixExpression:params.length
+      != types.length '
+    - '---------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS ForStatement@@[int i=0];i < params.length; [i++] @TO@ MethodDeclaration@@private,
+      static, @@boolean, MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '------INS VariableDeclarationExpression@@int i=0 @TO@ ForStatement@@[int i=0];i
+      < params.length; [i++] '
+    - '---------INS PrimitiveType@@int @TO@ VariableDeclarationExpression@@int i=0 '
+    - '---------INS VariableDeclarationFragment@@i=0 @TO@ VariableDeclarationExpression@@int
+      i=0 '
+    - '------------INS SimpleName@@i @TO@ VariableDeclarationFragment@@i=0 '
+    - '------------INS NumberLiteral@@0 @TO@ VariableDeclarationFragment@@i=0 '
+    - '------INS InfixExpression@@i < params.length @TO@ ForStatement@@[int i=0];i
+      < params.length; [i++] '
+    - '---------INS SimpleName@@i @TO@ InfixExpression@@i < params.length '
+    - '---------INS Operator@@< @TO@ InfixExpression@@i < params.length '
+    - '---------INS QualifiedName@@params.length @TO@ InfixExpression@@i < params.length '
+    - '------------INS SimpleName@@params @TO@ QualifiedName@@params.length '
+    - '------------INS SimpleName@@length @TO@ QualifiedName@@params.length '
+    - '------INS PostfixExpression@@i++ @TO@ ForStatement@@[int i=0];i < params.length;
+      [i++] '
+    - '---------INS SimpleName@@i @TO@ PostfixExpression@@i++ '
+    - '---------INS Operator@@++ @TO@ PostfixExpression@@i++ '
+    - '------INS IfStatement@@PrefixExpression:!types[i].isInstance(params[i]) @TO@
+      ForStatement@@[int i=0];i < params.length; [i++] '
+    - '---------INS PrefixExpression@@!types[i].isInstance(params[i]) @TO@ IfStatement@@PrefixExpression:!types[i].isInstance(params[i]) '
+    - '------------INS Operator@@! @TO@ PrefixExpression@@!types[i].isInstance(params[i]) '
+    - '------------INS MethodInvocation@@types[i].isInstance(params[i]) @TO@ PrefixExpression@@!types[i].isInstance(params[i]) '
+    - '---------------INS ArrayAccess@@types[i] @TO@ MethodInvocation@@types[i].isInstance(params[i]) '
+    - '------------------INS SimpleName@@types @TO@ ArrayAccess@@types[i] '
+    - '------------------INS SimpleName@@i @TO@ ArrayAccess@@types[i] '
+    - '---------------INS SimpleName@@MethodName:isInstance:[params[i]] @TO@ MethodInvocation@@types[i].isInstance(params[i]) '
+    - '------------------INS ArrayAccess@@params[i] @TO@ SimpleName@@MethodName:isInstance:[params[i]] '
+    - '---------------------INS SimpleName@@params @TO@ ArrayAccess@@params[i] '
+    - '---------------------INS SimpleName@@i @TO@ ArrayAccess@@params[i] '
+    - '---------INS ReturnStatement@@BooleanLiteral:false @TO@ IfStatement@@PrefixExpression:!types[i].isInstance(params[i]) '
+    - '------------INS BooleanLiteral@@false @TO@ ReturnStatement@@BooleanLiteral:false '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ MethodDeclaration@@private,
+      static, @@boolean, MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  repair_actions_cnt: 6
+13 purify_repair_actions:
+  biggest_depth: 6
+  classes_cnt: '1'
+  files_cnt: '1'
+  org/mockito/internal/creation/instance/ConstructorInstantiator:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD ReturnStatement@@MethodInvocation:withOuterClass(cls) @TO@ MethodInvocation:withParams(cls,outerClassInstance) '
+    - '---UPD MethodInvocation@@withOuterClass(cls) @TO@ withParams(cls,outerClassInstance) '
+    - '------UPD SimpleName@@MethodName:withOuterClass:[cls] @TO@ MethodName:withParams:[cls,
+      outerClassInstance] '
+    - '---------INS SimpleName@@outerClassInstance @TO@ SimpleName@@MethodName:withOuterClass:[cls] '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'UPD MethodDeclaration@@private, @@T, T, MethodName:withOuterClass, @@Argus:Class<T>+cls+
+      @TO@ private, static, @@T, T, MethodName:withParams, @@Argus:Class<T>+cls+Object+params+ '
+    - '---UPD SimpleName@@MethodName:withOuterClass @TO@ MethodName:withParams '
+    - '---INS Modifier@@static @TO@ MethodDeclaration@@private, @@T, T, MethodName:withOuterClass,
+      @@Argus:Class<T>+cls+ '
+    - '---INS SingleVariableDeclaration@@Object... params @TO@ MethodDeclaration@@private,
+      @@T, T, MethodName:withOuterClass, @@Argus:Class<T>+cls+ '
+    - '------INS SimpleType@@Object @TO@ SingleVariableDeclaration@@Object... params '
+    - '------INS SimpleName@@params @TO@ SingleVariableDeclaration@@Object... params '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL VariableDeclarationStatement@@Constructor<T> c=cls.getDeclaredConstructor(outerClassInstance.getClass()); '
+    - '---DEL ParameterizedType@@Constructor<T> '
+    - '------DEL SimpleType@@T '
+    - '---DEL VariableDeclarationFragment@@c=cls.getDeclaredConstructor(outerClassInstance.getClass()) '
+    - '------DEL SimpleName@@c '
+    - '------DEL MethodInvocation@@cls.getDeclaredConstructor(outerClassInstance.getClass()) '
+    - '---------DEL SimpleName@@MethodName:getDeclaredConstructor:[outerClassInstance.getClass()] '
+    - '------------DEL MethodInvocation@@outerClassInstance.getClass() '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS EnhancedForStatement@@Constructor<?> constructor, MethodInvocation:cls.getDeclaredConstructors()
+      @TO@ TryStatement@@try:[] '
+    - '---INS SingleVariableDeclaration@@Constructor<?> constructor @TO@ EnhancedForStatement@@Constructor<?>
+      constructor, MethodInvocation:cls.getDeclaredConstructors() '
+    - '------INS ParameterizedType@@Constructor<?> @TO@ SingleVariableDeclaration@@Constructor<?>
+      constructor '
+    - '---------MOV SimpleType@@Constructor @TO@ ParameterizedType@@Constructor<?> '
+    - '---------INS WildcardType@@? @TO@ ParameterizedType@@Constructor<?> '
+    - '------INS SimpleName@@constructor @TO@ SingleVariableDeclaration@@Constructor<?>
+      constructor '
+    - '---INS MethodInvocation@@cls.getDeclaredConstructors() @TO@ EnhancedForStatement@@Constructor<?>
+      constructor, MethodInvocation:cls.getDeclaredConstructors() '
+    - '------MOV SimpleName@@Name:cls @TO@ MethodInvocation@@cls.getDeclaredConstructors() '
+    - '------INS SimpleName@@MethodName:getDeclaredConstructors:[] @TO@ MethodInvocation@@cls.getDeclaredConstructors() '
+    - '---INS VariableDeclarationStatement@@Class<?>[] types=constructor.getParameterTypes();
+      @TO@ EnhancedForStatement@@Constructor<?> constructor, MethodInvocation:cls.getDeclaredConstructors() '
+    - '------INS ArrayType@@Class<?>[] @TO@ VariableDeclarationStatement@@Class<?>[]
+      types=constructor.getParameterTypes(); '
+    - '---------INS ParameterizedType@@Class<?> @TO@ ArrayType@@Class<?>[] '
+    - '------------INS SimpleType@@Class @TO@ ParameterizedType@@Class<?> '
+    - '------------INS WildcardType@@? @TO@ ParameterizedType@@Class<?> '
+    - '------INS VariableDeclarationFragment@@types=constructor.getParameterTypes()
+      @TO@ VariableDeclarationStatement@@Class<?>[] types=constructor.getParameterTypes(); '
+    - '---------INS SimpleName@@types @TO@ VariableDeclarationFragment@@types=constructor.getParameterTypes() '
+    - '---------INS MethodInvocation@@constructor.getParameterTypes() @TO@ VariableDeclarationFragment@@types=constructor.getParameterTypes() '
+    - '------------MOV SimpleName@@Name:outerClassInstance @TO@ MethodInvocation@@constructor.getParameterTypes() '
+    - '------------MOV SimpleName@@MethodName:getClass:[] @TO@ MethodInvocation@@constructor.getParameterTypes() '
+    - '---INS IfStatement@@MethodInvocation:paramsMatch(types,params) @TO@ EnhancedForStatement@@Constructor<?>
+      constructor, MethodInvocation:cls.getDeclaredConstructors() '
+    - '------INS MethodInvocation@@paramsMatch(types,params) @TO@ IfStatement@@MethodInvocation:paramsMatch(types,params) '
+    - '---------INS SimpleName@@MethodName:paramsMatch:[types, params] @TO@ MethodInvocation@@paramsMatch(types,params) '
+    - '------------INS SimpleName@@types @TO@ SimpleName@@MethodName:paramsMatch:[types,
+      params] '
+    - '------------INS SimpleName@@params @TO@ SimpleName@@MethodName:paramsMatch:[types,
+      params] '
+    - '------INS ReturnStatement@@CastExpression:(T)constructor.newInstance(params)
+      @TO@ IfStatement@@MethodInvocation:paramsMatch(types,params) '
+    - '---------INS CastExpression@@(T)constructor.newInstance(params) @TO@ ReturnStatement@@CastExpression:(T)constructor.newInstance(params) '
+    - '------------INS SimpleType@@T @TO@ CastExpression@@(T)constructor.newInstance(params) '
+    - '------------INS MethodInvocation@@constructor.newInstance(params) @TO@ CastExpression@@(T)constructor.newInstance(params) '
+    - '---------------MOV SimpleName@@Name:c @TO@ MethodInvocation@@constructor.newInstance(params) '
+    - '---------------MOV SimpleName@@MethodName:newInstance:[outerClassInstance]
+      @TO@ MethodInvocation@@constructor.newInstance(params) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL ReturnStatement@@MethodInvocation:c.newInstance(outerClassInstance) '
+    - '---DEL MethodInvocation@@c.newInstance(outerClassInstance) '
+  - !yamlable/myyaml.Action
+    lines:
+    - 'INS MethodDeclaration@@private, static, @@boolean, MethodName:paramsMatch,
+      @@Argus:Class<?>[]+types+Object[]+params+ @TO@ TypeDeclaration@@[public]ConstructorInstantiator,
+      [Instantiator] '
+    - '---INS Modifier@@private @TO@ MethodDeclaration@@private, static, @@boolean,
+      MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '---INS Modifier@@static @TO@ MethodDeclaration@@private, static, @@boolean,
+      MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '---INS PrimitiveType@@boolean @TO@ MethodDeclaration@@private, static, @@boolean,
+      MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '---INS SimpleName@@MethodName:paramsMatch @TO@ MethodDeclaration@@private,
+      static, @@boolean, MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '---INS SingleVariableDeclaration@@Class<?>[] types @TO@ MethodDeclaration@@private,
+      static, @@boolean, MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '------INS ArrayType@@Class<?>[] @TO@ SingleVariableDeclaration@@Class<?>[]
+      types '
+    - '---------INS ParameterizedType@@Class<?> @TO@ ArrayType@@Class<?>[] '
+    - '------------INS SimpleType@@Class @TO@ ParameterizedType@@Class<?> '
+    - '------------INS WildcardType@@? @TO@ ParameterizedType@@Class<?> '
+    - '------INS SimpleName@@types @TO@ SingleVariableDeclaration@@Class<?>[] types '
+    - '---INS SingleVariableDeclaration@@Object[] params @TO@ MethodDeclaration@@private,
+      static, @@boolean, MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '------INS ArrayType@@Object[] @TO@ SingleVariableDeclaration@@Object[] params '
+    - '---------INS SimpleType@@Object @TO@ ArrayType@@Object[] '
+    - '------INS SimpleName@@params @TO@ SingleVariableDeclaration@@Object[] params '
+    - '---INS ReturnStatement@@BooleanLiteral:true @TO@ MethodDeclaration@@private,
+      static, @@boolean, MethodName:paramsMatch, @@Argus:Class<?>[]+types+Object[]+params+ '
+    - '------INS BooleanLiteral@@true @TO@ ReturnStatement@@BooleanLiteral:true '
+  repair_actions_cnt: 6

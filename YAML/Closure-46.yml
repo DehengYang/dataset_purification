@@ -1,0 +1,235 @@
+1 bug_id: Closure-46
+2 src folder:
+  name of src folder: src
+  number of files: 408
+  number of java files: 394
+  number of src classes: 1319
+  number of test classes: 220
+3 test (cases):
+  failing test cases:
+  - com.google.javascript.rhino.jstype.RecordTypeTest#testSupAndInf
+  - com.google.javascript.rhino.jstype.JSTypeTest#testRecordTypeLeastSuperType2
+  - com.google.javascript.rhino.jstype.JSTypeTest#testRecordTypeLeastSuperType3
+  failing tests:
+  - com.google.javascript.rhino.jstype.RecordTypeTest
+  - com.google.javascript.rhino.jstype.JSTypeTest
+  number of all test cases: 7245
+  number of failing test cases: 3
+4 time cost of purification:
+  coverage on buggy version: 8.0
+  coverage on fixed version: 4.0
+  purification via coverage: 0.891
+  purification via delta debugging: 840.708
+  repair actions extraction: 0.829
+5 stmts covered by failing cases:
+  buggy:
+    com.google.javascript.rhino.jstype.JSTypeTest#testRecordTypeLeastSuperType2: 1035
+    com.google.javascript.rhino.jstype.JSTypeTest#testRecordTypeLeastSuperType3: 1017
+    com.google.javascript.rhino.jstype.RecordTypeTest#testSupAndInf: 853
+  fixed:
+    com.google.javascript.rhino.jstype.JSTypeTest#testRecordTypeLeastSuperType2: 1045
+    com.google.javascript.rhino.jstype.JSTypeTest#testRecordTypeLeastSuperType3: 1035
+    com.google.javascript.rhino.jstype.RecordTypeTest#testSupAndInf: 886
+6 reduced lines:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  covAdd: 0
+  covDel: 16
+  cov_patch_lines: 16
+  delta_patch_lines: 16
+  oriAdd: 0
+  oriDel: 16
+  ori_patch_lines: 16
+  purAdd: 0
+  purDel: 16
+7 reduced chunks:
+  by all: 0
+  by coverage: 0
+  by delta debugging: 0
+  cov: 1
+  original: 1
+  purifiy: 1
+8 mutants by delta debugging:
+  failAll: 0
+  failCompile: 0
+  failFail: 34
+  passed: 1
+  total: 35
+9 sibling repair actions: []
+10 patch:
+  original: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_46/src/com/google/javascript/rhino/jstype/RecordType.java\t\
+    2020-10-24 13:44:30.549199051 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_46/purify/patch/com/google/javascript/rhino/jstype/RecordType.java\t\
+    2020-10-24 13:44:30.545198938 -0400\n@@ -137,22 +137,6 @@\n         propertyNode);\n\
+    \   }\n \n-  @Override\n-  public JSType getLeastSupertype(JSType that) {\n- \
+    \   if (!that.isRecordType()) {\n-      return super.getLeastSupertype(that);\n\
+    -    }\n-    RecordTypeBuilder builder = new RecordTypeBuilder(registry);\n- \
+    \   for (String property : properties.keySet()) {\n-      if (that.toMaybeRecordType().hasProperty(property)\
+    \ &&\n-          that.toMaybeRecordType().getPropertyType(property).isEquivalentTo(\n\
+    -              getPropertyType(property))) {\n-        builder.addProperty(property,\
+    \ getPropertyType(property),\n-            getPropertyNode(property));\n-    \
+    \  }\n-    }\n-    return builder.build();\n-  }\n   JSType getGreatestSubtypeHelper(JSType\
+    \ that) {\n     if (that.isRecordType()) {\n       RecordType thatRecord = that.toMaybeRecordType();"
+  purified: "--- /mnt/purify/repairDir/Purify_Defects4J_Closure_46/src/com/google/javascript/rhino/jstype/RecordType.java\t\
+    2020-10-24 13:59:16.730381720 -0400\n+++ /mnt/purify/buggylocs/Defects4J/Defects4J_Closure_46/purify/purified/com/google/javascript/rhino/jstype/RecordType.java\t\
+    2020-10-24 13:59:16.730381720 -0400\n@@ -137,22 +137,6 @@\n         propertyNode);\n\
+    \   }\n \n-  @Override\n-  public JSType getLeastSupertype(JSType that) {\n- \
+    \   if (!that.isRecordType()) {\n-      return super.getLeastSupertype(that);\n\
+    -    }\n-    RecordTypeBuilder builder = new RecordTypeBuilder(registry);\n- \
+    \   for (String property : properties.keySet()) {\n-      if (that.toMaybeRecordType().hasProperty(property)\
+    \ &&\n-          that.toMaybeRecordType().getPropertyType(property).isEquivalentTo(\n\
+    -              getPropertyType(property))) {\n-        builder.addProperty(property,\
+    \ getPropertyType(property),\n-            getPropertyNode(property));\n-    \
+    \  }\n-    }\n-    return builder.build();\n-  }\n   JSType getGreatestSubtypeHelper(JSType\
+    \ that) {\n     if (that.isRecordType()) {\n       RecordType thatRecord = that.toMaybeRecordType();"
+11 repair actions: {}
+12 ori_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  com/google/javascript/rhino/jstype/RecordType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL MethodDeclaration@@public, @@JSType, MethodName:getLeastSupertype, @@Argus:JSType+that+ '
+    - '---DEL Modifier@@public '
+    - '---DEL SimpleType@@JSType '
+    - '---DEL SimpleName@@MethodName:getLeastSupertype '
+    - '---DEL SingleVariableDeclaration@@JSType that '
+    - '------DEL SimpleType@@JSType '
+    - '------DEL SimpleName@@that '
+    - '---DEL IfStatement@@PrefixExpression:!that.isRecordType() '
+    - '------DEL PrefixExpression@@!that.isRecordType() '
+    - '---------DEL Operator@@! '
+    - '---------DEL MethodInvocation@@that.isRecordType() '
+    - '------------DEL SimpleName@@Name:that '
+    - '------------DEL SimpleName@@MethodName:isRecordType:[] '
+    - '------DEL ReturnStatement@@SuperMethodInvocation:super.getLeastSupertype(that) '
+    - '---------DEL SuperMethodInvocation@@super.getLeastSupertype(that) '
+    - '------------DEL SimpleName@@MethodName:getLeastSupertype:[that] '
+    - '------------DEL SimpleName@@that '
+    - '---DEL VariableDeclarationStatement@@RecordTypeBuilder builder=new RecordTypeBuilder(registry); '
+    - '------DEL SimpleType@@RecordTypeBuilder '
+    - '------DEL VariableDeclarationFragment@@builder=new RecordTypeBuilder(registry) '
+    - '---------DEL SimpleName@@builder '
+    - '---------DEL ClassInstanceCreation@@RecordTypeBuilder[registry] '
+    - '------------DEL New@@new '
+    - '------------DEL SimpleType@@RecordTypeBuilder '
+    - '------------DEL SimpleName@@registry '
+    - '---DEL EnhancedForStatement@@String property, MethodInvocation:properties.keySet() '
+    - '------DEL SingleVariableDeclaration@@String property '
+    - '---------DEL SimpleType@@String '
+    - '---------DEL SimpleName@@property '
+    - '------DEL MethodInvocation@@properties.keySet() '
+    - '---------DEL SimpleName@@Name:properties '
+    - '---------DEL SimpleName@@MethodName:keySet:[] '
+    - '------DEL IfStatement@@InfixExpression:that.toMaybeRecordType().hasProperty(property)
+      && that.toMaybeRecordType().getPropertyType(property).isEquivalentTo(getPropertyType(property)) '
+    - '---------DEL InfixExpression@@that.toMaybeRecordType().hasProperty(property)
+      && that.toMaybeRecordType().getPropertyType(property).isEquivalentTo(getPropertyType(property)) '
+    - '------------DEL MethodInvocation@@that.toMaybeRecordType().hasProperty(property) '
+    - '---------------DEL SimpleName@@Name:that '
+    - '---------------DEL MethodInvocation@@MethodName:toMaybeRecordType:[] '
+    - '---------------DEL SimpleName@@MethodName:hasProperty:[property] '
+    - '------------------DEL SimpleName@@property '
+    - '------------DEL Operator@@&& '
+    - '------------DEL MethodInvocation@@that.toMaybeRecordType().getPropertyType(property).isEquivalentTo(getPropertyType(property)) '
+    - '---------------DEL SimpleName@@Name:that '
+    - '---------------DEL MethodInvocation@@MethodName:toMaybeRecordType:[] '
+    - '---------------DEL MethodInvocation@@MethodName:getPropertyType:[property] '
+    - '------------------DEL SimpleName@@property '
+    - '---------------DEL SimpleName@@MethodName:isEquivalentTo:[getPropertyType(property)] '
+    - '------------------DEL MethodInvocation@@getPropertyType(property) '
+    - '---------------------DEL SimpleName@@MethodName:getPropertyType:[property] '
+    - '------------------------DEL SimpleName@@property '
+    - '---------DEL ExpressionStatement@@MethodInvocation:builder.addProperty(property,getPropertyType(property),getPropertyNode(property)) '
+    - '------------DEL MethodInvocation@@builder.addProperty(property,getPropertyType(property),getPropertyNode(property)) '
+    - '---------------DEL SimpleName@@Name:builder '
+    - '---------------DEL SimpleName@@MethodName:addProperty:[property, getPropertyType(property),
+      getPropertyNode(property)] '
+    - '------------------DEL SimpleName@@property '
+    - '------------------DEL MethodInvocation@@getPropertyType(property) '
+    - '---------------------DEL SimpleName@@MethodName:getPropertyType:[property] '
+    - '------------------------DEL SimpleName@@property '
+    - '------------------DEL MethodInvocation@@getPropertyNode(property) '
+    - '---------------------DEL SimpleName@@MethodName:getPropertyNode:[property] '
+    - '------------------------DEL SimpleName@@property '
+    - '---DEL ReturnStatement@@MethodInvocation:builder.build() '
+    - '------DEL MethodInvocation@@builder.build() '
+    - '---------DEL SimpleName@@Name:builder '
+    - '---------DEL SimpleName@@MethodName:build:[] '
+  files_cnt: '1'
+  repair_actions_cnt: 1
+13 purify_repair_actions:
+  biggest_depth: 9
+  classes_cnt: '1'
+  com/google/javascript/rhino/jstype/RecordType:
+  - !yamlable/myyaml.Action
+    lines:
+    - 'DEL MethodDeclaration@@public, @@JSType, MethodName:getLeastSupertype, @@Argus:JSType+that+ '
+    - '---DEL Modifier@@public '
+    - '---DEL SimpleType@@JSType '
+    - '---DEL SimpleName@@MethodName:getLeastSupertype '
+    - '---DEL SingleVariableDeclaration@@JSType that '
+    - '------DEL SimpleType@@JSType '
+    - '------DEL SimpleName@@that '
+    - '---DEL IfStatement@@PrefixExpression:!that.isRecordType() '
+    - '------DEL PrefixExpression@@!that.isRecordType() '
+    - '---------DEL Operator@@! '
+    - '---------DEL MethodInvocation@@that.isRecordType() '
+    - '------------DEL SimpleName@@Name:that '
+    - '------------DEL SimpleName@@MethodName:isRecordType:[] '
+    - '------DEL ReturnStatement@@SuperMethodInvocation:super.getLeastSupertype(that) '
+    - '---------DEL SuperMethodInvocation@@super.getLeastSupertype(that) '
+    - '------------DEL SimpleName@@MethodName:getLeastSupertype:[that] '
+    - '------------DEL SimpleName@@that '
+    - '---DEL VariableDeclarationStatement@@RecordTypeBuilder builder=new RecordTypeBuilder(registry); '
+    - '------DEL SimpleType@@RecordTypeBuilder '
+    - '------DEL VariableDeclarationFragment@@builder=new RecordTypeBuilder(registry) '
+    - '---------DEL SimpleName@@builder '
+    - '---------DEL ClassInstanceCreation@@RecordTypeBuilder[registry] '
+    - '------------DEL New@@new '
+    - '------------DEL SimpleType@@RecordTypeBuilder '
+    - '------------DEL SimpleName@@registry '
+    - '---DEL EnhancedForStatement@@String property, MethodInvocation:properties.keySet() '
+    - '------DEL SingleVariableDeclaration@@String property '
+    - '---------DEL SimpleType@@String '
+    - '---------DEL SimpleName@@property '
+    - '------DEL MethodInvocation@@properties.keySet() '
+    - '---------DEL SimpleName@@Name:properties '
+    - '---------DEL SimpleName@@MethodName:keySet:[] '
+    - '------DEL IfStatement@@InfixExpression:that.toMaybeRecordType().hasProperty(property)
+      && that.toMaybeRecordType().getPropertyType(property).isEquivalentTo(getPropertyType(property)) '
+    - '---------DEL InfixExpression@@that.toMaybeRecordType().hasProperty(property)
+      && that.toMaybeRecordType().getPropertyType(property).isEquivalentTo(getPropertyType(property)) '
+    - '------------DEL MethodInvocation@@that.toMaybeRecordType().hasProperty(property) '
+    - '---------------DEL SimpleName@@Name:that '
+    - '---------------DEL MethodInvocation@@MethodName:toMaybeRecordType:[] '
+    - '---------------DEL SimpleName@@MethodName:hasProperty:[property] '
+    - '------------------DEL SimpleName@@property '
+    - '------------DEL Operator@@&& '
+    - '------------DEL MethodInvocation@@that.toMaybeRecordType().getPropertyType(property).isEquivalentTo(getPropertyType(property)) '
+    - '---------------DEL SimpleName@@Name:that '
+    - '---------------DEL MethodInvocation@@MethodName:toMaybeRecordType:[] '
+    - '---------------DEL MethodInvocation@@MethodName:getPropertyType:[property] '
+    - '------------------DEL SimpleName@@property '
+    - '---------------DEL SimpleName@@MethodName:isEquivalentTo:[getPropertyType(property)] '
+    - '------------------DEL MethodInvocation@@getPropertyType(property) '
+    - '---------------------DEL SimpleName@@MethodName:getPropertyType:[property] '
+    - '------------------------DEL SimpleName@@property '
+    - '---------DEL ExpressionStatement@@MethodInvocation:builder.addProperty(property,getPropertyType(property),getPropertyNode(property)) '
+    - '------------DEL MethodInvocation@@builder.addProperty(property,getPropertyType(property),getPropertyNode(property)) '
+    - '---------------DEL SimpleName@@Name:builder '
+    - '---------------DEL SimpleName@@MethodName:addProperty:[property, getPropertyType(property),
+      getPropertyNode(property)] '
+    - '------------------DEL SimpleName@@property '
+    - '------------------DEL MethodInvocation@@getPropertyType(property) '
+    - '---------------------DEL SimpleName@@MethodName:getPropertyType:[property] '
+    - '------------------------DEL SimpleName@@property '
+    - '------------------DEL MethodInvocation@@getPropertyNode(property) '
+    - '---------------------DEL SimpleName@@MethodName:getPropertyNode:[property] '
+    - '------------------------DEL SimpleName@@property '
+    - '---DEL ReturnStatement@@MethodInvocation:builder.build() '
+    - '------DEL MethodInvocation@@builder.build() '
+    - '---------DEL SimpleName@@Name:builder '
+    - '---------DEL SimpleName@@MethodName:build:[] '
+  files_cnt: '1'
+  repair_actions_cnt: 1
