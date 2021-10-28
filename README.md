@@ -116,7 +116,7 @@ Here we also share our literature review results (i.e., the APR techniques evalu
 | 24 | Kali-A                          | 2018 | https://github/com/yyxhdy/arja                      |
 | 25 | findbugs-violation              | 2018 | -                                                   |
 | 26 | VFix                             | 2019 | -                                                   |
-| 27 | SEQUENCER                        | 2019 | -                                                   |
+| 27 | SEQUENCER                        | 2019 | https://github.com/kth/sequencer                                                   |
 | 28 | GenPat                           | 2019 | https://github/com/xgdsmileboy/GenPat               |
 | 29 | kPAR                             | 2019 | https://github/com/SerVal-DTF/FL-VS-APR          |
 | 30 | ENCORE                           | 2019 | -                                                   |
