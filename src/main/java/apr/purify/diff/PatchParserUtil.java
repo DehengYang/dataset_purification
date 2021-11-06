@@ -1,4 +1,6 @@
-
+/**
+ * 
+ */
 package apr.purify.diff;
 
 import java.io.File;
@@ -27,6 +29,13 @@ import edu.lu.uni.serval.gumtree.regroup.HierarchicalRegrouper;
 import edu.lu.uni.serval.gumtree.regroup.NodeChecker;
 import edu.lu.uni.serval.utils.ListSorter;
 
+/**
+ * this is from PatchParser project: 
+ *  edu.lu.uni.serval.BugCommit.parser.PatchParser
+ * @author apr
+ * @version Oct 9, 2020
+ *
+ */
 public class PatchParserUtil {
 	final static Logger logger = LoggerFactory.getLogger(PatchParserUtil.class);
 	
@@ -38,20 +47,20 @@ public class PatchParserUtil {
 	
 	public static List<HierarchicalActionSet> parseChangedSourceCodeWithGumTree(File prevFile, File revFile) {
 		List<HierarchicalActionSet> actionSets = new ArrayList<>();
-		
+		// GumTree results
 		List<Action> gumTreeResults = new GumTreeComparer().compareTwoFilesWithGumTree(prevFile, revFile);
 		if (gumTreeResults == null) {
 			return null;
 		} else if (gumTreeResults.size() == 0){
 			return actionSets;
 		} else {
-			
+			// Regroup GumTre results.
 			List<HierarchicalActionSet> allActionSets = new HierarchicalRegrouper().regroupGumTreeResults(gumTreeResults);
 			
 			ListSorter<HierarchicalActionSet> sorter = new ListSorter<>(allActionSets);
 			actionSets = sorter.sortAscending();
 			
-
+//			getChunkActionMap(actionSets, prevFile, revFile);
 			return actionSets;
 		}
 		
@@ -62,6 +71,15 @@ public class PatchParserUtil {
 	public static Map<Chunk, List<HierarchicalActionSet>> getChunkActionMap(List<Chunk> chunks, List<HierarchicalActionSet> actionSets, String prevFilePath, String revFilePath) {
 		return getChunkActionMap(chunks, actionSets, new File(prevFilePath), new File(revFilePath));
 	}
+	/** @Description 
+	 * @author apr
+	 * @version Oct 17, 2020
+	 *
+	 * @param actionSets
+	 * @param revFile 
+	 * @param prevFile 
+	 * @return 
+	 */
 	public static Map<Chunk, List<HierarchicalActionSet>> getChunkActionMap(List<Chunk> chunks, List<HierarchicalActionSet> actionSets, File prevFile, File revFile) {
 		chunkActionMap.clear();
 		
@@ -74,7 +92,7 @@ public class PatchParserUtil {
 
 		
 		for (Chunk chunk: chunks) {
-			chunk.resetByLines(); 
+			chunk.resetByLines(); // update
 			
 			int buggyStart = -1;
 			int fixedStart = -1;
@@ -96,7 +114,7 @@ public class PatchParserUtil {
 			HierarchicalActionSet singlePatch = new HierarchicalActionSet();
 			singlePatch.setAstNodeType("");
 
-			
+			// Matching corresponding actionsets.
 			for (HierarchicalActionSet actionSet : actionSets) {
 				int actionBugStartLine = actionSet.getBugStartLineNum();
 				if (actionBugStartLine == 0) {
@@ -112,7 +130,7 @@ public class PatchParserUtil {
 					if (fixedStart <= actionFixEndLine && actionFixStartLine <= fixedEnd) {
 						singlePatch = addToPatchesMap(actionSet, singlePatch, chunk);
 					}
-				} else {
+				} else {//if (!actionStr.startsWith("MOV")){ // ignore move actions.
 					if (buggyStart <= actionBugEndLine && actionBugStartLine <= buggyEnd) {
 						singlePatch = addToPatchesMap(actionSet, singlePatch, chunk);
 					}
@@ -122,10 +140,10 @@ public class PatchParserUtil {
 			if (singlePatch.getSubActions().size() > 0) {
 				addToPatchesMap(singlePatch, chunk);
 			}
-
-
-
-
+//				else {
+//					zeroG ++;
+//				}
+//			}
 		}	
 		
 		return chunkActionMap;
@@ -148,7 +166,7 @@ public class PatchParserUtil {
 			}
 			singlePatch.getSubActions().add(actionSet);
 		} 
-
+//		else overRap ++;
 		
 		return singlePatch;
 	}
@@ -180,10 +198,10 @@ public class PatchParserUtil {
 		int actionFixStartLine;
 		int actionFixEndLine;
 		
-		
+		// position of buggy statements
 		int bugStartPosition = 0;
 		int bugEndPosition = 0;
-		
+		// position of fixed statements
 		int fixStartPosition = 0;
 		int fixEndPosition = 0;
 		
@@ -201,12 +219,12 @@ public class PatchParserUtil {
 			}
 		} else {
 			ITree oldTree = actionSet.getNode();
-			bugStartPosition = oldTree.getPos(); 
-			bugEndPosition = bugStartPosition + oldTree.getLength();
+			bugStartPosition = oldTree.getPos(); // range of actions 68378
+			bugEndPosition = bugStartPosition + oldTree.getLength();//68397
 			String astNodeType = actionSet.getAstNodeType();
 			if ("TypeDeclaration".equals(astNodeType)) {
 				bugEndPosition = getClassBodyStartPosition(oldTree);
-			} else if ("MethodDeclaration".equals(astNodeType) || NodeChecker.withBlockStatement(oldTree.getType())) { 
+			} else if ("MethodDeclaration".equals(astNodeType) || NodeChecker.withBlockStatement(oldTree.getType())) { //MethodDeclaration && Block-Statements
 				List<ITree> children = oldTree.getChildren();
 				bugEndPosition = getEndPosition(children);
 			}
@@ -217,8 +235,8 @@ public class PatchParserUtil {
 			if (actionStr.startsWith("UPD")) {
 				Update update = (Update) actionSet.getAction();
 				ITree newNode = update.getNewNode();
-				fixStartPosition = newNode.getPos();
-				fixEndPosition = fixStartPosition + newNode.getLength();
+				fixStartPosition = newNode.getPos();//66582
+				fixEndPosition = fixStartPosition + newNode.getLength();//66641
 				
 				if ("TypeDeclaration".equals(astNodeType)) {
 					fixEndPosition = getClassBodyStartPosition(newNode);
@@ -268,12 +286,12 @@ public class PatchParserUtil {
 		for (int i = 0, size = children.size(); i < size; i ++) {
 			ITree child = children.get(i);
 			int type = child.getType();
-			
+			// Modifier, NormalAnnotation, MarkerAnnotation, SingleMemberAnnotation
 			if (type != 83 && type != 77 && type != 78 && type != 79
 				&& type != 5 && type != 39 && type != 43 && type != 74 && type != 75
 				&& type != 76 && type != 84 && type != 87 && type != 88 && type != 42) {
-				
-				
+				// ArrayType, PrimitiveType, SimpleType, ParameterizedType, 
+				// QualifiedType, WildcardType, UnionType, IntersectionType, NameQualifiedType, SimpleName
 				if (i > 0) {
 					child = children.get(i - 1);
 					return child.getPos() + child.getLength() + 1;
@@ -329,9 +347,19 @@ public class PatchParserUtil {
 		return firstAndLastMoveActions;
 	}
 	
+	/**
+	 * @Description
+	 * get line number of the position from patchFilePath  
+	 * @author apr
+	 * @version Oct 10, 2020
+	 *
+	 * @param patchFilePath
+	 * @param position
+	 * @return
+	 */
 	public static int getLineNumber(String patchFilePath, int position){
 		List<String> lines = FileUtil.readFile(patchFilePath);
-
+//		String linesStr = FileUtil.readFileToStr(patchFilePath);
 		logger.debug("lines.size: {}", lines.size());
 
 		int posCount = 0;
@@ -359,7 +387,7 @@ public class PatchParserUtil {
 		pOptions.put(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_1_8);
 		pOptions.put(JavaCore.COMPILER_DOC_COMMENT_SUPPORT, JavaCore.ENABLED);
 		parser.setCompilerOptions(pOptions);
-
+//		parser.setSource(readerToCharArray(r));
 		parser.setSource(FileUtil.readFileToStr(patchFilePath).toCharArray());
 		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 		

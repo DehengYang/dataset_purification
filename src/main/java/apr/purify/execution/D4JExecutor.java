@@ -1,4 +1,6 @@
-
+/**
+ * 
+ */
 package apr.purify.execution;
 
 import java.io.File;
@@ -15,15 +17,16 @@ import apr.purify.utils.CmdUtil;
 import apr.purify.utils.FileUtil;
 import apr.purify.utils.GeneralUtil;
 
-
+/**
+ * @author apr
+ * @version Oct 15, 2020
+ *
+ */
 public class D4JExecutor extends Executor{
 	private List<String> failedCases = new ArrayList<>();
 
 	@Override
 	public boolean compile() {
-		
-
-		
 		if(new File(FileUtil.binJavaDir).exists()){
 			try {
 				FileUtils.deleteDirectory(new File(FileUtil.binJavaDir));
@@ -33,8 +36,17 @@ public class D4JExecutor extends Executor{
 			FileUtil.writeToFileWithFormat("[compile] delete %s before re-compiliation", FileUtil.binJavaDir);
 		}
 		
-		
-
+		// if the binTestDir is not removed. the test will fail for Lang 29 in:
+		/*
+		 * 			boolean runOriginal2 = DeltaDebugging.assertBeforeMut(simplifiedLinesBkForDDMin, chunksBkForDDMin, "simplifyPatch.diff", "[ddmin] original patch version does not pass!");
+			if (!runOriginal2){
+				FileUtil.raiseException("[ddmin] original patch version does not pass!");
+				
+				this is very ridiculous... as I have never changed the test classes.
+				Anyway, I think this is the problem of defects4j. For example, it compile test command will compile both src & test classes...
+				
+				So I recommend to delete both src and test classes dir before compile
+		 */
 		if(new File(FileUtil.binTestDir).exists()){
 			try {
 				FileUtils.deleteDirectory(new File(FileUtil.binTestDir));
@@ -43,6 +55,38 @@ public class D4JExecutor extends Executor{
 			}
 			FileUtil.writeToFileWithFormat("[compile] delete %s before re-compiliation", FileUtil.binTestDir);
 		}
+		
+		// only compile src code
+//		String cmd = String.format(
+//				"cd %s;"
+//				+ "export PATH=%s/bin:$PATH;"
+//				+ "export JAVA_HOME=%s;"
+//				+ "ant -f %s/framework/projects/defects4j.build.xml "
+//				+ "-Dd4j.home=%s "
+//				+ "-Dd4j.dir.projects=%s/framework/projects "
+//				+ "-Dbasedir=%s compile;", 
+//				FileUtil.projDir,
+//				Configuration.JAVA7_HOME,
+//				Configuration.JAVA7_HOME,
+//				Configuration.D4J_DIR,
+//				Configuration.D4J_DIR,
+//				Configuration.D4J_DIR,
+//				FileUtil.projDir
+//				);
+		
+		// bug fix: mockito 12 ant compile deletes the test class dir
+		// DONE_TODO: I recommend using d4j compile to compile both src and test dir. rather than just compile src dir using ant command. The former is more stable!
+//		if (FileUtil.projDir.contains("_Mockito_")){
+//			cmd = String.format(
+//					"cd %s;"
+//					+ "export PATH=%s/bin:$PATH;"
+//					+ "export JAVA_HOME=%s;"
+//					+ "timeout %s defects4j compile;", 
+//					FileUtil.projDir,
+//					Configuration.JAVA7_HOME,
+//					Configuration.JAVA7_HOME,
+//					Configuration.TIMEOUT_TEST_ALL);
+//		}
 		
 		String cmd = String.format(
 				"cd %s;"
@@ -57,6 +101,9 @@ public class D4JExecutor extends Executor{
 		String output = CmdUtil.runCmd(cmd, false);
 		FileUtil.writeToFileWithFormat("[compile] cmd:%s\noutput:%s\n", cmd, output);
 		
+//		String passKeyWord = "BUILD SUCCESSFUL";
+//		return checkPass(output, passKeyWord);
+		
 		String failKeyWord = "BUILD FAILED";
 		return checkPassCompile(output, failKeyWord);
 	}
@@ -66,8 +113,11 @@ public class D4JExecutor extends Executor{
 	@Override
 	public boolean testFailCases() {
 		String passKeyWord = "Failing tests: 0";
-	
-		for (String fCase : FileUtil.oriFailedTests){ 
+
+		/*
+		 * /mnt/purify/repairDir/Purify_Defects4J_Lang_24 && ant -f /mnt/recursive-repairthemall/RepairThemAll/benchmarks/defects4j/framework/projects/defects4j.build.xml -Dd4j.home=/mnt/recursive-repairthemall/RepairThemAll/benchmarks/defects4j -Dd4j.dir.projects=/mnt/recursive-repairthemall/RepairThemAll/benchmarks/defects4j/framework/projects -Dbasedir=/mnt/purify/repairDir/Purify_Defects4J_Lang_24 -DOUTFILE=/mnt/purify/repairDir/Purify_Defects4J_Lang_24/failing_tests -Dtest.entry.class=org.apache.commons.lang3.math.NumberUtilsTest -Dtest.entry.method=testIsNumber run.dev.tests 2>&1
+		 */
+		for (String fCase : FileUtil.oriFailedTests){ //FileUtil.gzFailingTestCases
 			String cmd = String.format(
 					"cd %s;"
 					+ "export PATH=%s/bin:$PATH;"
@@ -81,7 +131,7 @@ public class D4JExecutor extends Executor{
 			String output = CmdUtil.runCmd(cmd, false);
 			FileUtil.writeToFileWithFormat("[testFailCases] cmd:%s\noutput:%s\n", cmd, output);
 			
-			if (! checkPass(output, passKeyWord)){ 
+			if (! checkPass(output, passKeyWord)){ // fail
 				return false;
 			}
 		}
@@ -91,7 +141,9 @@ public class D4JExecutor extends Executor{
 	
 	@Override
 	public boolean testAll() {
-		
+		/*
+		 * cd /mnt/purify/repairDir/Purify_Defects4J_Lang_24 && ant -f /mnt/recursive-repairthemall/RepairThemAll/benchmarks/defects4j/framework/projects/defects4j.build.xml -Dd4j.home=/mnt/recursive-repairthemall/RepairThemAll/benchmarks/defects4j -Dd4j.dir.projects=/mnt/recursive-repairthemall/RepairThemAll/benchmarks/defects4j/framework/projects -Dbasedir=/mnt/purify/repairDir/Purify_Defects4J_Lang_24 -DOUTFILE=/mnt/purify/repairDir/Purify_Defects4J_Lang_24/failing_tests  run.dev.tests 
+		 */
 		String cmd = String.format(
 				"cd %s;"
 				+ "export PATH=%s/bin:$PATH;"
@@ -115,6 +167,17 @@ public class D4JExecutor extends Executor{
 		return pass;
 	}
 
+	/** @Description 
+	 * @author apr
+	 * @version Oct 17, 2020
+	 * e.g.,
+	 * Failing tests: 2
+  - org.jfree.data.general.junit.DatasetUtilitiesTests::testBug2849731_2
+  - org.jfree.data.general.junit.DatasetUtilitiesTests::testBug2849731_3
+	 * @param output
+	 * @param passKeyWord
+	 * @return
+	 */
 	private void getFailedCasesFromOutput(String output) {
 		List<String> outputLines = Arrays.asList(output.split("\n"));
 		
@@ -129,7 +192,7 @@ public class D4JExecutor extends Executor{
 			}
 			
 			if(failedLineStart){
-				
+				// get org.jfree.data.general.junit.DatasetUtilitiesTests#testBug2849731_2
 				if (outputLine.startsWith("  - ")){
 					failedCases.add(outputLine.substring("  - ".length()).replaceAll("::", "#"));
 				}
@@ -143,7 +206,14 @@ public class D4JExecutor extends Executor{
 		}
 	}
 	
-
+	/** @Description 
+	 * @author apr
+	 * @version Oct 15, 2020
+	 *
+	 * @param output
+	 * @param passKeyWord
+	 * @return
+	 */
 	private boolean checkPass(String output, String passKeyWord) {
 		List<String> outputLines = Arrays.asList(output.split("\n"));
 		for(String outputLine : outputLines){
@@ -172,7 +242,9 @@ public class D4JExecutor extends Executor{
 		this.failedCases = failedCases;
 	}
 
-
+	/* (non-Javadoc)
+	 * @see apr.purify.execution.Executor#getFailingCasesInTestAll()
+	 */
 	@Override
 	public List<String> getFailingCasesInTestAll() {
 		return failedCases;

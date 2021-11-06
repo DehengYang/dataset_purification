@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package apr.purify.execution;
 
 import java.util.concurrent.Callable;
@@ -8,7 +11,18 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-
+/**
+ * This is borrowed from my-apr framework
+ * 
+ * refer to: https://stackoverflow.com/questions/5715235/java-set-timeout-on-a-certain-block-of-code
+ * 
+ * other references:
+ * https://stackoverflow.com/questions/2275443/how-to-timeout-a-thread
+ * 
+ * @author apr
+ * @version Apr 17, 2020
+ *
+ */
 public class TimeOut {
 	public static void runWithTimeout(final Runnable runnable, long timeout, TimeUnit timeUnit) throws Exception {
 		runWithTimeout(new Callable<Object>() {
@@ -24,17 +38,18 @@ public class TimeOut {
 	public static <T> T runWithTimeout(Callable<T> callable, long timeout, TimeUnit timeUnit) throws Exception {
 		final ExecutorService executor = Executors.newSingleThreadExecutor();
 		final Future<T> future = executor.submit(callable);
-		executor.shutdown(); 
+		executor.shutdown(); // This does not cancel the already-scheduled task.
 		try {
 			return future.get(timeout, timeUnit);
 		}
 		catch (TimeoutException e) {
-			
+			//remove this if you do not want to cancel the job in progress
+			//or set the argument to 'false' if you do not want to interrupt the thread
 			future.cancel(true);
 			System.out.format("Timeout: %s %s. Now exit.\n", timeout, timeUnit);
 			throw e;
 		}catch (ExecutionException e) {
-			
+			//unwrap the root cause
 			Throwable t = e.getCause();
 			if (t instanceof Error) {
 				throw (Error) t;
@@ -44,6 +59,15 @@ public class TimeOut {
 				throw new IllegalStateException(t);
 			}
 		}
+		// not needed
+//		catch (Throwable throwable) {
+//            // Output unexpected Throwables.
+//			throw throwable;
+//        }
 		
+		// refer to: https://stackoverflow.com/questions/5715235/java-set-timeout-on-a-certain-block-of-code
+//		if (!executor.isTerminated()){
+//			executor.shutdownNow(); // If you want to stop the code that hasn't finished.
+//		}
 	}
 }

@@ -1,4 +1,6 @@
-
+/**
+ * 
+ */
 package apr.purify.utils;
 
 import java.io.BufferedReader;
@@ -29,15 +31,20 @@ import org.slf4j.LoggerFactory;
 import apr.purify.Configuration;
 import apr.purify.diff.DiffUtil;
 
-
+/**
+ * @author apr
+ * @version Oct 3, 2020
+ *
+ */
 public class FileUtil {
 	final static Logger logger = LoggerFactory.getLogger(FileUtil.class);
-
+	
+	// parameters
 	public static String srcJavaDir;
 	public static String binJavaDir;
 	public static String binTestDir;
 	public static String dependencies;
-	public static String testExecPath;
+//	public static String testExecPath;
 	public static String jvmPath;
 	public static String failedTestsStr;
 	public static String gzoltarDir;
@@ -50,20 +57,40 @@ public class FileUtil {
 	{
 	    BEARS, DEFECTS4J, BUGSJAR;
 	}
+	//
 	public static ArrayList<String> depsList = new ArrayList<>();
 	public static List<String> oriFailedTests = new ArrayList<>();
 	public static String logPath;
 	public static String toolDir;
 	public static List<String> gzFailingTestCases = new ArrayList<>();
 	
+	// constant vars
 	public static String toolName = "purify"; 
 	
+	// added vars 
 	public static int mutantCnt = 0;
 	
+	/**
+	 * @Description 
+	 * default: logPath & append is true
+	 * @author apr
+	 * @version Oct 4, 2020
+	 *
+	 * @param content
+	 */
 	public static void writeToFile(String content){
 		writeToFile(logPath, content, true);
 	}
-
+	
+	/**
+	 * @Description
+	 * write to file with format (add "\n" at the end) 
+	 * @author apr
+	 * @version Oct 12, 2020
+	 *
+	 * @param format
+	 * @param args
+	 */
 	public static void writeToFileWithFormat(String format, Object... args){
 		writeToFile(logPath, String.format(format + "\n", args), true);
 	}
@@ -73,6 +100,7 @@ public class FileUtil {
 	}
 
 	public static void writeToFile(String path, String content, boolean append){
+		// get dir
 		if (path.contains("/")){
 			String dirPath = path.substring(0, path.lastIndexOf("/"));
 			File dir = new File(dirPath);
@@ -86,17 +114,28 @@ public class FileUtil {
 		try {
 			output = new BufferedWriter(new FileWriter(path, append));
 			output.write(content);
+			//				output.close();
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}finally {
 			try {
 				output.close();
 			} catch (IOException ex) {
+				// Log error writing file and bail out.
 				ex.printStackTrace();
 			}
 		}
 	}
 	
+	/**
+	 * @Description
+	 * write a list of lines to file 
+	 * @author apr
+	 * @version Oct 4, 2020
+	 *
+	 * @param path
+	 * @param lines
+	 */
 	public static void writeLinesToFile(String path, List<String> lines){
 		writeLinesToFile(path, lines, false);
 	}
@@ -112,6 +151,8 @@ public class FileUtil {
 	}
 	
 	public static void writeLinesToFile(String path, List<String> lines, boolean append){
+		// get dir
+//		path = "1.txt";//debug
 		if (path.contains("/")){
 			String dirPath = path.substring(0, path.lastIndexOf("/"));
 			File dir = new File(dirPath);
@@ -138,6 +179,15 @@ public class FileUtil {
         }
 	}
 	
+	/**
+	 * @Description
+	 * read file from its path
+	 * @author apr
+	 * @version Oct 4, 2020
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static List<String> readFile(String path){
 		List<String> list = new ArrayList<>();
 		BufferedReader in = null;
@@ -146,7 +196,8 @@ public class FileUtil {
                 new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
             String line;
             while ((line = in.readLine()) != null) {
-            	list.add(line); 
+//            	if (line.length() == 0) System.err.println(String.format("Empty line in %s", path));
+            	list.add(line); // add line
             }
         } catch (final IOException e) {
             e.printStackTrace();
@@ -154,6 +205,7 @@ public class FileUtil {
             try {
             	in.close();
             } catch (IOException ex) {
+                // Log error writing file and bail out.
             	ex.printStackTrace();
             }
         }
@@ -174,7 +226,7 @@ public class FileUtil {
             	if (line.startsWith("//")){
             		continue;
             	}
-            	list.add(line); 
+            	list.add(line); // add line
             }
         } catch (final IOException e) {
             e.printStackTrace();
@@ -182,12 +234,21 @@ public class FileUtil {
             try {
             	in.close();
             } catch (IOException ex) {
+                // Log error writing file and bail out.
             	ex.printStackTrace();
             }
         }
         return list;
 	}
 	
+	/**
+	 * @Description (add \n) read file from file path and output String
+	 * @author apr
+	 * @version Oct 4, 2020
+	 *
+	 * @param input
+	 * @return
+	 */
 	public static String readFileToStr(String path){
 		StringBuilder buffer = new StringBuilder();
 		BufferedReader in = null;
@@ -197,7 +258,7 @@ public class FileUtil {
             String line;
             while ((line = in.readLine()) != null) {
             	String lineWithBreak = line + "\n";
-            	buffer.append(lineWithBreak); 
+            	buffer.append(lineWithBreak); // add line
             }
         } catch (final IOException e) {
             e.printStackTrace();
@@ -211,6 +272,14 @@ public class FileUtil {
         return buffer.toString();
 	}
 	
+	/**
+	 * @Description
+	 * raise an exception when necessary 
+	 * @author apr
+	 * @version Oct 4, 2020
+	 *
+	 * @param expInfo
+	 */
 	public static void raiseException(String expInfo) {
 		try {
 			throw new Exception(String.format("===raiseException: %s", expInfo));
@@ -221,7 +290,15 @@ public class FileUtil {
 		System.exit(0);
 	}
 	
-
+	/**
+	 * @Description
+	 * string with format 
+	 * @author apr
+	 * @version Oct 12, 2020
+	 *
+	 * @param format
+	 * @param args
+	 */
 	public static void raiseException(String format, Object... args){
 		try {
 			throw new Exception(String.format(format, args));
@@ -232,7 +309,15 @@ public class FileUtil {
 		System.exit(0);
 	}
 	
-
+	/**
+	 * @Description
+	 * concat strings with : and drop the last : 
+	 * @author apr
+	 * @version Oct 4, 2020
+	 *
+	 * @param list
+	 * @return
+	 */
 	public static String concatAndDropLastChar(List<String> list){
 		String output = "";
 		for (String str : list){
@@ -242,8 +327,22 @@ public class FileUtil {
 		return output;
 	}
 
-
+	/**
+	 * @Description 
+	 * @author apr
+	 * @version Oct 12, 2020
+	 *
+	 *refer to: <br>
+	 *<a href="https://stackoverflow.com/questions/17351043/how-to-get-absolute-path-to-file-in-resources-folder-of-your-project">How to get absolute path to file in /resources folder of your project</a>
+	 * 
+	 * however, this still does not work. (the res can be obtained but file is null)
+	 * I leave it as future work.
+	 * 
+	 * @param rscName: resourceFileName
+	 * @return
+	 */
 	public static String getResourceFilePath(String rscName){
+		//rscName: getDiff2.py without /
 		URL res = FileUtil.class.getClassLoader().getResource(rscName);
 		File file = null;
 		try {
@@ -256,14 +355,28 @@ public class FileUtil {
 		return absolutePath;
 	}
 	
-
+	/**
+	 * @Description
+	 * e.g., write getDiff2.py from src/main/resource/ to work folder.
+	 * <br>
+	 * Must notice that getDiff2.py obtained from the FileUtil.class.getResourceAsStream() 
+	 * is always the file in jar rather than in the directory we general edit!
+	 * <br>
+	 * So every time we modify the getDiff2.py, we need to re-package if we want to do remote debugging from terminal cmd
+	 * 
+	 * @author apr
+	 * @version Oct 13, 2020
+	 *
+	 * @param rscName
+	 */
 	public static String readAndWriteResourceByPath(String rscName){
 		String pathToWrite = System.getProperty("user.dir") + "/" + rscName;
 		if (new File(pathToWrite).exists()){
-			boolean delete = new File(pathToWrite).delete(); 
+			boolean delete = new File(pathToWrite).delete(); // first delete, otherwise, the Inputstream will be from this pathToWrite rather than my project jar.
 			logger.debug("delete file before writing: {}, result: {}", pathToWrite, delete);
 		}
 		
+		//rscName: /getDiff2.py
 		InputStream in = FileUtil.class.getResourceAsStream(rscName);
 		final int bufferSize = 1024;
 		final char[] buffer = new char[bufferSize];
@@ -287,12 +400,21 @@ public class FileUtil {
 			}
 		}
 		
+//		logger.debug(out.toString());
 		logger.info("write fileName: {} (length: {}) into path: {}", rscName, out.toString().length(), pathToWrite);
 		FileUtil.writeToFile(pathToWrite, out.toString(), false);
 		
 		return pathToWrite;
 	}
 
+	/** @Description 
+	 * @author apr
+	 * @version Oct 13, 2020
+	 *
+	 * @param line
+	 * @param separator
+	 * @return
+	 */
 	public static String getLastSplit(String line, String separator) {
 		String[] splits = line.split(separator);
 		String last = splits[splits.length - 1];
@@ -303,6 +425,12 @@ public class FileUtil {
 		backup(FileUtil.srcJavaDir, Configuration.srcJavaDirBk);
 	}
 	
+	/** @Description 
+	 * @author apr
+	 * @version Oct 14, 2020
+	 *
+	 * @param srcJavaDir2
+	 */
 	public static void backup(String folder, String targetDir) {
 		File file = new File(targetDir);
 		if (!file.exists()) {
@@ -335,6 +463,12 @@ public class FileUtil {
 		}
 	}
 
+	/** @Description 
+	 * @author apr
+	 * @version Oct 15, 2020
+	 *
+	 * @param patchFolder
+	 */
 	public static void remove(String patchFolder) {
 		if (new File(patchFolder).exists()){
 			try {
@@ -347,7 +481,12 @@ public class FileUtil {
 		return;
 	}
 
-
+	/** @Description 
+	 * @author apr
+	 * @version Oct 15, 2020
+	 *
+	 * @param string
+	 */
 	public static void mark(String string) {
 		writeToFile(String.format("\n\n======= %s ======\n\n", string));
 	}
@@ -362,7 +501,12 @@ public class FileUtil {
 		return dF.format((float) (System.currentTimeMillis() - startTime)/1000);
 	}
 
-
+	/** @Description 
+	 * @author apr
+	 * @version Oct 20, 2020
+	 *
+	 * @param filePath
+	 */
 	public static void removeFile(String filePath) {
 		File file = new File(filePath);
 		if (file.isFile() && file.exists()){

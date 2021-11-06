@@ -34,7 +34,13 @@ import edu.lu.uni.serval.gumtree.regroup.HierarchicalActionSet;
 import apr.purify.utils.GeneralUtil;
 import apr.purify.utils.Pair;
 
-
+/**
+ * This is for dataset purification
+ * The workflow:
+ * 1) use coverage analysis to identify the redundant code;
+ * 2) use mutation analysis for further identification from the perspective of test suite.
+ *
+ */
 public class Main 
 {
 	final static Logger logger = LoggerFactory.getLogger(Main.class);
@@ -48,37 +54,50 @@ public class Main
 	
     public static void main( String[] args )
     {	
+    	// set args & parse parameters and save to FileUtil
     	Main.args = args;
-    	
     	long mainStartT = System.currentTimeMillis();
-    	
     	setParameters(args);
     	
+    	// backup
     	FileUtil.mark("[main] init");
     	Executor exec = new D4JExecutor();
     	init(exec);
     	FileUtil.writeToFileWithFormat("[time cost] of init: %s", FileUtil.countTime(mainStartT));
     	
+    	// count loc
     	FileUtil.mark("[main] count project loc");
     	GeneralUtil.countLoc(FileUtil.srcJavaDir);
     	
+        //leverage gzoltar to collect test coverage
     	long covStartT = System.currentTimeMillis();
     	FileUtil.mark("[main] get coverage of buggyVersion: testToStmts & stmtToTests");
     	Coverage coverage = new Coverage();
-    	coverage.getCoverage(); 
+    	coverage.getCoverage(); // run GZoltar for coverage
     	coverage.calculateCoveredStmtsPerTest();
-		Map<TestCaseResult, List<SuspiciousLocation>> testToStmts = Coverage.getTestToStmts(); 
-		Map<SuspiciousLocation, List<TestCaseResult>> stmtToTests = Coverage.getStmtToTests(); 
+		Map<TestCaseResult, List<SuspiciousLocation>> testToStmts = Coverage.getTestToStmts(); //get covered stmts for each test case
+		Map<SuspiciousLocation, List<TestCaseResult>> stmtToTests = Coverage.getStmtToTests(); //get covered stmts for each test case
 		FileUtil.writeToFileWithFormat("[time cost] of coverage analysis on buggy version: %s", FileUtil.countTime(covStartT));
 		
+		// run test on buggy version to get failed tests.
+//		exec.testAll();
+		
+		//parse human-written patch
+		/*
+		 * parse patch diff file, and get buggy and patch file & info.
+		 * 1) delLines, addLines, chunks, number of patched files
+		 * 2) get chunks
+		 */
 		long getChunksStartT = System.currentTimeMillis();
 		FileUtil.mark("[main] get chunks from patchDiff.txt: chunks");
 		Diff diff = new Diff(FileUtil.patchDiffPath, FileUtil.srcJavaDir);
 		List<Chunk> chunks = diff.getChunks();
 		FileUtil.writeToFileWithFormat("[time cost] of getting human-patch chunks: %s", FileUtil.countTime(getChunksStartT));
 		
+		// human-patch
 		covStartT = System.currentTimeMillis();
 		FileUtil.mark("[main] reinit & get coverage of human-fixed version: testToStmtsPatch & stmtToTestsPatch");
+//		reInitForGZ();
 		int fCaseSizeBefore = FileUtil.gzFailingTestCases.size();
 		String patchFolder = FileUtil.toolDir + "/patch";
 		FileUtil.remove(patchFolder);
@@ -89,23 +108,28 @@ public class Main
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		coverage.getCoverage();
+		coverage.getCoverage(); // run GZoltar for coverage
     	coverage.calculateCoveredStmtsPerTest();
     	int fCaseSizeAfter = FileUtil.gzFailingTestCases.size();
     	if (fCaseSizeBefore != fCaseSizeAfter){
     		FileUtil.writeToFileWithFormat("Patch is wrong with extra failing tests! Before: %s, After: %s", fCaseSizeBefore, fCaseSizeAfter);
     		Main.gzoltarOnPatchFail = true;
+//    		FileUtil.raiseException("Patch is wrong with extra failing tests! Before: %s, After: %s", fCaseSizeBefore, fCaseSizeAfter);
     	}
-		Map<TestCaseResult, List<SuspiciousLocation>> testToStmtsPatch = Coverage.getTestToStmts(); 
-		Map<SuspiciousLocation, List<TestCaseResult>> stmtToTestsPatch = Coverage.getStmtToTests(); 
+		Map<TestCaseResult, List<SuspiciousLocation>> testToStmtsPatch = Coverage.getTestToStmts(); //get covered stmts for each test case
+		Map<SuspiciousLocation, List<TestCaseResult>> stmtToTestsPatch = Coverage.getStmtToTests(); //get covered stmts for each test case
 		FileUtil.restore();
 		FileUtil.writeToFileWithFormat("[time cost] of coverage analysis on fixed version: %s", FileUtil.countTime(covStartT));
 		
+//    	debugMain(chunks);
+		
+		// based on coverage info, we apply chunks to generate mutants.
 		long mutStartT = System.currentTimeMillis();
 		FileUtil.mark("[main] get mutants from chunks and coverage info, and compile & test");
 		Mutant mutant = new Mutant(FileUtil.srcJavaDir, patchFolder, FileUtil.toolDir + "/mutants/", chunks, testToStmts, stmtToTests, testToStmtsPatch, stmtToTestsPatch);
 		FileUtil.writeToFileWithFormat("[time cost] of purification via coverage and dd: %s", FileUtil.countTime(mutStartT));
 		
+		// get repair actions / code change instructions
 		FileUtil.writeToFileWithFormat("oriChunks start: ");
 		for(Chunk chunk:chunks){
 			chunk.updateMethods(FileUtil.srcJavaDir, patchFolder);
@@ -118,6 +142,7 @@ public class Main
 		MutantUtil.logChunks(deltaChunks);
 		FileUtil.writeToFileWithFormat("deltaChunks end.");
 		
+		// write diff
 		String purifyFolder = FileUtil.toolDir + "/purifiedComment";
 		DiffUtil.applyChunksAsMutants(deltaChunks, FileUtil.srcJavaDir, purifyFolder, "purifyWithCommentPatch.diff");
 		
@@ -140,57 +165,68 @@ public class Main
 		FileUtil.writeToFileWithFormat("[time cost] of main: %s", FileUtil.countTime(mainStartT));
     }
     
-	private static void someTest() {
-		Pair<Integer, String> pair = new Pair<Integer, String> (10000, "1212");
-		int lineNo = 10000;
-		Integer lineNo2 = 10000;
-		
-		boolean b1 = pair.getLeft() == lineNo;
-		boolean b2 = pair.getLeft() == lineNo2;
-		
-		boolean b3 = pair.getLeft().equals(lineNo);
-		boolean b4 = pair.getLeft().equals(lineNo2);
-		
-		logger.debug("{} {} {} {}", b1, b2, b3, b4);
-	}
-
+	/** @Description 
+	 * @author apr
+	 * @version Oct 17, 2020
+     * @param chunks 
+	 *
+	 */
 	private static void debugMain(List<Chunk> chunks) {
 		List<String> fileClasses = DiffUtil.getFileClasses(chunks);
 		Map<Chunk, List<HierarchicalActionSet>> patchChunkActionMap = new HashMap<>();
 		Map<String, List<HierarchicalActionSet>> patchActionsMap = DiffUtil.getActionsFromFileClasses(fileClasses, FileUtil.toolDir + "/patch", chunks, patchChunkActionMap);
 	}
 
+	/** @Description 
+	 * @author apr
+	 * @version Oct 15, 2020
+	 *
+	 */
 	private static void reInitForGZ() {
 		FileUtil.gzFailingTestCases.clear();
 	}
 
+	/** @Description 
+	 * @author apr
+	 * @version Oct 15, 2020
+	 * @param exec 
+	 *
+	 */
 	private static void init(Executor exec) {
 		Configuration.srcJavaDirBk = GeneralUtil.getBkDir(FileUtil.srcJavaDir);
     	FileUtil.backup(FileUtil.srcJavaDir, Configuration.srcJavaDirBk);
     	FileUtil.restore(FileUtil.srcJavaDir, Configuration.srcJavaDirBk);
     	
-		exec.compile();
+    	exec.compile();// bug fix. otherwise, the gzoltar for the second run of main will lead to no failing test!
     	
+    	// remove mut dir
     	String bkMutDir = Configuration.mutDir;
     	removeMutDir(bkMutDir);
     	
+    	// remove other dir
     	String assertBeforeMutDir = FileUtil.toolDir + "/assertBeforeMut";
     	removeMutDir(assertBeforeMutDir);
     	
     	FileUtil.remove(FileUtil.toolDir + "/patch");
     	FileUtil.remove(FileUtil.toolDir + "/purified");
 
+    	// 
     	String filePath = FileUtil.toolDir + "/" + "oriPatch.diff";
     	FileUtil.removeFile(filePath);
-    	filePath = FileUtil.toolDir + "/" + "patchAfterCov.diff";
+    	filePath = FileUtil.toolDir + "/" + "simplifyPatch.diff";
     	FileUtil.removeFile(filePath);
     	filePath = FileUtil.toolDir + "/" + "purifyWithCommentPatch.diff";
     	FileUtil.removeFile(filePath);
-    	filePath = FileUtil.toolDir + "/" + "purifiedPatch.diff";
+    	filePath = FileUtil.toolDir + "/" + "purifyPatch.diff";
     	FileUtil.removeFile(filePath);
 	}
 
-	
+	/** @Description 
+	 * @author apr
+	 * @version Oct 18, 2020
+	 *
+	 * @param assertBeforeMutDir
+	 */
 	private static void removeMutDir(String mutDir) {
 		for (int i = 0; i < Configuration.MAX_MUTANTS; i ++){
     		String dir = String.format("%s_%s", mutDir, i);
@@ -202,7 +238,14 @@ public class Main
     	}
 	}
 
-	
+	/**
+     * @Description
+     * parse parameters and save to FileUtil instance 
+     * @author apr
+     * @version Oct 4, 2020
+     *
+     * @param args
+     */
     public static void setParameters(String[] args) {		    	
     	Options options = new Options();
     	
@@ -221,10 +264,14 @@ public class Main
         opt = new Option("dependencies","dependencies",true,"all dependencies");
         opt.setRequired(true);
         options.addOption(opt);
-
-        opt = new Option("testExecPath","testExecPath",true,"Path to run junit tests. e.g., /home/apr/apr_tools/PatchTest-0.0.1-SNAPSHOT-jar-with-dependencies.jar");
-        opt.setRequired(false);
+        
+        opt = new Option("d4jDir","d4jDir",true,"root dir of defects4j env, e.g., /mnt/recursive-repairthemall/RepairThemAll/benchmarks/defects4j");
+        opt.setRequired(true);
         options.addOption(opt);
+
+//        opt = new Option("testExecPath","testExecPath",true,"Path to run junit tests. e.g., /home/apr/apr_tools/tbar-ori/TBar-dale/externel/target/PatchTest-0.0.1-SNAPSHOT-jar-with-dependencies.jar");
+//        opt.setRequired(true);
+//        options.addOption(opt);
         
         opt = new Option("jvmPath","jvmPath",true,"java path to run junit tests (e.g., -jvmPath /home/apr/env/jdk1.7.0_80/bin/ )");
         opt.setRequired(true);
@@ -243,7 +290,7 @@ public class Main
         options.addOption(opt);
         
         opt = new Option("timeout","timeout",true,"180");
-        opt.setRequired(false); 
+        opt.setRequired(false); //not necessary now.
         options.addOption(opt);
         
         opt = new Option("patchDiffPath","patchDiffPath",true,"e.g., -patchDiffPath /home/apr/apr_tools/datset_purification_2020/purification/purify/examples/Chart1_patchDiff.txt");
@@ -258,6 +305,7 @@ public class Main
         opt.setRequired(true);
         options.addOption(opt);
         
+        // 10
         logger.debug("total number of required options: {}", options.getRequiredOptions().size());
         logger.debug("total number of options: {}", options.getOptions().size());
 
@@ -285,6 +333,12 @@ public class Main
 	        	String binTestDir = cli.getOptionValue("binTestDir");
 	        	FileUtil.binTestDir = new File(binTestDir).getCanonicalPath();
 	        }
+	        
+	        if(cli.hasOption("d4jDir")){
+                String d4jDir = cli.getOptionValue("d4jDir");
+                Configuration.D4J_DIR = new File(d4jDir).getCanonicalPath();
+            }
+	        
 	        if(cli.hasOption("dependencies")){
 	        	FileUtil.dependencies = cli.getOptionValue("dependencies");
 	        	logger.debug("current dir: {}", System.getProperty("user.dir"));
@@ -305,18 +359,19 @@ public class Main
 	        	
 	        	FileUtil.toolDir = toolDir;
 	        	
+	        	// verify
 	        	if (FileUtil.toolDir.equals("/" + FileUtil.toolName)){
 	        		FileUtil.raiseException(FileUtil.toolDir);
 	        	}
 	        	
-	        	FileUtil.logPath = toolDir + "/purify.log";
+	        	FileUtil.logPath = toolDir + "/log.txt";
 	        	if (! Main.reRun){
 	        		FileUtil.writeToFile(FileUtil.logPath, "", false);
 	        	}
 	        }
-	        if(cli.hasOption("testExecPath")){
-	        	FileUtil.testExecPath = cli.getOptionValue("testExecPath");
-	        }
+//	        if(cli.hasOption("testExecPath")){
+//	        	FileUtil.testExecPath = cli.getOptionValue("testExecPath");
+//	        }
 	        if(cli.hasOption("jvmPath")){
 	        	try {
 					FileUtil.jvmPath = new File(cli.getOptionValue("jvmPath")).getCanonicalPath() + "/java";
@@ -324,14 +379,14 @@ public class Main
 					e.printStackTrace();
 				}
 	        }
-	        if(cli.hasOption("failedTestsStr")){ 
-	        	if (! Main.failingCasesInTestAll.isEmpty()){ 
-					FileUtil.gzFailingTestCases.clear(); 
+	        if(cli.hasOption("failedTestsStr")){ // failing test cases! not classes in this version.
+	        	if (! Main.failingCasesInTestAll.isEmpty()){ // re-run main
+	        		FileUtil.gzFailingTestCases.clear(); // must clear!
 	        		
 	        		for (String fCase : Main.failingCasesInTestAll){
 	        			FileUtil.oriFailedTests.add(fCase);
 	        		}
-					Main.failingCasesInTestAll.clear(); 
+	        		Main.failingCasesInTestAll.clear(); // clear
 	        	}else{
 	        		FileUtil.failedTestsStr = cli.getOptionValue("failedTestsStr");
 		        	List<String> fCases = Arrays.asList(FileUtil.failedTestsStr.split(":"));
@@ -364,6 +419,7 @@ public class Main
 			e.printStackTrace();
 		}
         
+        // make sure that src/ test-classes/ src-classes/ are contained
      	if( ! FileUtil.depsList.contains(FileUtil.srcJavaDir)){
      		FileUtil.depsList.add(0, FileUtil.srcJavaDir);
      	}
@@ -373,7 +429,14 @@ public class Main
      	if( ! FileUtil.depsList.contains(FileUtil.binTestDir)){
      		FileUtil.depsList.add(0, FileUtil.binTestDir);
      	}
-     	
+     	// re-arrange FileUtil.dependencies
+     	/*
+     	 * FileUtil.dependencies = "";
+     	for (String dep : FileUtil.depsList){
+     		FileUtil.dependencies += dep + ":";
+     	}
+     	FileUtil.dependencies = FileUtil.dependencies.substring(0, FileUtil.dependencies.length() - 1);
+     	 */
      	FileUtil.dependencies = FileUtil.concatAndDropLastChar(FileUtil.depsList);
      	logger.debug("Number of deps: {}", FileUtil.depsList.size());
      	logger.debug("Deps: {}", FileUtil.dependencies);

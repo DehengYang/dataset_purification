@@ -41,12 +41,21 @@ public class CmdUtil {
 			String[] commands = {"bash", "-c", cmd};
 			Process proc = Runtime.getRuntime().exec(commands);
 			
-
-			sb.append(IOUtils.toString(proc.getInputStream(), Charset.defaultCharset()));
-			String stderr = IOUtils.toString(proc.getErrorStream(), Charset.defaultCharset()); 
+			// buggy code
+//			BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+//			BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
 			
+			// still buggy.
+//			BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+//			BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			
+			// fixed
+			sb.append(IOUtils.toString(proc.getInputStream(), Charset.defaultCharset()));
+			String stderr = IOUtils.toString(proc.getErrorStream(), Charset.defaultCharset()); // fix a bug. seemingly proc.getErrorStream() should be after proc.getInputStream()
+			
+			// read error if exists
 			if(!stderr.equals("")){
-				System.err.println(String.format("Error/Warning occurs:\n %s\n", stderr)); 
+				System.err.println(String.format("Error/Warning occurs:\n %s\n", stderr)); // .substring(0, 300): avoid printing too long cmd string.
 			}
 		}catch (Exception err){
 			err.printStackTrace();
@@ -55,7 +64,15 @@ public class CmdUtil {
 		return sb.toString();
 	}
 	
-
+	/**
+	 * @Description
+	 * SimFix project 
+	 * @author apr
+	 * @version Oct 15, 2020
+	 *
+	 * @param command
+	 * @return
+	 */
 	public static List<String> execute(String[] command) {
 		Process process = null;
 		final List<String> message = new ArrayList<String>();
@@ -108,20 +125,75 @@ public class CmdUtil {
 			String[] commands = {"bash", "-c", cmd};
 			Process proc = Runtime.getRuntime().exec(commands);
 
-			
-
+			// fixed
+//			String stderr = IOUtils.toString(proc.getErrorStream(), Charset.defaultCharset());
 			
 			IOUtils.toString(proc.getInputStream(), Charset.defaultCharset());
-
+//			proc.getInputStream();  // this is not correct.
 			
-			
-
-
-
+			// read error if exists
+//			if(!stderr.equals("")){
+//				System.err.println(String.format("Error/Warning occurs:\n %s\n", stderr)); // .substring(0, 300): avoid printing too long cmd string.
+//			}
 		}catch (Exception err){
 			err.printStackTrace();
 		}
 	}
+	
+	
+	// a bug exposed by Closure 103 run all tests.
+	// the while ((line = stdInput.readLine()) != null){ will get stuck... after reading several lines.
+	// the solution is to use commons-io, refer to : https://stackoverflow.com/questions/5711084/java-runtime-getruntime-getting-output-from-executing-a-command-line-program
+	
+//	public static String runCmd(String cmd) {
+//		String output = "";
+//		
+//		try{
+//			String[] commands = {"bash", "-c", cmd};
+//			Process proc = Runtime.getRuntime().exec(commands);
+//			
+//			// buggy code
+////			BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+////			BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+//			
+//			// still buggy.
+//			BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+//			BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+//			
+//			// fixed
+//			String stderr = IOUtils.toString(proc.getErrorStream(), Charset.defaultCharset());
+//			String stdout = IOUtils.toString(proc.getInputStream(), Charset.defaultCharset());
+//			
+//			// read output
+//			String line = null;
+//			while ((line = stdInput.readLine()) != null){
+//				System.out.println(line);
+//				output += line + "\n";
+//			}
+//			
+//			// read error if exists
+//			String error = "";
+//			while ((line = stdError.readLine()) != null){
+//				error += line + "\n";
+//			}
+//			if(!error.equals("")){
+//				System.err.println(String.format("Error/Warning occurs:\n %s\n", error)); // .substring(0, 300): avoid printing too long cmd string.
+//			}
+//		}catch (Exception err){
+//			err.printStackTrace();
+//		}
+//		
+//		return output;
+//	}
+	
+	/**
+	 * @Description the second version of running cmd 
+	 * @author apr
+	 * @version Mar 29, 2020
+	 *
+	 * @param cmd
+	 * @return
+	 */
 	public static String runCmd2(String cmd) {
 		logger.info("cmd to run: {}", cmd);
 		StringBuilder output = new StringBuilder();
@@ -131,27 +203,27 @@ public class CmdUtil {
 			processBuilder.command("bash", "-c", cmd);
 			Process process = processBuilder.start();
 			
-
-
+//			InputStream is = process.getInputStream();
+//			String stderr = IOUtils.toString(process.getErrorStream(), Charset.defaultCharset());
 			String stdout = IOUtils.toString(process.getInputStream(), Charset.defaultCharset());
 			
 			BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			BufferedReader stdError = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 			
-			
+			// read output
 			String line = null;
 			while ((line = stdInput.readLine()) != null){
 				System.out.println(line);
 				output.append(line + "\n");
 			}
 			
-			
+			// read error if exists
 			String error = "";
 			while ((line = stdError.readLine()) != null){
 				error += line + "\n";
 			}
 			if(!error.equals("")){
-				System.err.println(String.format("Error/Warning occurs:\n %s\n", error)); 
+				System.err.println(String.format("Error/Warning occurs:\n %s\n", error)); // .substring(0, 300): avoid printing too long cmd string.
 			}
 		}catch (Exception err){
 			err.printStackTrace();

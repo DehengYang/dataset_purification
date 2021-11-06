@@ -1,9 +1,18 @@
+/**
+ * 
+ */
 package apr.purify.location;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * This is for parsing matrix of GZoltar
+ * refer to: apr.apr.repair.localization.SuspiciousLocation in my previous project
+ * @author apr
+ * @version Oct 4, 2020
+ *
+ */
 public class SuspiciousLocation {
 	private String className;
 	private String methodName;
@@ -37,6 +46,15 @@ public class SuspiciousLocation {
 		this.suspValue = suspValue;
 	}
 	
+	/**
+	 * 
+	 * @param className
+	 * @param lineNo
+	 * @param execPassed
+	 * @param execFailed
+	 * @param totalPassed
+	 * @param totalFailed
+	 */
 	public SuspiciousLocation(String className, int lineNo, int execPassed, int execFailed, int totalPassed, int totalFailed) {
 		this.className = className;
 		this.lineNo = lineNo;
@@ -49,6 +67,16 @@ public class SuspiciousLocation {
 	}
 	
 
+	/**
+	 * support executed test record
+	 * @param className
+	 * @param lineNo
+	 * @param execPassed
+	 * @param execFailed
+	 * @param totalPassed
+	 * @param totalFailed
+	 * @param coveredTestIndexList
+	 */
 	public SuspiciousLocation(String className, int lineNo, int execPassed, int execFailed, int totalPassed, int totalFailed, List<Integer> coveredTestIndexList) {
 		this.className = className;
 		this.lineNo = lineNo;
@@ -62,6 +90,16 @@ public class SuspiciousLocation {
 		this.suspValue = calculateSuspicious();
 	}
 	
+	/**
+	 * @param className
+	 * @param lineNo
+	 * @param execPassed
+	 * @param execFailed
+	 * @param totalPassed
+	 * @param totalFailed
+	 * @param execPassedMethods
+	 * @param execFailedMethods
+	 */
 	public SuspiciousLocation(String className, int lineNo, int execPassed, int execFailed, int totalPassed, int totalFailed,
 			List<String> execPassedMethods, List<String> execFailedMethods) {
 		this.className = className;
@@ -99,6 +137,16 @@ public class SuspiciousLocation {
 		return hash;
 	}
 	
+    /**
+     * @Description this is to get rid of $ character.
+     * e.g., spoon.generating.CloneVisitorGenerator$2$1:421,0.0    contains two $
+spoon.support.compiler.jdt.JDTCommentBuilder$1:219,0.0 contains 1 $
+     * @author apr
+     * @version Apr 12, 2020
+     *
+     * @param fullClassName
+     * @return
+     */
     public String getName(String fullClassName){
     	if(fullClassName.contains("$")){
     		return fullClassName.split("\\$")[0];
@@ -107,6 +155,13 @@ public class SuspiciousLocation {
     	}
     }
     
+	/**
+	 * @Description calculate suspiciousness using Ochiai formula 
+	 * @author apr
+	 * @version Mar 17, 2020
+	 *
+	 * @return
+	 */
 	public double calculateSuspicious(){
 		if (execFailed+execPassed == 0 || totalFailed == 0){
 			return 0;
@@ -121,6 +176,13 @@ public class SuspiciousLocation {
 		this.suspValue = suspValue;
 	}
 
+	/**
+	 * @Description getter and setter methods. 
+	 * @author apr
+	 * @version Mar 17, 2020
+	 *
+	 * @return
+	 */
 	public String getClassName() {
 		return className;
 	}
@@ -169,6 +231,12 @@ public class SuspiciousLocation {
 		this.methodName = methodName;
 	}
 	
+	/*
+	 * private int execPassed; 
+	private int execFailed; 
+	private int totalPassed; 
+	private int totalFailed;
+	 */
 	public void setExecPassed(int execPassed){
 		this.execPassed = execPassed;
 	}

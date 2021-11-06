@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package apr.purify.diff;
 
 import java.io.File;
@@ -22,20 +25,26 @@ import apr.purify.Configuration;
 import apr.purify.utils.GeneralUtil;
 import apr.purify.utils.Pair;
 
+/**
+ * this is to save chunk info from getDiff2.py output
+ * @author apr
+ * @version Oct 13, 2020
+ *
+ */
 public class Chunk implements Cloneable {
 	final static Logger logger = LoggerFactory.getLogger(Chunk.class);
 	
-	
-	
+	// because its hard to rank addLines/delLines... and its hard to setAddLines (putAll will change the elements order)
+	// so I changed Map into List<Pair>.
 	private List<Pair<Integer, String>> lines = new ArrayList<>(); 
 	
-	private List<Pair<Integer, String>> addLines = new ArrayList<>();
-	private List<Pair<Integer, String>> delLines = new ArrayList<>();
-	private List<Pair<Integer, String>> buggyLines = new ArrayList<>();  
+	private List<Pair<Integer, String>> addLines = new ArrayList<>();// <line_no, real_code>
+	private List<Pair<Integer, String>> delLines = new ArrayList<>();// <line_no, real_code>
+	private List<Pair<Integer, String>> buggyLines = new ArrayList<>();  // from getDiff2.py, it does not provide real_code, so the <line_no, real_code> is <line_no, "">
 	private List<String> methods = new ArrayList<>();
 	private String clazz;
-
-	public Pair<Integer, Integer> replaceRange = new Pair<Integer, Integer>(null, null); 
+//	private String srcFolder; 
+	public Pair<Integer, Integer> replaceRange = new Pair<Integer, Integer>(null, null); // if insert, only have left element (i.e., <insertAfterLineNo, null>). Otherwise, <replaceStartLineNo, replaceEndLineNo>
 	
 	public Chunk(){
 		
@@ -63,12 +72,12 @@ public class Chunk implements Cloneable {
 		}
 	}
 	
-
-
-
-
-
-
+//	public Pair<Integer, Integer> addLinesRange(){
+//		return new Pair<Integer, Integer>(addLines.get(0).getLeft(),addLines.get(addLines.size() - 1).getLeft()); 
+//	}
+//	public Pair<Integer, Integer> delLinesRange(){
+//		return new Pair<Integer, Integer>(delLines.get(0).getLeft(),delLines.get(delLines.size() - 1).getLeft()); 
+//	}
 	public List<Integer> getAddLineNos(){
 		List<Integer> lineNos = new ArrayList<>();
 		for (Pair<Integer, String> pair : addLines){
@@ -89,7 +98,7 @@ public class Chunk implements Cloneable {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(String.format("chunk class: %s\n", clazz));
-
+//		sb.append(String.format("srcFolder: %s\n", srcFolder));
 		for (String method : methods){
 			sb.append(String.format("method: %s\n", method));
 		}
@@ -97,15 +106,15 @@ public class Chunk implements Cloneable {
 		for (Pair<Integer, String> pair : lines){
 			sb.append(String.format("lineNo:%s, lineCode:%s\n", pair.getLeft(), pair.getRight()));
 		}
-
-
-
-
-
-
-
-
-
+//		for (Pair<Integer, String> pair : addLines){
+//			sb.append(String.format("addLine:%s==line==%s\n", pair.getLeft(), pair.getRight()));
+//		}
+//		for (Pair<Integer, String> pair : delLines){
+//			sb.append(String.format("delLine:%s==line==%s\n", pair.getLeft(), pair.getRight()));
+//		}
+//		for (Pair<Integer, String> pair : buggyLines){
+//			sb.append(String.format("buggyLine:%s==line==%s\n", pair.getLeft(), pair.getRight()));
+//		}
 		
 		return sb.toString();
 	}
@@ -142,13 +151,20 @@ public class Chunk implements Cloneable {
 		this.buggyLines.addAll(buggyLines);
 	}
 
+//	public String getSrcFolder() {
+//		return srcFolder;
+//	}
+//
+//	public void setSrcFolder(String srcFolder) {
+//		this.srcFolder = srcFolder;
+//	}
 
-
-
-
-
-
-
+	/** @Description 
+	 * @author apr
+	 * @version Oct 14, 2020
+	 *
+	 * @return
+	 */
 	public String getAllChanges() {
 		String all = "";
 		for(Pair<Integer, String> line : lines){
@@ -190,6 +206,11 @@ public class Chunk implements Cloneable {
 		this.lines.addAll(lines);
 	}
 
+	/** @Description 
+	 * @author apr
+	 * @version Oct 14, 2020
+	 *
+	 */
 	public void resetByLines() {
 		this.addLines.clear();
 		this.delLines.clear();
@@ -218,6 +239,24 @@ public class Chunk implements Cloneable {
 			}
 		}
 	}
+
+	/** @Description 
+	 * @author apr
+	 * @version Oct 17, 2020
+	 *
+	 * @return
+	 */
+//	public boolean hasRealDelLines() {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+
+	/** @Description 
+	 * @author apr
+	 * @version Oct 17, 2020
+	 *
+	 * @return
+	 */
 	public boolean hasCommentedDelLine() {
 		for(Pair<Integer, String> line : lines){
 			if (isCommentDel(line)){
@@ -237,17 +276,24 @@ public class Chunk implements Cloneable {
 		this.methods.addAll(methods);
 	}
 
+	/** @Description 
+	 * @author apr
+	 * @version Oct 19, 2020
+	 *
+	 * @param srcJavaDir
+	 * @param string
+	 */
 	public void updateMethods(String srcJavaDir, String mutJavaDir) {
 		String delFilePath = srcJavaDir + "/" + clazz + ".java";
 		String addFilePath = mutJavaDir + "/" + clazz + ".java";
 		
 		resetByLinesRemoveComment();
 		List<String> mdsDel = getSpanedMethods(delFilePath, delLines);
-		if (mdsDel.isEmpty()){ 
+		if (mdsDel.isEmpty()){ //exposed by time 11
 			mdsDel.add("OutOfMethod");
 		}
 		List<String> mdsAdd = getSpanedMethods(addFilePath, addLines);
-		if (mdsAdd.isEmpty()){ 
+		if (mdsAdd.isEmpty()){ //exposed by time 11
 			mdsAdd.add("OutOfMethod");
 		}
 		
@@ -284,7 +330,7 @@ public class Chunk implements Cloneable {
 					
 					for (int lineNo : lineNos){
 						if (lineNo >= startRow && lineNo <= endRow){
-							
+							// public LegendItemCollection getLegendItems() {
 							String mdStr = String.format("modifiers: %s, type: %s, name: %s, parameters: %s", 
 									GeneralUtil.listToStringWithSep(md.getModifiers(), " "), md.getType().asString(),
 									md.getName(), GeneralUtil.listToStringWithSep(md.getParameters(), " ")
@@ -304,13 +350,21 @@ public class Chunk implements Cloneable {
 		return mds;
 	}
 	
-	
+	// Overriding the inbuilt clone class 
     @Override
 	public Chunk clone() 
     { 
         return new Chunk(lines, methods, clazz, replaceRange); 
     }
 
+	/** @Description 
+	 * @author apr
+	 * @version Oct 20, 2020
+	 *
+	 * @param left
+	 * @param delOrAdd
+	 * @return
+	 */
 	public Pair<Integer, String> getPairByLineNo(Integer lineNo, String delOrAdd) {
 		if (delOrAdd.equals("+")){
 			for(Pair<Integer, String> pair : addLines){

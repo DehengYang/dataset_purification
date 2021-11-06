@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package apr.purify.diff;
 
 import java.io.File;
@@ -20,33 +23,44 @@ import apr.purify.utils.FileUtil;
 import apr.purify.utils.Pair;
 import edu.lu.uni.serval.gumtree.regroup.HierarchicalActionSet;
 
+/**
+ * @author apr
+ * @version Oct 7, 2020
+ *
+ */
 public class Diff {
 	final static Logger logger = LoggerFactory.getLogger(Diff.class);
 	
 	private String patchDiffPath;
 	private String srcFolder;
 	private List<Chunk> chunks = new ArrayList<>();
-
-
-
+//	private Map<String, String> addLines = new HashMap<>();// <line_no, real_code>
+//	private Map<String, String> delLines = new HashMap<>();// <line_no, real_code>
+//	private Map<String, String> buggyLines = new HashMap<>();  // from getDiff2.py, it does not provide real_code, so the <line_no, real_code> is <line_no, "">
 	
-	private List<Pair<String, String>> patchPathMap = new ArrayList<>(); 
+	private List<Pair<String, String>> patchPathMap = new ArrayList<>(); //buggy file path -> patch file path 
 	
 	private Map<Pair<String, String>, List<HierarchicalActionSet>> actionsPerFileMap = new HashMap<>();
 	
+	/**
+	 * init Diff instance with patch-diff file path and its src folder
+	 * and run a series of functions to obtain change actions with gumtree&patchparser.
+	 * @param patchDiffPath
+	 * @param srcFolder
+	 */
 	public Diff(String patchDiffPath, String srcFolder){
 		this.patchDiffPath = patchDiffPath;
 		this.srcFolder = srcFolder;
 		
-		
+		//
 		getAllChunks();
-
+//		applyAllChunksForPatch();
 		
-		
-
-
-
-
+		// old methods
+//		parseDiff();
+//		produceJavaFilesFromDiff();
+//		getGumTreeActions();
+//		getModifications();
 	}
 	
 	private void applyAllChunksForPatch() {
@@ -101,15 +115,7 @@ public class Diff {
 		return patchPathMap;
 	}
 
-
-
-
-
 	public List<Chunk> getChunks() {
 		return chunks;
 	}
-
-
-
-
 }

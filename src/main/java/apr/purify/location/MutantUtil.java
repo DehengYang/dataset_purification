@@ -1,4 +1,6 @@
-
+/**
+ * 
+ */
 package apr.purify.location;
 
 import java.util.ArrayList;
@@ -16,9 +18,21 @@ import apr.purify.execution.Executor;
 import apr.purify.utils.FileUtil;
 import apr.purify.utils.Pair;
 
+/**
+ * @author apr
+ * @version Oct 16, 2020
+ *
+ */
 public class MutantUtil {
 	final static Logger logger = LoggerFactory.getLogger(MutantUtil.class);
 	
+	/** @Description 
+	 * @author apr
+	 * @version Oct 16, 2020
+	 *
+	 * @param simplifiedChunks2
+	 * @return
+	 */
 	public static List<Pair<Integer, String>> getLinesFromChunks(List<Chunk> simplifiedChunks) {
 		List<Pair<Integer, String>> simplifiedLines = new ArrayList<>();
 		for (Chunk chunk : simplifiedChunks){
@@ -28,7 +42,10 @@ public class MutantUtil {
 		return simplifiedLines;
 	}
 	
-	public static boolean test(List<Pair<Integer, String>> lines, List<Chunk> oriChunks){
+//	public static boolean test(List<Pair<Integer, String>> lines, List<Chunk> oriChunks){
+//		return test(lines, oriChunks, true);
+//	}
+	public static boolean test(List<Pair<Integer, String>> lines, List<Chunk> oriChunks){//, boolean isMutation
 		
 		
 		String srcFolder = FileUtil.srcJavaDir;
@@ -54,10 +71,16 @@ public class MutantUtil {
 		}
 		FileUtil.mutantCnt ++;
 		
-		FileUtil.restore();
+		FileUtil.restore();//bug fix: must restore after testing
 		return pass.getLeft();
 	}
 	
+	/** @Description 
+	 * @author apr
+	 * @version Oct 16, 2020
+	 *
+	 * @return
+	 */
 	public static Pair<Boolean, String> compileAndTest() {
 		return compileAndTest(false);
 	}
@@ -70,7 +93,7 @@ public class MutantUtil {
 			FileUtil.writeToFileWithFormat("[time cost] of compile: %s", FileUtil.countTime(startT));
 			return new Pair<Boolean, String>(false, "failCompile");
 		}else{
-			FileUtil.writeToFileWithFormat("[time cost] of compile: %s", FileUtil.countTime(startT)); 
+			FileUtil.writeToFileWithFormat("[time cost] of compile: %s", FileUtil.countTime(startT)); // improve
 		}
 		
 		startT = System.currentTimeMillis();
@@ -79,7 +102,7 @@ public class MutantUtil {
 			FileUtil.writeToFileWithFormat("[time cost] of testing fail: %s", FileUtil.countTime(startT));
 			return new Pair<Boolean, String>(false, "failFail");
 		}else{
-			FileUtil.writeToFileWithFormat("[time cost] of testing fail: %s", FileUtil.countTime(startT)); 
+			FileUtil.writeToFileWithFormat("[time cost] of testing fail: %s", FileUtil.countTime(startT)); // improve
 		}
 		
 		startT = System.currentTimeMillis();
@@ -87,7 +110,7 @@ public class MutantUtil {
 			FileUtil.writeToFile("Fail to pass all tests!\n");
 			FileUtil.writeToFileWithFormat("[time cost] of testing all: %s", FileUtil.countTime(startT));
 			
-			if (isOriBeforeMutant){ 
+			if (isOriBeforeMutant){ // need re-run! exposed by Time 5
 				Main.failingCasesInTestAll.addAll(FileUtil.oriFailedTests);
 				Main.failingCasesInTestAll.addAll(executor.getFailingCasesInTestAll());
 				Main.reRun = true;
@@ -98,12 +121,51 @@ public class MutantUtil {
 			
 			return new Pair<Boolean, String>(false, "failAll");
 		}else{
-			FileUtil.writeToFileWithFormat("[time cost] of testing all: %s", FileUtil.countTime(startT)); 
+			FileUtil.writeToFileWithFormat("[time cost] of testing all: %s", FileUtil.countTime(startT)); // improve
 		}
 		
 		return new Pair<Boolean, String>(true, "passAll");
 	}
 
+	/** @Description 
+	 * @author apr
+	 * @version Oct 16, 2020
+	 *
+	 * @param lines
+	 * @param oriChunks 
+	 * @return
+	 */
+//	public static List<Chunk> getChunksFromLines(List<Pair<Integer, String>> lines, List<Chunk> oriChunks) {
+//		List<Chunk> chunks = new ArrayList<>();
+//		
+//		for (Chunk chunk : oriChunks){
+//			Chunk remainedChunk = new Chunk();
+//			
+//			for (Pair<Integer, String> line : lines){
+//				if (chunk.getLines().contains(line)){
+//					remainedChunk.getLines().add(line);
+//				}
+//			}
+//			if (!remainedChunk.getLines().isEmpty()){
+//				remainedChunk.setClazz(chunk.getClazz());
+//				remainedChunk.replaceRange = chunk.replaceRange;
+//				chunks.add(remainedChunk);
+//			}
+//		}
+//		
+//		return chunks;
+//	}
+	
+	/**
+	 * @Description 
+	 * I want to inserted commented chunks into file 
+	 * @author apr
+	 * @version Oct 17, 2020
+	 *
+	 * @param lines
+	 * @param oriChunks
+	 * @return
+	 */
 	public static List<Chunk> getCommentedChunksFromLines(List<Pair<Integer, String>> lines, List<Chunk> oriChunks) {
 		List<Chunk> chunks = new ArrayList<>();
 		
@@ -114,9 +176,9 @@ public class MutantUtil {
 				if (lines.contains(line)){
 					remainedChunk.getLines().add(line);
 				}else{
-					
-					
-					
+					// the line need to be commented
+					// bug fix: when the line is commented, the oriChunks are changed. There are two ways to deal with this: 1) use a new copy of oriChunks
+					// 2) use a new copy of line before line.setRight()
 					String commentedLine = line.getRight().substring(0, 1) + Configuration.COMMENT + line.getRight().substring(1);
 					Pair<Integer, String> lineCp = new Pair<Integer, String>(line.getLeft(), line.getRight());
 					lineCp.setRight(commentedLine);
@@ -128,6 +190,7 @@ public class MutantUtil {
 				remainedChunk.setClazz(chunk.getClazz());
 				remainedChunk.setReplaceRange(chunk.replaceRange);
 				
+				// bug fix: for chart 1. the chunk may not have - lines. so the replaceRange should be updated.
 				if (remainedChunk.hasCommentedDelLine()){
 					List<Chunk> updChunks = DiffUtil.updateChunkRange(remainedChunk);
 					chunks.addAll(updChunks);
@@ -142,6 +205,13 @@ public class MutantUtil {
 		return chunks;
 	}
 
+	/** @Description 
+	 * @author apr
+	 * @version Oct 17, 2020
+	 *
+	 * @param deltaChunks
+	 * @return
+	 */
 	public static void removePurifyComment(List<Chunk> deltaChunks) {
 		for (Chunk chunk : deltaChunks){
 			List<Pair<Integer, String>> lines = chunk.getLines();
@@ -158,12 +228,25 @@ public class MutantUtil {
 		
 	}
 
+	/** @Description 
+	 * @author apr
+	 * @version Oct 18, 2020
+	 *
+	 * @param deltaChunks
+	 */
 	public static void logChunks(List<Chunk> deltaChunks) {
 		for(Chunk chunk : deltaChunks){
 			FileUtil.writeToFileWithFormat("%s", chunk.toString());
 		}
 	}
 
+	/** @Description 
+	 * @author apr
+	 * @version Oct 20, 2020
+	 *
+	 * @param chunks
+	 * @return
+	 */
 	public static int getLinesCnt(List<Chunk> chunks) {
 		int cnt = 0;
 		for(Chunk chunk:chunks){

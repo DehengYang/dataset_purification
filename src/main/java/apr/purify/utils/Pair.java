@@ -5,6 +5,8 @@ public class Pair <L, R> {
 	private R right;
 
 	public Pair(L left, R right) {
+//		assert left != null;
+//		assert right != null;
 
 		this.left = left;
 		this.right = right;
@@ -27,7 +29,7 @@ public class Pair <L, R> {
 	
 	@Override
 	public String toString(){
-		String leftStr = ""; 
+		String leftStr = ""; // null has no toString. so must consider
 		String rightStr = "";
 		if (left != null){
 			leftStr = left.toString();

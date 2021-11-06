@@ -1,4 +1,6 @@
-
+/**
+ * 
+ */
 package apr.purify.diff;
 
 import java.io.File;
@@ -21,13 +23,19 @@ import com.github.javaparser.utils.Pair;
 import apr.purify.utils.FileUtil;
 import edu.lu.uni.serval.gumtree.regroup.HierarchicalActionSet;
 
+/**
+ * this is to extend Modification class, which is implemented by me, from javaparser library.
+ * @author apr
+ * @version Oct 9, 2020
+ *
+ */
 public class FileModification extends Modification {
 	final static Logger logger = LoggerFactory.getLogger(FileModification.class);
 	
 	private String buggyFilePath;
 	private String patchFilePath;
 	
-	
+	// start from 0. That is, 0th row/column is the first row/column.
 	private int patchStartLineNo = -1; 
 	private int patchStartCol = -1;
 	private int patchEndLineNo = -1;
@@ -36,11 +44,11 @@ public class FileModification extends Modification {
 	private String patchStr;
 	private HierarchicalActionSet actionSet;
 
-
-
-
-
-
+//	public FileModification(String buggyFilePath, Node targetNode, OP op, Pair<Node, Node> pair){
+//		super(targetNode, op, pair);
+//		
+//		this.setBuggyFilePath(buggyFilePath);
+//	}
 	
 	public FileModification(String buggyFilePath, String patchFilePath, HierarchicalActionSet actionSet){
 		this.setBuggyFilePath(buggyFilePath);
@@ -66,19 +74,24 @@ public class FileModification extends Modification {
 	}
 	
 	
+	/** @Description 
+	 * @author apr
+	 * @version Oct 10, 2020
+	 *
+	 */
 	@Override
 	public String toString() {
-
-
-
-
-
-
-
-
-
-
-
+//		private String buggyFilePath;
+//		private String patchFilePath;
+//		
+//		// start from 0. That is, 0th row/column is the first row/column.
+//		private int patchStartLineNo = -1; 
+//		private int patchStartCol = -1;
+//		private int patchEndLineNo = -1;
+//		private int patchEndCol = -1;
+//		
+//		private String patchStr;
+//		private HierarchicalActionSet actionSet;
 		
 		return String.format("buggyFilePath: %s\n"
 				+ "patchFilePath: %s\n"
@@ -98,20 +111,24 @@ public class FileModification extends Modification {
 				super.toString());
 	}
 
-
+	/** @Description 
+	 * @author apr
+	 * @version Oct 9, 2020
+	 *
+	 */
 	public void getModification(CompilationUnit cu) {
-
-
-
-
-
-
-
+//		Consumer<Node> classConsumer = n -> {
+//			if (n instanceof MethodDeclaration){
+//				mds.add((MethodDeclaration) n);
+//			}
+//		};
+//		
+//		cu.walk(TreeTraversal.PREORDER, classConsumer);
 		
-
-
-
-
+//		private int patchStartLineNo = -1;
+//		private int patchStartCol = -1;
+//		private int patchEndLineNo = -1;
+//		private int patchEndCol = -1;
 		
 		List<Statement> stmtList = new ArrayList<>();
 		Consumer<Node> cuConsumer = n -> {
@@ -121,10 +138,10 @@ public class FileModification extends Modification {
 				int endStmtRow = n.getEnd().get().line;
 				int endStmtCol = n.getEnd().get().column;
 				
-
-
-
-
+//				if (startStmtRow <= patchStartLineNo && startStmtCol <= patchStartCol
+//						&& endStmtRow >= patchEndLineNo && endStmtCol >= patchEndCol){
+//					stmtList.add((Statement) n);
+//				}
 				if (startStmtRow <= patchStartLineNo + 1 && startStmtCol <= patchStartCol + 1){
 					if(endStmtRow >= patchEndLineNo + 1 && endStmtCol >= patchEndCol + 1){
 						stmtList.add((Statement) n);
@@ -140,9 +157,9 @@ public class FileModification extends Modification {
 			logger.debug("stmt:{}", stmtList.get(i).toString());
 		}
 		
-
-
-
+//		if (actionSet.getAction().getName().equals("INS")){
+//			this.setOp(op);
+//		}
 		
 		if (stmtList.isEmpty()){
 			FileUtil.raiseException(String.format("fail to locate the patchStr stmt: %s from the cu!", patchStr));
@@ -152,52 +169,58 @@ public class FileModification extends Modification {
 		String actionName = actionSet.getAction().getName();
 		switch(actionName){
 			case "INS":
-
+//				this.setOp(OP.ADDBEF);
 				identifyOpAndTargetNode(donor, OP.ADD);
 				break;
 			case "DEL":
 				identifyOpAndTargetNode(donor, OP.DEL);
-
+//				this.setOp(OP.DEL);
 				break;
 			case "UPD":
 				identifyOpAndTargetNode(donor, OP.REP);
 				break;
-
+//				this.setOp(OP.REP);
 			case "MOV":
 				identifyOpAndTargetNode(donor, OP.MOV);
 				break;
-
+//				this.setOp(OP.MOVBEF);
 			default:
 				FileUtil.raiseException(String.format("unkown action: %s", actionName));
 		}
 		
 	}
 
-
+	/** @Description 
+	 * @author apr
+	 * @version Oct 10, 2020
+	 *
+	 * @param donor
+	 * @param add
+	 */
 	private void identifyOpAndTargetNode(Statement donor, OP op) {
 		if (op == OP.ADD){
-			
+			//findSibling(donor);
 			if (!donor.getParentNode().isPresent()){
 				FileUtil.raiseException(String.format("stmt: {} has no parent!", donor.toString()));
 			}
 			Node parent = donor.getParentNode().get();
-			
+			//
 			List<Node> chidren = parent.getChildNodes();
 			int index = chidren.indexOf(donor);
 			if (index >= 0){
-				if (index == 0 && chidren.size() == 1){ 
+				if (index == 0 && chidren.size() == 1){ // only one
 					Node targetNode = parent;
 					this.setTargetNode(targetNode);
 					this.setPair(new Pair<Node, Node>(targetNode, donor));
 					this.setOp(OP.ADD);
 				}
 				
-				if (index != chidren.size() - 1){ 
+				if (index != chidren.size() - 1){ // add after
 					Node targetNode = chidren.get(index - 1);
 					this.setTargetNode(targetNode);
 					this.setPair(new Pair<Node, Node>(targetNode, donor));
 					this.setOp(OP.ADDAFT);
-				}else{ 
+				}else{ // add before
 					Node targetNode = chidren.get(index - 1);
 					this.setTargetNode(targetNode);
 					this.setPair(new Pair<Node, Node>(targetNode, donor));
@@ -207,7 +230,7 @@ public class FileModification extends Modification {
 				FileUtil.raiseException(String.format("fail to find stmt: %s from its parent!", donor.toString()));
 			}
 		}else{
-			
+			//TODO: unfinished
 			FileUtil.raiseException("not done yet!");
 			this.setOp(op);
 		}
@@ -218,21 +241,21 @@ public class FileModification extends Modification {
 		List<String> lines = FileUtil.readFile(patchFilePath);
 		String linesStr = FileUtil.readFileToStr(patchFilePath);
 		logger.debug("lines.size: {}", lines.size());
-		
-
-
+		// debug: position: 49155, 49155 + 473
+//		startPosition =  0;
+//		length = 10;
 		
 		int posCount = 0;
 		String codeSnippet = "";
 		boolean breakFlag = false;
 		for (int lineNo = 0; lineNo < lines.size(); lineNo ++){
-			String line = lines.get(lineNo) + "\n";
+			String line = lines.get(lineNo) + "\n";// + "\n"
 			for (int i = 0; i < line.length(); i++){
 			    char c = line.charAt(i);
-
-
-
-
+//			    logger.debug("posCount: {}, posChar from linesStr: {}, posChar from lines: {}", posCount, linesStr.charAt(posCount), c);
+//			    if (linesStr.charAt(posCount) != c){
+//			    	FileUtil.raiseException(String.format("wrong position parser for %s!", patchFilePath));
+//			    }
 			    
 			    if (posCount >= startPosition && posCount <= startPosition + length - 1){
 			    	logger.debug("posCount: {}, posChar from linesStr: {}, posChar from lines: {}", posCount, linesStr.charAt(posCount), c);
@@ -250,13 +273,13 @@ public class FileModification extends Modification {
 				
 				posCount += 1;
 				
-				
+				// break once the codeSnippet is obtained
 				if (posCount > startPosition + length - 1){
 					breakFlag = true;
 					break;
 				}
 			}
-			
+			// break once the codeSnippet is obtained
 			if (breakFlag){
 				break;
 			}
@@ -264,7 +287,7 @@ public class FileModification extends Modification {
 		
 		logger.debug("codeSnippet: {}", codeSnippet);
 		logger.debug("substring  : {}", linesStr.substring(startPosition, startPosition + length));
-
+//		logger.debug("patchStartLineNo: {}, patchStartCol: {}, patchEndLineNo: {}, patchEndCol: {}", patchStartLineNo, patchStartCol, patchEndLineNo, patchEndCol);
 		logger.debug("start row-col: {}-{}, end row-col: {}-{}", patchStartLineNo, patchStartCol, patchEndLineNo, patchEndCol);
 		
 		return codeSnippet;

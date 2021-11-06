@@ -1,3 +1,49 @@
-target/
+# output dir to save jar
+versions/
 
+# eclipse
+.classpath
+.settings
+
+# deps
+deps/PatchParser/
+deps/javaparser/
+deps/gzoltar/
+
+#
+*/example/Defects4J_Time_2/
+
+# email
+discussion-email
+
+# script drafts 
+experiment/parser/data_analysis_by_author/
+
+# ignore the getDiff2.py generated during debugging
+getDiff2.py
+
+# 
+LaTeX_project/dataset_purification/tex-tests/*.pdf
+
+# bugs not run collection
+experiment/parser/BugsNotRun/
+
+#
+*.pyc
+
+#logs
+experiment/runner/log/
+experiment/parser/results 
+experiment/parser/data.yml
+experiment/parser/result_data
+
+
+# other
+target/
+execution.log*
+output/*
+examples/*
+
+# Temp files often created by editors
 *~
+/bin/
