@@ -1,0 +1,4 @@
+Mockito-1 purifyPatch.diff does not exist
+Mockito-3 purifyPatch.diff does not exist
+Mockito-18 purifyPatch.diff does not exist
+Mockito-20 purifyPatch.diff does not exist

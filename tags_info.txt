@@ -1,0 +1,33 @@
+# show commit ids 
+git log --abbrev-commit
+git log --pretty=oneline --abbrev-commit
+
+# push specific tag
+git push origin <tagname>
+eg: git push origin v1.5
+
+# push all tags
+git push origin --tags
+git push origin -f --tags    # force updating
+
+# delete specific tag in remote repo
+git push origin --delete <tagname>
+
+# delete a tag
+git tag -d <tagname>
+
+# show tag starting with v1.8. 
+git tag -l 'v1.8.*'
+
+git tag -a v0.1.1 -m "version 0.1.1 for the first execution of this experiment" b0a3297
+git tag -a v0.1.2 -m "version 0.1.2 for the second execution of this experiment after fixing some bugs" 759be27
+
+git tag -a v0.1.3 -m "version 0.1.3 for the third execution of this experiment (with a minor bug fix) after previous experiment gets stuck" 8afb39c
+git tag -a v0.1.4 -m "version 0.1.4 for revised latex template for paper writing" 4804bb
+git tag -a v0.1.5 -m "version 0.1.5 for the fourth execution of this experiment (by solving some exceptional cases)" adb24e
+
+git tag -d v0.1.5
+git tag -a v0.1.5 -m "version 0.1.5 for the fourth execution of this experiment (by solving some exceptional cases)" d0b9b8
+
+git tag -d v0.1.5
+git tag -a v0.1.5 -m "version 0.1.5 for the fifth execution of this experiment (by solving some exceptional cases)" 4e77c4
