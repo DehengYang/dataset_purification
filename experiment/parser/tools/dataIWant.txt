@@ -1,0 +1,193 @@
+data_dict = {
+        'time cost of purification' : time_cost_dict,
+        '1 src folder' : src_folder_dict,
+        'test (cases)' : failing_test_dict,
+        'purify' : purify_dict,
+        'covered lines by failing cases' : covered_line_dict,
+        'uncovered lines by failing cases' : not_covered_line_list,
+        'mutant test result': mutant_result_dict,
+        'patch' : patch_dict,
+        'chunks' : chunk_dict,
+        'bug_id' : bug_id,
+        'ori_repair_actions' : repair_actions_ori_dict,
+        'purify_repair_actions' : repair_actions_purify_dict
+    }
+
+
+ # special cases.
+    # 1) the chunk line is an else or else if: 
+    # m = myFindAll(log_str, re.compile("the chunk line is an else or else if: (.*)"))
+    # if len(m) != 0:
+    #     raise Exception("len(m) != 0")
+    # 2) return new Pair<String, Boolean>("inBlockStmt", true);
+    # FileUtil.writeToFileWithFormat("chunk line: %s is not covered by any failing test. It is a sub-stmt? %s It should be included? %s [end]", pair, boolPair.getLeft(), boolPair.getRight());
+
+    # 3) time 5
+    # FileUtil.writeToFileWithFormat("very special cases! There are %s extra failing cases in testing all. The coverage need to be re-run!", executor.getFailingCasesInTestAll().size());
+
+    # 4) time 6
+    # if (allAlphabets.contains("elseif")){
+	# 		FileUtil.writeToFile("allAlphabets.contains(\"elseif\")");
+	# 	}
+
+    # 5) time 10
+    # if(lineRange == null){ // bug fix: exposed by time 10.  +    private static final long START_1972 = 2L * 365L * 86400L * 1000L;
+	# 		showCurNode(filePath, lineNo, stmtInfo); // is not in method
+	# 		FileUtil.writeToFileWithFormat("chunk line: %s is not in any method", pair);
+	# 	}
+
+    """ lang 8
+     catch(IncompatibleClassChangeError e){ // bug fix: exposed by lang 8  -> relativePath: org/apache/commons/lang3/time/FastDateParser$TextStrategy.class, className: org.apache.commons.lang3.time.FastDateParser$TextStrategy
+				FileUtil.writeToFileWithFormat("IncompatibleClassChangeError occurs! error: %s, relativePath: %s, className: %s", e.toString(), relativePath, className);
+				e.printStackTrace();
+			}
+    """
+
+    """
+    if (isInMethod == null){ // has no method
+			boolPair = new Pair<String, Boolean>("notInAnyMethod", true);
+			FileUtil.writeToFileWithFormat("chunk line: %s is not covered by any failing test. It is a sub-stmt? %s It should be included? %s [end]", pair, boolPair.getLeft(), boolPair.getRight());
+			return boolPair;
+		}else{
+			if (isInMethod.getRight()){ // is the first line of the method
+				boolPair = new Pair<String, Boolean>("inMethodButNotInBlock", true);
+				FileUtil.writeToFileWithFormat("chunk line: %s is not covered by any failing test. It is a sub-stmt? %s It should be included? %s [end]", pair, boolPair.getLeft(), boolPair.getRight());
+				return boolPair;
+			}//else, go to next code lines
+		}
+        time 11 and lang 23
+    """
+
+    """
+    chart 21
+    if (bs.getChildNodes().isEmpty()){
+			FileUtil.writeToFile("bs.getChildNodes().isEmpty()");
+			return true; // should be included
+		}
+
+        if(stmtInfo.getLeft().equals("BlockStmt")){
+			FileUtil.writeToFileWithFormat("check if curLine: %s is before this block stmt.", pair);
+			boolean isBeforeBlockStmt = isBeforeBlockStmt((BlockStmt) stmtInfo.getRight(), pair);
+			if (isBeforeBlockStmt){
+				boolPair = new Pair<String, Boolean>("isBeforeBlockStmt", true);
+				FileUtil.writeToFileWithFormat("chunk line: %s is not covered by any failing test. It is a sub-stmt? %s It should be included? %s [end]", pair, boolPair.getLeft(), boolPair.getRight());
+				return boolPair;
+			}
+		}
+    """
+
+    """
+    if (! runOriginal){ // this means that the coverage analysis leads to the failure.
+                FileUtil.writeToFile("Coverage analysis leads to the failure of patch fail before mutation!");
+                runOriginal = DeltaDebugging.assertBeforeMut(simplifiedLinesBkForDDMin, chunksBkForDDMin);
+                if (!runOriginal){
+                    FileUtil.raiseException("[ddmin] original patch version does not pass!");
+                }else{
+                    FileUtil.writeToFile("Use backup lines and chunks for ddmin now!");
+                    useBk = true;
+                }
+            }
+
+            if (!pass){
+                FileUtil.writeToFile("[ddmin] original patch version does not pass!");
+    //			FileUtil.raiseException("[ddmin] original patch version does not pass!");
+            }
+    """
+
+"""
+if(!isInAllChunks){
+				useChunksBk = true;
+				FileUtil.writeToFileWithFormat("useChunksBk = true; for linePair: %s", linePair);
+//				FileUtil.raiseException("isInAllChunks is false!");
+			}
+"""
+
+"""
+if (matrix.length == 0){
+			FileUtil.writeToFile("matrix.length == 0, and return empty map!");
+			return;
+		}
+lang 29, 30
+
+fcaseList is null
+        """
+
+
+"""
+if (useBk || useChunksBk){
+			FileUtil.writeToFile("useBk || useChunksBk is true\n");
+			FileUtil.writeToFileWithFormat("simplifiedLinesBkForDDMin: %s", GeneralUtil.listToStringAddLineBreak(simplifiedLinesBkForDDMin));
+			deltaLines = DeltaDebugging.ddmin(simplifiedLinesBkForDDMin, chunksBkForDDMin);
+		}else{
+			FileUtil.writeToFile("useBk || useChunksBk is false\n");
+			FileUtil.writeToFileWithFormat("simplifiedLines: %s", GeneralUtil.listToStringAddLineBreak(simplifiedLines));
+			deltaLines = DeltaDebugging.ddmin(simplifiedLines, simplifiedChunks);
+		}
+
+closure 21
+
+// for closure 21. the purified patch cannot compile.
+		boolean runDDAfter = DeltaDebugging.assertBeforeMut(deltaLines, deltaChunks, "patchAfterRunDD.diff", "[ddmin] purified patch version does not pass!");
+		if (!runDDAfter){
+			FileUtil.writeToFile("runDDAfter is false! the pacth after dd cannot pass!\n");
+			if (runOriginal){
+				FileUtil.writeToFile("purified patch is simplifiedChunks\n");
+				deltaChunks.clear();
+				deltaChunks.addAll(simplifiedChunks);
+				deltaLines.clear();
+				deltaLines.addAll(simplifiedLines);
+			}else{ // add original
+				FileUtil.writeToFile("purified patch is chunksBkForDDMin\n");
+				deltaChunks.clear();
+				deltaChunks.addAll(chunksBkForDDMin);
+				deltaLines.clear();
+				deltaLines.addAll(simplifiedLinesBkForDDMin);
+			}
+		}
+"""
+
+
+"""
+
+
+/** @Description 
+	 * @author apr
+	 * @version Oct 23, 2020
+	 * 
+	 * this is for mockito 6. timeout problem.
+	 *
+	 * @param simplifiedLinesBkForDDMin
+	 * @param chunksBkForDDMin2
+	 * @return
+	 */
+	private List<Pair<Integer, String>> runDDWithTimeOut(List<Pair<Integer, String>> lines,
+			List<Chunk> chunks) {
+		List<Pair<Integer, String>> deltaLines = new ArrayList<>();
+		try {
+			TimeOut.runWithTimeout(new Runnable() {
+				@Override
+				public void run() {
+					deltaLines.addAll(DeltaDebugging.ddmin(lines, chunks));
+				}
+			}, Configuration.TIMEOUT_DD, TimeUnit.MINUTES);
+		} catch (Exception e1) {
+			FileUtil.writeToFileWithFormat("dd execution timeout! (%s min)", Configuration.TIMEOUT_DD);
+			e1.printStackTrace();
+		}catch (Error er) {
+			FileUtil.writeToFileWithFormat("dd execution timeout! (%s min)", Configuration.TIMEOUT_DD);
+			er.printStackTrace();
+		}
+		
+		return deltaLines;
+	}
+
+    """
+
+
+    // check
+		if (!Main.reRun && FileUtil.oriFailedTests.size() != FileUtil.gzFailingTestCases.size()){
+			// for mockito  1, 3, 18, 20. many of the failing test cases cannot be reproduced!
+			// provide a workaround here for future TODO
+//			FileUtil.raiseException("!Main.reRun && FileUtil.oriFailedTests.size() != FileUtil.gzFailingTestCases.size()");
+			FileUtil.writeToFile("!Main.reRun && FileUtil.oriFailedTests.size() != FileUtil.gzFailingTestCases.size()\n");
+		}

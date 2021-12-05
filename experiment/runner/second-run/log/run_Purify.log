@@ -1,0 +1,849 @@
+Defects4J Time-5 1
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Time-5
+start time: 2020-10-21 20:18:13
+end time of Purify: 2020-10-21 20:42:38
+time cost: 1465 s
+
+
+
+
+Defects4J Time-6 2
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Time-6
+start time: 2020-10-21 20:42:38
+end time of Purify: 2020-10-21 21:06:49
+time cost: 1451 s
+
+
+
+
+Defects4J Time-10 3
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Time-10
+start time: 2020-10-21 21:06:49
+end time of Purify: 2020-10-21 21:09:40
+time cost: 171 s
+
+
+
+
+Defects4J Time-11 4
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Time-11
+start time: 2020-10-21 21:09:40
+end time of Purify: 2020-10-21 21:13:09
+time cost: 209 s
+
+
+
+
+Defects4J Time-12 5
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Time-12
+start time: 2020-10-21 21:13:09
+end time of Purify: 2020-10-21 21:20:54
+time cost: 465 s
+
+
+
+
+Defects4J Time-18 6
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Time-18
+start time: 2020-10-21 21:20:54
+end time of Purify: 2020-10-21 21:25:11
+time cost: 257 s
+
+
+
+
+Defects4J Time-21 7
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Time-21
+start time: 2020-10-21 21:25:11
+end time of Purify: 2020-10-21 21:26:15
+time cost: 64 s
+
+
+
+
+Defects4J Chart-4 8
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Chart-4
+start time: 2020-10-21 21:26:15
+end time of Purify: 2020-10-21 21:29:37
+time cost: 202 s
+
+
+
+
+Defects4J Chart-5 9
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Chart-5
+start time: 2020-10-21 21:29:37
+end time of Purify: 2020-10-21 21:33:45
+time cost: 248 s
+
+
+
+
+Defects4J Chart-12 10
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Chart-12
+start time: 2020-10-21 21:33:45
+end time of Purify: 2020-10-21 21:36:14
+time cost: 149 s
+
+
+
+
+Defects4J Chart-15 11
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Chart-15
+start time: 2020-10-21 21:36:14
+end time of Purify: 2020-10-21 21:40:08
+time cost: 234 s
+
+
+
+
+Defects4J Chart-21 12
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Chart-21
+start time: 2020-10-21 21:40:08
+end time of Purify: 2020-10-21 21:56:50
+time cost: 1002 s
+
+
+
+
+Defects4J Chart-25 13
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Chart-25
+start time: 2020-10-21 21:56:50
+end time of Purify: 2020-10-21 22:02:27
+time cost: 337 s
+
+
+
+
+Defects4J Chart-26 14
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Chart-26
+start time: 2020-10-21 22:02:27
+end time of Purify: 2020-10-21 22:05:32
+time cost: 185 s
+
+
+
+
+Defects4J Lang-1 15
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-1
+start time: 2020-10-21 22:05:32
+end time of Purify: 2020-10-21 22:09:47
+time cost: 255 s
+
+
+
+
+Defects4J Lang-2 16
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-2
+start time: 2020-10-21 22:09:47
+end time of Purify: 2020-10-21 22:11:55
+time cost: 128 s
+
+
+
+
+Defects4J Lang-3 17
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-3
+start time: 2020-10-21 22:11:55
+end time of Purify: 2020-10-21 22:14:10
+time cost: 135 s
+
+
+
+
+Defects4J Lang-4 18
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-4
+start time: 2020-10-21 22:14:10
+end time of Purify: 2020-10-21 22:18:52
+time cost: 282 s
+
+
+
+
+Defects4J Lang-5 19
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-5
+start time: 2020-10-21 22:18:52
+end time of Purify: 2020-10-21 22:25:29
+time cost: 397 s
+
+
+
+
+Defects4J Lang-6 20
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-6
+start time: 2020-10-21 22:25:29
+end time of Purify: 2020-10-21 22:27:59
+time cost: 150 s
+
+
+
+
+Defects4J Lang-7 21
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-7
+start time: 2020-10-21 22:27:59
+end time of Purify: 2020-10-21 22:30:43
+time cost: 164 s
+
+
+
+
+Defects4J Lang-8 22
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-8
+start time: 2020-10-21 22:30:43
+end time of Purify: 2020-10-21 22:33:08
+time cost: 145 s
+
+
+
+
+Defects4J Lang-9 23
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-9
+start time: 2020-10-21 22:33:08
+end time of Purify: 2020-10-21 22:35:33
+time cost: 145 s
+
+
+
+
+Defects4J Lang-10 24
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-10
+start time: 2020-10-21 22:35:33
+end time of Purify: 2020-10-21 22:43:48
+time cost: 495 s
+
+
+
+
+Defects4J Lang-11 25
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-11
+start time: 2020-10-21 22:43:48
+end time of Purify: 2020-10-21 22:45:42
+time cost: 114 s
+
+
+
+
+Defects4J Lang-12 26
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-12
+start time: 2020-10-21 22:45:42
+end time of Purify: 2020-10-21 22:48:06
+time cost: 144 s
+
+
+
+
+Defects4J Lang-13 27
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-13
+start time: 2020-10-21 22:48:06
+end time of Purify: 2020-10-21 22:56:23
+time cost: 497 s
+
+
+
+
+Defects4J Lang-17 28
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-17
+start time: 2020-10-21 22:56:23
+end time of Purify: 2020-10-21 22:57:07
+time cost: 44 s
+
+
+
+
+Defects4J Lang-19 29
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-19
+start time: 2020-10-21 22:57:07
+end time of Purify: 2020-10-21 23:02:00
+time cost: 293 s
+
+
+
+
+Defects4J Lang-23 30
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-23
+start time: 2020-10-21 23:02:00
+end time of Purify: 2020-10-21 23:17:59
+time cost: 959 s
+
+
+
+
+Defects4J Lang-29 31
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-29
+start time: 2020-10-21 23:17:59
+end time of Purify: 2020-10-21 23:18:47
+time cost: 48 s
+
+
+
+
+Defects4J Lang-30 32
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-30
+start time: 2020-10-21 23:18:47
+end time of Purify: 2020-10-21 23:19:47
+time cost: 60 s
+
+
+
+
+Defects4J Lang-32 33
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-32
+start time: 2020-10-21 23:19:47
+end time of Purify: 2020-10-21 23:26:45
+time cost: 418 s
+
+
+
+
+Defects4J Lang-35 34
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-35
+start time: 2020-10-21 23:26:45
+end time of Purify: 2020-10-21 23:28:59
+time cost: 134 s
+
+
+
+
+Defects4J Lang-37 35
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-37
+start time: 2020-10-21 23:28:59
+end time of Purify: 2020-10-21 23:31:35
+time cost: 156 s
+
+
+
+
+Defects4J Lang-41 36
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-41
+start time: 2020-10-21 23:31:35
+end time of Purify: 2020-10-21 23:42:13
+time cost: 638 s
+
+
+
+
+Defects4J Lang-46 37
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-46
+start time: 2020-10-21 23:42:13
+end time of Purify: 2020-10-21 23:48:26
+time cost: 373 s
+
+
+
+
+Defects4J Lang-53 38
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-53
+start time: 2020-10-21 23:48:26
+end time of Purify: 2020-10-21 23:49:09
+time cost: 43 s
+
+
+
+
+Defects4J Lang-60 39
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-60
+start time: 2020-10-21 23:49:09
+end time of Purify: 2020-10-21 23:50:43
+time cost: 94 s
+
+
+
+
+Defects4J Lang-62 40
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-62
+start time: 2020-10-21 23:50:43
+end time of Purify: 2020-10-21 23:53:40
+time cost: 177 s
+
+
+
+
+Defects4J Lang-64 41
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-64
+start time: 2020-10-21 23:53:40
+end time of Purify: 2020-10-21 23:58:36
+time cost: 296 s
+
+
+
+
+Defects4J Math-6 42
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-6
+start time: 2020-10-21 23:58:36
+end time of Purify: 2020-10-22 01:39:08
+time cost: 6032 s
+
+
+
+
+Defects4J Math-7 43
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-7
+start time: 2020-10-22 01:39:08
+end time of Purify: 2020-10-22 02:08:37
+time cost: 1769 s
+
+
+
+
+Defects4J Math-16 44
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-16
+start time: 2020-10-22 02:08:37
+end time of Purify: 2020-10-22 02:19:41
+time cost: 664 s
+
+
+
+
+Defects4J Math-18 45
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-18
+start time: 2020-10-22 02:19:41
+end time of Purify: 2020-10-22 02:34:54
+time cost: 913 s
+
+
+
+
+Defects4J Math-23 46
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-23
+start time: 2020-10-22 02:34:54
+end time of Purify: 2020-10-22 02:46:49
+time cost: 715 s
+
+
+
+
+Defects4J Math-24 47
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-24
+start time: 2020-10-22 02:46:49
+end time of Purify: 2020-10-22 02:55:33
+time cost: 524 s
+
+
+
+
+Defects4J Math-31 48
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-31
+start time: 2020-10-22 02:55:33
+end time of Purify: 2020-10-22 03:59:14
+time cost: 3821 s
+
+
+
+
+Defects4J Math-38 49
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-38
+start time: 2020-10-22 03:59:14
+end time of Purify: 2020-10-22 04:12:09
+time cost: 775 s
+
+
+
+
+Defects4J Math-44 50
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-44
+start time: 2020-10-22 04:12:09
+end time of Purify: 2020-10-22 04:17:33
+time cost: 324 s
+
+
+
+
+Defects4J Math-49 51
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-49
+start time: 2020-10-22 04:17:33
+end time of Purify: 2020-10-22 04:22:35
+time cost: 302 s
+
+
+
+
+Defects4J Math-51 52
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-51
+start time: 2020-10-22 04:22:35
+end time of Purify: 2020-10-22 04:28:39
+time cost: 364 s
+
+
+
+
+Defects4J Math-60 53
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-60
+start time: 2020-10-22 04:28:39
+end time of Purify: 2020-10-22 04:32:31
+time cost: 232 s
+
+
+
+
+Defects4J Math-64 54
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-64
+start time: 2020-10-22 04:32:31
+end time of Purify: 2020-10-22 04:57:09
+time cost: 1478 s
+
+
+
+
+Defects4J Math-66 55
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-66
+start time: 2020-10-22 04:57:09
+end time of Purify: 2020-10-22 04:58:04
+time cost: 55 s
+
+
+
+
+Defects4J Math-67 56
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-67
+start time: 2020-10-22 04:58:04
+end time of Purify: 2020-10-22 05:00:40
+time cost: 156 s
+
+
+
+
+Defects4J Math-74 57
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-74
+start time: 2020-10-22 05:00:40
+end time of Purify: 2020-10-22 05:25:33
+time cost: 1493 s
+
+
+
+
+Defects4J Math-76 58
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-76
+start time: 2020-10-22 05:25:33
+end time of Purify: 2020-10-22 05:30:33
+time cost: 300 s
+
+
+
+
+Defects4J Math-84 59
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-84
+start time: 2020-10-22 05:30:33
+end time of Purify: 2020-10-22 05:31:23
+time cost: 50 s
+
+
+
+
+Defects4J Math-90 60
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-90
+start time: 2020-10-22 05:31:23
+end time of Purify: 2020-10-22 05:32:08
+time cost: 45 s
+
+
+
+
+Defects4J Math-92 61
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-92
+start time: 2020-10-22 05:32:08
+end time of Purify: 2020-10-22 05:39:02
+time cost: 414 s
+
+
+
+
+Defects4J Math-95 62
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-95
+start time: 2020-10-22 05:39:02
+end time of Purify: 2020-10-22 05:40:38
+time cost: 96 s
+
+
+
+
+Defects4J Math-97 63
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-97
+start time: 2020-10-22 05:40:38
+end time of Purify: 2020-10-22 05:46:36
+time cost: 358 s
+
+
+
+
+Defects4J Math-100 64
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-100
+start time: 2020-10-22 05:46:36
+end time of Purify: 2020-10-22 05:50:08
+time cost: 212 s
+
+
+
+
+Defects4J Math-103 65
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-103
+start time: 2020-10-22 05:50:08
+end time of Purify: 2020-10-22 05:53:24
+time cost: 196 s
+
+
+
+
+Defects4J Closure-1 66
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-1
+start time: 2020-10-22 05:53:24
+end time of Purify: 2020-10-22 06:00:58
+time cost: 454 s
+
+
+
+
+Defects4J Closure-3 67
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-3
+start time: 2020-10-22 06:00:58
+end time of Purify: 2020-10-22 06:11:09
+time cost: 611 s
+
+
+
+
+Defects4J Closure-13 68
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-13
+start time: 2020-10-22 06:11:09
+end time of Purify: 2020-10-22 06:16:52
+time cost: 343 s
+
+
+
+
+Defects4J Closure-17 69
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-17
+start time: 2020-10-22 06:16:52
+end time of Purify: 2020-10-22 06:26:42
+time cost: 590 s
+
+
+
+
+Defects4J Closure-20 70
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-20
+start time: 2020-10-22 06:26:42
+end time of Purify: 2020-10-22 06:31:59
+time cost: 317 s
+
+
+
+
+Defects4J Closure-21 71
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-21
+start time: 2020-10-22 06:31:59
+end time of Purify: 2020-10-22 06:47:30
+time cost: 931 s
+
+
+
+
+Defects4J Closure-22 72
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-22
+start time: 2020-10-22 06:47:30
+end time of Purify: 2020-10-22 07:07:43
+time cost: 1213 s
+
+
+
+
+Defects4J Closure-24 73
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-24
+start time: 2020-10-22 07:07:43
+end time of Purify: 2020-10-22 07:18:31
+time cost: 648 s
+
+
+
+
+Defects4J Closure-27 74
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-27
+start time: 2020-10-22 07:18:31
+end time of Purify: 2020-10-22 07:41:31
+time cost: 1380 s
+
+
+
+
+Defects4J Closure-28 75
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-28
+start time: 2020-10-22 07:41:31
+end time of Purify: 2020-10-22 07:49:40
+time cost: 489 s
+
+
+
+
+Defects4J Closure-32 76
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-32
+start time: 2020-10-22 07:49:40
+end time of Purify: 2020-10-22 08:17:16
+time cost: 1656 s
+
+
+
+
+Defects4J Closure-33 77
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-33
+start time: 2020-10-22 08:17:16
+end time of Purify: 2020-10-22 08:22:40
+time cost: 324 s
+
+
+
+
+Defects4J Closure-34 78
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-34
+start time: 2020-10-22 08:22:40
+end time of Purify: 2020-10-22 08:34:01
+time cost: 681 s
+
+
+
+
+Defects4J Closure-35 79
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-35
+start time: 2020-10-22 08:34:01
+end time of Purify: 2020-10-22 08:48:03
+time cost: 842 s
+
+
+
+
+Defects4J Closure-36 80
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-36
+start time: 2020-10-22 08:48:03
+end time of Purify: 2020-10-22 08:53:24
+time cost: 321 s
+
+
+
+
+Defects4J Closure-37 81
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-37
+start time: 2020-10-22 08:53:24
+end time of Purify: 2020-10-22 09:02:05
+time cost: 521 s
+
+
+
+
+Defects4J Closure-38 82
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-38
+start time: 2020-10-22 09:02:05
+end time of Purify: 2020-10-22 09:06:42
+time cost: 277 s
+
+
+
+
+Defects4J Closure-39 83
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-39
+start time: 2020-10-22 09:06:42
+end time of Purify: 2020-10-22 09:14:51
+time cost: 489 s
+
+
+
+
+Defects4J Closure-40 84
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-40
+start time: 2020-10-22 09:14:51
+end time of Purify: 2020-10-22 09:20:43
+time cost: 352 s
+
+
+
+
+Defects4J Closure-41 85
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-41
+start time: 2020-10-22 09:20:43
+end time of Purify: 2020-10-22 09:43:51
+time cost: 1388 s
+
+
+
+
+Defects4J Closure-42 86
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-42
+start time: 2020-10-22 09:43:51
+end time of Purify: 2020-10-22 09:53:34
+time cost: 583 s
+
+
+
+
+Defects4J Closure-43 87
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-43
+start time: 2020-10-22 09:53:34
+end time of Purify: 2020-10-22 10:11:14
+time cost: 1060 s
+
+
+
+
+Defects4J Closure-44 88
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-44
+start time: 2020-10-22 10:11:14
+end time of Purify: 2020-10-22 10:16:48
+time cost: 334 s
+
+
+
+
+Defects4J Closure-45 89
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-45
+start time: 2020-10-22 10:16:48
+end time of Purify: 2020-10-22 12:16:48
+time cost: 7200 s
+
+
+
+
+Defects4J Closure-46 90
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-46
+start time: 2020-10-22 12:16:48
+end time of Purify: 2020-10-22 14:16:48
+time cost: 7200 s
+
+
+
+
+Defects4J Closure-47 91
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-47
+start time: 2020-10-22 14:16:48
+end time of Purify: 2020-10-22 16:16:48
+time cost: 7200 s
+
+
+
+
+Defects4J Closure-48 92
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-48
+start time: 2020-10-22 16:16:48
+end time of Purify: 2020-10-22 18:16:48
+time cost: 7200 s
+
+
+
+
+Defects4J Closure-49 93
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-49
+start time: 2020-10-22 18:16:48
+end time of Purify: 2020-10-22 20:16:48
+time cost: 7200 s
+
+
+
+
+Defects4J Closure-50 94
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-50
+start time: 2020-10-22 20:16:48
+end time of Purify: 2020-10-22 22:16:48
+time cost: 7200 s
+
+
+
+
+Defects4J Closure-51 95
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-51
+start time: 2020-10-22 22:16:48

@@ -1,0 +1,2004 @@
+Defects4J Time-21 1
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Time-21
+start time: 2020-10-22 23:42:16
+end time of Purify: 2020-10-22 23:56:41
+time cost: 865 s
+
+
+
+
+Defects4J Lang-17 2
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-17
+start time: 2020-10-22 23:56:41
+end time of Purify: 2020-10-23 00:10:45
+time cost: 844 s
+
+
+
+
+Defects4J Lang-29 3
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-29
+start time: 2020-10-23 00:10:45
+end time of Purify: 2020-10-23 00:11:24
+time cost: 39 s
+
+
+
+
+Defects4J Lang-30 4
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-30
+start time: 2020-10-23 00:11:24
+end time of Purify: 2020-10-23 00:12:09
+time cost: 45 s
+
+
+
+
+Defects4J Lang-53 5
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Lang-53
+start time: 2020-10-23 00:12:09
+end time of Purify: 2020-10-23 00:13:39
+time cost: 90 s
+
+
+
+
+Defects4J Math-65 6
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-65
+start time: 2020-10-23 00:13:39
+end time of Purify: 2020-10-23 00:18:35
+time cost: 296 s
+
+
+
+
+Defects4J Math-66 7
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-66
+start time: 2020-10-23 00:18:35
+end time of Purify: 2020-10-23 00:37:23
+time cost: 1128 s
+
+
+
+
+Defects4J Math-84 8
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-84
+start time: 2020-10-23 00:37:23
+end time of Purify: 2020-10-23 00:41:46
+time cost: 263 s
+
+
+
+
+Defects4J Math-90 9
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Math-90
+start time: 2020-10-23 00:41:46
+end time of Purify: 2020-10-23 00:43:52
+time cost: 126 s
+
+
+
+
+Defects4J Closure-21 10
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-21
+start time: 2020-10-23 00:43:52
+end time of Purify: 2020-10-23 00:59:27
+time cost: 935 s
+
+
+
+
+Defects4J Closure-45 11
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-45
+start time: 2020-10-23 00:59:27
+end time of Purify: 2020-10-23 01:09:21
+time cost: 594 s
+
+
+
+
+Defects4J Closure-46 12
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-46
+start time: 2020-10-23 01:09:21
+end time of Purify: 2020-10-23 01:21:04
+time cost: 703 s
+
+
+
+
+Defects4J Closure-47 13
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-47
+start time: 2020-10-23 01:21:04
+end time of Purify: 2020-10-23 01:41:18
+time cost: 1214 s
+
+
+
+
+Defects4J Closure-48 14
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-48
+start time: 2020-10-23 01:41:18
+end time of Purify: 2020-10-23 01:59:39
+time cost: 1101 s
+
+
+
+
+Defects4J Closure-49 15
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-49
+start time: 2020-10-23 01:59:39
+end time of Purify: 2020-10-23 03:22:58
+time cost: 4999 s
+
+
+
+
+Defects4J Closure-50 16
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-50
+start time: 2020-10-23 03:22:58
+end time of Purify: 2020-10-23 03:32:50
+time cost: 592 s
+
+
+
+
+Defects4J Closure-51 17
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-51
+start time: 2020-10-23 03:32:50
+end time of Purify: 2020-10-23 03:37:27
+time cost: 277 s
+
+
+
+
+Defects4J Closure-52 18
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-52
+start time: 2020-10-23 03:37:27
+end time of Purify: 2020-10-23 03:42:20
+time cost: 293 s
+
+
+
+
+Defects4J Closure-53 19
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-53
+start time: 2020-10-23 03:42:20
+end time of Purify: 2020-10-23 03:47:47
+time cost: 327 s
+
+
+
+
+Defects4J Closure-54 20
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-54
+start time: 2020-10-23 03:47:47
+end time of Purify: 2020-10-23 04:06:59
+time cost: 1152 s
+
+
+
+
+Defects4J Closure-55 21
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-55
+start time: 2020-10-23 04:06:59
+end time of Purify: 2020-10-23 04:12:34
+time cost: 335 s
+
+
+
+
+Defects4J Closure-56 22
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-56
+start time: 2020-10-23 04:12:34
+end time of Purify: 2020-10-23 04:18:15
+time cost: 341 s
+
+
+
+
+Defects4J Closure-57 23
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-57
+start time: 2020-10-23 04:18:15
+end time of Purify: 2020-10-23 04:22:53
+time cost: 278 s
+
+
+
+
+Defects4J Closure-58 24
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-58
+start time: 2020-10-23 04:22:53
+end time of Purify: 2020-10-23 04:28:29
+time cost: 336 s
+
+
+
+
+Defects4J Closure-59 25
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-59
+start time: 2020-10-23 04:28:29
+end time of Purify: 2020-10-23 04:33:39
+time cost: 310 s
+
+
+
+
+Defects4J Closure-60 26
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-60
+start time: 2020-10-23 04:33:39
+end time of Purify: 2020-10-23 04:46:42
+time cost: 783 s
+
+
+
+
+Defects4J Closure-61 27
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-61
+start time: 2020-10-23 04:46:42
+end time of Purify: 2020-10-23 04:53:20
+time cost: 398 s
+
+
+
+
+Defects4J Closure-62 28
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-62
+start time: 2020-10-23 04:53:20
+end time of Purify: 2020-10-23 04:57:45
+time cost: 265 s
+
+
+
+
+Defects4J Closure-63 29
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-63
+start time: 2020-10-23 04:57:45
+end time of Purify: 2020-10-23 05:02:06
+time cost: 261 s
+
+
+
+
+Defects4J Closure-64 30
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-64
+start time: 2020-10-23 05:02:06
+end time of Purify: 2020-10-23 05:08:08
+time cost: 362 s
+
+
+
+
+Defects4J Closure-65 31
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-65
+start time: 2020-10-23 05:08:08
+end time of Purify: 2020-10-23 05:12:12
+time cost: 244 s
+
+
+
+
+Defects4J Closure-66 32
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-66
+start time: 2020-10-23 05:12:12
+end time of Purify: 2020-10-23 05:16:42
+time cost: 270 s
+
+
+
+
+Defects4J Closure-67 33
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-67
+start time: 2020-10-23 05:16:42
+end time of Purify: 2020-10-23 05:20:22
+time cost: 220 s
+
+
+
+
+Defects4J Closure-68 34
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-68
+start time: 2020-10-23 05:20:22
+end time of Purify: 2020-10-23 05:27:34
+time cost: 432 s
+
+
+
+
+Defects4J Closure-69 35
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-69
+start time: 2020-10-23 05:27:34
+end time of Purify: 2020-10-23 05:38:34
+time cost: 660 s
+
+
+
+
+Defects4J Closure-70 36
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-70
+start time: 2020-10-23 05:38:34
+end time of Purify: 2020-10-23 05:42:51
+time cost: 257 s
+
+
+
+
+Defects4J Closure-71 37
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-71
+start time: 2020-10-23 05:42:51
+end time of Purify: 2020-10-23 05:46:53
+time cost: 242 s
+
+
+
+
+Defects4J Closure-72 38
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-72
+start time: 2020-10-23 05:46:53
+end time of Purify: 2020-10-23 05:51:32
+time cost: 279 s
+
+
+
+
+Defects4J Closure-73 39
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-73
+start time: 2020-10-23 05:51:32
+end time of Purify: 2020-10-23 05:55:18
+time cost: 226 s
+
+
+
+
+Defects4J Closure-74 40
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-74
+start time: 2020-10-23 05:55:18
+end time of Purify: 2020-10-23 06:07:30
+time cost: 732 s
+
+
+
+
+Defects4J Closure-75 41
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-75
+start time: 2020-10-23 06:07:30
+end time of Purify: 2020-10-23 06:14:04
+time cost: 394 s
+
+
+
+
+Defects4J Closure-76 42
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-76
+start time: 2020-10-23 06:14:04
+end time of Purify: 2020-10-23 06:54:13
+time cost: 2409 s
+
+
+
+
+Defects4J Closure-77 43
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-77
+start time: 2020-10-23 06:54:13
+end time of Purify: 2020-10-23 06:57:41
+time cost: 208 s
+
+
+
+
+Defects4J Closure-78 44
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-78
+start time: 2020-10-23 06:57:41
+end time of Purify: 2020-10-23 07:01:51
+time cost: 250 s
+
+
+
+
+Defects4J Closure-79 45
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-79
+start time: 2020-10-23 07:01:51
+end time of Purify: 2020-10-23 07:06:20
+time cost: 269 s
+
+
+
+
+Defects4J Closure-80 46
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-80
+start time: 2020-10-23 07:06:20
+end time of Purify: 2020-10-23 07:10:56
+time cost: 276 s
+
+
+
+
+Defects4J Closure-81 47
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-81
+start time: 2020-10-23 07:10:56
+end time of Purify: 2020-10-23 07:16:11
+time cost: 315 s
+
+
+
+
+Defects4J Closure-82 48
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-82
+start time: 2020-10-23 07:16:11
+end time of Purify: 2020-10-23 07:21:04
+time cost: 293 s
+
+
+
+
+Defects4J Closure-83 49
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-83
+start time: 2020-10-23 07:21:04
+end time of Purify: 2020-10-23 07:31:06
+time cost: 602 s
+
+
+
+
+Defects4J Closure-84 50
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-84
+start time: 2020-10-23 07:31:06
+end time of Purify: 2020-10-23 07:51:12
+time cost: 1206 s
+
+
+
+
+Defects4J Closure-85 51
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-85
+start time: 2020-10-23 07:51:12
+end time of Purify: 2020-10-23 08:17:19
+time cost: 1567 s
+
+
+
+
+Defects4J Closure-86 52
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-86
+start time: 2020-10-23 08:17:19
+end time of Purify: 2020-10-23 08:21:20
+time cost: 241 s
+
+
+
+
+Defects4J Closure-87 53
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-87
+start time: 2020-10-23 08:21:20
+end time of Purify: 2020-10-23 08:31:27
+time cost: 607 s
+
+
+
+
+Defects4J Closure-88 54
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-88
+start time: 2020-10-23 08:31:27
+end time of Purify: 2020-10-23 08:38:38
+time cost: 431 s
+
+
+
+
+Defects4J Closure-89 55
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-89
+start time: 2020-10-23 08:38:38
+end time of Purify: 2020-10-23 08:46:50
+time cost: 492 s
+
+
+
+
+Defects4J Closure-90 56
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-90
+start time: 2020-10-23 08:46:50
+end time of Purify: 2020-10-23 08:51:14
+time cost: 264 s
+
+
+
+
+Defects4J Closure-91 57
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-91
+start time: 2020-10-23 08:51:14
+end time of Purify: 2020-10-23 08:58:16
+time cost: 422 s
+
+
+
+
+Defects4J Closure-92 58
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-92
+start time: 2020-10-23 08:58:16
+end time of Purify: 2020-10-23 09:01:27
+time cost: 191 s
+
+
+
+
+Defects4J Closure-93 59
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-93
+start time: 2020-10-23 09:01:27
+end time of Purify: 2020-10-23 09:04:40
+time cost: 193 s
+
+
+
+
+Defects4J Closure-94 60
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-94
+start time: 2020-10-23 09:04:40
+end time of Purify: 2020-10-23 09:19:54
+time cost: 914 s
+
+
+
+
+Defects4J Closure-95 61
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-95
+start time: 2020-10-23 09:19:54
+end time of Purify: 2020-10-23 09:24:03
+time cost: 249 s
+
+
+
+
+Defects4J Closure-96 62
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-96
+start time: 2020-10-23 09:24:03
+end time of Purify: 2020-10-23 09:27:58
+time cost: 235 s
+
+
+
+
+Defects4J Closure-97 63
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-97
+start time: 2020-10-23 09:27:58
+end time of Purify: 2020-10-23 09:32:27
+time cost: 269 s
+
+
+
+
+Defects4J Closure-98 64
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-98
+start time: 2020-10-23 09:32:27
+end time of Purify: 2020-10-23 09:47:01
+time cost: 874 s
+
+
+
+
+Defects4J Closure-99 65
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-99
+start time: 2020-10-23 09:47:01
+end time of Purify: 2020-10-23 09:51:49
+time cost: 288 s
+
+
+
+
+Defects4J Closure-100 66
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-100
+start time: 2020-10-23 09:51:49
+end time of Purify: 2020-10-23 09:58:40
+time cost: 411 s
+
+
+
+
+Defects4J Closure-101 67
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-101
+start time: 2020-10-23 09:58:40
+end time of Purify: 2020-10-23 10:02:53
+time cost: 253 s
+
+
+
+
+Defects4J Closure-102 68
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-102
+start time: 2020-10-23 10:02:53
+end time of Purify: 2020-10-23 10:06:38
+time cost: 225 s
+
+
+
+
+Defects4J Closure-103 69
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-103
+start time: 2020-10-23 10:06:38
+end time of Purify: 2020-10-23 10:10:36
+time cost: 238 s
+
+
+
+
+Defects4J Closure-104 70
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-104
+start time: 2020-10-23 10:10:36
+end time of Purify: 2020-10-23 10:12:58
+time cost: 142 s
+
+
+
+
+Defects4J Closure-105 71
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-105
+start time: 2020-10-23 10:12:58
+end time of Purify: 2020-10-23 10:21:06
+time cost: 488 s
+
+
+
+
+Defects4J Closure-106 72
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-106
+start time: 2020-10-23 10:21:06
+end time of Purify: 2020-10-23 10:25:00
+time cost: 234 s
+
+
+
+
+Defects4J Closure-107 73
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-107
+start time: 2020-10-23 10:25:00
+end time of Purify: 2020-10-23 10:30:30
+time cost: 330 s
+
+
+
+
+Defects4J Closure-108 74
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-108
+start time: 2020-10-23 10:30:30
+end time of Purify: 2020-10-23 10:41:55
+time cost: 685 s
+
+
+
+
+Defects4J Closure-109 75
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-109
+start time: 2020-10-23 10:41:55
+end time of Purify: 2020-10-23 10:50:00
+time cost: 485 s
+
+
+
+
+Defects4J Closure-110 76
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-110
+start time: 2020-10-23 10:50:00
+end time of Purify: 2020-10-23 11:42:55
+time cost: 3175 s
+
+
+
+
+Defects4J Closure-111 77
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-111
+start time: 2020-10-23 11:42:55
+end time of Purify: 2020-10-23 11:49:23
+time cost: 388 s
+
+
+
+
+Defects4J Closure-112 78
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-112
+start time: 2020-10-23 11:49:23
+end time of Purify: 2020-10-23 12:05:31
+time cost: 968 s
+
+
+
+
+Defects4J Closure-113 79
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-113
+start time: 2020-10-23 12:05:31
+end time of Purify: 2020-10-23 12:11:00
+time cost: 329 s
+
+
+
+
+Defects4J Closure-114 80
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-114
+start time: 2020-10-23 12:11:00
+end time of Purify: 2020-10-23 12:19:14
+time cost: 494 s
+
+
+
+
+Defects4J Closure-115 81
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-115
+start time: 2020-10-23 12:19:14
+end time of Purify: 2020-10-23 12:49:56
+time cost: 1842 s
+
+
+
+
+Defects4J Closure-116 82
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-116
+start time: 2020-10-23 12:49:56
+end time of Purify: 2020-10-23 13:05:30
+time cost: 934 s
+
+
+
+
+Defects4J Closure-117 83
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-117
+start time: 2020-10-23 13:05:30
+end time of Purify: 2020-10-23 13:28:19
+time cost: 1369 s
+
+
+
+
+Defects4J Closure-118 84
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-118
+start time: 2020-10-23 13:28:19
+end time of Purify: 2020-10-23 13:34:44
+time cost: 385 s
+
+
+
+
+Defects4J Closure-119 85
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-119
+start time: 2020-10-23 13:34:44
+end time of Purify: 2020-10-23 13:39:56
+time cost: 312 s
+
+
+
+
+Defects4J Closure-120 86
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-120
+start time: 2020-10-23 13:39:56
+end time of Purify: 2020-10-23 13:46:08
+time cost: 372 s
+
+
+
+
+Defects4J Closure-121 87
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-121
+start time: 2020-10-23 13:46:08
+end time of Purify: 2020-10-23 13:54:32
+time cost: 504 s
+
+
+
+
+Defects4J Closure-122 88
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-122
+start time: 2020-10-23 13:54:32
+end time of Purify: 2020-10-23 14:00:32
+time cost: 360 s
+
+
+
+
+Defects4J Closure-123 89
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-123
+start time: 2020-10-23 14:00:32
+end time of Purify: 2020-10-23 14:05:57
+time cost: 325 s
+
+
+
+
+Defects4J Closure-124 90
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-124
+start time: 2020-10-23 14:05:57
+end time of Purify: 2020-10-23 14:11:08
+time cost: 311 s
+
+
+
+
+Defects4J Closure-125 91
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-125
+start time: 2020-10-23 14:11:08
+end time of Purify: 2020-10-23 14:16:22
+time cost: 314 s
+
+
+
+
+Defects4J Closure-126 92
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-126
+start time: 2020-10-23 14:16:22
+end time of Purify: 2020-10-23 14:24:56
+time cost: 514 s
+
+
+
+
+Defects4J Closure-127 93
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-127
+start time: 2020-10-23 14:24:56
+end time of Purify: 2020-10-23 14:35:29
+time cost: 633 s
+
+
+
+
+Defects4J Closure-128 94
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-128
+start time: 2020-10-23 14:35:29
+end time of Purify: 2020-10-23 14:46:59
+time cost: 690 s
+
+
+
+
+Defects4J Closure-129 95
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-129
+start time: 2020-10-23 14:46:59
+end time of Purify: 2020-10-23 14:56:03
+time cost: 544 s
+
+
+
+
+Defects4J Closure-130 96
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-130
+start time: 2020-10-23 14:56:03
+end time of Purify: 2020-10-23 15:01:18
+time cost: 315 s
+
+
+
+
+Defects4J Closure-131 97
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-131
+start time: 2020-10-23 15:01:18
+end time of Purify: 2020-10-23 15:09:45
+time cost: 507 s
+
+
+
+
+Defects4J Closure-132 98
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-132
+start time: 2020-10-23 15:09:45
+end time of Purify: 2020-10-23 15:18:22
+time cost: 517 s
+
+
+
+
+Defects4J Closure-133 99
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Closure-133
+start time: 2020-10-23 15:18:22
+end time of Purify: 2020-10-23 15:23:19
+time cost: 297 s
+
+
+
+
+Defects4J Mockito-1 100
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-1
+start time: 2020-10-23 15:23:19
+end time of Purify: 2020-10-23 15:26:06
+time cost: 167 s
+
+
+
+
+Defects4J Mockito-2 101
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-2
+start time: 2020-10-23 15:26:06
+end time of Purify: 2020-10-23 15:38:38
+time cost: 752 s
+
+
+
+
+Defects4J Mockito-3 102
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-3
+start time: 2020-10-23 15:38:38
+end time of Purify: 2020-10-23 15:41:34
+time cost: 176 s
+
+
+
+
+Defects4J Mockito-4 103
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-4
+start time: 2020-10-23 15:41:34
+end time of Purify: 2020-10-23 16:15:29
+time cost: 2035 s
+
+
+
+
+Defects4J Mockito-5 104
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-5
+start time: 2020-10-23 16:15:29
+end time of Purify: 2020-10-23 16:23:32
+time cost: 483 s
+
+
+
+
+Defects4J Mockito-6 105
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-6
+start time: 2020-10-23 16:23:32
+end time of Purify: 2020-10-23 18:23:32
+time cost: 7200 s
+
+
+
+
+Defects4J Mockito-7 106
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-7
+start time: 2020-10-23 18:23:32
+end time of Purify: 2020-10-23 18:31:13
+time cost: 461 s
+
+
+
+
+Defects4J Mockito-8 107
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-8
+start time: 2020-10-23 18:31:13
+end time of Purify: 2020-10-23 18:48:54
+time cost: 1061 s
+
+
+
+
+Defects4J Mockito-9 108
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-9
+start time: 2020-10-23 18:48:54
+end time of Purify: 2020-10-23 19:03:18
+time cost: 864 s
+
+
+
+
+Defects4J Mockito-10 109
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-10
+start time: 2020-10-23 19:03:18
+end time of Purify: 2020-10-23 19:18:27
+time cost: 909 s
+
+
+
+
+Defects4J Mockito-11 110
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-11
+start time: 2020-10-23 19:18:27
+end time of Purify: 2020-10-23 19:39:18
+time cost: 1251 s
+
+
+
+
+Defects4J Mockito-12 111
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-12
+start time: 2020-10-23 19:39:18
+end time of Purify: 2020-10-23 19:40:01
+time cost: 43 s
+
+
+
+
+Defects4J Mockito-13 112
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-13
+start time: 2020-10-23 19:40:01
+end time of Purify: 2020-10-23 19:40:44
+time cost: 43 s
+
+
+
+
+Defects4J Mockito-14 113
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-14
+start time: 2020-10-23 19:40:44
+end time of Purify: 2020-10-23 19:41:26
+time cost: 42 s
+
+
+
+
+Defects4J Mockito-15 114
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-15
+start time: 2020-10-23 19:41:26
+end time of Purify: 2020-10-23 19:42:11
+time cost: 45 s
+
+
+
+
+Defects4J Mockito-16 115
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-16
+start time: 2020-10-23 19:42:11
+end time of Purify: 2020-10-23 19:42:52
+time cost: 41 s
+
+
+
+
+Defects4J Mockito-17 116
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-17
+start time: 2020-10-23 19:42:52
+end time of Purify: 2020-10-23 19:43:32
+time cost: 40 s
+
+
+
+
+Defects4J Mockito-18 117
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-18
+start time: 2020-10-23 19:43:32
+end time of Purify: 2020-10-23 19:46:57
+time cost: 205 s
+
+
+
+
+Defects4J Mockito-19 118
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-19
+start time: 2020-10-23 19:46:57
+end time of Purify: 2020-10-23 19:49:47
+time cost: 170 s
+
+
+
+
+Defects4J Mockito-20 119
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-20
+start time: 2020-10-23 19:49:47
+end time of Purify: 2020-10-23 19:53:15
+time cost: 208 s
+
+
+
+
+Defects4J Mockito-21 120
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-21
+start time: 2020-10-23 19:53:15
+end time of Purify: 2020-10-23 20:27:22
+time cost: 2047 s
+
+
+
+
+Defects4J Mockito-22 121
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-22
+start time: 2020-10-23 20:27:22
+end time of Purify: 2020-10-23 20:28:38
+time cost: 76 s
+
+
+
+
+Defects4J Mockito-23 122
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-23
+start time: 2020-10-23 20:28:38
+end time of Purify: 2020-10-23 20:29:53
+time cost: 75 s
+
+
+
+
+Defects4J Mockito-24 123
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-24
+start time: 2020-10-23 20:29:53
+end time of Purify: 2020-10-23 20:31:08
+time cost: 75 s
+
+
+
+
+Defects4J Mockito-25 124
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-25
+start time: 2020-10-23 20:31:08
+end time of Purify: 2020-10-23 20:32:34
+time cost: 86 s
+
+
+
+
+Defects4J Mockito-26 125
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-26
+start time: 2020-10-23 20:32:34
+end time of Purify: 2020-10-23 20:33:55
+time cost: 81 s
+
+
+
+
+Defects4J Mockito-27 126
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-27
+start time: 2020-10-23 20:33:55
+end time of Purify: 2020-10-23 20:34:42
+time cost: 47 s
+
+
+
+
+Defects4J Mockito-28 127
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-28
+start time: 2020-10-23 20:34:42
+end time of Purify: 2020-10-23 20:35:25
+time cost: 43 s
+
+
+
+
+Defects4J Mockito-29 128
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-29
+start time: 2020-10-23 20:35:25
+end time of Purify: 2020-10-23 20:36:09
+time cost: 44 s
+
+
+
+
+Defects4J Mockito-30 129
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-30
+start time: 2020-10-23 20:36:09
+end time of Purify: 2020-10-23 20:36:53
+time cost: 44 s
+
+
+
+
+Defects4J Mockito-31 130
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-31
+start time: 2020-10-23 20:36:53
+end time of Purify: 2020-10-23 20:37:37
+time cost: 44 s
+
+
+
+
+Defects4J Mockito-32 131
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-32
+start time: 2020-10-23 20:37:37
+end time of Purify: 2020-10-23 20:38:18
+time cost: 41 s
+
+
+
+
+Defects4J Mockito-33 132
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-33
+start time: 2020-10-23 20:38:18
+end time of Purify: 2020-10-23 20:39:01
+time cost: 43 s
+
+
+
+
+Defects4J Mockito-34 133
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-34
+start time: 2020-10-23 20:39:01
+end time of Purify: 2020-10-23 20:39:41
+time cost: 40 s
+
+
+
+
+Defects4J Mockito-35 134
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-35
+start time: 2020-10-23 20:39:41
+end time of Purify: 2020-10-23 20:40:21
+time cost: 40 s
+
+
+
+
+Defects4J Mockito-36 135
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-36
+start time: 2020-10-23 20:40:21
+end time of Purify: 2020-10-23 20:41:01
+time cost: 40 s
+
+
+
+
+Defects4J Mockito-37 136
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-37
+start time: 2020-10-23 20:41:01
+end time of Purify: 2020-10-23 20:41:40
+time cost: 39 s
+
+
+
+
+Defects4J Mockito-38 137
+timeout 120m python2.7 /mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/repair.py Purify -b Defects4J -i Mockito-38
+start time: 2020-10-23 20:41:40
+end time of Purify: 2020-10-23 20:42:17
+time cost: 37 s
+
+
+
+
+[sampled_bugs/Defects4J.txt] skip as 138 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 139 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 140 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 141 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 142 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 143 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 144 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 145 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 146 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 147 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 148 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 149 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 150 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 151 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 152 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 153 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 154 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 155 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 156 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 157 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 158 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 159 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 160 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 161 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 162 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 163 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 164 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 165 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 166 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 167 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 168 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 169 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 170 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 171 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 172 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 173 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 174 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 175 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 176 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 177 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 178 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 179 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 180 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 181 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 182 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 183 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 184 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 185 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 186 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 187 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 188 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 189 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 190 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 191 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 192 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 193 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 194 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 195 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 196 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 197 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 198 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 199 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 200 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 201 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 202 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 203 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 204 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 205 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 206 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 207 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 208 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 209 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 210 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 211 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 212 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 213 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 214 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 215 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 216 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 217 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 218 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 219 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 220 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 221 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 222 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 223 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 224 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 225 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 226 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 227 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 228 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 229 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 230 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 231 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 232 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 233 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 234 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 235 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 236 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 237 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 238 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 239 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 240 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 241 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 242 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 243 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 244 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 245 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 246 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 247 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 248 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 249 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 250 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 251 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 252 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 253 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 254 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 255 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 256 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 257 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 258 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 259 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 260 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 261 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 262 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 263 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 264 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 265 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 266 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 267 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 268 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 269 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 270 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 271 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 272 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 273 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 274 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 275 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 276 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 277 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 278 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 279 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 280 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 281 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 282 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 283 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 284 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 285 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 286 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 287 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 288 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 289 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 290 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 291 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 292 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 293 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 294 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 295 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 296 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 297 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 298 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 299 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 300 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 301 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 302 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 303 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 304 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 305 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 306 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 307 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 308 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 309 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 310 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 311 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 312 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 313 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 314 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 315 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 316 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 317 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 318 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 319 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 320 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 321 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 322 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 323 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 324 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 325 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 326 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 327 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 328 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 329 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 330 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 331 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 332 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 333 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 334 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 335 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 336 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 337 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 338 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 339 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 340 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 341 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 342 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 343 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 344 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 345 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 346 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 347 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 348 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 349 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 350 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 351 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 352 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 353 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 354 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 355 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 356 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 357 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 358 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 359 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 360 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 361 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 362 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 363 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 364 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 365 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 366 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 367 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 368 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 369 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 370 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 371 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 372 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 373 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 374 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 375 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 376 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 377 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 378 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 379 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 380 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 381 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 382 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 383 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 384 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 385 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 386 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 387 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 388 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 389 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 390 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 391 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 392 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 393 bug is null.
+
+
+[sampled_bugs/Defects4J.txt] skip as 394 bug is null.
+
+

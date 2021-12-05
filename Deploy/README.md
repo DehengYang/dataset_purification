@@ -1,18 +1,20 @@
-# Deploy DEPTest into RepairThemAll
+# integrate to RepairThemAll
 
-1) First configure the [RepairThemAll](https://github.com/program-repair/RepairThemAll) (please refer to: [RepairThemAll usage](https://github.com/program-repair/RepairThemAll/blob/master/INSTALL.md)). 
-Imagine that you have configured RepairThemAll correctly, and your RepairThemAll path is: `/apr/repairthemall`. Now do the following steps:
+1) add file:
+`/mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/core/repair_tools/Purify.py`
+(this is from `/mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/core/repair_tools/APR.py`)
 
-2) Copy file `purify.py` in this folder to `/apr/repairthemall/script/core/repair_tools/Purify.py`.
+replace all APR/apr with Purify/purify
 
+2) modify file `/mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/core/utils.py`:
 
-3) Modify file `/apr/repairthemall/script/core/utils.py`, and add 
-```
-import core.repair_tools.Purify
-```
+add `import core.repair_tools.Purify`
 
-4) Create file: `/apr/repairthemall/data/repair_tools/purify.json`
-The content of this file is:
+3) add file: `/mnt/recursive-repairthemall/RepairThemAll-Nopol-github/data/repair_tools/purify.json`
+(this is from `/mnt/recursive-repairthemall/RepairThemAll-Nopol-github/data/repair_tools/apr.json`) 
+
+the content is:
+
 ```
 {
 	"name": "Purify",
@@ -22,4 +24,25 @@ The content of this file is:
 }
 ```
 
-If you have any questions please don't hesitate to contact me.
+4) add file `/home/apr/apr_tools/datset_purification_2020/purification/purify/README/deploy.sh`. 
+
+```
+purifyJar="/home/apr/apr_tools/datset_purification_2020/purification/purify/target/purify-0.0.1-SNAPSHOT-jar-with-dependencies.jar"
+targetPath="/mnt/recursive-repairthemall/RepairThemAll-Nopol-github/repair_tools/purify.jar "
+
+
+BASE="$(cd $(dirname $0); pwd)"
+cd $BASE
+
+cp $purifyJar $targetPath
+
+time=$(date "+%Y-%m-%d %H:%M:%S")
+
+echo -e "$time --- cp $purifyJar $targetPath\n"
+echo -e "$time --- cp $purifyJar $targetPath\n" >> $BASE/deploy.log
+```
+
+
+5) further modify `/mnt/recursive-repairthemall/RepairThemAll-Nopol-github/script/core/repair_tools/Purify.py` for passing parameters to `purify.jar`.
+
+
