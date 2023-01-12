@@ -38,6 +38,11 @@ With such motivation, we propose a automated technique named DEPTest for **purif
 ### 1.2.2. Execution
 
 ```
+# install javaparser dependencies
+cd deps
+./installDeps.sh
+cd ..
+
 # to get purify-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 mvn clean package -DskipTests
 

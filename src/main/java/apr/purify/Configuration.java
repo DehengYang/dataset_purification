@@ -27,8 +27,8 @@ public class Configuration {
 	
 	public static String D4J_DIR; //= "/mnt/recursive-repairthemall/RepairThemAll/benchmarks/defects4j";
 	
-	public static String JAVA7_HOME = "/home/apr/env/jdk1.7.0_80/";
-	public static String JAVA8_HOME = "/home/apr/env/jdk1.8.0_202/";
+	public static String JAVA7_HOME; //= "/home/apr/env/jdk1.7.0_80/";
+	public static String JAVA8_HOME; //= "/home/apr/env/jdk1.8.0_202/";
 
 	public static String COMMENT = "//[apr-purify-comment]";
 	

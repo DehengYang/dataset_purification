@@ -265,6 +265,14 @@ public class Main
         opt.setRequired(true);
         options.addOption(opt);
         
+        opt = new Option("JAVA7_HOME","JAVA7_HOME",true,"e.g., /home/apr/env/jdk1.7.0_80/");
+        opt.setRequired(true);
+        options.addOption(opt);
+        
+        opt = new Option("JAVA8_HOME","JAVA8_HOME",true,"e.g., /home/apr/env/jdk1.8.0_202/");
+        opt.setRequired(true);
+        options.addOption(opt);
+        
         opt = new Option("d4jDir","d4jDir",true,"root dir of defects4j env, e.g., /mnt/recursive-repairthemall/RepairThemAll/benchmarks/defects4j");
         opt.setRequired(true);
         options.addOption(opt);
@@ -333,6 +341,15 @@ public class Main
 	        	String binTestDir = cli.getOptionValue("binTestDir");
 	        	FileUtil.binTestDir = new File(binTestDir).getCanonicalPath();
 	        }
+
+	        if(cli.hasOption("JAVA7_HOME")){
+                String java7Home = cli.getOptionValue("JAVA7_HOME");
+                Configuration.JAVA7_HOME = new File(java7Home).getCanonicalPath();
+            }
+	        if(cli.hasOption("JAVA8_HOME")){
+                String java8Home = cli.getOptionValue("JAVA8_HOME");
+                Configuration.JAVA8_HOME = new File(java8Home).getCanonicalPath();
+            }
 	        
 	        if(cli.hasOption("d4jDir")){
                 String d4jDir = cli.getOptionValue("d4jDir");
